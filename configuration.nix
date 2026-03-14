@@ -57,6 +57,7 @@ nix.settings = {
   time.timeZone = "Europe/Brussels";
   environment.variables = {
     TZ = "Europe/Brussels"; # Mangohud needs it
+    TZDIR = "/etc/zoneinfo";
   };
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";          # layout us intl comme dans ta config niri
@@ -120,6 +121,7 @@ nix.settings = {
   environment.systemPackages = with pkgs; [
     git wget curl
     polkit_gnome
+    yazi
     capitaine-cursors
   ];
 
