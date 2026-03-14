@@ -194,5 +194,5 @@ rebuild
 To update flake inputs:
 
 ```bash
-nix flake update && rebuild
+update && rebuild
 ```
