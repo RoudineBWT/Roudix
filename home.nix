@@ -33,9 +33,11 @@
     xwayland-satellite
     playerctl
     wl-clipboard
+    pwvucontrol
 
     # Apps
     ghostty
+    starship
     nautilus
     zed-editor
     gnome-text-editor
