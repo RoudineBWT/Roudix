@@ -10,10 +10,10 @@
       pkgs.proton-ge-bin                  # Proton-GE pour meilleure compatibilité
     ];
     package = pkgs.steam.override {
-      extraEnv = {
-        TZ = "Europe/Brussels";           # Fix MangoHud timezone in Steam
-        TZDIR = "/etc/zoneinfo";
-      };
+      extraProfile = ''
+        export TZ="Europe/Brussels"
+        export TZDIR="/etc/zoneinfo"
+      '';
     };
   };
 
@@ -46,10 +46,4 @@
   # ── Support manettes ─────────────────────────────────────────────────────
   hardware.steam-hardware.enable = true; # Support contrôleurs Steam
   services.udev.packages = [ pkgs.game-devices-udev-rules ]; # Xbox, PS, etc.
-
-  # ── Support 32 bits (obligatoire pour Steam/Wine) ────────────────────────
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
 }
