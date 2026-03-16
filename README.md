@@ -46,7 +46,6 @@ roudix/
 ├── flake.lock
 ├── configuration.nix         # NixOS system config
 ├── hardware-configuration.nix
-├── gaming.nix                # Steam, Gamescope, GameMode
 ├── niri.nix                  # Niri compositor + UWSM
 ├── home.nix                  # Home Manager entry point
 ├── niri/
@@ -57,10 +56,13 @@ roudix/
 └── modules/
     ├── fastfetch.nix         # Fastfetch + fish autostart
     ├── fish.nix              # Fish shell + rebuild alias
+    ├── gaming.nix            # Steam, Gamescope, GameMode
     ├── gaming-home.nix       # User gaming packages
     ├── git.nix               # Git config
     ├── mangohud.nix          # MangoHud overlay
-    └── ssh.nix               # SSH + GitHub
+    ├── ssh.nix               # SSH + GitHub
+    └── gpu.nix               # GPU configuration
+    
 ```
 
 ---
@@ -148,6 +150,7 @@ Files to update manually:
 | `modules/fastfetch.nix` | logo `source` path |
 | `modules/ssh.nix` | `identityFile` path |
 | `modules/git.nix` | your name and email |
+| `modules/gpu.nix` | `hardware.myGpu` → "amd", "nvidia" or "intel" |
 
 ### 4. Update the rebuild alias
 
@@ -174,8 +177,14 @@ fileSystems."/mnt/gaming" = {
   options = [ "defaults" "nofail" ];
 };
 ```
+### 6. Set your GPU type
 
-### 6. Build
+In `configuration.nix`:
+```nix
+hardware.myGpu = "amd"; # Change to "nvidia" or "intel"
+```
+
+### 7. Build
 
 ```bash
 sudo nixos-rebuild switch --flake .#roudix
