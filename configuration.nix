@@ -1,6 +1,8 @@
 { pkgs, inputs, config, lib, ... }:
 {
-  imports = [ ./hardware-configuration.nix ./gaming.nix];
+  imports = [ ./hardware-configuration.nix ./modules/gaming.nix ./modules/gpu.nix];
+
+  hardware.myGpu = "amd"; # <--- "nvidia" or "intel" or "amd"
 
   # ── Bootloader ──────────────────────────────────────────────────────────
   boot.loader.systemd-boot.enable = true;
