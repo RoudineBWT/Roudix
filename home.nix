@@ -46,6 +46,7 @@
     gnome-disk-utility
     mission-center
     loupe
+    inkscape
     gimp
     clapper
     easyeffects
