@@ -9,6 +9,12 @@
     extraCompatPackages = [
       pkgs.proton-ge-bin                  # Proton-GE pour meilleure compatibilité
     ];
+    package = pkgs.steam.override {
+      extraEnv = {
+        TZ = "Europe/Brussels";           # Fix MangoHud timezone in Steam
+        TZDIR = "/etc/zoneinfo";
+      };
+    };
   };
 
   # ── Gamescope ────────────────────────────────────────────────────────────
