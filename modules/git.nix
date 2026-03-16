@@ -2,9 +2,9 @@
 {
   programs.git = {
     enable = true;
-    userName = "roudinebwt";
-    userEmail = "roudinebwt@proton.me";
-    extraConfig = {
+    settings = {
+      user.name = "roudinebwt";
+      user.email = "roudinebwt@proton.me";
       init.defaultBranch = "main";
       pull.rebase = false;
     };
