@@ -5,16 +5,13 @@
     enable = true;
     remotePlay.openFirewall = true;       # Remote Play
     dedicatedServer.openFirewall = false; # Serveurs dédiés (optionnel)
-    gamescopeSession.enable = true;       # Gamescope intégré à Steam
+    gamescopeSession = { # Gamescope intégré à Steam
+      enable = true;
+      args = [ "--prefer-output" "DP-1" ]; # remplace DP-x par ton écran principal
+    };
     extraCompatPackages = [
       pkgs.proton-ge-bin                  # Proton-GE pour meilleure compatibilité
     ];
-    package = pkgs.steam.override {
-      extraProfile = ''
-        export TZ="Europe/Brussels"
-        export TZDIR="/etc/zoneinfo"
-      '';
-    };
   };
 
   # ── Gamescope ────────────────────────────────────────────────────────────
@@ -32,7 +29,7 @@
       };
       gpu = {
         apply_gpu_optimisations = "accept-responsibility";
-        gpu_device = 0;
+        gpu_device = 1;
         amd_performance_level = "high"; # Change en "auto" si pas AMD
       };
     };
