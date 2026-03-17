@@ -61,8 +61,8 @@ roudix/
     ├── git.nix               # Git config
     ├── mangohud.nix          # MangoHud overlay
     ├── ssh.nix               # SSH + GitHub
-    └── gpu.nix               # GPU configuration
-    
+    ├── gpu.nix               # GPU configuration
+    └── cpu.nix               # CPU configuration
 ```
 
 ---
@@ -151,6 +151,7 @@ Files to update manually:
 | `modules/ssh.nix` | `identityFile` path |
 | `modules/git.nix` | your name and email |
 | `modules/gpu.nix` | `hardware.myGpu` → "amd", "nvidia" or "intel" |
+| `modules/gpu.nix` | `hardware.myCpu` → "amd" or "intel" |
 
 ### 4. Update the rebuild alias
 
@@ -177,11 +178,12 @@ fileSystems."/mnt/gaming" = {
   options = [ "defaults" "nofail" ];
 };
 ```
-### 6. Set your GPU type
+### 6. Set your GPU and CPU type
 
 In `configuration.nix`:
 ```nix
 hardware.myGpu = "amd"; # Change to "nvidia" or "intel"
+hardware.myCpu = "intel"; # Change to "amd" or let "intel"
 ```
 
 ### 7. Build

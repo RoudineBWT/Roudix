@@ -1,8 +1,9 @@
 { pkgs, inputs, config, lib, ... }:
 {
-  imports = [ ./hardware-configuration.nix ./modules/gaming.nix ./modules/gpu.nix];
+  imports = [ ./hardware-configuration.nix ./modules/gaming.nix ./modules/gpu.nix /modules/cpu.nix];
 
   hardware.myGpu = "amd"; # <--- "nvidia" or "intel" or "amd"
+  hardware.myCpu = "intel"; # <--- "intel" or "amd"
 
   # ── Bootloader ──────────────────────────────────────────────────────────
   boot.loader.systemd-boot.enable = true;
@@ -34,7 +35,6 @@ nix.settings = {
 };
 
   nixpkgs.config.allowUnfree = true;
-  hardware.cpu.intel.updateMicrocode = true;
   boot.kernelModules = [ "ntsync" ];
   nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
 
@@ -57,12 +57,8 @@ nix.settings = {
 
   # ── Locale / timezone ───────────────────────────────────────────────────
   time.timeZone = "Europe/Brussels";
-  environment.variables = {
-    TZ = "Europe/Brussels"; # Mangohud needs it
-    TZDIR = "/etc/zoneinfo";
-  };
   i18n.defaultLocale = "en_US.UTF-8";
-  console.keyMap = "us";          # layout us intl comme dans ta config niri
+  console.keyMap = "us";
 
   # ── Son ─────────────────────────────────────────────────────────────────
   services.pipewire = {
@@ -154,9 +150,11 @@ boot.kernel.sysctl = {
   # ── Programs ────────────────────────────────────────────────────────────
   programs.fish.enable = true;
 
-  # ── Services ────────────────────────────────────────────────────────────
-  services.xserver.enable = true;
+  # ── Greeter ────────────────────────────────────────────────────────────
+  #services.xserver.enable = true;
   services.displayManager.gdm.enable = true;
+
+  # ── Services ────────────────────────────────────────────────────────────
   services.udev.packages = [ pkgs.openrgb ];
   services.udisks2.enable = true;
   services.power-profiles-daemon.enable = true;
@@ -167,5 +165,19 @@ boot.kernel.sysctl = {
   services.gvfs.enable = true;
   services.flatpak.enable = true;
 
-  system.stateVersion = "25.05";
+  # ── Flatpak Update auto ────────────────────────────────────────────────────────────
+  systemd.services.flatpak-update = {
+    description = "Update Flatpak apps";
+    serviceConfig.ExecStart = "${pkgs.flatpak}/bin/flatpak update --noninteractive";
+    wantedBy = [ "multi-user.target" ];
+  };
+
+  systemd.timers.flatpak-update = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+      Persistent = true;
+    };
+  };
+  system.stateVersion = "25.11";
 }
