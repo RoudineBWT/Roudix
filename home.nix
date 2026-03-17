@@ -2,7 +2,7 @@
 {
   home.username = "roudine";
   home.homeDirectory = "/home/roudine";
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 
   # ── Imports ──────────────────────────────────────────────────────────────
   imports = [
@@ -34,6 +34,8 @@
     playerctl
     wl-clipboard
     pwvucontrol
+    kdePackages.qtmultimedia
+    mpvpaper
 
     # Apps
     ghostty
@@ -50,6 +52,7 @@
     gimp
     clapper
     easyeffects
+    gpu-screen-recorder
     brave
 
     # GTK theming
@@ -63,6 +66,7 @@
 
     # Divers
     gvfs
+    ffmpeg
     capitaine-cursors
 
     #  OBS Studio
