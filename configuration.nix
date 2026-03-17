@@ -1,6 +1,6 @@
 { pkgs, inputs, config, lib, ... }:
 {
-  imports = [ ./hardware-configuration.nix ./modules/gaming.nix ./modules/gpu.nix /modules/cpu.nix];
+  imports = [ ./hardware-configuration.nix ./modules/gaming.nix ./modules/gpu.nix ./modules/cpu.nix];
 
   hardware.myGpu = "amd"; # <--- "nvidia" or "intel" or "amd"
   hardware.myCpu = "intel"; # <--- "intel" or "amd"
