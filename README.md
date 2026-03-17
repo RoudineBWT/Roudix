@@ -105,8 +105,9 @@ roudix/
 
 **Other**
 - OBS Studio with obs-pipewire-audio-capture + obs-vkcapture
+- GPU Screen Recorder
 - OpenRGB for LED control
-- Flatpak enabled
+- Flatpak enabled and auto update
 - GVfs for disk mounting in Nautilus
 - Nerd Fonts (JetBrains, Noto, Iosevka)
 
