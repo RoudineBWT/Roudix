@@ -13,14 +13,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Noctalia-shell — noctalia-qs est tiré automatiquement par ce flake
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Kernel CachyOS — branche release = binary cache disponible
-    # NE PAS faire inputs.nixpkgs.follows ici (risque de mismatch patches)
     nix-cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel/release";
     };
@@ -29,13 +26,21 @@
      url = "github:0xc000022070/zen-browser-flake";
      inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    glf-os = {
+      url = "git+https://framagit.org/gaming-linux-fr/glf-os/glf-os";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, glf-os, ... }:
+  let
+    username = "roudine"; # ← Change your username here
+  in
   {
     nixosConfigurations.roudix = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+      specialArgs = { inherit inputs username; };
       modules = [
         ./configuration.nix
         ./niri.nix
@@ -43,8 +48,8 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit inputs; };
-          home-manager.users.roudine = import ./home.nix;
+          home-manager.extraSpecialArgs = { inherit inputs username; };
+          home-manager.users.${username} = import ./home.nix;
         }
       ];
     };

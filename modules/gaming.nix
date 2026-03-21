@@ -1,5 +1,11 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
+  options.roudix.gaming.enable = lib.mkOption {
+    description = "Enable Roudix gaming configurations";
+    type = lib.types.bool;
+    default = true;
+  };
+  config = lib.mkIf config.roudix.gaming.enable {
   # ── Steam ────────────────────────────────────────────────────────────────
   programs.steam = {
     enable = true;
@@ -43,4 +49,6 @@
   # ── Support manettes ─────────────────────────────────────────────────────
   hardware.steam-hardware.enable = true; # Support contrôleurs Steam
   services.udev.packages = [ pkgs.game-devices-udev-rules ]; # Xbox, PS, etc.
+
+  };
 }

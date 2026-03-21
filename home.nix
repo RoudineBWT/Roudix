@@ -1,7 +1,7 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, username, ... }:
 {
-  home.username = "roudine";
-  home.homeDirectory = "/home/roudine";
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
   home.stateVersion = "25.11";
 
   # ── Imports ──────────────────────────────────────────────────────────────
@@ -52,8 +52,10 @@
     gimp
     clapper
     easyeffects
+    rnnoise-plugin
     gpu-screen-recorder
     brave
+    rustdesk
 
     # GTK theming
     nwg-look
@@ -66,10 +68,14 @@
 
     # Divers
     gvfs
+    nh
+    nvd
     ffmpeg
     capitaine-cursors
+    btop
+    cava
 
-    #  OBS Studio
+    # OBS Studio
     (pkgs.wrapOBS {
       plugins = with pkgs.obs-studio-plugins; [
         obs-pipewire-audio-capture

@@ -8,6 +8,7 @@ in
     pkgs-stable.heroic           # Launcher Epic/GOG
     lutris           # Launcher multi-plateformes
     prismlauncher    # Launcher Minecraft
+    vintagestory     # Minecraft but Harder
     winetricks
     wineWow64Packages.staging
     protonplus       # Gestionnaire de versions Proton

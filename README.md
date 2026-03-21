@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo/roudix-logo.png" width="250"/>
+<img src="logo/roudix-logo.png" width="250"/>
 
 # Roudix
 ### NixOS configuration — Niri · Noctalia · CachyOS Kernel
@@ -42,7 +42,7 @@
 
 ```
 roudix/
-├── flake.nix                 # Inputs & outputs
+├── flake.nix                 # Inputs & outputs — set username here
 ├── flake.lock
 ├── configuration.nix         # NixOS system config
 ├── hardware-configuration.nix
@@ -54,15 +54,18 @@ roudix/
 ├── logo/
 │   └── roudix-logo.png
 └── modules/
+    ├── cpu.nix               # CPU configuration (Intel/AMD microcode + OpenRGB)
     ├── fastfetch.nix         # Fastfetch + fish autostart
-    ├── fish.nix              # Fish shell + rebuild alias
-    ├── gaming.nix            # Steam, Gamescope, GameMode
+    ├── fish.nix              # Fish shell + aliases
+    ├── fstrim.nix            # fstrim for SSD/NVMe
+    ├── gaming.nix            # Steam, Gamescope, GameMode (system)
     ├── gaming-home.nix       # User gaming packages
     ├── git.nix               # Git config
+    ├── gpu.nix               # GPU configuration (AMD/NVIDIA/Intel)
     ├── mangohud.nix          # MangoHud overlay
+    ├── pipewire.nix          # PipeWire audio configuration
     ├── ssh.nix               # SSH + GitHub
-    ├── gpu.nix               # GPU configuration
-    └── cpu.nix               # CPU configuration
+    └── virtualization.nix    # QEMU/KVM (disabled by default)
 ```
 
 ---
@@ -72,10 +75,12 @@ roudix/
 | Input | Source |
 |-------|--------|
 | nixpkgs | nixos-unstable |
+| nixpkgs-stable | nixos-25.11 |
 | home-manager | nix-community/home-manager |
 | noctalia | noctalia-dev/noctalia-shell |
 | nix-cachyos-kernel | xddxdd/nix-cachyos-kernel |
 | zen-browser | 0xc000022070/zen-browser-flake |
+| glf-os | framagit.org/gaming-linux-fr/glf-os (NVIDIA drivers only) |
 
 ---
 
@@ -85,8 +90,8 @@ roudix/
 - CachyOS kernel with NTSync enabled (`ntsync` module)
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
-- Intel microcode up to date
-- GameMode with AMD GPU optimizations
+- CPU microcode auto-configured (Intel or AMD)
+- GameMode with GPU optimizations
 
 **Gaming**
 - Steam + Proton-GE + Gamescope session
@@ -106,63 +111,50 @@ roudix/
 **Other**
 - OBS Studio with obs-pipewire-audio-capture + obs-vkcapture
 - GPU Screen Recorder
-- OpenRGB for LED control
-- Flatpak enabled and auto update
+- OpenRGB for LED control (auto-configured per CPU)
+- Flatpak enabled with daily auto-update
 - GVfs for disk mounting in Nautilus
 - Nerd Fonts (JetBrains, Noto, Iosevka)
+- QEMU/KVM + Virt-Manager (optional, disabled by default)
+- NVIDIA drivers sourced from GLF OS (auto-updated via `nix flake update`)
 
 ---
 
 ## Installation
 
-> ⚠️ **This config is built around my hardware and username. Follow every step carefully before rebuilding.**
+> ⚠️ **Follow every step carefully before rebuilding.**
 
 ### 1. Clone the repo
 
 ```bash
-git clone git@github.com:roudinebwt/roudix ~/.config/roudix
+git clone https://github.com/RoudineBWT/Roudix.git ~/.config/roudix
 cd ~/.config/roudix
 ```
 
-### 2. Replace hardware-configuration.nix
+### 2. Set your username
 
-replace the existing one by your own hardware config:
-
-```bash
-sudo cp  /etc/nixos/hardware-configuration.nix ~/.config/roudix/hardware-configuration.nix
-```
-
-### 3. Replace username and paths
-
-This config uses the username `roudine` and home path `/home/roudine`. Replace every occurrence with your own:
-
-```bash
-# List all files containing roudine
-grep -r "roudine" ~/.config/roudix/ --include="*.nix" -l
-```
-
-Files to update manually:
-
-| File | What to change |
-|------|----------------|
-| `configuration.nix` | `users.users.roudine` → your username |
-| `home.nix` | `home.username` and `home.homeDirectory` |
-| `modules/fish.nix` | the `rebuild` alias path |
-| `modules/fastfetch.nix` | logo `source` path |
-| `modules/ssh.nix` | `identityFile` path |
-| `modules/git.nix` | your name and email |
-| `modules/gpu.nix` | `hardware.myGpu` → "amd", "nvidia" or "intel" |
-| `modules/gpu.nix` | `hardware.myCpu` → "amd" or "intel" |
-
-### 4. Update the rebuild alias
-
-In `modules/fish.nix`:
+Open `flake.nix` and change **only this one line** — everything else adapts automatically:
 
 ```nix
-shellAliases = {
-  rebuild = "sudo nixos-rebuild switch --flake /home/YOURUSERNAME/.config/roudix#roudix";
-};
+username = "roudine"; # ← Change to your username
 ```
+
+### 3. Replace hardware-configuration.nix
+
+```bash
+sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hardware-configuration.nix
+```
+
+### 4. Set your GPU and CPU type
+
+In `configuration.nix`:
+
+```nix
+hardware.myGpu = "amd"; # "amd", "nvidia" or "intel"
+hardware.myCpu = "intel"; # "intel" or "amd"
+```
+
+> **NVIDIA note:** drivers are automatically pulled from GLF OS and kept up to date with `nix flake update`. Open drivers are enabled by default (Turing/RTX 20xx and newer). Set `open = false` in `modules/gpu.nix` for older GPUs (GTX series).
 
 ### 5. Update the disk mount
 
@@ -179,32 +171,51 @@ fileSystems."/mnt/gaming" = {
   options = [ "defaults" "nofail" ];
 };
 ```
-### 6. Set your GPU and CPU type
 
-In `configuration.nix`:
+### 6. Update git config
+
+In `modules/git.nix`, set your name and email:
+
 ```nix
-hardware.myGpu = "amd"; # Change to "nvidia" or "intel"
-hardware.myCpu = "intel"; # Change to "amd" or let "intel"
+settings = {
+  user.name = "yourname";
+  user.email = "your@email.com";
+};
 ```
 
-### 7. Build
+### 7. Enable/disable optional modules
+
+In `configuration.nix`:
+
+```nix
+roudix.gaming.enable = true;
+roudix.pipewire.enable = true;
+roudix.fstrim.enable = true;          # recommended for SSD/NVMe
+roudix.virtualization.enable = false; # enable for QEMU/KVM
+```
+
+### 8. Build
 
 ```bash
 sudo nixos-rebuild switch --flake .#roudix
 ```
 
-Once built, use the `rebuild` alias from fish for all future updates.
+Once built, use the fish aliases for all future operations.
+
+---
+
+## Aliases
+
+| Alias | Action |
+|-------|--------|
+| `rebuild` | Apply configuration immediately |
+| `update` | Update flake inputs + apply |
+| `cleanup` | Remove old generations + garbage collect |
 
 ---
 
 ## Updating
 
 ```bash
-rebuild
-```
-
-To update flake inputs:
-
-```bash
-update && rebuild
+update
 ```
