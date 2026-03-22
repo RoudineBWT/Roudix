@@ -49,9 +49,11 @@ roudix/
 ├── hardware-configuration.nix
 ├── niri.nix                  # Niri compositor + UWSM
 ├── home.nix                  # Home Manager entry point
-├── niri/
-│   ├── config.kdl            # Niri config
-│   └── noctalia.kdl          # Noctalia config
+├── dotfiles/
+│   ├──easyeffects            # All my preset (i don't link all the sub-folders)
+│   ├── niri/
+│      └──  config.kdl        # Niri config
+│      └──  noctalia.kdl      # Noctalia config
 ├── logo/
 │   └── roudix-logo.png
 └── modules/

@@ -72,7 +72,7 @@
   environment.sessionVariables = {
     TZ = "Europe/Brussels";
     TZDIR = "/etc/zoneinfo";
-    FLAKE = "/home/${username}/.config/roudix";
+    NH_FLAKE = "/home/${username}/.config/roudix";
   };
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";
