@@ -31,9 +31,14 @@
       url = "git+https://framagit.org/gaming-linux-fr/glf-os/glf-os";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, glf-os, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, glf-os, spicetify-nix, ... }:
   let
     username = "roudine"; # ← Change your username here
   in
