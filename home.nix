@@ -24,7 +24,7 @@
 
   # ── Config Niri ──────────────────────────────────────────────────────────
   xdg.configFile."niri/config.kdl" = {
-    source = ./niri/config.kdl;
+    source = ./dotfiles/niri/config.kdl;
   };
 # ── Preset Easyeffects ──────────────────────────────────────────────────────────
   xdg.configFile."easyeffects" = {

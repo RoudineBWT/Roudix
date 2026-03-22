@@ -1,0 +1,21 @@
+[Spectrum]
+state=false
+
+[StreamInputs]
+blocklist=surround_loopback_capture,surround_to_easyeffects_capture,capture.rnnoise_source
+inputDevice=alsa_input.usb-Elgato_Systems_Elgato_Wave_3_BS15L1A02151-00.mono-fallback
+plugins=rnnoise#0
+visiblePlugin=rnnoise#0
+
+[StreamOutputs]
+outputDevice=alsa_output.usb-Corsair_CORSAIR_HS65_Wireless_Gaming_Receiver_F2DF1DF9D7A6D2B3-00.analog-stereo
+plugins=equalizer#0,convolver#0,bass_enhancer#0,crossfeed#0,maximizer#0
+visiblePlugin=equalizer#0
+
+[Window]
+height=1024
+lastLoadedOutputPreset=Bass Boosted
+visiblePage=inputPage
+visiblePipeWirePage=testSignalsPage
+visiblePresetSheetPage=communityPage
+width=938
