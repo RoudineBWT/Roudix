@@ -13,6 +13,7 @@
     ./modules/gaming-home.nix
     ./modules/git.nix
     ./modules/ssh.nix
+    ./modules/spicetify.nix
   ];
 
   # ── Noctalia-shell ───────────────────────────────────────────────────────
@@ -24,6 +25,11 @@
   # ── Config Niri ──────────────────────────────────────────────────────────
   xdg.configFile."niri/config.kdl" = {
     source = ./niri/config.kdl;
+  };
+# ── Preset Easyeffects ──────────────────────────────────────────────────────────
+  xdg.configFile."easyeffects" = {
+    source = ./dotfiles/easyeffects;
+    recursive = true;
   };
 
   # ── Packages home ────────────────────────────────────────────────────────
