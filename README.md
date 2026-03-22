@@ -50,10 +50,10 @@ roudix/
 ├── niri.nix                  # Niri compositor + UWSM
 ├── home.nix                  # Home Manager entry point
 ├── dotfiles/
-│   ├──easyeffects            # All my preset (i don't link all the sub-folders)
-│   ├── niri/
-│      └──  config.kdl        # Niri config
-│      └──  noctalia.kdl      # Noctalia config
+│   ├── easyeffects/          # EasyEffects presets
+│   └── niri/
+│       ├── config.kdl        # Niri config
+│       └── noctalia.kdl      # Noctalia config
 ├── logo/
 │   └── roudix-logo.png
 └── modules/
@@ -137,6 +137,14 @@ roudix/
 
 ### 1. Clone the repo
 
+> **If `git` is not installed** (fresh NixOS install):
+
+```bash
+nix-shell -p git --run "git clone https://github.com/RoudineBWT/Roudix.git ~/.config/roudix"
+```
+
+> **Otherwise:**
+
 ```bash
 git clone https://github.com/RoudineBWT/Roudix.git ~/.config/roudix
 cd ~/.config/roudix
@@ -206,6 +214,14 @@ roudix.virtualization.enable = false; # enable for QEMU/KVM
 ```
 
 ### 8. Build
+
+> **If flakes and nix-command are not enabled yet** (fresh NixOS install):
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#git -c sudo nixos-rebuild switch --flake .#roudix
+```
+
+> **Otherwise:**
 
 ```bash
 sudo nixos-rebuild switch --flake .#roudix
