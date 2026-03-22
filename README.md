@@ -35,6 +35,7 @@
 | Browser | Zen Browser |
 | File Manager | Nautilus |
 | Editor | Zed |
+| Music | Spotify + Spicetify (Comfy theme) |
 
 ---
 
@@ -64,6 +65,7 @@ roudix/
     ├── gpu.nix               # GPU configuration (AMD/NVIDIA/Intel)
     ├── mangohud.nix          # MangoHud overlay
     ├── pipewire.nix          # PipeWire audio configuration
+    ├── spicetify.nix         # Spotify + Spicetify (Comfy theme + marketplace)
     ├── ssh.nix               # SSH + GitHub
     └── virtualization.nix    # QEMU/KVM (disabled by default)
 ```
@@ -80,6 +82,7 @@ roudix/
 | noctalia | noctalia-dev/noctalia-shell |
 | nix-cachyos-kernel | xddxdd/nix-cachyos-kernel |
 | zen-browser | 0xc000022070/zen-browser-flake |
+| spicetify-nix | Gerg-L/spicetify-nix |
 | glf-os | framagit.org/gaming-linux-fr/glf-os (NVIDIA drivers only) |
 
 ---
@@ -107,6 +110,12 @@ roudix/
 - adw-gtk3 GTK theme + Papirus icons
 - GNOME Polkit agent
 - GDM display manager
+
+**Music**
+- Spotify patched with Spicetify
+- Comfy theme
+- Adblock + hide podcasts extensions
+- Marketplace for additional themes & extensions
 
 **Other**
 - OBS Studio with obs-pipewire-audio-capture + obs-vkcapture
