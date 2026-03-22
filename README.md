@@ -150,7 +150,22 @@ git clone https://github.com/RoudineBWT/Roudix.git ~/.config/roudix
 cd ~/.config/roudix
 ```
 
-### 2. Set your username
+### 2. Add binary caches (recommended for fresh installs)
+
+Without this, Nix will compile everything from source which requires a lot of RAM and time. Run this before building:
+
+```bash
+sudo mkdir -p /etc/nix
+sudo tee -a /etc/nix/nix.conf << EOF
+substituters = https://cache.nixos.org https://attic.xuyh0120.win/lantian https://cache.garnix.io
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc= cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=
+EOF
+sudo systemctl restart nix-daemon
+```
+
+Once built, your config takes over and manages the caches automatically.
+
+### 3. Set your username
 
 Open `flake.nix` and change **only this one line** — everything else adapts automatically:
 
@@ -158,13 +173,13 @@ Open `flake.nix` and change **only this one line** — everything else adapts au
 username = "roudine"; # ← Change to your username
 ```
 
-### 3. Replace hardware-configuration.nix
+### 4. Replace hardware-configuration.nix
 
 ```bash
 sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hardware-configuration.nix
 ```
 
-### 4. Set your GPU and CPU type
+### 5. Set your GPU and CPU type
 
 In `configuration.nix`:
 
@@ -175,7 +190,7 @@ hardware.myCpu = "intel"; # "intel" or "amd"
 
 > **NVIDIA note:** drivers are automatically pulled from GLF OS and kept up to date with `nix flake update`. Open drivers are enabled by default (Turing/RTX 20xx and newer). Set `open = false` in `modules/gpu.nix` for older GPUs (GTX series).
 
-### 5. Update the disk mount
+### 6. Update the disk mount
 
 In `configuration.nix`, replace the UUID with your own (or remove the block entirely):
 
@@ -191,7 +206,7 @@ fileSystems."/mnt/gaming" = {
 };
 ```
 
-### 6. Update git config
+### 7. Update git config
 
 In `modules/git.nix`, set your name and email:
 
@@ -202,7 +217,7 @@ settings = {
 };
 ```
 
-### 7. Enable/disable optional modules
+### 8. Enable/disable optional modules
 
 In `configuration.nix`:
 
@@ -213,7 +228,7 @@ roudix.fstrim.enable = true;          # recommended for SSD/NVMe
 roudix.virtualization.enable = false; # enable for QEMU/KVM
 ```
 
-### 8. Build
+### 9. Build
 
 > **If flakes and nix-command are not enabled yet** (fresh NixOS install):
 
