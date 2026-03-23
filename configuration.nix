@@ -2,6 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./modules/kernel.nix
     ./modules/gaming.nix
     ./modules/gpu.nix
     ./modules/cpu.nix
@@ -50,10 +51,7 @@
 
   nixpkgs.config.allowUnfree = true;
   boot.kernelModules = [ "ntsync" ];
-  nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
-
-  boot.kernelPackages = pkgs.linuxKernel.packagesFor
-    pkgs.cachyosKernels.linux-cachyos-latest-x86_64-v3;
+  hardware.myKernel = "cachyos-latest-lto-v3"; # "cachyos-latest", "cachyos-latest-v3", "cachyos-latest-lto", "cachyos-latest-lto-v3"
 
   # ── Nix ─────────────────────────────────────────────────────────────────
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -120,7 +118,7 @@
   # ── Utilisateur ─────────────────────────────────────────────────────────
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" "plugdev" "disk" "storage" "i2c" ];
+    extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" "plugdev" "disk" "storage" "i2c" "render" ];
     shell = pkgs.fish;
   };
 
@@ -170,6 +168,9 @@
   hardware.i2c.enable = true;
   services.gvfs.enable = true;
   services.flatpak.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
 
   # ── Flatpak Update auto ──────────────────────────────────────────────────
   systemd.services.flatpak-update = {
