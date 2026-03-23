@@ -1,0 +1,25 @@
+{ config, pkgs, lib, inputs, ... }:
+{
+  options.hardware.myKernel = lib.mkOption {
+    type = lib.types.enum [
+      "cachyos-latest"
+      "cachyos-latest-v3"
+      "cachyos-latest-lto"
+      "cachyos-latest-lto-v3"
+    ];
+    default = "cachyos-latest-v3";
+    description = "CachyOS kernel variant to use";
+  };
+
+  config = {
+    nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+    boot.kernelPackages = pkgs.linuxKernel.packagesFor (
+      {
+        "cachyos-latest"        = pkgs.cachyosKernels.linux-cachyos-latest;
+        "cachyos-latest-v3"     = pkgs.cachyosKernels.linux-cachyos-latest-x86_64-v3;
+        "cachyos-latest-lto"    = pkgs.cachyosKernels.linux-cachyos-latest-lto;
+        "cachyos-latest-lto-v3" = pkgs.cachyosKernels.linux-cachyos-latest-lto-x86_64-v3;
+      }.${config.hardware.myKernel}
+    );
+  };
+}
