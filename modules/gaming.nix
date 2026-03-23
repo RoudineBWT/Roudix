@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   options.roudix.gaming.enable = lib.mkOption {
     description = "Enable Roudix gaming configurations";
@@ -17,6 +17,7 @@
     };
     extraCompatPackages = [
       pkgs.proton-ge-bin                  # Proton-GE pour meilleure compatibilité
+      inputs.nix-proton-cachyos.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos # Proton-GE pour meilleure performance
     ];
   };
 
