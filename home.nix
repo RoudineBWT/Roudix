@@ -61,7 +61,7 @@
     rnnoise-plugin
     gpu-screen-recorder
     brave
-    rustdesk
+    rustdesk-flutter
 
     # GTK theming
     nwg-look
