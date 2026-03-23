@@ -65,6 +65,7 @@ roudix/
     ├── gaming-home.nix       # User gaming packages
     ├── git.nix               # Git config
     ├── gpu.nix               # GPU configuration (AMD/NVIDIA/Intel)
+    ├── kernel.nix            # CachyOS kernel variant selection
     ├── mangohud.nix          # MangoHud overlay
     ├── pipewire.nix          # PipeWire audio configuration
     ├── spicetify.nix         # Spotify + Spicetify (Comfy theme + marketplace)
@@ -85,6 +86,7 @@ roudix/
 | nix-cachyos-kernel | xddxdd/nix-cachyos-kernel |
 | zen-browser | 0xc000022070/zen-browser-flake |
 | spicetify-nix | Gerg-L/spicetify-nix |
+| nix-proton-cachyos | Flerpharos/nix-proton-cachyos |
 | glf-os | framagit.org/gaming-linux-fr/glf-os (NVIDIA drivers only) |
 
 ---
@@ -93,13 +95,14 @@ roudix/
 
 **Kernel & Performance**
 - CachyOS kernel with NTSync enabled (`ntsync` module)
+- 4 kernel variants available: `cachyos-latest`, `cachyos-latest-v3`, `cachyos-latest-lto`, `cachyos-latest-lto-v3` (set in `configuration.nix`)
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)
 - GameMode with GPU optimizations
 
 **Gaming**
-- Steam + Proton-GE + Gamescope session
+- Steam + Proton-GE + Proton CachyOS (via nix flake) + Gamescope session
 - Custom horizontal MangoHud overlay
 - Controller support (Steam Hardware + game-devices-udev-rules)
 - 32-bit support for Wine/Steam
@@ -164,16 +167,28 @@ username = "roudine"; # ← Change to your username
 sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hardware-configuration.nix
 ```
 
-### 4. Set your GPU and CPU type
+### 4. Set your GPU, CPU and kernel variant
 
 In `configuration.nix`:
 
 ```nix
 hardware.myGpu = "amd"; # "amd", "nvidia" or "intel"
 hardware.myCpu = "intel"; # "intel" or "amd"
+hardware.myKernel = "cachyos-latest-v3"; # see below
 ```
 
+**Available kernel variants:**
+
+| Variant | Description |
+|---------|-------------|
+| `cachyos-latest` | Standard latest CachyOS kernel |
+| `cachyos-latest-v3` | x86_64-v3 optimized (recommended for modern CPUs) |
+| `cachyos-latest-lto` | LTO build for better performance |
+| `cachyos-latest-lto-v3` | LTO + x86_64-v3 (best performance, modern CPUs only) |
+
 > **NVIDIA note:** drivers are automatically pulled from GLF OS and kept up to date with `nix flake update`. Open drivers are enabled by default (Turing/RTX 20xx and newer). Set `open = false` in `modules/gpu.nix` for older GPUs (GTX series).
+
+> **Proton CachyOS note:** Proton CachyOS is included via a nix flake fork. If you prefer to manage it manually with ProtonPlus instead, remove the `nix-proton-cachyos` input from `flake.nix` and remove the corresponding line in `modules/gaming.nix`.
 
 ### 5. Update the disk mount
 
