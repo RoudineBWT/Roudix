@@ -52,7 +52,8 @@ roudix/
 ├── dotfiles/
 │   ├── easyeffects/          # EasyEffects presets
 │   └── niri/
-│       ├── config.kdl        # Niri config
+│       ├── cfg/              # Niri config
+│       ├── config.kdl        
 │       └── noctalia.kdl      # Noctalia config
 ├── logo/
 │   └── roudix-logo.png
@@ -186,7 +187,7 @@ hardware.myKernel = "cachyos-latest-v3"; # see below
 | `cachyos-latest-lto` | LTO build for better performance |
 | `cachyos-latest-lto-v3` | LTO + x86_64-v3 (best performance, modern CPUs only) |
 
-> **NVIDIA note:** drivers are automatically pulled from GLF OS and kept up to date with `nix flake update`. Open drivers are enabled by default (Turing/RTX 20xx and newer). Set `open = false` in `modules/gpu.nix` for older GPUs (GTX series).
+> **NVIDIA note:** Only GTX 10xx / RTX series and newer are supported. Older GPUs (GTX 900 and below) are not supported. Open drivers are enabled by default for RTX 20xx+ (Turing and newer). Set `hardware.nvidiaOpen = false` in `configuration.nix` for GTX 10xx/16xx series.
 
 > **Proton CachyOS note:** Proton CachyOS is included via a nix flake fork. If you prefer to manage it manually with ProtonPlus instead, remove the `nix-proton-cachyos` input from `flake.nix` and remove the corresponding line in `modules/gaming.nix`.
 
