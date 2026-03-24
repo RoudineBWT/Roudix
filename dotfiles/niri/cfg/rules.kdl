@@ -1,0 +1,208 @@
+       // ────────────── Named Workspaces ──────────────
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+
+    workspace "󰈹"{
+    open-on-output "Lenovo Group Limited Legion 27Q-10 UNA07260"
+}
+    workspace ""{
+    open-on-output "Lenovo Group Limited Legion 27Q-10 UNA07260"
+}
+    workspace "" {
+    open-on-output "HKC OVERSEAS LIMITED 24E4 0000000000001"
+}
+    workspace ""{
+    open-on-output "Lenovo Group Limited Legion 27Q-10 UNA07260"
+}
+    workspace "󰊗"{
+    open-on-output "Lenovo Group Limited Legion 27Q-10 UNA07260"
+}
+    workspace "󰉋"{
+    open-on-output "Lenovo Group Limited Legion 27Q-10 UNA07260"
+}
+    workspace "󰝚" {
+    open-on-output "HKC OVERSEAS LIMITED 24E4 0000000000001"
+}
+  workspace "" {
+    open-on-output "HKC OVERSEAS LIMITED 24E4 0000000000001"
+}
+
+// ────────────── Window Rules ──────────────
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+       window-rule {
+        match at-startup=true app-id="discord"
+        open-on-workspace ""
+        default-column-width { fixed 1316; }
+        default-window-height { fixed 1011; }
+        default-floating-position x=0 y=0 relative-to="top-left"
+    }
+    window-rule {
+     match at-startup=true app-id="Element"
+     open-on-workspace ""
+     default-column-width { fixed 1316; }
+     default-window-height { fixed 1011; }
+     default-floating-position x=0 y=0 relative-to="top-left"
+ }
+
+
+ window-rule {
+ 	match at-startup=true app-id="com.mitchellh.ghostty"
+ 	open-floating true
+    }
+
+ window-rule {
+        match at-startup=true app-id="org.telegram.desktop"
+        open-on-workspace ""
+        default-column-width { fixed 555; }
+        default-window-height { fixed 1011; }
+        default-floating-position x=0 y=0 relative-to="top-right"
+    }
+
+    window-rule {
+        match app-id="firefox"
+        open-on-workspace "󰈹"
+        open-maximized true
+    }
+
+    window-rule {
+        match title="About Mozilla Firefox"
+        open-on-workspace "󰈹"
+        open-floating true
+    }
+
+    window-rule {
+        match app-id="dev.zed.Zed"
+        open-on-workspace ""
+        open-maximized true
+    }
+
+    window-rule {
+        match app-id="zen"
+        open-on-workspace "󰈹"
+        open-maximized true
+    }
+    window-rule {
+        match title="About Zen Browser"
+        open-on-workspace "󰈹"
+        open-floating true
+    }
+
+    window-rule {
+        match app-id=r#"^org.gnome.Nautilus$"# title="^Save As$"
+        open-focused true
+    }
+
+    window-rule {
+        match app-id="com.mitchellh.ghostty"
+        default-column-width { fixed 1505; }
+        default-window-height { fixed 755; }
+        open-floating true
+    }
+
+window-rule {
+        match app-id="steam"
+        open-on-workspace "󰊗"
+        open-maximized true
+    }
+    window-rule {
+        match app-id="openrgb"
+        open-on-workspace "󰊗"
+    }
+    window-rule {
+        match app-id="kitty"
+        open-on-workspace ""
+        open-floating true
+    }
+        window-rule {
+        match app-id="org.gnome.Ptyxis"
+        open-on-workspace ""
+    }
+
+
+    window-rule {
+        match app-id="brave-browser"
+        open-on-workspace ""
+        open-maximized true
+    }
+
+    window-rule {
+        match app-id="^(steam_app_.*)$"
+        open-on-workspace "󰊗"
+        open-fullscreen true
+        variable-refresh-rate true
+    }
+
+    window-rule {
+        match app-id=r#"^heroic$"#
+        open-on-workspace "󰊗"
+        open-fullscreen true
+        variable-refresh-rate true
+    }
+
+    window-rule {
+        match app-id="org.prismlauncher.PrismLauncher"
+        open-on-workspace "󰊗"
+        open-maximized true
+    }
+
+    window-rule {
+        match app-id="Minecraft"
+        open-on-workspace "󰊗"
+        open-fullscreen true
+        variable-refresh-rate true
+    }
+
+    window-rule {
+        match app-id=r#"^firefox$"# title="^Picture-in-Picture$"
+        open-floating true // Always float Firefox PiP windows
+    }
+
+     window-rule {
+        match app-id=r#"^zen$"# title="^Picture-in-Picture$"
+        open-floating true // Always float Firefox PiP windows
+    }
+
+    window-rule {
+    match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
+    default-floating-position x=10 y=10 relative-to="bottom-right"
+}
+
+   window-rule {
+        match title="Friends List"
+        open-on-workspace "󰊗"
+        open-floating true
+    }
+
+
+window-rule {
+        match app-id=r#"^org\.gnome\.Nautilus$"#
+        exclude app-id=r#"^xdg-desktop-portal(-gtk)?$"#
+        exclude title=r#"(?i)^(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$"#
+        open-on-workspace "󰉋"
+        open-maximized true
+    }
+
+    window-rule {
+        match app-id="org.gnome.TextEditor"
+        open-on-workspace "󰉋"
+    }
+
+window-rule {
+        match app-id="spotify"
+        open-on-workspace "󰝚"
+        open-maximized true
+    }
+
+window-rule {
+        match app-id="com.github.wwmm.easyeffects"
+        open-on-workspace "󰝚"
+    }
+
+    window-rule {
+        geometry-corner-radius 20 // Set every window radius to 20
+        clip-to-geometry true
+}
+
+    layer-rule {
+        match namespace="^noctalia-wallpaper*"
+        place-within-backdrop true
+    }

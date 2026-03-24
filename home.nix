@@ -10,6 +10,7 @@
     ./modules/fastfetch.nix
     ./modules/mangohud.nix
     ./modules/fish.nix
+    ./modules/bash.nix
     ./modules/gaming-home.nix
     ./modules/git.nix
     ./modules/ssh.nix
@@ -23,8 +24,9 @@
   };
 
   # ── Config Niri ──────────────────────────────────────────────────────────
-  xdg.configFile."niri/config.kdl" = {
-    source = ./dotfiles/niri/config.kdl;
+  xdg.configFile."niri" = {
+    source = ./dotfiles/niri;
+    recursive = true;
   };
 # ── Preset Easyeffects ──────────────────────────────────────────────────────────
   xdg.configFile."easyeffects" = {
