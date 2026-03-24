@@ -13,6 +13,7 @@
 
   # ── Configuration ──────────────────────────────────────────────────────────
   hardware.myGpu = "amd";          # "nvidia" or "intel" or "amd"
+  hardware.nvidiaOpen = false; # false is for GTX 10xx/16xx only, for RTX 20xx+ put true
   hardware.myCpu = "intel";        # "intel" or "amd"
   roudix.gaming.enable = true;     # enable (true) or disable (false) the config
   roudix.fstrim.enable = true;     # enable (true) or disable (false) the config
@@ -118,7 +119,7 @@
   # ── Utilisateur ─────────────────────────────────────────────────────────
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" "plugdev" "disk" "storage" "i2c" "render" ];
+    extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" "plugdev" "disk" "storage" "i2c" "bluetooth" "render" "gamemode" ];
     shell = pkgs.fish;
   };
 
