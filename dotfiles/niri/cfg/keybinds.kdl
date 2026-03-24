@@ -10,10 +10,10 @@ binds {
 
     // ─── Applications ───
     MOD+RETURN                          hotkey-overlay-title="Open Terminal: Ghostty" { spawn "ghostty"; }
-    MOD+D                    hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
+    MOD+D                    hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn-sh "noctalia-shell ipc call launcher toggle"; }
     MOD+B                               hotkey-overlay-title="Open Browser: Zen" { spawn "zen-beta"; }
     MOD+SHIFT+B                               hotkey-overlay-title="Open Browser: brave" { spawn "brave"; }
-    MOD+ALT+L                           hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
+    MOD+ALT+L                           hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "noctalia-shell ipc call lockScreen lock"; }
 
     // Please choose your own file manager.
     MOD+E                               hotkey-overlay-title="File Manager: Nautilus" { spawn "nautilus"; }
@@ -21,10 +21,10 @@ binds {
     Mod+Shift+Q { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
 
     // ─── Audio Controls ───
-    XF86AUDIORAISEVOLUME                allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume increase"; }
-    XF86AUDIOLOWERVOLUME                allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume decrease"; }
-    XF86AUDIOMUTE                       allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume muteOutput"; }
-    XF86AUDIOMICMUTE                    allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume muteInput"; }
+    XF86AUDIORAISEVOLUME                allow-when-locked=true { spawn-sh "noctalia-shell ipc call volume increase"; }
+    XF86AUDIOLOWERVOLUME                allow-when-locked=true { spawn-sh "noctalia-shell ipc call volume decrease"; }
+    XF86AUDIOMUTE                       allow-when-locked=true { spawn-sh "noctalia-shell ipc call volume muteOutput"; }
+    XF86AUDIOMICMUTE                    allow-when-locked=true { spawn-sh "noctalia-shell ipc call volume muteInput"; }
 
 
 // ─── Player Media ───
