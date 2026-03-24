@@ -42,6 +42,15 @@
     };
   };
 
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id == "com.feralinteractive.GameMode" &&
+          subject.isInGroup("gamemode")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
+
   # ── Paquets système gaming ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     vkbasalt        # Post-processing Vulkan (sharpening, etc.)
