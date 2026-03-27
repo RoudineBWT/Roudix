@@ -18,7 +18,7 @@ binds {
     // Please choose your own file manager.
     MOD+E                               hotkey-overlay-title="File Manager: Nautilus" { spawn "nautilus"; }
  // Power Menu
-    Mod+Shift+Q { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
+    Mod+Shift+Q { spawn "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
 
     // ─── Audio Controls ───
     XF86AUDIORAISEVOLUME                allow-when-locked=true { spawn-sh "noctalia-shell ipc call volume increase"; }
