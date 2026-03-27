@@ -5,7 +5,7 @@ in
 {
   # ── Packages gaming (user) ───────────────────────────────────────────────
   home.packages = with pkgs; [
-    pkgs-stable.heroic           # Launcher Epic/GOG
+    heroic           # Launcher Epic/GOG
     lutris           # Launcher multi-plateformes
     prismlauncher    # Launcher Minecraft
     vintagestory     # Minecraft but Harder
