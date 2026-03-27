@@ -62,12 +62,13 @@ roudix/
     ├── fastfetch.nix         # Fastfetch + fish autostart
     ├── fish.nix              # Fish shell + aliases
     ├── fstrim.nix            # fstrim for SSD/NVMe
-    ├── gaming.nix            # Steam, Gamescope, GameMode (system)
+    ├── gaming.nix            # Steam, Gamescope, GameMode, Millennium (system)
     ├── gaming-home.nix       # User gaming packages
     ├── git.nix               # Git config
     ├── gpu.nix               # GPU configuration (AMD/NVIDIA/Intel)
     ├── kernel.nix            # CachyOS kernel variant selection
     ├── mangohud.nix          # MangoHud overlay
+    ├── papirus-folders.nix   # Papirus folder color configuration
     ├── pipewire.nix          # PipeWire audio configuration
     ├── spicetify.nix         # Spotify + Spicetify (Comfy theme + marketplace)
     ├── ssh.nix               # SSH + GitHub
@@ -87,7 +88,7 @@ roudix/
 | nix-cachyos-kernel | xddxdd/nix-cachyos-kernel |
 | zen-browser | 0xc000022070/zen-browser-flake |
 | spicetify-nix | Gerg-L/spicetify-nix |
-| nix-proton-cachyos | Flerpharos/nix-proton-cachyos |
+| millennium | SteamClientHomebrew/Millennium |
 | glf-os | framagit.org/gaming-linux-fr/glf-os (NVIDIA drivers only) |
 
 ---
@@ -96,14 +97,17 @@ roudix/
 
 **Kernel & Performance**
 - CachyOS kernel with NTSync enabled (`ntsync` module)
-- 4 kernel variants available: `cachyos-latest`, `cachyos-latest-v3`, `cachyos-latest-lto`, `cachyos-latest-lto-v3` (set in `configuration.nix`)
+- 5 kernel variants available: `cachyos-latest`, `cachyos-latest-v3`, `cachyos-latest-lto`, `cachyos-latest-lto-v3`, `cachyos-rc` (set in `configuration.nix`)
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)
+- Intel: `split_lock_detect=off` kernel param applied automatically
 - GameMode with GPU optimizations
 
 **Gaming**
-- Steam + Proton-GE + Proton CachyOS (via nix flake) + Gamescope session
+- Steam + Proton-GE + Gamescope session
+- Millennium Steam client patcher (themes, plugins)
+- OBS capture env vars pre-configured for Steam (`OBS_VKCAPTURE`, `TZ`)
 - Custom horizontal MangoHud overlay
 - Controller support (Steam Hardware + game-devices-udev-rules)
 - 32-bit support for Wine/Steam
@@ -113,13 +117,14 @@ roudix/
 - Niri scrollable tiling Wayland compositor
 - Noctalia modern shell
 - Capitaine Cursors White
-- adw-gtk3 GTK theme + Papirus icons
+- adw-gtk3 GTK theme + Papirus icons + Papirus Folders
+- Discord with Vencord
 - GNOME Polkit agent
 - GDM display manager
 
 **Music**
 - Spotify patched with Spicetify
-- Comfy theme
+- Comfy theme (local, customized) — requires manual copy, see below
 - Adblock + hide podcasts extensions
 - Marketplace for additional themes & extensions
 
@@ -186,10 +191,17 @@ hardware.myKernel = "cachyos-latest-v3"; # see below
 | `cachyos-latest-v3` | x86_64-v3 optimized (recommended for modern CPUs) |
 | `cachyos-latest-lto` | LTO build for better performance |
 | `cachyos-latest-lto-v3` | LTO + x86_64-v3 (best performance, modern CPUs only) |
+| `cachyos-rc` | Release candidate — bleeding edge, potentially unstable |
 
 > **NVIDIA note:** Only GTX 10xx / RTX series and newer are supported. Older GPUs (GTX 900 and below) are not supported. Open drivers are enabled by default for RTX 20xx+ (Turing and newer). Set `hardware.nvidiaOpen = false` in `configuration.nix` for GTX 10xx/16xx series.
 
-> **Proton CachyOS note:** Proton CachyOS is included via a nix flake fork. If you prefer to manage it manually with ProtonPlus instead, remove the `nix-proton-cachyos` input from `flake.nix` and remove the corresponding line in `modules/gaming.nix`.
+> **Proton note:** Proton CachyOS was previously managed via a nix flake but has been removed — it's easier to handle it through [ProtonPlus](https://github.com/Vysp3r/ProtonPlus) directly, which lets you install and switch between specific versions without rebuilding.
+
+> **Spicetify Comfy theme note:** The Comfy theme colors are not applied automatically. After your first build, copy the color.ini manually:
+> ```bash
+> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/spicetify/Comfy/color.ini
+> ```
+> Then run `rebuild` to apply.
 
 ### 5. Update the disk mount
 
