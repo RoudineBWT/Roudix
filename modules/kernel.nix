@@ -6,6 +6,7 @@
       "cachyos-latest-v3"
       "cachyos-latest-lto"
       "cachyos-latest-lto-v3"
+      "cachyos-rc"
     ];
     default = "cachyos-latest-v3";
     description = "CachyOS kernel variant to use";
@@ -19,6 +20,7 @@
         "cachyos-latest-v3"     = pkgs.cachyosKernels.linux-cachyos-latest-x86_64-v3;
         "cachyos-latest-lto"    = pkgs.cachyosKernels.linux-cachyos-latest-lto;
         "cachyos-latest-lto-v3" = pkgs.cachyosKernels.linux-cachyos-latest-lto-x86_64-v3;
+        "cachyos-rc"            = pkgs.cachyosKernels.linux-cachyos-rc;
       }.${config.hardware.myKernel}
     );
   };

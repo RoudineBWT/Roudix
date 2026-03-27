@@ -52,7 +52,7 @@
 
   nixpkgs.config.allowUnfree = true;
   boot.kernelModules = [ "ntsync" ];
-  hardware.myKernel = "cachyos-latest-lto-v3"; # "cachyos-latest", "cachyos-latest-v3", "cachyos-latest-lto", "cachyos-latest-lto-v3"
+  hardware.myKernel = "cachyos-latest-lto-v3"; # "cachyos-latest", "cachyos-latest-v3", "cachyos-latest-lto", "cachyos-latest-lto-v3" "cachyos-rc"
 
   # ── Nix ─────────────────────────────────────────────────────────────────
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
