@@ -10,6 +10,7 @@
     (lib.mkIf (config.hardware.myCpu == "intel") {
       hardware.cpu.intel.updateMicrocode = true;
       services.hardware.openrgb.motherboard = "intel";
+      boot.kernelParams = [ "split_lock_detect=off" ];
     })
     (lib.mkIf (config.hardware.myCpu == "amd") {
       hardware.cpu.amd.updateMicrocode = true;
