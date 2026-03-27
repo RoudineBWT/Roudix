@@ -56,12 +56,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-proton-cachyos = {
-      url = "github:Flerpharos/nix-proton-cachyos/update-proton-cachyos";
+    millennium = {
+      url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, nix-proton-cachyos, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, ... }:
   let
     username = "roudine"; # ← Change your username here
   in

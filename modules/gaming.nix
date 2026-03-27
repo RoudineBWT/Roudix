@@ -6,6 +6,8 @@
     default = true;
   };
   config = lib.mkIf config.roudix.gaming.enable {
+
+  nixpkgs.overlays = [ inputs.millennium.overlays.default ];
   # ── Steam ────────────────────────────────────────────────────────────────
   programs.steam = {
     enable = true;
@@ -15,9 +17,14 @@
       enable = true;
       args = [ "--prefer-output" "DP-1" ]; # remplace DP-x par ton écran principal
     };
+    package = pkgs.steam.override {
+            extraEnv = {
+              TZ = ":/etc/localtime";
+              OBS_VKCAPTURE = true;
+            };
+    };
     extraCompatPackages = [
       pkgs.proton-ge-bin                  # Proton-GE pour meilleure compatibilité
-      inputs.nix-proton-cachyos.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos # Proton-GE pour meilleure performance
     ];
   };
 
@@ -54,7 +61,9 @@
   # ── Paquets système gaming ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     vkbasalt        # Post-processing Vulkan (sharpening, etc.)
+    millennium-steam
   ];
+
 
   # ── Support manettes ─────────────────────────────────────────────────────
   hardware.steam-hardware.enable = true; # Support contrôleurs Steam
