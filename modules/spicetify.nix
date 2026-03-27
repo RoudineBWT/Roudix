@@ -7,7 +7,14 @@ in
 
   programs.spicetify = {
     enable = true;
-    theme = spicePkgs.themes.comfy;
+     theme = {
+    name = "Comfy";
+    src = ./spicetify/Comfy;
+    injectCss = true;
+    replaceColors = true;
+    overwriteAssets = true;
+  };
+  colorScheme = "Comfy";
     enabledExtensions = with spicePkgs.extensions; [
       adblock
       hidePodcasts
