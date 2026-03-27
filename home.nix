@@ -15,6 +15,7 @@
     ./modules/git.nix
     ./modules/ssh.nix
     ./modules/spicetify.nix
+    ./modules/papirus-folders.nix
   ];
 
   # ── Noctalia-shell ───────────────────────────────────────────────────────
@@ -51,7 +52,7 @@
     nautilus
     zed-editor
     gnome-text-editor
-    discord
+    (discord.override { withVencord = true; })
     openrgb-with-all-plugins
     gnome-disk-utility
     mission-center
@@ -69,6 +70,8 @@
     nwg-look
     adw-gtk3
     papirus-icon-theme
+    papirus-folders
+
 
     # Qt theming
     qt6Packages.qt6ct
