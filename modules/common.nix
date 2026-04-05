@@ -28,11 +28,6 @@
     HOME_URL="https://nixos.org/"
   '';
 
-  # ── Bootloader ──────────────────────────────────────────────────────────
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.configurationLimit = 3;
-
   # ── Kernel ──────────────────────────────────────────────────────────────
   boot.kernelModules = [ "ntsync" ];
   boot.kernelParams = [ "zswap.enabled=0" ];
@@ -45,6 +40,7 @@
   # ── Network ─────────────────────────────────────────────────────────────
   networking.networkmanager.enable = true;
   networking.useDHCP = false;
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
   # ── Locale / timezone ───────────────────────────────────────────────────
   time.timeZone = "Europe/Brussels";
@@ -108,6 +104,9 @@
   services.flatpak.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
+  networking.firewall.enable = true;
+  networking.firewall.checkReversePath = false;
+  networking.firewall.allowedTCPPorts = [ 443 ];
 
   # ── Flatpak auto-update ──────────────────────────────────────────────────
   systemd.services.flatpak-update = {

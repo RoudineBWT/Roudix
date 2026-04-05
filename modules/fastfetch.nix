@@ -9,7 +9,7 @@
 
       logo = {
         type = "kitty-direct";
-        source = "/home/${username}/Pictures/nix-wall-colors.png";
+        source = "/home/${username}/Pictures/nix-snowflake-blue.png";
         padding = { top = 1; left = 3; };
         width = 38;
       };

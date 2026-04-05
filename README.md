@@ -27,6 +27,7 @@
 |-------|--------|
 | OS | NixOS unstable |
 | Kernel | CachyOS (linux-cachyos-latest) |
+| Bootloader | Limine |
 | Compositor | Niri (scrollable tiling Wayland) |
 | Shell | Noctalia |
 | Display Manager | GDM |
@@ -67,7 +68,7 @@ roudix/
     ├── common.nix                  # Shared system config (all hosts)
     ├── desktop-niri.nix            # Niri + UWSM desktop module
     ├── desktop-gnome.nix           # GNOME desktop module
-    ├── boot.nix                    # Boot + UEFI entry rename + OS detection (WIP)
+    ├── boot.nix                    # Limine bootloader + multi-OS entries
     ├── cpu.nix                     # CPU configuration (Intel/AMD microcode)
     ├── fastfetch.nix               # Fastfetch + fish autostart
     ├── fish.nix                    # Fish shell + aliases
@@ -129,6 +130,11 @@ roudix/
 - Intel: `split_lock_detect=off` applied automatically
 - GameMode with GPU optimizations
 
+**Boot**
+- Limine bootloader — modern, fast, multi-disk support
+- Automatic UEFI entry rename to "Roudix"
+- Multi-OS boot menu (Windows, other Linux distros on separate ESPs)
+
 **Gaming**
 - Steam + Proton-GE + Gamescope session
 - Millennium Steam client patcher
@@ -151,11 +157,6 @@ roudix/
 - GNOME 50 from staging-next (will track unstable once merged)
 - Curated extension set (blur, tiling, vitals, arcmenu...)
 - Bloat removed via `environment.gnome.excludePackages`
-- Same GDM greeter, shared keyring
-
-**Boot**
-- Automatic UEFI entry rename to "Roudix"
-- Auto-detection of other OS bootloaders on the ESP
 
 **Music**
 - Spotify patched with Spicetify
@@ -250,7 +251,47 @@ fileSystems."/mnt/gaming" = {
 };
 ```
 
-### 6. Update git config
+### 6. Configure Limine multi-boot (optional)
+
+> Skip this step if you only have NixOS on your machine.
+
+Limine can boot other operating systems on separate disks. This requires knowing the **PARTUUID** of each ESP partition (not the filesystem UUID).
+
+**Get your PARTUUIDs:**
+
+```bash
+lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
+```
+
+Look for partitions with `vfat` filesystem type and `EFI system partition` label — those are your ESPs.
+
+**Edit `modules/boot.nix`** and replace the placeholder UUIDs:
+
+```nix
+extraEntries = ''
+  /Windows
+    protocol: efi
+    path: uuid(YOUR-WINDOWS-ESP-PARTUUID):/EFI/Microsoft/Boot/bootmgfw.efi
+
+  /CachyOS
+    protocol: efi
+    path: uuid(YOUR-CACHYOS-ESP-PARTUUID):/EFI/limine/BOOTX64.EFI
+'';
+```
+
+> **Tip:** The EFI path after the UUID depends on the bootloader used by the other OS. Common paths:
+> - Windows: `/EFI/Microsoft/Boot/bootmgfw.efi`
+> - CachyOS (Limine): `/EFI/limine/BOOTX64.EFI`
+> - Arch/Manjaro (GRUB): `/EFI/grub/grubx64.efi`
+> - Any distro (fallback): `/EFI/BOOT/BOOTX64.EFI`
+
+If you don't have other OS to add, just leave `extraEntries` empty:
+
+```nix
+extraEntries = "";
+```
+
+### 7. Update git config
 
 In `modules/git.nix`:
 
@@ -261,7 +302,7 @@ settings = {
 };
 ```
 
-### 7. Enable/disable optional modules
+### 8. Enable/disable optional modules
 
 In `hosts/roudix/configuration.nix`:
 
@@ -273,7 +314,7 @@ roudix.virtualization.enable = false; # enable for QEMU/KVM
 roudix.hosts.gtaFix.enable = true;   # block BattlEye telemetry (GTA fix)
 ```
 
-### 8. Build
+### 9. Build
 
 > **If flakes and nix-command are not enabled yet** (fresh NixOS install):
 
