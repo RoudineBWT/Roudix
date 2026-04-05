@@ -3,7 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/common.nix
-    ../../modules/desktop.nix
+    ../../modules/desktop
     ../../modules/boot.nix
     ../../modules/kernel.nix
     ../../modules/gaming.nix

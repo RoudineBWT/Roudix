@@ -63,7 +63,11 @@ roudix/
 │   └── roudix-logo.png
 └── modules/
     ├── common.nix                  # Shared system config (all hosts)
-    ├── desktop.nix                 # Unified desktop module (Niri / GNOME / KDE)
+    ├── desktop/
+    │   ├── default.nix             # Desktop option (roudix.desktop.type)
+    │   ├── niri.nix                # Niri + UWSM + polkit
+    │   ├── gnome.nix               # GNOME 50 + staging overlay
+    │   └── kde.nix                 # KDE Plasma 6 + plasma-login-manager
     ├── boot.nix                    # Limine bootloader + multi-OS entries
     ├── cpu.nix                     # CPU configuration (Intel/AMD microcode)
     ├── fastfetch.nix               # Fastfetch + fish autostart
