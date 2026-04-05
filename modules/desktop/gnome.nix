@@ -20,6 +20,10 @@ lib.mkIf isGnome {
     config.common.default = "*";
   };
 
+  environment.systemPackages = with pkgs; [
+    gnome-tweaks
+  ];
+
   environment.gnome.excludePackages = with pkgs; [
     tali iagno hitori atomix yelp geary xterm totem
     epiphany gnome-tour gnome-software gnome-contacts
