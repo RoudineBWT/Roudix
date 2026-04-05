@@ -30,7 +30,7 @@
 | Bootloader | Limine |
 | Compositor | Niri (scrollable tiling Wayland) |
 | Shell | Noctalia |
-| Display Manager | GDM |
+| Display Manager | GDM / SDDM / plasma-login-manager |
 | Terminal | Ghostty |
 | Shell | Fish |
 | Browser | Zen Browser |
@@ -47,15 +47,12 @@ roudix/
 ├── flake.nix                       # Inputs & outputs — set username here
 ├── flake.lock
 ├── hosts/
-│   ├── roudix/                     # Desktop: Niri + Noctalia
-│   │   ├── configuration.nix
-│   │   └── hardware-configuration.nix
-│   └── roudix-gnome/               # Desktop: GNOME 50
-│       └── configuration.nix       # (shares hardware with roudix)
+│   └── roudix/                     # Single host — DE selected via roudix.desktop.type
+│       ├── configuration.nix
+│       └── hardware-configuration.nix
 ├── home/
 │   ├── common.nix                  # Shared home-manager config (all users)
-│   ├── niri.nix                    # Home config for Niri + Noctalia user
-│   └── gnome.nix                   # Home config for GNOME user
+│   └── niri.nix                    # Home config for Niri + Noctalia user
 ├── dotfiles/
 │   ├── easyeffects/                # EasyEffects presets
 │   └── niri/
@@ -66,12 +63,11 @@ roudix/
 │   └── roudix-logo.png
 └── modules/
     ├── common.nix                  # Shared system config (all hosts)
-    ├── desktop-niri.nix            # Niri + UWSM desktop module
-    ├── desktop-gnome.nix           # GNOME desktop module
+    ├── desktop.nix                 # Unified desktop module (Niri / GNOME / KDE)
     ├── boot.nix                    # Limine bootloader + multi-OS entries
     ├── cpu.nix                     # CPU configuration (Intel/AMD microcode)
     ├── fastfetch.nix               # Fastfetch + fish autostart
-    ├── fish.nix                    # Fish shell + aliases
+    ├── fish.nix                    # Fish shell + aliases + roudix-switch
     ├── fstrim.nix                  # fstrim for SSD/NVMe
     ├── gaming.nix                  # Steam, Gamescope, GameMode (system)
     ├── gaming-home.nix             # User gaming packages
@@ -112,10 +108,33 @@ roudix/
 
 ## Configurations
 
-| Name | Desktop | Description |
-|------|---------|-------------|
-| `roudix` | Niri + Noctalia | Main desktop, CachyOS LTO kernel |
-| `roudix-gnome` | GNOME 50 | GNOME desktop from staging-next |
+| Name | Description |
+|------|-------------|
+| `roudix` | Single config — desktop selected via `roudix.desktop.type` |
+
+---
+
+## Desktop environments
+
+Switch desktop at any time with `roudix-switch <de>` — no separate host needed.
+
+| Value | Desktop | Notes |
+|-------|---------|-------|
+| `niri` | Niri + Noctalia | Default — scrollable tiling Wayland |
+| `gnome` | GNOME 50 | From staging-next |
+| `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
+
+To change permanently, edit `hosts/roudix/configuration.nix`:
+
+```nix
+roudix.desktop.type = "niri"; # "niri", "gnome" or "kde"
+```
+
+Or use the fish function:
+
+```fish
+roudix-switch kde
+```
 
 ---
 
@@ -123,7 +142,7 @@ roudix/
 
 **Kernel & Performance**
 - CachyOS kernel with NTSync enabled (`ntsync` module)
-- 5 kernel variants available (set in `hosts/*/configuration.nix`)
+- 5 kernel variants available (set in `hosts/roudix/configuration.nix`)
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)
@@ -157,6 +176,14 @@ roudix/
 - GNOME 50 from staging-next (will track unstable once merged)
 - Curated extension set (blur, tiling, vitals, arcmenu...)
 - Bloat removed via `environment.gnome.excludePackages`
+
+**Desktop (KDE)**
+- KDE Plasma 6 with plasma-login-manager
+- KDE Connect enabled
+- xdg-desktop-portal-kde
+- Plasma taskbar icon fix (systemd user service)
+- Curated packages: partitionmanager, kcalc, digikam, vlc...
+- Bloat removed (Discover excluded)
 
 **Music**
 - Spotify patched with Spicetify
@@ -207,14 +234,15 @@ username = "roudine"; # ← Change to your username
 sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hardware-configuration.nix
 ```
 
-### 4. Set your GPU, CPU and kernel variant
+### 4. Set your GPU, CPU, kernel variant and desktop
 
 In `hosts/roudix/configuration.nix`:
 
 ```nix
-hardware.myGpu = "amd"; # "amd", "nvidia" or "intel"
-hardware.myCpu = "intel"; # "intel" or "amd"
-hardware.myKernel = "cachyos-latest-v3"; # see below
+roudix.desktop.type = "niri";          # "niri", "gnome" or "kde"
+hardware.myGpu      = "amd";           # "amd", "nvidia" or "intel"
+hardware.myCpu      = "intel";         # "intel" or "amd"
+hardware.myKernel   = "cachyos-latest-v3"; # see below
 ```
 
 **Available kernel variants:**
@@ -307,11 +335,11 @@ settings = {
 In `hosts/roudix/configuration.nix`:
 
 ```nix
-roudix.gaming.enable = true;
-roudix.pipewire.enable = true;
-roudix.fstrim.enable = true;          # recommended for SSD/NVMe
-roudix.virtualization.enable = false; # enable for QEMU/KVM
-roudix.hosts.gtaFix.enable = true;   # block BattlEye telemetry (GTA fix)
+roudix.gaming.enable        = true;
+roudix.pipewire.enable      = true;
+roudix.fstrim.enable        = true;          # recommended for SSD/NVMe
+roudix.virtualization.enable = false;        # enable for QEMU/KVM
+roudix.hosts.gtaFix.enable  = true;         # block BattlEye telemetry (GTA fix)
 ```
 
 ### 9. Build
@@ -340,6 +368,7 @@ Once built, use the fish aliases for all future operations.
 | `update` | Update flake inputs + apply |
 | `cleanup` | Remove old generations + garbage collect |
 | `noctalia-reload` | Restart Quickshell without logging out |
+| `roudix-switch <de>` | Switch desktop environment and rebuild |
 
 ---
 

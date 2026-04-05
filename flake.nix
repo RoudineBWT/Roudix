@@ -1,5 +1,5 @@
 {
-  description = "NixOS unstable — Niri + Noctalia + CachyOS kernel";
+  description = "NixOS unstable — Niri + Noctalia + CachyOS Kernel";
 
   nixConfig = {
     extra-substituters = [
@@ -71,12 +71,14 @@
   outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, firefox-nightly, nixpkgsStaging, ... }:
   let
     username = "roudine"; # ← Change your username here
+    specialArgs = { inherit inputs username; };
   in
   {
-    # ── Desktop: Niri + Noctalia ─────────────────────────────────────────
+    # ── Main desktop configuration ───────────────────────────────────────
+    # Use 'roudix-switch <de>' to change desktop environment
     nixosConfigurations.roudix = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit inputs username; };
+      specialArgs = specialArgs;
       modules = [
         ./hosts/roudix/configuration.nix
         home-manager.nixosModules.home-manager
@@ -84,25 +86,8 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "bak";
-          home-manager.extraSpecialArgs = { inherit inputs username; };
+          home-manager.extraSpecialArgs = specialArgs;
           home-manager.users.${username} = import ./home/niri.nix;
-        }
-      ];
-    };
-
-    # ── Desktop: GNOME ────────────────────────────────────────────────
-    nixosConfigurations.roudix-gnome = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; username = "oka"; };
-      modules = [
-        ./hosts/roudix-gnome/configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "bak";
-          home-manager.extraSpecialArgs = { inherit inputs; username = "oka"; };
-          home-manager.users.oka = import ./home/gnome.nix;
         }
       ];
     };
