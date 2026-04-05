@@ -17,9 +17,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    nixpkgs-stable = {
-      url = "github:NixOS/nixpkgs/nixos-25.11";
-    };
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+
+    # staging-next for GNOME 50 — no nixpkgs follows, it has its own
+    nixpkgsStaging.url = "github:NixOS/nixpkgs/staging-next";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -42,8 +43,8 @@
     };
 
     zen-browser = {
-     url = "github:0xc000022070/zen-browser-flake";
-     inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     glf-os = {
@@ -60,26 +61,48 @@
       url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    firefox-nightly = {
+      url = "github:nix-community/flake-firefox-nightly";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, firefox-nightly, nixpkgsStaging, ... }:
   let
     username = "roudine"; # ← Change your username here
   in
   {
+    # ── Desktop: Niri + Noctalia ─────────────────────────────────────────
     nixosConfigurations.roudix = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs username; };
       modules = [
-        ./configuration.nix
-        ./niri.nix
+        ./hosts/roudix/configuration.nix
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "bak";
           home-manager.extraSpecialArgs = { inherit inputs username; };
-          home-manager.users.${username} = import ./home.nix;
+          home-manager.users.${username} = import ./home/niri.nix;
+        }
+      ];
+    };
+
+    # ── Desktop: GNOME ────────────────────────────────────────────────
+    nixosConfigurations.roudix-gnome = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; username = "oka"; };
+      modules = [
+        ./hosts/roudix-gnome/configuration.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "bak";
+          home-manager.extraSpecialArgs = { inherit inputs; username = "oka"; };
+          home-manager.users.oka = import ./home/gnome.nix;
         }
       ];
     };

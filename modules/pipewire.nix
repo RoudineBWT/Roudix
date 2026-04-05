@@ -33,6 +33,36 @@
       };
     };
 
+    extraConfig.pipewire."99-noise-suppression" = {
+           "context.modules" = [{
+             name = "libpipewire-module-filter-chain";
+             args = {
+               "node.description" = "Noise Canceling Source";
+               "media.name" = "Noise Canceling Source";
+               "filter.graph" = {
+                 nodes = [{
+                   type = "ladspa";
+                   name = "rnnoise";
+                   plugin = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
+                   label = "noise_suppressor_mono";
+                   control = { "VAD Threshold (%)" = 50.0; };
+                 }];
+               };
+               "capture.props" = {
+                 "node.name" = "rnnoise_source";
+                 "media.class" = "Audio/Source";
+                 "audio.position" = [ "FL" "FR" ];
+               };
+               "playback.props" = {
+                 "node.name" = "rnnoise_input";
+                 "media.class" = "Audio/Sink";
+                 "audio.position" = [ "FL" "FR" ];
+               };
+             };
+           }];
+         };
+
+
     wireplumber.extraConfig = {
       "10-disable-camera" = {
         "wireplumber.profiles" = {

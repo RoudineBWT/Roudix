@@ -7,7 +7,7 @@
   };
   config = lib.mkIf config.roudix.gaming.enable {
 
-  nixpkgs.overlays = [ inputs.millennium.overlays.default ];
+  # nixpkgs.overlays = [ inputs.millennium.overlays.default ];
   # ── Steam ────────────────────────────────────────────────────────────────
   programs.steam = {
     enable = true;
@@ -61,7 +61,7 @@
   # ── Paquets système gaming ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     vkbasalt        # Post-processing Vulkan (sharpening, etc.)
-    millennium-steam
+    # millennium-steam
   ];
 
 

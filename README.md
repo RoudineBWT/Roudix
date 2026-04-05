@@ -43,36 +43,49 @@
 
 ```
 roudix/
-├── flake.nix                 # Inputs & outputs — set username here
+├── flake.nix                       # Inputs & outputs — set username here
 ├── flake.lock
-├── configuration.nix         # NixOS system config
-├── hardware-configuration.nix
-├── niri.nix                  # Niri compositor + UWSM
-├── home.nix                  # Home Manager entry point
+├── hosts/
+│   ├── roudix/                     # Desktop: Niri + Noctalia
+│   │   ├── configuration.nix
+│   │   └── hardware-configuration.nix
+│   └── roudix-gnome/               # Desktop: GNOME 50
+│       └── configuration.nix       # (shares hardware with roudix)
+├── home/
+│   ├── common.nix                  # Shared home-manager config (all users)
+│   ├── niri.nix                    # Home config for Niri + Noctalia user
+│   └── gnome.nix                   # Home config for GNOME user
 ├── dotfiles/
-│   ├── easyeffects/          # EasyEffects presets
+│   ├── easyeffects/                # EasyEffects presets
 │   └── niri/
-│       ├── cfg/              # Niri config
-│       ├── config.kdl        
-│       └── noctalia.kdl      # Noctalia config
+│       ├── cfg/                    # Niri config
+│       ├── config.kdl
+│       └── noctalia.kdl            # Noctalia config
 ├── logo/
 │   └── roudix-logo.png
 └── modules/
-    ├── cpu.nix               # CPU configuration (Intel/AMD microcode + OpenRGB)
-    ├── fastfetch.nix         # Fastfetch + fish autostart
-    ├── fish.nix              # Fish shell + aliases
-    ├── fstrim.nix            # fstrim for SSD/NVMe
-    ├── gaming.nix            # Steam, Gamescope, GameMode, Millennium (system)
-    ├── gaming-home.nix       # User gaming packages
-    ├── git.nix               # Git config
-    ├── gpu.nix               # GPU configuration (AMD/NVIDIA/Intel)
-    ├── kernel.nix            # CachyOS kernel variant selection
-    ├── mangohud.nix          # MangoHud overlay
-    ├── papirus-folders.nix   # Papirus folder color configuration
-    ├── pipewire.nix          # PipeWire audio configuration
-    ├── spicetify.nix         # Spotify + Spicetify (Comfy theme + marketplace)
-    ├── ssh.nix               # SSH + GitHub
-    └── virtualization.nix    # QEMU/KVM (disabled by default)
+    ├── common.nix                  # Shared system config (all hosts)
+    ├── desktop-niri.nix            # Niri + UWSM desktop module
+    ├── desktop-gnome.nix           # GNOME desktop module
+    ├── boot.nix                    # Boot + UEFI entry rename + OS detection
+    ├── cpu.nix                     # CPU configuration (Intel/AMD microcode)
+    ├── fastfetch.nix               # Fastfetch + fish autostart
+    ├── fish.nix                    # Fish shell + aliases
+    ├── fstrim.nix                  # fstrim for SSD/NVMe
+    ├── gaming.nix                  # Steam, Gamescope, GameMode (system)
+    ├── gaming-home.nix             # User gaming packages
+    ├── git.nix                     # Git config
+    ├── gpu.nix                     # GPU configuration (AMD/NVIDIA/Intel)
+    ├── hosts-gta.nix               # BattlEye hosts block (GTA fix, optional)
+    ├── kernel.nix                  # CachyOS kernel variant selection
+    ├── mangohud.nix                # MangoHud overlay
+    ├── papirus-folders.nix         # Papirus folder color configuration
+    ├── pipewire.nix                # PipeWire audio configuration
+    ├── spicetify.nix               # Spotify + Spicetify (Comfy theme)
+    ├── ssh.nix                     # SSH + GitHub
+    ├── update.nix                  # Auto-update configuration
+    ├── virtualization.nix          # QEMU/KVM (disabled by default)
+    └── vm-guest.nix                # VM guest optimizations (DNS, QEMU agent)
 ```
 
 ---
@@ -83,13 +96,25 @@ roudix/
 |-------|--------|
 | nixpkgs | nixos-unstable |
 | nixpkgs-stable | nixos-25.11 |
+| nixpkgsStaging | nixos/nixpkgs staging-next (GNOME 50) |
 | home-manager | nix-community/home-manager |
 | noctalia | noctalia-dev/noctalia-shell |
+| noctalia-qs | noctalia-dev/noctalia-qs |
 | nix-cachyos-kernel | xddxdd/nix-cachyos-kernel |
 | zen-browser | 0xc000022070/zen-browser-flake |
 | spicetify-nix | Gerg-L/spicetify-nix |
 | millennium | SteamClientHomebrew/Millennium |
-| glf-os | framagit.org/gaming-linux-fr/glf-os (NVIDIA drivers only) |
+| firefox-nightly | nix-community/flake-firefox-nightly |
+| glf-os | framagit.org/gaming-linux-fr/glf-os |
+
+---
+
+## Configurations
+
+| Name | Desktop | Description |
+|------|---------|-------------|
+| `roudix` | Niri + Noctalia | Main desktop, CachyOS LTO kernel |
+| `roudix-gnome` | GNOME 50 | GNOME desktop from staging-next |
 
 ---
 
@@ -97,46 +122,54 @@ roudix/
 
 **Kernel & Performance**
 - CachyOS kernel with NTSync enabled (`ntsync` module)
-- 5 kernel variants available: `cachyos-latest`, `cachyos-latest-v3`, `cachyos-latest-lto`, `cachyos-latest-lto-v3`, `cachyos-rc` (set in `configuration.nix`)
+- 5 kernel variants available (set in `hosts/*/configuration.nix`)
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)
-- Intel: `split_lock_detect=off` kernel param applied automatically
+- Intel: `split_lock_detect=off` applied automatically
 - GameMode with GPU optimizations
 
 **Gaming**
 - Steam + Proton-GE + Gamescope session
-- Millennium Steam client patcher (themes, plugins)
-- OBS capture env vars pre-configured for Steam (`OBS_VKCAPTURE`, `TZ`)
+- Millennium Steam client patcher
+- OBS capture env vars pre-configured (`OBS_VKCAPTURE`, `TZ`)
 - Custom horizontal MangoHud overlay
 - Controller support (Steam Hardware + game-devices-udev-rules)
 - 32-bit support for Wine/Steam
-- Heroic, Lutris, PrismLauncher
 
-**Desktop**
+**Desktop (Niri)**
 - Niri scrollable tiling Wayland compositor
 - Noctalia modern shell
 - Capitaine Cursors White
-- adw-gtk3 GTK theme + Papirus icons + Papirus Folders
+- adw-gtk3 + Papirus icons + Papirus Folders
 - Discord with Vencord
+- Element Desktop with gnome-libsecret
 - GNOME Polkit agent
 - GDM display manager
 
+**Desktop (GNOME)**
+- GNOME 50 from staging-next (will track unstable once merged)
+- Curated extension set (blur, tiling, vitals, arcmenu...)
+- Bloat removed via `environment.gnome.excludePackages`
+- Same GDM greeter, shared keyring
+
+**Boot**
+- Automatic UEFI entry rename to "Roudix"
+- Auto-detection of other OS bootloaders on the ESP
+
 **Music**
 - Spotify patched with Spicetify
-- Comfy theme (local, customized) — requires manual copy, see below
+- Comfy theme (local, customized)
 - Adblock + hide podcasts extensions
-- Marketplace for additional themes & extensions
 
 **Other**
-- OBS Studio with obs-pipewire-audio-capture + obs-vkcapture
+- OBS Studio with pipewire + vkcapture plugins
 - GPU Screen Recorder
-- OpenRGB for LED control (auto-configured per CPU)
-- Flatpak enabled with daily auto-update
-- GVfs for disk mounting in Nautilus
+- OpenRGB for LED control
+- Flatpak with daily auto-update
+- QEMU/KVM + Virt-Manager (optional)
+- VM guest optimizations module (DNS, QEMU agent, Spice)
 - Nerd Fonts (JetBrains, Noto, Iosevka)
-- QEMU/KVM + Virt-Manager (optional, disabled by default)
-- NVIDIA drivers sourced from GLF OS (auto-updated via `nix flake update`)
 
 ---
 
@@ -170,12 +203,12 @@ username = "roudine"; # ← Change to your username
 ### 3. Replace hardware-configuration.nix
 
 ```bash
-sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hardware-configuration.nix
+sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hardware-configuration.nix
 ```
 
 ### 4. Set your GPU, CPU and kernel variant
 
-In `configuration.nix`:
+In `hosts/roudix/configuration.nix`:
 
 ```nix
 hardware.myGpu = "amd"; # "amd", "nvidia" or "intel"
@@ -193,11 +226,9 @@ hardware.myKernel = "cachyos-latest-v3"; # see below
 | `cachyos-latest-lto-v3` | LTO + x86_64-v3 (best performance, modern CPUs only) |
 | `cachyos-rc` | Release candidate — bleeding edge, potentially unstable |
 
-> **NVIDIA note:** Only GTX 10xx / RTX series and newer are supported. Older GPUs (GTX 900 and below) are not supported. Open drivers are enabled by default for RTX 20xx+ (Turing and newer). Set `hardware.nvidiaOpen = false` in `configuration.nix` for GTX 10xx/16xx series.
+> **NVIDIA note:** Only GTX 10xx / RTX series and newer are supported. Open drivers enabled by default for RTX 20xx+ (Turing+). Set `hardware.nvidiaOpen = false` for GTX 10xx/16xx.
 
-> **Proton note:** Proton CachyOS was previously managed via a nix flake but has been removed — it's easier to handle it through [ProtonPlus](https://github.com/Vysp3r/ProtonPlus) directly, which lets you install and switch between specific versions without rebuilding.
-
-> **Spicetify Comfy theme note:** The Comfy theme colors are not applied automatically. After your first build, copy the color.ini manually:
+> **Spicetify Comfy theme note:** After your first build, copy the color.ini manually:
 > ```bash
 > cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/spicetify/Comfy/color.ini
 > ```
@@ -205,7 +236,7 @@ hardware.myKernel = "cachyos-latest-v3"; # see below
 
 ### 5. Update the disk mount
 
-In `configuration.nix`, replace the UUID with your own (or remove the block entirely):
+In `hosts/roudix/configuration.nix`, replace the UUID with your own (or remove the block):
 
 ```bash
 lsblk -f  # find your disk UUID
@@ -221,7 +252,7 @@ fileSystems."/mnt/gaming" = {
 
 ### 6. Update git config
 
-In `modules/git.nix`, set your name and email:
+In `modules/git.nix`:
 
 ```nix
 settings = {
@@ -232,13 +263,14 @@ settings = {
 
 ### 7. Enable/disable optional modules
 
-In `configuration.nix`:
+In `hosts/roudix/configuration.nix`:
 
 ```nix
 roudix.gaming.enable = true;
 roudix.pipewire.enable = true;
 roudix.fstrim.enable = true;          # recommended for SSD/NVMe
 roudix.virtualization.enable = false; # enable for QEMU/KVM
+roudix.hosts.gtaFix.enable = true;   # block BattlEye telemetry (GTA fix)
 ```
 
 ### 8. Build
@@ -266,6 +298,7 @@ Once built, use the fish aliases for all future operations.
 | `rebuild` | Apply configuration immediately |
 | `update` | Update flake inputs + apply |
 | `cleanup` | Remove old generations + garbage collect |
+| `noctalia-reload` | Restart Quickshell without logging out |
 
 ---
 
