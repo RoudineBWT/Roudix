@@ -67,7 +67,7 @@ roudix/
     ├── common.nix                  # Shared system config (all hosts)
     ├── desktop-niri.nix            # Niri + UWSM desktop module
     ├── desktop-gnome.nix           # GNOME desktop module
-    ├── boot.nix                    # Boot + UEFI entry rename + OS detection
+    ├── boot.nix                    # Boot + UEFI entry rename + OS detection (WIP)
     ├── cpu.nix                     # CPU configuration (Intel/AMD microcode)
     ├── fastfetch.nix               # Fastfetch + fish autostart
     ├── fish.nix                    # Fish shell + aliases
