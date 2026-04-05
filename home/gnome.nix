@@ -1,4 +1,4 @@
-{ pkgs, inputs, username, ... }:
+{ pkgs, inputs, username, lib, ... }:
 {
   home.username = username;
   home.homeDirectory = "/home/${username}";
@@ -24,6 +24,9 @@
     gnome-tweaks
     loupe
 
+    # Flake packages
+    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+
     # GNOME Extensions
     gnomeExtensions.caffeine
     gnomeExtensions.gsconnect
@@ -42,16 +45,13 @@
     gnomeExtensions.bluetooth-battery-meter
   ];
   # Aliases
-  programs.fish.shellAliases = {
+  programs.fish.shellAliases = lib.mkForce {
     rebuild = "nh os switch --accept-flake-config $NH_FLAKE#roudix-gnome";
     update = "sudo nix flake update --flake $NH_FLAKE && nh os switch --accept-flake-config $NH_FLAKE#roudix-gnome";
   };
 
-  programs.shellAliases = {
+  programs.bash.shellAliases = lib.mkForce {
       rebuild = "nh os switch /home/${username}/.config/roudix#roudix-gnome";
       update = "sudo nix flake update --flake /home/${username}/.config/roudix && nh os switch /home/${username}/.config/roudix#roudix-gnome";
   };
-
-  # Flake packages
-  inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
 }

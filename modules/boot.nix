@@ -18,18 +18,36 @@
       enrollConfig = true;
       # Keep last 3 generations in the boot menu
       maxGenerations = 3;
-
+      style = {
+              wallpapers = [
+                (builtins.path {
+                  path = ./bootloader/wallpaper.png;
+                  name = "limine-wallpaper";
+                })
+              ];
+              wallpaperStyle = "stretched";
+              # ── Catppuccin Mocha (thème CachyOS) ──────────────────────────
+              graphicalTerminal = {
+                foreground      = "cdd6f4";
+                background      = "ff1e1e2e"; # fond opaque Mocha base
+                brightForeground = "cdd6f4";
+                brightBackground = "ff1e1e2e";
+                palette       = "1e1e2e;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;cdd6f4";
+                brightPalette = "585b70;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;cdd6f4";
+              };
+            };
       # ── Extra boot entries for other OS on other ESPs ─────────────────
       # Use the PARTUUID of each ESP (not the filesystem UUID)
       # Get PARTUUIDs with: lsblk -o NAME,PARTUUID
       extraEntries = ''
-        /Windows
+        /+Other systems and bootloaders
+        //Windows
           protocol: efi
           path: uuid(ff4a714e-8ba8-4b3b-bf24-27ab1d7c4364):/EFI/Microsoft/Boot/bootmgfw.efi
 
-        /CachyOS
-          protocol: efi
-          path: uuid(337d9565-6dab-41c8-bebd-1128795554be):/EFI/limine/BOOTX64.EFI
+          //CachyOS
+            protocol: efi
+            path: uuid(44c1b2d3-4981-481f-b9e6-463bc2d512bc):/EFI/BOOT/BOOTX64.EFI
       '';
     };
 

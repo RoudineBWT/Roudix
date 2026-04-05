@@ -41,31 +41,4 @@
     fsType = "btrfs";
     options = [ "defaults" "nofail" ];
   };
-
-  #── Gnome excluded packages  ───────────────────────────────────────────────────
-  gnome.excludePackages = with pkgs; [
-          tali
-          iagno
-          hitori
-          atomix
-          yelp
-          geary
-          xterm
-          totem
-
-          epiphany
-          packagekit
-
-          gnome-tour
-          gnome-software
-          gnome-contacts
-          gnome-user-docs
-          gnome-packagekit
-          gnome-font-viewer
-          gnome-music
-
-        ];
-      };
-
-
 }
