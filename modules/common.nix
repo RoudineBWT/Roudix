@@ -74,6 +74,7 @@
     git wget curl
     yazi
     capitaine-cursors
+    efibootmgr
   ];
 
   # ── ZRAM ────────────────────────────────────────────────────────────────
@@ -101,27 +102,13 @@
   services.hardware.openrgb.enable = true;
   hardware.i2c.enable = true;
   services.gvfs.enable = true;
-  services.flatpak.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
   networking.firewall.enable = true;
   networking.firewall.checkReversePath = false;
   networking.firewall.allowedTCPPorts = [ 443 ];
 
-  # ── Flatpak auto-update ──────────────────────────────────────────────────
-  systemd.services.flatpak-update = {
-    description = "Update Flatpak apps";
-    serviceConfig.ExecStart = "${pkgs.flatpak}/bin/flatpak update --noninteractive";
-    wantedBy = [ "multi-user.target" ];
-  };
-
-  systemd.timers.flatpak-update = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "daily";
-      Persistent = true;
-    };
-  };
 
   system.stateVersion = "25.11";
 }

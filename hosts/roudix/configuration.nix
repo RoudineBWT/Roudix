@@ -7,6 +7,7 @@
     ../../modules/boot.nix
     ../../modules/kernel.nix
     ../../modules/gaming.nix
+    ../../modules/flatpak.nix
     ../../modules/gpu.nix
     ../../modules/cpu.nix
     ../../modules/pipewire.nix
@@ -25,10 +26,11 @@
   hardware.myGpu    = "amd";                   # "amd", "nvidia" or "intel"
   hardware.nvidiaOpen = false;                 # false for GTX 10xx/16xx, true for RTX 20xx+
   hardware.myCpu    = "intel";                 # "intel" or "amd"
-  hardware.myKernel = "cachyos-latest-lto-v3"; # see README for all variants
+  hardware.myKernel = "cachyos-lts-lto-v3"; # see README for all variants
 
   # ── Features ────────────────────────────────────────────────────────────
   roudix.gaming.enable        = true;
+  roudix.flatpak.enable       = true;
   roudix.fstrim.enable        = true;
   roudix.pipewire.enable      = true;
   roudix.virtualization.enable = true;

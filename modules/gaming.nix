@@ -20,7 +20,7 @@
     package = pkgs.steam.override {
             extraEnv = {
               TZ = ":/etc/localtime";
-              OBS_VKCAPTURE = true;
+              OBS_VKCAPTURE = "1";
             };
     };
     extraCompatPackages = [
@@ -41,23 +41,8 @@
       general = {
         renice = 10;
       };
-      gpu = {
-        apply_gpu_optimisations = "accept-responsibility";
-        gpu_device = 1;
-        amd_performance_level = "high"; # Change en "auto" si pas AMD
-      };
     };
   };
-
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (action.id == "com.feralinteractive.GameMode" &&
-          subject.isInGroup("gamemode")) {
-        return polkit.Result.YES;
-      }
-    });
-  '';
-
   # ── Paquets système gaming ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     vkbasalt        # Post-processing Vulkan (sharpening, etc.)

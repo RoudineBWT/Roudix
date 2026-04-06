@@ -15,6 +15,7 @@
 
   home.packages = with pkgs; [
     # Common apps
+    (pkgs.callPackage ../pkgs/roudix-switcher {})
     ghostty
     brave
     zed-editor

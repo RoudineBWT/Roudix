@@ -26,7 +26,7 @@
 | Layer | Choice |
 |-------|--------|
 | OS | NixOS unstable |
-| Kernel | CachyOS (linux-cachyos-latest) |
+| Kernel | CachyOS (linux-cachyos-lts-lto-v3) |
 | Bootloader | Limine |
 | Compositor | Niri (scrollable tiling Wayland) |
 | Shell | Noctalia |
@@ -59,8 +59,8 @@ roudix/
 │       ├── cfg/                    # Niri config
 │       ├── config.kdl
 │       └── noctalia.kdl            # Noctalia config
-├── logo/
-│   └── roudix-logo.png
+├── pkgs/
+│   └── roudix-switcher/            # Roudix Desktop Switcher package
 └── modules/
     ├── common.nix                  # Shared system config (all hosts)
     ├── desktop/
@@ -72,6 +72,7 @@ roudix/
     ├── cpu.nix                     # CPU configuration (Intel/AMD microcode)
     ├── fastfetch.nix               # Fastfetch + fish autostart
     ├── fish.nix                    # Fish shell + aliases + roudix-switch
+    ├── flatpak.nix                 # Flatpak service + auto update
     ├── fstrim.nix                  # fstrim for SSD/NVMe
     ├── gaming.nix                  # Steam, Gamescope, GameMode (system)
     ├── gaming-home.nix             # User gaming packages
@@ -120,7 +121,7 @@ roudix/
 
 ## Desktop environments
 
-Switch desktop at any time with `roudix-switch <de>` — no separate host needed.
+Switch desktop at any time with `roudix-switch <de>` or the **Roudix Desktop Switcher** GUI — no separate host needed.
 
 | Value | Desktop | Notes |
 |-------|---------|-------|
@@ -140,18 +141,20 @@ Or use the fish function:
 roudix-switch kde
 ```
 
+> **Note:** `roudix-switch` uses `nh os boot` — changes apply on next reboot.
+
 ---
 
 ## Features
 
 **Kernel & Performance**
 - CachyOS kernel with NTSync enabled (`ntsync` module)
-- 5 kernel variants available (set in `hosts/roudix/configuration.nix`)
+- 8 kernel variants available (set in `hosts/roudix/configuration.nix`)
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)
 - Intel: `split_lock_detect=off` applied automatically
-- GameMode with GPU optimizations
+- GameMode enabled
 
 **Boot**
 - Limine bootloader — modern, fast, multi-disk support
@@ -198,10 +201,12 @@ roudix-switch kde
 - OBS Studio with pipewire + vkcapture plugins
 - GPU Screen Recorder
 - OpenRGB for LED control
-- Flatpak with daily auto-update
+- Flatpak with daily auto-update (dedicated `flatpak.nix` module)
+- Blueman Bluetooth manager
 - QEMU/KVM + Virt-Manager (optional)
 - VM guest optimizations module (DNS, QEMU agent, Spice)
 - Nerd Fonts (JetBrains, Noto, Iosevka)
+- Roudix Desktop Switcher — GUI to switch DE without terminal
 
 ---
 
@@ -243,9 +248,9 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hard
 In `hosts/roudix/configuration.nix`:
 
 ```nix
-roudix.desktop.type = "niri";          # "niri", "gnome" or "kde"
-hardware.myGpu      = "amd";           # "amd", "nvidia" or "intel"
-hardware.myCpu      = "intel";         # "intel" or "amd"
+roudix.desktop.type = "niri";              # "niri", "gnome" or "kde"
+hardware.myGpu      = "amd";               # "amd", "nvidia" or "intel"
+hardware.myCpu      = "intel";             # "intel" or "amd"
 hardware.myKernel   = "cachyos-latest-v3"; # see below
 ```
 
@@ -257,6 +262,9 @@ hardware.myKernel   = "cachyos-latest-v3"; # see below
 | `cachyos-latest-v3` | x86_64-v3 optimized (recommended for modern CPUs) |
 | `cachyos-latest-lto` | LTO build for better performance |
 | `cachyos-latest-lto-v3` | LTO + x86_64-v3 (best performance, modern CPUs only) |
+| `cachyos-lts` | Long-term support CachyOS kernel |
+| `cachyos-lts-v3` | LTS + x86_64-v3 optimized |
+| `cachyos-lts-lto-v3` | LTS + LTO + x86_64-v3 (stable + performance) |
 | `cachyos-rc` | Release candidate — bleeding edge, potentially unstable |
 
 > **NVIDIA note:** Only GTX 10xx / RTX series and newer are supported. Open drivers enabled by default for RTX 20xx+ (Turing+). Set `hardware.nvidiaOpen = false` for GTX 10xx/16xx.
@@ -339,11 +347,12 @@ settings = {
 In `hosts/roudix/configuration.nix`:
 
 ```nix
-roudix.gaming.enable        = true;
-roudix.pipewire.enable      = true;
-roudix.fstrim.enable        = true;          # recommended for SSD/NVMe
-roudix.virtualization.enable = false;        # enable for QEMU/KVM
-roudix.hosts.gtaFix.enable  = true;         # block BattlEye telemetry (GTA fix)
+roudix.gaming.enable         = true;
+roudix.flatpak.enable        = true;   # Flatpak + daily auto-update
+roudix.pipewire.enable       = true;
+roudix.fstrim.enable         = true;   # recommended for SSD/NVMe
+roudix.virtualization.enable = false;  # enable for QEMU/KVM
+roudix.hosts.gtaFix.enable   = true;  # block BattlEye telemetry (GTA fix)
 ```
 
 ### 9. Build
@@ -372,7 +381,7 @@ Once built, use the fish aliases for all future operations.
 | `update` | Update flake inputs + apply |
 | `cleanup` | Remove old generations + garbage collect |
 | `noctalia-reload` | Restart Quickshell without logging out |
-| `roudix-switch <de>` | Switch desktop environment and rebuild |
+| `roudix-switch <de>` | Switch desktop environment (applies on next reboot) |
 
 ---
 

@@ -38,7 +38,7 @@
         sed -i "s/roudix\.desktop\.type = \".*\"/roudix.desktop.type = \"$de\"/" "$config_file"
 
         echo "Rebuilding configuration..."
-        nh os switch "/home/${username}/.config/roudix"
+        nh os boot "/home/${username}/.config/roudix"
       }
     '';
   };

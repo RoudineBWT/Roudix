@@ -37,7 +37,7 @@
         sed -i "s/roudix\.desktop\.type = \".*\"/roudix.desktop.type = \"$de\"/" $config_file
 
         echo "Rebuilding configuration..."
-        nh os switch --accept-flake-config $NH_FLAKE
+        nh os boot --accept-flake-config $NH_FLAKE
       '';
     };
   };
