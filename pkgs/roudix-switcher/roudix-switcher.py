@@ -3,6 +3,8 @@ import gi
 import os
 import subprocess
 import sys
+import logging
+import datetime
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -12,7 +14,13 @@ CONFIG_FILE = os.path.expanduser("~/.config/roudix/hosts/roudix/configuration.ni
 NH_FLAKE    = os.path.expanduser("~/.config/roudix")
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
-ICONS_DIR  = os.path.join(SCRIPT_DIR, "../share/roudix-switcher/icons")
+ICONS_DIR   = os.path.join(SCRIPT_DIR, "../share/roudix-switcher/icons")
+
+LOG_DIR     = os.path.expanduser("~/.local/share/roudix-switcher")
+LOG_FILE    = os.path.join(LOG_DIR, "switcher.log")
+
+# ── Polkit action ID (must match your .policy file) ──────────────────────────
+POLKIT_ACTION = "io.roudix.switcher.rebuild"
 
 ENVIRONMENTS = [
     {
@@ -35,6 +43,63 @@ ENVIRONMENTS = [
     },
 ]
 
+
+# ── Logging setup ─────────────────────────────────────────────────────────────
+
+def setup_logging():
+    os.makedirs(LOG_DIR, exist_ok=True)
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        handlers=[
+            logging.FileHandler(LOG_FILE, encoding="utf-8"),
+            logging.StreamHandler(sys.stdout),
+        ],
+    )
+
+log = logging.getLogger("roudix-switcher")
+
+
+# ── Polkit authentication ─────────────────────────────────────────────────────
+
+def polkit_check_authorization():
+    """
+    Ask polkit if the current user is authorized to perform the rebuild action.
+    Uses 'pkcheck' which is part of polkit and prompts for a password via the
+    system authentication agent (e.g. gnome-polkit-agent, kde-polkit-agent…).
+
+    Returns (True, None) if authorized, (False, error_message) otherwise.
+    """
+    try:
+        pid = str(os.getpid())
+        log.info("Requesting polkit authorization for action: %s (pid=%s)", POLKIT_ACTION, pid)
+        result = subprocess.run(
+            [
+                "pkcheck",
+                "--action-id", POLKIT_ACTION,
+                "--process", pid,
+                "--allow-user-interaction",   # triggers the graphical agent
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode == 0:
+            log.info("Polkit authorization granted.")
+            return True, None
+        else:
+            msg = result.stderr.strip() or f"pkcheck exited with code {result.returncode}"
+            log.warning("Polkit authorization denied: %s", msg)
+            return False, msg
+    except FileNotFoundError:
+        log.error("pkcheck not found — polkit may not be installed.")
+        return False, "pkcheck not found. Is polkit installed?"
+    except Exception as e:
+        log.exception("Unexpected error during polkit check.")
+        return False, str(e)
+
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
 
 def make_icon(icon_value):
     """Load a custom SVG from the icons/ folder, fallback to theme icon name."""
@@ -73,10 +138,14 @@ def set_de(de_id):
         )
         with open(CONFIG_FILE, "w") as f:
             f.write(new)
+        log.info("Configuration updated: desktop type set to '%s'.", de_id)
         return True
     except Exception as e:
+        log.error("Failed to write configuration: %s", e)
         return str(e)
 
+
+# ── Main window ───────────────────────────────────────────────────────────────
 
 class RoudixSwitcherWindow(Adw.ApplicationWindow):
     def __init__(self, app):
@@ -86,6 +155,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.set_resizable(False)
 
         self.selected_de = get_current_de()
+        log.info("Current desktop environment: %s", self.selected_de)
 
         # ── Main layout ──────────────────────────────────────────────────
         toolbar = Adw.ToolbarView()
@@ -175,6 +245,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
     def on_check_toggled(self, check, de_id):
         if check.get_active():
             self.selected_de = de_id
+            log.debug("User selected desktop environment: %s", de_id)
             # Uncheck all others
             for key, other in self.rows.items():
                 if key != de_id:
@@ -184,6 +255,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
     def on_apply(self, btn):
         if self.selected_de == get_current_de():
+            msg = f"Already on '{self.selected_de}' — nothing to do."
+            log.info(msg)
             self.status.set_markup(
                 f"<span color='gray'>Already on <b>{self.selected_de}</b> — nothing to do.</span>"
             )
@@ -205,33 +278,88 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
     def on_confirm_response(self, dialog, response):
         if response != "confirm":
+            log.info("User cancelled the rebuild dialog.")
             return
 
-        result = set_de(self.selected_de)
-        if result is not True:
-            self.status.set_markup(f"<span color='red'>Error: {result}</span>")
-            return
-
-        self.status.set_markup("<span color='orange'>Rebuilding… this window will close when done.</span>")
+        # ── Polkit authentication ────────────────────────────────────────
+        self.status.set_markup("<span color='orange'>Waiting for authentication…</span>")
         self.apply_btn.set_sensitive(False)
         self.exit_btn.set_sensitive(False)
 
-        GLib.timeout_add(100, self.run_rebuild)
+        # Run polkit check in a thread so the UI doesn't freeze
+        import threading
+        threading.Thread(target=self._polkit_then_rebuild, daemon=True).start()
+
+    def _polkit_then_rebuild(self):
+        authorized, error = polkit_check_authorization()
+        # Always schedule UI updates back on the main thread
+        if authorized:
+            GLib.idle_add(self._start_rebuild)
+        else:
+            GLib.idle_add(self._on_auth_failed, error)
+
+    def _on_auth_failed(self, error):
+        log.warning("Authentication failed or was dismissed: %s", error)
+        self.status.set_markup(
+            f"<span color='red'>Authentication failed: {GLib.markup_escape_text(error or 'dismissed')}</span>"
+        )
+        self.apply_btn.set_sensitive(True)
+        self.exit_btn.set_sensitive(True)
+
+    def _start_rebuild(self):
+        result = set_de(self.selected_de)
+        if result is not True:
+            self.status.set_markup(f"<span color='red'>Error writing config: {GLib.markup_escape_text(result)}</span>")
+            self.apply_btn.set_sensitive(True)
+            self.exit_btn.set_sensitive(True)
+            return
+
+        self.status.set_markup("<span color='orange'>Rebuilding… this window will close when done.</span>")
+        log.info("Starting NixOS rebuild for desktop: %s", self.selected_de)
+
+        import threading
+        threading.Thread(target=self.run_rebuild, daemon=True).start()
 
     def run_rebuild(self):
         try:
-            subprocess.run(
-                ["nh", "os", "switch", "--accept-flake-config", NH_FLAKE],
+            log.info("Running: nh os boot --accept-flake-config %s", NH_FLAKE)
+            proc = subprocess.run(
+                ["nh", "os", "boot", "--accept-flake-config", NH_FLAKE],
                 check=True,
+                capture_output=True,
+                text=True,
             )
-            self.status.set_markup("<span color='green'>Done! Log out and back in to apply changes.</span>")
+            log.info("Rebuild stdout:\n%s", proc.stdout)
+            if proc.stderr:
+                log.warning("Rebuild stderr:\n%s", proc.stderr)
+            log.info("Rebuild completed successfully.")
+            GLib.idle_add(
+                self.status.set_markup,
+                "<span color='green'>Done! Log out and back in to apply changes.</span>",
+            )
         except subprocess.CalledProcessError as e:
-            self.status.set_markup(f"<span color='red'>Rebuild failed. Check your terminal for details.</span>")
+            log.error(
+                "Rebuild failed (exit code %d).\nstdout:\n%s\nstderr:\n%s",
+                e.returncode,
+                e.stdout or "",
+                e.stderr or "",
+            )
+            GLib.idle_add(
+                self.status.set_markup,
+                "<span color='red'>Rebuild failed. Check <tt>~/.local/share/roudix-switcher/switcher.log</tt> for details.</span>",
+            )
+        except Exception as e:
+            log.exception("Unexpected error during rebuild.")
+            GLib.idle_add(
+                self.status.set_markup,
+                f"<span color='red'>Unexpected error: {GLib.markup_escape_text(str(e))}</span>",
+            )
         finally:
-            self.apply_btn.set_sensitive(True)
-            self.exit_btn.set_sensitive(True)
-        return False
+            GLib.idle_add(self.apply_btn.set_sensitive, True)
+            GLib.idle_add(self.exit_btn.set_sensitive, True)
 
+
+# ── Application ───────────────────────────────────────────────────────────────
 
 class RoudixSwitcherApp(Adw.Application):
     def __init__(self):
@@ -244,6 +372,8 @@ class RoudixSwitcherApp(Adw.Application):
 
 
 def main():
+    setup_logging()
+    log.info("=== Roudix Switcher started ===")
     app = RoudixSwitcherApp()
     sys.exit(app.run(sys.argv))
 

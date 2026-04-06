@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     ../../modules/common.nix
     ../../modules/desktop
+    ../../modules/environment.nix
     ../../modules/boot.nix
     ../../modules/kernel.nix
     ../../modules/gaming.nix
