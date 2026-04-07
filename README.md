@@ -66,7 +66,7 @@ roudix/
     ├── desktop/
     │   ├── default.nix             # Desktop option (roudix.desktop.type)
     │   ├── niri.nix                # Niri + UWSM + polkit
-    │   ├── gnome.nix               # GNOME 50 + staging overlay
+    │   ├── gnome.nix               # GNOME
     │   └── kde.nix                 # KDE Plasma 6 + plasma-login-manager
     ├── boot.nix                    # Limine bootloader + multi-OS entries
     ├── cpu.nix                     # CPU configuration (Intel/AMD microcode)
@@ -98,7 +98,6 @@ roudix/
 |-------|--------|
 | nixpkgs | nixos-unstable |
 | nixpkgs-stable | nixos-25.11 |
-| nixpkgsStaging | nixos/nixpkgs staging-next (GNOME 50) |
 | home-manager | nix-community/home-manager |
 | noctalia | noctalia-dev/noctalia-shell |
 | noctalia-qs | noctalia-dev/noctalia-qs |
@@ -126,7 +125,7 @@ Switch desktop at any time with `roudix-switch <de>` or the **Roudix Desktop Swi
 | Value | Desktop | Notes |
 |-------|---------|-------|
 | `niri` | Niri + Noctalia | Default — scrollable tiling Wayland |
-| `gnome` | GNOME 50 | From staging-next |
+| `gnome` | GNOME 49.4 |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 
 To change permanently, edit `hosts/roudix/configuration.nix`:
@@ -180,7 +179,7 @@ roudix-switch kde
 - GDM display manager
 
 **Desktop (GNOME)**
-- GNOME 50 from staging-next (will track unstable once merged)
+- GNOME 49.4 (follow nixos unstable branch)
 - Curated extension set (blur, tiling, vitals, arcmenu...)
 - Bloat removed via `environment.gnome.excludePackages`
 
