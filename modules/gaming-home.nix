@@ -1,6 +1,6 @@
 { pkgs, inputs, ... }:
 let
-  pkgs-stable = import inputs.nixpkgs-stable { system = pkgs.hostPlatform.system; config.allowUnfree = true; };
+  pkgs-stable = import inputs.nixpkgs-stable { system = pkgs.stdenv.hostPlatform; config.allowUnfree = true; };
 in
 {
   # ── Packages gaming (user) ───────────────────────────────────────────────

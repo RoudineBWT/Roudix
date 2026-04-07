@@ -19,9 +19,6 @@
 
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
 
-    # staging-next for GNOME 50 — no nixpkgs follows, it has its own
-    nixpkgsStaging.url = "github:NixOS/nixpkgs/staging-next";
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -68,7 +65,7 @@
     };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, firefox-nightly, nixpkgsStaging, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, firefox-nightly, ... }:
   let
     username = "roudine"; # ← Change your username here
     specialArgs = { inherit inputs username; };

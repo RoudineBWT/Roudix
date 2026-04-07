@@ -66,16 +66,6 @@ def strip_ansi(text):
     return ANSI_ESCAPE.sub('', text)
 
 
-def make_icon(icon_value):
-    path = os.path.join(ICONS_DIR, icon_value)
-    if os.path.exists(path):
-        img = Gtk.Image.new_from_file(path)
-    else:
-        img = Gtk.Image.new_from_icon_name(icon_value)
-    img.set_pixel_size(32)
-    return img
-
-
 def get_current_de():
     try:
         with open(CONFIG_FILE) as f:
@@ -107,6 +97,23 @@ def set_de(de_id):
         return str(e)
 
 
+def load_icon(icon_filename, dark):
+    """Load icon from dark/ or light/ subfolder, fallback to theme icon."""
+    theme = "dark" if dark else "light"
+    path = os.path.join(ICONS_DIR, theme, icon_filename)
+    if os.path.exists(path):
+        img = Gtk.Image.new_from_file(path)
+    else:
+        # fallback: try root icons dir
+        fallback = os.path.join(ICONS_DIR, icon_filename)
+        if os.path.exists(fallback):
+            img = Gtk.Image.new_from_file(fallback)
+        else:
+            img = Gtk.Image.new_from_icon_name(icon_filename)
+    img.set_pixel_size(32)
+    return img
+
+
 # ── Main window ───────────────────────────────────────────────────────────────
 
 class RoudixSwitcherWindow(Adw.ApplicationWindow):
@@ -118,6 +125,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.selected_de = get_current_de()
         log.info("Current desktop environment: %s", self.selected_de)
+
+        # Track icon widgets per env id so we can reload them on theme change
+        self.icon_widgets = {}
+
+        # ── Style manager — watch for theme changes ───────────────────────
+        self.style_manager = Adw.StyleManager.get_default()
+        self.style_manager.connect("notify::dark", self.on_theme_changed)
 
         # ── Main layout ──────────────────────────────────────────────────
         toolbar = Adw.ToolbarView()
@@ -158,7 +172,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             row.set_title(env["name"])
             row.set_subtitle(env["subtitle"])
 
-            icon = make_icon(env["icon"])
+            icon = load_icon(env["icon"], self.style_manager.get_dark())
+            self.icon_widgets[env["id"]] = (icon, env["icon"])
             row.add_prefix(icon)
 
             if env.get("disabled"):
@@ -207,6 +222,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         btn_box.append(self.apply_btn)
 
         toolbar.add_bottom_bar(btn_box)
+
+    def on_theme_changed(self, style_manager, _param):
+        """Reload all icons when the system theme switches dark/light."""
+        dark = style_manager.get_dark()
+        log.debug("Theme changed — dark: %s", dark)
+        for env_id, (img_widget, icon_filename) in self.icon_widgets.items():
+            theme = "dark" if dark else "light"
+            path = os.path.join(ICONS_DIR, theme, icon_filename)
+            if os.path.exists(path):
+                img_widget.set_from_file(path)
+            else:
+                fallback = os.path.join(ICONS_DIR, icon_filename)
+                if os.path.exists(fallback):
+                    img_widget.set_from_file(fallback)
 
     def on_check_toggled(self, check, de_id):
         if check.get_active():
@@ -294,7 +323,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             log.info("Rebuild completed successfully.")
             GLib.idle_add(
                 self.status.set_markup,
-                "<span color='green'>Done! Reboot and Enjoy your new desktop.</span>",
+                "<span color='green'>Done! Log out and back in to apply changes.</span>",
             )
 
         except subprocess.CalledProcessError as e:

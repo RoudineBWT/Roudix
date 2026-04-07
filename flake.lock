@@ -563,22 +563,6 @@
         "type": "github"
       }
     },
-    "nixpkgsStaging": {
-      "locked": {
-        "lastModified": 1775543562,
-        "narHash": "sha256-XDkpJVKBDpIgjTWzTL5BQePilQm1UxCWRgboEmtCB7I=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "99b39acf09c98bcec404fc725b04ca7436b205a3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "staging-next",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1775423009,
@@ -666,7 +650,6 @@
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-stable": "nixpkgs-stable",
-        "nixpkgsStaging": "nixpkgsStaging",
         "noctalia": "noctalia",
         "noctalia-qs": "noctalia-qs",
         "spicetify-nix": "spicetify-nix",

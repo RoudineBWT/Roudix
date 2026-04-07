@@ -5,12 +5,6 @@ in
 lib.mkIf isGnome {
   services.desktopManager.gnome.enable = true;
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      gnome = inputs.nixpkgsStaging.legacyPackages.${prev.system}.gnome;
-    })
-  ];
-
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
@@ -22,6 +16,25 @@ lib.mkIf isGnome {
 
   environment.systemPackages = with pkgs; [
     gnome-tweaks
+    gtk3
+    gsettings-desktop-schemas
+    adw-gtk3
+    gnomeExtensions.caffeine
+           gnomeExtensions.gsconnect
+           gnomeExtensions.appindicator
+           gnomeExtensions.dash-to-dock
+           gnomeExtensions.bing-wallpaper-changer
+           gnomeExtensions.quick-settings-audio-panel
+           gnomeExtensions.blur-my-shell
+           gnomeExtensions.burn-my-windows
+           gnomeExtensions.tiling-shell
+           gnomeExtensions.vitals
+           gnomeExtensions.rounded-window-corners-reborn
+           gnomeExtensions.dash-to-panel
+           gnomeExtensions.open-bar
+           gnomeExtensions.arcmenu
+           gnomeExtensions.bluetooth-battery-meter
+
   ];
 
   environment.gnome.excludePackages = with pkgs; [
