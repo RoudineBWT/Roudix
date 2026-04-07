@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 import gi
 import os
+import re
 import subprocess
 import sys
 import logging
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw, GLib
+from gi.repository import Gtk, Adw, GLib, Pango
 
 CONFIG_FILE = os.path.expanduser("~/.config/roudix/hosts/roudix/configuration.nix")
 NH_FLAKE    = os.path.expanduser("~/.config/roudix")
@@ -17,6 +18,8 @@ ICONS_DIR   = os.path.join(SCRIPT_DIR, "../share/roudix-switcher/icons")
 
 LOG_DIR     = os.path.expanduser("~/.local/share/roudix-switcher")
 LOG_FILE    = os.path.join(LOG_DIR, "switcher.log")
+
+ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
 ENVIRONMENTS = [
     {
@@ -59,6 +62,10 @@ log = logging.getLogger("roudix-switcher")
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+def strip_ansi(text):
+    return ANSI_ESCAPE.sub('', text)
+
+
 def make_icon(icon_value):
     path = os.path.join(ICONS_DIR, icon_value)
     if os.path.exists(path):
@@ -74,7 +81,6 @@ def get_current_de():
         with open(CONFIG_FILE) as f:
             for line in f:
                 if "roudix.desktop.type" in line:
-                    import re
                     m = re.search(r'"(\w+)"', line)
                     if m:
                         return m.group(1)
@@ -87,7 +93,6 @@ def set_de(de_id):
     try:
         with open(CONFIG_FILE) as f:
             content = f.read()
-        import re
         new = re.sub(
             r'roudix\.desktop\.type\s*=\s*"[^"]*"',
             f'roudix.desktop.type = "{de_id}"',
@@ -171,11 +176,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         main_box.append(self.list_box)
 
-        # ── Status label ─────────────────────────────────────────────────
+        # ── Status label (taille fixe pour éviter le blink/resize) ───────
         self.status = Gtk.Label(label="")
-        self.status.set_wrap(True)
         self.status.set_justify(Gtk.Justification.CENTER)
         self.status.set_max_width_chars(55)
+        self.status.set_lines(2)
+        self.status.set_ellipsize(Pango.EllipsizeMode.END)
+        self.status.set_size_request(-1, 40)
+        self.status.set_valign(Gtk.Align.CENTER)
         main_box.append(self.status)
 
         clamp.set_child(main_box)
@@ -243,9 +251,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             )
             return
 
-        self.status.set_markup(
-            "<span color='orange'>Starting rebuild…</span>"
-        )
+        self.status.set_markup("<span color='orange'>Starting rebuild…</span>")
         self.apply_btn.set_sensitive(False)
         self.exit_btn.set_sensitive(False)
 
@@ -272,7 +278,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             )
 
             for line in proc.stdout:
-                line = line.strip()
+                line = strip_ansi(line).strip()
                 if line:
                     log.info(line)
                     GLib.idle_add(
@@ -288,7 +294,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             log.info("Rebuild completed successfully.")
             GLib.idle_add(
                 self.status.set_markup,
-                "<span color='green'>Done! Log out and back in to apply changes.</span>",
+                "<span color='green'>Done! Reboot and Enjoy your new desktop.</span>",
             )
 
         except subprocess.CalledProcessError as e:
