@@ -17,7 +17,6 @@
     # Common apps
     (pkgs.callPackage ../pkgs/roudix-switcher {})
     ghostty
-    brave
     zed-editor
     btop
     ffmpeg

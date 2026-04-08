@@ -59,13 +59,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    firefox-nightly = {
-      url = "github:nix-community/flake-firefox-nightly";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    helium = {
+          url = "github:AlvaroParker/helium-nix";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, firefox-nightly, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium,  ... }:
   let
     username = "roudine"; # ← Change your username here
     specialArgs = { inherit inputs username; };

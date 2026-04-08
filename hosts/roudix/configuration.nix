@@ -5,6 +5,7 @@
     ../../modules/common.nix
     ../../modules/desktop
     ../../modules/environment.nix
+    ../../modules/chromium.nix
     ../../modules/boot.nix
     ../../modules/kernel.nix
     ../../modules/gaming.nix
@@ -22,6 +23,9 @@
   # ── Desktop environment ──────────────────────────────────────────────────
   # Use 'roudix-switch <de>' to change — available: niri, gnome, kde
   roudix.desktop.type = "niri";
+
+  # ── Choose your favorite chromium base browser ──────────────────────────────────────────────────
+  roudix.chromium = "brave"; # brave or helium or vivaldi
 
   # ── Hardware ────────────────────────────────────────────────────────────
   hardware.myGpu    = "amd";                   # "amd", "nvidia" or "intel"
