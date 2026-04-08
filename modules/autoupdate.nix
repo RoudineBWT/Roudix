@@ -68,18 +68,7 @@ in {
         echo "  local:  $LOCAL"
         echo "  remote: $REMOTE"
 
-        # Sauvegarde des hardware-configuration.nix locaux avant le pull
-        ${pkgs.findutils}/bin/find . -name "hardware-configuration.nix" \
-          -exec cp {} {}.bak \;
-
         ${pkgs.git}/bin/git pull --rebase origin ${cfg.branch}
-
-        # Restauration des hardware-configuration.nix après le pull
-        ${pkgs.findutils}/bin/find . -name "hardware-configuration.nix.bak" | while read bak; do
-          original="''${bak%.bak}"
-          mv "$bak" "$original"
-          echo "[roudix-autoupdate] Restored $original"
-        done
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
         ${pkgs.nh}/bin/nh os boot ${cfg.configPath}#roudix

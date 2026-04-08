@@ -153,12 +153,6 @@ info "Updating username in flake.nix..."
 sed -i "s/username\s*=\s*\"[^\"]*\"/username = \"${USERNAME}\"/" flake.nix
 success "flake.nix updated."
 
-# ── Git track local files ─────────────────────────────────────────────────────
-info "Adding local files to git index (local only, never pushed)..."
-git add -f hosts/roudix/hardware-configuration.nix
-git add -f hosts/roudix/local.nix
-success "Files tracked locally."
-
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo -e "\n${BOLD}══════════════════════════════════════${NC}"
 success "Setup complete!"
