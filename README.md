@@ -223,6 +223,18 @@ roudix-switch kde
 
 ## Installation
 
+## Automated Installation
+
+**Download the roudix-intaller script**
+
+```bash
+wget https://github.com/RoudineBWT/Roudix/blob/main/roudix-installer.sh
+chmod +x roudix-install.sh
+./roudix-installer.sh
+```
+
+## Manual Installation
+
 > ⚠️ **Follow every step carefully before rebuilding.**
 
 ### 1. Clone the repo
@@ -240,17 +252,6 @@ git clone https://github.com/RoudineBWT/Roudix.git ~/.config/roudix
 cd ~/.config/roudix
 ```
 
-## Automated Installation
-
-**Go into your ~/.config/roudix and open a terminal and do**
-
-```bash
-cd ~/.config/roudix
-chmod +x roudix-install.sh
-./roudix-installer.sh
-```
-
-## Manual Installation
 
 ### 2. Set your username
 

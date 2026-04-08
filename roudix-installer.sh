@@ -171,18 +171,29 @@ echo -e "
   ${BOLD}Desktop     :${NC} $DE
   ${BOLD}Config dir  :${NC} $INSTALL_DIR
 "
-# ── Apply system configuration (switch → boot fallback) ──────────────────────
+
+# ── Apply system configuration (smart switch → boot fallback) ────────────────
 read -rp "Apply configuration now? [y/N]: " confirm
 if [[ "$confirm" =~ ^[Yy]$ ]]; then
   info "Applying configuration..."
+  cd "$INSTALL_DIR" || error "Failed to enter install directory."
 
-  if cd "$INSTALL_DIR" && sudo nixos-rebuild switch --flake .#roudix; then
+  # Essayer de faire un switch
+  if output=$(sudo nixos-rebuild switch --flake .#roudix 2>&1); then
+    echo "$output"
     success "Configuration applied successfully!"
     warn "Please reboot your system to complete the setup."
   else
-    warn "Switch failed. Trying boot instead..."
+    echo "$output"
+    # Détection du message de NixOS
+    if echo "$output" | grep -q "not recommended"; then
+      warn "Switch not recommended by NixOS. Using boot instead..."
+    else
+      warn "Switch failed. Falling back to boot..."
+    fi
 
-    if cd "$INSTALL_DIR" && sudo nixos-rebuild boot --flake .#roudix; then
+    # fallback sur boot
+    if sudo nixos-rebuild boot --flake .#roudix; then
       success "Configuration built with 'boot'."
       warn "Reboot required to apply the new configuration."
     else
@@ -190,7 +201,7 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
     fi
   fi
 
-  # proposer reboot seulement si quelque chose a marché
+  # Reboot prompt
   read -rp "Reboot now? [y/N]: " reboot_now
   if [[ "$reboot_now" =~ ^[Yy]$ ]]; then
     sudo reboot
@@ -201,5 +212,5 @@ else
   echo -e "  ${CYAN}cd $INSTALL_DIR${NC}"
   echo -e "  ${CYAN}sudo nixos-rebuild switch --flake .#roudix${NC}"
   echo ""
-  warn "Reboot required after applying the configuration."
+  warn "Reboot required after the first rebuild."
 fi
