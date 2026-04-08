@@ -1,8 +1,6 @@
 { pkgs, inputs, config, lib, username, ... }:
 {
   imports = [
-    (builtins.path { path = ./hardware-configuration.nix; name = "hardware-configuration.nix"; })
-    (builtins.path { path = ./local.nix;                  name = "local.nix"; })
     ../../modules/autoupdate.nix
     ../../modules/common.nix
     ../../modules/desktop
