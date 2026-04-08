@@ -63,9 +63,14 @@
           url = "github:AlvaroParker/helium-nix";
           inputs.nixpkgs.follows = "nixpkgs";
         };
+
+    nix-flatpak = {
+          url = "github:gmodena/nix-flatpak";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium,  ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, helium, nix-flatpak,  ... }:
   let
     username = "roudine"; # ← Change your username here
     specialArgs = { inherit inputs username; };
@@ -77,6 +82,7 @@
       system = "x86_64-linux";
       specialArgs = specialArgs;
       modules = [
+        nix-flatpak.nixosModules.nix-flatpak
         ./hosts/roudix/configuration.nix
         home-manager.nixosModules.home-manager
         {

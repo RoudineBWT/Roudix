@@ -110,6 +110,7 @@ roudix/
 | spicetify-nix | Gerg-L/spicetify-nix |
 | millennium | SteamClientHomebrew/Millennium |
 | helium | AlvaroParker/helium-nix |
+| nix-flatpak | gmodena/nix-flatpak |
 | glf-os | framagit.org/gaming-linux-fr/glf-os |
 
 ---
@@ -209,7 +210,7 @@ roudix-switch kde
 - OBS Studio with pipewire + vkcapture plugins
 - GPU Screen Recorder
 - OpenRGB for LED control
-- Flatpak with daily auto-update (dedicated `flatpak.nix` module)
+- Flatpak with Flathub remote + daily auto-update (via nix-flatpak)
 - Blueman Bluetooth manager
 - QEMU/KVM + Virt-Manager (optional)
 - VM guest optimizations module (DNS, QEMU agent, Spice)

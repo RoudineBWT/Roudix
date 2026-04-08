@@ -24,24 +24,24 @@
 
   # ── Desktop environment ──────────────────────────────────────────────────
   # Use 'roudix-switch <de>' to change — available: niri, gnome, kde
-  roudix.desktop.type = "niri";
+  roudix.desktop.type = lib.mkDefault "niri";
 
   # ── Choose your favorite chromium base browser ──────────────────────────────────────────────────
-  roudix.chromium = "helium"; # brave or helium or vivaldi
+  roudix.chromium = lib.mkDefault "helium"; # brave or helium or vivaldi
 
   # ── Hardware ────────────────────────────────────────────────────────────
-  hardware.myGpu    = "amd";                   # "amd", "nvidia" or "intel"
-  hardware.myCpu    = "intel";                 # "intel" or "amd"
-  hardware.myKernel = "cachyos-lts-lto-v3"; # see README for all variants
+  hardware.myGpu    = lib.mkDefault "amd";                   # "amd", "nvidia" or "intel"
+  hardware.myCpu    = lib.mkDefault "intel";                 # "intel" or "amd"
+  hardware.myKernel = lib.mkDefault "cachyos-lts-lto-v3"; # see README for all variants
 
   # ── Features ────────────────────────────────────────────────────────────
-  roudix.gaming.enable        = true;
-  roudix.flatpak.enable       = true;
-  roudix.fstrim.enable        = true;
-  roudix.virtualization.enable = true;
-  roudix.vmGuest.enable       = true; # enable only inside a VM
-  roudix.hosts.gtaFix.enable  = true;
-  roudix.autoupdate.enable = true;
+  roudix.gaming.enable        = lib.mkDefault true;
+  roudix.flatpak.enable       = lib.mkDefault false;
+  roudix.fstrim.enable        = lib.mkDefault true;
+  roudix.virtualization.enable = lib.mkDefault false;
+  roudix.vmGuest.enable       = lib.mkDefault false; # enable only inside a VM
+  roudix.hosts.gtaFix.enable  = lib.mkDefault false;
+  roudix.autoupdate.enable = lib.mkDefault true;
 
   # ── Network ─────────────────────────────────────────────────────────────
   networking.hostName = "roudix";
