@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     (if builtins.pathExists ./local.nix then ./local.nix else { })
+    ../../modules/binary-caches.nix
     ../../modules/autoupdate.nix
     ../../modules/common.nix
     ../../modules/desktop
