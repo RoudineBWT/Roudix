@@ -57,6 +57,7 @@
     gpu-screen-recorder
 
 
+
     # GTK theming
     nwg-look
     adw-gtk3

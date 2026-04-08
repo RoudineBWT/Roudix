@@ -22,10 +22,6 @@
     ../../modules/hosts-gta.nix
   ];
 
-  # ── Desktop environment ──────────────────────────────────────────────────
-  # Use 'roudix-switch <de>' to change — available: niri, gnome, kde
-  roudix.desktop.type = lib.mkDefault "niri";
-
   # ── Choose your favorite chromium base browser ──────────────────────────────────────────────────
   roudix.chromium = lib.mkDefault "helium"; # brave or helium or vivaldi
 

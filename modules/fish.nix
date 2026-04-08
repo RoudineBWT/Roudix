@@ -15,7 +15,7 @@
       description = "Switch desktop environment (niri, gnome, kde)";
       body = ''
         set de $argv[1]
-        set config_file "$NH_FLAKE/hosts/roudix/configuration.nix"
+        set config_file "$NH_FLAKE/hosts/roudix/local.nix"
 
         if test -z "$de"
           echo "Usage: roudix-switch [niri|gnome|kde]"

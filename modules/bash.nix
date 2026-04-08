@@ -13,7 +13,7 @@
     initExtra = ''
       roudix-switch() {
         local de="$1"
-        local config_file="/home/${username}/.config/roudix/hosts/roudix/configuration.nix"
+        local config_file="/home/${username}/.config/roudix/hosts/roudix/local.nix"
 
         if [ -z "$de" ]; then
           echo "Usage: roudix-switch [niri|gnome|kde]"

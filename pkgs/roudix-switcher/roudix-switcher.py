@@ -10,7 +10,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib, Pango
 
-CONFIG_FILE = os.path.expanduser("~/.config/roudix/hosts/roudix/configuration.nix")
+CONFIG_FILE = os.path.expanduser("~/.config/roudix/hosts/roudix/local.nix")
 NH_FLAKE    = os.path.expanduser("~/.config/roudix")
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
