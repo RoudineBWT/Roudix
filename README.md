@@ -49,6 +49,8 @@ roudix/
 ├── hosts/
 │   └── roudix/                     # Single host — DE selected via roudix.desktop.type
 │       ├── configuration.nix
+│       ├── local.nix               # gitignored — your personal overrides
+│       ├── local.nix.example       # copy this to local.nix to get started
 │       └── hardware-configuration.nix
 ├── home/
 │   ├── common.nix                  # Shared home-manager config (all users)
@@ -130,7 +132,7 @@ Switch desktop at any time with `roudix-switch <de>` or the **Roudix Desktop Swi
 | `gnome` | GNOME 49.4 |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 
-To change permanently, edit `hosts/roudix/configuration.nix`:
+To change permanently, edit `hosts/roudix/local.nix`:
 
 ```nix
 roudix.desktop.type = "niri"; # "niri", "gnome" or "kde"
@@ -150,7 +152,7 @@ roudix-switch kde
 
 **Kernel & Performance**
 - CachyOS kernel with NTSync enabled (`ntsync` module)
-- 8 kernel variants available (set in `hosts/roudix/configuration.nix`)
+- 8 kernel variants available (set in `hosts/roudix/local.nix`)
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)
@@ -297,14 +299,14 @@ Then edit `local.nix` to match your hardware:
 
 ### 5. Update the disk mount
 
-In `hosts/roudix/configuration.nix`, replace the UUID with your own (or remove the block):
+In `hosts/roudix/local.nix`, add a `lib.mkForce` block with your own UUID (or skip if no secondary disk):
 
 ```bash
 lsblk -f  # find your disk UUID
 ```
 
 ```nix
-fileSystems."/mnt/gaming" = {
+fileSystems."/mnt/gaming" = lib.mkForce {
   device = "/dev/disk/by-uuid/YOUR-UUID-HERE";
   fsType = "btrfs";
   options = [ "defaults" "nofail" ];
@@ -364,16 +366,15 @@ settings = {
 
 ### 8. Enable/disable optional modules
 
-In `hosts/roudix/configuration.nix`:
+In `hosts/roudix/local.nix`:
 
 ```nix
 roudix.gaming.enable         = true;
 roudix.flatpak.enable        = true;   # Flatpak + daily auto-update
-roudix.pipewire.enable       = true;
 roudix.fstrim.enable         = true;   # recommended for SSD/NVMe
 roudix.virtualization.enable = false;  # enable for QEMU/KVM
 roudix.hosts.gtaFix.enable   = true;  # block BattlEye telemetry (GTA fix)
-roudix.autoupdate.enable      = true;  # auto pull + nh os boot on changes
+roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
 ```
 
 ### 9. Build
