@@ -2,7 +2,7 @@
 
 pkgs.stdenv.mkDerivation {
   pname = "roudix-switcher";
-  version = "1.0.2";
+  version = "1.0.4";
 
   src = ./.;
 

@@ -191,15 +191,27 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         main_box.append(self.list_box)
 
-        # ── Status label (taille fixe pour éviter le blink/resize) ───────
+        # ── Status area (barre de progression + label résultat) ──────────
+        status_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        status_box.set_size_request(-1, 48)
+        status_box.set_valign(Gtk.Align.CENTER)
+
+        self.progress_bar = Gtk.ProgressBar()
+        self.progress_bar.set_pulse_step(0.07)
+        self.progress_bar.set_visible(False)
+
         self.status = Gtk.Label(label="")
         self.status.set_justify(Gtk.Justification.CENTER)
         self.status.set_max_width_chars(55)
         self.status.set_lines(2)
         self.status.set_ellipsize(Pango.EllipsizeMode.END)
-        self.status.set_size_request(-1, 40)
         self.status.set_valign(Gtk.Align.CENTER)
-        main_box.append(self.status)
+
+        status_box.append(self.progress_bar)
+        status_box.append(self.status)
+        main_box.append(status_box)
+
+        self._pulse_source = None
 
         clamp.set_child(main_box)
         toolbar.set_content(clamp)
@@ -222,6 +234,24 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         btn_box.append(self.apply_btn)
 
         toolbar.add_bottom_bar(btn_box)
+
+    def _start_progress(self):
+        """Affiche la barre et démarre le pulse."""
+        self.progress_bar.set_visible(True)
+        self.status.set_label("")
+        if self._pulse_source is None:
+            self._pulse_source = GLib.timeout_add(80, self._do_pulse)
+
+    def _do_pulse(self):
+        self.progress_bar.pulse()
+        return True  # répéter
+
+    def _stop_progress(self):
+        """Arrête le pulse et cache la barre."""
+        if self._pulse_source is not None:
+            GLib.source_remove(self._pulse_source)
+            self._pulse_source = None
+        self.progress_bar.set_visible(False)
 
     def on_theme_changed(self, style_manager, _param):
         """Reload all icons when the system theme switches dark/light."""
@@ -280,7 +310,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             )
             return
 
-        self.status.set_markup("<span color='orange'>Starting rebuild…</span>")
+        self.status.set_markup("")
+        GLib.idle_add(self._start_progress)
         self.apply_btn.set_sensitive(False)
         self.exit_btn.set_sensitive(False)
 
@@ -310,10 +341,6 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 line = strip_ansi(line).strip()
                 if line:
                     log.info(line)
-                    GLib.idle_add(
-                        self.status.set_markup,
-                        f"<span size='small' color='orange'>{GLib.markup_escape_text(line)}</span>",
-                    )
 
             proc.wait()
 
@@ -321,22 +348,25 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 raise subprocess.CalledProcessError(proc.returncode, "nh")
 
             log.info("Rebuild completed successfully.")
+            GLib.idle_add(self._stop_progress)
             GLib.idle_add(
                 self.status.set_markup,
-                "<span color='green'>Done! Log out and back in to apply changes.</span>",
+                "<span color='green'>✓ Done! Log out and back in to apply changes.</span>",
             )
 
         except subprocess.CalledProcessError as e:
             log.error("Rebuild failed (exit code %d).", e.returncode)
+            GLib.idle_add(self._stop_progress)
             GLib.idle_add(
                 self.status.set_markup,
-                "<span color='red'>Rebuild failed. Check <tt>~/.local/share/roudix-switcher/switcher.log</tt> for details.</span>",
+                "<span color='red'>✗ Rebuild failed. Check <tt>~/.local/share/roudix-switcher/switcher.log</tt> for details.</span>",
             )
         except Exception as e:
             log.exception("Unexpected error during rebuild.")
+            GLib.idle_add(self._stop_progress)
             GLib.idle_add(
                 self.status.set_markup,
-                f"<span color='red'>Unexpected error: {GLib.markup_escape_text(str(e))}</span>",
+                f"<span color='red'>✗ Unexpected error: {GLib.markup_escape_text(str(e))}</span>",
             )
         finally:
             GLib.idle_add(self.apply_btn.set_sensitive, True)
