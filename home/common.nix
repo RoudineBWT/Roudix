@@ -25,6 +25,27 @@
     nvd
     capitaine-cursors
     deluge-gtk
+    (discord.override { withVencord = true; })
+    (element-desktop.override { commandLineArgs = "--password-store=gnome-libsecret"; })
+    openrgb-with-all-plugins
+    rustdesk-flutter
+    kodi-wayland
+    inkscape
+    gimp
+    starship
+    easyeffects
+    rnnoise-plugin
+
+       # OBS Studio
+    (pkgs.wrapOBS {
+      plugins = with pkgs.obs-studio-plugins; [
+        obs-pipewire-audio-capture
+        obs-vkcapture
+      ];
+    })
+
+       # Flake packages
+    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   # ── Cursor ───────────────────────────────────────────────────────────────

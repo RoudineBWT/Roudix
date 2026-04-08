@@ -31,6 +31,12 @@ lib.mkIf isNiri {
     };
   };
 
+  # ── Open ghossty in nautilus ─────────────────────────────────────────────────────────────
+  programs.nautilus-open-any-terminal = {
+    enable = true;
+    terminal = "ghostty";
+  };
+
   environment.systemPackages = with pkgs; [
     polkit_gnome
   ];

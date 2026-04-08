@@ -14,8 +14,14 @@ lib.mkIf isGnome {
     config.common.default = "*";
   };
 
+  programs.nautilus-open-any-terminal = {
+    enable = true;
+    terminal = "ghostty";
+  };
+
   environment.systemPackages = with pkgs; [
     gnome-tweaks
+    gnome-extension-manager
     gtk3
     gsettings-desktop-schemas
     adw-gtk3

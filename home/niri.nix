@@ -48,23 +48,14 @@
     mpvpaper
 
     # Apps
-    starship
     nautilus
     gnome-text-editor
-    (discord.override { withVencord = true; })
-    (element-desktop.override { commandLineArgs = "--password-store=gnome-libsecret"; })
-    openrgb-with-all-plugins
     gnome-disk-utility
     mission-center
     loupe
-    inkscape
-    gimp
     clapper
-    easyeffects
-    rnnoise-plugin
     gpu-screen-recorder
-    rustdesk-flutter
-    kodi-wayland
+
 
     # GTK theming
     nwg-look
@@ -80,17 +71,7 @@
     gvfs
     cava
 
-    # OBS Studio
-    (pkgs.wrapOBS {
-      plugins = with pkgs.obs-studio-plugins; [
-        obs-pipewire-audio-capture
-        obs-vkcapture
-      ];
-    })
-
     # Flake packages
     inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-    inputs.firefox-nightly.packages.${pkgs.stdenv.hostPlatform.system}.firefox-nightly-bin
   ];
 }

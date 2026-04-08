@@ -44,10 +44,6 @@
         //Windows
           protocol: efi
           path: uuid(ff4a714e-8ba8-4b3b-bf24-27ab1d7c4364):/EFI/Microsoft/Boot/bootmgfw.efi
-
-          //CachyOS
-            protocol: efi
-            path: uuid(44c1b2d3-4981-481f-b9e6-463bc2d512bc):/EFI/BOOT/BOOTX64.EFI
       '';
     };
 
