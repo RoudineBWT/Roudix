@@ -1,6 +1,6 @@
 { config, lib, pkgs, inputs, ... }:
-# NOTE: Only GTX 10xx and newer are supported.
-# Older GPUs (GTX 900 and below) are not supported.
+# NOTE: Only GTX 20xx and newer are supported.
+# Older GPUs (GTX 16xx and below) are not supported.
 {
   imports = [ "${inputs.glf-os}/modules/default/nvidia.nix" ];
 
@@ -14,7 +14,7 @@
     hardware.nvidiaOpen = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Use open NVIDIA drivers. Enable for Turing/RTX 20xx and newer. Disable for GTX 10xx/16xx.";
+      description = "Use open NVIDIA drivers. Enable for Turing/RTX 20xx and newer. Unsupported for GTX 10xx/16xx.";
     };
   };
 

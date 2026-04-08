@@ -33,7 +33,7 @@
 | Display Manager | GDM / SDDM / plasma-login-manager |
 | Terminal | Ghostty |
 | Shell | Fish |
-| Browser | Zen Browser + Chromium (configurable) |
+| Browser | Zen Browser + Helium (configurable) |
 | File Manager | Nautilus |
 | Editor | Zed |
 | Music | Spotify + Spicetify (Comfy theme) |
@@ -257,7 +257,7 @@ roudix.desktop.type = "niri";              # "niri", "gnome" or "kde"
 hardware.myGpu      = "amd";               # "amd", "nvidia" or "intel"
 hardware.myCpu      = "intel";             # "intel" or "amd"
 hardware.myKernel   = "cachyos-latest-v3"; # see below
-roudix.chromium     = "brave";             # "brave", "helium" or "vivaldi"
+roudix.chromium     = "helium";             # "brave", "helium" or "vivaldi"
 ```
 
 **Available kernel variants:**
@@ -273,7 +273,7 @@ roudix.chromium     = "brave";             # "brave", "helium" or "vivaldi"
 | `cachyos-lts-lto-v3` | LTS + LTO + x86_64-v3 (stable + performance) |
 | `cachyos-rc` | Release candidate — bleeding edge, potentially unstable |
 
-> **NVIDIA note:** Only GTX 10xx / RTX series and newer are supported. Open drivers enabled by default for RTX 20xx+ (Turing+). Set `hardware.nvidiaOpen = false` for GTX 10xx/16xx.
+> **NVIDIA note:** Only GTX 20xx / RTX series and newer are supported. Open drivers enabled by default for RTX 20xx+ (Turing+). GTX 10xx/16xx are not supported.
 
 > **Spicetify Comfy theme note:** After your first build, copy the color.ini manually:
 > ```bash

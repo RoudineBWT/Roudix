@@ -25,11 +25,10 @@
   roudix.desktop.type = "niri";
 
   # ── Choose your favorite chromium base browser ──────────────────────────────────────────────────
-  roudix.chromium = "brave"; # brave or helium or vivaldi
+  roudix.chromium = "helium"; # brave or helium or vivaldi
 
   # ── Hardware ────────────────────────────────────────────────────────────
   hardware.myGpu    = "amd";                   # "amd", "nvidia" or "intel"
-  hardware.nvidiaOpen = false;                 # false for GTX 10xx/16xx, true for RTX 20xx+
   hardware.myCpu    = "intel";                 # "intel" or "amd"
   hardware.myKernel = "cachyos-lts-lto-v3"; # see README for all variants
 
@@ -37,10 +36,8 @@
   roudix.gaming.enable        = true;
   roudix.flatpak.enable       = true;
   roudix.fstrim.enable        = true;
-  roudix.pipewire.enable      = true;
   roudix.virtualization.enable = true;
   roudix.vmGuest.enable       = true; # enable only inside a VM
-  roudix.boot.enable          = true;
   roudix.hosts.gtaFix.enable  = true;
 
   # ── Network ─────────────────────────────────────────────────────────────
