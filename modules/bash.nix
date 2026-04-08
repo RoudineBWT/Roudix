@@ -3,8 +3,8 @@
   programs.bash = {
     enable = true;
     shellAliases = {
-      rebuild  = "nh os switch /home/${username}/.config/roudix";
-      update   = "sudo nix flake update --flake /home/${username}/.config/roudix && nh os switch /home/${username}/.config/roudix";
+      rebuild  = "nh os switch --accept-flake-config path:$NH_FLAKE";
+      update   = "sudo nix flake update --flake $NH_FLAKE && nh os switch --accept-flake-config path:$NH_FLAKE";
       cleanup  = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-collect-garbage";
       noctalia-reload = "pkill quickshell; sleep 1; noctalia-shell --no-duplicate & disown";
     };
@@ -13,7 +13,7 @@
     initExtra = ''
       roudix-switch() {
         local de="$1"
-        local config_file="/home/${username}/.config/roudix/hosts/roudix/local.nix"
+        local config_file="$NH_FLAKE/hosts/roudix/local.nix"
 
         if [ -z "$de" ]; then
           echo "Usage: roudix-switch [niri|gnome|kde]"
@@ -38,7 +38,7 @@
         sed -i "s/roudix\.desktop\.type = \".*\"/roudix.desktop.type = \"$de\"/" "$config_file"
 
         echo "Rebuilding configuration..."
-        nh os boot "/home/${username}/.config/roudix"
+        nh os boot --accept-flake-config path:$NH_FLAKE
       }
     '';
   };

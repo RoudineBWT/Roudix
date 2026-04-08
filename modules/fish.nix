@@ -4,8 +4,8 @@
   programs.fish = {
     enable = true;
     shellAliases = {
-      update   = "sudo nix flake update --flake $NH_FLAKE && nh os switch --accept-flake-config $NH_FLAKE";
-      rebuild  = "nh os switch --accept-flake-config $NH_FLAKE";
+      update   = "sudo nix flake update --flake $NH_FLAKE && nh os switch --accept-flake-config path:$NH_FLAKE";
+      rebuild  = "nh os switch --accept-flake-config path:$NH_FLAKE";
       cleanup  = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-collect-garbage";
       noctalia-reload = "pkill quickshell; sleep 1; noctalia-shell --no-duplicate & disown";
     };
@@ -37,7 +37,7 @@
         sed -i "s/roudix\.desktop\.type = \".*\"/roudix.desktop.type = \"$de\"/" $config_file
 
         echo "Rebuilding configuration..."
-        nh os boot --accept-flake-config $NH_FLAKE
+        nh os boot --accept-flake-config path:$NH_FLAKE
       '';
     };
   };
