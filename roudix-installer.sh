@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# install.sh — Roudix installer
+# install.sh — Roudix NixOS installer
 # https://github.com/RoudineBWT/Roudix
 
 set -euo pipefail
@@ -25,7 +25,6 @@ ask() {
 }
 
 pick() {
-  # pick "Question" VAR_NAME "opt1|desc1" "opt2|desc2" ...
   local prompt="$1"; shift
   local var_name="$1"; shift
   local options=("$@")
@@ -41,7 +40,7 @@ pick() {
     read -rp "Choice [1-${#options[@]}]: " choice
     if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#options[@]} )); then
       local selected="${options[$((choice-1))]}"
-      printf -v "$var_name" '%s' "${selected%%|*}"
+      printf -v "$var_name" '%s' "${selected%%*|*}"
       break
     fi
     warn "Invalid choice, please try again."
@@ -62,7 +61,6 @@ ${NC}${BOLD}         NixOS Configuration Installer${NC}
 
 # ── Bootstrap: git + nix flakes ──────────────────────────────────────────────
 info "Bootstrapping environment (git + nix flakes)..."
-
 if ! command -v git >/dev/null 2>&1; then
   info "Installing git..."
   nix-env -iA nixos.git || error "Failed to install git."
@@ -78,7 +76,6 @@ INSTALL_DIR="/home/${USERNAME}/.config/roudix"
 
 # ── Clone repo ────────────────────────────────────────────────────────────────
 info "Cloning Roudix into ${INSTALL_DIR}..."
-
 if [[ -d "$INSTALL_DIR" ]]; then
   warn "Directory $INSTALL_DIR already exists."
   read -rp "Delete and re-clone? [y/N]: " confirm
@@ -138,13 +135,11 @@ pick "Desktop environment:" DE \
 
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
-
 sed -i "s/hardware\.myGpu\s*=\s*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"      hosts/roudix/local.nix
 sed -i "s/hardware\.myCpu\s*=\s*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"      hosts/roudix/local.nix
 sed -i "s/hardware\.myKernel\s*=\s*\"[^\"]*\"/hardware.myKernel  = \"${KERNEL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.chromium\s*=\s*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/"  hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type\s*=\s*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
-
 success "local.nix configured."
 
 # ── Update username in flake.nix ──────────────────────────────────────────────
@@ -172,36 +167,31 @@ echo -e "
   ${BOLD}Config dir  :${NC} $INSTALL_DIR
 "
 
-# ── Apply system configuration (smart switch → boot fallback) ────────────────
+# ── Smart apply (detect risky switch → boot) ────────────────────────────────
 read -rp "Apply configuration now? [y/N]: " confirm
 if [[ "$confirm" =~ ^[Yy]$ ]]; then
-  info "Applying configuration..."
+  info "Checking if 'switch' is safe..."
   cd "$INSTALL_DIR" || error "Failed to enter install directory."
 
-  # Essayer de faire un switch
-  if output=$(sudo nixos-rebuild switch --flake .#roudix 2>&1); then
-    echo "$output"
-    success "Configuration applied successfully!"
-    warn "Please reboot your system to complete the setup."
-  else
-    echo "$output"
-    # Détection du message de NixOS
-    if echo "$output" | grep -q "not recommended"; then
-      warn "Switch not recommended by NixOS. Using boot instead..."
-    else
-      warn "Switch failed. Falling back to boot..."
-    fi
-
-    # fallback sur boot
-    if sudo nixos-rebuild boot --flake .#roudix; then
+  if dry_output=$(sudo nixos-rebuild switch --flake .#roudix --dry-run 2>&1); then
+    if echo "$dry_output" | grep -q "not recommended"; then
+      warn "'switch' is not recommended by NixOS. Using 'boot' instead..."
+      sudo nixos-rebuild boot --flake .#roudix
       success "Configuration built with 'boot'."
       warn "Reboot required to apply the new configuration."
     else
-      error "Both switch and boot failed."
+      info "'switch' seems safe. Applying..."
+      sudo nixos-rebuild switch --flake .#roudix
+      success "Configuration applied successfully!"
+      warn "Please reboot your system to complete the setup."
     fi
+  else
+    warn "Dry-run failed. Using 'boot' as fallback..."
+    sudo nixos-rebuild boot --flake .#roudix
+    success "Configuration built with 'boot'."
+    warn "Reboot required to apply the new configuration."
   fi
 
-  # Reboot prompt
   read -rp "Reboot now? [y/N]: " reboot_now
   if [[ "$reboot_now" =~ ^[Yy]$ ]]; then
     sudo reboot
@@ -212,5 +202,5 @@ else
   echo -e "  ${CYAN}cd $INSTALL_DIR${NC}"
   echo -e "  ${CYAN}sudo nixos-rebuild switch --flake .#roudix${NC}"
   echo ""
-  warn "Reboot required after the first rebuild."
+  warn "Reboot required after applying the configuration."
 fi
