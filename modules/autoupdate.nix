@@ -39,6 +39,8 @@ in {
       description = "Roudix — auto pull config and schedule rebuild";
       after       = [ "network-online.target" ];
       wants       = [ "network-online.target" ];
+      # Only triggered by the timer, never started at activation time
+      wantedBy    = lib.mkForce [];
       serviceConfig = {
         Type            = "oneshot";
         User            = username;
