@@ -33,7 +33,7 @@
 | Display Manager | GDM / SDDM / plasma-login-manager |
 | Terminal | Ghostty |
 | Shell | Fish |
-| Browser | Zen Browser |
+| Browser | Zen Browser + Chromium (configurable) |
 | File Manager | Nautilus |
 | Editor | Zed |
 | Music | Spotify + Spicetify (Comfy theme) |
@@ -68,6 +68,7 @@ roudix/
     │   ├── niri.nix                # Niri + UWSM + polkit
     │   ├── gnome.nix               # GNOME
     │   └── kde.nix                 # KDE Plasma 6 + plasma-login-manager
+    ├── chromium.nix                # Chromium browser selection (roudix.chromium)
     ├── boot.nix                    # Limine bootloader + multi-OS entries
     ├── cpu.nix                     # CPU configuration (Intel/AMD microcode)
     ├── fastfetch.nix               # Fastfetch + fish autostart
@@ -105,7 +106,7 @@ roudix/
 | zen-browser | 0xc000022070/zen-browser-flake |
 | spicetify-nix | Gerg-L/spicetify-nix |
 | millennium | SteamClientHomebrew/Millennium |
-| firefox-nightly | nix-community/flake-firefox-nightly |
+| helium | AlvaroParker/helium-nix |
 | glf-os | framagit.org/gaming-linux-fr/glf-os |
 
 ---
@@ -196,6 +197,11 @@ roudix-switch kde
 - Comfy theme (local, customized)
 - Adblock + hide podcasts extensions
 
+**Browser**
+- Configurable Chromium-based browser via `roudix.chromium` option
+- Supports `brave`, `helium` (via helium-nix flake), and `vivaldi` (with ffmpeg codecs)
+- Vivaldi automatically pulls `vivaldi-ffmpeg-codecs` for H.264/AAC support
+
 **Other**
 - OBS Studio with pipewire + vkcapture plugins
 - GPU Screen Recorder
@@ -251,6 +257,7 @@ roudix.desktop.type = "niri";              # "niri", "gnome" or "kde"
 hardware.myGpu      = "amd";               # "amd", "nvidia" or "intel"
 hardware.myCpu      = "intel";             # "intel" or "amd"
 hardware.myKernel   = "cachyos-latest-v3"; # see below
+roudix.chromium     = "brave";             # "brave", "helium" or "vivaldi"
 ```
 
 **Available kernel variants:**

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, system, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   cfg = config.roudix;
@@ -9,7 +9,7 @@ let
       extras  = [];
     };
     "helium"  = {
-      package = inputs.helium.packages.${system}.default;
+      package = inputs.helium.packages.${pkgs.system}.default;
       extras  = [];
     };
     "vivaldi" = {
