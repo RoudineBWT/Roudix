@@ -48,6 +48,15 @@ pick() {
   done
 }
 
+# ── Bootstrap: git + nix flakes ──────────────────────────────────────────────
+info "Bootstrapping environment (git + nix flakes)..."
+
+if ! command -v git >/dev/null 2>&1; then
+  info "Installing git..."
+  nix-env -iA nixos.git || error "Failed to install git."
+fi
+success "git is available."
+
 # ── Banner ───────────────────────────────────────────────────────────────────
 echo -e "
 ${CYAN}${BOLD}
@@ -60,14 +69,6 @@ ${CYAN}${BOLD}
 ${NC}${BOLD}         NixOS Configuration Installer${NC}
 "
 
-# ── Bootstrap: git + nix flakes ──────────────────────────────────────────────
-info "Bootstrapping environment (git + nix flakes)..."
-
-if ! command -v git >/dev/null 2>&1; then
-  info "Installing git..."
-  nix-env -iA nixos.git || error "Failed to install git."
-fi
-success "git is available."
 
 # ── Username ──────────────────────────────────────────────────────────────────
 echo ""
