@@ -71,7 +71,7 @@ in {
         ${pkgs.git}/bin/git pull --rebase origin ${cfg.branch}
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
-        ${pkgs.nh}/bin/nh os boot ${cfg.configPath}#roudix
+        ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}#roudix
 
         echo "[roudix-autoupdate] Done — reboot to apply the new config."
       '';

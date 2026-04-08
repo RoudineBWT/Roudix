@@ -73,9 +73,6 @@
   let
     username = "roudine"; # ← Change your username here
     specialArgs = { inherit inputs username; };
-
-    localConfigPath    = builtins.path { path = ./hosts/roudix/local.nix;                  name = "local.nix"; };
-    hardwareConfigPath = builtins.path { path = ./hosts/roudix/hardware-configuration.nix; name = "hardware-configuration.nix"; };
   in
   {
     # ── Main desktop configuration ───────────────────────────────────────
@@ -85,8 +82,6 @@
       specialArgs = specialArgs;
       modules = [
         nix-flatpak.nixosModules.nix-flatpak
-        localConfigPath
-        hardwareConfigPath
         ./hosts/roudix/configuration.nix
         home-manager.nixosModules.home-manager
         {

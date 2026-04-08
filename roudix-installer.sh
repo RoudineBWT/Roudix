@@ -173,21 +173,21 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
   info "Checking if 'switch' is safe..."
   cd "$INSTALL_DIR" || error "Failed to enter install directory."
 
-  if dry_output=$(sudo nixos-rebuild switch --flake .#roudix --dry-run 2>&1); then
+  if dry_output=$(sudo nixos-rebuild switch --flake path:$(pwd)#roudix --dry-run 2>&1); then
     if echo "$dry_output" | grep -q "not recommended"; then
       warn "'switch' is not recommended by NixOS. Using 'boot' instead..."
-      sudo nixos-rebuild boot --flake .#roudix
+      sudo nixos-rebuild boot --flake path:$(pwd)#roudix
       success "Configuration built with 'boot'."
       warn "Reboot required to apply the new configuration."
     else
       info "'switch' seems safe. Applying..."
-      sudo nixos-rebuild switch --flake .#roudix
+      sudo nixos-rebuild switch --flake path:$(pwd)#roudix
       success "Configuration applied successfully!"
       warn "Please reboot your system to complete the setup."
     fi
   else
     warn "Dry-run failed. Using 'boot' as fallback..."
-    sudo nixos-rebuild boot --flake .#roudix
+    sudo nixos-rebuild boot --flake path:$(pwd)#roudix
     success "Configuration built with 'boot'."
     warn "Reboot required to apply the new configuration."
   fi

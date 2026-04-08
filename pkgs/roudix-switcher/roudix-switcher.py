@@ -345,7 +345,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 [
                     "nh", "os", "boot",
                     "--elevation-strategy", "pkexec",
-                    "--accept-flake-config", NH_FLAKE,
+                    "--accept-flake-config", f"path:{NH_FLAKE}",
                 ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
