@@ -200,6 +200,16 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.progress_bar.set_pulse_step(0.07)
         self.progress_bar.set_visible(False)
 
+        self.log_label = Gtk.Label(label="")
+        self.log_label.set_justify(Gtk.Justification.CENTER)
+        self.log_label.set_max_width_chars(55)
+        self.log_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        self.log_label.set_valign(Gtk.Align.CENTER)
+        self.log_label.set_visible(False)
+        attrs = Pango.AttrList()
+        attrs.insert(Pango.attr_scale_new(0.8))
+        self.log_label.set_attributes(attrs)
+
         self.status = Gtk.Label(label="")
         self.status.set_justify(Gtk.Justification.CENTER)
         self.status.set_max_width_chars(55)
@@ -208,6 +218,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.status.set_valign(Gtk.Align.CENTER)
 
         status_box.append(self.progress_bar)
+        status_box.append(self.log_label)
         status_box.append(self.status)
         main_box.append(status_box)
 
@@ -238,6 +249,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
     def _start_progress(self):
         """Affiche la barre et démarre le pulse."""
         self.progress_bar.set_visible(True)
+        self.log_label.set_label("")
+        self.log_label.set_visible(True)
         self.status.set_label("")
         if self._pulse_source is None:
             self._pulse_source = GLib.timeout_add(80, self._do_pulse)
@@ -247,11 +260,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         return True  # répéter
 
     def _stop_progress(self):
-        """Arrête le pulse et cache la barre."""
+        """Arrête le pulse et cache la barre + log_label."""
         if self._pulse_source is not None:
             GLib.source_remove(self._pulse_source)
             self._pulse_source = None
         self.progress_bar.set_visible(False)
+        self.log_label.set_visible(False)
+        self.log_label.set_label("")
 
     def on_theme_changed(self, style_manager, _param):
         """Reload all icons when the system theme switches dark/light."""
@@ -341,6 +356,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 line = strip_ansi(line).strip()
                 if line:
                     log.info(line)
+                    GLib.idle_add(self.log_label.set_label, line)
 
             proc.wait()
 
