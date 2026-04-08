@@ -228,8 +228,8 @@ roudix-switch kde
 **Download the roudix-intaller script**
 
 ```bash
-nix-shell -p wget -run "wget https://github.com/RoudineBWT/Roudix/blob/main/roudix-installer.sh"
-chmod +x roudix-install.sh
+nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
+chmod +x roudix-installer.sh
 ./roudix-installer.sh
 ```
 
