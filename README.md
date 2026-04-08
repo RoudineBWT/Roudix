@@ -86,6 +86,7 @@ roudix/
     ├── pipewire.nix                # PipeWire audio configuration
     ├── spicetify.nix               # Spotify + Spicetify (Comfy theme)
     ├── ssh.nix                     # SSH + GitHub
+    ├── autoupdate.nix              # Auto git pull + rebuild on config changes
     ├── update.nix                  # Auto-update configuration
     ├── virtualization.nix          # QEMU/KVM (disabled by default)
     └── vm-guest.nix                # VM guest optimizations (DNS, QEMU agent)
@@ -212,6 +213,7 @@ roudix-switch kde
 - VM guest optimizations module (DNS, QEMU agent, Spice)
 - Nerd Fonts (JetBrains, Noto, Iosevka)
 - Roudix Desktop Switcher — GUI to switch DE without terminal
+- Auto-update module — pulls config from GitHub and schedules a rebuild when changes are detected
 
 ---
 
@@ -248,17 +250,29 @@ username = "roudine"; # ← Change to your username
 sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hardware-configuration.nix
 ```
 
-### 4. Set your GPU, CPU, kernel variant and desktop
+### 4. Create your local config
 
-In `hosts/roudix/configuration.nix`:
+**Never edit `configuration.nix` directly** — it gets overwritten on `git pull`.
+Instead, create `hosts/roudix/local.nix` (gitignored) for your personal overrides:
+
+```bash
+cp hosts/roudix/local.nix.example hosts/roudix/local.nix
+```
+
+Then edit `local.nix` to match your hardware:
 
 ```nix
-roudix.desktop.type = "niri";              # "niri", "gnome" or "kde"
-hardware.myGpu      = "amd";               # "amd", "nvidia" or "intel"
-hardware.myCpu      = "intel";             # "intel" or "amd"
-hardware.myKernel   = "cachyos-latest-v3"; # see below
-roudix.chromium     = "helium";             # "brave", "helium" or "vivaldi"
+{ lib, ... }:
+{
+  roudix.desktop.type = "niri";               # "niri", "gnome" or "kde"
+  hardware.myGpu      = "amd";                # "amd", "nvidia" or "intel"
+  hardware.myCpu      = "intel";              # "intel" or "amd"
+  hardware.myKernel   = "cachyos-lts-lto-v3"; # see below
+  roudix.chromium     = "helium";             # "brave", "helium" or "vivaldi"
+}
 ```
+
+> `local.nix` is listed in `.gitignore` — it will never be overwritten by a `git pull`.
 
 **Available kernel variants:**
 
@@ -359,6 +373,7 @@ roudix.pipewire.enable       = true;
 roudix.fstrim.enable         = true;   # recommended for SSD/NVMe
 roudix.virtualization.enable = false;  # enable for QEMU/KVM
 roudix.hosts.gtaFix.enable   = true;  # block BattlEye telemetry (GTA fix)
+roudix.autoupdate.enable      = true;  # auto pull + nh os boot on changes
 ```
 
 ### 9. Build
@@ -376,6 +391,32 @@ sudo nixos-rebuild switch --flake .#roudix
 ```
 
 Once built, use the fish aliases for all future operations.
+
+---
+
+## Auto-update
+
+When `roudix.autoupdate.enable = true`, the system checks GitHub every hour (and 5 min after boot).
+If new commits are detected on `main`, it pulls and runs `nh os boot` — the new config applies on next reboot.
+Your `local.nix` is gitignored and never touched.
+
+To configure the interval or branch, override in `local.nix`:
+
+```nix
+{ ... }:
+{
+  roudix.autoupdate.enable   = true;
+  roudix.autoupdate.interval = "6h";   # check every 6 hours instead of 1h
+  roudix.autoupdate.branch   = "main"; # branch to track
+}
+```
+
+Check the last run:
+
+```bash
+systemctl status roudix-autoupdate
+journalctl -u roudix-autoupdate -n 20
+```
 
 ---
 

@@ -2,6 +2,8 @@
 {
   imports = [
     ./hardware-configuration.nix
+    (if builtins.pathExists ./local.nix then ./local.nix else { })
+    ../../modules/autoupdate.nix
     ../../modules/common.nix
     ../../modules/desktop
     ../../modules/environment.nix
@@ -39,6 +41,7 @@
   roudix.virtualization.enable = true;
   roudix.vmGuest.enable       = true; # enable only inside a VM
   roudix.hosts.gtaFix.enable  = true;
+  roudix.autoupdate.enable = true;
 
   # ── Network ─────────────────────────────────────────────────────────────
   networking.hostName = "roudix";

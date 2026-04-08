@@ -1,0 +1,3 @@
+hosts/roudix/local.nix
+hosts/roudix/hardware-configuration.nix
+flake.lock
