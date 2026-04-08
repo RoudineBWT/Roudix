@@ -44,6 +44,7 @@
 
 ```
 roudix/
+├── roudix-installer.nix            # a pretty bad Bash-based installer
 ├── flake.nix                       # Inputs & outputs — set username here
 ├── flake.lock
 ├── hosts/
@@ -238,6 +239,18 @@ nix-shell -p git --run "git clone https://github.com/RoudineBWT/Roudix.git ~/.co
 git clone https://github.com/RoudineBWT/Roudix.git ~/.config/roudix
 cd ~/.config/roudix
 ```
+
+## Automated Installation
+
+**Go into your ~/.config/roudix and open a terminal and do**
+
+```bash
+cd ~/.config/roudix
+chmod +x roudix-install.sh
+./roudix-installer.sh
+```
+
+## Manual Installation
 
 ### 2. Set your username
 
