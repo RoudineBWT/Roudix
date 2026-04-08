@@ -44,7 +44,7 @@
 
 ```
 roudix/
-├── roudix-installer.nix            # a pretty bad Bash-based installer
+├── roudix-installer.sh             # Bash-based installer
 ├── flake.nix                       # Inputs & outputs — set username here
 ├── flake.lock
 ├── hosts/
@@ -90,6 +90,7 @@ roudix/
     ├── spicetify.nix               # Spotify + Spicetify (Comfy theme)
     ├── ssh.nix                     # SSH + GitHub
     ├── autoupdate.nix              # Auto git pull + rebuild on config changes
+    ├── binary-caches.nix           # Nix binary caches (substituters + trusted keys)
     ├── update.nix                  # Auto-update configuration
     ├── virtualization.nix          # QEMU/KVM (disabled by default)
     └── vm-guest.nix                # VM guest optimizations (DNS, QEMU agent)
@@ -225,7 +226,7 @@ roudix-switch kde
 
 ## Automated Installation
 
-**Download the roudix-intaller script**
+**Download the roudix-installer script**
 
 ```bash
 nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
@@ -397,13 +398,13 @@ roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
 > **If flakes and nix-command are not enabled yet** (fresh NixOS install):
 
 ```bash
-nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#git -c sudo nixos-rebuild switch --flake .#roudix
+nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#git -c sudo nixos-rebuild switch --flake path:$(pwd)#roudix
 ```
 
 > **Otherwise:**
 
 ```bash
-sudo nixos-rebuild switch --flake .#roudix
+sudo nixos-rebuild switch --flake path:$(pwd)#roudix
 ```
 
 Once built, use the fish aliases for all future operations.
@@ -413,8 +414,8 @@ Once built, use the fish aliases for all future operations.
 ## Auto-update
 
 When `roudix.autoupdate.enable = true`, the system checks GitHub every hour (and 5 min after boot).
-If new commits are detected on `main`, it pulls and runs `nh os boot` — the new config applies on next reboot.
-Your `local.nix` is gitignored and never touched.
+If new commits are detected on `main`, it pulls and runs `nh os boot path:...` — the new config applies on next reboot.
+Your `local.nix` and `hardware-configuration.nix` are gitignored and never touched by the pull.
 
 To configure the interval or branch, override in `local.nix`:
 
