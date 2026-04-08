@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# install.sh — Roudix NixOS installer
+# install.sh — Roudix installer
 # https://github.com/RoudineBWT/Roudix
 
 set -euo pipefail
@@ -25,6 +25,7 @@ ask() {
 }
 
 pick() {
+  # pick "Question" VAR_NAME "opt1|desc1" "opt2|desc2" ...
   local prompt="$1"; shift
   local var_name="$1"; shift
   local options=("$@")
@@ -40,7 +41,7 @@ pick() {
     read -rp "Choice [1-${#options[@]}]: " choice
     if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#options[@]} )); then
       local selected="${options[$((choice-1))]}"
-      printf -v "$var_name" '%s' "${selected%%*|*}"
+      printf -v "$var_name" '%s' "${selected%%|*}"
       break
     fi
     warn "Invalid choice, please try again."
@@ -61,6 +62,7 @@ ${NC}${BOLD}         NixOS Configuration Installer${NC}
 
 # ── Bootstrap: git + nix flakes ──────────────────────────────────────────────
 info "Bootstrapping environment (git + nix flakes)..."
+
 if ! command -v git >/dev/null 2>&1; then
   info "Installing git..."
   nix-env -iA nixos.git || error "Failed to install git."
@@ -76,6 +78,7 @@ INSTALL_DIR="/home/${USERNAME}/.config/roudix"
 
 # ── Clone repo ────────────────────────────────────────────────────────────────
 info "Cloning Roudix into ${INSTALL_DIR}..."
+
 if [[ -d "$INSTALL_DIR" ]]; then
   warn "Directory $INSTALL_DIR already exists."
   read -rp "Delete and re-clone? [y/N]: " confirm
@@ -135,11 +138,13 @@ pick "Desktop environment:" DE \
 
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
+
 sed -i "s/hardware\.myGpu\s*=\s*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"      hosts/roudix/local.nix
 sed -i "s/hardware\.myCpu\s*=\s*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"      hosts/roudix/local.nix
 sed -i "s/hardware\.myKernel\s*=\s*\"[^\"]*\"/hardware.myKernel  = \"${KERNEL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.chromium\s*=\s*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/"  hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type\s*=\s*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
+
 success "local.nix configured."
 
 # ── Update username in flake.nix ──────────────────────────────────────────────
