@@ -12,24 +12,25 @@
 
     # ── roudix-switch: change desktop environment and rebuild ─────────────
     functions.roudix-switch = {
-      description = "Switch desktop environment (niri, gnome, kde)";
+      description = "Switch desktop environment (niri, gnome, kde, hyprland)";
       body = ''
         set de $argv[1]
         set config_file "$NH_FLAKE/hosts/roudix/local.nix"
 
         if test -z "$de"
-          echo "Usage: roudix-switch [niri|gnome|kde]"
+          echo "Usage: roudix-switch [niri|gnome|kde|hyprland]"
           echo ""
           echo "Available desktop environments:"
           echo "  niri  — Niri scrollable tiling compositor + Noctalia"
           echo "  gnome — GNOME desktop environment"
           echo "  kde   — KDE Plasma"
+          echo "  hyprland   — Dynamic tiling Wayland compositor + Noctalia shell"
           return 1
         end
 
-        if not contains $de niri gnome kde
+        if not contains $de niri gnome kde hyprland
           echo "Unknown desktop environment: $de"
-          echo "Available: niri, gnome, kde"
+          echo "Available: niri, gnome, kde, hyprland"
           return 1
         end
 
