@@ -42,11 +42,11 @@ in {
       # Only triggered by the timer, never started at activation time
       wantedBy    = lib.mkForce [];
       serviceConfig = {
-        Type            = "oneshot";
-        User            = username;
+        Type             = "oneshot";
+        User             = username;
         WorkingDirectory = cfg.configPath;
         # Prevent the service from hanging forever
-        TimeoutStartSec = "120";
+        TimeoutStartSec  = "120";
       };
       script = ''
         set -euo pipefail
@@ -68,7 +68,16 @@ in {
         echo "  local:  $LOCAL"
         echo "  remote: $REMOTE"
 
+        # Stash only dotfiles/ local changes so the pull doesn't fail
+        STASHED=$(${pkgs.git}/bin/git stash push --include-untracked -- dotfiles/)
+
         ${pkgs.git}/bin/git pull --rebase origin ${cfg.branch}
+
+        # Restore dotfiles if anything was stashed
+        if echo "$STASHED" | grep -q "Saved working directory"; then
+          echo "[roudix-autoupdate] Restoring dotfiles local changes..."
+          ${pkgs.git}/bin/git stash pop || true
+        fi
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
         ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}#roudix

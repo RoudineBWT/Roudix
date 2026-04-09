@@ -2,43 +2,42 @@
 {
   imports = [
     ./hardware-configuration.nix
-    (if builtins.pathExists ./local.nix then ./local.nix else { })
-    ../../modules/binary-caches.nix
-    ../../modules/autoupdate.nix
-    ../../modules/common.nix
-    ../../modules/desktop
-    ../../modules/environment.nix
-    ../../modules/chromium.nix
-    ../../modules/boot.nix
-    ../../modules/kernel.nix
-    ../../modules/gaming.nix
-    ../../modules/flatpak.nix
-    ../../modules/gpu.nix
-    ../../modules/cpu.nix
-    ../../modules/pipewire.nix
-    ../../modules/fstrim.nix
-    ../../modules/virtualization.nix
-    ../../modules/vm-guest.nix
-    ../../modules/update.nix
-    ../../modules/hosts-gta.nix
-  ];
+    ../../modules/system/binary-caches.nix
+    ../../modules/system/autoupdate.nix
+    ../../modules/system/common.nix
+    ../../modules/system/desktop
+    ../../modules/system/environment.nix
+    ../../modules/system/chromium.nix
+    ../../modules/system/boot.nix
+    ../../modules/system/kernel.nix
+    ../../modules/system/gaming.nix
+    ../../modules/system/flatpak.nix
+    ../../modules/system/gpu.nix
+    ../../modules/system/cpu.nix
+    ../../modules/system/pipewire.nix
+    ../../modules/system/fstrim.nix
+    ../../modules/system/virtualization.nix
+    ../../modules/system/vm-guest.nix
+    ../../modules/system/update.nix
+    ../../modules/system/hosts-gta.nix
+  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
-  # ── Choose your favorite chromium base browser ──────────────────────────────────────────────────
+  # ── Choose your favorite chromium base browser ───────────────────────────
   roudix.chromium = lib.mkDefault "helium"; # brave or helium or vivaldi
 
   # ── Hardware ────────────────────────────────────────────────────────────
-  hardware.myGpu    = lib.mkDefault "amd";                   # "amd", "nvidia" or "intel"
-  hardware.myCpu    = lib.mkDefault "intel";                 # "intel" or "amd"
+  hardware.myGpu    = lib.mkDefault "amd";              # "amd", "nvidia" or "intel"
+  hardware.myCpu    = lib.mkDefault "intel";            # "intel" or "amd"
   hardware.myKernel = lib.mkDefault "cachyos-lts-lto-v3"; # see README for all variants
 
   # ── Features ────────────────────────────────────────────────────────────
-  roudix.gaming.enable        = lib.mkDefault true;
-  roudix.flatpak.enable       = lib.mkDefault false;
-  roudix.fstrim.enable        = lib.mkDefault true;
+  roudix.gaming.enable         = lib.mkDefault true;
+  roudix.flatpak.enable        = lib.mkDefault false;
+  roudix.fstrim.enable         = lib.mkDefault true;
   roudix.virtualization.enable = lib.mkDefault false;
-  roudix.vmGuest.enable       = lib.mkDefault false; # enable only inside a VM
-  roudix.hosts.gtaFix.enable  = lib.mkDefault false;
-  roudix.autoupdate.enable = lib.mkDefault true;
+  roudix.vmGuest.enable        = lib.mkDefault false; # enable only inside a VM
+  roudix.hosts.gtaFix.enable   = lib.mkDefault false;
+  roudix.autoupdate.enable     = lib.mkDefault true;
 
   # ── Network ─────────────────────────────────────────────────────────────
   networking.hostName = "roudix";

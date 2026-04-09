@@ -1,0 +1,25 @@
+{ pkgs, lib, osConfig, roudixSwitch, dotfiles, ... }:
+{
+  # ── Personal Home Manager overrides ─────────────────────────────────────
+  # This file is gitignored and never touched by git pull.
+  # Copy this file to home/local.nix and add your personal overrides here.
+
+  # Examples:
+
+  # Add personal packages
+  # home.packages = with pkgs; [
+  #   vlc
+  #   telegram-desktop
+  # ];
+
+  # Override dotfiles source
+  # xdg.configFile."hypr" = {
+  #   source = "${dotfiles}/hyprland-custom";
+  #   recursive = true;
+  # };
+
+  # Custom shell aliases
+  # programs.fish.shellAliases = {
+  #   myalias = "echo hello";
+  # };
+}

@@ -1,9 +1,9 @@
-{ pkgs, inputs, config, lib, osConfig, ... }:
+{ pkgs, inputs, config, lib, osConfig, dotfiles, ... }:
 {
   imports = [
     inputs.noctalia.homeModules.default
-    ../modules/mangohud.nix
-    ../modules/papirus-folders.nix
+    ../modules/home/mangohud.nix
+    ../modules/home/papirus-folders.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") {
@@ -16,7 +16,7 @@
 
   # ── Config files ─────────────────────────────────────────────
   xdg.configFile."hypr" = {
-    source = ../dotfiles/hyprland;
+    source = ../../dotfiles/hyprland;
     recursive = true;
   };
 

@@ -1,16 +1,12 @@
 { lib, pkgs }:
-
 pkgs.stdenv.mkDerivation {
   pname = "roudix-switcher";
-  version = "1.0.6";
-
+  version = "1.0.7";
   src = ./.;
-
   nativeBuildInputs = with pkgs; [
     wrapGAppsHook4
     gobject-introspection
   ];
-
   buildInputs = with pkgs; [
     gtk4
     libadwaita
@@ -18,17 +14,16 @@ pkgs.stdenv.mkDerivation {
       pygobject3
     ]))
   ];
-
   installPhase = ''
-    mkdir -p $out/bin $out/share/applications $out/share/icons/hicolor/scalable/apps $out/share/roudix-switcher
-
+    mkdir -p $out/bin $out/share/applications $out/share/icons/hicolor/scalable/apps $out/share/roudix-switcher $out/share/polkit-1/actions
     # Install the Python script
     cp roudix-switcher.py $out/bin/roudix-switcher
     chmod +x $out/bin/roudix-switcher
     patchShebangs $out/bin/roudix-switcher
     # Install the custom icons folders
     cp -r icons $out/share/roudix-switcher/
-
+    # Install Polkit policy
+    cp io.roudix.switcher.policy $out/share/polkit-1/actions/
     # Install .desktop file
     cat > $out/share/applications/io.roudix.switcher.desktop << EOF
     [Desktop Entry]
@@ -42,7 +37,6 @@ pkgs.stdenv.mkDerivation {
     Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;
     EOF
   '';
-
   meta = {
     description = "Switch desktop environments on Roudix";
     license = lib.licenses.mit;

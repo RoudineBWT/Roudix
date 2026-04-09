@@ -1,9 +1,9 @@
-{ pkgs, inputs, config, lib, osConfig, ... }:
+{ pkgs, inputs, config, lib, osConfig, dotfiles, ... }:
 {
 imports = [
   inputs.noctalia.homeModules.default
-  ../modules/mangohud.nix
-  ../modules/papirus-folders.nix
+  ../modules/home/mangohud.nix
+  ../modules/home/papirus-folders.nix
 ];
 
 config = lib.mkIf (osConfig.roudix.desktop.type == "niri") {
@@ -17,7 +17,7 @@ config = lib.mkIf (osConfig.roudix.desktop.type == "niri") {
 
   # ── Niri config ──────────────────────────────────────────────────────────
   xdg.configFile."niri" = {
-    source = ../dotfiles/niri;
+    source = "${dotfiles}/niri";
     recursive = true;
   };
 

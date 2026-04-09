@@ -44,61 +44,73 @@
 
 ```
 roudix/
-├── roudix-installer.sh             # Bash-based installer
-├── flake.nix                       # Inputs & outputs — set username here
+├── roudix-installer.sh              # Bash-based installer
+├── flake.nix                        # Inputs & outputs — set username here
 ├── flake.lock
 ├── hosts/
-│   └── roudix/                     # Single host — DE selected via roudix.desktop.type
+│   └── roudix/                      # Single host — DE selected via roudix.desktop.type
 │       ├── configuration.nix
-│       ├── local.nix               # gitignored — your personal overrides
-│       ├── local.nix.example       # copy this to local.nix to get started
+│       ├── local.nix                # gitignored — your personal system overrides
+│       ├── local.nix.example        # copy this to local.nix to get started
 │       └── hardware-configuration.nix
-├── home/
-│   ├── common.nix                  # Shared home-manager config (all users)
-│   ├── niri.nix                    # Home config for Niri + Noctalia
-│   └── hyprland.nix                # Home config for Hyprland + Noctalia
-├── dotfiles/
-│   ├── easyeffects/                # EasyEffects presets
+│
+├── home/                            # Home Manager — user-level configuration
+│   ├── common.nix                   # Shared home config (all users & DEs)
+│   ├── local.nix                    # gitignored — your personal home overrides
+│   ├── local.nix.example            # copy this to home/local.nix to get started
+│   ├── niri.nix                     # Home config for Niri + Noctalia
+│   └── hyprland.nix                 # Home config for Hyprland + Noctalia
+│
+├── dotfiles/                        # Raw config files managed by Home Manager
+│   ├── easyeffects/                 # EasyEffects presets
 │   ├── niri/
-│   │   ├── cfg/                    # Niri config
+│   │   ├── cfg/                     # Niri split config
 │   │   ├── config.kdl
-│   │   └── noctalia.kdl            # Noctalia config
+│   │   └── noctalia.kdl             # Noctalia shell config
 │   └── hyprland/
-│       ├── cfg/                    # Hyprland split config
+│       ├── cfg/                     # Hyprland split config
 │       └── hyprland.conf
+│
 ├── pkgs/
-│   └── roudix-switcher/            # Roudix Desktop Switcher package
+│   └── roudix-switcher/             # Roudix Desktop Switcher package
+│
 └── modules/
-    ├── common.nix                  # Shared system config (all hosts)
-    ├── desktop/
-    │   ├── default.nix             # Desktop option (roudix.desktop.type)
-    │   ├── niri.nix                # Niri + UWSM + polkit
-    │   ├── hyprland.nix            # Hyprland + UWSM + polkit + xdg-portal
-    │   ├── gnome.nix               # GNOME
-    │   └── kde.nix                 # KDE Plasma 6 + plasma-login-manager
-    ├── chromium.nix                # Chromium browser selection (roudix.chromium)
-    ├── boot.nix                    # Limine bootloader + multi-OS entries
-    ├── cpu.nix                     # CPU configuration (Intel/AMD microcode)
-    ├── fastfetch.nix               # Fastfetch + fish autostart
-    ├── fish.nix                    # Fish shell + aliases + roudix-switch
-    ├── flatpak.nix                 # Flatpak service + auto update
-    ├── fstrim.nix                  # fstrim for SSD/NVMe
-    ├── gaming.nix                  # Steam, Gamescope, ananicy-cpp, game-performance
-    ├── gaming-home.nix             # User gaming packages
-    ├── git.nix                     # Git config
-    ├── gpu.nix                     # GPU configuration (AMD/NVIDIA/Intel)
-    ├── hosts-gta.nix               # BattlEye hosts block (GTA fix, optional)
-    ├── kernel.nix                  # CachyOS kernel variant selection
-    ├── mangohud.nix                # MangoHud overlay
-    ├── papirus-folders.nix         # Papirus folder color configuration
-    ├── pipewire.nix                # PipeWire audio configuration
-    ├── spicetify.nix               # Spotify + Spicetify (Comfy theme)
-    ├── ssh.nix                     # SSH + GitHub
-    ├── autoupdate.nix              # Auto git pull + rebuild on config changes
-    ├── binary-caches.nix           # Nix binary caches (substituters + trusted keys)
-    ├── update.nix                  # Auto-update configuration
-    ├── virtualization.nix          # QEMU/KVM (disabled by default)
-    └── vm-guest.nix                # VM guest optimizations (DNS, QEMU agent)
+    ├── desktop/                     # Desktop environment modules (NixOS-level)
+    │   ├── default.nix              # Desktop option (roudix.desktop.type)
+    │   ├── niri.nix                 # Niri + UWSM + polkit
+    │   ├── hyprland.nix             # Hyprland + UWSM + polkit + xdg-portal
+    │   ├── gnome.nix                # GNOME
+    │   └── kde.nix                  # KDE Plasma 6 + plasma-login-manager
+    │
+    ├── system/                      # NixOS system-level modules
+    │   ├── autoupdate.nix           # Auto git pull + rebuild on config changes
+    │   ├── binary-caches.nix        # Nix binary caches (substituters + trusted keys)
+    │   ├── boot.nix                 # Limine bootloader + multi-OS entries
+    │   ├── chromium.nix             # Chromium browser selection (roudix.chromium)
+    │   ├── common.nix               # Shared system config (all hosts)
+    │   ├── cpu.nix                  # CPU configuration (Intel/AMD microcode)
+    │   ├── environment.nix          # Environment variables
+    │   ├── flatpak.nix              # Flatpak service + auto update
+    │   ├── fstrim.nix               # fstrim for SSD/NVMe
+    │   ├── gaming.nix               # Steam, Gamescope, ananicy-cpp, game-performance
+    │   ├── gpu.nix                  # GPU configuration (AMD/NVIDIA/Intel)
+    │   ├── hosts-gta.nix            # BattlEye hosts block (GTA fix, optional)
+    │   ├── kernel.nix               # CachyOS kernel variant selection
+    │   ├── pipewire.nix             # PipeWire audio configuration
+    │   ├── update.nix               # Flake update configuration
+    │   ├── virtualization.nix       # QEMU/KVM (disabled by default)
+    │   └── vm-guest.nix             # VM guest optimizations (clipboard, QEMU agent, Spice)
+    │
+    └── home/                        # Home Manager user-level modules
+        ├── bash.nix                 # Bash shell config
+        ├── fastfetch.nix            # Fastfetch + fish autostart
+        ├── fish.nix                 # Fish shell + aliases + roudix-switch
+        ├── gaming-home.nix          # User gaming packages (proton, mangohud...)
+        ├── git.nix                  # Git config
+        ├── mangohud.nix             # MangoHud overlay
+        ├── papirus-folders.nix      # Papirus folder color configuration
+        ├── spicetify.nix            # Spotify + Spicetify (Comfy theme)
+        └── ssh.nix                  # SSH + GitHub
 ```
 
 ---
@@ -181,6 +193,7 @@ roudix-switch kde
 - Controller support (Steam Hardware + game-devices-udev-rules)
 - 32-bit support for Wine/Steam
 - `game-performance` wrapper — switches CPU governor to performance for the duration of a game (usage: `game-performance %command%` in Steam launch options)
+- `protonup-qt` on KDE, `protonplus` on other DEs
 
 **Desktop (Niri)**
 - Niri scrollable tiling Wayland compositor
@@ -188,7 +201,7 @@ roudix-switch kde
 - Capitaine Cursors White
 - adw-gtk3 + Papirus icons + Papirus Folders
 - Discord with Vencord
-- Element Desktop with gnome-libsecret
+- Element Desktop with gnome-libsecret / kwallet6 (auto-detected per DE)
 - GNOME Polkit agent
 - GDM display manager
 
@@ -231,7 +244,7 @@ roudix-switch kde
 - Flatpak with Flathub remote + daily auto-update (via nix-flatpak)
 - Blueman Bluetooth manager
 - QEMU/KVM + Virt-Manager (optional)
-- VM guest optimizations module (DNS, QEMU agent, Spice)
+- VM guest optimizations module (clipboard sharing, auto-resize, QEMU agent, Spice)
 - Nerd Fonts (JetBrains, Noto, Iosevka)
 - Roudix Desktop Switcher — GUI to switch DE without terminal
 - Auto-update module — pulls config from GitHub and schedules a rebuild when changes are detected
@@ -269,7 +282,6 @@ git clone https://github.com/RoudineBWT/Roudix.git ~/.config/roudix
 cd ~/.config/roudix
 ```
 
-
 ### 2. Set your username
 
 Open `flake.nix` and change **only this one line** — everything else adapts automatically:
@@ -284,16 +296,17 @@ username = "roudine"; # ← Change to your username
 sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hardware-configuration.nix
 ```
 
-### 4. Create your local config
+### 4. Create your local configs
 
-**Never edit `configuration.nix` directly** — it gets overwritten on `git pull`.
-Instead, create `hosts/roudix/local.nix` (gitignored) for your personal overrides:
+**Never edit `configuration.nix` or `home/common.nix` directly** — they get overwritten on `git pull`.
+Instead, create your local override files (both gitignored):
 
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
+cp home/local.nix.example home/local.nix
 ```
 
-Then edit `local.nix` to match your hardware:
+Edit `hosts/roudix/local.nix` to match your hardware:
 
 ```nix
 { lib, ... }:
@@ -306,7 +319,16 @@ Then edit `local.nix` to match your hardware:
 }
 ```
 
-> `local.nix` is listed in `.gitignore` — it will never be overwritten by a `git pull`.
+Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfiles, aliases...):
+
+```nix
+{ pkgs, lib, osConfig, ... }:
+{
+  # home.packages = with pkgs; [ vlc telegram-desktop ];
+}
+```
+
+> Both `local.nix` files are listed in `.gitignore` — they will never be overwritten by a `git pull`.
 
 **Available kernel variants:**
 
@@ -325,7 +347,7 @@ Then edit `local.nix` to match your hardware:
 
 > **Spicetify Comfy theme note:** After your first build, copy the color.ini manually:
 > ```bash
-> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/spicetify/Comfy/color.ini
+> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/spicetify/Comfy/color.ini
 > ```
 > Then run `rebuild` to apply.
 
@@ -359,7 +381,7 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 Look for partitions with `vfat` filesystem type and `EFI system partition` label — those are your ESPs.
 
-**Edit `modules/boot.nix`** and replace the placeholder UUIDs:
+**Edit `modules/system/boot.nix`** and replace the placeholder UUIDs:
 
 ```nix
 extraEntries = ''
@@ -387,7 +409,7 @@ extraEntries = "";
 
 ### 7. Update git config
 
-In `modules/git.nix`:
+In `modules/home/git.nix`:
 
 ```nix
 settings = {
@@ -405,7 +427,8 @@ roudix.gaming.enable         = true;
 roudix.flatpak.enable        = true;   # Flatpak + daily auto-update
 roudix.fstrim.enable         = true;   # recommended for SSD/NVMe
 roudix.virtualization.enable = false;  # enable for QEMU/KVM
-roudix.hosts.gtaFix.enable   = true;  # block BattlEye telemetry (GTA fix)
+roudix.vmGuest.enable        = true;   # enable only inside a VM
+roudix.hosts.gtaFix.enable   = true;   # block BattlEye telemetry (GTA fix)
 roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
 ```
 
@@ -431,7 +454,8 @@ Once built, use the fish aliases for all future operations.
 
 When `roudix.autoupdate.enable = true`, the system checks GitHub every hour (and 5 min after boot).
 If new commits are detected on `main`, it pulls and runs `nh os boot path:...` — the new config applies on next reboot.
-Your `local.nix` and `hardware-configuration.nix` are gitignored and never touched by the pull.
+Local changes in `dotfiles/` are automatically stashed before the pull and restored after, so your personal dotfile tweaks are never lost.
+Your `local.nix` files and `hardware-configuration.nix` are gitignored and never touched by the pull.
 
 To configure the interval or branch, override in `local.nix`:
 
