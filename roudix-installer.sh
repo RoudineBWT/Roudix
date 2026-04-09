@@ -112,7 +112,6 @@ info "Creating username.nix..."
 echo "\"${USERNAME}\"" > "hosts/roudix/username.nix"
 success "username.nix created."
 
-
 # ── Generate hardware config ──────────────────────────────────────────────────
 info "Generating hardware-configuration.nix..."
 nixos-generate-config --show-hardware-config > "hosts/roudix/hardware-configuration.nix"
@@ -159,14 +158,19 @@ pick "Desktop environment:" DE \
   "kde|KDE Plasma" \
   "hyprland|Hyprland"
 
+pick "Running inside a VM?" VM_GUEST \
+  "false|No — bare metal install" \
+  "true|Yes — enable VM guest optimizations"
+
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
 
-sed -i "s/hardware\.myGpu\s*=\s*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"      hosts/roudix/local.nix
-sed -i "s/hardware\.myCpu\s*=\s*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"      hosts/roudix/local.nix
+sed -i "s/hardware\.myGpu\s*=\s*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/roudix/local.nix
+sed -i "s/hardware\.myCpu\s*=\s*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/roudix/local.nix
 sed -i "s/hardware\.myKernel\s*=\s*\"[^\"]*\"/hardware.myKernel  = \"${KERNEL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.chromium\s*=\s*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/"  hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type\s*=\s*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.vmGuest\.enable\s*=\s*\(true\|false\)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
 
 success "local.nix configured."
 
@@ -181,6 +185,7 @@ echo -e "
   ${BOLD}Kernel      :${NC} $KERNEL
   ${BOLD}Browser     :${NC} $BROWSER
   ${BOLD}Desktop     :${NC} $DE
+  ${BOLD}VM Guest    :${NC} $VM_GUEST
   ${BOLD}Config dir  :${NC} $INSTALL_DIR
 "
 
