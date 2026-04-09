@@ -8,21 +8,24 @@
 
   config = lib.mkIf config.roudix.vmGuest.enable {
     # ── DNS ────────────────────────────────────────────────────────────────
-    # dnsmasq de libvirt n'est pas fiable sur NixOS, on force des DNS publics
+    # libvirt's dnsmasq is unreliable on NixOS, force public DNS instead
     networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
     # ── QEMU Guest Agent ───────────────────────────────────────────────────
-    # Permet à l'hôte de communiquer avec la VM (shutdown propre, snapshots, etc.)
+    # Allows the host to communicate with the VM (clean shutdown, snapshots...)
     services.qemuGuest.enable = true;
 
     # ── Spice Agent ────────────────────────────────────────────────────────
-    # Copier/coller et redimensionnement automatique de la fenêtre virt-manager
+    # Enables clipboard sharing and automatic window resizing in virt-manager
     services.spice-vdagentd.enable = true;
 
-    # ── Optimisations disque virtio ────────────────────────────────────────
+    # Wayland support for spice-vdagent
+    environment.sessionVariables.SPICE_NOGRAB = "1";
+
+    # ── Virtio disk optimizations ──────────────────────────────────────────
     services.fstrim.enable = true;
 
-    # ── Packages utiles en VM ──────────────────────────────────────────────
+    # ── Useful packages inside the VM ─────────────────────────────────────
     environment.systemPackages = with pkgs; [
       spice-vdagent
     ];
