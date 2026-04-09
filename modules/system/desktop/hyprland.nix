@@ -37,6 +37,12 @@ lib.mkIf isHyprland {
     };
   };
 
+  # ── Greeter & keyring ───────────────────────────────────────────────────
+  services.displayManager.gdm.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.gdm.enableGnomeKeyring = true;
+
+
   programs.nautilus-open-any-terminal = {
     enable = true;
     terminal = "ghostty";

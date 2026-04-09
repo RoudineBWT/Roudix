@@ -13,7 +13,7 @@ lib.mkIf isKde {
     enable = true;
     extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
     xdgOpenUsePortal = true;
-    config.common.default = "*";
+    config.common.default = "kde";
   };
 
   systemd.services."getty@tty1".enable  = false;

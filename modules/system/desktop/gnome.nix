@@ -3,7 +3,11 @@ let
   isGnome = config.roudix.desktop.type == "gnome";
 in
 lib.mkIf isGnome {
-  services.desktopManager.gnome.enable = true;
+  # ── Greeter & keyring ───────────────────────────────────────────────────
+  services.displayManager.gdm.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.gdm.enableGnomeKeyring = true;
+  security.polkit.enable = true;
 
   xdg.portal = {
     enable = true;

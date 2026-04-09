@@ -5,6 +5,32 @@
 
 let
   cfg = config.roudix.autoupdate;
+
+  # Helper: send a notification to the user's graphical session
+  notify = pkgs.writeShellScript "roudix-notify" ''
+    SUMMARY="$1"
+    BODY="$2"
+    ICON="$3"
+
+    # Find the user's D-Bus session address
+    USER_ID=$(id -u ${username})
+    DBUS_ADDR=$(cat /proc/$(pgrep -u ${username} -x "dbus-daemon" | head -1)/environ 2>/dev/null \
+      | tr '\0' '\n' | grep DBUS_SESSION_BUS_ADDRESS | cut -d= -f2-)
+
+    if [ -z "$DBUS_ADDR" ]; then
+      # Fallback: try via systemd user session
+      DBUS_ADDR="unix:path=/run/user/$USER_ID/bus"
+    fi
+
+    DBUS_SESSION_BUS_ADDRESS="$DBUS_ADDR" \
+    XDG_RUNTIME_DIR="/run/user/$USER_ID" \
+    sudo -u ${username} \
+      ${pkgs.libnotify}/bin/notify-send \
+        --app-name="Roudix" \
+        --icon="$ICON" \
+        --urgency=normal \
+        "$SUMMARY" "$BODY" 2>/dev/null || true
+  '';
 in {
   options.roudix.autoupdate = {
     enable = lib.mkEnableOption "Automatic git pull + nh os boot on config changes";
@@ -35,6 +61,8 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = [ pkgs.libnotify ];
+
     systemd.services.roudix-autoupdate = {
       description = "Roudix — auto pull config and schedule rebuild";
       after       = [ "network-online.target" ];
@@ -43,7 +71,7 @@ in {
       wantedBy    = lib.mkForce [];
       serviceConfig = {
         Type             = "oneshot";
-        User             = username;
+        User             = "root";
         WorkingDirectory = cfg.configPath;
         # Prevent the service from hanging forever
         TimeoutStartSec  = "120";
@@ -68,21 +96,33 @@ in {
         echo "  local:  $LOCAL"
         echo "  remote: $REMOTE"
 
-        # Stash only dotfiles/ local changes so the pull doesn't fail
-        STASHED=$(${pkgs.git}/bin/git stash push --all -- dotfiles/)
+        # Notify: update detected
+        ${notify} \
+          "Roudix — Update detected" \
+          "New changes found on ${cfg.branch}. Pulling and scheduling rebuild..." \
+          "software-update-available"
 
-        ${pkgs.git}/bin/git pull --rebase origin ${cfg.branch}
+        # Stash dotfiles/ local changes so the pull doesn't fail
+        STASHED=$(sudo -u ${username} ${pkgs.git}/bin/git stash push --all -- dotfiles/)
+
+        sudo -u ${username} ${pkgs.git}/bin/git pull --rebase origin ${cfg.branch}
 
         # Restore dotfiles if anything was stashed
         if echo "$STASHED" | grep -q "Saved working directory"; then
           echo "[roudix-autoupdate] Restoring dotfiles local changes..."
-          ${pkgs.git}/bin/git stash pop || true
+          sudo -u ${username} ${pkgs.git}/bin/git stash pop || true
         fi
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
         ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}#roudix
 
         echo "[roudix-autoupdate] Done — reboot to apply the new config."
+
+        # Notify: rebuild scheduled
+        ${notify} \
+          "Roudix — Rebuild scheduled" \
+          "Configuration updated successfully. Reboot to apply the new config." \
+          "system-reboot"
       '';
     };
 

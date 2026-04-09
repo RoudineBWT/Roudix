@@ -17,19 +17,18 @@
 
     # ── Spice Agent ────────────────────────────────────────────────────────
     # Enables clipboard sharing and automatic window resizing in virt-manager
+    services.spice-vdagentd.enable = true;
+
     systemd.user.services.spice-vdagent = {
       description = "SPICE vdagent — clipboard + display resize";
       wantedBy = [ "graphical-session.target" ];
       after = [ "graphical-session.target" ];
       serviceConfig = {
-        Type      = "simple";
-        ExecStart = "${pkgs.spice-vdagent}/bin/spice-vdagent -x -f";
-        Restart   = "on-failure";
+        Type       = "simple";
+        ExecStart  = "${pkgs.spice-vdagent}/bin/spice-vdagent -x";
+        Restart    = "on-failure";
       };
     };
-
-    # Wayland support for spice-vdagent
-    environment.sessionVariables.SPICE_NOGRAB = "1";
 
     # ── Virtio disk optimizations ──────────────────────────────────────────
     services.fstrim.enable = true;
@@ -37,6 +36,7 @@
     # ── Useful packages inside the VM ─────────────────────────────────────
     environment.systemPackages = with pkgs; [
       spice-vdagent
+      wlr-randr
     ];
   };
 }

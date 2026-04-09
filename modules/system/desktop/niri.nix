@@ -30,6 +30,11 @@ lib.mkIf isNiri {
       Restart   = "on-failure";
     };
   };
+  # ── Greeter & keyring ───────────────────────────────────────────────────
+  services.displayManager.gdm.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.gdm.enableGnomeKeyring = true;
+
 
   # ── Open ghossty in nautilus ─────────────────────────────────────────────────────────────
   programs.nautilus-open-any-terminal = {

@@ -88,12 +88,6 @@
   # ── Programs ────────────────────────────────────────────────────────────
   programs.fish.enable = true;
 
-  # ── Greeter & keyring ───────────────────────────────────────────────────
-  services.displayManager.gdm.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.gdm.enableGnomeKeyring = true;
-  security.polkit.enable = true;
-
   # ── Services ────────────────────────────────────────────────────────────
   services.udev.packages = [ pkgs.openrgb ];
   services.udisks2.enable = true;

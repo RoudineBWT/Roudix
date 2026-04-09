@@ -25,7 +25,7 @@
     virtualisation.spiceUSBRedirection.enable = true;
     hardware.graphics.enable = true;
     hardware.graphics.extraPackages = with pkgs; [ virglrenderer ];
-    services.qemuGuest.enable = true;
+
 
     # ── Virt-Manager ─────────────────────────────────────────────────────────
     programs.virt-manager.enable = true;
