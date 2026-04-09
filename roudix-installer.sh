@@ -170,7 +170,9 @@ sed -i "s/hardware\.myCpu\s*=\s*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"    
 sed -i "s/hardware\.myKernel\s*=\s*\"[^\"]*\"/hardware.myKernel  = \"${KERNEL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.chromium\s*=\s*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/"  hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type\s*=\s*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.vmGuest\.enable\s*=\s*\(true\|false\)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
+if [[ "$VM_GUEST" == "true" ]]; then
+  sed -i "s|#\s*roudix\.vmGuest\.enable\s*=\s*true;|roudix.vmGuest.enable       = true;|" hosts/roudix/local.nix
+fi
 
 success "local.nix configured."
 
