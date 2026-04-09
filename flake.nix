@@ -73,11 +73,11 @@
 
   outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, helium, nix-flatpak, ... }:
   let
-    username = "roudine"; # ← Change your username here
+  # ← username is defined in hosts/roudix/username.nix (gitignored)
+  # Create it with: echo '"yourusername"' > hosts/roudix/username.nix
+    username = import ./hosts/roudix/username.nix;
     roudixSwitcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-switcher {};
-    specialArgs = { inherit inputs username roudixSwitcher;
-    dotfiles = self + /dotfiles;
-    };
+    specialArgs = { inherit inputs username roudixSwitcher; dotfiles = self + /dotfiles; };
   in
   {
     # ── Main desktop configuration ───────────────────────────────────────

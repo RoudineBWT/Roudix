@@ -107,6 +107,12 @@ fi
 
 cd "$INSTALL_DIR"
 
+# ── Create username.nix ───────────────────────────────────────────────────────
+info "Creating username.nix..."
+echo "\"${USERNAME}\"" > "hosts/roudix/username.nix"
+success "username.nix created."
+
+
 # ── Generate hardware config ──────────────────────────────────────────────────
 info "Generating hardware-configuration.nix..."
 nixos-generate-config --show-hardware-config > "hosts/roudix/hardware-configuration.nix"
@@ -163,11 +169,6 @@ sed -i "s/roudix\.chromium\s*=\s*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/
 sed -i "s/roudix\.desktop\.type\s*=\s*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
 
 success "local.nix configured."
-
-# ── Update username in flake.nix ──────────────────────────────────────────────
-info "Updating username in flake.nix..."
-sed -i "s/username\s*=\s*\"[^\"]*\"/username = \"${USERNAME}\"/" flake.nix
-success "flake.nix updated."
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo -e "\n${BOLD}══════════════════════════════════════${NC}"

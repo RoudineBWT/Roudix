@@ -45,11 +45,12 @@
 ```
 roudix/
 ├── roudix-installer.sh              # Bash-based installer
-├── flake.nix                        # Inputs & outputs — set username here
+├── flake.nix                        # Inputs & outputs
 ├── flake.lock
 ├── hosts/
 │   └── roudix/                      # Single host — DE selected via roudix.desktop.type
 │       ├── configuration.nix
+│       ├── username.nix             # gitignored — your username (see installation)
 │       ├── local.nix                # gitignored — your personal system overrides
 │       ├── local.nix.example        # copy this to local.nix to get started
 │       └── hardware-configuration.nix
@@ -245,9 +246,6 @@ roudix-switch kde
 - Blueman Bluetooth manager
 - QEMU/KVM + Virt-Manager (optional)
 - VM guest optimizations module (clipboard sharing, auto-resize, QEMU agent, Spice)
-- Nerd Fonts (JetBrains, Noto, Iosevka)
-- Roudix Desktop Switcher — GUI to switch DE without terminal
-- Auto-update module — pulls config from GitHub and schedules a rebuild when changes are detected
 
 ---
 
@@ -284,11 +282,13 @@ cd ~/.config/roudix
 
 ### 2. Set your username
 
-Open `flake.nix` and change **only this one line** — everything else adapts automatically:
+Create the `username.nix` file with your username:
 
-```nix
-username = "roudine"; # ← Change to your username
+```bash
+echo '"yourusername"' > ~/.config/roudix/hosts/roudix/username.nix
 ```
+
+> This file is gitignored — it will never be overwritten by a `git pull`.
 
 ### 3. Replace hardware-configuration.nix
 
@@ -455,7 +455,7 @@ Once built, use the fish aliases for all future operations.
 When `roudix.autoupdate.enable = true`, the system checks GitHub every hour (and 5 min after boot).
 If new commits are detected on `main`, it pulls and runs `nh os boot path:...` — the new config applies on next reboot.
 Local changes in `dotfiles/` are automatically stashed before the pull and restored after, so your personal dotfile tweaks are never lost.
-Your `local.nix` files and `hardware-configuration.nix` are gitignored and never touched by the pull.
+Your `local.nix` files, `username.nix` and `hardware-configuration.nix` are gitignored and never touched by the pull.
 
 To configure the interval or branch, override in `local.nix`:
 

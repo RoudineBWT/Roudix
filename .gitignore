@@ -1,3 +1,4 @@
 hosts/roudix/local.nix
 hosts/roudix/hardware-configuration.nix
 home/local.nix
+hosts/roudix/username.nix
