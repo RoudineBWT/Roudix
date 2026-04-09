@@ -192,18 +192,18 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
   if dry_output=$(sudo nixos-rebuild switch --flake path:$(pwd)#roudix --dry-run 2>&1); then
     if echo "$dry_output" | grep -q "not recommended"; then
       warn "'switch' is not recommended by NixOS. Using 'boot' instead..."
-      sudo nixos-rebuild boot --flake path:$(pwd)#roudix
+      sudo nixos-rebuild boot --flake path:$(pwd)#roudix --accept-flake-config
       success "Configuration built with 'boot'."
       warn "Reboot required to apply the new configuration."
     else
       info "'switch' seems safe. Applying..."
-      sudo nixos-rebuild switch --flake path:$(pwd)#roudix
+      sudo nixos-rebuild switch --flake path:$(pwd)#roudix --accept-flake-config
       success "Configuration applied successfully!"
       warn "Please reboot your system to complete the setup."
     fi
   else
     warn "Dry-run failed. Using 'boot' as fallback..."
-    sudo nixos-rebuild boot --flake path:$(pwd)#roudix
+    sudo nixos-rebuild boot --flake path:$(pwd)#roudix --accept-flake-config
     success "Configuration built with 'boot'."
     warn "Reboot required to apply the new configuration."
   fi
@@ -216,7 +216,7 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
 else
   warn "You can apply it later manually."
   echo -e "  ${CYAN}cd $INSTALL_DIR${NC}"
-  echo -e "  ${CYAN}sudo nixos-rebuild switch --flake .#roudix${NC}"
+  echo -e "  ${CYAN}sudo nixos-rebuild switch --flake .#roudix --accept-flake-config${NC}"
   echo ""
   warn "Reboot required after applying the configuration."
 fi
