@@ -47,16 +47,16 @@
     };
 
     helium = {
-          url = "github:AlvaroParker/helium-nix";
-          inputs.nixpkgs.follows = "nixpkgs";
-        };
+      url = "github:AlvaroParker/helium-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nix-flatpak = {
-          url = "github:gmodena/nix-flatpak";
-        };
+      url = "github:gmodena/nix-flatpak";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, helium, nix-flatpak,  ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, helium, nix-flatpak, ... }:
   let
     username = "roudine"; # ← Change your username here
     specialArgs = { inherit inputs username; };
@@ -76,7 +76,13 @@
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "bak";
           home-manager.extraSpecialArgs = specialArgs;
-          home-manager.users.${username} = import ./home/niri.nix;
+          home-manager.users.${username} = { ... }: {
+            imports = [
+              ./home/common.nix
+              ./home/niri.nix
+              ./home/hyprland.nix
+            ];
+          };
         }
       ];
     };

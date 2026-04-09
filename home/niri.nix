@@ -1,22 +1,13 @@
-{ pkgs, inputs, username, ... }:
+{ pkgs, inputs, config, lib, osConfig, ... }:
 {
-  home.username = username;
-  home.homeDirectory = "/home/${username}";
-  home.stateVersion = "25.11";
+imports = [
+  inputs.noctalia.homeModules.default
+  ../modules/mangohud.nix
+  ../modules/papirus-folders.nix
+];
 
-  imports = [
-    ./common.nix
-    inputs.noctalia.homeModules.default
-    ../modules/fastfetch.nix
-    ../modules/mangohud.nix
-    ../modules/fish.nix
-    ../modules/bash.nix
-    ../modules/gaming-home.nix
-    ../modules/git.nix
-    ../modules/ssh.nix
-    ../modules/spicetify.nix
-    ../modules/papirus-folders.nix
-  ];
+config = lib.mkIf (osConfig.roudix.desktop.type == "niri") {
+
 
   # ── Noctalia-shell ───────────────────────────────────────────────────────
   programs.noctalia-shell = {
@@ -69,4 +60,5 @@
     # Flake packages
     inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
+ };
 }

@@ -1,6 +1,13 @@
-{ pkgs, inputs, ... }:
-
+{ pkgs, inputs, config, lib, osConfig, ... }:
 {
+  imports = [
+    inputs.noctalia.homeModules.default
+    ../modules/mangohud.nix
+    ../modules/papirus-folders.nix
+  ];
+
+  config = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") {
+
   # ── Noctalia-shell ───────────────────────────────────────────────────────
   programs.noctalia-shell = {
     enable = true;
@@ -45,8 +52,10 @@
     gvfs
     cava
 
-  ];
+
 
   # Flake packages
   inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+   ];
+ };
 }

@@ -11,6 +11,7 @@
     ../modules/git.nix
     ../modules/ssh.nix
     ../modules/spicetify.nix
+    ../modules/gaming-home.nix
   ];
 
   # ── Easyeffects preset ───────────────────────────────────────────────────
