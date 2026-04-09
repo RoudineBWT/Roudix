@@ -60,9 +60,9 @@ roudix/
 ├── dotfiles/
 │   ├── easyeffects/                # EasyEffects presets
 │   ├── niri/
-│       ├── cfg/                    # Niri config
-│       ├── config.kdl
-│       └── noctalia.kdl            # Noctalia config
+│   │   ├── cfg/                    # Niri config
+│   │   ├── config.kdl
+│   │   └── noctalia.kdl            # Noctalia config
 │   └── hyprland/
 │       ├── cfg/                    # Hyprland split config
 │       └── hyprland.conf
@@ -73,7 +73,7 @@ roudix/
     ├── desktop/
     │   ├── default.nix             # Desktop option (roudix.desktop.type)
     │   ├── niri.nix                # Niri + UWSM + polkit
-│   ├── hyprland.nix            # Hyprland + UWSM + polkit + xdg-portal
+    │   ├── hyprland.nix            # Hyprland + UWSM + polkit + xdg-portal
     │   ├── gnome.nix               # GNOME
     │   └── kde.nix                 # KDE Plasma 6 + plasma-login-manager
     ├── chromium.nix                # Chromium browser selection (roudix.chromium)
@@ -83,7 +83,7 @@ roudix/
     ├── fish.nix                    # Fish shell + aliases + roudix-switch
     ├── flatpak.nix                 # Flatpak service + auto update
     ├── fstrim.nix                  # fstrim for SSD/NVMe
-    ├── gaming.nix                  # Steam, Gamescope, GameMode (system)
+    ├── gaming.nix                  # Steam, Gamescope, ananicy-cpp, game-performance
     ├── gaming-home.nix             # User gaming packages
     ├── git.nix                     # Git config
     ├── gpu.nix                     # GPU configuration (AMD/NVIDIA/Intel)
@@ -166,7 +166,7 @@ roudix-switch kde
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)
 - Intel: `split_lock_detect=off` applied automatically
-- GameMode enabled
+- ananicy-cpp enabled (process priority daemon, CachyOS rules)
 
 **Boot**
 - Limine bootloader — modern, fast, multi-disk support
@@ -180,6 +180,7 @@ roudix-switch kde
 - Custom horizontal MangoHud overlay
 - Controller support (Steam Hardware + game-devices-udev-rules)
 - 32-bit support for Wine/Steam
+- `game-performance` wrapper — switches CPU governor to performance for the duration of a game (usage: `game-performance %command%` in Steam launch options)
 
 **Desktop (Niri)**
 - Niri scrollable tiling Wayland compositor
