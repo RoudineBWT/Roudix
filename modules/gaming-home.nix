@@ -1,18 +1,19 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, osConfig, ... }:
 let
   pkgs-stable = import inputs.nixpkgs-stable { system = pkgs.stdenv.hostPlatform; config.allowUnfree = true; };
+  isKde = osConfig.roudix.desktop.type == "kde";
 in
 {
-  # ── Packages gaming (user) ───────────────────────────────────────────────
+  # ── Gaming packages (user) ───────────────────────────────────────────────
   home.packages = with pkgs; [
-    heroic           # Launcher Epic/GOG
-    lutris           # Launcher multi-plateformes
-    prismlauncher    # Launcher Minecraft
-    vintagestory     # Minecraft but Harder
+    heroic                              # Epic/GOG launcher
+    lutris                              # Multi-platform launcher
+    prismlauncher                       # Minecraft launcher
+    vintagestory                        # Minecraft but harder
     winetricks
     wineWow64Packages.staging
-    protonplus       # Gestionnaire de versions Proton
-    mangohud         # Overlay de performances
-    gamemode         # Daemon gamemode (client)
+    mangohud                            # Performance overlay
+    (if isKde then protonup-qt          # Qt-native Proton manager (KDE)
+               else protonplus)         # GTK Proton manager (Niri, Hyprland, GNOME)
   ];
 }
