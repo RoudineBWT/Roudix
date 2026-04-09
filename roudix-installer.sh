@@ -78,18 +78,32 @@ ask "Your username (used for the home directory):" USERNAME
 INSTALL_DIR="/home/${USERNAME}/.config/roudix"
 
 # ── Clone repo ────────────────────────────────────────────────────────────────
-info "Cloning Roudix into ${INSTALL_DIR}..."
-
 if [[ -d "$INSTALL_DIR" ]]; then
-  warn "Directory $INSTALL_DIR already exists."
-  read -rp "Delete and re-clone? [y/N]: " confirm
-  [[ "$confirm" =~ ^[Yy]$ ]] || error "Installation cancelled."
-  rm -rf "$INSTALL_DIR"
+  if [[ -d "$INSTALL_DIR/.git" ]]; then
+    warn "Roudix repo already exists at $INSTALL_DIR."
+    read -rp "Re-clone from scratch? [y/N]: " confirm
+    if [[ "$confirm" =~ ^[Yy]$ ]]; then
+      rm -rf "$INSTALL_DIR"
+      mkdir -p "/home/${USERNAME}/.config"
+      git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
+      success "Repository re-cloned."
+    else
+      info "Using existing repo."
+    fi
+  else
+    warn "Directory $INSTALL_DIR exists but is not a git repo."
+    read -rp "Delete and clone? [y/N]: " confirm
+    [[ "$confirm" =~ ^[Yy]$ ]] || error "Installation cancelled."
+    rm -rf "$INSTALL_DIR"
+    mkdir -p "/home/${USERNAME}/.config"
+    git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
+    success "Repository cloned."
+  fi
+else
+  mkdir -p "/home/${USERNAME}/.config"
+  git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
+  success "Repository cloned."
 fi
-
-mkdir -p "/home/${USERNAME}/.config"
-git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
-success "Repository cloned."
 
 cd "$INSTALL_DIR"
 
@@ -128,6 +142,7 @@ pick "Kernel:" KERNEL \
   "cachyos-rc|Release candidate — bleeding edge, potentially unstable"
 
 pick "Browser:" BROWSER \
+  "none|No chromium base browser" \
   "brave|Brave" \
   "helium|Helium" \
   "vivaldi|Vivaldi"
