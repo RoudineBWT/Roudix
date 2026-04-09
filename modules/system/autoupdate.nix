@@ -69,7 +69,7 @@ in {
         echo "  remote: $REMOTE"
 
         # Stash only dotfiles/ local changes so the pull doesn't fail
-        STASHED=$(${pkgs.git}/bin/git stash push --include-untracked -- dotfiles/)
+        STASHED=$(${pkgs.git}/bin/git stash push --all -- dotfiles/)
 
         ${pkgs.git}/bin/git pull --rebase origin ${cfg.branch}
 
