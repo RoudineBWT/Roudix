@@ -2,7 +2,7 @@
 
 pkgs.stdenv.mkDerivation {
   pname = "roudix-switcher";
-  version = "1.0.4";
+  version = "1.0.6";
 
   src = ./.;
 
@@ -39,7 +39,7 @@ pkgs.stdenv.mkDerivation {
     Terminal=false
     Type=Application
     Categories=System;Settings;
-    Keywords=desktop;environment;switch;niri;gnome;kde;
+    Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;
     EOF
   '';
 

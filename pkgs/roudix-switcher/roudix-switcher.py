@@ -29,6 +29,12 @@ ENVIRONMENTS = [
         "icon":     "niri.svg",
     },
     {
+        "id":       "hyprland",
+        "name":     "Hyprland",
+        "subtitle": "Dynamic tiling Wayland compositor + Noctalia shell",
+        "icon":     "hyprland.svg",
+    },
+    {
         "id":       "gnome",
         "name":     "GNOME",
         "subtitle": "GNOME — modern and user-friendly desktop",

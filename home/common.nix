@@ -13,6 +13,12 @@
     ../modules/spicetify.nix
   ];
 
+  # ── Easyeffects preset ───────────────────────────────────────────────────
+  xdg.configFile."easyeffects" = {
+    source = ../dotfiles/easyeffects;
+    recursive = true;
+  };
+
   home.packages = with pkgs; [
     # Common apps
     (pkgs.callPackage ../pkgs/roudix-switcher {})
@@ -44,7 +50,7 @@
     })
 
        # Flake packages
-    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight
   ];
 
   # ── Cursor ───────────────────────────────────────────────────────────────

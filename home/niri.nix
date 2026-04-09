@@ -30,12 +30,6 @@
     recursive = true;
   };
 
-  # ── Easyeffects preset ───────────────────────────────────────────────────
-  xdg.configFile."easyeffects" = {
-    source = ../dotfiles/easyeffects;
-    recursive = true;
-  };
-
   # ── Packages ─────────────────────────────────────────────────────────────
   home.packages = with pkgs; [
     # Niri / Wayland tools
