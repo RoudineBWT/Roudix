@@ -2,10 +2,10 @@
 <img src="logo/roudix-logo.png" width="250"/>
 
 # Roudix
-### NixOS configuration — Niri · Noctalia · CachyOS Kernel
+### NixOS configuration — Niri · Hyprland · Noctalia · CachyOS Kernel
 
 ![NixOS](https://img.shields.io/badge/NixOS-unstable-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
-![Wayland](https://img.shields.io/badge/Wayland-Niri-FFB800?style=for-the-badge&logo=wayland&logoColor=black)
+![Wayland](https://img.shields.io/badge/Wayland-Niri%20%2F%20Hyprland-FFB800?style=for-the-badge&logo=wayland&logoColor=black)
 ![Kernel](https://img.shields.io/badge/Kernel-CachyOS-FF4500?style=for-the-badge&logo=linux&logoColor=white)
 
 </div>
@@ -28,7 +28,7 @@
 | OS | NixOS unstable |
 | Kernel | CachyOS (linux-cachyos-lts-lto-v3) |
 | Bootloader | Limine |
-| Compositor | Niri (scrollable tiling Wayland) |
+| Compositor | Niri (scrollable tiling) · Hyprland (dynamic tiling) |
 | Shell | Noctalia |
 | Display Manager | GDM / SDDM / plasma-login-manager |
 | Terminal | Ghostty |
@@ -55,13 +55,17 @@ roudix/
 │       └── hardware-configuration.nix
 ├── home/
 │   ├── common.nix                  # Shared home-manager config (all users)
-│   └── niri.nix                    # Home config for Niri + Noctalia user
+│   ├── niri.nix                    # Home config for Niri + Noctalia
+│   └── hyprland.nix                # Home config for Hyprland + Noctalia
 ├── dotfiles/
 │   ├── easyeffects/                # EasyEffects presets
-│   └── niri/
+│   ├── niri/
 │       ├── cfg/                    # Niri config
 │       ├── config.kdl
 │       └── noctalia.kdl            # Noctalia config
+│   └── hyprland/
+│       ├── cfg/                    # Hyprland split config
+│       └── hyprland.conf
 ├── pkgs/
 │   └── roudix-switcher/            # Roudix Desktop Switcher package
 └── modules/
@@ -69,6 +73,7 @@ roudix/
     ├── desktop/
     │   ├── default.nix             # Desktop option (roudix.desktop.type)
     │   ├── niri.nix                # Niri + UWSM + polkit
+│   ├── hyprland.nix            # Hyprland + UWSM + polkit + xdg-portal
     │   ├── gnome.nix               # GNOME
     │   └── kde.nix                 # KDE Plasma 6 + plasma-login-manager
     ├── chromium.nix                # Chromium browser selection (roudix.chromium)
@@ -132,13 +137,14 @@ Switch desktop at any time with `roudix-switch <de>` or the **Roudix Desktop Swi
 | Value | Desktop | Notes |
 |-------|---------|-------|
 | `niri` | Niri + Noctalia | Default — scrollable tiling Wayland |
+| `hyprland` | Hyprland + Noctalia | Dynamic tiling Wayland |
 | `gnome` | GNOME 49.4 |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 
 To change permanently, edit `hosts/roudix/local.nix`:
 
 ```nix
-roudix.desktop.type = "niri"; # "niri", "gnome" or "kde"
+roudix.desktop.type = "niri"; # "niri", "hyprland", "gnome" or "kde"
 ```
 
 Or use the fish function:
@@ -184,6 +190,15 @@ roudix-switch kde
 - Element Desktop with gnome-libsecret
 - GNOME Polkit agent
 - GDM display manager
+
+**Desktop (Hyprland)**
+- Hyprland dynamic tiling Wayland compositor
+- Noctalia modern shell
+- xdg-desktop-portal-hyprland + gtk portal
+- Capitaine Cursors White
+- GNOME Polkit agent
+- swww wallpaper daemon
+- grimblast screenshots
 
 **Desktop (GNOME)**
 - GNOME 49.4 (follow nixos unstable branch)
@@ -282,7 +297,7 @@ Then edit `local.nix` to match your hardware:
 ```nix
 { lib, ... }:
 {
-  roudix.desktop.type = "niri";               # "niri", "gnome" or "kde"
+  roudix.desktop.type = "niri";               # "niri", "hyprland", "gnome" or "kde"
   hardware.myGpu      = "amd";                # "amd", "nvidia" or "intel"
   hardware.myCpu      = "intel";              # "intel" or "amd"
   hardware.myKernel   = "cachyos-lts-lto-v3"; # see below
