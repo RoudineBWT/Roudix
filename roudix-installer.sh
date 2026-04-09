@@ -135,7 +135,8 @@ pick "Browser:" BROWSER \
 pick "Desktop environment:" DE \
   "niri|Niri" \
   "gnome|GNOME" \
-  "kde|KDE Plasma"
+  "kde|KDE Plasma" \
+  "hyprland|Hyprland"
 
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
