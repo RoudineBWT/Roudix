@@ -8,8 +8,12 @@
       "$schema" = "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json";
 
       logo = {
-        type = "file-raw";
+        type = "file";
         source = "${dotfiles}/fastfetch/roudix.txt";
+        height = 15;
+        padding = {
+          right = 5;
+        };
       };
 
       display = {
@@ -43,6 +47,8 @@
       ];
     };
   };
+
+  xdg.configFile."fastfetch/roudix.txt".source = "${dotfiles}/fastfetch/roudix.txt";
 
   # Launch fastfetch on every interactive fish shell
   xdg.configFile."fish/conf.d/fastfetch.fish" = {
