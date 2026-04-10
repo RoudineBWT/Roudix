@@ -102,7 +102,7 @@
   networking.firewall.enable = true;
   networking.firewall.checkReversePath = false;
   networking.firewall.allowedTCPPorts = [ 443 ];
-
+  security.polkit.enable = true;
 
   system.stateVersion = "25.11";
 }
