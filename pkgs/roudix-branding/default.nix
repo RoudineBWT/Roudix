@@ -1,4 +1,10 @@
-{ lib, stdenvNoCC, coreutils, bash }:
+{
+  lib,
+  stdenvNoCC,
+  coreutils,
+  bash,
+  imagemagick,
+}:
 
 stdenvNoCC.mkDerivation {
   pname = "roudix-branding";
@@ -6,11 +12,16 @@ stdenvNoCC.mkDerivation {
 
   src = ../../assets;
 
-  buildInputs = [ bash coreutils ];
+  buildInputs = [ bash coreutils imagemagick ];
 
   installPhase = ''
-    mkdir -p $out/share/icons/hicolor/scalable/apps
-    cp $src/logo/roudix-logo.svg $out/share/icons/hicolor/scalable/apps/roudix-logo.svg
+    # PNGs rescalés
+    for SIZE in 16 32 48 64 128 256; do
+      mkdir -p $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps
+      convert $src/logo/roudix-logo.png \
+        -resize ''${SIZE}x''${SIZE} \
+        $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/roudix-logo.png
+    done
   '';
 
   meta = {
