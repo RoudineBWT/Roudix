@@ -9,7 +9,7 @@
     ../../modules/system/common.nix
     ../../modules/system/desktop
     ../../modules/system/environment.nix
-    ../../modules/system/chromium.nix
+    ../../modules/system/browser.nix
     ../../modules/system/boot.nix
     ../../modules/system/kernel.nix
     ../../modules/system/gaming.nix
@@ -25,7 +25,7 @@
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
   # ── Choose your favorite chromium base browser ───────────────────────────
-  roudix.chromium = lib.mkDefault "helium"; # brave or helium or vivaldi
+  roudix.browsers = lib.mkDefault ["helium"]; # brave or helium or vivaldi
 
   # ── Hardware ────────────────────────────────────────────────────────────
   hardware.myGpu    = lib.mkDefault "amd";              # "amd", "nvidia" or "intel"

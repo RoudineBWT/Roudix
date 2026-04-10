@@ -10,7 +10,8 @@
   roudix.desktop.type = "niri";               # "niri", "gnome", "kde" or "hyprland"
 
   # ── Browser ───────────────────────────────────────────────────────────────
-  roudix.chromium = "helium";                 # "brave", "helium", "vivaldi" or "none"
+  roudix.browsers = ["helium"];               # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
+  roudix.zen.enable           = false;        # install Zen Browser (from zen-browser flake input)
 
   # ── Hardware ──────────────────────────────────────────────────────────────
   hardware.myGpu    = "amd";                  # "amd", "nvidia" or "intel"

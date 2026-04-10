@@ -20,7 +20,7 @@
     recursive = true;
   };
 
-  home.packages = with pkgs; [
+  home.packages = (with pkgs; [
     # Common apps
     roudixSwitcher
     ghostty
@@ -53,10 +53,10 @@
         obs-vkcapture
       ];
     })
-
-    # Flake packages
-    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight
-  ];
+  ])
+  # Zen Browser (optional)
+  ++ lib.optional osConfig.roudix.zen.enable
+       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight;
 
   # ── Cursor ───────────────────────────────────────────────────────────────
   home.pointerCursor = {

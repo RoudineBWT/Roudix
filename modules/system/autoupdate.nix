@@ -102,16 +102,7 @@ in {
           "New changes found on ${cfg.branch}. Pulling and scheduling rebuild..." \
           "software-update-available"
 
-        # Stash dotfiles/ local changes so the pull doesn't fail
-        STASHED=$(sudo -u ${username} ${pkgs.git}/bin/git stash push --all -- dotfiles/)
-
         sudo -u ${username} ${pkgs.git}/bin/git pull --rebase origin ${cfg.branch}
-
-        # Restore dotfiles if anything was stashed
-        if echo "$STASHED" | grep -q "Saved working directory"; then
-          echo "[roudix-autoupdate] Restoring dotfiles local changes..."
-          sudo -u ${username} ${pkgs.git}/bin/git stash pop || true
-        fi
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
         ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}#roudix

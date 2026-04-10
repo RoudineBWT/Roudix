@@ -3,3 +3,5 @@ hosts/roudix/hardware-configuration.nix
 home/local.nix
 hosts/roudix/username.nix
 modules/system/boot.local.nix
+dotfiles/perso/*
+!dotfiles/perso/README.md

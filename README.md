@@ -25,7 +25,7 @@
 
 | Layer | Choice |
 |-------|--------|
-| OS | NixOS unstable |
+| OS | Roudix (NixOS unstable) |
 | Kernel | CachyOS (linux-cachyos-lts-lto-v3) |
 | Bootloader | Limine |
 | Compositor | Niri (scrollable tiling) · Hyprland (dynamic tiling) |
@@ -33,7 +33,7 @@
 | Display Manager | GDM / SDDM / plasma-login-manager |
 | Terminal | Ghostty |
 | Shell | Fish |
-| Browser | Zen Browser + Helium (configurable) |
+| Browser | Configurable (Brave, Helium, Vivaldi, Firefox, LibreWolf, Chromium, Zen) |
 | File Manager | Nautilus |
 | Editor | Zed |
 | Music | Spotify + Spicetify (Comfy theme) |
@@ -64,13 +64,16 @@ roudix/
 │
 ├── dotfiles/                        # Raw config files managed by Home Manager
 │   ├── easyeffects/                 # EasyEffects presets
+│   ├── fastfetch/
+│   │   └── roudix.txt               # Default Roudix ASCII logo for fastfetch
 │   ├── niri/
 │   │   ├── cfg/                     # Niri split config
 │   │   ├── config.kdl
 │   │   └── noctalia.kdl             # Noctalia shell config
 │   └── hyprland/
-│       ├── cfg/                     # Hyprland split config
-│       └── hyprland.conf
+│   │   ├── cfg/                     # Hyprland split config
+│   │   └── hyprland.conf
+│   └── perso/                       # Personal config (gitignored)
 │
 ├── pkgs/
 │   └── roudix-switcher/             # Roudix Desktop Switcher package
@@ -78,7 +81,7 @@ roudix/
 └── modules/
     ├── desktop/                     # Desktop environment modules (NixOS-level)
     │   ├── default.nix              # Desktop option (roudix.desktop.type)
-    │   ├── niri.nix                 # Niri + UWSM + polkit
+    │   ├── niri.nix                 # Niri + polkit
     │   ├── hyprland.nix             # Hyprland + UWSM + polkit + xdg-portal
     │   ├── gnome.nix                # GNOME
     │   └── kde.nix                  # KDE Plasma 6 + plasma-login-manager
@@ -89,7 +92,7 @@ roudix/
     │   ├── boot.nix                 # Limine bootloader + multi-OS entries
     │   ├── boot.local.nix           # gitignored — your personal boot entries
     │   ├── boot.local.nix.example   # copy this to boot.local.nix to get started
-    │   ├── chromium.nix             # Chromium browser selection (roudix.chromium)
+    │   ├── browser.nix              # Browser selection (roudix.browsers + roudix.zen.enable)
     │   ├── common.nix               # Shared system config (all hosts)
     │   ├── cpu.nix                  # CPU configuration (Intel/AMD microcode)
     │   ├── environment.nix          # Environment variables
@@ -101,6 +104,7 @@ roudix/
     │   ├── kernel.nix               # CachyOS kernel variant selection
     │   ├── pipewire.nix             # PipeWire audio configuration
     │   ├── update.nix               # Flake update configuration
+    │   ├── version.nix              # Roudix OS branding (os-release, distroName)
     │   ├── virtualization.nix       # QEMU/KVM (disabled by default)
     │   └── vm-guest.nix             # VM guest optimizations (clipboard, QEMU agent, Spice)
     │
@@ -116,7 +120,14 @@ roudix/
         └── ssh.nix                  # SSH + GitHub
 ```
 
+## Personal dotfiles
+
+Personal config files live in `dotfiles/perso/` — they are gitignored (except for `dotfiles/perso/README.md`) and never touched by `git pull` or the auto-updater.
+
+See [`dotfiles/perso/README.md`](dotfiles/perso/README.md) for structure and usage.
+
 ---
+
 
 ## Flake inputs
 
@@ -152,7 +163,7 @@ Switch desktop at any time with `roudix-switch <de>` or the **Roudix Desktop Swi
 | Value | Desktop | Notes |
 |-------|---------|-------|
 | `niri` | Niri + Noctalia | Default — scrollable tiling Wayland |
-| `hyprland` | Hyprland + Noctalia | Dynamic tiling Wayland |
+| `hyprland` | Hyprland + Noctalia | Dynamic tiling Wayland — launched via UWSM |
 | `gnome` | GNOME 49.4 |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 
@@ -187,6 +198,7 @@ roudix-switch kde
 - Limine bootloader — modern, fast, multi-disk support
 - Automatic UEFI entry rename to "Roudix"
 - Multi-OS boot menu (Windows, other Linux distros on separate ESPs)
+- Boot label shows Roudix name + NixOS release version
 
 **Gaming**
 - Steam + Proton-GE + Gamescope session
@@ -209,11 +221,11 @@ roudix-switch kde
 - GDM display manager
 
 **Desktop (Hyprland)**
-- Hyprland dynamic tiling Wayland compositor
+- Hyprland dynamic tiling Wayland compositor launched via UWSM
 - Noctalia modern shell
 - xdg-desktop-portal-hyprland + gtk portal
 - Capitaine Cursors White
-- GNOME Polkit agent
+- GNOME Polkit agent (started via systemd user service)
 - swww wallpaper daemon
 - grimblast screenshots
 
@@ -236,9 +248,9 @@ roudix-switch kde
 - Adblock + hide podcasts extensions
 
 **Browser**
-- Configurable Chromium-based browser via `roudix.chromium` option
-- Supports `brave`, `helium` (via helium-nix flake), and `vivaldi` (with ffmpeg codecs)
-- Vivaldi automatically pulls `vivaldi-ffmpeg-codecs` for H.264/AAC support
+- Configurable browser list via `roudix.browsers` option
+- Supports `brave`, `helium` (via helium-nix flake), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, or `[]` for none
+- Zen Browser available separately via `roudix.zen.enable = true` (disabled by default)
 
 **Other**
 - OBS Studio with pipewire + vkcapture plugins
@@ -318,7 +330,8 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   hardware.myGpu      = "amd";                # "amd", "nvidia" or "intel"
   hardware.myCpu      = "intel";              # "intel" or "amd"
   hardware.myKernel   = "cachyos-lts-lto-v3"; # see below
-  roudix.chromium     = "helium";             # "brave", "helium" or "vivaldi"
+  roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
+  roudix.zen.enable   = false;                # set to true to also install Zen Browser
 
   # ── Locale / Timezone ───────────────────────────────────────────────────────
   time.timeZone                   = "Europe/Brussels"; # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -378,7 +391,7 @@ Edit `hosts/roudix/local.nix` to match your hardware:
 
 > **Note:** `environment.sessionVariables.TZ` must always match `time.timeZone` — they both control the timezone, one at the system level and one at the session level.
 
-Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfiles, aliases...):
+Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfiles, aliases, fastfetch...):
 
 ```nix
 { pkgs, lib, osConfig, ... }:
@@ -386,6 +399,8 @@ Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfi
   # home.packages = with pkgs; [ vlc telegram-desktop ];
 }
 ```
+
+> See `home/local.nix.example` for all available override options including fastfetch customization.
 
 > All three `local.nix` files and `boot.local.nix` are listed in `.gitignore` — they will never be overwritten by a `git pull`.
 
@@ -502,6 +517,7 @@ roudix.virtualization.enable = false;  # enable for QEMU/KVM
 roudix.vmGuest.enable        = true;   # enable only inside a VM
 roudix.hosts.gtaFix.enable   = true;   # block BattlEye telemetry (GTA fix)
 roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
+roudix.zen.enable            = false;  # install Zen Browser (disabled by default)
 ```
 
 > **Reminder:** If you set `roudix.autoupdate.enable = true`, also configure the interval:
@@ -509,7 +525,40 @@ roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
 > roudix.autoupdate.interval = "1h"; # 1h, 6h, 12h, 24h...
 > ```
 
-### 9. Build
+### 9. Customize fastfetch (optional)
+
+By default Roudix shows its ASCII logo in fastfetch. You can override it in `home/local.nix` without touching git:
+
+```nix
+# Use a custom image (requires kitty terminal)
+programs.fastfetch.settings.logo = {
+  type = "kitty-direct";
+  source = "/home/youruser/Pictures/my-logo.png";
+  padding = { top = 1; left = 3; };
+  width = 38;
+};
+
+# Use a custom ASCII file
+programs.fastfetch.settings.logo = {
+  type = "file";
+  source = "/home/youruser/.config/fastfetch/my-logo.txt";
+  padding = { top = 1; left = 3; };
+  width = 38;
+};
+
+# Override the entire fastfetch config (replaces everything)
+programs.fastfetch.settings = lib.mkForce {
+  "$schema" = "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json";
+  logo = { ... };
+  display = { separator = "  "; color = "33"; };
+  modules = [ ... ];
+};
+```
+
+> `lib.mkForce` overwrites the entire Roudix default config. Without it, your keys are merged with the defaults.
+> See `home/local.nix.example` for more examples.
+
+### 10. Build
 
 > **If flakes and nix-command are not enabled yet** (fresh NixOS install):
 
@@ -531,8 +580,7 @@ Once built, use the fish aliases for all future operations.
 
 When `roudix.autoupdate.enable = true`, the system checks GitHub every hour (and 5 min after boot).
 If new commits are detected on `main`, it pulls and runs `nh os boot path:...` — the new config applies on next reboot.
-Local changes in `dotfiles/` are automatically stashed before the pull and restored after, so your personal dotfile tweaks are never lost.
-Your `local.nix` files, `username.nix` and `hardware-configuration.nix` are gitignored and never touched by the pull.
+Your `local.nix` files, `username.nix`, `hardware-configuration.nix` and everything under `dotfiles/perso/` are gitignored and never touched by the pull.
 
 To configure the interval or branch, override in `local.nix`:
 

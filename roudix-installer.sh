@@ -120,6 +120,7 @@ success "hardware-configuration.nix generated."
 # ── Copy local.nix ────────────────────────────────────────────────────────────
 info "Creating local.nix from example..."
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
+cp home/local.nix.example home/local.nix
 success "local.nix created."
 
 # ── Copy boot.local.nix ───────────────────────────────────────────────────────
@@ -178,6 +179,10 @@ pick "Browser:" BROWSER \
   "brave|Brave" \
   "helium|Helium" \
   "vivaldi|Vivaldi"
+
+pick "Install Zen Browser?" ZEN \
+  "false|No" \
+  "true|Yes"
 
 pick "Desktop environment:" DE \
   "niri|Niri" \
@@ -388,7 +393,8 @@ info "Writing configuration to local.nix..."
 sed -i "s/hardware\.myGpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/roudix/local.nix
 sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/roudix/local.nix
 sed -i "s/hardware\.myKernel[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKernel = \"${KERNEL}\"/"  hosts/roudix/local.nix
-sed -i "s/roudix\.chromium[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/"  hosts/roudix/local.nix
+sed -i "s/roudix\.browsers[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.browsers = [\"${BROWSER}\"]/"    hosts/roudix/local.nix
+sed -i -E "s/roudix\.zen\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.enable           = ${ZEN}/" hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.shell = \"${SHELL_DEFAULT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
@@ -415,6 +421,7 @@ echo -e "
   ${BOLD}CPU           :${NC} $CPU
   ${BOLD}Kernel        :${NC} $KERNEL
   ${BOLD}Browser       :${NC} $BROWSER
+  ${BOLD}Zen Browser   :${NC} $ZEN
   ${BOLD}Desktop       :${NC} $DE
   ${BOLD}Shell         :${NC} $SHELL_DEFAULT
   ${BOLD}VM Guest      :${NC} $VM_GUEST
