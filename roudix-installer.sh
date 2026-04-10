@@ -127,6 +127,28 @@ info "Creating boot.local.nix from example..."
 cp modules/system/boot.local.nix.example modules/system/boot.local.nix
 success "boot.local.nix created."
 
+echo -e "
+${BOLD}══════════════════════════════════════${NC}
+${CYAN}${BOLD}  Multi-boot configuration${NC}
+${BOLD}══════════════════════════════════════${NC}
+
+  If you have other operating systems installed (Windows, another Linux...),
+  you need to add their boot entries in:
+
+  ${CYAN}modules/system/boot.local.nix${NC}
+
+  Get your ESP PARTUUIDs with:
+  ${CYAN}lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID${NC}
+
+  Look for partitions with type ${BOLD}vfat${NC} and label ${BOLD}EFI System Partition${NC}.
+  Then replace the placeholder UUIDs in boot.local.nix.
+
+  If you only have NixOS, leave the file as-is.
+  ${YELLOW}${BOLD}See the README § 'Configure Limine multi-boot' for full instructions.${NC}
+${BOLD}══════════════════════════════════════${NC}"
+
+read -rp "Press Enter to continue..."
+
 # ── Configuration questions ───────────────────────────────────────────────────
 echo -e "\n${BOLD}══════════════════════════════════════${NC}"
 info "Hardware & software configuration"
