@@ -359,7 +359,7 @@ pick "System locale:" LOCALE \
   "el_GR.UTF-8|Ελληνικά (Ελλάδα)" \
   "C.UTF-8|C (POSIX minimal)"
 
-pick "Enable GTA Online fix? (blocks IP causing long loading times)" GTA_FIX \
+pick "Enable GTA Online fix? (blocks IP to play on linux)" GTA_FIX \
   "false|No" \
   "true|Yes"
 
@@ -454,7 +454,7 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
     warn "Reboot required to apply the new configuration."
   fi
 
-  read -rp "Reboot now? [y/N]: " reboot_now
+  read -rp "Reboot now? [Y/n]: " reboot_now
   if [[ "$reboot_now" =~ ^[Yy]$ ]]; then
     sudo reboot
   fi
@@ -462,7 +462,7 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
 else
   warn "You can apply it later manually."
   echo -e "  ${CYAN}cd $INSTALL_DIR${NC}"
-  echo -e "  ${CYAN}sudo nixos-rebuild switch --flake .#roudix --accept-flake-config${NC}"
+  echo -e "  ${CYAN}sudo nixos-rebuild boot --flake path:${pwd}#roudix --accept-flake-config${NC}"
   echo ""
   warn "Reboot required after applying the configuration."
 fi
