@@ -22,7 +22,7 @@ let
     VERSION_ID        = cfg.release;
     BUILD_ID          = cfg.version;
     PRETTY_NAME       = "${DISTRO_NAME} ${cfg.version}";
-    LOGO              = "nixos-logo";
+    LOGO              = "roudix-logo";
     DOCUMENTATION_URL = "";
     SUPPORT_URL       = "";
     BUG_REPORT_URL    = "";

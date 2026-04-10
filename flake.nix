@@ -88,6 +88,8 @@
       modules = [
         nix-flatpak.nixosModules.nix-flatpak
         ./hosts/roudix/configuration.nix
+        ./version.nix
+        ./branding.nix
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
