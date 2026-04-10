@@ -7,15 +7,27 @@
 { lib, ... }:
 {
   # ── Desktop ───────────────────────────────────────────────────────────────
-  roudix.desktop.type = "niri";               # "niri", "gnome" or "kde"
+  roudix.desktop.type = "niri";               # "niri", "gnome", "kde" or "hyprland"
 
   # ── Browser ───────────────────────────────────────────────────────────────
-  roudix.chromium = "helium";                 # "brave", "helium" or "vivaldi"
+  roudix.chromium = "helium";                 # "brave", "helium", "vivaldi" or "none"
 
   # ── Hardware ──────────────────────────────────────────────────────────────
   hardware.myGpu    = "amd";                  # "amd", "nvidia" or "intel"
-  hardware.myCpu    = "intel";                # "intel" or "amd"
-  hardware.myKernel = "cachyos-lts-lto-v3";  # see README for all variants
+  hardware.myCpu    = "intel";               # "intel" or "amd"
+  hardware.myKernel = "cachyos-lts-lto-v3"; # see README for all variants
+
+  # ── Optional modules ──────────────────────────────────────────────────────
+  roudix.gaming.enable        = true;         # disable to skip Steam, Wine, etc.
+  roudix.flatpak.enable       = false;        # enable Flatpak support
+  roudix.virtualization.enable = false;       # enable libvirt / virt-manager
+  roudix.vmGuest.enable       = false;        # enable only inside a VM
+  roudix.autoupdate.enable    = true;         # automatic NixOS updates
+  roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
+
+  # ── Misc ──────────────────────────────────────────────────────────────────
+  roudix.hosts.gtaFix.enable  = false;      # fix GTA Online to play on linux (but your friends need to block battleye telemetry via /etc/hosts or if on windows in C:\Windows\System32\drivers\etc\hosts)
+  # roudix.autoupdate.branch   = "main";
 
   # ── Disk (replace with your own UUID) ─────────────────────────────────────
   # Run: lsblk -f
@@ -24,13 +36,4 @@
   #   fsType = "btrfs";
   #   options = [ "defaults" "nofail" ];
   # };
-
-  # ── Optional modules ──────────────────────────────────────────────────────
-  # roudix.virtualization.enable = true;
-  # roudix.flatpak.enable       = true;
-  # roudix.vmGuest.enable       = true; # enable only inside a VM
-  # roudix.hosts.gtaFix.enable   = true;
-  # roudix.autoupdate.enable   = false;
-  # roudix.autoupdate.interval = "6h";   # check every 6 hours instead of 1h
-  # roudix.autoupdate.branch   = "main"; # branch to track
 }

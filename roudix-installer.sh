@@ -166,6 +166,10 @@ pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
   "true|Yes" \
   "false|No"
 
+pick "Enable GTA Online fix? (blocks IP to play on linux)" GTA_FIX \
+  "false|No" \
+  "true|Yes"
+
 pick "Enable Flatpak?" FLATPAK \
   "false|No" \
   "true|Yes"
@@ -193,30 +197,13 @@ sed -i "s/hardware\.myCpu\s*=\s*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"    
 sed -i "s/hardware\.myKernel\s*=\s*\"[^\"]*\"/hardware.myKernel  = \"${KERNEL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.chromium\s*=\s*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/"  hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type\s*=\s*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
-
-if [[ "$VM_GUEST" == "true" ]]; then
-  sed -i "s|#\s*roudix\.vmGuest\.enable\s*=\s*true;|roudix.vmGuest.enable       = true;|" hosts/roudix/local.nix
-fi
-
-if [[ "$GAMING" == "false" ]]; then
-  sed -i "s|#\s*roudix\.gaming\.enable\s*=\s*true;|roudix.gaming.enable        = false;|" hosts/roudix/local.nix
-fi
-
-if [[ "$FLATPAK" == "true" ]]; then
-  sed -i "s|#\s*roudix\.flatpak\.enable\s*=\s*true;|roudix.flatpak.enable       = true;|" hosts/roudix/local.nix
-fi
-
-if [[ "$VIRTUALIZATION" == "true" ]]; then
-  sed -i "s|#\s*roudix\.virtualization\.enable\s*=\s*true;|roudix.virtualization.enable = true;|" hosts/roudix/local.nix
-fi
-
-if [[ "$AUTOUPDATE" == "false" ]]; then
-  sed -i "s|#\s*roudix\.autoupdate\.enable\s*=\s*false;|roudix.autoupdate.enable    = false;|" hosts/roudix/local.nix
-fi
-
-if [[ "$AUTOUPDATE" == "true" && "$AUTOUPDATE_INTERVAL" != "1h" ]]; then
-  sed -i "s|#\s*roudix\.autoupdate\.interval\s*=\s*\"[^\"]*\";|roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\";|" hosts/roudix/local.nix
-fi
+sed -i "s|roudix\.vmGuest\.enable\s*=\s*\(true\|false\)|roudix.vmGuest.enable       = ${VM_GUEST}|" hosts/roudix/local.nix
+sed -i "s|roudix\.gaming\.enable\s*=\s*\(true\|false\)|roudix.gaming.enable        = ${GAMING}|" hosts/roudix/local.nix
+sed -i "s|roudix\.hosts\.gtaFix\.enable\s*=\s*\(true\|false\)|roudix.hosts.gtaFix.enable  = ${GTA_FIX}|" hosts/roudix/local.nix
+sed -i "s|roudix\.flatpak\.enable\s*=\s*\(true\|false\)|roudix.flatpak.enable       = ${FLATPAK}|" hosts/roudix/local.nix
+sed -i "s|roudix\.virtualization\.enable\s*=\s*\(true\|false\)|roudix.virtualization.enable = ${VIRTUALIZATION}|" hosts/roudix/local.nix
+sed -i "s|roudix\.autoupdate\.enable\s*=\s*\(true\|false\)|roudix.autoupdate.enable    = ${AUTOUPDATE}|" hosts/roudix/local.nix
+sed -i "s|roudix\.autoupdate\.interval\s*=\s*\"[^\"]*\"|roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"|" hosts/roudix/local.nix
 
 success "local.nix configured."
 
@@ -233,6 +220,7 @@ echo -e "
   ${BOLD}Desktop       :${NC} $DE
   ${BOLD}VM Guest      :${NC} $VM_GUEST
   ${BOLD}Gaming        :${NC} $GAMING
+  ${BOLD}GTA Fix       :${NC} $GTA_FIX
   ${BOLD}Flatpak       :${NC} $FLATPAK
   ${BOLD}Virtualization:${NC} $VIRTUALIZATION
   ${BOLD}Auto-update   :${NC} $AUTOUPDATE $([ "$AUTOUPDATE" == "true" ] && echo "(every $AUTOUPDATE_INTERVAL)")
