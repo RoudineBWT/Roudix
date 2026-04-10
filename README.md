@@ -514,13 +514,13 @@ roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
 > **If flakes and nix-command are not enabled yet** (fresh NixOS install):
 
 ```bash
-nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#git -c sudo nixos-rebuild switch --flake path:$(pwd)#roudix
+nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#git -c sudo nixos-rebuild boot --flake path:$(pwd)#roudix --accept-flake-config
 ```
 
 > **Otherwise:**
 
 ```bash
-sudo nixos-rebuild switch --flake path:$(pwd)#roudix
+sudo nixos-rebuild boot --flake path:$(pwd)#roudix --accept-flake-config
 ```
 
 Once built, use the fish aliases for all future operations.
