@@ -1,4 +1,4 @@
-{ username, ... }:
+{ username, dotfiles, ... }:
 {
   # ── Fastfetch ────────────────────────────────────────────────────────────
   programs.fastfetch = {
