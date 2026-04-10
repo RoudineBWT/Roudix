@@ -26,7 +26,7 @@
   roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
 
   # ── Misc ──────────────────────────────────────────────────────────────────
-  roudix.hosts.gtaFix.enable  = false;      # fix GTA Online to play on linux (but your friends need to block battleye telemetry via /etc/hosts or if on windows in C:\Windows\System32\drivers\etc\hosts)
+  roudix.hosts.gtaFix.enable  = false;      # fix GTA Online long loading times
   # roudix.autoupdate.branch   = "main";
 
   # ── Disk (replace with your own UUID) ─────────────────────────────────────

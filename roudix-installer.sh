@@ -166,7 +166,7 @@ pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
   "true|Yes" \
   "false|No"
 
-pick "Enable GTA Online fix? (blocks IP to play on linux)" GTA_FIX \
+pick "Enable GTA Online fix? (blocks IP causing long loading times)" GTA_FIX \
   "false|No" \
   "true|Yes"
 
@@ -192,18 +192,18 @@ fi
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
 
-sed -i "s/hardware\.myGpu\s*=\s*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/roudix/local.nix
-sed -i "s/hardware\.myCpu\s*=\s*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/roudix/local.nix
-sed -i "s/hardware\.myKernel\s*=\s*\"[^\"]*\"/hardware.myKernel  = \"${KERNEL}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.chromium\s*=\s*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/"  hosts/roudix/local.nix
-sed -i "s/roudix\.desktop\.type\s*=\s*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
-sed -i "s|roudix\.vmGuest\.enable\s*=\s*\(true\|false\)|roudix.vmGuest.enable       = ${VM_GUEST}|" hosts/roudix/local.nix
-sed -i "s|roudix\.gaming\.enable\s*=\s*\(true\|false\)|roudix.gaming.enable        = ${GAMING}|" hosts/roudix/local.nix
-sed -i "s|roudix\.hosts\.gtaFix\.enable\s*=\s*\(true\|false\)|roudix.hosts.gtaFix.enable  = ${GTA_FIX}|" hosts/roudix/local.nix
-sed -i "s|roudix\.flatpak\.enable\s*=\s*\(true\|false\)|roudix.flatpak.enable       = ${FLATPAK}|" hosts/roudix/local.nix
-sed -i "s|roudix\.virtualization\.enable\s*=\s*\(true\|false\)|roudix.virtualization.enable = ${VIRTUALIZATION}|" hosts/roudix/local.nix
-sed -i "s|roudix\.autoupdate\.enable\s*=\s*\(true\|false\)|roudix.autoupdate.enable    = ${AUTOUPDATE}|" hosts/roudix/local.nix
-sed -i "s|roudix\.autoupdate\.interval\s*=\s*\"[^\"]*\"|roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"|" hosts/roudix/local.nix
+sed -i "s/hardware\.myGpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/roudix/local.nix
+sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/roudix/local.nix
+sed -i "s/hardware\.myKernel[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKernel = \"${KERNEL}\"/"  hosts/roudix/local.nix
+sed -i "s/roudix\.chromium[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/"  hosts/roudix/local.nix
+sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.hosts\.gtaFix\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.hosts.gtaFix.enable  = ${GTA_FIX}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.flatpak.enable       = ${FLATPAK}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.virtualization.enable = ${VIRTUALIZATION}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.autoupdate.enable    = ${AUTOUPDATE}/" hosts/roudix/local.nix
+sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
 
 success "local.nix configured."
 
