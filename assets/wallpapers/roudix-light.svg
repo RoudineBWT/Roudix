@@ -1,0 +1,77 @@
+<svg width="2560" height="1440" viewBox="0 0 2560 1440" xmlns="http://www.w3.org/2000/svg">
+<style>
+  .bg { fill: #eff1f5; }
+  .h1 { stroke: #ccd0da; fill: none; stroke-width: 1; }
+  .h2 { stroke: #bcc0cc; fill: none; stroke-width: 1; opacity: 0.5; }
+  .acc1 { fill: #fe640b; opacity: 0.08; }
+  .acc2 { fill: #e64553; opacity: 0.07; }
+  .acc3 { fill: #dd7878; opacity: 0.06; }
+  .acc4 { fill: #8839ef; opacity: 0.05; }
+  .glow1 { fill: #fe640b; opacity: 0.05; }
+  .glow2 { fill: #e64553; opacity: 0.04; }
+  .line { stroke: #ccd0da; stroke-width: 0.8; fill: none; opacity: 0.8; }
+  .dot { fill: #acb0be; }
+  .dot-acc { fill: #fe640b; }
+  .dot-acc2 { fill: #e64553; }
+</style>
+<rect width="2560" height="1440" class="bg"/>
+<defs>
+  <pattern id="hgl" x="0" y="0" width="80" height="92.4" patternUnits="userSpaceOnUse">
+    <polygon points="40,4 76,24 76,68 40,88 4,68 4,24" class="h1"/>
+  </pattern>
+  <pattern id="hgl2" x="40" y="46.2" width="80" height="92.4" patternUnits="userSpaceOnUse">
+    <polygon points="40,4 76,24 76,68 40,88 4,68 4,24" class="h2"/>
+  </pattern>
+</defs>
+<rect width="2560" height="1440" fill="url(#hgl)"/>
+<rect width="2560" height="1440" fill="url(#hgl2)"/>
+<polygon points="0,0 600,0 300,520" class="acc4"/>
+<polygon points="2560,0 1900,0 2200,480" class="acc2"/>
+<polygon points="0,1440 700,1440 350,900" class="acc1"/>
+<polygon points="2560,1440 1800,1440 2200,960" class="acc3"/>
+<polygon points="1280,0 1560,400 1000,400" class="acc2"/>
+<polygon points="1280,1440 1000,1040 1560,1040" class="acc1"/>
+<circle cx="400" cy="300" r="500" class="glow1"/>
+<circle cx="2160" cy="1140" r="500" class="glow2"/>
+<circle cx="1280" cy="720" r="450" class="glow1"/>
+<line x1="0" y1="200" x2="2560" y2="800" class="line"/>
+<line x1="0" y1="400" x2="2560" y2="1000" class="line" style="opacity:0.4"/>
+<line x1="0" y1="900" x2="2560" y2="300" class="line"/>
+<line x1="0" y1="1100" x2="2560" y2="500" class="line" style="opacity:0.4"/>
+<line x1="640" y1="0" x2="1920" y2="1440" class="line" style="opacity:0.5"/>
+<line x1="1280" y1="0" x2="0" y2="1440" class="line" style="opacity:0.5"/>
+<line x1="1280" y1="0" x2="2560" y2="1440" class="line" style="opacity:0.5"/>
+<g class="dot">
+  <circle cx="160" cy="160" r="2"/><circle cx="320" cy="160" r="2"/><circle cx="480" cy="160" r="2"/><circle cx="640" cy="160" r="2"/><circle cx="800" cy="160" r="2"/><circle cx="960" cy="160" r="2"/><circle cx="1120" cy="160" r="2"/><circle cx="1280" cy="160" r="2"/><circle cx="1440" cy="160" r="2"/><circle cx="1600" cy="160" r="2"/><circle cx="1760" cy="160" r="2"/><circle cx="1920" cy="160" r="2"/><circle cx="2080" cy="160" r="2"/><circle cx="2240" cy="160" r="2"/><circle cx="2400" cy="160" r="2"/>
+  <circle cx="160" cy="320" r="2"/><circle cx="320" cy="320" r="2"/><circle cx="480" cy="320" r="2"/><circle cx="640" cy="320" r="2"/><circle cx="800" cy="320" r="2"/><circle cx="960" cy="320" r="2"/><circle cx="1120" cy="320" r="2"/><circle cx="1280" cy="320" r="2"/><circle cx="1440" cy="320" r="2"/><circle cx="1600" cy="320" r="2"/><circle cx="1760" cy="320" r="2"/><circle cx="1920" cy="320" r="2"/><circle cx="2080" cy="320" r="2"/><circle cx="2240" cy="320" r="2"/><circle cx="2400" cy="320" r="2"/>
+  <circle cx="160" cy="480" r="2"/><circle cx="320" cy="480" r="2"/><circle cx="480" cy="480" r="2"/><circle cx="640" cy="480" r="2"/><circle cx="800" cy="480" r="2"/><circle cx="960" cy="480" r="2"/><circle cx="1120" cy="480" r="2"/><circle cx="1280" cy="480" r="2"/><circle cx="1440" cy="480" r="2"/><circle cx="1600" cy="480" r="2"/><circle cx="1760" cy="480" r="2"/><circle cx="1920" cy="480" r="2"/><circle cx="2080" cy="480" r="2"/><circle cx="2240" cy="480" r="2"/><circle cx="2400" cy="480" r="2"/>
+  <circle cx="160" cy="640" r="2"/><circle cx="320" cy="640" r="2"/><circle cx="480" cy="640" r="2"/><circle cx="640" cy="640" r="2"/><circle cx="800" cy="640" r="2"/><circle cx="960" cy="640" r="2"/><circle cx="1120" cy="640" r="2"/><circle cx="1280" cy="640" r="2"/><circle cx="1440" cy="640" r="2"/><circle cx="1600" cy="640" r="2"/><circle cx="1760" cy="640" r="2"/><circle cx="1920" cy="640" r="2"/><circle cx="2080" cy="640" r="2"/><circle cx="2240" cy="640" r="2"/><circle cx="2400" cy="640" r="2"/>
+  <circle cx="160" cy="800" r="2"/><circle cx="320" cy="800" r="2"/><circle cx="480" cy="800" r="2"/><circle cx="640" cy="800" r="2"/><circle cx="800" cy="800" r="2"/><circle cx="960" cy="800" r="2"/><circle cx="1120" cy="800" r="2"/><circle cx="1280" cy="800" r="2"/><circle cx="1440" cy="800" r="2"/><circle cx="1600" cy="800" r="2"/><circle cx="1760" cy="800" r="2"/><circle cx="1920" cy="800" r="2"/><circle cx="2080" cy="800" r="2"/><circle cx="2240" cy="800" r="2"/><circle cx="2400" cy="800" r="2"/>
+  <circle cx="160" cy="960" r="2"/><circle cx="320" cy="960" r="2"/><circle cx="480" cy="960" r="2"/><circle cx="640" cy="960" r="2"/><circle cx="800" cy="960" r="2"/><circle cx="960" cy="960" r="2"/><circle cx="1120" cy="960" r="2"/><circle cx="1280" cy="960" r="2"/><circle cx="1440" cy="960" r="2"/><circle cx="1600" cy="960" r="2"/><circle cx="1760" cy="960" r="2"/><circle cx="1920" cy="960" r="2"/><circle cx="2080" cy="960" r="2"/><circle cx="2240" cy="960" r="2"/><circle cx="2400" cy="960" r="2"/>
+  <circle cx="160" cy="1120" r="2"/><circle cx="320" cy="1120" r="2"/><circle cx="480" cy="1120" r="2"/><circle cx="640" cy="1120" r="2"/><circle cx="800" cy="1120" r="2"/><circle cx="960" cy="1120" r="2"/><circle cx="1120" cy="1120" r="2"/><circle cx="1280" cy="1120" r="2"/><circle cx="1440" cy="1120" r="2"/><circle cx="1600" cy="1120" r="2"/><circle cx="1760" cy="1120" r="2"/><circle cx="1920" cy="1120" r="2"/><circle cx="2080" cy="1120" r="2"/><circle cx="2240" cy="1120" r="2"/><circle cx="2400" cy="1120" r="2"/>
+  <circle cx="160" cy="1280" r="2"/><circle cx="320" cy="1280" r="2"/><circle cx="480" cy="1280" r="2"/><circle cx="640" cy="1280" r="2"/><circle cx="800" cy="1280" r="2"/><circle cx="960" cy="1280" r="2"/><circle cx="1120" cy="1280" r="2"/><circle cx="1280" cy="1280" r="2"/><circle cx="1440" cy="1280" r="2"/><circle cx="1600" cy="1280" r="2"/><circle cx="1760" cy="1280" r="2"/><circle cx="1920" cy="1280" r="2"/><circle cx="2080" cy="1280" r="2"/><circle cx="2240" cy="1280" r="2"/><circle cx="2400" cy="1280" r="2"/>
+</g>
+<circle cx="480" cy="320" r="3" class="dot-acc"/><circle cx="960" cy="480" r="3" class="dot-acc2"/><circle cx="1600" cy="320" r="3" class="dot-acc"/><circle cx="2080" cy="480" r="3" class="dot-acc2"/><circle cx="320" cy="800" r="3" class="dot-acc2"/><circle cx="1920" cy="960" r="3" class="dot-acc2"/><circle cx="640" cy="1120" r="3" class="dot-acc"/><circle cx="1760" cy="1120" r="3" class="dot-acc2"/><circle cx="2240" cy="800" r="3" class="dot-acc"/>
+<g transform="translate(1280,720)">
+  <g id="arml">
+    <rect x="-18" y="-195" width="36" height="138" rx="18" fill="#fe640b" opacity="0.85"/>
+    <polygon points="0,-216 16,-188 0,-165 -16,-188" fill="#dd7878" opacity="0.85"/>
+    <g transform="rotate(-30) translate(0,-126)">
+      <rect x="-13" y="-63" width="26" height="66" rx="13" transform="rotate(30)" fill="#e64553" opacity="0.85"/>
+      <polygon points="0,-76 10,-54 0,-35 -10,-54" transform="rotate(30)" fill="#dd7878" opacity="0.85"/>
+    </g>
+    <g transform="rotate(30) translate(0,-126)">
+      <rect x="-13" y="-63" width="26" height="66" rx="13" transform="rotate(-30)" fill="#e64553" opacity="0.85"/>
+      <polygon points="0,-76 10,-54 0,-35 -10,-54" transform="rotate(-30)" fill="#dd7878" opacity="0.85"/>
+    </g>
+  </g>
+  <use href="#arml" transform="rotate(60)"/>
+  <use href="#arml" transform="rotate(120)"/>
+  <use href="#arml" transform="rotate(180)"/>
+  <use href="#arml" transform="rotate(240)"/>
+  <use href="#arml" transform="rotate(300)"/>
+  <circle cx="0" cy="0" r="52" fill="none" stroke="#dce0e8" stroke-width="22" opacity="0.95"/>
+  <circle cx="0" cy="0" r="30" fill="none" stroke="#e64553" stroke-width="13" opacity="0.85"/>
+  <circle cx="0" cy="0" r="12" fill="#fe640b" opacity="0.85"/>
+</g>
+</svg>
