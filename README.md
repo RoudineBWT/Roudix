@@ -1,5 +1,5 @@
 <div align="center">
-<img src="logo/roudix-logo.png" width="250"/>
+<img src="assets/logo/roudix-logo.png" width="250"/>
 
 # Roudix
 ### NixOS configuration — Niri · Hyprland · Noctalia · CachyOS Kernel
