@@ -45,7 +45,7 @@
     };
 
     # ── Rename boot profile label ─────────────────────────────────────────────
-    system.nixos.label = lib.mkForce "${config.system.nixos.release}";
+    system.nixos.label = lib.mkForce "${config.system.nixos.version}";
 
     # ── Rename UEFI entry to "Roudix" ─────────────────────────────────────
     system.activationScripts.renameUefiEntry = {
