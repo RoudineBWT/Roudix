@@ -16,11 +16,12 @@ let
   osReleaseContents = {
     NAME              = DISTRO_NAME;
     ID                = DISTRO_ID;
+    ID_LIKE           = "nixos";
     VERSION           = "${cfg.release} (${cfg.codeName})";
     VERSION_CODENAME  = cfg.codeName;
     VERSION_ID        = cfg.release;
     BUILD_ID          = cfg.version;
-    PRETTY_NAME       = "${DISTRO_NAME} ${cfg.release} (${cfg.codeName})";
+    PRETTY_NAME       = "${DISTRO_NAME} ${cfg.version}";
     LOGO              = "nixos-logo";
     DOCUMENTATION_URL = "";
     SUPPORT_URL       = "";
