@@ -447,7 +447,7 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 Look for partitions with `vfat` filesystem type and `EFI system partition` label — those are your ESPs.
 
-**Edit `modules/system/boot.local.nix`** and replace the placeholder UUIDs:
+**Edit `modules/system/boot.local.nix`** , uncomment the block and replace the placeholder UUIDs:
 
 ```nix
 {
