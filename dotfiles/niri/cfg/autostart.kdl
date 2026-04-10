@@ -3,7 +3,7 @@
 
 spawn-at-startup "noctalia-shell" "--no-duplicate" // Launch Quickshell
 //spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1" "&" // Polkit
-//spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-at-startup "/run/current-system/sw/libexec/polkit-gnome-authentication-agent-1"
 spawn-at-startup "xwayland-satellite" // XWayland support
 spawn-at-startup "swww-daemon" // Wallpaper daemon
 spawn-at-startup "discord" // Launch Discord

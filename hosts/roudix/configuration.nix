@@ -2,6 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/system/version.nix
     ../../modules/system/binary-caches.nix
     ../../modules/system/shell.nix
     ../../modules/system/autoupdate.nix

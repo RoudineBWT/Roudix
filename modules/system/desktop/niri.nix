@@ -5,15 +5,6 @@ in
 lib.mkIf isNiri {
   programs.niri.enable = true;
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors.niri = {
-      prettyName = "Niri";
-      comment     = "Niri scrollable tiling compositor";
-      binPath     = "/run/current-system/sw/bin/niri";
-    };
-  };
-
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];

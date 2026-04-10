@@ -29,7 +29,7 @@
               # ── Catppuccin Mocha (thème CachyOS) ──────────────────────────
               graphicalTerminal = {
                 foreground      = "cdd6f4";
-                background      = "ff1e1e2e"; # fond opaque Mocha base
+                background      = "aa1e1e2e"; # background semi-transparent Mocha base
                 brightForeground = "cdd6f4";
                 brightBackground = "ff1e1e2e";
                 palette       = "1e1e2e;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;cdd6f4";
@@ -43,6 +43,9 @@
         then (import ./boot.local.nix).extraEntries or ""
         else "";
     };
+
+    # ── Rename boot profile label ─────────────────────────────────────────────
+    system.nixos.label = lib.mkForce "${config.system.nixos.release}";
 
     # ── Rename UEFI entry to "Roudix" ─────────────────────────────────────
     system.activationScripts.renameUefiEntry = {

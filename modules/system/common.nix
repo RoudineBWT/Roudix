@@ -18,16 +18,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # ── OS release ──────────────────────────────────────────────────────────
-  environment.etc."os-release".text = lib.mkForce ''
-    NAME="Roudix"
-    ID=nixos
-    VERSION="${config.system.nixos.version}"
-    VERSION_CODENAME="${config.system.nixos.codeName}"
-    PRETTY_NAME="Roudix ${config.system.nixos.version}"
-    HOME_URL="https://nixos.org/"
-  '';
-
   # ── Kernel ──────────────────────────────────────────────────────────────
   boot.kernelModules = [ "ntsync" ];
   boot.kernelParams = [ "zswap.enabled=0" ];

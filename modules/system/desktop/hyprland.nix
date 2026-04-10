@@ -5,6 +5,7 @@ in
 lib.mkIf isHyprland {
   programs.hyprland = {
     enable = true;
+    withUWSM = true;
     xwayland.enable = true;
   };
 
