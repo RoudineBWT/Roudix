@@ -50,7 +50,7 @@
     NH_FLAKE = "/home/${username}/.config/roudix";
   };
   i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
-  console.keyMap = lib.mkDefault "us-accentos";
+  console.keyMap = lib.mkDefault "us-acentos";
 
   # ── Fonts ───────────────────────────────────────────────────────────────
   fonts.packages = with pkgs; [
@@ -66,7 +66,7 @@
   users.users.${username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" "plugdev" "disk" "storage" "i2c" "bluetooth" "render" ];
-    shell = pkgs.fish;
+    shell = if config.roudix.shell == "bash" then pkgs.bash else pkgs.fish;
   };
 
   # ── System packages ─────────────────────────────────────────────────────

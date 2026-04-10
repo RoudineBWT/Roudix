@@ -35,6 +35,8 @@
   i18n.defaultLocale                   = "en_US.UTF-8";
   console.keyMap                       = "us-accentos";
 
+  # ── Shell ─────────────────────────────────────────────────────────────────
+  roudix.shell                         = "fish";        # "fish" or "bash"
 
   # ── Disk (replace with your own UUID) ─────────────────────────────────────
   # Run: lsblk -f

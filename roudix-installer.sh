@@ -158,6 +158,10 @@ pick "Desktop environment:" DE \
   "kde|KDE Plasma" \
   "hyprland|Hyprland"
 
+pick "Default shell:" SHELL_DEFAULT \
+  "fish|Fish — smart, user-friendly shell (recommended)" \
+  "bash|Bash — classic Unix shell"
+
 pick "Running inside a VM?" VM_GUEST \
   "false|No — bare metal install" \
   "true|Yes — enable VM guest optimizations"
@@ -359,6 +363,7 @@ sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     
 sed -i "s/hardware\.myKernel[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKernel = \"${KERNEL}\"/"  hosts/roudix/local.nix
 sed -i "s/roudix\.chromium[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.chromium    = \"${BROWSER}\"/"  hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.shell = \"${SHELL_DEFAULT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/roudix/local.nix
 sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
@@ -384,6 +389,7 @@ echo -e "
   ${BOLD}Kernel        :${NC} $KERNEL
   ${BOLD}Browser       :${NC} $BROWSER
   ${BOLD}Desktop       :${NC} $DE
+  ${BOLD}Shell         :${NC} $SHELL_DEFAULT
   ${BOLD}VM Guest      :${NC} $VM_GUEST
   ${BOLD}Gaming        :${NC} $GAMING
   ${BOLD}Timezone      :${NC} $TIMEZONE
