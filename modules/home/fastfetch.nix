@@ -10,8 +10,6 @@
       logo = {
         type = "file";
         source = "${dotfiles}/fastfetch/roudix.txt";
-        padding = { top = 1; left = 3; };
-        width = 57;
       };
 
       display = {
