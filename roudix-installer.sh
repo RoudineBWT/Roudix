@@ -166,6 +166,168 @@ pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
   "true|Yes" \
   "false|No"
 
+pick "Timezone:" TIMEZONE \
+  "Europe/Brussels|Belgique" \
+  "Europe/Paris|France" \
+  "Europe/London|Royaume-Uni" \
+  "Europe/Amsterdam|Pays-Bas" \
+  "Europe/Berlin|Allemagne" \
+  "Europe/Vienna|Autriche" \
+  "Europe/Zurich|Suisse" \
+  "Europe/Luxembourg|Luxembourg" \
+  "Europe/Madrid|Espagne" \
+  "Europe/Lisbon|Portugal" \
+  "Europe/Rome|Italie" \
+  "Europe/Warsaw|Pologne" \
+  "Europe/Prague|République Tchèque" \
+  "Europe/Bratislava|Slovaquie" \
+  "Europe/Budapest|Hongrie" \
+  "Europe/Bucharest|Roumanie" \
+  "Europe/Sofia|Bulgarie" \
+  "Europe/Athens|Grèce" \
+  "Europe/Helsinki|Finlande" \
+  "Europe/Stockholm|Suède" \
+  "Europe/Oslo|Norvège" \
+  "Europe/Copenhagen|Danemark" \
+  "Europe/Tallinn|Estonie" \
+  "Europe/Riga|Lettonie" \
+  "Europe/Vilnius|Lituanie" \
+  "Europe/Kiev|Ukraine" \
+  "Europe/Moscow|Russie (Moscou)" \
+  "Europe/Istanbul|Turquie" \
+  "Atlantic/Reykjavik|Islande" \
+  "Africa/Casablanca|Maroc" \
+  "Africa/Algiers|Algérie" \
+  "Africa/Tunis|Tunisie" \
+  "Africa/Cairo|Égypte" \
+  "Africa/Johannesburg|Afrique du Sud" \
+  "Africa/Lagos|Nigéria" \
+  "Africa/Nairobi|Kenya" \
+  "America/New_York|États-Unis (Est)" \
+  "America/Chicago|États-Unis (Centre)" \
+  "America/Denver|États-Unis (Montagne)" \
+  "America/Los_Angeles|États-Unis (Ouest)" \
+  "America/Anchorage|États-Unis (Alaska)" \
+  "Pacific/Honolulu|États-Unis (Hawaï)" \
+  "America/Toronto|Canada (Est)" \
+  "America/Vancouver|Canada (Ouest)" \
+  "America/Mexico_City|Mexique" \
+  "America/Bogota|Colombie" \
+  "America/Lima|Pérou" \
+  "America/Santiago|Chili" \
+  "America/Buenos_Aires|Argentine" \
+  "America/Sao_Paulo|Brésil (São Paulo)" \
+  "America/Caracas|Venezuela" \
+  "Asia/Dubai|Émirats Arabes Unis" \
+  "Asia/Riyadh|Arabie Saoudite" \
+  "Asia/Jerusalem|Israël" \
+  "Asia/Beirut|Liban" \
+  "Asia/Baghdad|Irak" \
+  "Asia/Tehran|Iran" \
+  "Asia/Karachi|Pakistan" \
+  "Asia/Kolkata|Inde" \
+  "Asia/Dhaka|Bangladesh" \
+  "Asia/Colombo|Sri Lanka" \
+  "Asia/Kathmandu|Népal" \
+  "Asia/Almaty|Kazakhstan" \
+  "Asia/Tashkent|Ouzbékistan" \
+  "Asia/Bangkok|Thaïlande" \
+  "Asia/Ho_Chi_Minh|Vietnam" \
+  "Asia/Jakarta|Indonésie (Ouest)" \
+  "Asia/Singapore|Singapour" \
+  "Asia/Kuala_Lumpur|Malaisie" \
+  "Asia/Manila|Philippines" \
+  "Asia/Shanghai|Chine" \
+  "Asia/Hong_Kong|Hong Kong" \
+  "Asia/Taipei|Taïwan" \
+  "Asia/Seoul|Corée du Sud" \
+  "Asia/Tokyo|Japon" \
+  "Australia/Perth|Australie (Ouest)" \
+  "Australia/Adelaide|Australie (Centre)" \
+  "Australia/Sydney|Australie (Est)" \
+  "Pacific/Auckland|Nouvelle-Zélande" \
+  "Pacific/Fiji|Fidji" \
+  "UTC|UTC"
+
+pick "Keyboard layout (console):" KEYMAP \
+  "us|English (US) QWERTY" \
+  "us-acentos|English (US) International (accents)" \
+  "uk|English (UK) QWERTY" \
+  "be-latin1|Belge AZERTY" \
+  "fr|Français AZERTY" \
+  "fr-latin9|Français AZERTY (latin9)" \
+  "fr_CH|Français Suisse QWERTZ" \
+  "de|Allemand QWERTZ" \
+  "de-latin1|Allemand QWERTZ (latin1)" \
+  "at|Autrichien QWERTZ" \
+  "ch|Suisse QWERTZ" \
+  "nl|Néerlandais QWERTY" \
+  "es|Espagnol QWERTY" \
+  "es-cp850|Espagnol QWERTY (cp850)" \
+  "pt-latin1|Portugais QWERTY (latin1)" \
+  "br-abnt2|Portugais Brésilien ABNT2" \
+  "it|Italien QWERTY" \
+  "it-latin1|Italien QWERTY (latin1)" \
+  "pl2|Polonais QWERTY" \
+  "ru|Russe" \
+  "ua|Ukrainien" \
+  "cz-lat2|Tchèque QWERTY (latin2)" \
+  "sk-qwerty|Slovaque QWERTY" \
+  "hu|Hongrois QWERTY" \
+  "ro|Roumain QWERTY" \
+  "trq|Turc Q" \
+  "trf|Turc F" \
+  "jp106|Japonais 106 touches" \
+  "sv-latin1|Suédois QWERTY (latin1)" \
+  "no-latin1|Norvégien QWERTY (latin1)" \
+  "dk-latin1|Danois QWERTY (latin1)" \
+  "fi-latin1|Finnois QWERTY (latin1)" \
+  "gr|Grec" \
+  "il|Hébreu" \
+  "arabic|Arabe" \
+  "dvorak|Dvorak (US)" \
+  "dvorak-l|Dvorak gauche" \
+  "dvorak-r|Dvorak droite" \
+  "colemak|Colemak"
+
+pick "System locale:" LOCALE \
+  "en_US.UTF-8|English (US)" \
+  "en_GB.UTF-8|English (UK)" \
+  "fr_BE.UTF-8|Français (Belgique)" \
+  "fr_FR.UTF-8|Français (France)" \
+  "fr_CH.UTF-8|Français (Suisse)" \
+  "de_DE.UTF-8|Deutsch (Deutschland)" \
+  "de_AT.UTF-8|Deutsch (Österreich)" \
+  "de_CH.UTF-8|Deutsch (Schweiz)" \
+  "nl_BE.UTF-8|Nederlands (België)" \
+  "nl_NL.UTF-8|Nederlands (Nederland)" \
+  "es_ES.UTF-8|Español (España)" \
+  "es_MX.UTF-8|Español (México)" \
+  "pt_PT.UTF-8|Português (Portugal)" \
+  "pt_BR.UTF-8|Português (Brasil)" \
+  "it_IT.UTF-8|Italiano (Italia)" \
+  "pl_PL.UTF-8|Polski (Polska)" \
+  "ru_RU.UTF-8|Русский (Россия)" \
+  "uk_UA.UTF-8|Українська (Україна)" \
+  "cs_CZ.UTF-8|Čeština (Česká republika)" \
+  "sk_SK.UTF-8|Slovenčina (Slovensko)" \
+  "hu_HU.UTF-8|Magyar (Magyarország)" \
+  "ro_RO.UTF-8|Română (România)" \
+  "tr_TR.UTF-8|Türkçe (Türkiye)" \
+  "ja_JP.UTF-8|日本語 (日本)" \
+  "zh_CN.UTF-8|中文 (中国大陆)" \
+  "zh_TW.UTF-8|中文 (台灣)" \
+  "ko_KR.UTF-8|한국어 (대한민국)" \
+  "ar_SA.UTF-8|العربية (المملكة العربية السعودية)" \
+  "he_IL.UTF-8|עברית (ישראל)" \
+  "hi_IN.UTF-8|हिन्दी (भारत)" \
+  "sv_SE.UTF-8|Svenska (Sverige)" \
+  "nb_NO.UTF-8|Norsk bokmål (Norge)" \
+  "da_DK.UTF-8|Dansk (Danmark)" \
+  "fi_FI.UTF-8|Suomi (Suomi)" \
+  "el_GR.UTF-8|Ελληνικά (Ελλάδα)" \
+  "C.UTF-8|C (POSIX minimal)"
+
 pick "Enable GTA Online fix? (blocks IP causing long loading times)" GTA_FIX \
   "false|No" \
   "true|Yes"
@@ -199,6 +361,10 @@ sed -i "s/roudix\.chromium[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.chromium   
 sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/roudix/local.nix
+sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
+sed -i "s|environment\.sessionVariables\.TZ[[:space:]]*=[[:space:]]*\"[^\"]*\"|environment.sessionVariables.TZ      = \"${TIMEZONE}\"|" hosts/roudix/local.nix
+sed -i "s|i18n\.defaultLocale[[:space:]]*=[[:space:]]*\"[^\"]*\"|i18n.defaultLocale                   = \"${LOCALE}\"|"       hosts/roudix/local.nix
+sed -i "s|console\.keyMap[[:space:]]*=[[:space:]]*\"[^\"]*\"|console.keyMap                       = \"${KEYMAP}\"|"           hosts/roudix/local.nix
 sed -i -E "s/roudix\.hosts\.gtaFix\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.hosts.gtaFix.enable  = ${GTA_FIX}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.flatpak.enable       = ${FLATPAK}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.virtualization.enable = ${VIRTUALIZATION}/" hosts/roudix/local.nix
@@ -220,6 +386,9 @@ echo -e "
   ${BOLD}Desktop       :${NC} $DE
   ${BOLD}VM Guest      :${NC} $VM_GUEST
   ${BOLD}Gaming        :${NC} $GAMING
+  ${BOLD}Timezone      :${NC} $TIMEZONE
+  ${BOLD}Locale        :${NC} $LOCALE
+  ${BOLD}Keymap        :${NC} $KEYMAP
   ${BOLD}GTA Fix       :${NC} $GTA_FIX
   ${BOLD}Flatpak       :${NC} $FLATPAK
   ${BOLD}Virtualization:${NC} $VIRTUALIZATION
