@@ -122,6 +122,11 @@ info "Creating local.nix from example..."
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
 success "local.nix created."
 
+# ── Copy boot.local.nix ───────────────────────────────────────────────────────
+info "Creating boot.local.nix from example..."
+cp modules/system/boot.local.nix.example modules/system/boot.local.nix
+success "boot.local.nix created."
+
 # ── Configuration questions ───────────────────────────────────────────────────
 echo -e "\n${BOLD}══════════════════════════════════════${NC}"
 info "Hardware & software configuration"

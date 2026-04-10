@@ -1,0 +1,15 @@
+# ── boot.local.nix ──────────────────────────────────────────────────────────
+# Personal boot entries — gitignored, never overwritten by git pull.
+# Copy: cp modules/system/boot.local.nix.example modules/system/boot.local.nix
+# ────────────────────────────────────────────────────────────────────────────
+{
+  extraEntries = ''
+    /+Other systems and bootloaders
+    //Windows
+      protocol: efi
+      path: uuid(YOUR-WINDOWS-ESP-PARTUUID):/EFI/Microsoft/Boot/bootmgfw.efi
+    //CachyOS
+      protocol: efi
+      path: uuid(YOUR-CACHYOS-ESP-PARTUUID):/EFI/limine/BOOTX64.EFI
+  '';
+}

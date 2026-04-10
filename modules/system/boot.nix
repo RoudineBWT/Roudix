@@ -39,12 +39,9 @@
       # ── Extra boot entries for other OS on other ESPs ─────────────────
       # Use the PARTUUID of each ESP (not the filesystem UUID)
       # Get PARTUUIDs with: lsblk -o NAME,PARTUUID
-      extraEntries = ''
-        /+Other systems and bootloaders
-        //Windows
-          protocol: efi
-          path: uuid(ff4a714e-8ba8-4b3b-bf24-27ab1d7c4364):/EFI/Microsoft/Boot/bootmgfw.efi
-      '';
+      extraEntries = if builtins.pathExists ./boot.local.nix
+        then (import ./boot.local.nix).extraEntries or ""
+        else "";
     };
 
     # ── Rename UEFI entry to "Roudix" ─────────────────────────────────────

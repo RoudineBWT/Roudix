@@ -87,6 +87,8 @@ roudix/
     │   ├── autoupdate.nix           # Auto git pull + rebuild on config changes
     │   ├── binary-caches.nix        # Nix binary caches (substituters + trusted keys)
     │   ├── boot.nix                 # Limine bootloader + multi-OS entries
+    │   ├── boot.local.nix           # gitignored — your personal boot entries
+    │   ├── boot.local.nix.example   # copy this to boot.local.nix to get started
     │   ├── chromium.nix             # Chromium browser selection (roudix.chromium)
     │   ├── common.nix               # Shared system config (all hosts)
     │   ├── cpu.nix                  # CPU configuration (Intel/AMD microcode)
@@ -299,11 +301,12 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hard
 ### 4. Create your local configs
 
 **Never edit `configuration.nix` or `home/common.nix` directly** — they get overwritten on `git pull`.
-Instead, create your local override files (both gitignored):
+Instead, create your local override files (all gitignored):
 
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
 cp home/local.nix.example home/local.nix
+cp modules/system/boot.local.nix.example modules/system/boot.local.nix
 ```
 
 Edit `hosts/roudix/local.nix` to match your hardware:
@@ -384,7 +387,7 @@ Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfi
 }
 ```
 
-> Both `local.nix` files are listed in `.gitignore` — they will never be overwritten by a `git pull`.
+> All three `local.nix` files and `boot.local.nix` are listed in `.gitignore` — they will never be overwritten by a `git pull`.
 
 **Available kernel variants:**
 
@@ -429,6 +432,13 @@ fileSystems."/mnt/gaming" = lib.mkForce {
 
 Limine can boot other operating systems on separate disks. This requires knowing the **PARTUUID** of each ESP partition (not the filesystem UUID).
 
+**Never edit `modules/system/boot.nix` directly** — it gets overwritten on `git pull`.
+Instead, edit `modules/system/boot.local.nix` (gitignored, created automatically by the installer):
+
+```bash
+cp modules/system/boot.local.nix.example modules/system/boot.local.nix
+```
+
 **Get your PARTUUIDs:**
 
 ```bash
@@ -437,18 +447,20 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 Look for partitions with `vfat` filesystem type and `EFI system partition` label — those are your ESPs.
 
-**Edit `modules/system/boot.nix`** and replace the placeholder UUIDs:
+**Edit `modules/system/boot.local.nix`** and replace the placeholder UUIDs:
 
 ```nix
-extraEntries = ''
-  /Windows
-    protocol: efi
-    path: uuid(YOUR-WINDOWS-ESP-PARTUUID):/EFI/Microsoft/Boot/bootmgfw.efi
-
-  /CachyOS
-    protocol: efi
-    path: uuid(YOUR-CACHYOS-ESP-PARTUUID):/EFI/limine/BOOTX64.EFI
-'';
+{
+  extraEntries = ''
+    /+Other systems and bootloaders
+    //Windows
+      protocol: efi
+      path: uuid(YOUR-WINDOWS-ESP-PARTUUID):/EFI/Microsoft/Boot/bootmgfw.efi
+    //CachyOS
+      protocol: efi
+      path: uuid(YOUR-CACHYOS-ESP-PARTUUID):/EFI/limine/BOOTX64.EFI
+  '';
+}
 ```
 
 > **Tip:** The EFI path after the UUID depends on the bootloader used by the other OS. Common paths:
@@ -460,8 +472,12 @@ extraEntries = ''
 If you don't have other OS to add, just leave `extraEntries` empty:
 
 ```nix
-extraEntries = "";
+{
+  extraEntries = "";
+}
 ```
+
+> `boot.local.nix` is listed in `.gitignore` — it will never be overwritten by a `git pull`.
 
 ### 7. Update git config
 
