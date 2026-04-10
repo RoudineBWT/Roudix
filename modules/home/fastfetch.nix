@@ -10,7 +10,6 @@
       logo = {
         type = "file-raw";
         source = "${dotfiles}/fastfetch/roudix.txt";
-        height = 20;
       };
 
       display = {

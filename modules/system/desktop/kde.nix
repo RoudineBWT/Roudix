@@ -35,14 +35,6 @@ lib.mkIf isKde {
     restartIfChanged = false;
   };
 
-  # Logo du menu KDE
-  programs.plasma6.configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
-    "Containments/1/Applets/2/Configuration/General" = {
-      icon = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
-    };
-  };
-
-
   programs.kdeconnect.enable = true;
   documentation.nixos.enable = false;
 

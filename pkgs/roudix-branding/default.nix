@@ -37,8 +37,8 @@ stdenvNoCC.mkDerivation {
     done
     # Wallpapers
     mkdir -p $out/share/backgrounds/roudix
-    cp $src/wallpaper/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
-    cp $src/wallpaper/roudix-light.svg $out/share/backgrounds/roudix/roudix-light.svg
+    cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
+    cp $src/wallpapers/roudix-light.svg $out/share/backgrounds/roudix/roudix-light.svg
 
     # Entrées GNOME background properties (paire dark/light)
     mkdir -p $out/share/gnome-background-properties
