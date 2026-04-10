@@ -437,7 +437,7 @@ echo -e "
 "
 
 # ── Smart apply (detect risky switch → boot) ────────────────────────────────
-read -rp "Apply configuration now? [y/N]: " confirm
+read -rp "Apply configuration now? [Y/n]: " confirm
 if [[ "$confirm" =~ ^[Yy]$ ]]; then
   info "Checking if 'switch' is safe..."
   cd "$INSTALL_DIR" || error "Failed to enter install directory."
