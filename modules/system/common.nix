@@ -43,14 +43,14 @@
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
   # ── Locale / timezone ───────────────────────────────────────────────────
-  time.timeZone = "Europe/Brussels";
+  time.timeZone = lib.mkDefault "Europe/Brussels";
   environment.sessionVariables = {
-    TZ = "Europe/Brussels";
+    TZ = lib.mkDefault "Europe/Brussels";
     TZDIR = "/etc/zoneinfo";
     NH_FLAKE = "/home/${username}/.config/roudix";
   };
-  i18n.defaultLocale = "en_US.UTF-8";
-  console.keyMap = "us";
+  i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
+  console.keyMap = lib.mkDefault "us-accentos";
 
   # ── Fonts ───────────────────────────────────────────────────────────────
   fonts.packages = with pkgs; [

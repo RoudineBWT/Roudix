@@ -29,6 +29,13 @@
   roudix.hosts.gtaFix.enable  = false;      # fix GTA Online long loading times
   # roudix.autoupdate.branch   = "main";
 
+  # ── Locale / Timezone ─────────────────────────────────────────────────────
+  time.timeZone                        = "Europe/Brussels";
+  environment.sessionVariables.TZ      = "Europe/Brussels";
+  i18n.defaultLocale                   = "en_US.UTF-8";
+  console.keyMap                       = "us-accentos";
+
+
   # ── Disk (replace with your own UUID) ─────────────────────────────────────
   # Run: lsblk -f
   # fileSystems."/mnt/gaming" = lib.mkForce {

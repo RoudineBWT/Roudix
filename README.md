@@ -316,8 +316,64 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   hardware.myCpu      = "intel";              # "intel" or "amd"
   hardware.myKernel   = "cachyos-lts-lto-v3"; # see below
   roudix.chromium     = "helium";             # "brave", "helium" or "vivaldi"
+
+  # ── Locale / Timezone ───────────────────────────────────────────────────────
+  time.timeZone                   = "Europe/Brussels"; # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  environment.sessionVariables.TZ = "Europe/Brussels"; # must match time.timeZone
+  i18n.defaultLocale              = "en_US.UTF-8";     # system locale
+  console.keyMap                  = "us";              # console keyboard layout
 }
 ```
+
+**Common timezone values:**
+
+| Timezone | Region |
+|----------|--------|
+| `Europe/Brussels` | Belgium |
+| `Europe/Paris` | France |
+| `Europe/London` | United Kingdom |
+| `Europe/Berlin` | Germany |
+| `Europe/Amsterdam` | Netherlands |
+| `America/New_York` | US East |
+| `America/Los_Angeles` | US West |
+| `Asia/Tokyo` | Japan |
+| `UTC` | Universal |
+
+**Common locale values:**
+
+| Locale | Language |
+|--------|----------|
+| `en_US.UTF-8` | English (US) |
+| `en_GB.UTF-8` | English (UK) |
+| `fr_BE.UTF-8` | Français (Belgique) |
+| `fr_FR.UTF-8` | Français (France) |
+| `de_DE.UTF-8` | Deutsch |
+| `nl_BE.UTF-8` | Nederlands (België) |
+| `nl_NL.UTF-8` | Nederlands |
+| `es_ES.UTF-8` | Español |
+| `pt_BR.UTF-8` | Português (Brasil) |
+| `it_IT.UTF-8` | Italiano |
+| `ru_RU.UTF-8` | Русский |
+| `ja_JP.UTF-8` | 日本語 |
+| `zh_CN.UTF-8` | 中文 (简体) |
+| `ko_KR.UTF-8` | 한국어 |
+
+**Common console keymap values:**
+
+| Keymap | Layout |
+|--------|--------|
+| `us` | English (US) QWERTY |
+| `us-acentos` | English (US) International |
+| `uk` | English (UK) QWERTY |
+| `be-latin1` | Belge AZERTY |
+| `fr` | Français AZERTY |
+| `de` | Allemand QWERTZ |
+| `nl` | Néerlandais QWERTY |
+| `es` | Espagnol QWERTY |
+| `dvorak` | Dvorak (US) |
+| `colemak` | Colemak |
+
+> **Note:** `environment.sessionVariables.TZ` must always match `time.timeZone` — they both control the timezone, one at the system level and one at the session level.
 
 Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfiles, aliases...):
 
@@ -431,6 +487,11 @@ roudix.vmGuest.enable        = true;   # enable only inside a VM
 roudix.hosts.gtaFix.enable   = true;   # block BattlEye telemetry (GTA fix)
 roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
 ```
+
+> **Reminder:** If you set `roudix.autoupdate.enable = true`, also configure the interval:
+> ```nix
+> roudix.autoupdate.interval = "1h"; # 1h, 6h, 12h, 24h...
+> ```
 
 ### 9. Build
 
