@@ -373,7 +373,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             GLib.idle_add(self._stop_progress)
             GLib.idle_add(
                 self.status.set_markup,
-                "<span color='green'>✓ Done! Log out and back in to apply changes.</span>",
+                "<span color='green'>✓ Done! Reboot to apply changes.</span>",
             )
 
         except subprocess.CalledProcessError as e:
