@@ -35,7 +35,7 @@
         end
 
         echo "Switching desktop environment to: $de"
-        sed -i "s/roudix\.desktop\.type = \".*\"/roudix.desktop.type = \"$de\"/" $config_file
+        sed -i "s/roudix\.desktop\.type = \"[^\"]*\"/roudix.desktop.type = \"$de\"/" $config_file
 
         echo "Rebuilding configuration..."
         nh os boot --accept-flake-config path:$NH_FLAKE

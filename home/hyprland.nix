@@ -16,7 +16,7 @@
 
   # ── Config files ─────────────────────────────────────────────
   xdg.configFile."hypr" = {
-    source = ../../dotfiles/hyprland;
+    source = "${dotfiles}/hyprland";
     recursive = true;
   };
 
