@@ -26,14 +26,14 @@
                 })
               ];
               wallpaperStyle = "stretched";
-              # ── Catppuccin Mocha (thème CachyOS) ──────────────────────────
+              # ── Catppuccin Mocha Peach ─────────────────────────────────
               graphicalTerminal = {
-                foreground      = "cdd6f4";
-                background      = "aa1e1e2e"; # background semi-transparent Mocha base
-                brightForeground = "cdd6f4";
-                brightBackground = "ff1e1e2e";
-                palette       = "1e1e2e;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;cdd6f4";
-                brightPalette = "585b70;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;cdd6f4";
+                foreground       = "fab387"; # peach
+                background       = "aa1e1e2e"; # base semi-transparent
+                brightForeground = "f5e0dc"; # rosewater
+                brightBackground = "ff1e1e2e"; # base opaque
+                palette       = "1e1e2e;f38ba8;a6e3a1;f9e2af;fab387;eba0ac;f2cdcd;cdd6f4";
+                brightPalette = "585b70;f38ba8;a6e3a1;f9e2af;fab387;eba0ac;f2cdcd;cdd6f4";
               };
             };
       # ── Extra boot entries for other OS on other ESPs ─────────────────
