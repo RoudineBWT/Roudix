@@ -78,8 +78,8 @@ lib.mkIf isKde {
     vlc
     digikam
     (pkgs.runCommand "roudix-backgrounds" {} ''
-        mkdir -p $out/share/backgrounds/roudix
-        cp ${./../../assets/backgrounds/roudix-dark.svg} $out/share/backgrounds/roudix/roudix-dark.svg
+        mkdir -p $out/share/wallpapers/roudix
+        cp ${./../../assets/wallpapers/roudix-dark.svg} $out/share/backgrounds/roudix/roudix-dark.svg
       '')
   ];
 }
