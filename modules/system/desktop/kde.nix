@@ -71,7 +71,12 @@ let
 
 in
 lib.mkIf isKde {
-  services.displayManager.plasma-login-manager.enable = true;
+  # ── Display Manager : SDDM fork KDE (plus stable que plasma-login-manager) ─
+  services.displayManager.sddm = {
+    enable         = true;
+    package        = pkgs.kdePackages.sddm;
+    wayland.enable = true;
+  };
   services.displayManager.defaultSession = "plasma";
   services.desktopManager.plasma6.enable = true;
 
@@ -85,10 +90,6 @@ lib.mkIf isKde {
     xdgOpenUsePortal = true;
     config.common.default = "kde";
   };
-
-  # ── Disable getty/autovt on tty1 (handled by display manager) ─────────────
-  systemd.services."getty@tty1".enable  = false;
-  systemd.services."autovt@tty1".enable = false;
 
   # ── Fix plasma taskbar icon path ───────────────────────────────────────────
   systemd.user.services.plasma-taskbar-icon-fix = {
