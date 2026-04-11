@@ -7,15 +7,6 @@ lib.mkIf isKde {
   services.displayManager.defaultSession = "plasma";
   services.desktopManager.plasma6.enable = true;
 
-  # ── Login screen wallpaper ─────────────────────────────────────────────────
-  environment.etc."plasmalogin.conf".text = ''
-    [Greeter]
-    WallpaperPlugin=org.kde.image
-
-    [Greeter.WallpaperPlugin.org.kde.image]
-    Image=/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg
-  '';
-
   # ── Hardware ───────────────────────────────────────────────────────────────
   hardware.bluetooth.enable = true;
 
@@ -85,11 +76,5 @@ lib.mkIf isKde {
     kdePackages.qtwebengine
     vlc
     digikam
-
-    # Wallpaper exposé dans le store pour le login manager
-    (pkgs.runCommand "roudix-backgrounds" {} ''
-      mkdir -p $out/share/backgrounds/roudix
-      cp ${./../../assets/wallpapers/roudix-dark.svg} $out/share/backgrounds/roudix/roudix-dark.svg
-    '')
   ];
 }
