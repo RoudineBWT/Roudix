@@ -7,6 +7,7 @@ lib.mkIf isKde {
   services.displayManager.defaultSession = "plasma";
   services.desktopManager.plasma6.enable = true;
 
+  # ── Login screen wallpaper ─────────────────────────────────────────────────
   environment.etc."plasmalogin.conf".text = ''
     [Greeter]
     WallpaperPlugin=org.kde.image
@@ -15,11 +16,10 @@ lib.mkIf isKde {
     Image=/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg
   '';
 
-  environment.etc."backgrounds/roudix/roudix-dark.svg".source =
-    ../../assets/wallpapers/roudix-dark.svg;
-
+  # ── Hardware ───────────────────────────────────────────────────────────────
   hardware.bluetooth.enable = true;
 
+  # ── Portals ────────────────────────────────────────────────────────────────
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
@@ -27,9 +27,11 @@ lib.mkIf isKde {
     config.common.default = "kde";
   };
 
+  # ── Disable getty/autovt on tty1 (handled by display manager) ─────────────
   systemd.services."getty@tty1".enable  = false;
   systemd.services."autovt@tty1".enable = false;
 
+  # ── Fix plasma taskbar icon path ───────────────────────────────────────────
   systemd.user.services.plasma-taskbar-icon-fix = {
     description = "Fix plasma taskbar icon path";
     before   = [ "plasma-plasmashell.service" ];
@@ -46,7 +48,7 @@ lib.mkIf isKde {
     restartIfChanged = false;
   };
 
-  # Icône du menu KDE
+  # ── Set Roudix KDE menu icon ───────────────────────────────────────────────
   systemd.user.services.plasma-menu-icon = {
     description = "Set Roudix KDE menu icon";
     after    = [ "plasma-plasmashell.service" ];
@@ -66,13 +68,16 @@ lib.mkIf isKde {
     restartIfChanged = false;
   };
 
+  # ── KDE Connect ───────────────────────────────────────────────────────────
   programs.kdeconnect.enable = true;
   documentation.nixos.enable = false;
 
+  # ── Excluded packages ──────────────────────────────────────────────────────
   environment.plasma6.excludePackages = with pkgs; [
     kdePackages.discover
   ];
 
+  # ── System packages ────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     kdePackages.partitionmanager
     kdePackages.kpmcore
@@ -80,9 +85,11 @@ lib.mkIf isKde {
     kdePackages.qtwebengine
     vlc
     digikam
+
+    # Wallpaper exposé dans le store pour le login manager
     (pkgs.runCommand "roudix-backgrounds" {} ''
-        mkdir -p $out/share/wallpapers/roudix
-        cp ${./../../assets/wallpapers/roudix-dark.svg} $out/share/backgrounds/roudix/roudix-dark.svg
-      '')
+      mkdir -p $out/share/backgrounds/roudix
+      cp ${./../../assets/wallpapers/roudix-dark.svg} $out/share/backgrounds/roudix/roudix-dark.svg
+    '')
   ];
 }
