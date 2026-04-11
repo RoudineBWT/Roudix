@@ -15,7 +15,7 @@ stdenvNoCC.mkDerivation {
   buildInputs = [ bash coreutils imagemagick ];
 
   installPhase = ''
-    # ── Icônes (toutes tailles) ───────────────────────────────────────────────
+    # ── Icônes PNG (toutes tailles) ───────────────────────────────────────────
     for SIZE in 16 32 48 64 128 256; do
       mkdir -p $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps
 
@@ -32,7 +32,30 @@ stdenvNoCC.mkDerivation {
         $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/start-here.png
     done
 
-    # ── Wallpapers (share/backgrounds pour SDDM + branding) ──────────────────
+    # ── Icônes SVG scalable ───────────────────────────────────────────────────
+    mkdir -p $out/share/icons/hicolor/scalable/apps
+
+    cp $src/logo/roudix-logo.svg \
+      $out/share/icons/hicolor/scalable/apps/roudix-logo.svg
+
+    cp $src/logo/roudix-logo.svg \
+      $out/share/icons/hicolor/scalable/apps/start-here-kde.svg
+
+    cp $src/logo/roudix-logo.svg \
+      $out/share/icons/hicolor/scalable/apps/start-here.svg
+
+    # ── Icône symbolique Kickoff (priorité maximale) ──────────────────────────
+    # Kickoff cherche start-here-kde-symbolic EN PREMIER avant tout le reste
+    mkdir -p $out/share/icons/hicolor/symbolic/apps
+
+    cp $src/logo/roudix-logo.svg \
+      $out/share/icons/hicolor/symbolic/apps/start-here-kde-symbolic.svg
+
+    # Aussi en scalable pour le fallback
+    cp $src/logo/roudix-logo.svg \
+      $out/share/icons/hicolor/scalable/apps/start-here-kde-symbolic.svg
+
+    # ── Wallpapers (share/backgrounds pour SDDM + branding GNOME) ────────────
     mkdir -p $out/share/backgrounds/roudix
     cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
     cp $src/wallpapers/roudix-light.svg $out/share/backgrounds/roudix/roudix-light.svg
@@ -43,8 +66,7 @@ stdenvNoCC.mkDerivation {
     cp $src/wallpapers/roudix-dark.svg \
       $out/share/wallpapers/RoudixDark/contents/images/roudix-dark.svg
 
-    # Preview obligatoire pour que le sélecteur KDE affiche la miniature
-    # sans ça → crash ou wallpaper invisible dans les paramètres
+    # Preview obligatoire pour le sélecteur KDE
     convert $src/wallpapers/roudix-dark.svg \
       -resize 400x250 \
       $out/share/wallpapers/RoudixDark/contents/screenshot.png

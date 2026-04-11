@@ -101,6 +101,7 @@
               ./home/common.nix
               ./home/niri.nix
               ./home/hyprland.nix
+              ./home/kde.nix
             ];
           };
         }
