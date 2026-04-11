@@ -8,6 +8,7 @@ let
     #!${pkgs.bash}
 
     PLASMA_CFG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
+    KDEGLOBALS="$HOME/.config/kdeglobals"
 
     # Attendre que plasmashell soit prêt sur DBus
     for i in $(seq 1 60); do
@@ -32,42 +33,58 @@ let
       's/file:\/\/\/nix\/store\/[^\/]*\/share\/applications\//applications:/gi' \
       "$PLASMA_CFG"
 
-    # ── Icône du menu Kickoff via kwriteconfig6 ───────────────────────────────
-    KICKOFF_LINE=$(${pkgs.gnugrep}/bin/grep -n "plugin=org.kde.plasma.kickoff" "$PLASMA_CFG" 2>/dev/null \
-      | ${pkgs.coreutils}/bin/cut -d: -f1 \
-      | ${pkgs.coreutils}/bin/head -1)
-
-    if [ -n "$KICKOFF_LINE" ]; then
-      SECTION=$(${pkgs.gnused}/bin/sed -n "1,''${KICKOFF_LINE}p" "$PLASMA_CFG" \
-        | ${pkgs.gnugrep}/bin/grep "^\[Containments\]\[[0-9]*\]\[Applets\]\[[0-9]*\]" \
-        | ${pkgs.coreutils}/bin/tail -1)
-      CONTAINMENT=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Containments\]\[\K[0-9]+')
-      APPLET=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Applets\]\[\K[0-9]+')
+    # ── Thème sombre — seulement si pas encore configuré ─────────────────────
+    if ! ${pkgs.gnugrep}/bin/grep -q "^ColorScheme=" "$KDEGLOBALS" 2>/dev/null; then
+      ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
+        --file kdeglobals --group KDE --key ColorScheme "BreezeDark"
+      ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
+        --file kdeglobals --group General --key ColorScheme "BreezeDark"
+      ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
+        --file kdeglobals --group Icons --key Theme "breeze-dark"
     fi
 
-    CONTAINMENT="''${CONTAINMENT:-2}"
-    APPLET="''${APPLET:-3}"
+    # ── Icône du menu Kickoff — seulement si pas encore configurée ────────────
+    KICKOFF_HAS_ICON=$(${pkgs.gnugrep}/bin/grep -c "^icon=" "$PLASMA_CFG" 2>/dev/null || echo "0")
+    if [ "$KICKOFF_HAS_ICON" = "0" ]; then
+      KICKOFF_LINE=$(${pkgs.gnugrep}/bin/grep -n "plugin=org.kde.plasma.kickoff" "$PLASMA_CFG" 2>/dev/null \
+        | ${pkgs.coreutils}/bin/cut -d: -f1 \
+        | ${pkgs.coreutils}/bin/head -1)
 
-    ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
-      --file plasma-org.kde.plasma.desktop-appletsrc \
-      --group "Containments" --group "$CONTAINMENT" \
-      --group "Applets" --group "$APPLET" \
-      --group "Configuration" --group "General" \
-      --key "icon" "roudix-logo"
+      if [ -n "$KICKOFF_LINE" ]; then
+        SECTION=$(${pkgs.gnused}/bin/sed -n "1,''${KICKOFF_LINE}p" "$PLASMA_CFG" \
+          | ${pkgs.gnugrep}/bin/grep "^\[Containments\]\[[0-9]*\]\[Applets\]\[[0-9]*\]" \
+          | ${pkgs.coreutils}/bin/tail -1)
+        CONTAINMENT=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Containments\]\[\K[0-9]+')
+        APPLET=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Applets\]\[\K[0-9]+')
+      fi
 
-    # ── Wallpaper via dbus evaluateScript ─────────────────────────────────────
-    ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
-      --type=method_call /PlasmaShell \
-      org.kde.PlasmaShell.evaluateScript \
-      string:"
-        var allDesktops = desktops();
-        for (var i = 0; i < allDesktops.length; i++) {
-          var d = allDesktops[i];
-          d.wallpaperPlugin = 'org.kde.image';
-          d.currentConfigGroup = ['Wallpaper', 'org.kde.image', 'General'];
-          d.writeConfig('Image', '${wallpaper}');
-        }
-      " 2>/dev/null || true
+      CONTAINMENT="''${CONTAINMENT:-2}"
+      APPLET="''${APPLET:-3}"
+
+      ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
+        --file plasma-org.kde.plasma.desktop-appletsrc \
+        --group "Containments" --group "$CONTAINMENT" \
+        --group "Applets" --group "$APPLET" \
+        --group "Configuration" --group "General" \
+        --key "icon" "roudix-logo"
+    fi
+
+    # ── Wallpaper — seulement si pas encore configuré ─────────────────────────
+    WALLPAPER_SET=$(${pkgs.gnugrep}/bin/grep -c "^Image=" "$PLASMA_CFG" 2>/dev/null || echo "0")
+    if [ "$WALLPAPER_SET" = "0" ]; then
+      ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
+        --type=method_call /PlasmaShell \
+        org.kde.PlasmaShell.evaluateScript \
+        string:"
+          var allDesktops = desktops();
+          for (var i = 0; i < allDesktops.length; i++) {
+            var d = allDesktops[i];
+            d.wallpaperPlugin = 'org.kde.image';
+            d.currentConfigGroup = ['Wallpaper', 'org.kde.image', 'General'];
+            d.writeConfig('Image', '${wallpaper}');
+          }
+        " 2>/dev/null || true
+    fi
   '';
 
 in
@@ -80,22 +97,8 @@ lib.mkIf isKde {
   services.displayManager.defaultSession = "plasma";
   services.desktopManager.plasma6.enable = true;
 
-  # ── Thème sombre par défaut ────────────────────────────────────────────────
-  environment.etc."xdg/kdeglobals".text = ''
-    [KDE]
-    ColorScheme=BreezeDark
-    widgetStyle=Breeze
-
-    [General]
-    ColorScheme=BreezeDark
-
-    [Icons]
-    Theme=breeze-dark
-  '';
-
   # ── Icône Kickoff par défaut (avant premier login) ─────────────────────────
-  # Les IDs 2/3 correspondent à une fresh install Plasma standard
-  # Le service branding corrige dynamiquement si les IDs diffèrent
+  # Plasma lit ce fichier comme base si ~/.config/ n'existe pas encore
   environment.etc."xdg/plasma-org.kde.plasma.desktop-appletsrc".text = ''
     [Containments][2][Applets][3][Configuration][General]
     icon=roudix-logo
@@ -112,7 +115,10 @@ lib.mkIf isKde {
     config.common.default = "kde";
   };
 
-  # ── Roudix branding : taskbar fix + wallpaper + icône menu ────────────────
+  # ── Roudix branding ────────────────────────────────────────────────────────
+  # - Fresh install  → applique thème sombre, icône et wallpaper
+  # - Retour sur KDE → respecte les préférences existantes
+  # - Ne killer jamais plasmashell
   systemd.user.services.roudix-kde-branding = {
     description = "Apply Roudix KDE branding (wallpaper + menu icon)";
     after    = [ "plasma-plasmashell.service" ];
