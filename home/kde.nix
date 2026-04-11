@@ -1,7 +1,7 @@
 { lib, osConfig, inputs, ... }:
 {
   imports = [
-    inputs.plasma-manager.homeManagerModules.plasma-manager
+    inputs.plasma-manager.homeModules.plasma-manager
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "kde") {
@@ -10,9 +10,9 @@
 
       workspace = {
         # ── Thème sombre ──────────────────────────────────────────────────
-        lookAndFeel  = "org.kde.breezedark.desktop";
-        colorScheme  = "BreezeDark";
-        iconTheme    = "breeze-dark";
+        lookAndFeel = "org.kde.breezedark.desktop";
+        colorScheme = "BreezeDark";
+        iconTheme   = "breeze-dark";
 
         # Wallpaper par défaut Roudix Dark
         # Override dans home/local.nix :
