@@ -62,4 +62,12 @@
   #     { type = "kernel"; key = " Kernel"; keyColor = "33"; }
   #   ];
   # };
+  # Override wallpaper KDE
+# programs.plasma.workspace.wallpaper = lib.mkForce "/home/user/mon-wallpaper.jpg";
+
+# Override thème
+# programs.plasma.colorscheme = lib.mkForce "Catppuccin-Mocha";
+
+# Override icône Kickoff
+# programs.plasma.panels = lib.mkForce [{ ... }];
 }

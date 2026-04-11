@@ -1,31 +1,43 @@
-{ lib, ... }:
-let
-  wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/roudix-dark.svg";
-  logoPath      = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
-in
+{ lib, osConfig, inputs, ... }:
 lib.mkIf (osConfig.roudix.desktop.type == "kde") {
-  # ── Roudix KDE branding — fresh install only ─────────────────────────────
-  #
-  # Ce script s'exécute lors de `nixos-rebuild switch` via Home Manager,
-  # AVANT que KDE démarre. Il écrit les configs uniquement si elles
-  # n'existent pas encore → respecte les changements utilisateur après.
-  #
-  # Pour override perso, copier dans home/local.nix :
-  #   home.activation.roudixKdeDefaults = lib.mkForce "";
+  imports = [
+    inputs.plasma-manager.homeManagerModules.plasma-manager
+  ];
 
-  home.activation.roudixKdeDefaults = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    PLASMA_CFG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
+  programs.plasma = {
+    enable = true;
 
-    if [ ! -f "$PLASMA_CFG" ]; then
-      $DRY_RUN_CMD mkdir -p "$(dirname "$PLASMA_CFG")"
-      $DRY_RUN_CMD cat > "$PLASMA_CFG" <<EOF
-[Containments][2][Applets][3][Configuration][General]
-icon=${logoPath}
+    # ── Thème sombre ──────────────────────────────────────────────────────
+    colorschemes = "BreezeDark";
+    workspace = {
+      lookAndFeel = "org.kde.breezedark.desktop";
+      iconTheme   = "breeze-dark";
 
-[Containments][2][Wallpaper][org.kde.image][General]
-Image=${wallpaperDark}
-SlidePaths=/run/current-system/sw/share/wallpapers
-EOF
-    fi
-  '';
+      # Wallpaper par défaut Roudix Dark
+      # Override dans home/local.nix :
+      #   programs.plasma.workspace.wallpaper = lib.mkForce "/chemin/wallpaper.jpg";
+      wallpaper = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
+    };
+
+    # ── Barre des tâches ──────────────────────────────────────────────────
+    # Override dans home/local.nix :
+    #   programs.plasma.panels = lib.mkForce [ ... ];
+    panels = [
+      {
+        location = "bottom";
+        widgets = [
+          {
+            kickoff = {
+              icon = "/run/current-system/sw/share/icons/hicolor/scalable/apps/roudix-logo.svg";
+            };
+          }
+          "org.kde.plasma.icontasks"
+          "org.kde.plasma.marginsseperator"
+          "org.kde.plasma.systemtray"
+          "org.kde.plasma.digitalclock"
+          "org.kde.plasma.showdesktop"
+        ];
+      }
+    ];
+  };
 }

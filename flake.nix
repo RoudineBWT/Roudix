@@ -69,9 +69,15 @@
     nix-flatpak = {
       url = "github:gmodena/nix-flatpak";
     };
+
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, helium, nix-flatpak, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, helium, nix-flatpak, plasma-manager, ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
   # Create it with: echo '"yourusername"' > hosts/roudix/username.nix

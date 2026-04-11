@@ -2,7 +2,6 @@
 let
   roudix-branding = pkgs.callPackage ./pkgs/roudix-branding {};
 in
-
 {
   environment.systemPackages = with pkgs; [
     roudix-branding
@@ -33,8 +32,7 @@ in
     };
   }];
 
-  # Le branding KDE (thème sombre + wallpaper + icône menu) est géré via
-  # environment.etc."xdg/" dans modules/system/kde.nix — aucun script
-  # systemd nécessaire. Les defaults s'appliquent uniquement à la
-  # fresh install et respectent les préférences utilisateur après.
+  # Le branding KDE (thème sombre + wallpaper + icône Kickoff) est géré
+  # de façon déclarative par plasma-manager dans home/kde.nix.
+  # Le fallback thème système reste dans modules/system/kde.nix.
 }

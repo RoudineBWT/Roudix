@@ -1,10 +1,6 @@
 { config, lib, pkgs, ... }:
 let
   isKde = config.roudix.desktop.type == "kde";
-
-  wallpaperDark  = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/roudix-dark.svg";
-  wallpaperLight = "/run/current-system/sw/share/wallpapers/RoudixLight/contents/images/roudix-light.svg";
-
 in
 lib.mkIf isKde {
   # ── Display Manager ────────────────────────────────────────────────────────
@@ -26,15 +22,10 @@ lib.mkIf isKde {
     config.common.default = "kde";
   };
 
-  # ── Roudix KDE branding — defaults pour fresh install ─────────────────────
-  #
-  # Ces fichiers sont lus par KDE comme valeurs système par défaut.
-  # Ils s'appliquent uniquement si l'utilisateur n'a pas encore de config
-  # dans ~/.config/ (= fresh install).
-  # Un utilisateur existant qui change son thème/wallpaper depuis les
-  # paramètres KDE ne sera jamais écrasé.
-
-  # Thème sombre Breeze par défaut
+  # ── Thème sombre Breeze par défaut (système) ──────────────────────────────
+  # Sert de fallback système uniquement.
+  # Le thème, wallpaper et icône Kickoff sont gérés de façon déclarative
+  # par plasma-manager dans home/kde.nix.
   environment.etc."xdg/kdeglobals".text = ''
     [KDE]
     ColorScheme=BreezeDark
@@ -47,17 +38,6 @@ lib.mkIf isKde {
     Theme=breeze-dark
   '';
 
-  # Icône Kickoff + wallpaper par défaut
-  environment.etc."xdg/plasma-org.kde.plasma.desktop-appletsrc".text = ''
-    [Containments][2][Applets][3][Configuration][General]
-    icon=roudix-logo
-
-    [Containments][2][Wallpaper][org.kde.image][General]
-    Image=${wallpaperDark}
-    SlidePaths=/run/current-system/sw/share/wallpapers
-  '';
-
-  # Switcher dynamique jour/nuit (optionnel, respecte le choix utilisateur)
   environment.etc."xdg/plasmarc".text = ''
     [Theme]
     name=breeze-dark

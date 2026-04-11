@@ -44,16 +44,14 @@ stdenvNoCC.mkDerivation {
     cp $src/logo/roudix-logo.svg \
       $out/share/icons/hicolor/scalable/apps/start-here.svg
 
+    cp $src/logo/roudix-logo.svg \
+      $out/share/icons/hicolor/scalable/apps/start-here-kde-symbolic.svg
+
     # ── Icône symbolique Kickoff (priorité maximale) ──────────────────────────
-    # Kickoff cherche start-here-kde-symbolic EN PREMIER avant tout le reste
     mkdir -p $out/share/icons/hicolor/symbolic/apps
 
     cp $src/logo/roudix-logo.svg \
       $out/share/icons/hicolor/symbolic/apps/start-here-kde-symbolic.svg
-
-    # Aussi en scalable pour le fallback
-    cp $src/logo/roudix-logo.svg \
-      $out/share/icons/hicolor/scalable/apps/start-here-kde-symbolic.svg
 
     # ── Wallpapers (share/backgrounds pour SDDM + branding GNOME) ────────────
     mkdir -p $out/share/backgrounds/roudix
@@ -63,10 +61,12 @@ stdenvNoCC.mkDerivation {
     # ── Wallpaper KDE Dark ────────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixDark/contents/images
 
-    cp $src/wallpapers/roudix-dark.svg \
-      $out/share/wallpapers/RoudixDark/contents/images/roudix-dark.svg
+    # KDE requiert PNG/JPEG dans contents/images — le SVG seul ne fonctionne pas
+    convert $src/wallpapers/roudix-dark.svg \
+      -resize 3840x2160 \
+      $out/share/wallpapers/RoudixDark/contents/images/3840x2160.png
 
-    # Preview obligatoire pour le sélecteur KDE
+    # Preview pour le sélecteur KDE (évite le crash et affiche la miniature)
     convert $src/wallpapers/roudix-dark.svg \
       -resize 400x250 \
       $out/share/wallpapers/RoudixDark/contents/screenshot.png
@@ -88,10 +88,10 @@ JSONEOF
     # ── Wallpaper KDE Light ───────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixLight/contents/images
 
-    cp $src/wallpapers/roudix-light.svg \
-      $out/share/wallpapers/RoudixLight/contents/images/roudix-light.svg
+    convert $src/wallpapers/roudix-light.svg \
+      -resize 3840x2160 \
+      $out/share/wallpapers/RoudixLight/contents/images/3840x2160.png
 
-    # Preview obligatoire
     convert $src/wallpapers/roudix-light.svg \
       -resize 400x250 \
       $out/share/wallpapers/RoudixLight/contents/screenshot.png
