@@ -24,32 +24,12 @@ let
     done
     [ -f "$PLASMA_CFG" ] || exit 1
 
-    # ── Détection dynamique du containment et de l'applet Kickoff ────────────
-    # Format dans le fichier : [Containments][2][Applets][3]
-    KICKOFF_LINE=$(${pkgs.gnugrep}/bin/grep -n "plugin=org.kde.plasma.kickoff" "$PLASMA_CFG" 2>/dev/null \
-      | ${pkgs.coreutils}/bin/cut -d: -f1 \
-      | ${pkgs.coreutils}/bin/head -1)
+    # ── Fix taskbar icon path ─────────────────────────────────────────────────
+    ${pkgs.gnused}/bin/sed -i \
+      's/file:\/\/\/nix\/store\/[^\/]*\/share\/applications\//applications:/gi' \
+      "$PLASMA_CFG"
 
-    if [ -n "$KICKOFF_LINE" ]; then
-      SECTION=$(${pkgs.gnused}/bin/sed -n "1,''${KICKOFF_LINE}p" "$PLASMA_CFG" \
-        | ${pkgs.gnugrep}/bin/grep "^\[Containments\]\[[0-9]*\]\[Applets\]\[[0-9]*\]" \
-        | ${pkgs.coreutils}/bin/tail -1)
-      CONTAINMENT=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Containments\]\[\K[0-9]+')
-      APPLET=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Applets\]\[\K[0-9]+')
-    fi
-
-    CONTAINMENT="''${CONTAINMENT:-2}"
-    APPLET="''${APPLET:-3}"
-
-    # ── Icône du menu Kickoff ─────────────────────────────────────────────────
-    ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
-      --file plasma-org.kde.plasma.desktop-appletsrc \
-      --group "Containments" --group "$CONTAINMENT" \
-      --group "Applets" --group "$APPLET" \
-      --group "Configuration" --group "General" \
-      --key "icon" "roudix-logo"
-
-    # ── Wallpaper du desktop via dbus-send + evaluateScript ───────────────────
+    # ── Wallpaper + icône Kickoff via dbus evaluateScript ────────────────────
     ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
       --type=method_call /PlasmaShell \
       org.kde.PlasmaShell.evaluateScript \
@@ -61,20 +41,24 @@ let
           d.currentConfigGroup = ['Wallpaper', 'org.kde.image', 'General'];
           d.writeConfig('Image', '${wallpaper}');
         }
+        var containments = desktopsForActivity(currentActivity());
+        for (var i = 0; i < containments.length; i++) {
+          var applets = containments[i].applets();
+          for (var j = 0; j < applets.length; j++) {
+            if (applets[j].pluginName == 'org.kde.plasma.kickoff') {
+              applets[j].currentConfigGroup = ['General'];
+              applets[j].writeConfig('icon', 'roudix-logo');
+            }
+          }
+        }
       " 2>/dev/null || true
-
-    # ── Recharger le shell pour appliquer l'icône du menu ────────────────────
-    ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
-      --type=method_call /PlasmaShell \
-      org.kde.PlasmaShell.refreshCurrentShell 2>/dev/null || true
   '';
 
 in
 lib.mkIf isKde {
-  # ── Display Manager : SDDM fork KDE (plus stable que plasma-login-manager) ─
+  # ── Display Manager ────────────────────────────────────────────────────────
   services.displayManager.sddm = {
     enable         = true;
-    package        = pkgs.kdePackages.sddm;
     wayland.enable = true;
   };
   services.displayManager.defaultSession = "plasma";
@@ -91,25 +75,8 @@ lib.mkIf isKde {
     config.common.default = "kde";
   };
 
-  # ── Fix plasma taskbar icon path ───────────────────────────────────────────
-  systemd.user.services.plasma-taskbar-icon-fix = {
-    description = "Fix plasma taskbar icon path";
-    before   = [ "plasma-plasmashell.service" ];
-    wantedBy = [ "plasma-core.target" ];
-    serviceConfig = {
-      Type      = "simple";
-      ExecStart = "${pkgs.writeShellScriptBin "plasma-taskbar-icon-fix" ''
-        #!${pkgs.bash}
-        if [ -f ''${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc ]; then
-          ${pkgs.gnused}/bin/sed -i 's/file:\/\/\/nix\/store\/[^\/]*\/share\/applications\//applications:/gi' ''${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc
-        fi
-      ''}/bin/plasma-taskbar-icon-fix";
-    };
-    restartIfChanged = false;
-  };
-
-  # ── Roudix branding : wallpaper desktop + icône menu ──────────────────────
-  # Assets fournis par pkgs/roudix-branding via branding.nix
+  # ── Roudix branding : taskbar fix + wallpaper + icône menu ────────────────
+  # Un seul service après que plasmashell soit prêt, sans jamais le killer
   systemd.user.services.roudix-kde-branding = {
     description = "Apply Roudix KDE branding (wallpaper + menu icon)";
     after    = [ "plasma-plasmashell.service" ];
