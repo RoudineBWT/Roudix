@@ -1,48 +1,49 @@
-{ config, lib, pkgs, roudixBranding, ... }:
+{ lib, osConfig, inputs, ... }:
 let
-  isKde = config.roudix.desktop.type == "kde";
-
   wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
 in
-lib.mkIf isKde {
-  services.displayManager.defaultSession = "plasma";
-  services.desktopManager.plasma6.enable = true;
-
-  # ── Plasma Login Manager ──────────────────────────────────────────────────
-  services.displayManager.plasma-login-manager = {
-    enable = true;
-  };
-
-  # ── Hardware ──────────────────────────────────────────────────────────────
-  hardware.bluetooth.enable = true;
-
-  # ── Portals ───────────────────────────────────────────────────────────────
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
-    xdgOpenUsePortal = true;
-    config.common.default = "kde";
-  };
-
-  # ── KDE Connect ───────────────────────────────────────────────────────────
-  programs.kdeconnect.enable = true;
-  documentation.nixos.enable = false;
-
-  # ── Excluded packages ─────────────────────────────────────────────────────
-  environment.plasma6.excludePackages = with pkgs; [
-    kdePackages.discover
+{
+  imports = [
+    inputs.plasma-manager.homeModules.plasma-manager
   ];
 
-  # ── System packages ───────────────────────────────────────────────────────
-  # lib.hiPrio sur roudix-branding pour que start-here-kde écrase Papirus
-  environment.systemPackages = with pkgs; [
-    (lib.hiPrio roudixBranding)
-    kdePackages.partitionmanager
-    kdePackages.kpmcore
-    kdePackages.kcalc
-    kdePackages.qtwebengine
-    papirus-icon-theme
-    vlc
-    digikam
-  ];
+  config = lib.mkIf (osConfig.roudix.desktop.type == "kde") {
+    programs.plasma = {
+      enable = true;
+
+      workspace = {
+        # ── Thème sombre ──────────────────────────────────────────────────
+        lookAndFeel = "org.kde.breezedark.desktop";
+        colorScheme = "BreezeDark";
+        iconTheme   = "Papirus-Dark";
+
+        # Wallpaper par défaut Roudix Dark
+        # Override dans home/local.nix :
+        #   programs.plasma.workspace.wallpaper = lib.mkForce "/chemin/wallpaper.jpg";
+        wallpaper = wallpaperDark;
+      };
+
+      # ── Écran de verrouillage ────────────────────────────────────────────
+      # Override dans home/local.nix :
+      #   programs.plasma.kscreenlocker.appearance.wallpaper = lib.mkForce "/chemin/wallpaper.jpg";
+      kscreenlocker.appearance.wallpaper = wallpaperDark;
+
+      # ── Barre des tâches ────────────────────────────────────────────────
+      # Override dans home/local.nix :
+      #   programs.plasma.panels = lib.mkForce [ ... ];
+      panels = [
+        {
+          location = "bottom";
+          widgets = [
+            "org.kde.plasma.kickoff"
+            "org.kde.plasma.icontasks"
+            "org.kde.plasma.marginsseperator"
+            "org.kde.plasma.systemtray"
+            "org.kde.plasma.digitalclock"
+            "org.kde.plasma.showdesktop"
+          ];
+        }
+      ];
+    };
+  };
 }

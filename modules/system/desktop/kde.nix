@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, roudixBranding, ... }:
 let
   isKde = config.roudix.desktop.type == "kde";
 
@@ -36,7 +36,7 @@ lib.mkIf isKde {
   # ── System packages ───────────────────────────────────────────────────────
   # lib.hiPrio sur roudix-branding pour que start-here-kde écrase Papirus
   environment.systemPackages = with pkgs; [
-    (lib.hiPrio (callPackage ../../pkgs/roudix-branding {}))
+    (lib.hiPrio roudixBranding)
     kdePackages.partitionmanager
     kdePackages.kpmcore
     kdePackages.kcalc
