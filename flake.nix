@@ -83,7 +83,8 @@
   # Create it with: echo '"yourusername"' > hosts/roudix/username.nix
     username = import ./hosts/roudix/username.nix;
     roudixSwitcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-switcher {};
-    specialArgs = { inherit inputs username roudixSwitcher; dotfiles = self + /dotfiles; };
+    roudixBranding  = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-branding {};
+    specialArgs = { inherit inputs username roudixSwitcher roudixBranding; dotfiles = self + /dotfiles; };
   in
   {
     # ── Main desktop configuration ───────────────────────────────────────
