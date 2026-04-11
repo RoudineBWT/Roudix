@@ -109,6 +109,7 @@
               ./home/niri.nix
               ./home/hyprland.nix
               ./home/kde.nix
+              ./home/gnome.nix
               ./home/local.nix
             ];
           };

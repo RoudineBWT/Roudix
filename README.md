@@ -60,6 +60,8 @@ roudix/
 │   ├── local.nix                    # gitignored — your personal home overrides
 │   ├── local.nix.example            # copy this to home/local.nix to get started
 │   ├── niri.nix                     # Home config for Niri + Noctalia
+│   ├── gnome.nix                    # Home config for GNOME (wallpaper, theme, icons, cursor)
+│   ├── kde.nix                      # Home config for KDE (wallpaper, theme, icons, cursor)
 │   └── hyprland.nix                 # Home config for Hyprland + Noctalia
 │
 ├── dotfiles/                        # Raw config files managed by Home Manager
@@ -230,9 +232,15 @@ roudix-switch kde
 - grimblast screenshots
 
 **Desktop (GNOME)**
-- GNOME 49.4 (follow nixos unstable branch)
+- GNOME 49.4 (follows nixos-unstable branch)
 - Curated extension set (blur, tiling, vitals, arcmenu...)
 - Bloat removed via `environment.gnome.excludePackages`
+- Papirus-Dark icon theme
+- adw-gtk3-dark GTK theme (dark mode by default)
+- Capitaine Cursors White
+- Roudix wallpaper (light/dark based on system theme)
+- `color-scheme = prefer-dark` applied via dconf
+- Override wallpaper, theme, icons in `home/local.nix`
 
 **Desktop (KDE)**
 - KDE Plasma 6 with plasma-login-manager (Plasma 6.6+, nixpkgs unstable)
