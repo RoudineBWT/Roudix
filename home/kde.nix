@@ -39,7 +39,7 @@ in
               kickoff.icon = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
             }
             "org.kde.plasma.icontasks"
-            "org.kde.plasma.marginsseperator"
+            "org.kde.plasma.marginsseparator"
             "org.kde.plasma.systemtray"
             "org.kde.plasma.digitalclock"
             "org.kde.plasma.showdesktop"
