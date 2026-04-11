@@ -114,7 +114,76 @@ success "username.nix created."
 
 # ── Generate hardware config ──────────────────────────────────────────────────
 info "Generating hardware-configuration.nix..."
-nixos-generate-config --show-hardware-config > "hosts/roudix/hardware-configuration.nix"
+
+HW_CONFIG_STDERR=$(mktemp)
+HW_CONFIG_FILE="hosts/roudix/hardware-configuration.nix"
+
+nixos-generate-config --show-hardware-config > "$HW_CONFIG_FILE" 2>"$HW_CONFIG_STDERR" || \
+  nixos-generate-config --show-hardware-config > "$HW_CONFIG_FILE" 2>/dev/null || true
+
+# ── btrfs subvolume auto-patch ────────────────────────────────────────────────
+if grep -q "Failed to retrieve subvolume info" "$HW_CONFIG_STDERR" 2>/dev/null; then
+  warn "btrfs détecté — patch automatique des options de montage..."
+
+  # Read active btrfs mounts from /proc/mounts
+  # Format: device mountpoint fstype options dump pass
+  while IFS=' ' read -r _dev mountpoint _fstype mountopts _rest; do
+    # Extract subvol= from mount options (subvolid handled separately)
+    subvol=""
+    compress=""
+    noatime=""
+
+    IFS=',' read -ra opts_arr <<< "$mountopts"
+    for opt in "${opts_arr[@]}"; do
+      case "$opt" in
+        subvol=*)   subvol="${opt#subvol=}" ;;
+        compress=*|compress-force=*) compress="$opt" ;;
+        noatime)    noatime="noatime" ;;
+      esac
+    done
+
+    [[ -z "$subvol" ]] && continue  # skip if no subvol option (bare btrfs mount)
+
+    # Escape mountpoint for use as sed pattern (handle special chars like /)
+    escaped_mp=$(printf '%s\n' "$mountpoint" | sed 's/[\/&]/\\&/g')
+
+    # Build the options list to inject
+    nix_opts="\"subvol=${subvol}\""
+    [[ -n "$compress" ]] && nix_opts="${nix_opts} \"${compress}\""
+    [[ -n "$noatime"  ]] && nix_opts="${nix_opts} \"noatime\""
+
+    # In hardware-configuration.nix, find the fileSystems."<mountpoint>" block
+    # and inject/replace the options = [ ... ]; line
+    # Strategy: if options line already exists → replace it; if not → insert after fsType line
+    if grep -q "fileSystems\.\"${mountpoint}\"" "$HW_CONFIG_FILE"; then
+      if grep -A5 "fileSystems\.\"${mountpoint}\"" "$HW_CONFIG_FILE" | grep -q "options = \["; then
+        # Replace existing options line for this block
+        # Use awk to only replace within the correct block
+        awk -v mp="$mountpoint" -v opts="$nix_opts" '
+          /fileSystems\."/ { in_block = ($0 ~ "\"" mp "\"") }
+          in_block && /options = \[/ {
+            sub(/options = \[[^\]]*\]/, "options = [ " opts " ]")
+          }
+          { print }
+        ' "$HW_CONFIG_FILE" > "${HW_CONFIG_FILE}.tmp" && mv "${HW_CONFIG_FILE}.tmp" "$HW_CONFIG_FILE"
+      else
+        # Insert options line after the fsType = "btrfs"; line in this block
+        awk -v mp="$mountpoint" -v opts="$nix_opts" '
+          /fileSystems\."/ { in_block = ($0 ~ "\"" mp "\"") }
+          in_block && /fsType = "btrfs"/ {
+            print
+            print "      options = [ " opts " ];"
+            next
+          }
+          { print }
+        ' "$HW_CONFIG_FILE" > "${HW_CONFIG_FILE}.tmp" && mv "${HW_CONFIG_FILE}.tmp" "$HW_CONFIG_FILE"
+      fi
+      success "Options btrfs injectées pour ${mountpoint} (subvol=${subvol}${compress:+, $compress}${noatime:+, noatime})."
+    fi
+  done < <(grep ' btrfs ' /proc/mounts)
+fi
+
+rm -f "$HW_CONFIG_STDERR"
 success "hardware-configuration.nix generated."
 
 # ── Copy local.nix ────────────────────────────────────────────────────────────
@@ -128,41 +197,216 @@ info "Creating boot.local.nix from example..."
 cp modules/system/boot.local.nix.example modules/system/boot.local.nix
 success "boot.local.nix created."
 
-echo -e "
-${BOLD}══════════════════════════════════════${NC}
-${CYAN}${BOLD}  Multi-boot configuration${NC}
-${BOLD}══════════════════════════════════════${NC}
+# ── Multi-boot: detect other OS via EFI NVRAM ─────────────────────────────────
+echo -e "\n${BOLD}══════════════════════════════════════${NC}"
+info "Détection des autres systèmes (NVRAM EFI)..."
+echo -e "${BOLD}══════════════════════════════════════${NC}"
 
-  If you have other operating systems installed (Windows, another Linux...),
-  you need to add their boot entries in:
+BOOT_LOCAL_NIX="modules/system/boot.local.nix"
 
-  ${CYAN}modules/system/boot.local.nix${NC}
+# Entries we want to skip — NixOS/Roudix itself and firmware tools
+SKIP_PATTERN="nixos|roudix|uefi|firmware|setup|shell|pxe|ipv4|ipv6|network|floppy|optical|cd|dvd|usb boot"
 
-  Get your ESP PARTUUIDs with:
-  ${CYAN}lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID${NC}
+# Collect EFI entries from NVRAM using efibootmgr -v
+# Each relevant line looks like:
+#   Boot0001* Windows Boot Manager  HD(1,GPT,<PARTUUID>,...)/File(\EFI\Microsoft\Boot\bootmgfw.efi)
+declare -a DETECTED_LABELS=()
+declare -a DETECTED_PARTUUIDS=()
+declare -a DETECTED_EFIPATHS=()
 
-  Look for partitions with type ${BOLD}vfat${NC} and label ${BOLD}EFI System Partition${NC}.
-  Then replace the placeholder UUIDs in boot.local.nix.
+while IFS= read -r line; do
+  # Only active boot entries (marked with *)
+  [[ "$line" =~ ^Boot[0-9A-Fa-f]{4}\* ]] || continue
 
-  If you only have NixOS, leave the file as-is.
-  ${YELLOW}${BOLD}See the README § 'Configure Limine multi-boot' for full instructions.${NC}
-${BOLD}══════════════════════════════════════${NC}"
+  # Extract human label (between * and the HD( block)
+  label=$(echo "$line" | sed 's/^Boot[0-9A-Fa-f]\{4\}\*[[:space:]]*//' | sed 's/[[:space:]]*HD(.*$//' | sed 's/[[:space:]]*$//')
 
-read -rp "Press Enter to continue..."
+  # Skip if label matches things we don't want in Limine
+  if echo "$label" | grep -qiE "$SKIP_PATTERN"; then
+    continue
+  fi
+
+  # Extract PARTUUID from the HD(...) GPT block
+  # Format: HD(<part>,GPT,<PARTUUID>,...)
+  partuuid=$(echo "$line" | grep -oiP '(?<=GPT,)[0-9a-f-]{36}' | head -1)
+  [[ -z "$partuuid" ]] && continue
+
+  # Extract EFI path — between File( and )
+  efi_path=$(echo "$line" | grep -oP '(?<=File\()[^)]+' | head -1)
+  [[ -z "$efi_path" ]] && continue
+
+  # Normalize backslashes to forward slashes
+  efi_path=$(echo "$efi_path" | tr '\\' '/')
+
+  DETECTED_LABELS+=("$label")
+  DETECTED_PARTUUIDS+=("$partuuid")
+  DETECTED_EFIPATHS+=("$efi_path")
+
+done < <(efibootmgr -v 2>/dev/null)
+
+# ── Interactive selection ──────────────────────────────────────────────────────
+SELECTED_ENTRIES=()
+
+if [[ ${#DETECTED_LABELS[@]} -eq 0 ]]; then
+  info "Aucun autre OS détecté dans la NVRAM EFI — boot.local.nix laissé vide."
+else
+  echo -e "\n  ${BOLD}OS détectés dans la NVRAM EFI :${NC}\n"
+  for i in "${!DETECTED_LABELS[@]}"; do
+    printf "  ${CYAN}%2d)${NC} %-35s ${BOLD}PARTUUID:${NC} %s\n" \
+      "$((i+1))" "${DETECTED_LABELS[$i]}" "${DETECTED_PARTUUIDS[$i]}"
+    printf "      ${BOLD}EFI path:${NC} %s\n" "${DETECTED_EFIPATHS[$i]}"
+  done
+
+  echo -e "\n  ${BOLD}Lesquels veux-tu ajouter dans Limine ?${NC}"
+  echo -e "  (entre les numéros séparés par des espaces, ex: ${CYAN}1 3${NC} — ou ${CYAN}0${NC} pour aucun)\n"
+  read -rp "  Choix: " raw_choices
+
+  if [[ "$raw_choices" != "0" && -n "$raw_choices" ]]; then
+    for choice in $raw_choices; do
+      idx=$((choice - 1))
+      if (( idx >= 0 && idx < ${#DETECTED_LABELS[@]} )); then
+        SELECTED_ENTRIES+=("$idx")
+      else
+        warn "Entrée $choice ignorée (hors limites)."
+      fi
+    done
+  fi
+fi
+
+# ── Write boot.local.nix ──────────────────────────────────────────────────────
+if [[ ${#SELECTED_ENTRIES[@]} -gt 0 ]]; then
+  info "Génération de boot.local.nix..."
+
+  ENTRIES_BLOCK=""
+  for idx in "${SELECTED_ENTRIES[@]}"; do
+    label="${DETECTED_LABELS[$idx]}"
+    partuuid="${DETECTED_PARTUUIDS[$idx]}"
+    efi_path="${DETECTED_EFIPATHS[$idx]}"
+    ENTRIES_BLOCK+="    //${label}\n"
+    ENTRIES_BLOCK+="      protocol: efi\n"
+    ENTRIES_BLOCK+="      path: uuid(${partuuid}):${efi_path}\n"
+  done
+
+  {
+    echo "# ── boot.local.nix ──────────────────────────────────────────────────────────"
+    echo "# Generated by roudix-installer — gitignored, never overwritten by git pull."
+    echo "# ────────────────────────────────────────────────────────────────────────────"
+    echo "{"
+    echo "  extraEntries = '''"
+    echo "    /+Other systems and bootloaders"
+    printf '%b' "$ENTRIES_BLOCK"
+    echo "  ''';"
+    echo "}"
+  } > "$BOOT_LOCAL_NIX"
+
+  success "boot.local.nix configuré avec ${#SELECTED_ENTRIES[@]} entrée(s)."
+  for idx in "${SELECTED_ENTRIES[@]}"; do
+    echo -e "  ${GREEN}✓${NC} ${DETECTED_LABELS[$idx]}"
+  done
+else
+  info "Aucune entrée ajoutée — boot.local.nix laissé vide (NixOS only)."
+fi
 
 # ── Configuration questions ───────────────────────────────────────────────────
 echo -e "\n${BOLD}══════════════════════════════════════${NC}"
 info "Hardware & software configuration"
 echo -e "${BOLD}══════════════════════════════════════${NC}"
 
-pick "GPU:" GPU \
-  "amd|AMD GPU" \
-  "nvidia|NVIDIA GPU" \
-  "intel|Intel integrated GPU"
+# ── Auto-detect VM ────────────────────────────────────────────────────────────
+DETECTED_VM="false"
+if command -v systemd-detect-virt >/dev/null 2>&1; then
+  virt_type=$(systemd-detect-virt 2>/dev/null || true)
+  [[ "$virt_type" != "none" && -n "$virt_type" ]] && DETECTED_VM="true"
+fi
 
-pick "CPU:" CPU \
-  "amd|AMD CPU" \
-  "intel|Intel CPU"
+# ── Auto-detect GPU ───────────────────────────────────────────────────────────
+DETECTED_GPU=""
+if command -v lspci >/dev/null 2>&1; then
+  lspci_out=$(lspci 2>/dev/null)
+  if echo "$lspci_out" | grep -qi "amd\|radeon\|advanced micro"; then
+    DETECTED_GPU="amd"
+  elif echo "$lspci_out" | grep -qi "nvidia"; then
+    DETECTED_GPU="nvidia"
+  elif echo "$lspci_out" | grep -qi "intel.*\(vga\|display\|3d\|gpu\)"; then
+    DETECTED_GPU="intel"
+  fi
+fi
+
+# ── Auto-detect CPU ───────────────────────────────────────────────────────────
+DETECTED_CPU=""
+vendor=$(grep -m1 "vendor_id" /proc/cpuinfo 2>/dev/null | awk '{print $3}' || true)
+case "$vendor" in
+  AuthenticAMD) DETECTED_CPU="amd" ;;
+  GenuineIntel) DETECTED_CPU="intel" ;;
+esac
+
+# ── VM warning ────────────────────────────────────────────────────────────────
+if [[ "$DETECTED_VM" == "true" ]]; then
+  echo ""
+  warn "Virtual machine detected (${virt_type})."
+  warn "GPU/CPU detection may be inaccurate — verify manually if needed."
+  warn "vm_guest will be pre-selected to 'Yes'."
+  echo ""
+fi
+
+# ── GPU pick (with pre-selection if detected) ─────────────────────────────────
+if [[ "$DETECTED_VM" == "true" ]]; then
+  echo -e "\n${BOLD}GPU:${NC} virtual machine detected — pre-selecting ${CYAN}vm${NC}"
+  read -rp "  Use 'vm' (recommended for VMs)? [Y/n]: " confirm_gpu
+  if [[ "${confirm_gpu:-Y}" =~ ^[Yy]$ ]]; then
+    GPU="vm"
+    success "GPU set to: vm"
+  else
+    pick "GPU:" GPU \
+      "amd|AMD GPU" \
+      "nvidia|NVIDIA GPU" \
+      "intel|Intel integrated GPU" \
+      "vm|Virtual machine (virtio-gpu / QXL / VMware SVGA)"
+  fi
+elif [[ -n "$DETECTED_GPU" ]]; then
+  echo -e "\n${BOLD}GPU:${NC} detected ${CYAN}${DETECTED_GPU}${NC}"
+  read -rp "  Use ${DETECTED_GPU}? [Y/n]: " confirm_gpu
+  if [[ "${confirm_gpu:-Y}" =~ ^[Yy]$ ]]; then
+    GPU="$DETECTED_GPU"
+    success "GPU set to: $GPU"
+  else
+    pick "GPU:" GPU \
+      "amd|AMD GPU" \
+      "nvidia|NVIDIA GPU" \
+      "intel|Intel integrated GPU" \
+      "vm|Virtual machine (virtio-gpu / QXL / VMware SVGA)"
+  fi
+else
+  pick "GPU:" GPU \
+    "amd|AMD GPU" \
+    "nvidia|NVIDIA GPU" \
+    "intel|Intel integrated GPU" \
+    "vm|Virtual machine (virtio-gpu / QXL / VMware SVGA)"
+fi
+
+# ── Laptop (NVIDIA only) ──────────────────────────────────────────────────────
+NVIDIA_LAPTOP="false"
+if [[ "$GPU" == "nvidia" && "$DETECTED_VM" != "true" ]]; then
+  pick "Running on a laptop? (enables NVIDIA PRIME)" NVIDIA_LAPTOP \
+    "false|No — desktop" \
+    "true|Yes — laptop (PRIME support)"
+fi
+if [[ -n "$DETECTED_CPU" ]]; then
+  echo -e "\n${BOLD}CPU:${NC} detected ${CYAN}${DETECTED_CPU}${NC}"
+  read -rp "  Use ${DETECTED_CPU}? [Y/n]: " confirm_cpu
+  if [[ "${confirm_cpu:-Y}" =~ ^[Yy]$ ]]; then
+    CPU="$DETECTED_CPU"
+    success "CPU set to: $CPU"
+  else
+    pick "CPU:" CPU \
+      "amd|AMD CPU" \
+      "intel|Intel CPU"
+  fi
+else
+  pick "CPU:" CPU \
+    "amd|AMD CPU" \
+    "intel|Intel CPU"
+fi
 
 pick "Kernel:" KERNEL \
   "cachyos-latest|Standard latest CachyOS kernel" \
@@ -194,9 +438,20 @@ pick "Default shell:" SHELL_DEFAULT \
   "fish|Fish — smart, user-friendly shell (recommended)" \
   "bash|Bash — classic Unix shell"
 
-pick "Running inside a VM?" VM_GUEST \
-  "false|No — bare metal install" \
-  "true|Yes — enable VM guest optimizations"
+if [[ "$DETECTED_VM" == "true" ]]; then
+  echo -e "\n${BOLD}Running inside a VM?${NC} detected: ${CYAN}yes (${virt_type})${NC}"
+  read -rp "  Enable VM guest optimizations? [Y/n]: " confirm_vm
+  if [[ "${confirm_vm:-Y}" =~ ^[Yy]$ ]]; then
+    VM_GUEST="true"
+    success "VM guest mode enabled."
+  else
+    VM_GUEST="false"
+  fi
+else
+  pick "Running inside a VM?" VM_GUEST \
+    "false|No — bare metal install" \
+    "true|Yes — enable VM guest optimizations"
+fi
 
 pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
   "true|Yes" \
@@ -406,6 +661,7 @@ sed -i "s|console\.keyMap[[:space:]]*=[[:space:]]*\"[^\"]*\"|console.keyMap     
 sed -i -E "s/roudix\.hosts\.gtaFix\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.hosts.gtaFix.enable  = ${GTA_FIX}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.flatpak.enable       = ${FLATPAK}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.virtualization.enable = ${VIRTUALIZATION}/" hosts/roudix/local.nix
+sed -i -E "s/hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*(true|false)/hardware.nvidiaLaptop = ${NVIDIA_LAPTOP}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.autoupdate.enable    = ${AUTOUPDATE}/" hosts/roudix/local.nix
 sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
 
@@ -417,7 +673,7 @@ success "Setup complete!"
 echo -e "${BOLD}══════════════════════════════════════${NC}"
 echo -e "
   ${BOLD}User          :${NC} $USERNAME
-  ${BOLD}GPU           :${NC} $GPU
+  ${BOLD}GPU           :${NC} $GPU$([ "$GPU" == "nvidia" ] && [ "$NVIDIA_LAPTOP" == "true" ] && echo " (laptop/PRIME)")
   ${BOLD}CPU           :${NC} $CPU
   ${BOLD}Kernel        :${NC} $KERNEL
   ${BOLD}Browser       :${NC} $BROWSER

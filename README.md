@@ -278,6 +278,14 @@ chmod +x roudix-installer.sh
 ./roudix-installer.sh
 ```
 
+The installer handles everything interactively:
+- Clones the repo, generates `hardware-configuration.nix`, creates all local config files
+- **Detects other OSes automatically** via EFI NVRAM (`efibootmgr`) — no manual PARTUUID lookup needed
+- **Detects GPU and CPU automatically** (`lspci` / `/proc/cpuinfo`) — pre-selects and asks for confirmation
+- **Detects if running in a VM** (`systemd-detect-virt`) — pre-enables VM guest mode and warns that GPU/CPU detection may be inaccurate
+- Asks about kernel, desktop, browser, locale, timezone, keymap, and optional modules
+- Builds and applies the configuration
+
 ## Manual Installation
 
 > ⚠️ **Follow every step carefully before rebuilding.**
@@ -488,14 +496,19 @@ fileSystems."/mnt/gaming" = lib.mkForce {
 
 > Skip this step if you only have NixOS on your machine.
 
-Limine can boot other operating systems on separate disks. This requires knowing the **PARTUUID** of each ESP partition (not the filesystem UUID).
+Limine can boot other operating systems on separate disks. `boot.local.nix` controls the extra entries — it is gitignored and never overwritten by `git pull`.
 
 **Never edit `modules/system/boot.nix` directly** — it gets overwritten on `git pull`.
-Instead, edit `modules/system/boot.local.nix` (gitignored, created automatically by the installer):
+
+#### If you used the automated installer
+
+The installer detected your other OSes automatically from the EFI NVRAM (`efibootmgr`) and wrote `boot.local.nix` for you — no manual action needed. You can review the result:
 
 ```bash
-cp modules/system/boot.local.nix.example modules/system/boot.local.nix
+cat modules/system/boot.local.nix
 ```
+
+#### If you are installing manually
 
 **Get your PARTUUIDs:**
 
@@ -505,7 +518,7 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 Look for partitions with `vfat` filesystem type and `EFI system partition` label — those are your ESPs.
 
-**Edit `modules/system/boot.local.nix`** , uncomment the block and replace the placeholder UUIDs:
+**Edit `modules/system/boot.local.nix`** and add your entries:
 
 ```nix
 {
@@ -527,7 +540,7 @@ Look for partitions with `vfat` filesystem type and `EFI system partition` label
 > - Arch/Manjaro (GRUB): `/EFI/grub/grubx64.efi`
 > - Any distro (fallback): `/EFI/BOOT/BOOTX64.EFI`
 
-If you don't have other OS to add, just leave `extraEntries` empty:
+If you have no other OS to add, just leave `extraEntries` empty:
 
 ```nix
 {

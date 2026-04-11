@@ -6,15 +6,21 @@
 
   options = {
     hardware.myGpu = lib.mkOption {
-      type = lib.types.enum [ "amd" "nvidia" "intel" ];
+      type = lib.types.enum [ "amd" "nvidia" "intel" "vm" ];
       default = "amd";
-      description = "GPU type to configure";
+      description = "GPU type to configure. Use 'vm' for virtual machines (virtio-gpu, QXL, VMware SVGA).";
     };
 
     hardware.nvidiaOpen = lib.mkOption {
       type = lib.types.bool;
       default = true;
       description = "Use open NVIDIA drivers. Enable for Turing/RTX 20xx and newer. Unsupported for GTX 10xx/16xx.";
+    };
+
+    hardware.nvidiaLaptop = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable NVIDIA laptop mode (PRIME support)";
     };
   };
 
@@ -40,7 +46,7 @@
 
       glf.nvidia_config = {
         enable = true;
-        # laptop = true; # uncomment for laptop (PRIME support)
+         laptop = config.hardware.nvidiaLaptop; # for laptop (PRIME support)
       };
 
       # Override open setting from GLF OS config
@@ -55,6 +61,13 @@
         intel-media-driver
         vaapiIntel
       ];
+    })
+
+    # ── VM ────────────────────────────────────────────────────────
+    (lib.mkIf (config.hardware.myGpu == "vm") {
+      hardware.graphics.enable = true;
+      hardware.graphics.enable32Bit = true;
+      # virtio-gpu / QXL / VMware SVGA — no vendor-specific drivers needed
     })
   ];
 }
