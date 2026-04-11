@@ -9,10 +9,11 @@ let
 
     PLASMA_CFG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
 
-    # Attendre que plasmashell soit vraiment prêt sur DBus (max 30s)
+    # Attendre que plasmashell soit prêt sur DBus (max 30s)
     for i in $(seq 1 60); do
-      ${pkgs.kdePackages.plasma-workspace}/bin/qdbus org.kde.plasmashell /PlasmaShell \
-        org.kde.PlasmaShell.version 2>/dev/null && break
+      ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
+        --type=method_call /PlasmaShell \
+        org.kde.PlasmaShell.evaluateScript string:"" 2>/dev/null && break
       sleep 0.5
     done
 
@@ -24,8 +25,10 @@ let
     [ -f "$PLASMA_CFG" ] || exit 1
 
     # ── Détection dynamique du containment et de l'applet Kickoff ────────────
-    # Format réel dans le fichier : [Containments][2][Applets][3]
-    KICKOFF_LINE=$(${pkgs.gnugrep}/bin/grep -n "plugin=org.kde.plasma.kickoff" "$PLASMA_CFG" 2>/dev/null | ${pkgs.coreutils}/bin/cut -d: -f1 | ${pkgs.coreutils}/bin/head -1)
+    # Format dans le fichier : [Containments][2][Applets][3]
+    KICKOFF_LINE=$(${pkgs.gnugrep}/bin/grep -n "plugin=org.kde.plasma.kickoff" "$PLASMA_CFG" 2>/dev/null \
+      | ${pkgs.coreutils}/bin/cut -d: -f1 \
+      | ${pkgs.coreutils}/bin/head -1)
 
     if [ -n "$KICKOFF_LINE" ]; then
       SECTION=$(${pkgs.gnused}/bin/sed -n "1,''${KICKOFF_LINE}p" "$PLASMA_CFG" \
@@ -44,11 +47,13 @@ let
       --group "Containments" --group "$CONTAINMENT" \
       --group "Applets" --group "$APPLET" \
       --group "Configuration" --group "General" \
-      --key "icon" "start-here"
+      --key "icon" "roudix-logo"
 
-    # ── Wallpaper du desktop via l'API JavaScript de plasmashell ─────────────
-    ${pkgs.kdePackages.plasma-workspace}/bin/qdbus org.kde.plasmashell /PlasmaShell \
-      org.kde.PlasmaShell.evaluateScript "
+    # ── Wallpaper du desktop via dbus-send + evaluateScript ───────────────────
+    ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
+      --type=method_call /PlasmaShell \
+      org.kde.PlasmaShell.evaluateScript \
+      string:"
         var allDesktops = desktops();
         for (var i = 0; i < allDesktops.length; i++) {
           var d = allDesktops[i];
@@ -58,8 +63,9 @@ let
         }
       " 2>/dev/null || true
 
-    # Recharger plasmashell pour appliquer l'icône du menu
-    ${pkgs.kdePackages.plasma-workspace}/bin/qdbus org.kde.plasmashell /PlasmaShell \
+    # ── Recharger le shell pour appliquer l'icône du menu ────────────────────
+    ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
+      --type=method_call /PlasmaShell \
       org.kde.PlasmaShell.refreshCurrentShell 2>/dev/null || true
   '';
 
@@ -102,6 +108,7 @@ lib.mkIf isKde {
   };
 
   # ── Roudix branding : wallpaper desktop + icône menu ──────────────────────
+  # Assets fournis par pkgs/roudix-branding via branding.nix
   systemd.user.services.roudix-kde-branding = {
     description = "Apply Roudix KDE branding (wallpaper + menu icon)";
     after    = [ "plasma-plasmashell.service" ];
