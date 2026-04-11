@@ -80,5 +80,9 @@ lib.mkIf isKde {
     kdePackages.qtwebengine
     vlc
     digikam
+    (pkgs.runCommand "roudix-backgrounds" {} ''
+        mkdir -p $out/share/backgrounds/roudix
+        cp ${./../../assets/backgrounds/roudix-dark.svg} $out/share/backgrounds/roudix/roudix-dark.svg
+      '')
   ];
 }
