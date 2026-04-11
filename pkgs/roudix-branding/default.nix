@@ -39,8 +39,15 @@ stdenvNoCC.mkDerivation {
 
     # ── Wallpaper KDE Dark ────────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixDark/contents/images
+
     cp $src/wallpapers/roudix-dark.svg \
       $out/share/wallpapers/RoudixDark/contents/images/roudix-dark.svg
+
+    # Preview obligatoire pour que le sélecteur KDE affiche la miniature
+    # sans ça → crash ou wallpaper invisible dans les paramètres
+    convert $src/wallpapers/roudix-dark.svg \
+      -resize 400x250 \
+      $out/share/wallpapers/RoudixDark/contents/screenshot.png
 
     cat <<JSONEOF > $out/share/wallpapers/RoudixDark/metadata.json
 {
@@ -58,8 +65,14 @@ JSONEOF
 
     # ── Wallpaper KDE Light ───────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixLight/contents/images
+
     cp $src/wallpapers/roudix-light.svg \
       $out/share/wallpapers/RoudixLight/contents/images/roudix-light.svg
+
+    # Preview obligatoire
+    convert $src/wallpapers/roudix-light.svg \
+      -resize 400x250 \
+      $out/share/wallpapers/RoudixLight/contents/screenshot.png
 
     cat <<JSONEOF > $out/share/wallpapers/RoudixLight/metadata.json
 {
