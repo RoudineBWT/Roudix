@@ -8,11 +8,11 @@
     programs.plasma = {
       enable = true;
 
-      # ── Thème sombre ────────────────────────────────────────────────────
-      colorschemes = "BreezeDark";
       workspace = {
-        lookAndFeel = "org.kde.breezedark.desktop";
-        iconTheme   = "breeze-dark";
+        # ── Thème sombre ──────────────────────────────────────────────────
+        lookAndFeel  = "org.kde.breezedark.desktop";
+        colorScheme  = "BreezeDark";
+        iconTheme    = "breeze-dark";
 
         # Wallpaper par défaut Roudix Dark
         # Override dans home/local.nix :
