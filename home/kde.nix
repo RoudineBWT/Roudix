@@ -3,7 +3,7 @@ let
   wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/roudix-dark.svg";
   logoPath      = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
 in
-{
+lib.mkIf (osConfig.roudix.desktop.type == "kde") {
   # ── Roudix KDE branding — fresh install only ─────────────────────────────
   #
   # Ce script s'exécute lors de `nixos-rebuild switch` via Home Manager,
