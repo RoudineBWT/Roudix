@@ -9,9 +9,8 @@ lib.mkIf isKde {
   services.desktopManager.plasma6.enable = true;
 
   # ── Plasma Login Manager ──────────────────────────────────────────────────
-  services.displayManager.plasma-manager = {
-    enable    = true;
-    wallpaper = wallpaperDark;
+  services.displayManager.plasma-login-manager = {
+    enable = true;
   };
 
   # ── Hardware ──────────────────────────────────────────────────────────────
@@ -24,24 +23,6 @@ lib.mkIf isKde {
     xdgOpenUsePortal = true;
     config.common.default = "kde";
   };
-
-  # ── Thème sombre Breeze par défaut (système) ──────────────────────────────
-  environment.etc."xdg/kdeglobals".text = ''
-    [KDE]
-    ColorScheme=BreezeDark
-    LookAndFeelPackage=org.kde.breezedark.desktop
-
-    [General]
-    ColorScheme=BreezeDark
-
-    [Icons]
-    Theme=breeze-dark
-  '';
-
-  environment.etc."xdg/plasmarc".text = ''
-    [Theme]
-    name=breeze-dark
-  '';
 
   # ── KDE Connect ───────────────────────────────────────────────────────────
   programs.kdeconnect.enable = true;

@@ -1,4 +1,7 @@
 { lib, osConfig, inputs, ... }:
+let
+  wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
+in
 {
   imports = [
     inputs.plasma-manager.homeModules.plasma-manager
@@ -19,8 +22,13 @@
         # Wallpaper par défaut Roudix Dark
         # Override dans home/local.nix :
         #   programs.plasma.workspace.wallpaper = lib.mkForce "/chemin/wallpaper.jpg";
-        wallpaper = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
+        wallpaper = wallpaperDark;
       };
+
+      # ── Écran de verrouillage ────────────────────────────────────────────
+      # Override dans home/local.nix :
+      #   programs.plasma.kscreenlocker.appearance.wallpaper = lib.mkForce "/chemin/wallpaper.jpg";
+      kscreenlocker.appearance.wallpaper = wallpaperDark;
 
       # ── Barre des tâches ────────────────────────────────────────────────
       # Override dans home/local.nix :
