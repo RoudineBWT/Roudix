@@ -20,12 +20,12 @@
 
     dconf.settings = {
       "org/gnome/desktop/background" = {
-        picture-uri      = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-light.svg";
-        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg";
+        picture-uri      = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-light.png";
+        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
         picture-options  = "zoom";
       };
       "org/gnome/desktop/screensaver" = {
-        picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg";
+        picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
       };
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";

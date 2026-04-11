@@ -53,10 +53,21 @@ stdenvNoCC.mkDerivation {
     cp $src/logo/roudix-logo.svg \
       $out/share/icons/hicolor/symbolic/apps/start-here-kde-symbolic.svg
 
-    # ── Wallpapers (share/backgrounds pour SDDM + branding GNOME) ────────────
+    # ── Wallpapers SVG (SDDM + fallback) ─────────────────────────────────────
     mkdir -p $out/share/backgrounds/roudix
     cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
     cp $src/wallpapers/roudix-light.svg $out/share/backgrounds/roudix/roudix-light.svg
+
+    # ── Wallpapers PNG GNOME (librsvg crash workaround) ───────────────────────
+    # gnome-control-center génère des thumbnails via gdk-pixbuf/librsvg
+    # ce qui provoque un SEGFAULT avec les SVG — on utilise des PNG à la place
+    convert $src/wallpapers/roudix-dark.svg \
+      -resize 3840x2160 \
+      $out/share/backgrounds/roudix/roudix-dark.png
+
+    convert $src/wallpapers/roudix-light.svg \
+      -resize 3840x2160 \
+      $out/share/backgrounds/roudix/roudix-light.png
 
     # ── Wallpaper KDE Dark ────────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixDark/contents/images
@@ -118,8 +129,8 @@ JSONEOF
 <wallpapers>
   <wallpaper deleted="false">
     <n>Roudix</n>
-    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-light.svg</filename>
-    <filename-dark>/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg</filename-dark>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-light.png</filename>
+    <filename-dark>/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png</filename-dark>
     <options>zoom</options>
     <shade_type>solid</shade_type>
     <pcolor>#eff1f5</pcolor>
