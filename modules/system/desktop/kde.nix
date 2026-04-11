@@ -9,13 +9,16 @@ let
 
     PLASMA_CFG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
 
-    # Attendre que plasmashell soit prêt sur DBus (max 30s)
+    # Attendre que plasmashell soit prêt sur DBus
     for i in $(seq 1 60); do
       ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
         --type=method_call /PlasmaShell \
         org.kde.PlasmaShell.evaluateScript string:"" 2>/dev/null && break
       sleep 0.5
     done
+
+    # Laisser le temps à plasmashell de vraiment finir l'init
+    sleep 3
 
     # Attendre que le fichier de config Plasma existe
     for i in $(seq 1 20); do
@@ -29,7 +32,30 @@ let
       's/file:\/\/\/nix\/store\/[^\/]*\/share\/applications\//applications:/gi' \
       "$PLASMA_CFG"
 
-    # ── Wallpaper + icône Kickoff via dbus evaluateScript ────────────────────
+    # ── Icône du menu Kickoff via kwriteconfig6 ───────────────────────────────
+    KICKOFF_LINE=$(${pkgs.gnugrep}/bin/grep -n "plugin=org.kde.plasma.kickoff" "$PLASMA_CFG" 2>/dev/null \
+      | ${pkgs.coreutils}/bin/cut -d: -f1 \
+      | ${pkgs.coreutils}/bin/head -1)
+
+    if [ -n "$KICKOFF_LINE" ]; then
+      SECTION=$(${pkgs.gnused}/bin/sed -n "1,''${KICKOFF_LINE}p" "$PLASMA_CFG" \
+        | ${pkgs.gnugrep}/bin/grep "^\[Containments\]\[[0-9]*\]\[Applets\]\[[0-9]*\]" \
+        | ${pkgs.coreutils}/bin/tail -1)
+      CONTAINMENT=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Containments\]\[\K[0-9]+')
+      APPLET=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Applets\]\[\K[0-9]+')
+    fi
+
+    CONTAINMENT="''${CONTAINMENT:-2}"
+    APPLET="''${APPLET:-3}"
+
+    ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
+      --file plasma-org.kde.plasma.desktop-appletsrc \
+      --group "Containments" --group "$CONTAINMENT" \
+      --group "Applets" --group "$APPLET" \
+      --group "Configuration" --group "General" \
+      --key "icon" "roudix-logo"
+
+    # ── Wallpaper via dbus evaluateScript ─────────────────────────────────────
     ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
       --type=method_call /PlasmaShell \
       org.kde.PlasmaShell.evaluateScript \
@@ -40,16 +66,6 @@ let
           d.wallpaperPlugin = 'org.kde.image';
           d.currentConfigGroup = ['Wallpaper', 'org.kde.image', 'General'];
           d.writeConfig('Image', '${wallpaper}');
-        }
-        var containments = desktopsForActivity(currentActivity());
-        for (var i = 0; i < containments.length; i++) {
-          var applets = containments[i].applets();
-          for (var j = 0; j < applets.length; j++) {
-            if (applets[j].pluginName == 'org.kde.plasma.kickoff') {
-              applets[j].currentConfigGroup = ['General'];
-              applets[j].writeConfig('icon', 'roudix-logo');
-            }
-          }
         }
       " 2>/dev/null || true
   '';
@@ -64,6 +80,27 @@ lib.mkIf isKde {
   services.displayManager.defaultSession = "plasma";
   services.desktopManager.plasma6.enable = true;
 
+  # ── Thème sombre par défaut ────────────────────────────────────────────────
+  environment.etc."xdg/kdeglobals".text = ''
+    [KDE]
+    ColorScheme=BreezeDark
+    widgetStyle=Breeze
+
+    [General]
+    ColorScheme=BreezeDark
+
+    [Icons]
+    Theme=breeze-dark
+  '';
+
+  # ── Icône Kickoff par défaut (avant premier login) ─────────────────────────
+  # Les IDs 2/3 correspondent à une fresh install Plasma standard
+  # Le service branding corrige dynamiquement si les IDs diffèrent
+  environment.etc."xdg/plasma-org.kde.plasma.desktop-appletsrc".text = ''
+    [Containments][2][Applets][3][Configuration][General]
+    icon=roudix-logo
+  '';
+
   # ── Hardware ───────────────────────────────────────────────────────────────
   hardware.bluetooth.enable = true;
 
@@ -76,7 +113,6 @@ lib.mkIf isKde {
   };
 
   # ── Roudix branding : taskbar fix + wallpaper + icône menu ────────────────
-  # Un seul service après que plasmashell soit prêt, sans jamais le killer
   systemd.user.services.roudix-kde-branding = {
     description = "Apply Roudix KDE branding (wallpaper + menu icon)";
     after    = [ "plasma-plasmashell.service" ];

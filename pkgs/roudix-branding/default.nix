@@ -15,32 +15,56 @@ stdenvNoCC.mkDerivation {
   buildInputs = [ bash coreutils imagemagick ];
 
   installPhase = ''
-    # PNGs rescalés
+    # ── Icônes (toutes tailles) ───────────────────────────────────────────────
     for SIZE in 16 32 48 64 128 256; do
       mkdir -p $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps
+
+      # Logo principal
       convert $src/logo/roudix-logo.png \
         -resize ''${SIZE}x''${SIZE} \
         $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/roudix-logo.png
-        # Logo principal
-        convert $src/logo/roudix-logo.png \
-          -resize ''${SIZE}x''${SIZE} \
-          $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/roudix-logo.png
 
-        # Icône menu KDE
-        convert $src/logo/roudix-logo.png \
-          -resize ''${SIZE}x''${SIZE} \
-          $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/start-here-kde.png
+      # Icône menu KDE
+      convert $src/logo/roudix-logo.png \
+        -resize ''${SIZE}x''${SIZE} \
+        $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/start-here-kde.png
 
-        convert $src/logo/roudix-logo.png \
-          -resize ''${SIZE}x''${SIZE} \
-          $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/start-here.png
+      convert $src/logo/roudix-logo.png \
+        -resize ''${SIZE}x''${SIZE} \
+        $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/start-here.png
     done
-    # Wallpapers
+
+    # ── Wallpapers (share/backgrounds pour SDDM + autres) ────────────────────
     mkdir -p $out/share/backgrounds/roudix
     cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
     cp $src/wallpapers/roudix-light.svg $out/share/backgrounds/roudix/roudix-light.svg
 
-    # Entrées GNOME background properties (paire dark/light)
+    # ── Wallpaper KDE (share/wallpapers pour le sélecteur KDE) ───────────────
+    mkdir -p $out/share/wallpapers/Roudix/contents/images
+    cp $src/wallpapers/roudix-dark.svg \
+      $out/share/wallpapers/Roudix/contents/images/roudix-dark.svg
+    cp $src/wallpapers/roudix-light.svg \
+      $out/share/wallpapers/Roudix/contents/images/roudix-light.svg
+
+    cat <<JSONEOF > $out/share/wallpapers/Roudix/metadata.json
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Name": "Roudix"
+      }
+    ],
+    "Id": "Roudix",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "Roudix"
+}
+JSONEOF
+
+    # ── Entrées GNOME background properties (paire dark/light) ───────────────
     mkdir -p $out/share/gnome-background-properties
     cat <<XMLEOF > $out/share/gnome-background-properties/roudix.xml
 <?xml version="1.0" encoding="UTF-8"?>
