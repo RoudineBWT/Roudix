@@ -10,6 +10,13 @@ let
 
     PLASMA_CFG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
 
+    # Attendre que plasmashell soit vraiment prêt (max 30s)
+    for i in $(seq 1 60); do
+      ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
+        /PlasmaShell org.kde.PlasmaShell.version 2>/dev/null && break
+      sleep 0.5
+    done
+
     # Attendre que le fichier de config Plasma existe
     for i in $(seq 1 20); do
       [ -f "$PLASMA_CFG" ] && break
@@ -29,24 +36,26 @@ let
     CONTAINMENT="''${CONTAINMENT:-1}"
     APPLET="''${APPLET:-2}"
 
-    # ── Wallpaper du desktop ──────────────────────────────────────────────────
-    ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
-      --file plasma-org.kde.plasma.desktop-appletsrc \
-      --group "Containments" --group "$CONTAINMENT" \
-      --group "Wallpaper" --group "org.kde.image" \
-      --group "General" --key "Image" "${wallpaper}"
-
-    # ── Icône du menu Kickoff ─────────────────────────────────────────────────
+    # ── Icône du menu Kickoff (via kwriteconfig6) ─────────────────────────────
     ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
       --file plasma-org.kde.plasma.desktop-appletsrc \
       --group "Containments" --group "$CONTAINMENT" \
       --group "Applets" --group "$APPLET" \
       --group "Configuration" --group "General" \
-      --key "icon" "start-here-kde"
+      --key "icon" "start-here"
 
-    # Recharger plasmashell pour appliquer
-    ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
-      /PlasmaShell org.kde.PlasmaShell.refreshCurrentShell 2>/dev/null || true
+    # ── Wallpaper du desktop via l'API JavaScript de plasmashell ─────────────
+    # (plus fiable que kwriteconfig6 + refreshCurrentShell)
+    ${pkgs.kdePackages.plasma-workspace}/bin/qdbus org.kde.plasmashell /PlasmaShell \
+      org.kde.PlasmaShell.evaluateScript "
+        var allDesktops = desktops();
+        for (var i = 0; i < allDesktops.length; i++) {
+          var d = allDesktops[i];
+          d.wallpaperPlugin = 'org.kde.image';
+          d.currentConfigGroup = ['Wallpaper', 'org.kde.image', 'General'];
+          d.writeConfig('Image', '${wallpaper}');
+        }
+      " 2>/dev/null || true
   '';
 
 in
