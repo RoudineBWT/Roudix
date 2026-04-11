@@ -454,44 +454,6 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
       sudo nixos-rebuild switch --flake path:$(pwd)#roudix --accept-flake-config
       success "Configuration applied successfully!"
 
-      # ── KDE Plasma branding (wallpaper + menu icon) ───────────────────────
-      if [[ "$DE" == "kde" ]] && command -v kwriteconfig6 >/dev/null 2>&1; then
-        info "Applying KDE branding (wallpaper + menu icon)..."
-        WALLPAPER="/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg"
-        PLASMA_CFG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
-
-        # ── Detect Kickoff containment & applet IDs dynamically ──────────────
-        KICKOFF_LINE=$(grep -n "plugin=org.kde.plasma.kickoff" "$PLASMA_CFG" 2>/dev/null | cut -d: -f1)
-
-        if [[ -n "$KICKOFF_LINE" ]]; then
-          KICKOFF_SECTION=$(sed -n "1,${KICKOFF_LINE}p" "$PLASMA_CFG" | grep "^\[Containments\]" | tail -1)
-          CONTAINMENT=$(echo "$KICKOFF_SECTION" | grep -oP '\[\K[0-9]+(?=\]\[Applets\])')
-          APPLET=$(echo "$KICKOFF_SECTION" | grep -oP 'Applets\]\[\K[0-9]+')
-        fi
-
-        # ── Fallback to defaults if detection failed ──────────────────────────
-        CONTAINMENT="${CONTAINMENT:-1}"
-        APPLET="${APPLET:-2}"
-
-        info "KDE: using containment=$CONTAINMENT, applet=$APPLET"
-
-        kwriteconfig6 \
-          --file plasma-org.kde.plasma.desktop-appletsrc \
-          --group "Containments" --group "$CONTAINMENT" \
-          --group "Wallpaper" --group "org.kde.image" \
-          --group "General" --key "Image" "$WALLPAPER"
-
-        kwriteconfig6 \
-          --file plasma-org.kde.plasma.desktop-appletsrc \
-          --group "Containments" --group "$CONTAINMENT" \
-          --group "Applets" --group "$APPLET" \
-          --group "Configuration" --group "General" \
-          --key "icon" "start-here"
-
-        plasmashell --replace &>/dev/null &
-        success "KDE branding applied (containment=$CONTAINMENT, applet=$APPLET)."
-      fi
-
       warn "Please reboot your system to complete the setup."
     fi
   else

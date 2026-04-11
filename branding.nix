@@ -33,19 +33,6 @@ in
     };
   }];
 
-  # Wallpaper par défaut KDE
-  environment.etc."xdg/plasma-workspace/env/roudix-wallpaper.sh" = {
-    mode = "0755";
-    text = ''
-      #!/bin/sh
-      WALLPAPER="/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg"
-      CONFIG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
-
-      ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
-        --file plasma-org.kde.plasma.desktop-appletsrc \
-        --group "Containments" --group "1" \
-        --group "Wallpaper" --group "org.kde.image" \
-        --group "General" --key "Image" "$WALLPAPER"
-    '';
-  };
+  # Le branding KDE (wallpaper + icône menu) est géré de façon déclarative
+  # par le service systemd roudix-kde-branding défini dans modules/system/kde.nix
 }

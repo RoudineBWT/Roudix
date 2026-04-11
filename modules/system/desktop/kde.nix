@@ -1,6 +1,54 @@
 { config, lib, pkgs, ... }:
 let
   isKde = config.roudix.desktop.type == "kde";
+
+  wallpaper = "/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg";
+
+  # Script de branding : wallpaper desktop + icône menu Kickoff
+  brandingScript = pkgs.writeShellScriptBin "roudix-kde-branding" ''
+    #!${pkgs.bash}
+
+    PLASMA_CFG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
+
+    # Attendre que le fichier de config Plasma existe
+    for i in $(seq 1 20); do
+      [ -f "$PLASMA_CFG" ] && break
+      sleep 0.5
+    done
+    [ -f "$PLASMA_CFG" ] || exit 1
+
+    # ── Détection dynamique du containment et de l'applet Kickoff ────────────
+    KICKOFF_LINE=$(${pkgs.gnugrep}/bin/grep -n "plugin=org.kde.plasma.kickoff" "$PLASMA_CFG" 2>/dev/null | ${pkgs.coreutils}/bin/cut -d: -f1 | ${pkgs.coreutils}/bin/head -1)
+
+    if [ -n "$KICKOFF_LINE" ]; then
+      KICKOFF_SECTION=$(${pkgs.gnused}/bin/sed -n "1,''${KICKOFF_LINE}p" "$PLASMA_CFG" | ${pkgs.gnugrep}/bin/grep "^\[Containments\]" | ${pkgs.coreutils}/bin/tail -1)
+      CONTAINMENT=$(echo "$KICKOFF_SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[\K[0-9]+(?=\]\[Applets\])')
+      APPLET=$(echo "$KICKOFF_SECTION" | ${pkgs.gnugrep}/bin/grep -oP 'Applets\]\[\K[0-9]+')
+    fi
+
+    CONTAINMENT="''${CONTAINMENT:-1}"
+    APPLET="''${APPLET:-2}"
+
+    # ── Wallpaper du desktop ──────────────────────────────────────────────────
+    ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
+      --file plasma-org.kde.plasma.desktop-appletsrc \
+      --group "Containments" --group "$CONTAINMENT" \
+      --group "Wallpaper" --group "org.kde.image" \
+      --group "General" --key "Image" "${wallpaper}"
+
+    # ── Icône du menu Kickoff ─────────────────────────────────────────────────
+    ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
+      --file plasma-org.kde.plasma.desktop-appletsrc \
+      --group "Containments" --group "$CONTAINMENT" \
+      --group "Applets" --group "$APPLET" \
+      --group "Configuration" --group "General" \
+      --key "icon" "start-here-kde"
+
+    # Recharger plasmashell pour appliquer
+    ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
+      /PlasmaShell org.kde.PlasmaShell.refreshCurrentShell 2>/dev/null || true
+  '';
+
 in
 lib.mkIf isKde {
   services.displayManager.plasma-login-manager.enable = true;
@@ -39,22 +87,17 @@ lib.mkIf isKde {
     restartIfChanged = false;
   };
 
-  # ── Set Roudix KDE menu icon ───────────────────────────────────────────────
-  systemd.user.services.plasma-menu-icon = {
-    description = "Set Roudix KDE menu icon";
+  # ── Roudix branding : wallpaper desktop + icône menu ──────────────────────
+  # Les assets (wallpapers + icônes) sont fournis par pkgs/roudix-branding
+  # via branding.nix — pas besoin de runCommand ici
+  systemd.user.services.roudix-kde-branding = {
+    description = "Apply Roudix KDE branding (wallpaper + menu icon)";
     after    = [ "plasma-plasmashell.service" ];
     wantedBy = [ "plasma-core.target" ];
     serviceConfig = {
-      Type      = "oneshot";
-      ExecStart = "${pkgs.writeShellScriptBin "plasma-menu-icon" ''
-        #!${pkgs.bash}
-        ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
-          --file plasma-org.kde.plasma.desktop-appletsrc \
-          --group "Containments" --group "1" \
-          --group "Applets" --group "2" \
-          --group "Configuration" --group "General" \
-          --key "icon" "start-here-kde"
-      ''}/bin/plasma-menu-icon";
+      Type            = "oneshot";
+      ExecStart       = "${brandingScript}/bin/roudix-kde-branding";
+      RemainAfterExit = true;
     };
     restartIfChanged = false;
   };
