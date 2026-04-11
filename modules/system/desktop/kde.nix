@@ -42,6 +42,7 @@ lib.mkIf isKde {
     kdePackages.kcalc
     kdePackages.qtwebengine
     papirus-icon-theme
+    capitaine-cursors
     vlc
     digikam
   ];

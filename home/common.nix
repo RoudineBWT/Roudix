@@ -58,14 +58,5 @@
   ++ lib.optional osConfig.roudix.zen.enable
        inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight;
 
-  # ── Cursor ───────────────────────────────────────────────────────────────
-  home.pointerCursor = {
-    gtk.enable = true;
-    x11.enable = true;
-    package = pkgs.capitaine-cursors;
-    name = "Capitaine Cursors White";
-    size = 32;
-  };
-
   programs.home-manager.enable = true;
 }
