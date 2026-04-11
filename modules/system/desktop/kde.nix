@@ -4,16 +4,15 @@ let
 
   wallpaper = "/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg";
 
-  # Script de branding : wallpaper desktop + icône menu Kickoff
   brandingScript = pkgs.writeShellScriptBin "roudix-kde-branding" ''
     #!${pkgs.bash}
 
     PLASMA_CFG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
 
-    # Attendre que plasmashell soit vraiment prêt (max 30s)
+    # Attendre que plasmashell soit vraiment prêt sur DBus (max 30s)
     for i in $(seq 1 60); do
-      ${pkgs.dbus}/bin/dbus-send --session --dest=org.kde.plasmashell \
-        /PlasmaShell org.kde.PlasmaShell.version 2>/dev/null && break
+      ${pkgs.kdePackages.plasma-workspace}/bin/qdbus org.kde.plasmashell /PlasmaShell \
+        org.kde.PlasmaShell.version 2>/dev/null && break
       sleep 0.5
     done
 
@@ -25,18 +24,21 @@ let
     [ -f "$PLASMA_CFG" ] || exit 1
 
     # ── Détection dynamique du containment et de l'applet Kickoff ────────────
+    # Format réel dans le fichier : [Containments][2][Applets][3]
     KICKOFF_LINE=$(${pkgs.gnugrep}/bin/grep -n "plugin=org.kde.plasma.kickoff" "$PLASMA_CFG" 2>/dev/null | ${pkgs.coreutils}/bin/cut -d: -f1 | ${pkgs.coreutils}/bin/head -1)
 
     if [ -n "$KICKOFF_LINE" ]; then
-      KICKOFF_SECTION=$(${pkgs.gnused}/bin/sed -n "1,''${KICKOFF_LINE}p" "$PLASMA_CFG" | ${pkgs.gnugrep}/bin/grep "^\[Containments\]" | ${pkgs.coreutils}/bin/tail -1)
-      CONTAINMENT=$(echo "$KICKOFF_SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[\K[0-9]+(?=\]\[Applets\])')
-      APPLET=$(echo "$KICKOFF_SECTION" | ${pkgs.gnugrep}/bin/grep -oP 'Applets\]\[\K[0-9]+')
+      SECTION=$(${pkgs.gnused}/bin/sed -n "1,''${KICKOFF_LINE}p" "$PLASMA_CFG" \
+        | ${pkgs.gnugrep}/bin/grep "^\[Containments\]\[[0-9]*\]\[Applets\]\[[0-9]*\]" \
+        | ${pkgs.coreutils}/bin/tail -1)
+      CONTAINMENT=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Containments\]\[\K[0-9]+')
+      APPLET=$(echo "$SECTION" | ${pkgs.gnugrep}/bin/grep -oP '\[Applets\]\[\K[0-9]+')
     fi
 
-    CONTAINMENT="''${CONTAINMENT:-1}"
-    APPLET="''${APPLET:-2}"
+    CONTAINMENT="''${CONTAINMENT:-2}"
+    APPLET="''${APPLET:-3}"
 
-    # ── Icône du menu Kickoff (via kwriteconfig6) ─────────────────────────────
+    # ── Icône du menu Kickoff ─────────────────────────────────────────────────
     ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
       --file plasma-org.kde.plasma.desktop-appletsrc \
       --group "Containments" --group "$CONTAINMENT" \
@@ -45,7 +47,6 @@ let
       --key "icon" "start-here"
 
     # ── Wallpaper du desktop via l'API JavaScript de plasmashell ─────────────
-    # (plus fiable que kwriteconfig6 + refreshCurrentShell)
     ${pkgs.kdePackages.plasma-workspace}/bin/qdbus org.kde.plasmashell /PlasmaShell \
       org.kde.PlasmaShell.evaluateScript "
         var allDesktops = desktops();
@@ -56,6 +57,10 @@ let
           d.writeConfig('Image', '${wallpaper}');
         }
       " 2>/dev/null || true
+
+    # Recharger plasmashell pour appliquer l'icône du menu
+    ${pkgs.kdePackages.plasma-workspace}/bin/qdbus org.kde.plasmashell /PlasmaShell \
+      org.kde.PlasmaShell.refreshCurrentShell 2>/dev/null || true
   '';
 
 in
@@ -97,8 +102,6 @@ lib.mkIf isKde {
   };
 
   # ── Roudix branding : wallpaper desktop + icône menu ──────────────────────
-  # Les assets (wallpapers + icônes) sont fournis par pkgs/roudix-branding
-  # via branding.nix — pas besoin de runCommand ici
   systemd.user.services.roudix-kde-branding = {
     description = "Apply Roudix KDE branding (wallpaper + menu icon)";
     after    = [ "plasma-plasmashell.service" ];
