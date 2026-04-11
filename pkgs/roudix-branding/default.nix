@@ -58,15 +58,22 @@ stdenvNoCC.mkDerivation {
     cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
     cp $src/wallpapers/roudix-light.svg $out/share/backgrounds/roudix/roudix-light.svg
 
-    # ── Wallpapers PNG GNOME (librsvg crash workaround) ───────────────────────
-    # gnome-control-center génère des thumbnails via gdk-pixbuf/librsvg
-    # ce qui provoque un SEGFAULT avec les SVG — on utilise des PNG à la place
+    # ── Wallpapers PNG GNOME (libpng/librsvg crash workaround) ────────────────
+    # -strip                   : supprime les métadonnées et profils ICC
+    # -define png:color-type=2 : force RGB sans canal alpha
+    # -depth 8                 : force 8 bits par canal
     convert $src/wallpapers/roudix-dark.svg \
       -resize 3840x2160 \
+      -strip \
+      -define png:color-type=2 \
+      -depth 8 \
       $out/share/backgrounds/roudix/roudix-dark.png
 
     convert $src/wallpapers/roudix-light.svg \
       -resize 3840x2160 \
+      -strip \
+      -define png:color-type=2 \
+      -depth 8 \
       $out/share/backgrounds/roudix/roudix-light.png
 
     # ── Wallpaper KDE Dark ────────────────────────────────────────────────────
