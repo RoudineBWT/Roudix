@@ -5,8 +5,6 @@ in
 {
   imports = [
     inputs.plasma-manager.homeModules.plasma-manager
-    ../modules/home/mangohud.nix
-    ../modules/home/papirus-folders.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "kde") {
@@ -37,11 +35,7 @@ in
         {
           location = "bottom";
           widgets = [
-            {
-              kickoff = {
-                icon = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
-              };
-            }
+            "org.kde.plasma.kickoff"
             "org.kde.plasma.icontasks"
             "org.kde.plasma.marginsseperator"
             "org.kde.plasma.systemtray"
