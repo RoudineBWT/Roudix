@@ -1,35 +1,27 @@
-<svg width="680" height="680" viewBox="0 0 680 680" role="img" xmlns="http://www.w3.org/2000/svg">
+<svg width="480" height="480" viewBox="-240 -240 480 480" role="img" xmlns="http://www.w3.org/2000/svg">
   <title>Roudix logo Catppuccin Mocha Peach</title>
   <desc>Logo Roudix en palette Catppuccin Mocha — couleurs dominantes peach, maroon et flamingo.</desc>
 
-  <g transform="translate(340,340)">
-    <g id="arm-group">
-      <!-- Bras principal : peach #fab387 -->
-      <rect x="-14" y="-155" width="28" height="110" rx="14" fill="#fab387"/>
-      <!-- Pointe : flamingo #f2cdcd -->
-      <polygon points="0,-170 12,-148 0,-130 -12,-148" fill="#f2cdcd"/>
-
-      <!-- Branche gauche : maroon #eba0ac -->
-      <g transform="rotate(-30) translate(0,-100)">
-        <rect x="-10" y="-50" width="20" height="52" rx="10" transform="rotate(30)" fill="#eba0ac"/>
-        <polygon points="0,-60 8,-42 0,-26 -8,-42" transform="rotate(30)" fill="#f2cdcd"/>
-      </g>
-      <!-- Branche droite : maroon #eba0ac -->
-      <g transform="rotate(30) translate(0,-100)">
-        <rect x="-10" y="-50" width="20" height="52" rx="10" transform="rotate(-30)" fill="#eba0ac"/>
-        <polygon points="0,-60 8,-42 0,-26 -8,-42" transform="rotate(-30)" fill="#f2cdcd"/>
-      </g>
+  <g id="arm-group">
+    <rect x="-14" y="-155" width="28" height="110" rx="14" fill="#fab387"/>
+    <polygon points="0,-170 12,-148 0,-130 -12,-148" fill="#f2cdcd"/>
+    <g transform="rotate(-30) translate(0,-100)">
+      <rect x="-10" y="-50" width="20" height="52" rx="10" transform="rotate(30)" fill="#eba0ac"/>
+      <polygon points="0,-60 8,-42 0,-26 -8,-42" transform="rotate(30)" fill="#f2cdcd"/>
     </g>
-
-    <use href="#arm-group" transform="rotate(60)"/>
-    <use href="#arm-group" transform="rotate(120)"/>
-    <use href="#arm-group" transform="rotate(180)"/>
-    <use href="#arm-group" transform="rotate(240)"/>
-    <use href="#arm-group" transform="rotate(300)"/>
-
-    <!-- Anneaux centraux : rosewater #f5e0dc et maroon #eba0ac -->
-    <circle cx="0" cy="0" r="42" fill="none" stroke="#f5e0dc" stroke-width="18"/>
-    <circle cx="0" cy="0" r="24" fill="none" stroke="#eba0ac" stroke-width="10"/>
-    <circle cx="0" cy="0" r="10" fill="#fab387"/>
+    <g transform="rotate(30) translate(0,-100)">
+      <rect x="-10" y="-50" width="20" height="52" rx="10" transform="rotate(-30)" fill="#eba0ac"/>
+      <polygon points="0,-60 8,-42 0,-26 -8,-42" transform="rotate(-30)" fill="#f2cdcd"/>
+    </g>
   </g>
+
+  <use href="#arm-group" transform="rotate(60)"/>
+  <use href="#arm-group" transform="rotate(120)"/>
+  <use href="#arm-group" transform="rotate(180)"/>
+  <use href="#arm-group" transform="rotate(240)"/>
+  <use href="#arm-group" transform="rotate(300)"/>
+
+  <circle cx="0" cy="0" r="42" fill="none" stroke="#f5e0dc" stroke-width="18"/>
+  <circle cx="0" cy="0" r="24" fill="none" stroke="#eba0ac" stroke-width="10"/>
+  <circle cx="0" cy="0" r="10" fill="#fab387"/>
 </svg>
