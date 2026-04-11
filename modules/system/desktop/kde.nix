@@ -7,9 +7,16 @@ lib.mkIf isKde {
   services.displayManager.defaultSession = "plasma";
   services.desktopManager.plasma6.enable = true;
 
-  services.xserver.displayManager.lightdm.greeters.slick.extraConfig = ''
-    background=/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg
+  environment.etc."plasmalogin.conf".text = ''
+    [Greeter]
+    WallpaperPlugin=org.kde.image
+
+    [Greeter.WallpaperPlugin.org.kde.image]
+    Image=/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg
   '';
+
+  environment.etc."backgrounds/roudix/roudix-dark.svg".source =
+    ../../../assets/backgrounds/roudix-dark.svg;
 
   hardware.bluetooth.enable = true;
 
