@@ -15,6 +15,9 @@ lib.mkIf isKde {
     Image=/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg
   '';
 
+  environment.etc."backgrounds/roudix/roudix-dark.svg".source =
+    ../../assets/wallpapers/roudix-dark.svg;
+
   hardware.bluetooth.enable = true;
 
   xdg.portal = {
