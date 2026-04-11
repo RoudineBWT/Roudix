@@ -235,12 +235,15 @@ roudix-switch kde
 - Bloat removed via `environment.gnome.excludePackages`
 
 **Desktop (KDE)**
-- KDE Plasma 6 with plasma-login-manager
+- KDE Plasma 6 with plasma-login-manager (Plasma 6.6+, nixpkgs unstable)
 - KDE Connect enabled
 - xdg-desktop-portal-kde
-- Plasma taskbar icon fix (systemd user service)
+- Papirus-Dark icon theme
+- Breeze Dark look & feel + color scheme
+- Roudix Dark wallpaper on login screen and desktop
 - Curated packages: partitionmanager, kcalc, digikam, vlc...
 - Bloat removed (Discover excluded)
+- Override wallpaper, panels, icon theme in `home/local.nix`
 
 **Music**
 - Spotify patched with Spicetify
@@ -401,6 +404,46 @@ Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfi
 ```
 
 > See `home/local.nix.example` for all available override options including fastfetch customization.
+
+### KDE Plasma overrides (`home/local.nix`)
+
+When using `roudix.desktop.type = "kde"`, you can override any plasma-manager setting in `home/local.nix`:
+
+**Wallpaper**
+```nix
+programs.plasma.workspace.wallpaper = lib.mkForce "/home/youruser/Pictures/wallpaper.jpg";
+```
+
+**Icon theme**
+```nix
+programs.plasma.workspace.iconTheme = lib.mkForce "Papirus-Dark";
+# Other values: "Papirus", "Papirus-Light", "breeze-dark", "breeze"
+```
+
+**Color scheme / Look & Feel**
+```nix
+programs.plasma.workspace.colorScheme = lib.mkForce "BreezeDark";
+programs.plasma.workspace.lookAndFeel = lib.mkForce "org.kde.breezedark.desktop";
+```
+
+**Taskbar / Panels**
+```nix
+programs.plasma.panels = lib.mkForce [
+  {
+    location = "bottom";
+    widgets = [
+      { kickoff.icon = "/path/to/your/icon.svg"; }
+      "org.kde.plasma.icontasks"
+      "org.kde.plasma.marginsseperator"
+      "org.kde.plasma.systemtray"
+      "org.kde.plasma.digitalclock"
+      "org.kde.plasma.showdesktop"
+    ];
+  }
+];
+```
+
+> `lib.mkForce` is required to override the defaults set in `home/kde.nix`.
 
 > All three `local.nix` files and `boot.local.nix` are listed in `.gitignore` — they will never be overwritten by a `git pull`.
 

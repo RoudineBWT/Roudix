@@ -2,6 +2,8 @@
 {
   imports = [
     inputs.plasma-manager.homeModules.plasma-manager
+    ../modules/home/mangohud.nix
+    ../modules/home/papirus-folders.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "kde") {
@@ -12,7 +14,7 @@
         # ── Thème sombre ──────────────────────────────────────────────────
         lookAndFeel = "org.kde.breezedark.desktop";
         colorScheme = "BreezeDark";
-        iconTheme   = "breeze-dark";
+        iconTheme   = "Papirus-Dark";
 
         # Wallpaper par défaut Roudix Dark
         # Override dans home/local.nix :
