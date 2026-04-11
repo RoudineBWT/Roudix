@@ -38,16 +38,14 @@ in
     mode = "0755";
     text = ''
       #!/bin/sh
-      WALLPAPER_DARK="/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg"
-      WALLPAPER_LIGHT="/run/current-system/sw/share/backgrounds/roudix/roudix-light.svg"
+      WALLPAPER="/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg"
       CONFIG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
-      if [ ! -f "$CONFIG" ]; then
-        mkdir -p "$HOME/.config"
-        cat > "$CONFIG" << KDEEOF
-[Containments][1][Wallpaper][org.kde.image][General]
-Image=$WALLPAPER_DARK
-KDEEOF
-      fi
+
+      ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
+        --file plasma-org.kde.plasma.desktop-appletsrc \
+        --group "Containments" --group "1" \
+        --group "Wallpaper" --group "org.kde.image" \
+        --group "General" --key "Image" "$WALLPAPER"
     '';
   };
 }

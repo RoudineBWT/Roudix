@@ -7,6 +7,10 @@ lib.mkIf isKde {
   services.displayManager.defaultSession = "plasma";
   services.desktopManager.plasma6.enable = true;
 
+  services.xserver.displayManager.lightdm.greeters.slick.extraConfig = ''
+    background=/run/current-system/sw/share/backgrounds/roudix/roudix-dark.svg
+  '';
+
   hardware.bluetooth.enable = true;
 
   xdg.portal = {
@@ -31,6 +35,26 @@ lib.mkIf isKde {
           ${pkgs.gnused}/bin/sed -i 's/file:\/\/\/nix\/store\/[^\/]*\/share\/applications\//applications:/gi' ''${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc
         fi
       ''}/bin/plasma-taskbar-icon-fix";
+    };
+    restartIfChanged = false;
+  };
+
+  # Icône du menu KDE
+  systemd.user.services.plasma-menu-icon = {
+    description = "Set Roudix KDE menu icon";
+    after    = [ "plasma-plasmashell.service" ];
+    wantedBy = [ "plasma-core.target" ];
+    serviceConfig = {
+      Type      = "oneshot";
+      ExecStart = "${pkgs.writeShellScriptBin "plasma-menu-icon" ''
+        #!${pkgs.bash}
+        ${pkgs.kdePackages.plasma-workspace}/bin/kwriteconfig6 \
+          --file plasma-org.kde.plasma.desktop-appletsrc \
+          --group "Containments" --group "1" \
+          --group "Applets" --group "2" \
+          --group "Configuration" --group "General" \
+          --key "icon" "start-here-kde"
+      ''}/bin/plasma-menu-icon";
     };
     restartIfChanged = false;
   };
