@@ -39,7 +39,7 @@ in
           widgets = [
             {
               kickoff = {
-                icon = "/run/current-system/sw/share/icons/hicolor/scalable/apps/roudix-logo.svg";
+                icon = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
               };
             }
             "org.kde.plasma.icontasks"
