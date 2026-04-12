@@ -1,4 +1,9 @@
 { pkgs, inputs, lib, username, osConfig, roudixSwitcher, dotfiles, ... }:
+let
+  desktopType = osConfig.roudix.desktop.type;
+  shellType = osConfig.roudix.desktop.shell or "noctalia";
+  isHyprlandOrNiri = desktopType == "hyprland" || desktopType == "niri";
+in
 {
   home.username = username;
   home.homeDirectory = "/home/${username}";
@@ -18,6 +23,32 @@
   xdg.configFile."easyeffects" = {
     source = "${dotfiles}/easyeffects";
     recursive = true;
+  };
+
+  # ── Default branding wallpaper ───────────────────────────────────────────
+  # Set a Roudix wallpaper by default — the user can override it via the shell UI.
+  # These files live in ~/.cache / ~/.local/state so they're not read-only symlinks
+  # and will be overwritten as soon as the user picks their own wallpaper.
+
+  # Noctalia
+  home.file.".cache/noctalia/wallpapers.json" = lib.mkIf (isHyprlandOrNiri && shellType == "noctalia") {
+    text = builtins.toJSON {
+      defaultWallpaper = "/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
+      wallpapers = {};
+    };
+  };
+
+  # DMS
+  home.file.".local/state/DankMaterialShell/session.json" = lib.mkIf (isHyprlandOrNiri && shellType == "dms") {
+    text = builtins.toJSON {
+      wallpaperPath = "/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
+      wallpaperFillMode = "PreserveAspectCrop";
+    };
+  };
+
+  # Caelestia
+  programs.caelestia = lib.mkIf (isHyprlandOrNiri && shellType == "caelestia") {
+    settings.paths.wallpaperDir = "/run/current-system/sw/share/backgrounds/roudix";
   };
 
   home.packages = (with pkgs; [
