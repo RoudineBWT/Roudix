@@ -450,6 +450,14 @@ pick "Desktop environment:" DE \
   "kde|KDE Plasma" \
   "hyprland|Hyprland"
 
+DESKTOP_SHELL="noctalia"
+if [[ "$DE" == "niri" || "$DE" == "hyprland" ]]; then
+  pick "Desktop shell (bar/UI stack):" DESKTOP_SHELL \
+    "noctalia|Noctalia — default Roudix shell" \
+    "dms|DankMaterialShell — Material 3 design" \
+    "caelestia|Caelestia — aesthetic Quickshell setup"
+fi
+
 pick "Default shell:" SHELL_DEFAULT \
   "fish|Fish — smart, user-friendly shell (recommended)" \
   "bash|Bash — classic Unix shell"
@@ -657,6 +665,7 @@ sed -i "s/hardware\.myKernel[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKerne
 sed -i "s/roudix\.browsers[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.browsers = [\"${BROWSER}\"]/"    hosts/roudix/local.nix
 sed -i -E "s/roudix\.zen\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.enable           = ${ZEN}/" hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.desktop\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.shell = \"${DESKTOP_SHELL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.shell = \"${SHELL_DEFAULT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/roudix/local.nix
@@ -684,6 +693,7 @@ echo -e "
   ${BOLD}Browser       :${NC} $BROWSER
   ${BOLD}Zen Browser   :${NC} $ZEN
   ${BOLD}Desktop       :${NC} $DE
+  ${BOLD}Desktop shell :${NC} $DESKTOP_SHELL
   ${BOLD}Shell         :${NC} $SHELL_DEFAULT
   ${BOLD}VM Guest      :${NC} $VM_GUEST
   ${BOLD}Gaming        :${NC} $GAMING

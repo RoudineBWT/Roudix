@@ -9,6 +9,14 @@
   # ── Desktop ───────────────────────────────────────────────────────────────
   roudix.desktop.type = "niri";               # "niri", "gnome", "kde" or "hyprland"
 
+  # ── Desktop shell ─────────────────────────────────────────────────────────
+  # Only used when roudix.desktop.type = "niri" or "hyprland"
+  # Controls which shell/bar stack is enabled for the chosen compositor.
+  #   "noctalia"  — Noctalia shell   (github:noctalia-dev/noctalia-shell)
+  #   "dms"       — DankMaterialShell (github:AvengeMedia/DankMaterialShell)
+  #   "caelestia" — Caelestia shell  (github:caelestia-dots/shell)
+  roudix.desktop.shell = "noctalia";
+
   # ── Browser ───────────────────────────────────────────────────────────────
   roudix.browsers = ["helium"];               # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable           = false;        # install Zen Browser (from zen-browser flake input)

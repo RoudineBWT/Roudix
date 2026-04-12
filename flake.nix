@@ -37,6 +37,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    caelestia-shell = {
+         url = "github:caelestia-dots/shell";
+         inputs.nixpkgs.follows = "nixpkgs";
+       };
+
+    dms ={
+        url = "github:AvengeMedia/DankMaterialShell";
+        inputs.nixpkgs.follows = "nixpkgs";
+  };
+
     nix-cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel/release";
     };
@@ -77,7 +87,7 @@
     };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, glf-os, spicetify-nix, millennium, helium, nix-flatpak, plasma-manager, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, caelestia-shell, dms, glf-os, spicetify-nix, millennium, helium, nix-flatpak, plasma-manager, ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
   # Create it with: echo '"yourusername"' > hosts/roudix/username.nix
@@ -111,6 +121,7 @@
               ./home/kde.nix
               ./home/gnome.nix
               ./home/local.nix
+              ./home/shell-modules.nix
             ];
           };
         }

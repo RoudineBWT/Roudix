@@ -1,0 +1,11 @@
+// ────────────── Startup Applications ──────────────
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
+
+spawn-at-startup "dms" "run" // Launch DankMaterialShell
+//spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1" "&" // Polkit
+spawn-at-startup "/run/current-system/sw/libexec/polkit-gnome-authentication-agent-1"
+spawn-at-startup "xwayland-satellite" // XWayland support
+spawn-at-startup "swww-daemon" // Wallpaper daemon
+spawn-at-startup "discord" // Launch Discord
+spawn-at-startup "openrgb" // Launch OpenRGB
+//spawn-at-startup "Telegram" // Launch Telegram

@@ -48,6 +48,40 @@ ENVIRONMENTS = [
     },
 ]
 
+# Shells graphiques — disponibles uniquement pour niri et hyprland
+SHELLS = [
+    {
+        "id":       "noctalia",
+        "name":     "Noctalia",
+        "subtitle": "Roudix default shell — sleek and feature-complete",
+        "icon":     "noctalia.svg",
+    },
+    {
+        "id":       "dms",
+        "name":     "DMS",
+        "subtitle": "Minimal and lightweight Roudix shell",
+        "icon":     "dms.svg",
+    },
+]
+
+CAELESTIA = [
+    {
+        "id":       "caelestia",
+        "name":     "Caelestia",
+        "subtitle": "Elegant Roudix shell with a focus on aesthetics",
+        "icon":     "caelestia.svg",
+    },
+]
+
+# Compositeurs qui supportent le choix de shell graphique
+SHELL_SUPPORTED_DE    = {"niri", "hyprland"}
+CAELESTIA_SUPPORTED_DE = {"hyprland"}
+
+
+def shells_for_de(de_id: str) -> list:
+    """Return the shell list appropriate for the given DE."""
+    return SHELLS + (CAELESTIA if de_id in CAELESTIA_SUPPORTED_DE else [])
+
 
 # ── Logging setup ─────────────────────────────────────────────────────────────
 
@@ -85,6 +119,19 @@ def get_current_de():
     return "niri"
 
 
+def get_current_shell():
+    try:
+        with open(CONFIG_FILE) as f:
+            for line in f:
+                if "roudix.desktop.shell" in line:
+                    m = re.search(r'"(\w+)"', line)
+                    if m:
+                        return m.group(1)
+    except Exception:
+        pass
+    return "noctalia"
+
+
 def set_de(de_id):
     try:
         with open(CONFIG_FILE) as f:
@@ -103,6 +150,39 @@ def set_de(de_id):
         return str(e)
 
 
+def set_shell(shell_id):
+    """Write roudix.desktop.shell to config, adding the line if absent."""
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+
+        if re.search(r'roudix\.desktop\.shell\s*=\s*"[^"]*"', content):
+            new = re.sub(
+                r'roudix\.desktop\.shell\s*=\s*"[^"]*"',
+                f'roudix.desktop.shell = "{shell_id}"',
+                content,
+            )
+        else:
+            # Insert after roudix.desktop.type line if present
+            de_line = re.search(r'(roudix\.desktop\.type\s*=\s*"[^"]*";)', content)
+            if de_line:
+                new = content[:de_line.end()] + f'\n  roudix.desktop.shell = "{shell_id}";' + content[de_line.end():]
+            else:
+                new = content.rstrip()
+                if new.endswith("}"):
+                    new = new[:-1] + f'  roudix.desktop.shell = "{shell_id}";\n}}'
+                else:
+                    new = content + f'\n  roudix.desktop.shell = "{shell_id}";\n'
+
+        with open(CONFIG_FILE, "w") as f:
+            f.write(new)
+        log.info("Configuration updated: desktop shell set to '%s'.", shell_id)
+        return True
+    except Exception as e:
+        log.error("Failed to write configuration: %s", e)
+        return str(e)
+
+
 def load_icon(icon_filename, dark):
     """Load icon from dark/ or light/ subfolder, fallback to theme icon."""
     theme = "dark" if dark else "light"
@@ -110,14 +190,111 @@ def load_icon(icon_filename, dark):
     if os.path.exists(path):
         img = Gtk.Image.new_from_file(path)
     else:
-        # fallback: try root icons dir
         fallback = os.path.join(ICONS_DIR, icon_filename)
         if os.path.exists(fallback):
             img = Gtk.Image.new_from_file(fallback)
         else:
-            img = Gtk.Image.new_from_icon_name(icon_filename)
+            # Use a generic terminal icon for shells when no dedicated icon exists
+            img = Gtk.Image.new_from_icon_name("utilities-terminal-symbolic")
     img.set_pixel_size(32)
     return img
+
+
+# ── Reusable selector widget ──────────────────────────────────────────────────
+
+class SelectorGroup(Gtk.Box):
+    """
+    A labelled ListBox of radio-like rows.
+    items   — list of dicts with keys: id, name, subtitle, icon
+    current — currently selected id
+    dark    — whether the theme is dark (for icon loading)
+    """
+
+    def __init__(self, title: str, items: list, current: str, dark: bool):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        label = Gtk.Label()
+        label.set_markup(f"<b>{title}</b>")
+        label.set_halign(Gtk.Align.START)
+        self.append(label)
+
+        self.selected_id = current
+        self.icon_widgets: dict[str, tuple] = {}
+        self.rows: dict[str, Gtk.CheckButton] = {}
+        self._dark = dark
+        self._row_widgets: dict[str, Adw.ActionRow] = {}
+
+        self.list_box = Gtk.ListBox()
+        self.list_box.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.list_box.add_css_class("boxed-list")
+        self.append(self.list_box)
+
+        for item in items:
+            self._append_item(item)
+
+    def _append_item(self, item: dict):
+        row = Adw.ActionRow()
+        row.set_title(item["name"])
+        row.set_subtitle(item["subtitle"])
+
+        icon = load_icon(item["icon"], self._dark)
+        self.icon_widgets[item["id"]] = (icon, item["icon"])
+        row.add_prefix(icon)
+
+        if item.get("disabled"):
+            row.set_sensitive(False)
+        else:
+            check = Gtk.CheckButton()
+            check.set_valign(Gtk.Align.CENTER)
+            if item["id"] == self.selected_id:
+                check.set_active(True)
+            check.connect("toggled", self._on_toggled, item["id"])
+            row.add_suffix(check)
+            self.rows[item["id"]] = check
+
+        self._row_widgets[item["id"]] = row
+        self.list_box.append(row)
+
+    def add_item(self, item: dict):
+        """Append a new item row (e.g. caelestia) if not already present."""
+        if item["id"] not in self._row_widgets:
+            self._append_item(item)
+
+    def remove_item(self, item_id: str):
+        """Remove a row by id. If it was selected, fall back to the first row."""
+        row = self._row_widgets.pop(item_id, None)
+        if row is None:
+            return
+        self.list_box.remove(row)
+        self.icon_widgets.pop(item_id, None)
+        self.rows.pop(item_id, None)
+        # If the removed item was selected, select the first available
+        if self.selected_id == item_id:
+            first = next(iter(self.rows), None)
+            if first:
+                self.rows[first].set_active(True)
+                self.selected_id = first
+
+    def _on_toggled(self, check, item_id):
+        if check.get_active():
+            self.selected_id = item_id
+            for key, other in self.rows.items():
+                if key != item_id:
+                    other.handler_block_by_func(self._on_toggled)
+                    other.set_active(False)
+                    other.handler_unblock_by_func(self._on_toggled)
+
+    def update_icons(self, dark: bool):
+        self._dark = dark
+        theme = "dark" if dark else "light"
+        for env_id, (img_widget, icon_filename) in self.icon_widgets.items():
+            path = os.path.join(ICONS_DIR, theme, icon_filename)
+            if os.path.exists(path):
+                img_widget.set_from_file(path)
+            else:
+                fallback = os.path.join(ICONS_DIR, icon_filename)
+                if os.path.exists(fallback):
+                    img_widget.set_from_file(fallback)
 
 
 # ── Main window ───────────────────────────────────────────────────────────────
@@ -126,26 +303,30 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
     def __init__(self, app):
         super().__init__(application=app)
         self.set_title("Roudix — Desktop Switcher")
-        self.set_default_size(480, 420)
+        self.set_default_size(480, 640)
         self.set_resizable(False)
 
-        self.selected_de = get_current_de()
-        log.info("Current desktop environment: %s", self.selected_de)
+        current_de    = get_current_de()
+        current_shell = get_current_shell()
+        log.info("Current desktop environment: %s", current_de)
+        log.info("Current shell: %s", current_shell)
 
-        # Track icon widgets per env id so we can reload them on theme change
-        self.icon_widgets = {}
-
-        # ── Style manager — watch for theme changes ───────────────────────
+        # ── Style manager ─────────────────────────────────────────────────
         self.style_manager = Adw.StyleManager.get_default()
         self.style_manager.connect("notify::dark", self.on_theme_changed)
+        dark = self.style_manager.get_dark()
 
-        # ── Main layout ──────────────────────────────────────────────────
+        # ── Main layout ───────────────────────────────────────────────────
         toolbar = Adw.ToolbarView()
         self.set_content(toolbar)
 
         header = Adw.HeaderBar()
         header.set_show_end_title_buttons(False)
         toolbar.add_top_bar(header)
+
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scroll.set_vexpand(True)
 
         clamp = Adw.Clamp()
         clamp.set_maximum_size(440)
@@ -156,7 +337,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         main_box.set_margin_start(16)
         main_box.set_margin_end(16)
 
-        # ── Description ──────────────────────────────────────────────────
+        # ── Description ───────────────────────────────────────────────────
         desc = Gtk.Label()
         desc.set_markup(
             "<b>Select your desktop environment</b>\n"
@@ -167,37 +348,35 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         desc.set_wrap(True)
         main_box.append(desc)
 
-        # ── Environment list ─────────────────────────────────────────────
-        self.list_box = Gtk.ListBox()
-        self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        self.list_box.add_css_class("boxed-list")
+        # ── DE selector ───────────────────────────────────────────────────
+        self.de_selector = SelectorGroup(
+            "Desktop environment",
+            ENVIRONMENTS,
+            current_de,
+            dark,
+        )
+        # Écouter les changements de DE pour afficher/cacher/mettre à jour le shell selector
+        for de_id, check in self.de_selector.rows.items():
+            check.connect("toggled", self._on_de_toggled)
+        main_box.append(self.de_selector)
 
-        self.rows = {}
-        for env in ENVIRONMENTS:
-            row = Adw.ActionRow()
-            row.set_title(env["name"])
-            row.set_subtitle(env["subtitle"])
+        # ── Shell selector (niri/hyprland uniquement) ─────────────────────
+        # Construire avec la liste correcte selon le DE actuel
+        initial_shells = shells_for_de(current_de)
+        # Si le shell sauvegardé n'est pas dispo pour ce DE, fallback noctalia
+        if current_shell not in {s["id"] for s in initial_shells}:
+            current_shell = "noctalia"
 
-            icon = load_icon(env["icon"], self.style_manager.get_dark())
-            self.icon_widgets[env["id"]] = (icon, env["icon"])
-            row.add_prefix(icon)
+        self.shell_selector = SelectorGroup(
+            "Graphical shell",
+            initial_shells,
+            current_shell,
+            dark,
+        )
+        self.shell_selector.set_visible(current_de in SHELL_SUPPORTED_DE)
+        main_box.append(self.shell_selector)
 
-            if env.get("disabled"):
-                row.set_sensitive(False)
-            else:
-                check = Gtk.CheckButton()
-                check.set_valign(Gtk.Align.CENTER)
-                if env["id"] == self.selected_de:
-                    check.set_active(True)
-                check.connect("toggled", self.on_check_toggled, env["id"])
-                row.add_suffix(check)
-                self.rows[env["id"]] = check
-
-            self.list_box.append(row)
-
-        main_box.append(self.list_box)
-
-        # ── Status area (barre de progression + label résultat) ──────────
+        # ── Status area ───────────────────────────────────────────────────
         status_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         status_box.set_size_request(-1, 48)
         status_box.set_valign(Gtk.Align.CENTER)
@@ -231,9 +410,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._pulse_source = None
 
         clamp.set_child(main_box)
-        toolbar.set_content(clamp)
+        scroll.set_child(clamp)
+        toolbar.set_content(scroll)
 
-        # ── Buttons ──────────────────────────────────────────────────────
+        # ── Buttons ───────────────────────────────────────────────────────
         btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         btn_box.set_margin_top(8)
         btn_box.set_margin_bottom(16)
@@ -252,8 +432,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         toolbar.add_bottom_bar(btn_box)
 
+    # ── Helpers ───────────────────────────────────────────────────────────
+
     def _start_progress(self):
-        """Affiche la barre et démarre le pulse."""
         self.progress_bar.set_visible(True)
         self.log_label.set_label("")
         self.log_label.set_visible(True)
@@ -263,10 +444,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
     def _do_pulse(self):
         self.progress_bar.pulse()
-        return True  # répéter
+        return True
 
     def _stop_progress(self):
-        """Arrête le pulse et cache la barre + log_label."""
         if self._pulse_source is not None:
             GLib.source_remove(self._pulse_source)
             self._pulse_source = None
@@ -274,69 +454,108 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.log_label.set_visible(False)
         self.log_label.set_label("")
 
+    def _on_de_toggled(self, check, *_):
+        """Affiche/cache le shell selector et met à jour la liste selon le DE choisi."""
+        new_de  = self.de_selector.selected_id
+        visible = new_de in SHELL_SUPPORTED_DE
+        self.shell_selector.set_visible(visible)
+
+        if not visible:
+            return
+
+        # Ajouter ou retirer caelestia selon le DE
+        if new_de in CAELESTIA_SUPPORTED_DE:
+            for item in CAELESTIA:
+                self.shell_selector.add_item(item)
+        else:
+            for item in CAELESTIA:
+                self.shell_selector.remove_item(item["id"])
+
+        log.debug(
+            "DE changed to '%s' — shell selector updated (caelestia: %s)",
+            new_de,
+            new_de in CAELESTIA_SUPPORTED_DE,
+        )
+
     def on_theme_changed(self, style_manager, _param):
-        """Reload all icons when the system theme switches dark/light."""
         dark = style_manager.get_dark()
         log.debug("Theme changed — dark: %s", dark)
-        for env_id, (img_widget, icon_filename) in self.icon_widgets.items():
-            theme = "dark" if dark else "light"
-            path = os.path.join(ICONS_DIR, theme, icon_filename)
-            if os.path.exists(path):
-                img_widget.set_from_file(path)
-            else:
-                fallback = os.path.join(ICONS_DIR, icon_filename)
-                if os.path.exists(fallback):
-                    img_widget.set_from_file(fallback)
+        self.de_selector.update_icons(dark)
+        self.shell_selector.update_icons(dark)
 
-    def on_check_toggled(self, check, de_id):
-        if check.get_active():
-            self.selected_de = de_id
-            log.debug("User selected desktop environment: %s", de_id)
-            for key, other in self.rows.items():
-                if key != de_id:
-                    other.handler_block_by_func(self.on_check_toggled)
-                    other.set_active(False)
-                    other.handler_unblock_by_func(self.on_check_toggled)
+    # ── Apply logic ───────────────────────────────────────────────────────
 
     def on_apply(self, btn):
-        if self.selected_de == get_current_de():
-            log.info("Already on '%s' — nothing to do.", self.selected_de)
+        new_de    = self.de_selector.selected_id
+        cur_de    = get_current_de()
+        cur_shell = get_current_shell()
+
+        de_changed = new_de != cur_de
+
+        # Le shell n'est pertinent que pour niri/hyprland
+        shell_relevant = new_de in SHELL_SUPPORTED_DE
+        new_shell      = self.shell_selector.selected_id if shell_relevant else cur_shell
+        shell_changed  = shell_relevant and (new_shell != cur_shell)
+
+        if not de_changed and not shell_changed:
+            log.info("No changes detected — nothing to do.")
             self.status.set_markup(
-                f"<span color='gray'>Already on <b>{self.selected_de}</b> — nothing to do.</span>"
+                "<span color='gray'>No changes detected — nothing to do.</span>"
             )
             return
 
+        # Build a human-readable summary of what will change
+        changes = []
+        if de_changed:
+            changes.append(f"Desktop: <b>{cur_de}</b> → <b>{new_de}</b>")
+        if shell_changed:
+            changes.append(f"Shell: <b>{cur_shell}</b> → <b>{new_shell}</b>")
+        body_changes = "\n".join(changes)
+
         dialog = Adw.AlertDialog()
-        dialog.set_heading("Switch desktop environment?")
+        dialog.set_heading("Apply changes?")
         dialog.set_body(
-            f"This will switch to <b>{self.selected_de}</b> and rebuild your NixOS configuration.\n\n"
-            "The rebuild may take a few minutes."
+            f"{body_changes}\n\n"
+            "Your NixOS configuration will be rebuilt. This may take a few minutes."
         )
         dialog.add_response("cancel", "Cancel")
         dialog.add_response("confirm", "Apply & Rebuild")
         dialog.set_response_appearance("confirm", Adw.ResponseAppearance.SUGGESTED)
         dialog.set_default_response("confirm")
-        dialog.connect("response", self.on_confirm_response)
+        dialog.connect("response", self.on_confirm_response, new_de, new_shell, de_changed, shell_changed)
         dialog.present(self)
 
-    def on_confirm_response(self, dialog, response):
+    def on_confirm_response(self, dialog, response, new_de, new_shell, de_changed, shell_changed):
         if response != "confirm":
             log.info("User cancelled the rebuild dialog.")
             return
 
-        result = set_de(self.selected_de)
-        if result is not True:
-            self.status.set_markup(
-                f"<span color='red'>Error writing config: {GLib.markup_escape_text(result)}</span>"
-            )
-            return
+        if de_changed:
+            result = set_de(new_de)
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing DE config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if shell_changed:
+            result = set_shell(new_shell)
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing shell config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
 
         self.status.set_markup("")
         GLib.idle_add(self._start_progress)
         self.apply_btn.set_sensitive(False)
         self.exit_btn.set_sensitive(False)
 
-        log.info("Starting NixOS rebuild for desktop: %s", self.selected_de)
+        log.info(
+            "Starting NixOS rebuild — DE: %s, shell: %s",
+            new_de if de_changed else "(unchanged)",
+            new_shell if shell_changed else "(unchanged)",
+        )
 
         import threading
         threading.Thread(target=self.run_rebuild, daemon=True).start()

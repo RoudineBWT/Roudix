@@ -13,4 +13,10 @@
     type = lib.types.enum [ "niri" "gnome" "kde" "hyprland" ];
     default = "niri";
   };
+  # ── Desktop shell option ─────────────────────────────────────────────────
+  options.roudix.desktop.shell = lib.mkOption {
+    description = "Shell/bar stack for Wayland compositors (niri, hyprland). Set in local.nix.";
+    type = lib.types.enum [ "noctalia" "dms" "caelestia" ];
+    default = "noctalia";
+  };
 }

@@ -5,7 +5,7 @@ include "./cfg/display.kdl"
 include "./cfg/layout.kdl"
 include "./cfg/rules.kdl"
 include "./cfg/misc.kdl"
-include "./noctalia.kdl"
+
 
 // ── User overrides ───────────────────────────────────────────────────────────
 // Injected by Nix at build time — see home/niri.nix.

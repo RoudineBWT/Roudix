@@ -1,7 +1,7 @@
 { lib, pkgs }:
 pkgs.stdenv.mkDerivation {
   pname = "roudix-switcher";
-  version = "1.0.8";
+  version = "1.1.0";
   src = ./.;
   nativeBuildInputs = with pkgs; [
     wrapGAppsHook4

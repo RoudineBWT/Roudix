@@ -4,21 +4,54 @@
   # This file is gitignored and never touched by git pull.
   # Copy this file to home/local.nix and add your personal overrides here.
 
-  # Examples:
+  # ── Hyprland user overrides ──────────────────────────────────────────────
+  # Sourced at the end of hyprland.conf — put your monitors, keybinds,
+  # and any personal tweaks here. Overrides anything set by the dotfiles.
+  # Only active when roudix.desktop.type = "hyprland".
+  #
+  # home.file.".config/hypr/user.conf".text = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") ''
+  #   # ── Monitors ──────────────────────────────────────────────────────────
+  #   monitor = DP-1, 2560x1440@144, 0x0, 1
+  #   monitor = HDMI-A-1, 1920x1080@60, 2560x0, 1
+  #
+  #   # ── Keybinds ──────────────────────────────────────────────────────────
+  #   bind = SUPER, T, exec, alacritty
+  #
+  #   # ── Misc tweaks ───────────────────────────────────────────────────────
+  #   general {
+  #     gaps_out = 20
+  #   }
+  # '';
 
-  # Add personal packages
+  # ── Niri user overrides ──────────────────────────────────────────────────
+  # Included at the end of config.kdl — put your outputs, keybinds,
+  # and any personal tweaks here. Overrides anything set by the dotfiles.
+  # Only active when roudix.desktop.type = "niri".
+  #
+  # home.file.".config/niri/user.kdl".text = lib.mkIf (osConfig.roudix.desktop.type == "niri") ''
+  #   // ── Outputs ─────────────────────────────────────────────────────────
+  #   output "DP-1" {
+  #     mode "2560x1440" refresh=144.0
+  #     position x=0 y=0
+  #   }
+  #   output "HDMI-A-1" {
+  #     mode "1920x1080" refresh=60.0
+  #     position x=2560 y=0
+  #   }
+  #
+  #   // ── Keybinds ─────────────────────────────────────────────────────────
+  #   binds {
+  #     Mod+T { spawn "alacritty"; }
+  #   }
+  # '';
+
+  # ── Add personal packages ────────────────────────────────────────────────
   # home.packages = with pkgs; [
   #   vlc
   #   telegram-desktop
   # ];
 
-  # Override dotfiles source
-  # xdg.configFile."hypr" = {
-  #   source = "${dotfiles}/perso/hyprland";
-  #   recursive = true;
-  # };
-
-  # Custom shell aliases
+  # ── Custom shell aliases ─────────────────────────────────────────────────
   # programs.fish.shellAliases = {
   #   myalias = "echo hello";
   # };
