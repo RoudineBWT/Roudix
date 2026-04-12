@@ -3,6 +3,8 @@ let
   desktopType = osConfig.roudix.desktop.type;
   shellType = osConfig.roudix.desktop.shell or "noctalia";
   isHyprlandOrNiri = desktopType == "hyprland" || desktopType == "niri";
+
+  brandingWallpaper = "/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
 in
 {
   home.username = username;
@@ -26,30 +28,33 @@ in
   };
 
   # ── Default branding wallpaper ───────────────────────────────────────────
-  # Set a Roudix wallpaper by default — the user can override it via the shell UI.
-  # These files live in ~/.cache / ~/.local/state so they're not read-only symlinks
-  # and will be overwritten as soon as the user picks their own wallpaper.
-
-  # Noctalia
-  home.file.".cache/noctalia/wallpapers.json" = lib.mkIf (isHyprlandOrNiri && shellType == "noctalia") {
-    text = builtins.toJSON {
-      defaultWallpaper = "/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
-      wallpapers = {};
-    };
-  };
-
-  # DMS
-  home.file.".local/state/DankMaterialShell/session.json" = lib.mkIf (isHyprlandOrNiri && shellType == "dms") {
-    text = builtins.toJSON {
-      wallpaperPath = "/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
-      wallpaperFillMode = "PreserveAspectCrop";
-    };
-  };
-
-  # Caelestia
-  programs.caelestia = lib.mkIf (isHyprlandOrNiri && shellType == "caelestia") {
-    settings.paths.wallpaperDir = "/run/current-system/sw/share/backgrounds/roudix";
-  };
+  # Write the Roudix wallpaper only on first install (file absent).
+  # Rebuilds never overwrite the user's own wallpaper choice.
+  home.activation.defaultWallpaper = lib.mkIf isHyprlandOrNiri (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] (
+      lib.optionalString (shellType == "noctalia") ''
+        if [ ! -f "$HOME/.cache/noctalia/wallpapers.json" ]; then
+          mkdir -p "$HOME/.cache/noctalia"
+          printf '%s' '{"defaultWallpaper":"/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png","wallpapers":{}}' \
+            > "$HOME/.cache/noctalia/wallpapers.json"
+        fi
+      ''
+      + lib.optionalString (shellType == "dms") ''
+        if [ ! -f "$HOME/.local/state/DankMaterialShell/session.json" ]; then
+          mkdir -p "$HOME/.local/state/DankMaterialShell"
+          printf '%s' '{"wallpaperPath":"/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png","wallpaperFillMode":"PreserveAspectCrop"}' \
+            > "$HOME/.local/state/DankMaterialShell/session.json"
+        fi
+      ''
+      + lib.optionalString (shellType == "caelestia") ''
+        if [ ! -f "$HOME/.config/caelestia/shell.json" ]; then
+          mkdir -p "$HOME/.config/caelestia"
+          printf '%s' '{"paths":{"wallpaperDir":"/run/current-system/sw/share/backgrounds/roudix"}}' \
+            > "$HOME/.config/caelestia/shell.json"
+        fi
+      ''
+    )
+  );
 
   home.packages = (with pkgs; [
     # Common apps
