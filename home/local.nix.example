@@ -11,6 +11,7 @@
   #
   # IMPORTANT: utilise xdg.configFile et non home.file pour éviter les conflits
   # xdg.configFile."hypr/user.conf" = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") (lib.mkForce {
+  # text = ''
   # ── Monitors ──────────────────────────────────────────────────────────
   #   monitor = DP-1, 2560x1440@144, x0, 1
   # ── Keybinds ──────────────────────────────────────────────────────────
@@ -28,6 +29,7 @@
   # Only active when roudix.desktop.type = "niri".
   #
   # xdg.configFile."niri/user.kdl" = lib.mkIf (osConfig.roudix.desktop.type == "niri") (lib.mkForce {
+  # text = ''
   #   // ── Outputs ─────────────────────────────────────────────────────────
   #   output "DP-1" {
   #     mode "2560x1440" refresh=144.0
