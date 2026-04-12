@@ -9,6 +9,8 @@
   # and any personal tweaks here. Overrides anything set by the dotfiles.
   # Only active when roudix.desktop.type = "hyprland".
   #
+  # To get info for your monitors type on the terminal : hyprctl monitors
+  #
   # IMPORTANT: utilise xdg.configFile et non home.file pour éviter les conflits
   # xdg.configFile."hypr/user.conf" = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") (lib.mkForce {
   # text = ''
@@ -28,25 +30,27 @@
   # and any personal tweaks here. Overrides anything set by the dotfiles.
   # Only active when roudix.desktop.type = "niri".
   #
+  # To get info for your monitors type on the terminal : niri msg outputs
+  #
   # xdg.configFile."niri/user.kdl" = lib.mkIf (osConfig.roudix.desktop.type == "niri") (lib.mkForce {
   # text = ''
-  #   // ── Outputs ─────────────────────────────────────────────────────────
-  #   output "DP-1" {
-  #     mode "2560x1440" refresh=144.0
-  #     position x=0 y=0
-  #   }
-  #   output "HDMI-A-1" {
-  #     mode "1920x1080" refresh=60.0
-  #     position x=2560 y=0
-  #   }
-  #
-  #   // ── Keybinds ─────────────────────────────────────────────────────────
-  #   binds {
-  #     Mod+T { spawn "alacritty"; }
-  #   }
-  # '';
-  # });
+  /*   // ── Outputs ─────────────────────────────────────────────────────────
+     output "DP-1" {
+       mode "2560x1440@240.000"
+       position x=0 y=0
+     }
+     output "HDMI-A-1" {
+       mode "1920x1080@60.000
+       position x=2560 y=0
+     }
 
+     // ── Keybinds ─────────────────────────────────────────────────────────
+     binds {
+       Mod+T { spawn "alacritty"; }
+     }
+   '';
+   });
+*/
   # ── Add personal packages ────────────────────────────────────────────────
   # home.packages = with pkgs; [
   #   vlc
