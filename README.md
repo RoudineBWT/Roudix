@@ -166,7 +166,7 @@ Switch desktop at any time with `roudix-switch <de>` or the **Roudix Desktop Swi
 |-------|---------|-------|
 | `niri` | Niri + Noctalia | Default — scrollable tiling Wayland |
 | `hyprland` | Hyprland + Noctalia | Dynamic tiling Wayland — launched via UWSM |
-| `gnome` | GNOME 49.4 |
+| `gnome` | GNOME 49.5 |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 
 To change permanently, edit `hosts/roudix/local.nix`:
@@ -232,15 +232,17 @@ roudix-switch kde
 - grimblast screenshots
 
 **Desktop (GNOME)**
-- GNOME 49.4 (follows nixos-unstable branch)
-- Curated extension set (blur, tiling, vitals, arcmenu...)
+- GNOME 49.5 (follows nixos-unstable branch)
+- Curated extension set (blur, tiling, vitals, arcmenu...) — enabled via dconf
+- ArcMenu with Roudix logo as menu button icon
 - Bloat removed via `environment.gnome.excludePackages`
 - Papirus-Dark icon theme
 - adw-gtk3-dark GTK theme (dark mode by default)
 - Capitaine Cursors White
 - Roudix wallpaper (light/dark based on system theme)
 - `color-scheme = prefer-dark` applied via dconf
-- Override wallpaper, theme, icons in `home/local.nix`
+- Add/remove extensions without editing core files via `roudix.gnome.extraExtensions` / `roudix.gnome.disabledExtensions`
+- Override wallpaper, theme, icons, cursor in `home/local.nix`
 
 **Desktop (KDE)**
 - KDE Plasma 6 with plasma-login-manager (Plasma 6.6+, nixpkgs unstable)
@@ -420,6 +422,57 @@ Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfi
 ```
 
 > See `home/local.nix.example` for all available override options including fastfetch customization.
+
+### GNOME overrides (`home/local.nix`)
+
+When using `roudix.desktop.type = "gnome"`, you can override any GNOME setting in `home/local.nix`:
+
+**Add extensions on top of the defaults**
+```nix
+roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [
+  pop-shell
+];
+```
+
+**Disable a default extension (by UUID)**
+```nix
+roudix.gnome.disabledExtensions = [
+  "dash-to-dock@micxgx.gmail.com"
+];
+```
+
+**Wallpaper**
+```nix
+dconf.settings."org/gnome/desktop/background".picture-uri =
+  lib.mkForce "file:///home/youruser/Pictures/my-wallpaper.png";
+dconf.settings."org/gnome/desktop/background".picture-uri-dark =
+  lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+```
+
+**Light/dark mode**
+```nix
+dconf.settings."org/gnome/desktop/interface".color-scheme =
+  lib.mkForce "prefer-light"; # or "prefer-dark"
+```
+
+**Icon theme**
+```nix
+dconf.settings."org/gnome/desktop/interface".icon-theme =
+  lib.mkForce "Papirus";
+# Other values: "Papirus-Dark", "Papirus-Light", "hicolor"
+```
+
+**Cursor**
+```nix
+dconf.settings."org/gnome/desktop/interface".cursor-theme =
+  lib.mkForce "capitaine-cursors";
+dconf.settings."org/gnome/desktop/interface".cursor-size =
+  lib.mkForce 32;
+```
+
+> See `home/local.nix.example` for all available GNOME override options.
+
+---
 
 ### KDE Plasma overrides (`home/local.nix`)
 

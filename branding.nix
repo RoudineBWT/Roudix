@@ -1,10 +1,10 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, roudixBranding. ... }:
 let
   roudix-branding = pkgs.callPackage ./pkgs/roudix-branding {};
 in
 {
   environment.systemPackages = with pkgs; [
-    roudix-branding
+    (lib.hiPrio roudixBranding)
   ];
 
   environment.pathsToLink = [ "/share/icons" "/share/backgrounds" "/share/wallpapers" "/share/gnome-background-properties" ];

@@ -62,12 +62,63 @@
   #     { type = "kernel"; key = " Kernel"; keyColor = "33"; }
   #   ];
   # };
-  # Override wallpaper KDE
-# programs.plasma.workspace.wallpaper = lib.mkForce "/home/user/mon-wallpaper.jpg";
 
-# Override thème
-# programs.plasma.colorscheme = lib.mkForce "Catppuccin-Mocha";
+  # ── KDE overrides ────────────────────────────────────────────────────────
 
-# Override icône Kickoff
-# programs.plasma.panels = lib.mkForce [{ ... }];
+  # Override wallpaper
+  # programs.plasma.workspace.wallpaper = lib.mkForce "/home/youruser/Pictures/my-wallpaper.jpg";
+
+  # Override color scheme
+  # programs.plasma.colorscheme = lib.mkForce "Catppuccin-Mocha";
+
+  # Override Kickoff icon
+  # programs.plasma.panels = lib.mkForce [{ ... }];
+
+  # ── GNOME overrides ──────────────────────────────────────────────────────
+
+  # Install and enable additional extensions on top of the defaults
+  # roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [
+  #   pop-shell
+  #   just-perfection
+  # ];
+
+  # Disable one or more default extensions (by UUID)
+  # roudix.gnome.disabledExtensions = [
+  #   "dash-to-dock@micxgx.gmail.com"
+  #   "arcmenu@arcmenu.com"
+  # ];
+
+  # Override light wallpaper
+  # dconf.settings."org/gnome/desktop/background".picture-uri =
+  #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper.png";
+
+  # Override dark wallpaper
+  # dconf.settings."org/gnome/desktop/background".picture-uri-dark =
+  #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+
+  # Override screensaver wallpaper
+  # dconf.settings."org/gnome/desktop/screensaver".picture-uri =
+  #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+
+  # Override light/dark mode
+  # dconf.settings."org/gnome/desktop/interface".color-scheme =
+  #   lib.mkForce "prefer-light"; # or "prefer-dark"
+
+  # Override GTK theme
+  # dconf.settings."org/gnome/desktop/interface".gtk-theme =
+  #   lib.mkForce "adw-gtk3";
+
+  # Override icon theme
+  # dconf.settings."org/gnome/desktop/interface".icon-theme =
+  #   lib.mkForce "Papirus";
+
+  # Override cursor theme
+  # dconf.settings."org/gnome/desktop/interface".cursor-theme =
+  #   lib.mkForce "capitaine-cursors";
+  # dconf.settings."org/gnome/desktop/interface".cursor-size =
+  #   lib.mkForce 32;
+
+  # Override system font
+  # dconf.settings."org/gnome/desktop/interface".font-name =
+  #   lib.mkForce "Inter 11";
 }
