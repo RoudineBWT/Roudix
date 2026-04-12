@@ -9,26 +9,25 @@
   # and any personal tweaks here. Overrides anything set by the dotfiles.
   # Only active when roudix.desktop.type = "hyprland".
   #
-  # home.file.".config/hypr/user.conf".text = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") ''
-  #   # ── Monitors ──────────────────────────────────────────────────────────
-  #   monitor = DP-1, 2560x1440@144, 0x0, 1
-  #   monitor = HDMI-A-1, 1920x1080@60, 2560x0, 1
-  #
-  #   # ── Keybinds ──────────────────────────────────────────────────────────
-  #   bind = SUPER, T, exec, alacritty
-  #
-  #   # ── Misc tweaks ───────────────────────────────────────────────────────
+  # IMPORTANT: utilise xdg.configFile et non home.file pour éviter les conflits
+  # xdg.configFile."hypr/user.conf" = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") (lib.mkForce {
+  # ── Monitors ──────────────────────────────────────────────────────────
+  #   monitor = DP-1, 2560x1440@144, x0, 1
+  # ── Keybinds ──────────────────────────────────────────────────────────
+  #   bind = SUPER, T, exec, foot
+  # ── Misc tweaks ───────────────────────────────────────────────────────
   #   general {
   #     gaps_out = 20
   #   }
   # '';
+  # });
 
   # ── Niri user overrides ──────────────────────────────────────────────────
   # Included at the end of config.kdl — put your outputs, keybinds,
   # and any personal tweaks here. Overrides anything set by the dotfiles.
   # Only active when roudix.desktop.type = "niri".
   #
-  # home.file.".config/niri/user.kdl".text = lib.mkIf (osConfig.roudix.desktop.type == "niri") ''
+  # xdg.configFile."niri/user.kdl" = lib.mkIf (osConfig.roudix.desktop.type == "niri") (lib.mkForce {
   #   // ── Outputs ─────────────────────────────────────────────────────────
   #   output "DP-1" {
   #     mode "2560x1440" refresh=144.0
@@ -44,6 +43,7 @@
   #     Mod+T { spawn "alacritty"; }
   #   }
   # '';
+  # });
 
   # ── Add personal packages ────────────────────────────────────────────────
   # home.packages = with pkgs; [
