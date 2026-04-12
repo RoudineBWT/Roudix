@@ -4,7 +4,7 @@
 # Then edit to match your hardware and preferences.
 # Use lib.mkForce for options that conflict with configuration.nix defaults.
 # ────────────────────────────────────────────────────────────────────────────
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   # ── Desktop ───────────────────────────────────────────────────────────────
   roudix.desktop.type = "niri";               # "niri", "gnome", "kde" or "hyprland"
@@ -39,6 +39,23 @@
 
   # ── Shell ─────────────────────────────────────────────────────────────────
   roudix.shell                         = "fish";        # "fish" or "bash"
+
+  # ── GNOME extensions ──────────────────────────────────────────────────────
+  # Only used when roudix.desktop.type = "gnome"
+  #
+  # Add extensions on top of the defaults — pass the nixpkgs package:
+  # roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [
+  #   pop-shell   # <-- the package name from pkgs.gnomeExtensions.*
+  # ];
+  #
+  # Disable a default extension — pass its UUID (the string identifier):
+  # roudix.gnome.disabledExtensions = [
+  #   "arcmenu@arcmenu.com"   # <-- UUID, not the package name
+  # ];
+  #
+  # You can combine both — e.g. swap ArcMenu for another launcher:
+  # roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [ pop-shell ];
+  # roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 
   # ── Disk (replace with your own UUID) ─────────────────────────────────────
   # Run: lsblk -f

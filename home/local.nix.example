@@ -76,18 +76,6 @@
 
   # ── GNOME overrides ──────────────────────────────────────────────────────
 
-  # Install and enable additional extensions on top of the defaults
-  # roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [
-  #   pop-shell
-  #   just-perfection
-  # ];
-
-  # Disable one or more default extensions (by UUID)
-  # roudix.gnome.disabledExtensions = [
-  #   "dash-to-dock@micxgx.gmail.com"
-  #   "arcmenu@arcmenu.com"
-  # ];
-
   # Override light wallpaper
   # dconf.settings."org/gnome/desktop/background".picture-uri =
   #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper.png";

@@ -61,6 +61,7 @@ roudix/
 │   ├── local.nix.example            # copy this to home/local.nix to get started
 │   ├── niri.nix                     # Home config for Niri + Noctalia
 │   ├── gnome.nix                    # Home config for GNOME (wallpaper, theme, icons, cursor)
+│   ├── gnome-extensions.nix         # GNOME extensions — packages, enabled UUIDs, dconf settings
 │   ├── kde.nix                      # Home config for KDE (wallpaper, theme, icons, cursor)
 │   └── hyprland.nix                 # Home config for Hyprland + Noctalia
 │
@@ -147,6 +148,7 @@ See [`dotfiles/perso/README.md`](dotfiles/perso/README.md) for structure and usa
 | helium | AlvaroParker/helium-nix |
 | nix-flatpak | gmodena/nix-flatpak |
 | glf-os | framagit.org/gaming-linux-fr/glf-os |
+| plasma-manager |nix-community/plasma-manager |
 
 ---
 
@@ -241,6 +243,7 @@ roudix-switch kde
 - Capitaine Cursors White
 - Roudix wallpaper (light/dark based on system theme)
 - `color-scheme = prefer-dark` applied via dconf
+- Extension settings (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) pre-configured via `gnome-extensions.nix`
 - Add/remove extensions without editing core files via `roudix.gnome.extraExtensions` / `roudix.gnome.disabledExtensions`
 - Override wallpaper, theme, icons, cursor in `home/local.nix`
 
@@ -423,25 +426,31 @@ Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfi
 
 > See `home/local.nix.example` for all available override options including fastfetch customization.
 
-### GNOME overrides (`home/local.nix`)
+### GNOME overrides
 
-When using `roudix.desktop.type = "gnome"`, you can override any GNOME setting in `home/local.nix`:
+When using `roudix.desktop.type = "gnome"`, extension management goes in `hosts/roudix/local.nix` and appearance overrides go in `home/local.nix`.
 
-**Add extensions on top of the defaults**
+**Add extensions on top of the defaults** (`hosts/roudix/local.nix`)
 ```nix
 roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [
   pop-shell
 ];
 ```
 
-**Disable a default extension (by UUID)**
+**Disable a default extension by UUID** (`hosts/roudix/local.nix`)
 ```nix
 roudix.gnome.disabledExtensions = [
-  "dash-to-dock@micxgx.gmail.com"
+  "arcmenu@arcmenu.com"
 ];
 ```
 
-**Wallpaper**
+**Combine both — e.g. swap ArcMenu for another launcher** (`hosts/roudix/local.nix`)
+```nix
+roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [ pop-shell ];
+roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
+```
+
+**Wallpaper** (`home/local.nix`)
 ```nix
 dconf.settings."org/gnome/desktop/background".picture-uri =
   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper.png";
@@ -449,20 +458,20 @@ dconf.settings."org/gnome/desktop/background".picture-uri-dark =
   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
 ```
 
-**Light/dark mode**
+**Light/dark mode** (`home/local.nix`)
 ```nix
 dconf.settings."org/gnome/desktop/interface".color-scheme =
   lib.mkForce "prefer-light"; # or "prefer-dark"
 ```
 
-**Icon theme**
+**Icon theme** (`home/local.nix`)
 ```nix
 dconf.settings."org/gnome/desktop/interface".icon-theme =
   lib.mkForce "Papirus";
 # Other values: "Papirus-Dark", "Papirus-Light", "hicolor"
 ```
 
-**Cursor**
+**Cursor** (`home/local.nix`)
 ```nix
 dconf.settings."org/gnome/desktop/interface".cursor-theme =
   lib.mkForce "capitaine-cursors";
@@ -470,7 +479,7 @@ dconf.settings."org/gnome/desktop/interface".cursor-size =
   lib.mkForce 32;
 ```
 
-> See `home/local.nix.example` for all available GNOME override options.
+> See `hosts/roudix/local.nix.example` and `home/local.nix.example` for all available GNOME override options.
 
 ---
 

@@ -135,7 +135,7 @@ JSONEOF
 <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
 <wallpapers>
   <wallpaper deleted="false">
-    <n>Roudix</n>
+    <name>Roudix</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-light.png</filename>
     <filename-dark>/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png</filename-dark>
     <options>zoom</options>
