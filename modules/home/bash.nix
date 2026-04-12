@@ -67,7 +67,7 @@ in
           echo "Available graphical shells:"
           echo "  noctalia  — Roudix default shell"
           echo "  dms       — DankMaterialShell"
-          ${lib.optionalString onHyprland ''echo "  caelista  — Caelista shell"''}
+          ${lib.optionalString onHyprland ''echo "  caelestia  — Caelestia shell"''}
           return 1
         fi
 
