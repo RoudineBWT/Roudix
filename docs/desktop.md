@@ -78,7 +78,11 @@ xdg.configFile."hypr/user.conf".text = lib.mkIf (osConfig.roudix.desktop.type ==
 # Niri
 xdg.configFile."niri/user.kdl".text = lib.mkIf (osConfig.roudix.desktop.type == "niri") ''
   output "DP-1" {
-    mode "2560x1440" refresh=144.0
+    mode "2560x1440@144.000"
+    scale 1
+    transform "normal"
+    position x=1920 y=0
+    variable-refresh-rate on-demand=true
   }
 '';
 ```
