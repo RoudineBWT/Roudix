@@ -1,4 +1,4 @@
-{ pkgs, lib, config, roudixBranding. ... }:
+{ pkgs, lib, config, roudixBranding, ... }:
 let
   roudix-branding = pkgs.callPackage ./pkgs/roudix-branding {};
 in
