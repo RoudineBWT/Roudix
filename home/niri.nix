@@ -12,6 +12,8 @@ let
       fallback = candidates.noctalia;
     in
       if builtins.pathExists desired then desired else fallback;
+
+  niriDir = resolveNiriDotfiles shellType;
 in
 {
   imports = [
@@ -32,30 +34,34 @@ in
       enable = true;
     };
 
-    # ── Caelestia ────────────────────────────────────────────────────────────
-    # No programs.* option — the homeManagerModules.default handles the
-    # systemd service automatically. Just add the package in home.packages.
-
     # ── Niri config ───────────────────────────────────────────────────────────
-    # On déploie tous les fichiers des dotfiles sauf config.kdl
     xdg.configFile."niri" = {
-      source    = resolveNiriDotfiles shellType;
+      source    = niriDir;
       recursive = true;
     };
 
-    # config.kdl est généré par Nix : dotfiles + include absolu vers user.kdl
-    # Niri n'expand pas '~', donc on injecte le chemin absolu à la compilation.
-    xdg.configFile."niri/config.kdl".text =
-      builtins.readFile "${resolveNiriDotfiles shellType}/config.kdl" + ''
+    # config.kdl est généré par Nix : chemins absolus vers le nix store
+    # + include absolu vers user.kdl (niri n'expand pas '~').
+    xdg.configFile."niri/config.kdl" = {
+      force = true;
+      text = ''
+        include "${niriDir}/cfg/autostart.kdl"
+        include "${niriDir}/cfg/keybinds.kdl"
+        include "${niriDir}/cfg/input.kdl"
+        include "${niriDir}/cfg/display.kdl"
+        include "${niriDir}/cfg/layout.kdl"
+        include "${niriDir}/cfg/rules.kdl"
+        include "${niriDir}/cfg/misc.kdl"
 
-        // ── User overrides (injected by Nix) ─────────────────────────────────
+        // ── User overrides (injected by Nix) ─────────────────────────────
         include "${config.home.homeDirectory}/.config/niri/user.kdl"
       '';
+    };
 
     # ── User overrides file ───────────────────────────────────────────────────
     # Empty by default — the user fills it in home/local.nix.
-    xdg.configFile."niri/user.kdl" = lib.mkDefault {
-      text = ''
+    xdg.configFile."niri/user.kdl" = {
+      text = lib.mkDefault ''
         // Personal Niri overrides — edit this in home/local.nix
         // See home/local.nix.example for examples (outputs, keybinds, etc.)
       '';

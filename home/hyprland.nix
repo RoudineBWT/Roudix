@@ -13,6 +13,8 @@ let
       fallback = candidates.noctalia;
     in
       if builtins.pathExists desired then desired else fallback;
+
+  hyprDir = resolveHyprDotfiles shellType;
 in
 {
   imports = [
@@ -39,22 +41,35 @@ in
 
     # ── Config files ─────────────────────────────────────────────────────────
     xdg.configFile."hypr" = {
-      source    = resolveHyprDotfiles shellType;
+      source    = hyprDir;
       recursive = true;
     };
 
-    # hyprland.conf est généré par Nix : dotfiles + source absolu vers user.conf
-    xdg.configFile."hypr/hyprland.conf".text =
-      builtins.readFile "${resolveHyprDotfiles shellType}/hyprland.conf" + ''
+    # hyprland.conf est généré par Nix : chemins absolus vers le nix store
+    # + source absolu vers user.conf pour éviter tout conflit avec le récursif.
+    xdg.configFile."hypr/hyprland.conf" = {
+      force = true;
+      text = ''
+        source = ${hyprDir}/cfg/monitors.conf
+        source = ${hyprDir}/cfg/environment.conf
+        source = ${hyprDir}/cfg/autostart.conf
+        source = ${hyprDir}/cfg/input.conf
+        source = ${hyprDir}/cfg/appearance.conf
+        source = ${hyprDir}/cfg/animations.conf
+        source = ${hyprDir}/cfg/workspaces.conf
+        source = ${hyprDir}/cfg/rules.conf
+        source = ${hyprDir}/cfg/keybinds.conf
+        source = ${hyprDir}/cfg/misc.conf
 
-        # ── User overrides (injected by Nix) ─────────────────────────────────
+        # ── User overrides (injected by Nix) ───────────────────────────────
         source = ${config.home.homeDirectory}/.config/hypr/user.conf
       '';
+    };
 
     # ── User overrides file ───────────────────────────────────────────────────
     # Empty by default — the user fills it in home/local.nix.
-    xdg.configFile."hypr/user.conf" = lib.mkDefault {
-      text = ''
+    xdg.configFile."hypr/user.conf" = {
+      text = lib.mkDefault ''
         # Personal Hyprland overrides — edit this in home/local.nix
         # See home/local.nix.example for examples (monitors, keybinds, etc.)
       '';
