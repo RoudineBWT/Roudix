@@ -110,6 +110,7 @@ in
     ]
     ++ lib.optionals (shellType == "caelestia") [
       inputs.caelestia-shell.packages.${pkgs.stdenv.hostPlatform.system}.with-cli
+      inputs.caelestia-shell.packages.${pkgs.stdenv.hostPlatform.system}.cli
     ]
     ;
   };
