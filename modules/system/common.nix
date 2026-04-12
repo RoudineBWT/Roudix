@@ -65,6 +65,7 @@
     yazi
     capitaine-cursors
     efibootmgr
+    pciutils
   ];
 
   # ── ZRAM ────────────────────────────────────────────────────────────────

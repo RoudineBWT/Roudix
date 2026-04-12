@@ -93,11 +93,14 @@ if [[ -d "$INSTALL_DIR" ]]; then
   else
     warn "Directory $INSTALL_DIR exists but is not a git repo."
     read -rp "Delete and clone? [y/N]: " confirm
-    [[ "$confirm" =~ ^[Yy]$ ]] || error "Installation cancelled."
-    rm -rf "$INSTALL_DIR"
-    mkdir -p "/home/${USERNAME}/.config"
-    git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
-    success "Repository cloned."
+    if [[ "$confirm" =~ ^[Yy]$ ]]; then
+      rm -rf "$INSTALL_DIR"
+      mkdir -p "/home/${USERNAME}/.config"
+      git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
+      success "Repository cloned."
+    else
+      info "Using existing directory."
+    fi
   fi
 else
   mkdir -p "/home/${USERNAME}/.config"
@@ -231,12 +234,12 @@ while IFS= read -r line; do
   partuuid=$(echo "$line" | grep -oiP '(?<=GPT,)[0-9a-f-]{36}' | head -1)
   [[ -z "$partuuid" ]] && continue
 
-  # Extract EFI path — between File( and )
-  efi_path=$(echo "$line" | grep -oP '(?<=File\()[^)]+' | head -1)
+  # Extract EFI path — comes after HD(...)/  as \EFI\...\file.efi
+  # efibootmgr sometimes appends garbage bytes after the .efi — strip them
+  efi_path=$(echo "$line" | grep -oP 'HD\([^)]+\)/(?:\\[^\s\\,]+)+' | \
+    grep -oP '(?<=/)(?:\\[^\s\\,]+)+' | head -1 | tr '\\' '/')
+  efi_path=$(echo "$efi_path" | sed 's/\(\.efi\).*/\1/i')
   [[ -z "$efi_path" ]] && continue
-
-  # Normalize backslashes to forward slashes
-  efi_path=$(echo "$efi_path" | tr '\\' '/')
 
   DETECTED_LABELS+=("$label")
   DETECTED_PARTUUIDS+=("$partuuid")
@@ -249,6 +252,7 @@ SELECTED_ENTRIES=()
 
 if [[ ${#DETECTED_LABELS[@]} -eq 0 ]]; then
   info "Aucun autre OS détecté dans la NVRAM EFI — boot.local.nix laissé vide."
+  SKIP_ENTRY_MSG=true
 else
   echo -e "\n  ${BOLD}OS détectés dans la NVRAM EFI :${NC}\n"
   for i in "${!DETECTED_LABELS[@]}"; do
@@ -304,7 +308,7 @@ if [[ ${#SELECTED_ENTRIES[@]} -gt 0 ]]; then
     echo -e "  ${GREEN}✓${NC} ${DETECTED_LABELS[$idx]}"
   done
 else
-  info "Aucune entrée ajoutée — boot.local.nix laissé vide (NixOS only)."
+  [[ -z "${SKIP_ENTRY_MSG:-}" ]] && info "Aucune entrée ajoutée — boot.local.nix laissé vide (NixOS only)."
 fi
 
 # ── Configuration questions ───────────────────────────────────────────────────
@@ -312,91 +316,81 @@ echo -e "\n${BOLD}════════════════════�
 info "Hardware & software configuration"
 echo -e "${BOLD}══════════════════════════════════════${NC}"
 
-# ── Auto-detect VM ────────────────────────────────────────────────────────────
-DETECTED_VM="false"
-if command -v systemd-detect-virt >/dev/null 2>&1; then
-  virt_type=$(systemd-detect-virt 2>/dev/null || true)
-  [[ "$virt_type" != "none" && -n "$virt_type" ]] && DETECTED_VM="true"
-fi
-
-# ── Auto-detect GPU ───────────────────────────────────────────────────────────
+# Auto-detect GPU via sysfs PCI vendor IDs (works without lspci on live ISO)
 DETECTED_GPU=""
-if command -v lspci >/dev/null 2>&1; then
-  lspci_out=$(lspci 2>/dev/null)
-  if echo "$lspci_out" | grep -qi "amd\|radeon\|advanced micro"; then
-    DETECTED_GPU="amd"
-  elif echo "$lspci_out" | grep -qi "nvidia"; then
-    DETECTED_GPU="nvidia"
-  elif echo "$lspci_out" | grep -qi "intel.*\(vga\|display\|3d\|gpu\)"; then
-    DETECTED_GPU="intel"
+NVIDIA_LAPTOP="false"
+declare -A GPU_VENDORS_FOUND=()
+
+for vendor_file in /sys/bus/pci/devices/*/vendor; do
+  vendor=$(cat "$vendor_file" 2>/dev/null)
+  class_file="${vendor_file/vendor/class}"
+  class=$(cat "$class_file" 2>/dev/null)
+  # PCI class 0x03xxxx = display controller
+  [[ "$class" == 0x03* ]] || continue
+  case "$vendor" in
+    0x1002) GPU_VENDORS_FOUND[amd]=1    ;;
+    0x10de) GPU_VENDORS_FOUND[nvidia]=1 ;;
+    0x8086) GPU_VENDORS_FOUND[intel]=1  ;;
+  esac
+done
+
+# Detect Optimus: NVIDIA + iGPU (Intel or AMD) = laptop discrete GPU
+if [[ -n "${GPU_VENDORS_FOUND[nvidia]:-}" ]]; then
+  DETECTED_GPU="nvidia"
+  if [[ -n "${GPU_VENDORS_FOUND[intel]:-}" || -n "${GPU_VENDORS_FOUND[amd]:-}" ]]; then
+    NVIDIA_LAPTOP="true"
+    igpu="${GPU_VENDORS_FOUND[intel]:+Intel}${GPU_VENDORS_FOUND[amd]:+AMD}"
+    warn "Configuration Optimus détectée (${igpu} iGPU + NVIDIA dGPU) — nvidiaLaptop activé."
   fi
+elif [[ -n "${GPU_VENDORS_FOUND[amd]:-}" ]]; then
+  DETECTED_GPU="amd"
+elif [[ -n "${GPU_VENDORS_FOUND[intel]:-}" ]]; then
+  DETECTED_GPU="intel"
 fi
 
-# ── Auto-detect CPU ───────────────────────────────────────────────────────────
-DETECTED_CPU=""
-vendor=$(grep -m1 "vendor_id" /proc/cpuinfo 2>/dev/null | awk '{print $3}' || true)
-case "$vendor" in
-  AuthenticAMD) DETECTED_CPU="amd" ;;
-  GenuineIntel) DETECTED_CPU="intel" ;;
-esac
-
-# ── VM warning ────────────────────────────────────────────────────────────────
-if [[ "$DETECTED_VM" == "true" ]]; then
-  echo ""
-  warn "Virtual machine detected (${virt_type})."
-  warn "GPU/CPU detection may be inaccurate — verify manually if needed."
-  warn "vm_guest will be pre-selected to 'Yes'."
-  echo ""
-fi
-
-# ── GPU pick (with pre-selection if detected) ─────────────────────────────────
-if [[ "$DETECTED_VM" == "true" ]]; then
-  echo -e "\n${BOLD}GPU:${NC} virtual machine detected — pre-selecting ${CYAN}vm${NC}"
-  read -rp "  Use 'vm' (recommended for VMs)? [Y/n]: " confirm_gpu
-  if [[ "${confirm_gpu:-Y}" =~ ^[Yy]$ ]]; then
-    GPU="vm"
-    success "GPU set to: vm"
-  else
-    pick "GPU:" GPU \
-      "amd|AMD GPU" \
-      "nvidia|NVIDIA GPU" \
-      "intel|Intel integrated GPU" \
-      "vm|Virtual machine (virtio-gpu / QXL / VMware SVGA)"
-  fi
-elif [[ -n "$DETECTED_GPU" ]]; then
-  echo -e "\n${BOLD}GPU:${NC} detected ${CYAN}${DETECTED_GPU}${NC}"
-  read -rp "  Use ${DETECTED_GPU}? [Y/n]: " confirm_gpu
-  if [[ "${confirm_gpu:-Y}" =~ ^[Yy]$ ]]; then
+if [[ -n "$DETECTED_GPU" ]]; then
+  info "GPU détecté automatiquement : ${BOLD}${DETECTED_GPU}${NC}${NVIDIA_LAPTOP:+ (laptop Optimus)}"
+  read -rp "Confirmer ? [Y/n]: " gpu_confirm
+  if [[ "${gpu_confirm:-Y}" =~ ^[Yy]$ ]]; then
     GPU="$DETECTED_GPU"
-    success "GPU set to: $GPU"
   else
+    NVIDIA_LAPTOP="false"
     pick "GPU:" GPU \
       "amd|AMD GPU" \
       "nvidia|NVIDIA GPU" \
-      "intel|Intel integrated GPU" \
-      "vm|Virtual machine (virtio-gpu / QXL / VMware SVGA)"
+      "intel|Intel integrated GPU"
+    # If user manually picked nvidia, ask about laptop
+    if [[ "$GPU" == "nvidia" ]]; then
+      pick "Laptop avec NVIDIA dGPU (Optimus) ?" NVIDIA_LAPTOP \
+        "false|Non — desktop ou NVIDIA seul" \
+        "true|Oui — laptop Intel/AMD + NVIDIA"
+    fi
   fi
 else
   pick "GPU:" GPU \
     "amd|AMD GPU" \
     "nvidia|NVIDIA GPU" \
-    "intel|Intel integrated GPU" \
-    "vm|Virtual machine (virtio-gpu / QXL / VMware SVGA)"
+    "intel|Intel integrated GPU"
+  if [[ "$GPU" == "nvidia" ]]; then
+    pick "Laptop avec NVIDIA dGPU (Optimus) ?" NVIDIA_LAPTOP \
+      "false|Non — desktop ou NVIDIA seul" \
+      "true|Oui — laptop Intel/AMD + NVIDIA"
+  fi
 fi
 
-# ── Laptop (NVIDIA only) ──────────────────────────────────────────────────────
-NVIDIA_LAPTOP="false"
-if [[ "$GPU" == "nvidia" && "$DETECTED_VM" != "true" ]]; then
-  pick "Running on a laptop? (enables NVIDIA PRIME)" NVIDIA_LAPTOP \
-    "false|No — desktop" \
-    "true|Yes — laptop (PRIME support)"
+# Auto-detect CPU vendor
+DETECTED_CPU=""
+if grep -q "AuthenticAMD" /proc/cpuinfo 2>/dev/null; then
+  DETECTED_CPU="amd"
+elif grep -q "GenuineIntel" /proc/cpuinfo 2>/dev/null; then
+  DETECTED_CPU="intel"
 fi
+
 if [[ -n "$DETECTED_CPU" ]]; then
-  echo -e "\n${BOLD}CPU:${NC} detected ${CYAN}${DETECTED_CPU}${NC}"
-  read -rp "  Use ${DETECTED_CPU}? [Y/n]: " confirm_cpu
-  if [[ "${confirm_cpu:-Y}" =~ ^[Yy]$ ]]; then
+  info "CPU détecté automatiquement : ${BOLD}${DETECTED_CPU}${NC}"
+  read -rp "Confirmer ? [Y/n]: " cpu_confirm
+  if [[ "${cpu_confirm:-Y}" =~ ^[Yy]$ ]]; then
     CPU="$DETECTED_CPU"
-    success "CPU set to: $CPU"
   else
     pick "CPU:" CPU \
       "amd|AMD CPU" \
@@ -438,20 +432,9 @@ pick "Default shell:" SHELL_DEFAULT \
   "fish|Fish — smart, user-friendly shell (recommended)" \
   "bash|Bash — classic Unix shell"
 
-if [[ "$DETECTED_VM" == "true" ]]; then
-  echo -e "\n${BOLD}Running inside a VM?${NC} detected: ${CYAN}yes (${virt_type})${NC}"
-  read -rp "  Enable VM guest optimizations? [Y/n]: " confirm_vm
-  if [[ "${confirm_vm:-Y}" =~ ^[Yy]$ ]]; then
-    VM_GUEST="true"
-    success "VM guest mode enabled."
-  else
-    VM_GUEST="false"
-  fi
-else
-  pick "Running inside a VM?" VM_GUEST \
-    "false|No — bare metal install" \
-    "true|Yes — enable VM guest optimizations"
-fi
+pick "Running inside a VM?" VM_GUEST \
+  "false|No — bare metal install" \
+  "true|Yes — enable VM guest optimizations"
 
 pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
   "true|Yes" \
@@ -646,6 +629,7 @@ fi
 info "Writing configuration to local.nix..."
 
 sed -i "s/hardware\.myGpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/roudix/local.nix
+sed -i -E "s/hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*(true|false)/hardware.nvidiaLaptop = ${NVIDIA_LAPTOP}/" hosts/roudix/local.nix
 sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/roudix/local.nix
 sed -i "s/hardware\.myKernel[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKernel = \"${KERNEL}\"/"  hosts/roudix/local.nix
 sed -i "s/roudix\.browsers[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.browsers = [\"${BROWSER}\"]/"    hosts/roudix/local.nix
@@ -661,7 +645,6 @@ sed -i "s|console\.keyMap[[:space:]]*=[[:space:]]*\"[^\"]*\"|console.keyMap     
 sed -i -E "s/roudix\.hosts\.gtaFix\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.hosts.gtaFix.enable  = ${GTA_FIX}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.flatpak.enable       = ${FLATPAK}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.virtualization.enable = ${VIRTUALIZATION}/" hosts/roudix/local.nix
-sed -i -E "s/hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*(true|false)/hardware.nvidiaLaptop = ${NVIDIA_LAPTOP}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.autoupdate.enable    = ${AUTOUPDATE}/" hosts/roudix/local.nix
 sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
 
@@ -673,7 +656,7 @@ success "Setup complete!"
 echo -e "${BOLD}══════════════════════════════════════${NC}"
 echo -e "
   ${BOLD}User          :${NC} $USERNAME
-  ${BOLD}GPU           :${NC} $GPU$([ "$GPU" == "nvidia" ] && [ "$NVIDIA_LAPTOP" == "true" ] && echo " (laptop/PRIME)")
+  ${BOLD}GPU           :${NC} $GPU
   ${BOLD}CPU           :${NC} $CPU
   ${BOLD}Kernel        :${NC} $KERNEL
   ${BOLD}Browser       :${NC} $BROWSER
