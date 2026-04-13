@@ -4,8 +4,10 @@ let
   shellType   = config.roudix.desktop.shell or "noctalia";
   needsPolkit = shellType != "dms";
 in
-lib.mkIf isHyprland {
-  imports = [ ./greetd.nix ];
+{
+imports = [ ./greetd.nix ];
+config =lib.mkIf isHyprland {
+
 
   programs.hyprland = {
     enable = true;
@@ -56,5 +58,7 @@ lib.mkIf isHyprland {
     awww
     grimblast
     playerctl
+    capitaine-cursors
   ] ++ lib.optionals needsPolkit [ hyprpolkitagent ];
+ };
 }

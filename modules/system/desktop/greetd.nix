@@ -3,9 +3,21 @@
   services.greetd = {
     enable = true;
     settings.default_session = {
-      command = "${lib.getExe pkgs.greetd.regreet} -l debug";
+      command = "${lib.getExe pkgs.cage} -s -d -- ${lib.getExe pkgs.regreet}";
       user    = "greeter";
     };
+  };
+
+  environment.etc."greetd/sessions/hyprland-uwsm.desktop".text = ''
+    [Desktop Entry]
+    Name=Hyprland (UWSM)
+    Exec=uwsm start hyprland-uwsm.desktop
+    Type=Application
+  '';
+
+  environment.variables = {
+    XCURSOR_THEME = "capitaine-cursors";
+    XCURSOR_SIZE  = "24";
   };
 
   programs.regreet = {
@@ -17,13 +29,19 @@
       };
       GTK = {
         application_prefer_dark_theme = true;
-        icon_theme_name   = "Papirus-Dark";
-        cursor_theme_name = "capitaine-cursors";
+        icon_theme_name   = lib.mkForce "Papirus-Dark";
+        cursor_theme_name = lib.mkForce "capitaine-cursors";
       };
+      session.path = "/etc/greetd/sessions";
     };
     extraCss = ''
       window {
         background-color: transparent;
+      }
+
+      window > box {
+        margin-left: 80px;
+        margin-right: auto;
       }
 
       .container {
