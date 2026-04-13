@@ -126,7 +126,8 @@ nixos-generate-config 2>"$HW_CONFIG_STDERR" || true
 cp /etc/nixos/hardware-configuration.nix "$HW_CONFIG_FILE"
 
 # ── btrfs subvolume auto-patch ────────────────────────────────────────────────
-if grep -q "Failed to retrieve subvolume info" "$HW_CONFIG_STDERR" 2>/dev/null; then
+# Always patch if any btrfs mounts exist — don't rely on stderr error to trigger
+if grep -q ' btrfs ' /proc/mounts 2>/dev/null; then
   warn "btrfs détecté — patch automatique des options de montage..."
 
   # Read active btrfs mounts from /proc/mounts
@@ -462,9 +463,16 @@ pick "Default shell:" SHELL_DEFAULT \
   "fish|Fish — smart, user-friendly shell (recommended)" \
   "bash|Bash — classic Unix shell"
 
-pick "Running inside a VM?" VM_GUEST \
-  "false|No — bare metal install" \
-  "true|Yes — enable VM guest optimizations"
+# Auto-detect VM via systemd-detect-virt or DMI vendor
+DETECTED_VIRT=$(systemd-detect-virt 2>/dev/null || echo "none")
+if [[ "$DETECTED_VIRT" != "none" && "$DETECTED_VIRT" != "" ]]; then
+  VM_GUEST="true"
+  info "VM détectée automatiquement : ${BOLD}${DETECTED_VIRT}${NC} — vmGuest activé."
+else
+  pick "Running inside a VM?" VM_GUEST \
+    "false|No — bare metal install" \
+    "true|Yes — enable VM guest optimizations"
+fi
 
 pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
   "true|Yes" \
