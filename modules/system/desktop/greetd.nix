@@ -20,78 +20,60 @@
         background-color: transparent;
       }
 
-      box#main-box {
-        background-color: rgba(30, 30, 46, 0.85);
+      window > box {
+        margin-left: 80px;
+        margin-right: auto;
+      }
+
+      .container {
+        background-color: alpha(#1e1e2e, 0.75);
         border-radius: 16px;
-        padding: 32px 40px;
-        border: 1px solid rgba(88, 91, 112, 0.5);
-      }
-
-      label#clock {
-        font-family: monospace;
-        font-size: 48px;
-        font-weight: bold;
-        color: #cba6f7;
-        margin-bottom: 4px;
-      }
-
-      label {
-        color: #cdd6f4;
+        padding: 48px 56px;
+        border: 1px solid alpha(#cdd6f4, 0.1);
+        box-shadow: 0 8px 32px alpha(#000000, 0.5);
+        min-width: 360px;
       }
 
       entry {
-        background-color: rgba(49, 50, 68, 0.9);
+        background-color: alpha(#313244, 0.9);
+        border: 1px solid alpha(#cdd6f4, 0.2);
+        border-radius: 8px;
         color: #cdd6f4;
-        border: 1px solid #585b70;
-        border-radius: 12px;
         padding: 10px 14px;
+        caret-color: #cba6f7;
       }
 
       entry:focus {
         border-color: #cba6f7;
-        box-shadow: none;
+        box-shadow: 0 0 0 2px alpha(#cba6f7, 0.3);
       }
 
-      combobox button,
-      combobox button.combo {
-        background: rgba(49, 50, 68, 0.9);
+      button {
+        background-color: #cba6f7;
+        color: #1e1e2e;
+        border-radius: 8px;
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+      }
+
+      button:hover {
+        background-color: #b4a0e8;
+      }
+
+      combobox button {
+        background-color: alpha(#313244, 0.9);
         color: #cdd6f4;
-        border: 1px solid #585b70;
-        border-radius: 12px;
-        padding: 10px 14px;
-        box-shadow: none;
+        border: 1px solid alpha(#cdd6f4, 0.2);
       }
 
       combobox button:hover {
-        background-color: rgba(88, 91, 112, 0.9);
+        background-color: alpha(#585b70, 0.9);
         border-color: #cba6f7;
       }
 
-      button.suggested-action {
-        background-color: rgba(203, 166, 247, 0.25);
-        color: #cba6f7;
-        border: 1px solid #cba6f7;
-        border-radius: 12px;
-        padding: 10px 24px;
-        font-weight: bold;
-        box-shadow: none;
-      }
-
-      button.suggested-action:hover {
-        background-color: rgba(203, 166, 247, 0.45);
-      }
-
-      button.destructive-action {
-        background-color: rgba(243, 139, 168, 0.2);
-        color: #f38ba8;
-        border: 1px solid #f38ba8;
-        border-radius: 12px;
-        padding: 8px 20px;
-        box-shadow: none;
-      }
-
-      button.destructive-action:hover {
-        background-color: rgba(243, 139, 168, 0.4);
+      label {
+        color: #cdd6f4;
       }
     '';
   };
