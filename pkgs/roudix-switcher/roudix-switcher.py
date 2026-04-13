@@ -25,13 +25,13 @@ ENVIRONMENTS = [
     {
         "id":       "niri",
         "name":     "Niri",
-        "subtitle": "Scrollable tiling Wayland compositor + Noctalia shell",
+        "subtitle": "Scrollable tiling Wayland compositor",
         "icon":     "niri.svg",
     },
     {
         "id":       "hyprland",
         "name":     "Hyprland",
-        "subtitle": "Dynamic tiling Wayland compositor + Noctalia shell",
+        "subtitle": "Dynamic tiling Wayland compositor",
         "icon":     "hyprland.svg",
     },
     {
