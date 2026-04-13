@@ -13,6 +13,13 @@ lib.mkIf isKde {
     enable = true;
   };
 
+  environment.etc."plasmalogin.conf".text = ''
+    [Greeter]
+    WallpaperPluginId=org.kde.image
+
+    [Greeter.WallpaperPlugin.org.kde.image]
+    Image=${wallpaperDark}
+  '';
   # ── Hardware ──────────────────────────────────────────────────────────────
   hardware.bluetooth.enable = true;
 
