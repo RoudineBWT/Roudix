@@ -1,15 +1,8 @@
 { config, lib, pkgs, roudixBranding, ... }:
 {
-  services.greetd = {
-    enable = true;
-    settings.default_session = {
-      command = "${pkgs.hyprland}/bin/Hyprland --config /etc/greetd/hyprland-greeter.conf";
-      user = "greeter";
-    };
-  };
-
   programs.regreet = {
     enable = true;
+    cageArgs = [ "-s" "-m" "last" ];
     settings = {
       background = {
         path = "/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
@@ -18,10 +11,9 @@
       GTK = {
         cursor_theme_name = "capitaine-cursors";
         icon_theme_name = "Papirus-Dark";
-        font_name = "Sans 13";
       };
     };
-    css = ''
+    extraCss = ''
       /* Catppuccin Mocha */
 
       window {
@@ -31,7 +23,7 @@
       box#main-box {
         background-color: rgba(30, 30, 46, 0.85);
         border-radius: 16px;
-        padding: 32px;
+        padding: 32px 40px;
         border: 1px solid rgba(88, 91, 112, 0.5);
       }
 
@@ -60,12 +52,14 @@
         box-shadow: none;
       }
 
-      combobox button {
+      combobox button,
+      combobox button.combo {
         background: rgba(49, 50, 68, 0.9);
         color: #cdd6f4;
         border: 1px solid #585b70;
         border-radius: 12px;
         padding: 10px 14px;
+        box-shadow: none;
       }
 
       combobox button:hover {
@@ -73,54 +67,36 @@
         border-color: #cba6f7;
       }
 
-      button#login-button {
+      button.suggested-action {
         background-color: rgba(203, 166, 247, 0.25);
         color: #cba6f7;
         border: 1px solid #cba6f7;
         border-radius: 12px;
         padding: 10px 24px;
         font-weight: bold;
+        box-shadow: none;
       }
 
-      button#login-button:hover {
+      button.suggested-action:hover {
         background-color: rgba(203, 166, 247, 0.45);
       }
 
-      button#reboot-button,
-      button#poweroff-button {
+      button.destructive-action {
         background-color: rgba(243, 139, 168, 0.2);
         color: #f38ba8;
         border: 1px solid #f38ba8;
         border-radius: 12px;
         padding: 8px 20px;
+        box-shadow: none;
       }
 
-      button#reboot-button:hover,
-      button#poweroff-button:hover {
+      button.destructive-action:hover {
         background-color: rgba(243, 139, 168, 0.4);
       }
     '';
   };
 
   environment.etc = {
-    "greetd/hyprland-greeter.conf".text = ''
-      monitor = ,preferred,auto,1
-
-      misc {
-        disable_hyprland_logo = true
-        disable_splash_rendering = true
-      }
-
-      animations {
-        enabled = false
-      }
-
-      env = XCURSOR_THEME,capitaine-cursors
-      env = XCURSOR_SIZE,24
-
-      exec-once = ${pkgs.greetd.regreet}/bin/regreet; hyprctl dispatch exit
-    '';
-
     "greetd/sessions/hyprland-uwsm.desktop".text = ''
       [Desktop Entry]
       Name=Hyprland (UWSM)
