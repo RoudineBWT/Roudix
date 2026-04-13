@@ -13,13 +13,23 @@ lib.mkIf isKde {
     enable = true;
   };
 
+  # ── Plasma Login Manager wallpaper ────────────────────────────────────────
+  # Le KCM lit le wallpaper depuis /var/lib/plasmalogin/wallpapers/
+  # et le référence via /etc/plasmalogin.conf avec le préfixe file://
   environment.etc."plasmalogin.conf".text = ''
-    [Greeter]
-    WallpaperPluginId=org.kde.image
-
-    [Greeter.WallpaperPlugin.org.kde.image]
-    Image=${wallpaperDark}
+    [Greeter][Wallpaper][org.kde.image][General]
+    Image=file:///var/lib/plasmalogin/wallpapers/RoudixDark
   '';
+
+  system.activationScripts.plasmaLoginWallpaper = {
+    text = ''
+      install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images
+      cp ${wallpaperDark} /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images/3840x2160.png
+      cp /run/current-system/sw/share/wallpapers/RoudixDark/metadata.json /var/lib/plasmalogin/wallpapers/RoudixDark/metadata.json
+      chown -R plasmalogin:plasmalogin /var/lib/plasmalogin/wallpapers/
+    '';
+  };
+
   # ── Hardware ──────────────────────────────────────────────────────────────
   hardware.bluetooth.enable = true;
 

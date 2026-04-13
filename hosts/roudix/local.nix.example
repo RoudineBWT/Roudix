@@ -65,6 +65,31 @@
   # roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [ pop-shell ];
   # roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 
+  # ── KDE Login Screen wallpaper ────────────────────────────────────────────
+  # Only used when roudix.desktop.type = "kde"
+  #
+  # The Plasma Login Manager copies the wallpaper into /var/lib/plasmalogin/wallpapers/
+  # and references it via /etc/plasmalogin.conf.
+  # Both the conf and the copy must point to the same wallpaper name.
+  #
+  # To use a custom wallpaper on the login screen:
+  #
+  # 1. Override the conf to point to your wallpaper folder name:
+  # environment.etc."plasmalogin.conf".text = lib.mkForce ''
+  #   [Greeter][Wallpaper][org.kde.image][General]
+  #   Image=file:///var/lib/plasmalogin/wallpapers/MyWallpaper
+  # '';
+  #
+  # 2. Override the activation script to copy your wallpaper files:
+  # system.activationScripts.plasmaLoginWallpaper = lib.mkForce {
+  #   text = ''
+  #     install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/MyWallpaper/contents/images
+  #     cp /path/to/your/wallpaper.png /var/lib/plasmalogin/wallpapers/MyWallpaper/contents/images/wallpaper.png
+  #     cp /path/to/your/metadata.json /var/lib/plasmalogin/wallpapers/MyWallpaper/metadata.json
+  #     chown -R plasmalogin:plasmalogin /var/lib/plasmalogin/wallpapers/
+  #   '';
+  # };
+
   # ── Disk (replace with your own UUID) ─────────────────────────────────────
   # Run: lsblk -f
   # fileSystems."/mnt/gaming" = lib.mkForce {
