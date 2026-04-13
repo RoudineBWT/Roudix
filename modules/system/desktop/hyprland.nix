@@ -27,7 +27,9 @@ lib.mkIf isHyprland {
     config.common.default = "*";
   };
 
-  systemd.user.services.hyprpolkitagent = {
+  # ── Polkit agent — hyprpolkitagent requires systemd user session (uwsm)
+  #    fallback to polkit-gnome for plain hyprland sessions
+  systemd.user.services.hyprpolkitagent = lib.mkIf config.programs.hyprland.withUWSM {
     description = "Hyprland Polkit agent";
     wantedBy = [ "graphical-session.target" ];
     after    = [ "graphical-session.target" ];
@@ -35,6 +37,19 @@ lib.mkIf isHyprland {
     serviceConfig = {
       Type       = "simple";
       ExecStart  = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
+      Restart    = "on-failure";
+      RestartSec = "1s";
+    };
+  };
+
+  systemd.user.services.polkit-gnome-agent = lib.mkIf (!config.programs.hyprland.withUWSM) {
+    description = "Polkit GNOME agent (fallback without uwsm)";
+    wantedBy = [ "graphical-session.target" ];
+    after    = [ "graphical-session.target" ];
+    partOf   = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type      = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
       Restart    = "on-failure";
       RestartSec = "1s";
     };
@@ -53,6 +68,7 @@ lib.mkIf isHyprland {
 
   environment.systemPackages = with pkgs; [
     hyprpolkitagent
+    polkit_gnome
     awww
     grimblast
     playerctl
