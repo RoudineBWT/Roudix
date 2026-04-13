@@ -8,6 +8,100 @@
     };
   };
 
+  programs.regreet = {
+    enable = true;
+    settings = {
+      background = {
+        path = "/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
+        fit = "Cover";
+      };
+      GTK = {
+        cursor_theme_name = "capitaine-cursors";
+        icon_theme_name = "Papirus-Dark";
+        font_name = "Sans 13";
+      };
+    };
+    css = ''
+      /* Catppuccin Mocha */
+
+      window {
+        background-color: transparent;
+      }
+
+      box#main-box {
+        background-color: rgba(30, 30, 46, 0.85);
+        border-radius: 16px;
+        padding: 32px;
+        border: 1px solid rgba(88, 91, 112, 0.5);
+      }
+
+      label#clock {
+        font-family: monospace;
+        font-size: 48px;
+        font-weight: bold;
+        color: #cba6f7;
+        margin-bottom: 4px;
+      }
+
+      label {
+        color: #cdd6f4;
+      }
+
+      entry {
+        background-color: rgba(49, 50, 68, 0.9);
+        color: #cdd6f4;
+        border: 1px solid #585b70;
+        border-radius: 12px;
+        padding: 10px 14px;
+      }
+
+      entry:focus {
+        border-color: #cba6f7;
+        box-shadow: none;
+      }
+
+      combobox button {
+        background: rgba(49, 50, 68, 0.9);
+        color: #cdd6f4;
+        border: 1px solid #585b70;
+        border-radius: 12px;
+        padding: 10px 14px;
+      }
+
+      combobox button:hover {
+        background-color: rgba(88, 91, 112, 0.9);
+        border-color: #cba6f7;
+      }
+
+      button#login-button {
+        background-color: rgba(203, 166, 247, 0.25);
+        color: #cba6f7;
+        border: 1px solid #cba6f7;
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-weight: bold;
+      }
+
+      button#login-button:hover {
+        background-color: rgba(203, 166, 247, 0.45);
+      }
+
+      button#reboot-button,
+      button#poweroff-button {
+        background-color: rgba(243, 139, 168, 0.2);
+        color: #f38ba8;
+        border: 1px solid #f38ba8;
+        border-radius: 12px;
+        padding: 8px 20px;
+      }
+
+      button#reboot-button:hover,
+      button#poweroff-button:hover {
+        background-color: rgba(243, 139, 168, 0.4);
+      }
+    '';
+  };
+
   environment.etc = {
     "greetd/hyprland-greeter.conf".text = ''
       monitor = ,preferred,auto,1
@@ -21,7 +115,10 @@
         enabled = false
       }
 
-      exec-once = ${lib.getExe pkgs.nwg-hello}; hyprctl dispatch exit
+      env = XCURSOR_THEME,capitaine-cursors
+      env = XCURSOR_SIZE,24
+
+      exec-once = ${pkgs.greetd.regreet}/bin/regreet; hyprctl dispatch exit
     '';
 
     "greetd/sessions/hyprland-uwsm.desktop".text = ''
@@ -30,139 +127,15 @@
       Exec=uwsm start hyprland-uwsm.desktop
       Type=Application
     '';
-
-    "nwg-hello/nwg-hello.json".text = builtins.toJSON {
-      session_dirs      = [ "/etc/greetd/sessions" ];
-      custom_sessions   = [];
-      monitor_nums      = [];
-      form_on_monitors  = [ 0 ];
-      delay_secs        = 1;
-      "cmd-sleep"       = "systemctl suspend";
-      "cmd-reboot"      = "systemctl reboot";
-      "cmd-poweroff"    = "systemctl poweroff";
-      "gtk-theme"           = "";
-      "gtk-icon-theme"      = "Papirus-Dark";
-      "gtk-cursor-theme"    = "capitaine-cursors";
-      "prefer-dark-theme"   = true;
-      "template-name"       = "";
-      "time-format"         = "%H:%M";
-      "date-format"         = "%A, %d %B";
-      "layer"               = "overlay";
-      "keyboard-mode"       = "exclusive";
-      "lang"                = "en";
-      "avatar-show"         = false;
-      "avatar-size"         = 100;
-      "avatar-border-width" = 1;
-      "avatar-border-color" = "#cdd6f4";
-      "avatar-corner-radius" = 15;
-      "avatar-circle"       = false;
-      "env-vars"            = [
-        "XCURSOR_THEME=capitaine-cursors"
-        "XCURSOR_SIZE=24"
-      ];
-    };
-
-    "nwg-hello/nwg-hello.css".text = ''
-      /* Catppuccin Mocha */
-
-      window {
-        background-image: url("/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png");
-        background-size: cover;
-        background-position: center;
-      }
-
-      #form-wrapper {
-        background-color: rgba(30, 30, 46, 0.75);
-      }
-
-      entry {
-        background-color: rgba(49, 50, 68, 0.9);
-        color: #cdd6f4;
-        border: 1px solid #585b70;
-        border-radius: 18px;
-        padding: 12px;
-      }
-
-      entry:focus {
-        border-color: #cba6f7;
-      }
-
-      button {
-        background: rgba(49, 50, 68, 0.85) none;
-        color: #cdd6f4;
-        border: 1px solid #585b70;
-        border-radius: 18px;
-        padding: 12px;
-      }
-
-      button:hover {
-        background-color: rgba(88, 91, 112, 0.9);
-        border-color: #cba6f7;
-      }
-
-      #power-button {
-        border-radius: 18px;
-        background: none;
-        border: none;
-      }
-
-      #power-button:hover {
-        background-color: rgba(203, 166, 247, 0.15);
-      }
-
-      #power-button:active {
-        background-color: rgba(203, 166, 247, 0.3);
-      }
-
-      #welcome-label {
-        font-size: 48px;
-        color: #cba6f7;
-      }
-
-      #clock-label {
-        font-family: monospace;
-        font-size: 30px;
-        color: #cdd6f4;
-      }
-
-      #date-label {
-        font-size: 18px;
-        color: #a6adc8;
-      }
-
-      #form-label {
-        color: #a6adc8;
-      }
-
-      #form-combo {
-      }
-
-      #password-entry {
-      }
-
-      #login-button {
-        background-color: rgba(203, 166, 247, 0.2);
-        border-color: #cba6f7;
-      }
-
-      #login-button:hover {
-        background-color: rgba(203, 166, 247, 0.4);
-      }
-    '';
   };
 
   environment.systemPackages = with pkgs; [
     papirus-icon-theme
     capitaine-cursors
-    adw-gtk3
   ];
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
-
-  systemd.tmpfiles.rules = [
-    "d /var/cache/nwg-hello 0755 greeter greeter -"
-  ];
 
   users.users.greeter.extraGroups = [ "video" "input" ];
 }
