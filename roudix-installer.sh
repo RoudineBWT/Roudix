@@ -172,9 +172,15 @@ if grep -q ' btrfs ' /proc/mounts 2>/dev/null; then
     [[ "$_dev" == /dev/nvme* ]] && is_nvme=true
 
     nix_opts="\"subvol=${subvol}\""
-    [[ -n "$compress" ]] && nix_opts="${nix_opts} \"${compress}\""
+    # Always inject compress=zstd:1 — safe on both SSD and HDD, minimal overhead
+    compress="${compress:-compress=zstd:1}"
+    nix_opts="${nix_opts} \"${compress}\""
+    # Add ssd + discard=async if real SSD/NVMe (rotational=0)
+    # Fallback: add discard=async alone if already in /proc/mounts (e.g. virtio in VM)
     if [[ "$rotational" == "0" ]]; then
       nix_opts="${nix_opts} \"ssd\""
+      nix_opts="${nix_opts} \"discard=async\""
+    elif [[ -n "$discard" ]]; then
       nix_opts="${nix_opts} \"discard=async\""
     fi
 
