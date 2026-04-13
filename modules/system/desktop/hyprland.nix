@@ -5,10 +5,8 @@ let
   needsPolkit = shellType != "dms";
 in
 {
-imports =
-[
-  ./greetd.nix
-];
+  imports = [ ./ly.nix ];
+
 config =lib.mkIf isHyprland {
 
 
