@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 let
-  isHyprland = config.roudix.desktop.type == "hyprland";
+  isHyprland  = config.roudix.desktop.type == "hyprland";
+  shellType   = config.roudix.desktop.shell or "noctalia";
+  needsPolkit = shellType == "noctalia";
 in
 lib.mkIf isHyprland {
   programs.hyprland = {
@@ -27,9 +29,8 @@ lib.mkIf isHyprland {
     config.common.default = "*";
   };
 
-  # ── Polkit agent — hyprpolkitagent requires systemd user session (uwsm)
-  #    fallback to polkit-gnome for plain hyprland sessions
-  systemd.user.services.hyprpolkitagent = lib.mkIf config.programs.hyprland.withUWSM {
+  # ── Polkit agent ────────────────────────────────────────────────────────
+  systemd.user.services.hyprpolkitagent = lib.mkIf needsPolkit {
     description = "Hyprland Polkit agent";
     wantedBy = [ "graphical-session.target" ];
     after    = [ "graphical-session.target" ];
@@ -42,24 +43,16 @@ lib.mkIf isHyprland {
     };
   };
 
-  systemd.user.services.polkit-gnome-agent = lib.mkIf (!config.programs.hyprland.withUWSM) {
-    description = "Polkit GNOME agent (fallback without uwsm)";
-    wantedBy = [ "graphical-session.target" ];
-    after    = [ "graphical-session.target" ];
-    partOf   = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type      = "simple";
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      Restart    = "on-failure";
-      RestartSec = "1s";
-    };
-  };
-
   # ── Greeter & keyring ───────────────────────────────────────────────────
   services.displayManager.gdm.enable = true;
+  services.displayManager.defaultSession = "hyprland-uwsm";
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.gdm.enableGnomeKeyring = true;
 
+  # ── GDM : forcer hyprland-uwsm, retirer le .desktop vanilla ────────────
+  system.activationScripts.removeHyprlandDesktop = ''
+    rm -f /run/current-system/sw/share/wayland-sessions/hyprland.desktop
+  '';
 
   programs.nautilus-open-any-terminal = {
     enable = true;
@@ -67,10 +60,8 @@ lib.mkIf isHyprland {
   };
 
   environment.systemPackages = with pkgs; [
-    hyprpolkitagent
-    polkit_gnome
     awww
     grimblast
     playerctl
-  ];
+  ] ++ lib.optionals needsPolkit [ hyprpolkitagent ];
 }
