@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, roudixBranding, ... }:
 {
   services.greetd = {
     enable = true;
@@ -10,6 +10,7 @@
 
   environment.etc = {
     "greetd/hyprland-greeter.conf".text = ''
+      exec-once = ${pkgs.swaybg}/bin/swaybg -i /run/current-system/sw/share/backgrounds/roudix/roudix-dark.png -m fill &
       exec-once = ${lib.getExe pkgs.nwg-hello}; hyprctl dispatch exit
     '';
 
@@ -45,15 +46,17 @@
       "avatar-border-color" = "#cdd6f4";
       "avatar-corner-radius" = 15;
       "avatar-circle"       = false;
-      "env-vars"            = [];
+      "env-vars"            = [
+        "XCURSOR_THEME=capitaine-cursors"
+        "XCURSOR_SIZE=24"
+      ];
     };
 
     "nwg-hello/nwg-hello.css".text = ''
       /* Catppuccin Mocha */
 
       window {
-        background-image: url("/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png");
-        background-size: auto 100%;
+        background-color: #1e1e2e;
       }
 
       #form-wrapper {
@@ -140,13 +143,15 @@
     papirus-icon-theme
     capitaine-cursors
     adw-gtk3
+    swaybg
   ];
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
-  systemd.tmpfiles.rules = [
-      "d /var/cache/nwg-hello 0755 greeter greeter -"
-    ];
 
-    users.users.greeter.extraGroups = [ "video" "input" ];
-  }
+  systemd.tmpfiles.rules = [
+    "d /var/cache/nwg-hello 0755 greeter greeter -"
+  ];
+
+  users.users.greeter.extraGroups = [ "video" "input" ];
+}
