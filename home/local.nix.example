@@ -15,7 +15,7 @@
   # xdg.configFile."hypr/user.conf" = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") (lib.mkForce {
   # text = ''
   # ── Monitors ──────────────────────────────────────────────────────────
-  #   monitor = DP-1, 2560x1440@144, x0, 1
+  #   monitor = DP-1, 2560x1440@144, 0x0, 1
   # ── Keybinds ──────────────────────────────────────────────────────────
   #   bind = SUPER, T, exec, foot
   # ── Misc tweaks ───────────────────────────────────────────────────────
