@@ -42,11 +42,4 @@
 
   # ── Network ─────────────────────────────────────────────────────────────
   networking.hostName = "roudix";
-
-  # ── Disk configuration ───────────────────────────────────────────────────
-  fileSystems."/mnt/gaming" = {
-    device = "/dev/disk/by-uuid/b1f03b7d-59fc-4d29-aeb7-efbeae507860";
-    fsType = "btrfs";
-    options = [ "defaults" "nofail" ];
-  };
 }
