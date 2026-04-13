@@ -4,8 +4,8 @@ Switch desktop at any time with `roudix-switch <de>` or the **Roudix Desktop Swi
 
 | Value | Desktop | Notes |
 |-------|---------|-------|
-| `niri` | Niri + Noctalia | Default — scrollable tiling Wayland |
-| `hyprland` | Hyprland + Noctalia | Dynamic tiling Wayland — launched via UWSM |
+| `niri` | Niri + (Noctalia, DMS) | Default — scrollable tiling Wayland |
+| `hyprland` | Hyprland + (Noctalia, DMS, Caelestia) | Dynamic tiling Wayland — launched via UWSM |
 | `gnome` | GNOME 49.5 | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 
@@ -33,7 +33,9 @@ For Wayland compositors (Niri, Hyprland), you can switch the shell/bar stack ind
 |-------|-------|-----------------|
 | `noctalia` | Noctalia | `dotfiles/niri/` · `dotfiles/hyprland/` |
 | `dms` | DankMaterialShell | `dotfiles/niri-dms/` · `dotfiles/hyprland-dms/` |
-| `caelestia` | Caelestia | `dotfiles/niri-caelestia/` · `dotfiles/hyprland-caelestia/` |
+| `caelestia` | Caelestia |  `dotfiles/hyprland-caelestia/` |
+
+**Note:** caelestia is only avaible on Hyprland
 
 To change, edit `hosts/roudix/local.nix`:
 

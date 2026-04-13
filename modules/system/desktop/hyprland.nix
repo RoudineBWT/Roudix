@@ -7,8 +7,7 @@ in
 {
   imports = [ ./ly.nix ];
 
-config =lib.mkIf isHyprland {
-
+config = lib.mkIf isHyprland {
 
   programs.hyprland = {
     enable = true;
@@ -36,15 +35,15 @@ config =lib.mkIf isHyprland {
 
   # ── Polkit agent ────────────────────────────────────────────────────────
   # DMS a son propre agent polkit intégré.
-  # Noctalia et Caelestia n'en ont pas — on lance hyprpolkitagent.
-  systemd.user.services.hyprpolkitagent = lib.mkIf needsPolkit {
-    description = "Hyprland Polkit agent";
+  # Noctalia et Caelestia n'en ont pas — on lance polkit-gnome.
+  systemd.user.services.polkit-gnome = lib.mkIf needsPolkit {
+    description = "Polkit GNOME agent";
     wantedBy = [ "graphical-session.target" ];
     after    = [ "graphical-session.target" ];
     partOf   = [ "graphical-session.target" ];
     serviceConfig = {
-      Type       = "simple";
-      ExecStart  = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
+      Type      = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
       Restart    = "on-failure";
       RestartSec = "1s";
     };
@@ -59,6 +58,6 @@ config =lib.mkIf isHyprland {
     awww
     grimblast
     playerctl
-  ] ++ lib.optionals needsPolkit [ hyprpolkitagent ];
+  ] ++ lib.optionals needsPolkit [ polkit_gnome ];
  };
 }
