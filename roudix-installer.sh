@@ -128,7 +128,7 @@ cp /etc/nixos/hardware-configuration.nix "$HW_CONFIG_FILE"
 # ── btrfs subvolume auto-patch ────────────────────────────────────────────────
 # Always patch if any btrfs mounts exist — don't rely on stderr error to trigger
 if grep -q ' btrfs ' /proc/mounts 2>/dev/null; then
-  warn "btrfs détecté — patch automatique des options de montage..."
+  warn "btrfs detected — auto-patching mount options..."
 
   # Read active btrfs mounts from /proc/mounts
   # Format: device mountpoint fstype options dump pass
@@ -210,7 +210,7 @@ if grep -q ' btrfs ' /proc/mounts 2>/dev/null; then
           { print }
         ' "$HW_CONFIG_FILE" > "${HW_CONFIG_FILE}.tmp" && mv "${HW_CONFIG_FILE}.tmp" "$HW_CONFIG_FILE"
       fi
-      success "Options btrfs injectées pour ${mountpoint} (subvol=${subvol}${compress:+, $compress}${noatime:+, noatime})."
+      success "btrfs options injected for ${mountpoint} (subvol=${subvol}${compress:+, $compress}${noatime:+, noatime})."
     fi
   done < <(grep ' btrfs ' /proc/mounts)
 fi
@@ -231,7 +231,7 @@ success "boot.local.nix created."
 
 # ── Multi-boot: detect other OS via EFI NVRAM ─────────────────────────────────
 echo -e "\n${BOLD}══════════════════════════════════════${NC}"
-info "Détection des autres systèmes (NVRAM EFI)..."
+info "Detecting other systems (EFI NVRAM)..."
 echo -e "${BOLD}══════════════════════════════════════${NC}"
 
 BOOT_LOCAL_NIX="modules/system/boot.local.nix"
@@ -280,19 +280,19 @@ done < <(efibootmgr -v 2>/dev/null)
 SELECTED_ENTRIES=()
 
 if [[ ${#DETECTED_LABELS[@]} -eq 0 ]]; then
-  info "Aucun autre OS détecté dans la NVRAM EFI — boot.local.nix laissé vide."
+  info "No other OS detected in EFI NVRAM — boot.local.nix left empty."
   SKIP_ENTRY_MSG=true
 else
-  echo -e "\n  ${BOLD}OS détectés dans la NVRAM EFI :${NC}\n"
+  echo -e "\n  ${BOLD}OS detected in EFI NVRAM:${NC}\n"
   for i in "${!DETECTED_LABELS[@]}"; do
     printf "  ${CYAN}%2d)${NC} %-35s ${BOLD}PARTUUID:${NC} %s\n" \
       "$((i+1))" "${DETECTED_LABELS[$i]}" "${DETECTED_PARTUUIDS[$i]}"
     printf "      ${BOLD}EFI path:${NC} %s\n" "${DETECTED_EFIPATHS[$i]}"
   done
 
-  echo -e "\n  ${BOLD}Lesquels veux-tu ajouter dans Limine ?${NC}"
-  echo -e "  (entre les numéros séparés par des espaces, ex: ${CYAN}1 3${NC} — ou ${CYAN}0${NC} pour aucun)\n"
-  read -rp "  Choix: " raw_choices
+  echo -e "\n  ${BOLD}Which ones do you want to add to Limine?${NC}"
+  echo -e "  (enter numbers separated by spaces, e.g. ${CYAN}1 3${NC} — or ${CYAN}0${NC} for none)\n"
+  read -rp "  Choice: " raw_choices
 
   if [[ "$raw_choices" != "0" && -n "$raw_choices" ]]; then
     for choice in $raw_choices; do
@@ -308,7 +308,7 @@ fi
 
 # ── Write boot.local.nix ──────────────────────────────────────────────────────
 if [[ ${#SELECTED_ENTRIES[@]} -gt 0 ]]; then
-  info "Génération de boot.local.nix..."
+  info "Generating boot.local.nix..."
 
   ENTRIES_BLOCK=""
   for idx in "${SELECTED_ENTRIES[@]}"; do
@@ -332,12 +332,12 @@ if [[ ${#SELECTED_ENTRIES[@]} -gt 0 ]]; then
     echo "}"
   } > "$BOOT_LOCAL_NIX"
 
-  success "boot.local.nix configuré avec ${#SELECTED_ENTRIES[@]} entrée(s)."
+  success "boot.local.nix configured with ${#SELECTED_ENTRIES[@]} entry/entries."
   for idx in "${SELECTED_ENTRIES[@]}"; do
     echo -e "  ${GREEN}✓${NC} ${DETECTED_LABELS[$idx]}"
   done
 else
-  [[ -z "${SKIP_ENTRY_MSG:-}" ]] && info "Aucune entrée ajoutée — boot.local.nix laissé vide (NixOS only)."
+  [[ -z "${SKIP_ENTRY_MSG:-}" ]] && info "No entry added — boot.local.nix left empty (NixOS only)."
 fi
 
 # ── Configuration questions ───────────────────────────────────────────────────
@@ -369,7 +369,7 @@ if [[ -n "${GPU_VENDORS_FOUND[nvidia]:-}" ]]; then
   if [[ -n "${GPU_VENDORS_FOUND[intel]:-}" || -n "${GPU_VENDORS_FOUND[amd]:-}" ]]; then
     NVIDIA_LAPTOP="true"
     igpu="${GPU_VENDORS_FOUND[intel]:+Intel}${GPU_VENDORS_FOUND[amd]:+AMD}"
-    warn "Configuration Optimus détectée (${igpu} iGPU + NVIDIA dGPU) — nvidiaLaptop activé."
+    warn "Optimus configuration detected (${igpu} iGPU + NVIDIA dGPU) — nvidiaLaptop enabled."
   fi
 elif [[ -n "${GPU_VENDORS_FOUND[amd]:-}" ]]; then
   DETECTED_GPU="amd"
@@ -378,8 +378,8 @@ elif [[ -n "${GPU_VENDORS_FOUND[intel]:-}" ]]; then
 fi
 
 if [[ -n "$DETECTED_GPU" ]]; then
-  info "GPU détecté automatiquement : ${BOLD}${DETECTED_GPU}${NC}${NVIDIA_LAPTOP:+ (laptop Optimus)}"
-  read -rp "Confirmer ? [Y/n]: " gpu_confirm
+  info "GPU auto-detected: ${BOLD}${DETECTED_GPU}${NC}${NVIDIA_LAPTOP:+ (Optimus laptop)}"
+  read -rp "Confirm? [Y/n]: " gpu_confirm
   if [[ "${gpu_confirm:-Y}" =~ ^[Yy]$ ]]; then
     GPU="$DETECTED_GPU"
   else
@@ -390,9 +390,9 @@ if [[ -n "$DETECTED_GPU" ]]; then
       "intel|Intel integrated GPU"
     # If user manually picked nvidia, ask about laptop
     if [[ "$GPU" == "nvidia" ]]; then
-      pick "Laptop avec NVIDIA dGPU (Optimus) ?" NVIDIA_LAPTOP \
-        "false|Non — desktop ou NVIDIA seul" \
-        "true|Oui — laptop Intel/AMD + NVIDIA"
+      pick "Laptop with NVIDIA dGPU (Optimus)?" NVIDIA_LAPTOP \
+        "false|No — desktop or standalone NVIDIA" \
+        "true|Yes — laptop Intel/AMD + NVIDIA"
     fi
   fi
 else
@@ -416,8 +416,8 @@ elif grep -q "GenuineIntel" /proc/cpuinfo 2>/dev/null; then
 fi
 
 if [[ -n "$DETECTED_CPU" ]]; then
-  info "CPU détecté automatiquement : ${BOLD}${DETECTED_CPU}${NC}"
-  read -rp "Confirmer ? [Y/n]: " cpu_confirm
+  info "CPU auto-detected: ${BOLD}${DETECTED_CPU}${NC}"
+  read -rp "Confirm? [Y/n]: " cpu_confirm
   if [[ "${cpu_confirm:-Y}" =~ ^[Yy]$ ]]; then
     CPU="$DETECTED_CPU"
   else
@@ -442,10 +442,13 @@ pick "Kernel:" KERNEL \
   "cachyos-rc|Release candidate — bleeding edge, potentially unstable"
 
 pick "Browser:" BROWSER \
-  "none|No chromium base browser" \
+  "none|No browser" \
   "brave|Brave" \
   "helium|Helium" \
-  "vivaldi|Vivaldi"
+  "vivaldi|Vivaldi" \
+  "firefox|Firefox" \
+  "librewolf|LibreWolf" \
+  "chromium|Chromium"
 
 pick "Install Zen Browser?" ZEN \
   "false|No" \
@@ -458,7 +461,11 @@ pick "Desktop environment:" DE \
   "hyprland|Hyprland"
 
 DESKTOP_SHELL="noctalia"
-if [[ "$DE" == "niri" || "$DE" == "hyprland" ]]; then
+if [[ "$DE" == "niri" ]]; then
+  pick "Desktop shell (bar/UI stack):" DESKTOP_SHELL \
+    "noctalia|Noctalia — default Roudix shell" \
+    "dms|DankMaterialShell — Material 3 design"
+elif [[ "$DE" == "hyprland" ]]; then
   pick "Desktop shell (bar/UI stack):" DESKTOP_SHELL \
     "noctalia|Noctalia — default Roudix shell" \
     "dms|DankMaterialShell — Material 3 design" \
@@ -473,7 +480,7 @@ pick "Default shell:" SHELL_DEFAULT \
 DETECTED_VIRT=$(systemd-detect-virt 2>/dev/null || echo "none")
 if [[ "$DETECTED_VIRT" != "none" && "$DETECTED_VIRT" != "" ]]; then
   VM_GUEST="true"
-  info "VM détectée automatiquement : ${BOLD}${DETECTED_VIRT}${NC} — vmGuest activé."
+  info "VM auto-detected: ${BOLD}${DETECTED_VIRT}${NC} — vmGuest enabled."
 else
   pick "Running inside a VM?" VM_GUEST \
     "false|No — bare metal install" \
