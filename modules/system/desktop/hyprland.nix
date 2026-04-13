@@ -2,9 +2,11 @@
 let
   isHyprland  = config.roudix.desktop.type == "hyprland";
   shellType   = config.roudix.desktop.shell or "noctalia";
-  needsPolkit = shellType == "noctalia";
+  needsPolkit = shellType != "dms";
 in
 lib.mkIf isHyprland {
+  imports = [ ./greetd.nix ];
+
   programs.hyprland = {
     enable = true;
     withUWSM = true;
@@ -30,6 +32,8 @@ lib.mkIf isHyprland {
   };
 
   # ── Polkit agent ────────────────────────────────────────────────────────
+  # DMS a son propre agent polkit intégré.
+  # Noctalia et Caelestia n'en ont pas — on lance hyprpolkitagent.
   systemd.user.services.hyprpolkitagent = lib.mkIf needsPolkit {
     description = "Hyprland Polkit agent";
     wantedBy = [ "graphical-session.target" ];
@@ -42,17 +46,6 @@ lib.mkIf isHyprland {
       RestartSec = "1s";
     };
   };
-
-  # ── Greeter & keyring ───────────────────────────────────────────────────
-  services.displayManager.gdm.enable = true;
-  services.displayManager.defaultSession = "hyprland-uwsm";
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.gdm.enableGnomeKeyring = true;
-
-  # ── GDM : forcer hyprland-uwsm, retirer le .desktop vanilla ────────────
-  system.activationScripts.removeHyprlandDesktop = ''
-    rm -f /run/current-system/sw/share/wayland-sessions/hyprland.desktop
-  '';
 
   programs.nautilus-open-any-terminal = {
     enable = true;
