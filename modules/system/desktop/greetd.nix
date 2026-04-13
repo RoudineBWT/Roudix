@@ -10,7 +10,17 @@
 
   environment.etc = {
     "greetd/hyprland-greeter.conf".text = ''
-      exec-once = ${pkgs.swaybg}/bin/swaybg -i /run/current-system/sw/share/backgrounds/roudix/roudix-dark.png -m fill &
+      monitor = ,preferred,auto,1
+
+      misc {
+        disable_hyprland_logo = true
+        disable_splash_rendering = true
+      }
+
+      animations {
+        enabled = false
+      }
+
       exec-once = ${lib.getExe pkgs.nwg-hello}; hyprctl dispatch exit
     '';
 
@@ -30,7 +40,7 @@
       "cmd-sleep"       = "systemctl suspend";
       "cmd-reboot"      = "systemctl reboot";
       "cmd-poweroff"    = "systemctl poweroff";
-      "gtk-theme"           = "adw-gtk3-dark";
+      "gtk-theme"           = "";
       "gtk-icon-theme"      = "Papirus-Dark";
       "gtk-cursor-theme"    = "capitaine-cursors";
       "prefer-dark-theme"   = true;
@@ -56,7 +66,9 @@
       /* Catppuccin Mocha */
 
       window {
-        background-color: #1e1e2e;
+        background-image: url("/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png");
+        background-size: cover;
+        background-position: center;
       }
 
       #form-wrapper {
@@ -143,7 +155,6 @@
     papirus-icon-theme
     capitaine-cursors
     adw-gtk3
-    swaybg
   ];
 
   services.gnome.gnome-keyring.enable = true;
