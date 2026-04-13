@@ -3,12 +3,16 @@
   services.greetd = {
     enable = true;
     settings.default_session = {
-      command = "${lib.getExe pkgs.nwg-hello}";
+      command = "${pkgs.hyprland}/bin/Hyprland --config /etc/greetd/hyprland-greeter.conf";
       user = "greeter";
     };
   };
 
   environment.etc = {
+    "greetd/hyprland-greeter.conf".text = ''
+      exec-once = ${lib.getExe pkgs.nwg-hello}; hyprctl dispatch exit
+    '';
+
     "greetd/sessions/hyprland-uwsm.desktop".text = ''
       [Desktop Entry]
       Name=Hyprland (UWSM)
@@ -17,31 +21,31 @@
     '';
 
     "nwg-hello/nwg-hello.json".text = builtins.toJSON {
-      session_dirs     = [ "/etc/greetd/sessions" ];
-      custom_sessions  = [];
-      monitor_nums     = [];
-      form_on_monitors = [ 0 ];
-      delay_secs       = 1;
-      "cmd-sleep"      = "systemctl suspend";
-      "cmd-reboot"     = "systemctl reboot";
-      "cmd-poweroff"   = "systemctl poweroff";
-      "gtk-theme"          = "adw-gtk3-dark";
-      "gtk-icon-theme"     = "Papirus-Dark";
-      "gtk-cursor-theme"   = "capitaine-cursors";
-      "prefer-dark-theme"  = true;
-      "template-name"      = "";
-      "time-format"        = "%H:%M";
-      "date-format"        = "%A, %d %B";
-      "layer"              = "overlay";
-      "keyboard-mode"      = "exclusive";
-      "lang"               = "en";
-      "avatar-show"        = false;
-      "avatar-size"        = 100;
+      session_dirs      = [ "/etc/greetd/sessions" ];
+      custom_sessions   = [];
+      monitor_nums      = [];
+      form_on_monitors  = [ 0 ];
+      delay_secs        = 1;
+      "cmd-sleep"       = "systemctl suspend";
+      "cmd-reboot"      = "systemctl reboot";
+      "cmd-poweroff"    = "systemctl poweroff";
+      "gtk-theme"           = "adw-gtk3-dark";
+      "gtk-icon-theme"      = "Papirus-Dark";
+      "gtk-cursor-theme"    = "capitaine-cursors";
+      "prefer-dark-theme"   = true;
+      "template-name"       = "";
+      "time-format"         = "%H:%M";
+      "date-format"         = "%A, %d %B";
+      "layer"               = "overlay";
+      "keyboard-mode"       = "exclusive";
+      "lang"                = "en";
+      "avatar-show"         = false;
+      "avatar-size"         = 100;
       "avatar-border-width" = 1;
-      "avatar-border-color" = "#cdd6f4";   # Catppuccin text
+      "avatar-border-color" = "#cdd6f4";
       "avatar-corner-radius" = 15;
-      "avatar-circle"      = false;
-      "env-vars"           = [];
+      "avatar-circle"       = false;
+      "env-vars"            = [];
     };
 
     "nwg-hello/nwg-hello.css".text = ''
@@ -140,4 +144,9 @@
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
-}
+  systemd.tmpfiles.rules = [
+      "d /var/cache/nwg-hello 0755 greeter greeter -"
+    ];
+
+    users.users.greeter.extraGroups = [ "video" "input" ];
+  }
