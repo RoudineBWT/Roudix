@@ -58,7 +58,6 @@ config =lib.mkIf isHyprland {
     awww
     grimblast
     playerctl
-    capitaine-cursors
   ] ++ lib.optionals needsPolkit [ hyprpolkitagent ];
  };
 }

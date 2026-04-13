@@ -30,7 +30,7 @@
 | Bootloader | Limine |
 | Compositor | Niri (scrollable tiling) · Hyprland (dynamic tiling) |
 | Graphical shell | Noctalia · DankMaterialShell · Caelestia |
-| Display Manager | GDM / SDDM / plasma-login-manager |
+| Display Manager | GDM / greetd (nwg-hello) / plasma-login-manager |
 | Terminal | Ghostty |
 | Shell | Fish · Bash |
 | Browser | Configurable (Brave, Helium, Vivaldi, Firefox, LibreWolf, Chromium, Zen) |
