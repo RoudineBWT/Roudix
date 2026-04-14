@@ -2,7 +2,7 @@
 let
   isKde = config.roudix.desktop.type == "kde";
 
-  wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
+  wallpaperDark = "${roudixBranding}/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
 in
 lib.mkIf isKde {
   services.displayManager.defaultSession = "plasma";

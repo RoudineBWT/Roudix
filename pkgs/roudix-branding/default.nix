@@ -93,12 +93,12 @@ stdenvNoCC.mkDerivation {
           -depth 8 \
           $out/share/backgrounds/roudix/roudix_wallpaper_dark_logo.png
 
-          convert $src/wallpapers/roudix-roudix_wallpaper_light_logo.svg \
+          convert $src/wallpapers/roudix_wallpaper_light_logo.svg \
             -resize 3840x2160 \
             -strip \
             -define png:color-type=2 \
             -depth 8 \
-            $out/share/backgrounds/roudix/roudix-roudix_wallpaper_light_logo.png
+            $out/share/backgrounds/roudix/roudix_wallpaper_light_logo.png
 
     # ── Wallpaper KDE Dark ────────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixDark/contents/images
