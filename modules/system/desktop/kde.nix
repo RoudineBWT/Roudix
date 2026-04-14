@@ -22,6 +22,7 @@ lib.mkIf isKde {
   '';
 
   system.activationScripts.plasmaLoginWallpaper = {
+    after = [ "users" "groups" ];
     text = ''
       install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images
       cp ${wallpaperDark} /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images/3840x2160.png

@@ -57,6 +57,9 @@ stdenvNoCC.mkDerivation {
     mkdir -p $out/share/backgrounds/roudix
     cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
     cp $src/wallpapers/roudix-light.svg $out/share/backgrounds/roudix/roudix-light.svg
+    cp $src/wallpapers/roudix_wallpaper_cosmos.svg $out/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg
+    cp $src/wallpapers/roudix_wallpaper_dark_logo.svg $out/share/backgrounds/roudix/roudix_wallpaper_dark_logo.svg
+    cp $src/wallpapers/roudix_wallpaper_light_logot.svg $out/share/backgrounds/roudix/roudix_wallpaper_light_logo.svg
 
     # ── Wallpapers PNG GNOME (libpng/librsvg crash workaround) ────────────────
     # -strip                   : supprime les métadonnées et profils ICC
