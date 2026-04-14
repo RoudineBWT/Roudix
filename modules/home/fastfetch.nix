@@ -43,6 +43,22 @@
         { type = "shell";    key = " Shell";       keyColor = "33"; }
         { type = "packages"; key = " Packages";   keyColor = "33"; }
         { type = "custom"; format = "───────────────────────────────"; }
+        { type = "custom"; format = "─────────── Challenge ───────────"; }
+        {
+          type = "command";
+          key = " Challenge";
+          keyColor = "35";
+          text = ''
+            start=$(stat -c %W /); end=$((start + 63072000)); now=$(date +%s)
+            elapsed=$(( now - start )); total=$(( end - start ))
+            pct=$(( elapsed * 100 / total ))
+            days_done=$(( elapsed / 86400 )); days_left=$(( (end - now) / 86400 ))
+            filled=$(( pct * 20 / 100 )); empty=$(( 20 - filled ))
+            bar=$(printf '█%.0s' $(seq 1 $filled 2>/dev/null))$(printf '░%.0s' $(seq 1 $empty 2>/dev/null))
+            echo "[$bar] $pct% — $days_done j / 730 j ($days_left restants)"
+          '';
+        }
+        { type = "custom"; format = "───────────────────────────────"; }
         { type = "break"; }
       ];
     };
