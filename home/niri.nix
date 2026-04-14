@@ -52,6 +52,9 @@ in
         include "${niriDir}/cfg/layout.kdl"
         include "${niriDir}/cfg/rules.kdl"
         include "${niriDir}/cfg/misc.kdl"
+      '' + lib.optionalString (shellType == "noctalia") ''
+        include "${config.home.homeDirectory}/.config/niri/noctalia.kdl"
+      '' + ''
 
         // ── User overrides (injected by Nix) ─────────────────────────────
         include "${config.home.homeDirectory}/.config/niri/user.kdl"
