@@ -53,13 +53,13 @@ stdenvNoCC.mkDerivation {
     cp $src/logo/roudix-logo.svg \
       $out/share/icons/hicolor/symbolic/apps/start-here-kde-symbolic.svg
 
-    # ── Wallpapers SVG (SDDM + fallback) ─────────────────────────────────────
+    # ── Wallpapers SVG (fallback) ─────────────────────────────────────────────
     mkdir -p $out/share/backgrounds/roudix
     cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
     cp $src/wallpapers/roudix-light.svg $out/share/backgrounds/roudix/roudix-light.svg
     cp $src/wallpapers/roudix_wallpaper_cosmos.svg $out/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg
     cp $src/wallpapers/roudix_wallpaper_dark_logo.svg $out/share/backgrounds/roudix/roudix_wallpaper_dark_logo.svg
-    cp $src/wallpapers/roudix_wallpaper_light_logot.svg $out/share/backgrounds/roudix/roudix_wallpaper_light_logo.svg
+    cp $src/wallpapers/roudix_wallpaper_light_logo.svg $out/share/backgrounds/roudix/roudix_wallpaper_light_logo.svg
 
     # ── Wallpapers PNG GNOME (libpng/librsvg crash workaround) ────────────────
     # -strip                   : supprime les métadonnées et profils ICC
@@ -79,15 +79,34 @@ stdenvNoCC.mkDerivation {
       -depth 8 \
       $out/share/backgrounds/roudix/roudix-light.png
 
+      convert $src/wallpapers/roudix_wallpaper_cosmos.svg \
+        -resize 3840x2160 \
+        -strip \
+        -define png:color-type=2 \
+        -depth 8 \
+        $out/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg.png
+
+        convert $src/wallpapers/roudix_wallpaper_dark_logo.svg \
+          -resize 3840x2160 \
+          -strip \
+          -define png:color-type=2 \
+          -depth 8 \
+          $out/share/backgrounds/roudix/roudix_wallpaper_dark_logo.png
+
+          convert $src/wallpapers/roudix-roudix_wallpaper_light_logo.svg \
+            -resize 3840x2160 \
+            -strip \
+            -define png:color-type=2 \
+            -depth 8 \
+            $out/share/backgrounds/roudix/roudix-roudix_wallpaper_light_logo.png
+
     # ── Wallpaper KDE Dark ────────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixDark/contents/images
 
-    # KDE requiert PNG/JPEG dans contents/images — le SVG seul ne fonctionne pas
     convert $src/wallpapers/roudix-dark.svg \
       -resize 3840x2160 \
       $out/share/wallpapers/RoudixDark/contents/images/3840x2160.png
 
-    # Preview pour le sélecteur KDE (évite le crash et affiche la miniature)
     convert $src/wallpapers/roudix-dark.svg \
       -resize 400x250 \
       $out/share/wallpapers/RoudixDark/contents/screenshot.png
@@ -131,6 +150,81 @@ JSONEOF
 }
 JSONEOF
 
+    # ── Wallpaper KDE Cosmos ──────────────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixCosmos/contents/images
+
+    convert $src/wallpapers/roudix_wallpaper_cosmos.svg \
+      -resize 3840x2160 \
+      $out/share/wallpapers/RoudixCosmos/contents/images/3840x2160.png
+
+    convert $src/wallpapers/roudix_wallpaper_cosmos.svg \
+      -resize 400x250 \
+      $out/share/wallpapers/RoudixCosmos/contents/screenshot.png
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixCosmos/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixCosmos",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Cosmos",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixCosmos"
+}
+JSONEOF
+
+    # ── Wallpaper KDE Dark Logo ───────────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixDarkLogo/contents/images
+
+    convert $src/wallpapers/roudix_wallpaper_dark_logo.svg \
+      -resize 3840x2160 \
+      $out/share/wallpapers/RoudixDarkLogo/contents/images/3840x2160.png
+
+    convert $src/wallpapers/roudix_wallpaper_dark_logo.svg \
+      -resize 400x250 \
+      $out/share/wallpapers/RoudixDarkLogo/contents/screenshot.png
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixDarkLogo/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixDarkLogo",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Dark Logo",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixDarkLogo"
+}
+JSONEOF
+
+    # ── Wallpaper KDE Light Logo ──────────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixLightLogo/contents/images
+
+    convert $src/wallpapers/roudix_wallpaper_light_logo.svg \
+      -resize 3840x2160 \
+      $out/share/wallpapers/RoudixLightLogo/contents/images/3840x2160.png
+
+    convert $src/wallpapers/roudix_wallpaper_light_logo.svg \
+      -resize 400x250 \
+      $out/share/wallpapers/RoudixLightLogo/contents/screenshot.png
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixLightLogo/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixLightLogo",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Light Logo",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixLightLogo"
+}
+JSONEOF
+
     # ── Entrées GNOME background properties ───────────────────────────────────
     mkdir -p $out/share/gnome-background-properties
     cat <<XMLEOF > $out/share/gnome-background-properties/roudix.xml
@@ -141,6 +235,23 @@ JSONEOF
     <name>Roudix</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-light.png</filename>
     <filename-dark>/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#eff1f5</pcolor>
+    <scolor>#1e1e2e</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Roudix Cosmos</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#1e1e2e</pcolor>
+    <scolor>#1e1e2e</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Roudix Logo</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_light_logo.png</filename>
+    <filename-dark>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_dark_logo.png</filename-dark>
     <options>zoom</options>
     <shade_type>solid</shade_type>
     <pcolor>#eff1f5</pcolor>

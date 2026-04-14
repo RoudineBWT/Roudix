@@ -22,11 +22,11 @@ lib.mkIf isKde {
   '';
 
   system.activationScripts.plasmaLoginWallpaper = {
-    after = [ "users" "groups" ];
+    deps = [ "users" "groups" ];
     text = ''
       install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images
       cp ${wallpaperDark} /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images/3840x2160.png
-      cp /run/current-system/sw/share/wallpapers/RoudixDark/metadata.json /var/lib/plasmalogin/wallpapers/RoudixDark/metadata.json
+      cp ${roudixBranding}/share/wallpapers/RoudixDark/metadata.json /var/lib/plasmalogin/wallpapers/RoudixDark/metadata.json
       chown -R plasmalogin:plasmalogin /var/lib/plasmalogin/wallpapers/
     '';
   };
