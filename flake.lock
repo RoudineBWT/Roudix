@@ -99,11 +99,11 @@
         "quickshell": "quickshell"
       },
       "locked": {
-        "lastModified": 1775801889,
-        "narHash": "sha256-q1LGwhQbNOurIAClh5YwKVU2kJ5lTCxRYZf48bAb9IM=",
+        "lastModified": 1776182611,
+        "narHash": "sha256-AG8IIsK9H5nk8BgFk6zF8Oqvy3XV9ERyrltn4hpD+CM=",
         "owner": "caelestia-dots",
         "repo": "shell",
-        "rev": "0e07176ff149d02391531c802b51c28e73185f30",
+        "rev": "0eaca375abd76fbe08e7e0d62708ae910a7ac6d9",
         "type": "github"
       },
       "original": {
@@ -137,11 +137,11 @@
         "quickshell": "quickshell_2"
       },
       "locked": {
-        "lastModified": 1776087977,
-        "narHash": "sha256-45EGJS6qT700/YfUsvUmcfYJk8xhSnKbt9O/Zt8TX10=",
+        "lastModified": 1776181899,
+        "narHash": "sha256-t059Cxlen3i6OKVbQstGL9/G02AxD6ApM1TUfxGhcd4=",
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
-        "rev": "8d415e956832402849ff07bfeb9a6df4f1927a1e",
+        "rev": "6d0953de68d465557368027af4e50aceade57f2e",
         "type": "github"
       },
       "original": {
@@ -244,11 +244,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1775897713,
-        "narHash": "sha256-kB+su45HgWxnfdb4frEfyBg9h9MkJ595PUS1Vk1eVcw=",
+        "lastModified": 1776173722,
+        "narHash": "sha256-+III+3A3MO6H7Ab5SarTBeHuKNQr59HgRw4mn1TI7Jk=",
         "ref": "refs/heads/testing",
-        "rev": "c1027b7736aeb71023e82fba360d3137be5d990c",
-        "revCount": 546,
+        "rev": "964fdfdc4360d1c022b8f622d4dd7e192461d3cc",
+        "revCount": 547,
         "type": "git",
         "url": "https://framagit.org/gaming-linux-fr/glf-os/glf-os"
       },
