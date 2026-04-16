@@ -55,7 +55,7 @@
             days_done=$(( elapsed / 86400 )); days_left=$(( (end - now) / 86400 ))
             filled=$(( pct * 20 / 100 )); empty=$(( 20 - filled ))
             bar=$(printf '█%.0s' $(seq 1 $filled 2>/dev/null))$(printf '░%.0s' $(seq 1 $empty 2>/dev/null))
-            echo "[$bar] $pct% — $days_done j / 730 j ($days_left restants)"
+            echo "[$bar] $pct% — $days_done days / 730 days ($days_left remaining)"
           '';
         }
         { type = "custom"; format = "───────────────────────────────"; }

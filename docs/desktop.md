@@ -6,13 +6,14 @@ Switch desktop at any time with `roudix-switch <de>` or the **Roudix Desktop Swi
 |-------|---------|-------|
 | `niri` | Niri + (Noctalia, DMS) | Default — scrollable tiling Wayland |
 | `hyprland` | Hyprland + (Noctalia, DMS, Caelestia) | Dynamic tiling Wayland — launched via UWSM |
+| `mangowc` | MangoWC + (Noctalia, DMS) | Wayland compositor |
 | `gnome` | GNOME 49.5 | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 
 To change permanently, edit `hosts/roudix/local.nix`:
 
 ```nix
-roudix.desktop.type = "niri"; # "niri", "hyprland", "gnome" or "kde"
+roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome" or "kde"
 ```
 
 Or use the fish function — it edits the config and rebuilds in one step:
@@ -25,17 +26,17 @@ roudix-switch kde
 
 ---
 
-## Graphical shells (Niri & Hyprland only)
+## Graphical shells (Niri, Hyprland & MangoWC only)
 
-For Wayland compositors (Niri, Hyprland), you can switch the shell/bar stack independently from the compositor. Each shell gets its own dotfiles folder.
+For Wayland compositors (Niri, Hyprland, MangoWC), you can switch the shell/bar stack independently from the compositor. Each shell gets its own dotfiles folder.
 
 | Value | Shell | Dotfiles folders |
 |-------|-------|-----------------|
-| `noctalia` | Noctalia | `dotfiles/niri/` · `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/niri-dms/` · `dotfiles/hyprland-dms/` |
-| `caelestia` | Caelestia |  `dotfiles/hyprland-caelestia/` |
+| `noctalia` | Noctalia | `dotfiles/niri/` · `dotfiles/hyprland/` · `dotfiles/mangowc/` |
+| `dms` | DankMaterialShell | `dotfiles/niri-dms/` · `dotfiles/hyprland-dms/` · `dotfiles/mangowc-dms/` |
+| `caelestia` | Caelestia | `dotfiles/hyprland-caelestia/` |
 
-**Note:** caelestia is only avaible on Hyprland
+**Note:** caelestia is only available on Hyprland
 
 To change, edit `hosts/roudix/local.nix`:
 
@@ -49,7 +50,7 @@ Then rebuild:
 rebuild
 ```
 
-Or use the fish function (available on Niri & Hyprland only) — it edits the config and rebuilds in one step:
+Or use the fish function (available on Niri, Hyprland & MangoWC only) — it edits the config and rebuilds in one step:
 
 ```fish
 roudix-shell-switch dms
@@ -67,6 +68,7 @@ Each compositor config sources a personal override file at the very end — gene
 
 - Hyprland → `~/.config/hypr/user.conf`
 - Niri → `~/.config/niri/user.kdl`
+- MangoWC → `~/.config/mango/user.conf`
 
 Set your monitors, keybinds, and tweaks in `home/local.nix`:
 

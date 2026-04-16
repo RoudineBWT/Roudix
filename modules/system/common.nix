@@ -48,7 +48,7 @@
     nerd-fonts.noto
     noto-fonts
     noto-fonts-color-emoji
-    nerd-fonts.iosevka
+    # nerd-fonts.iosevka
     nerd-fonts.hurmit
   ];
 

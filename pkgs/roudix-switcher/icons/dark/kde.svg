@@ -1,11 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 161.70692 129.27732" width="161.70692" height="129.27732">
-  <g transform="translate(267.18554,-21.403483)">
-    <g transform="matrix(0.56519383,0,0,0.57481111,-284.34397,11.528102)" style="fill:#ffffff;stroke:none;">
-      <path fill-rule="evenodd" d="M 221.0982,20.159593 188.80471,45.01584 248.00946,90.585598 188.80471,136.1554 221.0982,161.01164 312.59646,90.585598 Z"/>
-      <rect width="33.639156" x="85.196251" y="24.302172" rx="16.81958" height="25.892"/>
-      <rect width="48.440346" x="32.719471" y="105.0884" rx="24.220093" height="37.284332"/>
-      <rect width="69.9692" x="102.68873" y="185.86803" rx="34.984604" height="53.855175"/>
-      <path opacity="0.9" fill-rule="evenodd" d="m 210.33367,119.58458 32.29351,24.85626 37.67572,-28.999 -32.2935,-24.856242 z"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 161.70692 129.27732"
+   width="161.70692"
+   height="129.27731"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="kde.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="161.70692"
+       height="129.27731"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <g
+     transform="translate(267.18554,-21.403483)"
+     id="g4">
+    <g
+       transform="matrix(0.56519383,0,0,0.57481111,-284.34397,11.528102)"
+       style="fill:#ffffff;stroke:none"
+       id="g3">
+      <path
+         fill-rule="evenodd"
+         d="M 221.0982,20.159593 188.80471,45.01584 248.00946,90.585598 188.80471,136.1554 221.0982,161.01164 312.59646,90.585598 Z"
+         id="path1"
+         style="fill:#4f4f4f;fill-opacity:1;stroke:#ffffff;stroke-width:4.03521;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         width="33.639156"
+         x="85.196251"
+         y="24.302172"
+         rx="16.81958"
+         height="25.892"
+         id="rect1"
+         style="fill:#ee8f6a;fill-opacity:1;stroke:#ffffff;stroke-width:4.03521;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         width="48.440346"
+         x="32.719471"
+         y="105.0884"
+         rx="24.220093"
+         height="37.284332"
+         id="rect2"
+         style="fill:#45dd18;fill-opacity:1;stroke:#ffffff;stroke-width:4.03521;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         width="69.9692"
+         x="102.68873"
+         y="185.86803"
+         rx="34.984604"
+         height="53.855175"
+         id="rect3"
+         style="fill:#18bedd;fill-opacity:1;stroke:#ffffff;stroke-width:4.03521;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         opacity="0.9"
+         fill-rule="evenodd"
+         d="m 214.2011,119.37564 28.21358,22.34897 32.91581,-26.07383 -28.21357,-22.34895 z"
+         id="path3"
+         style="fill:#4f4f4f;fill-opacity:1;stroke-width:0.886303" />
     </g>
   </g>
 </svg>

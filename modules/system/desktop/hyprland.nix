@@ -3,9 +3,10 @@ let
   isHyprland  = config.roudix.desktop.type == "hyprland";
   shellType   = config.roudix.desktop.shell or "noctalia";
   needsPolkit = shellType != "dms";
+  isDms       = shellType == "dms";
 in
 {
-  imports = [ ./ly.nix ];
+  imports = [ ./ly.nix ./dankgreeter.nix ];
 
 config = lib.mkIf isHyprland {
 

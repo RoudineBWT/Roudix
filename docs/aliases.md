@@ -12,7 +12,7 @@
 | `caelista-reload` | Restart Quickshell without logging out |
 | `roudix-switch <de>` | Switch desktop environment (applies on next reboot) |
 
-## Niri & Hyprland only
+## Niri, Hyprland & MangoWC only
 
 | Alias | Action |
 |-------|--------|
@@ -24,13 +24,14 @@
 # Switch desktop environment
 roudix-switch niri
 roudix-switch hyprland
+roudix-switch mangowc
 roudix-switch gnome
 roudix-switch kde
 
-# Switch graphical shell (Niri & Hyprland only)
+# Switch graphical shell (Niri, Hyprland & MangoWC only)
 roudix-shell-switch noctalia
 roudix-shell-switch dms
-roudix-shell-switch caelista # only for hyprland
+roudix-shell-switch caelestia # only for hyprland
 ```
 
 Both `roudix-switch` and `roudix-shell-switch` edit `hosts/roudix/local.nix` automatically and run `nh os boot` — no manual rebuild needed. Changes apply on next reboot.

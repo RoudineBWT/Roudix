@@ -2,14 +2,27 @@
 
 let
   isHyprland = config.roudix.desktop.type == "hyprland";
+  isMango    = config.roudix.desktop.type == "mangowc";
+  useLy      = isHyprland || isMango;
 in
 
-lib.mkIf isHyprland {
+lib.mkIf useLy {
 
-  # Répertoire custom avec uniquement la session UWSM
-  environment.etc."ly/wayland-sessions/hyprland-uwsm.desktop" = {
-    source = "/run/current-system/sw/share/wayland-sessions/hyprland-uwsm.desktop";
-  };
+  # Sessions exposées à Ly — une par compositeur activé
+  environment.etc = lib.mkMerge [
+    (lib.mkIf isHyprland {
+      "ly/wayland-sessions/hyprland-uwsm.desktop".source =
+        "/run/current-system/sw/share/wayland-sessions/hyprland-uwsm.desktop";
+    })
+    (lib.mkIf isMango {
+      "ly/wayland-sessions/mangowc.desktop".text = ''
+        [Desktop Entry]
+        Name=MangoWC
+        Exec=mango
+        Type=Application
+      '';
+    })
+  ];
 
   services.displayManager.ly = {
     enable = true;
@@ -18,7 +31,7 @@ lib.mkIf isHyprland {
       waylandsessions     = "/etc/ly/wayland-sessions";
       xsessions           = "";
       xinitrcpath         = "";
-      default_session     = "hyprland-uwsm";
+      default_session     = if isMango then "mangowc" else "hyprland-uwsm";
       animate             = true;
       hide_borders        = false;
       hide_version_string = true;

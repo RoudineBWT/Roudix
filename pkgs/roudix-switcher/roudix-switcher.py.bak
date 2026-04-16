@@ -310,7 +310,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         super().__init__(application=app)
         self.set_title("Roudix — Desktop Switcher")
         self.set_default_size(480, 640)
-        self.set_resizable(True)
+        self.set_resizable(False)
 
         current_de    = get_current_de()
         current_shell = get_current_shell()
@@ -335,8 +335,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         scroll.set_vexpand(True)
 
         clamp = Adw.Clamp()
-        clamp.set_maximum_size(800)
-        clamp.set_tightening_threshold(440)
+        clamp.set_maximum_size(440)
 
         main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
         main_box.set_margin_top(16)
@@ -394,7 +393,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.log_label = Gtk.Label(label="")
         self.log_label.set_justify(Gtk.Justification.CENTER)
-        self.log_label.set_wrap(True)
+        self.log_label.set_max_width_chars(55)
         self.log_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
         self.log_label.set_valign(Gtk.Align.CENTER)
         self.log_label.set_visible(False)
@@ -404,7 +403,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.status = Gtk.Label(label="")
         self.status.set_justify(Gtk.Justification.CENTER)
-        self.status.set_wrap(True)
+        self.status.set_max_width_chars(55)
         self.status.set_lines(2)
         self.status.set_ellipsize(Pango.EllipsizeMode.END)
         self.status.set_valign(Gtk.Align.CENTER)

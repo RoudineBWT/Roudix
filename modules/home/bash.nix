@@ -29,21 +29,22 @@ in
         local config_file="$NH_FLAKE/hosts/roudix/local.nix"
 
         if [ -z "$de" ]; then
-          echo "Usage: roudix-switch [niri|gnome|kde|hyprland]"
+          echo "Usage: roudix-switch [niri|gnome|kde|hyprland|mangowc]"
           echo ""
           echo "Available desktop environments:"
-          echo "  niri  — Niri scrollable tiling compositor + Noctalia"
-          echo "  gnome — GNOME desktop environment"
-          echo "  kde   — KDE Plasma"
-          echo "  hyprland   — Dynamic tiling Wayland compositor + Noctalia shell"
+          echo "  niri     — Niri scrollable tiling compositor + Noctalia"
+          echo "  gnome    — GNOME desktop environment"
+          echo "  kde      — KDE Plasma"
+          echo "  hyprland — Dynamic tiling Wayland compositor + Noctalia shell"
+          echo "  mangowc  — Lightweight dynamic tiling Wayland compositor"
           return 1
         fi
 
         case "$de" in
-          niri|gnome|kde|hyprland) ;;
+          niri|gnome|kde|hyprland|mangowc) ;;
           *)
             echo "Unknown desktop environment: $de"
-            echo "Available: niri, gnome, kde, hyprland"
+            echo "Available: niri, gnome, kde, hyprland, mangowc"
             return 1
             ;;
         esac

@@ -55,6 +55,13 @@ in
       '' + lib.optionalString (shellType == "noctalia") ''
         include "${config.home.homeDirectory}/.config/niri/noctalia.kdl"
       '' + ''
+      '' + lib.optionalString (shellType == "dms") ''
+        include "${config.home.homeDirectory}/.config/niri/dms/alttab.kdl"
+        include "${config.home.homeDirectory}/.config/niri/dms/wpblur.kdl"
+        include "${config.home.homeDirectory}/.config/niri/dms/colors.kdl"
+        include "${config.home.homeDirectory}/.config/niri/dms/cursor.kdl"
+        include "${config.home.homeDirectory}/.config/niri/dms/layout.kdl"
+      '' + ''
 
         // ── User overrides (injected by Nix) ─────────────────────────────
         include "${config.home.homeDirectory}/.config/niri/user.kdl"

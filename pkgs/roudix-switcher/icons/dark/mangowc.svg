@@ -1,0 +1,66 @@
+<svg width="100%" viewBox="0 0 400 400" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Logo MangoWC</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Mangue stylisée style Papirus sur fond transparent</desc>
+
+  <defs>
+    <linearGradient id="body-grad" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#FFDD55"/>
+      <stop offset="45%" stop-color="#FFAA22"/>
+      <stop offset="100%" stop-color="#E86000"/>
+    </linearGradient>
+    <linearGradient id="body-side" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0%" stop-color="#E06000" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#E06000" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="leaf-main" x1="0.1" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#8DC63F"/>
+      <stop offset="100%" stop-color="#2E7D1F"/>
+    </linearGradient>
+    <linearGradient id="leaf-shadow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2E7D1F" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2E7D1F" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0.2" y1="0.05" x2="0.55" y2="0.45">
+      <stop offset="0%" stop-color="#FFEE88" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#FFEE88" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="stem-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2E7D1F"/>
+      <stop offset="100%" stop-color="#5B9E2A"/>
+    </linearGradient>
+    <filter id="outline" x="-8%" y="-8%" width="116%" height="116%">
+      <feMorphology operator="dilate" radius="7" in="SourceAlpha" result="expanded"/>
+      <feFlood flood-color="white" result="white"/>
+      <feComposite in="white" in2="expanded" operator="in" result="outline"/>
+      <feMerge><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#outline)" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+    <!-- Mango body - bas plus étroit et arrondi -->
+    <path d="&#xA;      M200 68&#xA;      C215 62, 265 65, 295 95&#xA;      C335 135, 340 185, 325 230&#xA;      C312 265, 288 298, 265 318&#xA;      C248 332, 228 340, 210 338&#xA;      C192 336, 175 328, 162 316&#xA;      C140 298, 122 270, 112 238&#xA;      C100 200, 104 150, 128 108&#xA;      C150 83, 182 72, 200 68 Z&#xA;    " fill="url(#body-grad)" style="stroke:none;color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+    <!-- Left side shadow -->
+    <path d="&#xA;      M200 68&#xA;      C182 72, 150 83, 128 108&#xA;      C104 150, 100 200, 112 238&#xA;      C122 270, 140 298, 162 316&#xA;      C148 300, 132 272, 124 240&#xA;      C112 204, 116 155, 138 115&#xA;      C158 80, 185 70, 200 68 Z&#xA;    " fill="url(#body-side)" style="stroke:none;color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+    <!-- Main shine blob -->
+    <ellipse cx="237" cy="140" rx="42" ry="52" fill="url(#shine)" transform="rotate(-20,237,140)" style="stroke:none;color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+    <!-- Smaller secondary shine -->
+    <ellipse cx="252" cy="118" rx="14" ry="18" fill="#FFFDE0" opacity="0.75" transform="rotate(-15,252,118)" style="fill:rgb(255, 253, 224);stroke:none;color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.75;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+    <!-- Stem -->
+    <path d="M200 68 C196 50, 196 34, 198 24 C200 18, 205 16, 208 22 C210 32, 210 50, 206 68 Z" fill="url(#stem-grad)" stroke="#1a5c10" stroke-width="0.5" style="stroke:rgb(26, 92, 16);color:rgb(251, 251, 254);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+    <!-- Leaf -->
+    <path d="&#xA;      M200 72&#xA;      C185 68, 148 58, 120 72&#xA;      C95 85, 80 110, 88 132&#xA;      C96 154, 120 162, 148 155&#xA;      C170 150, 188 132, 200 108&#xA;      C200 95, 200 82, 200 72 Z&#xA;    " fill="url(#leaf-main)" stroke="#1a5c10" stroke-width="1.5" style="stroke:rgb(26, 92, 16);color:rgb(251, 251, 254);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+    <!-- Leaf fold/shadow -->
+    <path d="&#xA;      M200 72&#xA;      C195 82, 192 98, 190 115&#xA;      C188 130, 185 145, 178 155&#xA;      C165 152, 152 148, 148 155&#xA;      C170 150, 188 132, 200 108&#xA;      C200 95, 200 82, 200 72 Z&#xA;    " fill="#1a5c10" opacity="0.3" style="fill:rgb(26, 92, 16);stroke:none;color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.3;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+    <!-- Leaf vein -->
+    <path d="M198 76 C175 95, 135 110, 100 120" fill="none" stroke="#5BAE2A" stroke-width="2" stroke-linecap="round" opacity="0.7" style="fill:none;stroke:rgb(91, 174, 42);color:rgb(251, 251, 254);stroke-width:2px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <path d="M170 91 C158 100, 148 112, 142 122" fill="none" stroke="#5BAE2A" stroke-width="1" stroke-linecap="round" opacity="0.5" style="fill:none;stroke:rgb(91, 174, 42);color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <path d="M148 100 C138 108, 130 118, 126 128" fill="none" stroke="#5BAE2A" stroke-width="1" stroke-linecap="round" opacity="0.5" style="fill:none;stroke:rgb(91, 174, 42);color:rgb(251, 251, 254);stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  </g>
+</svg>

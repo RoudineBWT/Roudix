@@ -7,11 +7,13 @@
       "https://attic.xuyh0120.win/lantian"
       "https://cache.garnix.io"
       "https://noctalia.cachix.org"
+      "https://prismlauncher.cachix.org"
     ];
     extra-trusted-public-keys = [
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      "prismlauncher.cachix.org-1:9/n/FGyABA2jLUVfY+DEp4hKds/rwO+SCOtbOkDzd+c="
     ];
   };
 
@@ -118,10 +120,12 @@
               ./home/common.nix
               ./home/niri.nix
               ./home/hyprland.nix
+              ./home/mangowc.nix
               ./home/kde.nix
               ./home/gnome.nix
               ./home/local.nix
               ./home/shell-modules.nix
+              ./home/dankgreeter.nix
             ];
           };
         }

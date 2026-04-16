@@ -39,6 +39,16 @@
 - GNOME Polkit agent
 - GDM display manager
 
+## Desktop (MangoWC)
+
+- MangoWC Wayland compositor
+- Noctalia modern shell
+- xdg-desktop-portal-gtk
+- Capitaine Cursors White
+- GNOME Polkit agent
+- Ly display manager (Noctalia) — DankGreeter/greetd (DMS)
+- adw-gtk3 + Papirus icons + Papirus Folders
+
 ## Desktop (Hyprland)
 
 - Hyprland dynamic tiling Wayland compositor launched via UWSM
