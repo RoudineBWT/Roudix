@@ -154,13 +154,41 @@ Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfi
 | Variant | Description |
 |---------|-------------|
 | `cachyos-latest` | Standard latest CachyOS kernel |
+| `cachyos-latest-v2` | x86_64-v2 optimized |
 | `cachyos-latest-v3` | x86_64-v3 optimized (recommended for modern CPUs) |
+| `cachyos-latest-v4` | x86_64-v4 optimized (AVX-512, very recent CPUs only) |
+| `cachyos-latest-zen4` | AMD Zen 4 optimized |
 | `cachyos-latest-lto` | LTO build for better performance |
+| `cachyos-latest-lto-v2` | LTO + x86_64-v2 |
 | `cachyos-latest-lto-v3` | LTO + x86_64-v3 (best performance, modern CPUs only) |
+| `cachyos-latest-lto-v4` | LTO + x86_64-v4 (AVX-512) |
+| `cachyos-latest-lto-zen4` | LTO + AMD Zen 4 |
 | `cachyos-lts` | Long-term support CachyOS kernel |
+| `cachyos-lts-v2` | LTS + x86_64-v2 |
 | `cachyos-lts-v3` | LTS + x86_64-v3 optimized |
+| `cachyos-lts-v4` | LTS + x86_64-v4 (AVX-512) |
+| `cachyos-lts-zen4` | LTS + AMD Zen 4 |
+| `cachyos-lts-lto` | LTS + LTO |
+| `cachyos-lts-lto-v2` | LTS + LTO + x86_64-v2 |
 | `cachyos-lts-lto-v3` | LTS + LTO + x86_64-v3 (stable + performance) |
+| `cachyos-lts-lto-v4` | LTS + LTO + x86_64-v4 (AVX-512) |
+| `cachyos-lts-lto-zen4` | LTS + LTO + AMD Zen 4 |
+| `cachyos-bmq` | BMQ scheduler |
+| `cachyos-bmq-lto` | BMQ scheduler + LTO |
+| `cachyos-bore` | BORE scheduler (better interactivity) |
+| `cachyos-bore-lto` | BORE scheduler + LTO |
+| `cachyos-deckify` | Steam Deck optimized |
+| `cachyos-deckify-lto` | Steam Deck optimized + LTO |
+| `cachyos-eevdf` | EEVDF scheduler |
+| `cachyos-eevdf-lto` | EEVDF scheduler + LTO |
+| `cachyos-hardened` | Security hardened kernel |
+| `cachyos-hardened-lto` | Security hardened + LTO |
 | `cachyos-rc` | Release candidate — bleeding edge, potentially unstable |
+| `cachyos-rc-lto` | Release candidate + LTO |
+| `cachyos-rt-bore` | Real-time + BORE scheduler |
+| `cachyos-rt-bore-lto` | Real-time + BORE + LTO |
+| `cachyos-server` | Server optimized (no desktop tuning) |
+| `cachyos-server-lto` | Server optimized + LTO |
 
 > **NVIDIA note:** Only GTX 20xx / RTX series and newer are supported. Open drivers enabled by default for RTX 20xx+ (Turing+). GTX 10xx/16xx are not supported.
 

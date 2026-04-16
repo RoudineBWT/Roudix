@@ -96,7 +96,8 @@
     username = import ./hosts/roudix/username.nix;
     roudixSwitcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-switcher {};
     roudixBranding  = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-branding {};
-    specialArgs = { inherit inputs username roudixSwitcher roudixBranding; dotfiles = self + /dotfiles; };
+    roudix-kernel-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-kernel-switcher {};
+    specialArgs = { inherit inputs username roudixSwitcher roudixBranding roudix-kernel-switcher; dotfiles = self + /dotfiles; };
   in
   {
     # ── Main desktop configuration ───────────────────────────────────────
@@ -105,6 +106,7 @@
       system = "x86_64-linux";
       specialArgs = specialArgs;
       modules = [
+        inputs.dms.nixosModules.dank-material-shell
         nix-flatpak.nixosModules.nix-flatpak
         ./hosts/roudix/configuration.nix
         ./version.nix
@@ -125,7 +127,6 @@
               ./home/gnome.nix
               ./home/local.nix
               ./home/shell-modules.nix
-              ./home/dankgreeter.nix
             ];
           };
         }

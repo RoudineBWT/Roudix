@@ -6,6 +6,13 @@ let
   shellType           = osConfig.roudix.desktop.shell or "noctalia";
   availableShells     = if onHyprland then "noctalia|dms|caelestia" else "noctalia|dms";
   availableShellsList = if onHyprland then "noctalia, dms, caelestia" else "noctalia, dms";
+
+  fnArgs = { inherit lib onHyprland availableShells availableShellsList; };
+  switchFn       = import ./functions/roudix-switch.nix       fnArgs;
+  kernelSwitchFn = import ./functions/roudix-kernel-switch.nix fnArgs;
+  shellSwitchFn  = import ./functions/roudix-shell-switch.nix  (fnArgs // {
+    shellList = availableShellsList;
+  });
 in
 {
   programs.bash = {
@@ -22,75 +29,7 @@ in
       caelestia-reload = "pkill -f caelestia-shell; sleep 1; caelestia-shell & disown";
     };
 
-    # ── roudix-switch ─────────────────────────────────────────────────────
-    initExtra = ''
-      roudix-switch() {
-        local de="$1"
-        local config_file="$NH_FLAKE/hosts/roudix/local.nix"
-
-        if [ -z "$de" ]; then
-          echo "Usage: roudix-switch [niri|gnome|kde|hyprland|mangowc]"
-          echo ""
-          echo "Available desktop environments:"
-          echo "  niri     — Niri scrollable tiling compositor + Noctalia"
-          echo "  gnome    — GNOME desktop environment"
-          echo "  kde      — KDE Plasma"
-          echo "  hyprland — Dynamic tiling Wayland compositor + Noctalia shell"
-          echo "  mangowc  — Lightweight dynamic tiling Wayland compositor"
-          return 1
-        fi
-
-        case "$de" in
-          niri|gnome|kde|hyprland|mangowc) ;;
-          *)
-            echo "Unknown desktop environment: $de"
-            echo "Available: niri, gnome, kde, hyprland, mangowc"
-            return 1
-            ;;
-        esac
-
-        echo "Switching desktop environment to: $de"
-        sed -i "s/roudix\.desktop\.type = \"[^\"]*\"/roudix.desktop.type = \"$de\"/" $config_file
-
-        echo "Rebuilding configuration..."
-        nh os boot --accept-flake-config path:$NH_FLAKE
-      }
-    '' + lib.optionalString onTilingDE ''
-
-      # ── roudix-shell-switch (niri & hyprland only) ────────────────────────
-      roudix-shell-switch() {
-        local shell="$1"
-        local config_file="$NH_FLAKE/hosts/roudix/local.nix"
-
-        if [ -z "$shell" ]; then
-          echo "Usage: roudix-shell-switch [${availableShells}]"
-          echo ""
-          echo "Available graphical shells:"
-          echo "  noctalia  — Roudix default shell"
-          echo "  dms       — DankMaterialShell"
-          ${lib.optionalString onHyprland ''echo "  caelestia  — Caelestia shell"''}
-          return 1
-        fi
-
-        case "$shell" in
-          ${availableShells}) ;;
-          *)
-            echo "Unknown shell: $shell"
-            echo "Available: ${availableShellsList}"
-            return 1
-            ;;
-        esac
-
-        echo "Switching graphical shell to: $shell"
-        if grep -q 'roudix\.desktop\.shell' "$config_file"; then
-          sed -i "s/roudix\.desktop\.shell = \"[^\"]*\"/roudix.desktop.shell = \"$shell\"/" "$config_file"
-        else
-          sed -i "s/\(roudix\.desktop\.type = \"[^\"]*\";\)/\1\n  roudix.desktop.shell = \"$shell\";/" "$config_file"
-        fi
-
-        echo "Rebuilding configuration..."
-        nh os boot --accept-flake-config path:$NH_FLAKE
-      }
-    '';
+    initExtra = switchFn.bash + kernelSwitchFn.bash
+      + lib.optionalString onTilingDE shellSwitchFn.bash;
   };
 }

@@ -55,7 +55,7 @@
   # ── User ────────────────────────────────────────────────────────────────
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" "plugdev" "disk" "storage" "i2c" "bluetooth" "render" ];
+    extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" "plugdev" "disk" "storage" "i2c" "bluetooth" "render" "greeter" ];
     shell = if config.roudix.shell == "bash" then pkgs.bash else pkgs.fish;
   };
 
@@ -95,5 +95,5 @@
   networking.firewall.allowedTCPPorts = [ 443 ];
   security.polkit.enable = true;
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }

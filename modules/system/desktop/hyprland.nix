@@ -34,6 +34,11 @@ config = lib.mkIf isHyprland {
     config.common.default = "*";
   };
 
+  programs.dank-material-shell = lib.mkIf isDms {
+    enable = true;
+    systemd.enable = true;
+  };
+
   # ── Polkit agent ────────────────────────────────────────────────────────
   # DMS a son propre agent polkit intégré.
   # Noctalia et Caelestia n'en ont pas — on lance polkit-gnome.

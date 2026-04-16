@@ -1,4 +1,4 @@
-{ pkgs, inputs, lib, username, osConfig, roudixSwitcher, dotfiles, roudixBranding, ... }:
+{ pkgs, inputs, lib, username, osConfig, roudixSwitcher, dotfiles, roudixBranding, roudix-kernel-switcher, ... }:
 let
   desktopType = osConfig.roudix.desktop.type;
   shellType = osConfig.roudix.desktop.shell or "noctalia";
@@ -9,7 +9,7 @@ in
 {
   home.username = username;
   home.homeDirectory = "/home/${username}";
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
 
   imports = [
     ../modules/home/fastfetch.nix
@@ -59,6 +59,7 @@ in
   home.packages = (with pkgs; [
     # Common apps
     roudixSwitcher
+    roudix-kernel-switcher
     ghostty
     zed-editor
     btop
@@ -81,6 +82,7 @@ in
     starship
     easyeffects
     rnnoise-plugin
+    songrec
 
     # OBS Studio
     (pkgs.wrapOBS {

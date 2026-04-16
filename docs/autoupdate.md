@@ -9,7 +9,7 @@ To configure the interval or branch, override in `local.nix`:
 ```nix
 { ... }:
 {
-  roudix.autoupdate.enable   = true;
+  roudix.autoupdate.enable   = true;  # if you set false at this one, config.roudix.autoupdate will take the relai to update but not git pulled
   roudix.autoupdate.interval = "6h";   # check every 6 hours instead of 1h
   roudix.autoupdate.branch   = "main"; # branch to track
 }

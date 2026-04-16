@@ -29,11 +29,6 @@ in
       package = null;
     };
 
-    # ── DankMaterialShell ────────────────────────────────────────────────────
-    programs.dank-material-shell = lib.mkIf (shellType == "dms") {
-      enable = true;
-    };
-
     # ── Niri config ───────────────────────────────────────────────────────────
     xdg.configFile."niri" = {
       source    = niriDir;

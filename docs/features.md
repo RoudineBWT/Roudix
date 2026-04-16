@@ -3,7 +3,7 @@
 ## Kernel & Performance
 
 - CachyOS kernel with NTSync enabled (`ntsync` module)
-- 8 kernel variants available (set in `hosts/roudix/local.nix`)
+- 36 kernel variants available (set in `hosts/roudix/local.nix`)
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)

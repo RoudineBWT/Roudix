@@ -30,11 +30,6 @@ in
       package = null;
     };
 
-    # ── DankMaterialShell ────────────────────────────────────────────────────
-    programs.dank-material-shell = lib.mkIf (shellType == "dms") {
-      enable = true;
-    };
-
     # ── Caelestia ────────────────────────────────────────────────────────────
     # No programs.* option — the homeManagerModules.default handles the
     # systemd service automatically. Just add the package in home.packages.

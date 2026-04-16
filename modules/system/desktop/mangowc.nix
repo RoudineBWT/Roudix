@@ -3,6 +3,7 @@ let
   isMango = config.roudix.desktop.type == "mangowc";
   shellType  = config.roudix.desktop.shell or "noctalia";
   isDms      = shellType == "dms";
+  needsPolkit = !isDms;
 in
 {
   imports = [ ./ly.nix ./dankgreeter.nix ];
@@ -16,7 +17,12 @@ config = lib.mkIf isMango {
     config.common.default = "*";
   };
 
-  systemd.user.services.polkit-gnome = {
+  programs.dank-material-shell = lib.mkIf isDms {
+    enable = true;
+    systemd.enable = true;
+  };
+
+  systemd.user.services.polkit-gnome = lib.mkIf needsPolkit {
     description = "GNOME Polkit authentication agent";
     wantedBy = [ "graphical-session.target" ];
     after    = [ "graphical-session.target" ];
@@ -40,8 +46,6 @@ config = lib.mkIf isMango {
     terminal = "ghostty";
   };
 
-  environment.systemPackages = with pkgs; [
-    polkit_gnome
-  ];
-  };
+  environment.systemPackages = lib.optionals needsPolkit [ pkgs.polkit_gnome ];
+    };
 }

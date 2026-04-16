@@ -17,6 +17,11 @@ in
       config.common.default = "*";
     };
 
+    programs.dank-material-shell = lib.mkIf isDms {
+      enable = true;
+      systemd.enable = true;
+    };
+
     systemd.user.services.polkit-gnome = {
       description = "GNOME Polkit authentication agent";
       wantedBy = [ "graphical-session.target" ];
