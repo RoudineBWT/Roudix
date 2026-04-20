@@ -5,7 +5,7 @@ let
   isDms       = shellType == "dms";
   compositor  = if desktopType == "niri" then "niri" else "hyprland";
 in
-lib.mkIf isDms {
+lib.mkIf (isDms && desktopType != "mangowc") {
   services.displayManager.dms-greeter = {
     enable          = true;
     compositor.name = compositor;

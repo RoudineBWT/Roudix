@@ -18,6 +18,7 @@ ICONS_DIR   = os.path.join(SCRIPT_DIR, "../share/roudix-switcher/icons")
 
 LOG_DIR     = os.path.expanduser("~/.local/share/roudix-switcher")
 LOG_FILE    = os.path.join(LOG_DIR, "switcher.log")
+TMP_LOG     = "/tmp/roudix-switcher.log"
 
 ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
@@ -99,6 +100,7 @@ def setup_logging():
         datefmt="%Y-%m-%d %H:%M:%S",
         handlers=[
             logging.FileHandler(LOG_FILE, encoding="utf-8"),
+            logging.FileHandler(TMP_LOG, mode="w", encoding="utf-8"),
             logging.StreamHandler(sys.stdout),
         ],
     )

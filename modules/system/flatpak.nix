@@ -14,6 +14,10 @@ config = lib.mkIf config.roudix.flatpak.enable {
             name = "flathub";
             location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
           }
+          {
+            name = "flathub-beta";
+            location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
+          }
         ];
         # Put your flatpak here or you just use terminal to install them
         packages = [];

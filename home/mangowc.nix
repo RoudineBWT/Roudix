@@ -24,11 +24,11 @@ in
     xdg.configFile."mango/config.conf" = {
       force = true;
       text = ''
-        source = ${mangowcDir}/cfg/env.conf
+        source = ${mangowcDir}/cfg/environment.conf
         source = ${mangowcDir}/cfg/appearance.conf
         source = ${mangowcDir}/cfg/animations.conf
         source = ${mangowcDir}/cfg/input.conf
-        source = ${mangowcDir}/cfg/layout.conf
+        source = ${mangowcDir}/cfg/workspace.conf
         source = ${mangowcDir}/cfg/monitors.conf
         source = ${mangowcDir}/cfg/rules.conf
         source = ${mangowcDir}/cfg/keybinds.conf

@@ -8,9 +8,9 @@
       "$schema" = "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json";
 
       logo = {
-        type = "file";
-        source = "${dotfiles}/fastfetch/roudix.txt";
-        height = 15;
+        type = "kitty-direct";
+        source = "${dotfiles}/fastfetch/roudix-cat-lavender.png";
+        height = 100;
         padding = {
           right = 5;
         };

@@ -76,11 +76,11 @@ in
     rulesProvider = pkgs.ananicy-rules-cachyos;
   };
 
-
   # ── Paquets système gaming ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
-    vkbasalt        # Post-processing Vulkan (sharpening, etc.)
-    game-performance   # Wrapper governor CPU performance (usage: game-performance %command%)
+    vkbasalt          # Post-processing Vulkan (sharpening, etc.)
+    game-performance  # Wrapper governor CPU performance (usage: game-performance %command%)
+    scx.full
     # millennium-steam
   ];
 
