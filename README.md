@@ -2,11 +2,17 @@
 <img src="assets/logo/roudix-logo.png" width="250"/>
 
 # Roudix
-### NixOS configuration — Niri · Hyprland · Noctalia · DMS · Caelestia · CachyOS Kernel
+### NixOS configuration — Niri · Hyprland · MangoWC · Noctalia · DMS · Caelestia · Gnome · KDE Plasma · CachyOS Kernel
 
 ![NixOS](https://img.shields.io/badge/NixOS-unstable-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
 ![Wayland](https://img.shields.io/badge/Wayland-Niri%20%2F%20Hyprland-FFB800?style=for-the-badge&logo=wayland&logoColor=black)
 ![Kernel](https://img.shields.io/badge/Kernel-CachyOS-FF4500?style=for-the-badge&logo=linux&logoColor=white)
+
+<br/>
+
+![Screenshot](assets/screenshot/screenshot.png)
+
+<sub>Niri + DankMaterialShell — personal customization, yours will look different depending on your setup 👀</sub>
 
 </div>
 
