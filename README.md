@@ -2,7 +2,7 @@
 <img src="assets/logo/roudix-logo.png" width="250"/>
 
 # Roudix
-### NixOS configuration — Niri · Hyprland · MangoWC · Noctalia · DMS · Caelestia · Gnome · KDE Plasma · CachyOS Kernel
+### NixOS configuration — Niri · Hyprland · Noctalia · DMS · Caelestia · CachyOS Kernel
 
 ![NixOS](https://img.shields.io/badge/NixOS-unstable-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
 ![Wayland](https://img.shields.io/badge/Wayland-Niri%20%2F%20Hyprland-FFB800?style=for-the-badge&logo=wayland&logoColor=black)
@@ -174,6 +174,14 @@ roudix/
 | nix-flatpak | gmodena/nix-flatpak |
 | glf-os | framagit.org/gaming-linux-fr/glf-os |
 | plasma-manager | nix-community/plasma-manager |
+
+---
+
+## See also
+
+| Project | Description |
+|---------|-------------|
+| [GLF OS](https://framagit.org/gaming-linux-fr/glf-os/glf-os) | NixOS-based gaming distro by Gaming Linux FR |
 
 ---
 
