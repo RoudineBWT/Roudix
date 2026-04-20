@@ -1,5 +1,7 @@
 # Installation
 
+> **Note:** Before to do this please install nixos with their [stable](https://nixos.org/download/) or [unstable](https://releases.nixos.org/nixos/unstable/nixos-26.05pre980183.4bd9165a9165) iso and then run the script or do the manual installation
+
 ## Automated Installation
 
 **Download the roudix-installer script**
