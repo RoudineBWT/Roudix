@@ -159,21 +159,21 @@ roudix/
 
 | Input | Source |
 |-------|--------|
-| nixpkgs | nixos-unstable |
-| nixpkgs-stable | nixos-25.11 |
-| home-manager | nix-community/home-manager |
-| noctalia | noctalia-dev/noctalia-shell |
-| noctalia-qs | noctalia-dev/noctalia-qs |
-| caelestia-shell | caelestia-dots/shell |
-| dms | AvengeMedia/DankMaterialShell |
-| nix-cachyos-kernel | xddxdd/nix-cachyos-kernel |
-| zen-browser | 0xc000022070/zen-browser-flake |
-| spicetify-nix | Gerg-L/spicetify-nix |
-| millennium | SteamClientHomebrew/Millennium |
-| helium | AlvaroParker/helium-nix |
-| nix-flatpak | gmodena/nix-flatpak |
-| glf-os | framagit.org/gaming-linux-fr/glf-os |
-| plasma-manager | nix-community/plasma-manager |
+| nixpkgs | [nixos-unstable](https://github.com/NixOS/nixpkgs/tree/nixos-unstable) |
+| nixpkgs-stable | [nixos-25.11](https://github.com/NixOS/nixpkgs/tree/nixos-25.11) |
+| home-manager | [nix-community/home-manager](https://github.com/nix-community/home-manager) |
+| noctalia | [noctalia-dev/noctalia-shell](https://github.com/noctalia-dev/noctalia-shell) |
+| noctalia-qs | [noctalia-dev/noctalia-qs](https://github.com/noctalia-dev/noctalia-qs) |
+| caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
+| dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
+| nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
+| zen-browser | [0xc000022070/zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) |
+| spicetify-nix | [Gerg-L/spicetify-nix](https://github.com/Gerg-L/spicetify-nix) |
+| millennium | [SteamClientHomebrew/Millennium](https://github.com/SteamClientHomebrew/Millennium) |
+| helium | [AlvaroParker/helium-nix](https://github.com/AlvaroParker/helium-nix) |
+| nix-flatpak | [gmodena/nix-flatpak](https://github.com/gmodena/nix-flatpak) |
+| glf-os | [framagit.org/gaming-linux-fr/glf-os](https://framagit.org/gaming-linux-fr/glf-os/glf-os) |
+| plasma-manager | [nix-community/plasma-manager](https://github.com/nix-community/plasma-manager) |
 
 ---
 
