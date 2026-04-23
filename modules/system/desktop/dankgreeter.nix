@@ -1,11 +1,11 @@
-{ config, pkgs, inputs, lib, roudixBranding, username, ... }:
+{ config, pkgs, inputs, lib, ... }:
 let
   desktopType = config.roudix.desktop.type;
-  shellType   = config.roudix.desktop.shell or "noctalia";
-  isDms       = shellType == "dms";
-  compositor  = if desktopType == "niri" then "niri" else "hyprland";
+  compositor  = if desktopType == "niri"    then "niri"
+                else if desktopType == "mangowc" then "mango"
+                else "hyprland";
 in
-lib.mkIf (isDms && desktopType != "mangowc") {
+lib.mkIf (desktopType != null) {
   services.displayManager.dms-greeter = {
     enable          = true;
     compositor.name = compositor;
@@ -14,5 +14,4 @@ lib.mkIf (isDms && desktopType != "mangowc") {
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.dms-greeter.enableGnomeKeyring = true;
-
 }

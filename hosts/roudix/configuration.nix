@@ -21,6 +21,7 @@
     ../../modules/system/vm-guest.nix
     ../../modules/system/update.nix
     ../../modules/system/hosts-gta.nix
+     inputs.brave-previews.nixosModules.default
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
   # ── Choose your favorite chromium base browser ───────────────────────────

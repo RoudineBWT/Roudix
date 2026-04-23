@@ -87,9 +87,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    brave-previews ={
+    url = "github:drishal/brave-browser-flake";
+    inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, caelestia-shell, dms, glf-os, spicetify-nix, millennium, helium, nix-flatpak, plasma-manager, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, caelestia-shell, dms, glf-os, spicetify-nix, millennium, helium, nix-flatpak, plasma-manager, brave-previews, ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
   # Create it with: echo '"yourusername"' > hosts/roudix/username.nix

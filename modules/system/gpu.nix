@@ -6,7 +6,7 @@
 
   options = {
     hardware.myGpu = lib.mkOption {
-      type = lib.types.enum [ "amd" "nvidia" "intel" "vm" ];
+      type = lib.types.enum [ "amd" "nvidia" "amd-legacy" "intel" "vm" ];
       default = "amd";
       description = "GPU type to configure. Use 'vm' for virtual machines (virtio-gpu, QXL, VMware SVGA).";
     };
@@ -37,6 +37,27 @@
       systemd.tmpfiles.rules = [
         "L+ /opt/rocm/hip - - - - ${pkgs.rocmPackages.clr}"
       ];
+      boot.initrd.kernelModules = [ "amdgpu" ];
+    })
+
+    # ── AMD legacy (GCN 1.x / 2.x — HD 7xxx, R9 2xx) ──────────────────────
+    (lib.mkIf (config.hardware.myGpu == "amd-legacy") {
+      hardware.graphics.enable = true;
+      hardware.graphics.enable32Bit = true;
+
+      boot.extraModprobeConfig = ''
+        options amdgpu si_support=1
+        options amdgpu cik_support=1
+        options radeon si_support=0
+        options radeon cik_support=0
+      '';
+
+      boot.blacklistedKernelModules = [ "radeon" ];
+
+      # amdgpu doit être chargé avant radeon dans l'initrd
+      boot.initrd.kernelModules = [ "amdgpu" ];
+
+      environment.systemPackages = with pkgs; [ amdgpu_top ];
     })
 
     # ── NVIDIA ───────────────────────────────────────────────────
@@ -61,6 +82,7 @@
         intel-media-driver
         vaapiIntel
       ];
+      boot.initrd.kernelModules = [ "i915" ];
     })
 
     # ── VM ────────────────────────────────────────────────────────

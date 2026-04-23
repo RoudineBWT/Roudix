@@ -382,6 +382,11 @@ if [[ -n "$DETECTED_GPU" ]]; then
   read -rp "Confirm? [Y/n]: " gpu_confirm
   if [[ "${gpu_confirm:-Y}" =~ ^[Yy]$ ]]; then
     GPU="$DETECTED_GPU"
+    if [[ "$GPU" == "amd" ]]; then
+      pick "AMD generation:" GPU \
+        "amd|Modern — RDNA / GCN 3+ (RX 400 series and newer)" \
+        "amd-legacy|Legacy — GCN 1.x / 2.x (HD 7xxx, R9 2xx)"
+    fi
   else
     NVIDIA_LAPTOP="false"
     pick "GPU:" GPU \
@@ -398,6 +403,7 @@ if [[ -n "$DETECTED_GPU" ]]; then
 else
   pick "GPU:" GPU \
     "amd|AMD GPU" \
+    "amd-legacy|AMD GPU legacy (GCN 1.x / 2.x — HD 7xxx, R9 2xx)" \
     "nvidia|NVIDIA GPU" \
     "intel|Intel integrated GPU"
   if [[ "$GPU" == "nvidia" ]]; then
@@ -448,7 +454,20 @@ pick "Browser:" BROWSER \
   "vivaldi|Vivaldi" \
   "firefox|Firefox" \
   "librewolf|LibreWolf" \
+  "google-chrome|Google Chrome" \
+  "microsoft-edge|Microsoft Edge" \
+  "ungoogled-chromium|Ungoogled Chromium" \
   "chromium|Chromium"
+
+if [[ "$BROWSER" == "brave" ]]; then
+  pick "Brave variant:" BROWSER \
+    "brave|Stable (recommended)" \
+    "brave-beta|Beta" \
+    "brave-nightly|Nightly" \
+    "brave-origin-beta|Origin Beta" \
+    "brave-origin-nightly|Origin Nightly"
+fi
+
 
 pick "Install Zen Browser?" ZEN \
   "false|No" \

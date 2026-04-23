@@ -3,7 +3,6 @@ let
   isNiri     = config.roudix.desktop.type == "niri";
   shellType  = config.roudix.desktop.shell or "noctalia";
   isDms      = shellType == "dms";
-  isNoctalia = shellType == "noctalia";
 in
 {
   imports = [ ./dankgreeter.nix ];
@@ -35,12 +34,9 @@ in
       };
     };
 
-    services.displayManager.gdm.enable = isNoctalia;
+    # GDM supprimé — dankgreeter.nix gère le display manager pour tous les shells
     services.gnome.gnome-keyring.enable = true;
-    security.pam.services = lib.mkMerge [
-      (lib.mkIf isNoctalia { gdm.enableGnomeKeyring         = true; })
-      (lib.mkIf isDms      { greeter.enableGnomeKeyring = true; })
-    ];
+    security.pam.services.dms-greeter.enableGnomeKeyring = true;
 
     programs.nautilus-open-any-terminal = {
       enable   = true;

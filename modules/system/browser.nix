@@ -1,15 +1,22 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, brave-previews, ... }:
 
 let
   cfg = config.roudix;
 
   browserDefs = {
     "brave"    = { package = pkgs.brave;                                     extras = []; };
+    "brave-beta"    = { package = pkgs.brave-beta;                           extras = []; };
+    "brave-nightly" = { package = pkgs.brave-nightly;                        extras = []; };
+    "brave-origin-beta" = { package = pkgs.brave-origin-beta;                extras = []; };
+    "brave-origin-nightly" = { package = pkgs.brave-origin-nightly;          extras = []; };
     "helium"   = { package = inputs.helium.packages.${pkgs.system}.default;  extras = []; };
     "vivaldi"  = { package = pkgs.vivaldi;                                   extras = [ pkgs.vivaldi-ffmpeg-codecs ]; };
     "chromium" = { package = pkgs.chromium;                                  extras = []; };
     "firefox"  = { package = pkgs.firefox;                                   extras = []; };
     "librewolf"= { package = pkgs.librewolf;                                 extras = []; };
+    "google-chrome"       = { package = pkgs.google-chrome;                  extras = []; };
+    "microsoft-edge"      = { package = pkgs.microsoft-edge;                 extras = []; };
+    "ungoogled-chromium"  = { package = pkgs.ungoogled-chromium;             extras = []; };
   };
 
   # Collect packages for all selected browsers

@@ -47,7 +47,7 @@
         {
           type = "command";
           key = " Challenge";
-          keyColor = "35";
+          keyColor = "33";
           text = ''
             start=$(stat -c %W /); end=$((start + 63072000)); now=$(date +%s)
             elapsed=$(( now - start )); total=$(( end - start ))
