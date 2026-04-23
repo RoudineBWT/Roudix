@@ -1,11 +1,12 @@
 { config, pkgs, inputs, lib, ... }:
 let
   desktopType = config.roudix.desktop.type;
+  waylandCompositors = [ "niri" "hyprland" "mangowc" ];
   compositor  = if desktopType == "niri"    then "niri"
                 else if desktopType == "mangowc" then "mango"
                 else "hyprland";
 in
-lib.mkIf (desktopType != null) {
+lib.mkIf (builtins.elem desktopType waylandCompositors) {
   services.displayManager.dms-greeter = {
     enable          = true;
     compositor.name = compositor;
