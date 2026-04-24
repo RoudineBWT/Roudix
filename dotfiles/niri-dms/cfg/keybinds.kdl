@@ -11,7 +11,7 @@ binds {
     // ─── Applications ───
     MOD+RETURN                          hotkey-overlay-title="Open Terminal: Ghostty" { spawn "ghostty"; }
     MOD+D                    hotkey-overlay-title="Open App Launcher: DMS Spotlight" { spawn-sh "dms ipc call spotlight toggle"; }
-    MOD+B                               hotkey-overlay-title="Open Browser: Zen" { spawn "zen-twilight"; }
+    MOD+B                               hotkey-overlay-title="Open Browser: Zen" { spawn "zen-beta"; }
     MOD+SHIFT+B                               hotkey-overlay-title="Open Browser: brave" { spawn "brave"; }
     MOD+ALT+L                           hotkey-overlay-title="Lock Screen: DMS lock"            { spawn-sh "dms ipc call lock lock"; }
 

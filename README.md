@@ -174,7 +174,7 @@ roudix/
 | nix-flatpak | [gmodena/nix-flatpak](https://github.com/gmodena/nix-flatpak) |
 | glf-os | [framagit.org/gaming-linux-fr/glf-os](https://framagit.org/gaming-linux-fr/glf-os/glf-os) |
 | plasma-manager | [nix-community/plasma-manager](https://github.com/nix-community/plasma-manager) |
-| brave-previews | [drishal/brave-browser-flake](https://github.com/drishal/brave-browser-flake) |
+| brave-previews | [roudinebwt/brave-preview](https://github.com/roudinebwt/brave-preview) |
 ---
 
 ## See also

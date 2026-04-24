@@ -76,12 +76,12 @@
     }
 
     window-rule {
-        match app-id="zen-twilight"
+        match app-id="zen"
         open-on-workspace "󰈹"
         open-maximized true
     }
     window-rule {
-        match title="About Zen Twilight"
+        match title="About Zen"
         open-on-workspace "󰈹"
         open-floating true
     }
@@ -157,7 +157,7 @@ window-rule {
     }
 
      window-rule {
-        match app-id=r#"^zen-twilight$"# title="^Picture-in-Picture$"
+        match app-id=r#"^zen$"# title="^Picture-in-Picture$"
         open-floating true // Always float Firefox PiP windows
     }
 

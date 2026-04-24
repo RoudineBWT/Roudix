@@ -42,16 +42,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1776861746,
-        "narHash": "sha256-A9q7q5hNr+bf3YTxJlqq6NZTUAlSn7YoHeTt/6yHNxk=",
-        "owner": "drishal",
-        "repo": "brave-browser-flake",
-        "rev": "185fb9f2ba585acc45ab20b1d79c7ab86875e2d8",
+        "lastModified": 1777021402,
+        "narHash": "sha256-ERMAUqp51fQC2A+BxKuILaozqLln82CniU1VL+T1xhA=",
+        "owner": "roudinebwt",
+        "repo": "brave-preview",
+        "rev": "53ced89a3bd042042006a64e1fecf235724f41ab",
         "type": "github"
       },
       "original": {
-        "owner": "drishal",
-        "repo": "brave-browser-flake",
+        "owner": "roudinebwt",
+        "repo": "brave-preview",
         "type": "github"
       }
     },
@@ -159,11 +159,11 @@
         "quickshell": "quickshell_2"
       },
       "locked": {
-        "lastModified": 1776868325,
-        "narHash": "sha256-p5IqaxTTVB7mOpsKENNJbmKoqGiW5KBv4JfZ4VtV6lE=",
+        "lastModified": 1776950906,
+        "narHash": "sha256-jiPj3d62hEgIaZSA4jW+12DGs0Up/SKBZt0sEb7uVCY=",
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
-        "rev": "97fa86d8f0f73232119040dca264566f1dc22772",
+        "rev": "f4c11bc2ffc1c6fd8ac3307d6054b88f3e1156d9",
         "type": "github"
       },
       "original": {
@@ -342,11 +342,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776904464,
-        "narHash": "sha256-sBUCj7/4d3Hoevpu3oQp8ccJNA1EDeVmFi1F8O6VJro=",
+        "lastModified": 1777004352,
+        "narHash": "sha256-SV+9PgNwZ8jHVCjK6YaCBzaheLSW7cDnm5DpOYrD8Vw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "667b3c47325441e6a444faaf405bba76ec70338a",
+        "rev": "6012cf1fed3eba66115f3fd117b9be6bd2a15b2f",
         "type": "github"
       },
       "original": {
@@ -992,11 +992,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776922304,
-        "narHash": "sha256-T1r7GWzeqX0C6YauIMN6D0sdr5voDAPMg8jvn59Wm7g=",
+        "lastModified": 1777008980,
+        "narHash": "sha256-pVZgqx3xbyFs0CnVlPLsizHL+S8vK1JcHQ1WVw/X+NI=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "91cc9ed57a893b2e944de60812511f05fd408ce6",
+        "rev": "269ed2e95863c99ce067672813767661612e402b",
         "type": "github"
       },
       "original": {

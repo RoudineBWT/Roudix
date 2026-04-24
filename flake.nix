@@ -88,7 +88,7 @@
       inputs.home-manager.follows = "home-manager";
     };
     brave-previews ={
-    url = "github:drishal/brave-browser-flake";
+    url = "github:roudinebwt/brave-preview";
     inputs.nixpkgs.follows = "nixpkgs";
     };
   };

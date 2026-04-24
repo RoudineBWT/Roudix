@@ -11,7 +11,7 @@ binds {
     // ─── Applications ───
     MOD+RETURN                          hotkey-overlay-title="Open Terminal: Ghostty" { spawn "ghostty"; }
     MOD+D                    hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn-sh "noctalia-shell ipc call launcher toggle"; }
-    MOD+B                               hotkey-overlay-title="Open Browser: Zen" { spawn "zen-twilight"; }
+    MOD+B                               hotkey-overlay-title="Open Browser: Zen" { spawn "zen-beta"; }
     MOD+SHIFT+B                               hotkey-overlay-title="Open Browser: brave" { spawn "brave"; }
     MOD+ALT+L                           hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "noctalia-shell ipc call lockScreen lock"; }
 

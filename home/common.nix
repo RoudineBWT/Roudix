@@ -94,7 +94,7 @@ in
   ])
   # Zen Browser (optional)
   ++ lib.optional osConfig.roudix.zen.enable
-       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight;
+       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.beta;
 
   programs.home-manager.enable = true;
 }
