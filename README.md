@@ -110,6 +110,8 @@ roudix/
 │   └── perso/                       # Personal config (gitignored)
 │
 ├── pkgs/
+│   ├── roudix-branding              # Roudix Branding package
+│   ├── roudix-kernel-switcher       # Roudix Kernel and Scheduler Switcher GUI package
 │   └── roudix-switcher/             # Roudix Desktop Switcher GUI package
 │
 └── modules/
