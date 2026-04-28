@@ -28,11 +28,13 @@
 - 32-bit support for Wine/Steam
 - `game-performance` wrapper — switches CPU governor to performance for the duration of a game (usage: `game-performance %command%` in Steam launch options)
 - `protonup-qt` on KDE, `protonplus` on other DEs
+- Heroic (via roudix-caches), Lutris + Faugus Launcher (via glf-os)
 
 ## Desktop (Niri)
 
 - Niri scrollable tiling Wayland compositor
 - Noctalia modern shell
+- xdg-desktop-portal-gnome + gtk (screencast + remote desktop portals configured)
 - Capitaine Cursors White
 - adw-gtk3 + Papirus icons + Papirus Folders
 - Discord with Vencord
@@ -43,12 +45,21 @@
 ## Desktop (MangoWC)
 
 - MangoWC Wayland compositor
-- Noctalia modern shell
+- Noctalia / DankMaterialShell
 - xdg-desktop-portal-gtk
-- Capitaine Cursors White
+- Capitaine Cursors White (24 px)
 - GNOME Polkit agent
-- Ly display manager (Noctalia) — DankGreeter/greetd (DMS)
+- Ly display manager (Noctalia & DMS)
 - adw-gtk3 + Papirus icons + Papirus Folders
+- Zoom open animation + official bezier curves
+- VRR + tearing enabled on gaming monitor (DP-1 1440p@240)
+- Screenshots with grim + slurp + satty (annotation) — 3 keybinds
+- rofi window switcher (Alt+Tab)
+- XDG Desktop Portal env vars pre-configured (Pipewire screen capture, OBS, Discord Go Live)
+- force_tearing + indleinhibit_when_focus on all gaming apps (Steam, Heroic, Minecraft, Lutris, Bottles)
+- Unfocused window opacity (0.85)
+- Hotarea overview (corner mouse gesture)
+- Floating snap + drag tile-to-tile
 
 ## Desktop (Hyprland)
 
@@ -58,7 +69,7 @@
 - Capitaine Cursors White
 - GNOME Polkit agent (started via systemd user service)
 - swww wallpaper daemon
-- grimblast screenshots
+- Screenshots with grim + slurp + satty (annotation) — 3 keybinds
 
 ## Desktop (GNOME)
 
@@ -103,7 +114,8 @@
 
 - OBS Studio with pipewire + vkcapture plugins
 - GPU Screen Recorder
-- OpenRGB for LED control
+- OpenRGB for LED control (extracted to `openrgb.nix`, i2c modules auto-loaded per CPU vendor)
+- PipeWire with rnnoise stereo noise suppression (nofail, LADSPA_PATH compat 25.11/26.05)
 - Flatpak with Flathub remote + daily auto-update (via nix-flatpak)
 - Blueman Bluetooth manager
 - QEMU/KVM + Virt-Manager (optional)

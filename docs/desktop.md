@@ -89,6 +89,11 @@ xdg.configFile."niri/user.kdl".text = lib.mkIf (osConfig.roudix.desktop.type == 
     variable-refresh-rate on-demand=true
   }
 '';
+
+# MangoWC
+xdg.configFile."mango/user.conf".text = lib.mkIf (osConfig.roudix.desktop.type == "mangowc") ''
+  monitorrule=name:DP-1,width:2560,height:1440,refresh:144,x:0,y:0,scale:1,vrr:1,rr:0,tearing:1
+'';
 ```
 
 > See `home/local.nix.example` for the full list of examples.

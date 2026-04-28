@@ -89,6 +89,7 @@ roudix/
 │   ├── gnome-extensions.nix         # GNOME extensions — packages, enabled UUIDs, dconf settings
 │   ├── kde.nix                      # Home config for KDE (wallpaper, theme, icons, cursor)
 │   ├── hyprland.nix                 # Home config for Hyprland (shell-aware)
+│   ├── mangowc.nix                  # Home config for MangoWC (screenshot.sh, packages)
 │   └── shell-modules.nix            # Shared shell module imports (noctalia, dms, caelestia)
 │
 ├── dotfiles/                        # Raw config files managed by Home Manager
@@ -127,7 +128,7 @@ roudix/
     │   ├── boot.local.nix.example   # copy this to boot.local.nix to get started
     │   ├── browser.nix              # Browser selection (roudix.browsers + roudix.zen.enable)
     │   ├── common.nix               # Shared system config (all hosts)
-    │   ├── cpu.nix                  # CPU configuration (Intel/AMD microcode)
+    │   ├── cpu.nix                  # CPU configuration (Intel/AMD microcode + i2c modules)
     │   ├── environment.nix          # Environment variables
     │   ├── flatpak.nix              # Flatpak service + auto update
     │   ├── fstrim.nix               # fstrim for SSD/NVMe
@@ -135,7 +136,8 @@ roudix/
     │   ├── gpu.nix                  # GPU configuration (AMD/NVIDIA/Intel)
     │   ├── hosts-gta.nix            # BattlEye hosts block (GTA fix, optional)
     │   ├── kernel.nix               # CachyOS kernel variant selection
-    │   ├── pipewire.nix             # PipeWire audio configuration
+    │   ├── openrgb.nix              # OpenRGB LED control (extracted from common.nix)
+    │   ├── pipewire.nix             # PipeWire audio + rnnoise noise suppression
     │   ├── update.nix               # Flake update configuration
     │   ├── version.nix              # Roudix OS branding (os-release, distroName)
     │   ├── virtualization.nix       # QEMU/KVM (disabled by default)
@@ -175,6 +177,7 @@ roudix/
 | glf-os | [framagit.org/gaming-linux-fr/glf-os](https://framagit.org/gaming-linux-fr/glf-os/glf-os) |
 | plasma-manager | [nix-community/plasma-manager](https://github.com/nix-community/plasma-manager) |
 | brave-previews | [roudinebwt/brave-preview](https://github.com/roudinebwt/brave-preview) |
+| roudix-caches | [RoudineBWT/Roudix-caches](https://github.com/RoudineBWT/Roudix-caches) |
 ---
 
 ## See also
