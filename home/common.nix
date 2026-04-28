@@ -74,7 +74,6 @@ in
         then "--password-store=kwallet6"
         else "--password-store=gnome-libsecret";
     })
-    openrgb-with-all-plugins
     rustdesk-flutter
     kodi-wayland
     inkscape

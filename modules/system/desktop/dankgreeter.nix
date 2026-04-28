@@ -1,9 +1,8 @@
 { config, pkgs, inputs, lib, ... }:
 let
   desktopType = config.roudix.desktop.type;
-  waylandCompositors = [ "niri" "hyprland" "mangowc" ];
+  waylandCompositors = [ "niri" "hyprland" ];
   compositor  = if desktopType == "niri"    then "niri"
-                else if desktopType == "mangowc" then "mango"
                 else "hyprland";
 in
 lib.mkIf (builtins.elem desktopType waylandCompositors) {

@@ -1,18 +1,28 @@
 { pkgs, inputs, config, lib, username, ... }:
 {
+  imports = [ ./openrgb.nix ];
+
   # ── Nix settings ────────────────────────────────────────────────────────
   nix.settings = {
     trusted-users = [ "root" "${username}" ];
     experimental-features = [ "nix-command" "flakes" ];
-    substituters = [
-      "https://cache.nixos.org"
+    extra-substituters = [
       "https://attic.xuyh0120.win/lantian"
       "https://cache.garnix.io"
+      "https://noctalia.cachix.org"
+      "https://prismlauncher.cachix.org"
+      "https://nix-community.cachix.org"
+      "http://37.59.123.5:8080/glf"
+      "https://roudix.cachix.org"
     ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    extra-trusted-public-keys = [
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      "prismlauncher.cachix.org-1:9/n/FGyABA2jLUVfY+DEp4hKds/rwO+SCOtbOkDzd+c="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCUSeBw="
+      "glf:gLU8OSnfaopb5atQHiNJDgvS7/VbQ8HDQn3GOWT8w7Y="
+      "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
     ];
   };
 
@@ -80,12 +90,9 @@
   programs.fish.enable = true;
 
   # ── Services ────────────────────────────────────────────────────────────
-  services.udev.packages = [ pkgs.openrgb ];
   services.udisks2.enable = true;
   services.power-profiles-daemon.enable = true;
   services.upower.enable = true;
-  services.hardware.openrgb.enable = true;
-  hardware.i2c.enable = true;
   services.gvfs.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;

@@ -49,6 +49,29 @@ in
       '';
     };
 
+    home.file.".local/bin/screenshot.sh" = {
+      executable = true;
+      text = ''
+        #!/bin/bash
+        MODE=''${1:-zone}
+
+        case "$MODE" in
+            # Sélection manuelle de zone → annotation Satty
+            zone)
+                grim -g "$(slurp)" - | satty --filename -
+                ;;
+            # Output où est le curseur → annotation Satty
+            output)
+                grim -o "$(slurp -o -f '%o')" - | satty --filename -
+                ;;
+            # Output où est le curseur → clipboard direct
+            screen)
+                grim -o "$(slurp -o -f '%o')" - | wl-copy
+                ;;
+        esac
+      '';
+    };
+
     # ── Packages ─────────────────────────────────────────────────────────────
     home.packages = with pkgs; [
       mangowc
@@ -59,6 +82,11 @@ in
       pwvucontrol
       kdePackages.qtmultimedia
       mpvpaper
+      grim
+      slurp
+      satty
+      rofi
+
 
       # Apps
       nautilus

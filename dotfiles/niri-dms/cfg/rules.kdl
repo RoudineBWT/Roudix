@@ -201,3 +201,33 @@ window-rule {
         geometry-corner-radius 20 // Set every window radius to 20
         clip-to-geometry true
 }
+
+// Block out sensitive components from screencasts
+layer-rule {
+    match namespace="^dms:clipboard$"
+
+    block-out-from "screencast"
+}
+
+// Match all DMS layers with a regex
+layer-rule {
+    match namespace=r#"^dms:.*"#
+
+    // Apply rules to all DMS components
+}
+
+layer-rule {
+    match namespace="^dms:bar$"
+    match namespace="^dms:dock$"
+
+    shadow {
+        on
+        // off
+        softness 40
+        spread 5
+        offset x=0 y=5
+        draw-behind-window true
+        color "#00000064"
+        // inactive-color "#00000064"
+    }
+}

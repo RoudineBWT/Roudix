@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
   isNiri     = config.roudix.desktop.type == "niri";
   shellType  = config.roudix.desktop.shell or "noctalia";
@@ -8,14 +8,22 @@ in
   imports = [ ./dankgreeter.nix ];
 
   config = lib.mkIf isNiri {
-    programs.niri.enable = true;
+    programs.niri = {
+      enable = true;
+    };
 
     xdg.portal = {
       enable = true;
-      extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-      config.common.default = "*";
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+        xdg-desktop-portal-gnome
+      ];
+      config.niri = {
+        default = [ "gnome" "gtk" ];
+        "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+        "org.freedesktop.impl.portal.RemoteDesktop" = [ "gnome" ];
+      };
     };
-
     programs.dank-material-shell = lib.mkIf isDms {
       enable = true;
       systemd.enable = true;

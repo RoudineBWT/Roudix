@@ -33,6 +33,7 @@
         rocmPackages.rocm-smi
         amdgpu_top
         rocmPackages.clr
+        mesa
       ];
       systemd.tmpfiles.rules = [
         "L+ /opt/rocm/hip - - - - ${pkgs.rocmPackages.clr}"
