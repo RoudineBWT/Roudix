@@ -9,7 +9,7 @@ let
     "brave-nightly" = { package = pkgs.brave-nightly;                        extras = []; };
     "brave-origin-beta" = { package = pkgs.brave-origin-beta;                extras = []; };
     "brave-origin-nightly" = { package = pkgs.brave-origin-nightly;          extras = []; };
-    "helium"   = { package = inputs.helium.packages.${pkgs.system}.default;  extras = []; };
+    "helium"   = { package = inputs.helium.packages.${pkgs.system}.helium-appimage;  extras = []; };
     "vivaldi"  = { package = pkgs.vivaldi;                                   extras = [ pkgs.vivaldi-ffmpeg-codecs ]; };
     "chromium" = { package = pkgs.chromium;                                  extras = []; };
     "firefox"  = { package = pkgs.firefox;                                   extras = []; };

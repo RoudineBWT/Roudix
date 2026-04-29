@@ -25,38 +25,41 @@ let
   '';
 in
 {
+  imports = [ ./scx.nix ];
+
   options.roudix.gaming.enable = lib.mkOption {
     description = "Enable Roudix gaming configurations";
     type = lib.types.bool;
     default = true;
   };
+
   config = lib.mkIf config.roudix.gaming.enable {
 
   # nixpkgs.overlays = [ inputs.millennium.overlays.default ];
   # ── Steam ────────────────────────────────────────────────────────────────
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall = true;       # Remote Play
-    dedicatedServer.openFirewall = false; # Serveurs dédiés (optionnel)
-    gamescopeSession = { # Gamescope intégré à Steam
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = false;
+    gamescopeSession = {
       enable = true;
-      args = [ "--prefer-output" "DP-1" ]; # remplace DP-x par ton écran principal
+      args = [ "--prefer-output" "DP-1" ];
     };
     package = pkgs.steam.override {
-            extraEnv = {
-              TZ = ":/etc/localtime";
-              OBS_VKCAPTURE = "1";
-            };
+      extraEnv = {
+        TZ = ":/etc/localtime";
+        OBS_VKCAPTURE = "1";
+      };
     };
     extraCompatPackages = [
-      pkgs.proton-ge-bin                  # Proton-GE pour meilleure compatibilité
+      pkgs.proton-ge-bin
     ];
   };
 
   # ── Gamescope ────────────────────────────────────────────────────────────
   programs.gamescope = {
     enable = true;
-    capSysNice = true; # Permet à gamescope de prioriser les processus
+    capSysNice = true;
   };
 
   # ── GameMode ─────────────────────────────────────────────────────────────
@@ -70,6 +73,8 @@ in
   #};
 
   # ── Ananicy-CPP (remplace GameMode) ──────────────────────────────────────
+  # Démarre au boot par défaut. Stoppé par scx-switch quand un scheduler SCX
+  # est activé, redémarré automatiquement quand on repasse sur None.
   services.ananicy = {
     enable = true;
     package = pkgs.ananicy-cpp;
@@ -80,14 +85,12 @@ in
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
     game-performance  # Wrapper governor CPU performance (usage: game-performance %command%)
-    scx.full
     # millennium-steam
   ];
 
-
   # ── Support manettes ─────────────────────────────────────────────────────
-  hardware.steam-hardware.enable = true; # Support contrôleurs Steam
-  services.udev.packages = [ pkgs.game-devices-udev-rules ]; # Xbox, PS, etc.
+  hardware.steam-hardware.enable = true;
+  services.udev.packages = [ pkgs.game-devices-udev-rules ];
 
   };
 }

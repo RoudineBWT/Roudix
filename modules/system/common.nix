@@ -1,6 +1,6 @@
 { pkgs, inputs, config, lib, username, ... }:
 {
-  imports = [ ./openrgb.nix ];
+  #imports = [ ./openrgb.nix ];
 
   # ── Nix settings ────────────────────────────────────────────────────────
   nix.settings = {
@@ -76,6 +76,18 @@
     capitaine-cursors
     efibootmgr
     pciutils
+    python3
+    dust
+    fd
+    ripgrep
+    bat
+    jq
+    unzip
+    zip
+    file
+    lsof
+    nmap
+    dig
   ];
 
   # ── ZRAM ────────────────────────────────────────────────────────────────

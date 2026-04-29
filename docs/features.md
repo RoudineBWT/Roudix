@@ -9,7 +9,7 @@
 - CPU microcode auto-configured (Intel or AMD)
 - Intel: `split_lock_detect=off` applied automatically
 - ananicy-cpp enabled (process priority daemon, CachyOS rules)
-- SCX scheduler support — live switching, no reboot required (bpfland, lavd, flash, p2dq, rusty…) via the Kernel Switcher GUI — **⚠️ work in progress** — it's completely normal to be prompted for your password 3 times: once to stop ananicy-cpp, once to apply the scheduler, and once to apply the profile
+- SCX scheduler support — live switching, no reboot required (bpfland, lavd, flash, p2dq, rusty…) via the Kernel Switcher GUI — a single password prompt via `scx-switch` handles ananicy-cpp stop/start and scheduler switching in one shot — **note:** SCX is not persistent across reboots; after a reboot ananicy-cpp restarts automatically and the scheduler must be re-applied via the Kernel Switcher GUI
 
 ## Boot
 

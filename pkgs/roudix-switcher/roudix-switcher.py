@@ -385,25 +385,45 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.shell_selector.set_visible(current_de in SHELL_SUPPORTED_DE)
         main_box.append(self.shell_selector)
 
-        # ── Status area ───────────────────────────────────────────────────
-        status_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        status_box.set_size_request(-1, 48)
-        status_box.set_valign(Gtk.Align.CENTER)
+        # ── Integrated terminal ───────────────────────────────────────────
+        term_frame = Gtk.Frame()
+        term_frame.add_css_class("card")
 
+        term_scroll = Gtk.ScrolledWindow()
+        term_scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        term_scroll.set_size_request(-1, 180)
+        term_scroll.set_vexpand(False)
+
+        self.term_view = Gtk.TextView()
+        self.term_view.set_editable(False)
+        self.term_view.set_cursor_visible(False)
+        self.term_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+        self.term_view.set_monospace(True)
+        self.term_view.set_left_margin(10)
+        self.term_view.set_right_margin(10)
+        self.term_view.set_top_margin(8)
+        self.term_view.set_bottom_margin(8)
+
+        # Dark terminal background via CSS
+        # No custom CSS — inherit theme colors (follows dynamic accent/wallpaper)
+        self.term_view.add_css_class("card")
+
+        self.term_buf = self.term_view.get_buffer()
+
+        # Text tags for coloured output
+        self.tag_section  = self.term_buf.create_tag("section",  foreground="#5e81ac", weight=Pango.Weight.BOLD)
+        self.tag_info     = self.term_buf.create_tag("info",     foreground="#c8c8c8")
+        self.tag_ok       = self.term_buf.create_tag("ok",       foreground="#a3be8c")
+        self.tag_error    = self.term_buf.create_tag("error",    foreground="#bf616a")
+        self.tag_warn     = self.term_buf.create_tag("warn",     foreground="#ebcb8b")
+        self.tag_dim      = self.term_buf.create_tag("dim",      foreground="#555555")
+
+        # Progress bar (thin, below the terminal)
         self.progress_bar = Gtk.ProgressBar()
         self.progress_bar.set_pulse_step(0.07)
         self.progress_bar.set_visible(False)
 
-        self.log_label = Gtk.Label(label="")
-        self.log_label.set_justify(Gtk.Justification.CENTER)
-        self.log_label.set_wrap(True)
-        self.log_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
-        self.log_label.set_valign(Gtk.Align.CENTER)
-        self.log_label.set_visible(False)
-        attrs = Pango.AttrList()
-        attrs.insert(Pango.attr_scale_new(0.8))
-        self.log_label.set_attributes(attrs)
-
+        # Status label (success / error summary)
         self.status = Gtk.Label(label="")
         self.status.set_justify(Gtk.Justification.CENTER)
         self.status.set_wrap(True)
@@ -411,8 +431,16 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.status.set_ellipsize(Pango.EllipsizeMode.END)
         self.status.set_valign(Gtk.Align.CENTER)
 
+        # Kept for API compatibility — no longer shown, output goes to terminal
+        self.log_label = Gtk.Label(label="")
+        self.log_label.set_visible(False)
+
+        term_scroll.set_child(self.term_view)
+        term_frame.set_child(term_scroll)
+
+        status_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        status_box.append(term_frame)
         status_box.append(self.progress_bar)
-        status_box.append(self.log_label)
         status_box.append(self.status)
         main_box.append(status_box)
 
@@ -443,10 +471,38 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
     # ── Helpers ───────────────────────────────────────────────────────────
 
+    def _term_append(self, text: str, tag_name: str = "info"):
+        """Append a line to the integrated terminal (must be called from the main thread)."""
+        buf = self.term_buf
+        end_iter = buf.get_end_iter()
+        tag = buf.get_tag_table().lookup(tag_name)
+        if tag:
+            buf.insert_with_tags(end_iter, text + "\n", tag)
+        else:
+            buf.insert(end_iter, text + "\n")
+        # Auto-scroll to bottom
+        adj = self.term_view.get_parent().get_vadjustment()
+        adj.set_value(adj.get_upper() - adj.get_page_size())
+
+    def _term_clear(self):
+        self.term_buf.set_text("")
+
+    def _pick_tag(self, line: str) -> str:
+        lo = line.lower()
+        if line.startswith("="):
+            return "section"
+        if any(w in lo for w in ("error", "failed", "✗", "fail")):
+            return "error"
+        if any(w in lo for w in ("warning", "warn")):
+            return "warn"
+        if any(w in lo for w in ("done", "success", "✓", "completed", "ok")):
+            return "ok"
+        if line.startswith("Running") or line.startswith("Checking"):
+            return "dim"
+        return "info"
+
     def _start_progress(self):
         self.progress_bar.set_visible(True)
-        self.log_label.set_label("")
-        self.log_label.set_visible(True)
         self.status.set_label("")
         if self._pulse_source is None:
             self._pulse_source = GLib.timeout_add(80, self._do_pulse)
@@ -460,8 +516,6 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             GLib.source_remove(self._pulse_source)
             self._pulse_source = None
         self.progress_bar.set_visible(False)
-        self.log_label.set_visible(False)
-        self.log_label.set_label("")
 
     def _on_de_toggled(self, check, *_):
         """Affiche/cache le shell selector et met à jour la liste selon le DE choisi."""
@@ -556,6 +610,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 return
 
         self.status.set_markup("")
+        GLib.idle_add(self._term_clear)
+        GLib.idle_add(self._term_append, "=" * 50, "section")
+        GLib.idle_add(self._term_append, "Important Notices:", "section")
+        GLib.idle_add(self._term_append, "=" * 50, "section")
+        GLib.idle_add(self._term_append, "No issues currently reported.", "info")
+        GLib.idle_add(self._term_append, "", "dim")
+        GLib.idle_add(self._term_append, "=" * 50, "section")
         GLib.idle_add(self._start_progress)
         self.apply_btn.set_sensitive(False)
         self.exit_btn.set_sensitive(False)
@@ -571,10 +632,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
     def run_rebuild(self):
         try:
-            log.info(
-                "Running: nh os boot --elevation-strategy pkexec --accept-flake-config %s",
-                NH_FLAKE,
-            )
+            cmd_str = f"Running: nh os boot --elevation-strategy pkexec --accept-flake-config {NH_FLAKE}"
+            log.info(cmd_str)
+            GLib.idle_add(self._term_append, cmd_str, "dim")
+            GLib.idle_add(self._term_append, "Checking repositories...", "dim")
+
             proc = subprocess.Popen(
                 [
                     "nh", "os", "boot",
@@ -586,11 +648,25 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 text=True,
             )
 
-            for line in proc.stdout:
-                line = strip_ansi(line).strip()
+            # Read char-by-char to handle \r (in-place timer updates from nh).
+            # \r resets the current line buffer; \n commits it to the terminal.
+            _buf = ""
+            for ch in iter(lambda: proc.stdout.read(1), ""):
+                if ch == "\r":
+                    _buf = ""  # discard in-place overwrite
+                elif ch == "\n":
+                    line = strip_ansi(_buf).strip()
+                    _buf = ""
+                    if line:
+                        log.info(line)
+                        GLib.idle_add(self._term_append, line, self._pick_tag(line))
+                else:
+                    _buf += ch
+            if _buf.strip():
+                line = strip_ansi(_buf).strip()
                 if line:
                     log.info(line)
-                    GLib.idle_add(self.log_label.set_label, line)
+                    GLib.idle_add(self._term_append, line, self._pick_tag(line))
 
             proc.wait()
 
@@ -598,6 +674,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 raise subprocess.CalledProcessError(proc.returncode, "nh")
 
             log.info("Rebuild completed successfully.")
+            GLib.idle_add(self._term_append, "", "dim")
+            GLib.idle_add(self._term_append, "✓ Rebuild completed successfully. Reboot to apply changes.", "ok")
             GLib.idle_add(self._stop_progress)
             GLib.idle_add(
                 self.status.set_markup,
@@ -606,6 +684,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         except subprocess.CalledProcessError as e:
             log.error("Rebuild failed (exit code %d).", e.returncode)
+            GLib.idle_add(self._term_append, "", "dim")
+            GLib.idle_add(self._term_append, f"✗ Rebuild failed (exit code {e.returncode}).", "error")
             GLib.idle_add(self._stop_progress)
             GLib.idle_add(
                 self.status.set_markup,
@@ -613,6 +693,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             )
         except Exception as e:
             log.exception("Unexpected error during rebuild.")
+            GLib.idle_add(self._term_append, "", "dim")
+            GLib.idle_add(self._term_append, f"✗ Unexpected error: {e}", "error")
             GLib.idle_add(self._stop_progress)
             GLib.idle_add(
                 self.status.set_markup,
