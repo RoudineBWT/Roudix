@@ -104,15 +104,60 @@ PROFILE_MODE = {
 }
 
 SCX_SCHEDULERS = {
-    "none":      ("None",      "Default kernel scheduler — CFS/EEVDF",                SCX_PROFILES[:1]),
-    "bpfland":   ("bpfland",   "Best all-around — gaming, desktop, heavy load",        SCX_PROFILES),
-    "lavd":      ("lavd",      "Low latency — gaming & interactive, autopilot mode",   SCX_PROFILES),
-    "flash":     ("flash",     "Fairness-focused — good latency predictability",       SCX_PROFILES),
-    "p2dq":      ("p2dq",      "Pull-based two-level queue — general purpose",         SCX_PROFILES),
-    "rusty":     ("rusty",     "Rust-based — good scalability, no profiles",           SCX_PROFILES[:1]),
-    "rustland":  ("rustland",  "Userspace Rust scheduler",                             SCX_PROFILES[:1]),
-    "cosmos":    ("cosmos",    "Experimental — in active development",                 SCX_PROFILES[:1]),
-    "beerland":  ("beerland",  "Experimental — in active development",                 SCX_PROFILES[:1]),
+    # (display_name, description, supported_profiles)
+    # Source: nixpkgs scx.rustscheds passthru.schedulers (commit 74351ca)
+    #         + scx-loader configuration.md for profile flags
+    # Profiles: Auto  Gaming  LowLatency  PowerSave  Server
+    "none":       ("None",       "Default kernel scheduler — CFS/EEVDF",
+                   SCX_PROFILES[:1]),
+    "bpfland":    ("bpfland",    "vruntime-based, interactive-first — best all-around "
+                                 "(gaming, desktop, heavy load); cache-topology aware",
+                   SCX_PROFILES),           # Auto Gaming LowLatency PowerSave Server
+    "lavd":       ("lavd",       "Latency-Aware Virtual Deadline — gaming + interactive; "
+                                 "core compaction at low load; autopilot adjusts mode automatically",
+                   SCX_PROFILES[:4]),       # Auto Gaming LowLatency PowerSave  (no Server)
+    "flash":      ("flash",      "Fairness-focused, low-latency — good for mixed "
+                                 "desktop + compile workloads",
+                   SCX_PROFILES),           # Auto Gaming LowLatency PowerSave Server
+    "p2dq":       ("p2dq",      "Pick-2 load balancing, two-level queue — "
+                                 "general purpose; good cache locality",
+                   SCX_PROFILES),           # Auto Gaming LowLatency PowerSave Server
+    "rusty":      ("rusty",     "Multi-domain load balancer — scales well on large/NUMA systems; "
+                                 "no per-mode tuning",
+                   SCX_PROFILES[:1]),       # Auto only
+    "rustland":   ("rustland",   "Userspace Rust scheduler (proof-of-concept) — "
+                                 "no per-mode tuning",
+                   SCX_PROFILES[:1]),       # Auto only
+    "cosmos":     ("cosmos",     "Lightweight locality-first — successor to bpfland, "
+                                 "in active development",
+                   SCX_PROFILES),           # Auto Gaming LowLatency PowerSave Server
+    "beerland":   ("beerland",   "Experimental — in active development; "
+                                 "no per-mode tuning",
+                   SCX_PROFILES[:1]),       # Auto only
+    "tickless":   ("tickless",   "Server/HPC-oriented — reduces OS noise via tick suppression; "
+                                 "requires nohz_full kernel param; NOT for desktop/gaming",
+                   SCX_PROFILES),           # Auto Gaming LowLatency PowerSave Server
+    "layered":    ("layered",    "Layer-based — classify tasks into cgroups and apply a "
+                                 "different policy per layer; highly configurable via TOML",
+                   SCX_PROFILES[:1]),       # Auto only (complex TOML config required)
+    "cake":       ("cake",       "Profile-driven — simple Gaming/Esports/Battery profiles; "
+                                 "in active development",
+                   SCX_PROFILES),           # Auto Gaming LowLatency PowerSave Server
+    "chaos":      ("chaos",      "Stress-test / debugging only — amplifies race conditions; "
+                                 "NOT for production use",
+                   SCX_PROFILES[:1]),       # Auto only
+    "mitosis":    ("mitosis",    "Experimental cell-division scheduler — "
+                                 "in active development",
+                   SCX_PROFILES[:1]),       # Auto only
+    "pandemonium": ("pandemonium", "Experimental — in active development; "
+                                   "no per-mode tuning",
+                   SCX_PROFILES[:1]),       # Auto only
+    "rlfifo":     ("rlfifo",     "Round-robin FIFO userspace scheduler — "
+                                 "educational / proof-of-concept",
+                   SCX_PROFILES[:1]),       # Auto only
+    "wd40":       ("wd40",       "Experimental fork of rusty using BPF arenas — "
+                                 "in active development",
+                   SCX_PROFILES[:1]),       # Auto only
 }
 
 # ── SCX backend detection ─────────────────────────────────────────────────────
@@ -667,7 +712,7 @@ class SchedulerPage(Gtk.Box):
         # profile row
         profile_row = Adw.ActionRow()
         profile_row.set_title("Profile")
-        profile_row.set_subtitle("Scheduler mode — bpfland, lavd, flash and p2dq only")
+        profile_row.set_subtitle("Scheduler mode — bpfland, lavd, flash, p2dq, cosmos, cake and tickless only")
         self._profile_combo = Gtk.DropDown()
         self._profile_combo.set_model(Gtk.StringList.new(SCX_PROFILES))
         self._profile_combo.set_valign(Gtk.Align.CENTER)
