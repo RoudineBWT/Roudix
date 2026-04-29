@@ -7,7 +7,7 @@
 **Download the roudix-installer script**
 
 ```bash
-nix-shell -p wget i2c-tools dmidecode --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
+nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
 chmod +x roudix-installer.sh
 ./roudix-installer.sh
 ```
@@ -96,6 +96,33 @@ Edit `hosts/roudix/local.nix` to match your hardware:
 | `openlinkhub` | OpenLinkHub — full Corsair setup (iCUE Link, Commander...) |
 | `openrgb` | OpenRGB — mixed brands (Razer, ASUS, MSI...) |
 | `none` | No RGB management |
+
+**RAM RGB (OpenLinkHub only):**
+
+If you selected `openlinkhub`, you can also enable RGB control for your Corsair DDR4/DDR5 RAM. Add these lines to `hosts/roudix/local.nix`:
+
+```nix
+roudix.memory.enable = true;                  # enable RAM RGB via SMBus
+roudix.memory.type   = "ddr5";                # "ddr4" or "ddr5"
+roudix.memory.smBus  = "i2c-9";              # find with: sudo i2cdetect -l (look for "SMBus")
+roudix.memory.sku    = "CMH64GX5M2B5200C40"; # find with: sudo dmidecode -t memory | grep 'Part Number'
+```
+
+To find the correct values before setting them:
+
+```bash
+# Install the required tools if not available (fresh NixOS install)
+nix-env -iA nixos.i2c-tools
+nix-env -iA nixos.dmidecode
+
+# Find your SMBus (look for a line with "SMBus", "i801", "piix4" or "nforce")
+sudo i2cdetect -l
+
+# Find your RAM part number
+sudo dmidecode -t memory | grep 'Part Number'
+```
+
+> **Note:** `roudix.memory.enable` automatically applies `acpi_enforce_resources=lax` as a kernel parameter and blacklists `spd5118` (DDR5) or `ee1004` (DDR4) to free the SMBus. The `config.json` of OpenLinkHub is patched automatically on activation.
 
 **Common timezone values:**
 

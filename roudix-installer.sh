@@ -684,6 +684,16 @@ MEMORY_SMBUS="i2c-0"
 MEMORY_SKU=""
 
 if [[ "$RGB" == "openlinkhub" ]]; then
+  # Install i2c-tools and dmidecode if missing (needed for SMBus + SKU detection)
+  if ! command -v i2cdetect >/dev/null 2>&1; then
+    info "Installing i2c-tools for SMBus detection..."
+    nix-env -iA nixos.i2c-tools 2>/dev/null || warn "Could not install i2c-tools — SMBus detection will be manual."
+  fi
+  if ! command -v dmidecode >/dev/null 2>&1; then
+    info "Installing dmidecode for RAM SKU detection..."
+    nix-env -iA nixos.dmidecode 2>/dev/null || warn "Could not install dmidecode — SKU detection will be manual."
+  fi
+
   pick "Enable RAM RGB control? (Corsair DDR4/DDR5 with RGB)" MEMORY_ENABLE \
     "false|No" \
     "true|Yes"
@@ -693,13 +703,46 @@ if [[ "$RGB" == "openlinkhub" ]]; then
       "ddr5|DDR5" \
       "ddr4|DDR4"
 
-    echo ""
-    info "To find your SMBus, run: sudo i2cdetect -l  (look for 'SMBus' or 'smbus')"
-    ask "SMBus device (e.g. i2c-9) [default: i2c-0]:" MEMORY_SMBUS
-    [[ -z "$MEMORY_SMBUS" ]] && MEMORY_SMBUS="i2c-0"
+    # Auto-detect SMBus
+    DETECTED_SMBUS=""
+    if command -v i2cdetect >/dev/null 2>&1; then
+      DETECTED_SMBUS=$(sudo i2cdetect -l 2>/dev/null | awk '/smbus|SMBus|i801|piix4|nforce/{ print $1; exit }')
+    fi
 
-    info "To find your RAM part number, run: sudo dmidecode -t memory | grep 'Part Number'"
-    ask "RAM part number (e.g. CMH64GX5M2B5200C40) [leave empty to skip]:" MEMORY_SKU
+    if [[ -n "$DETECTED_SMBUS" ]]; then
+      info "SMBus auto-detected: ${BOLD}${DETECTED_SMBUS}${NC}"
+      read -rp "Confirm? [Y/n]: " smbus_confirm
+      if [[ "${smbus_confirm:-Y}" =~ ^[Yy]$ ]]; then
+        MEMORY_SMBUS="$DETECTED_SMBUS"
+      else
+        ask "SMBus device (e.g. i2c-9) [default: i2c-0]:" MEMORY_SMBUS
+        [[ -z "$MEMORY_SMBUS" ]] && MEMORY_SMBUS="i2c-0"
+      fi
+    else
+      warn "SMBus not auto-detected. You can find it after install with: sudo i2cdetect -l"
+      ask "SMBus device (e.g. i2c-9) [default: i2c-0]:" MEMORY_SMBUS
+      [[ -z "$MEMORY_SMBUS" ]] && MEMORY_SMBUS="i2c-0"
+    fi
+
+    # Auto-detect RAM SKU
+    DETECTED_SKU=""
+    if command -v dmidecode >/dev/null 2>&1; then
+      DETECTED_SKU=$(sudo dmidecode -t memory 2>/dev/null | awk '/Part Number/{ print $NF; exit }' | tr -d '[:space:]')
+      [[ "$DETECTED_SKU" == "Unknown" || "$DETECTED_SKU" == "NotSpecified" ]] && DETECTED_SKU=""
+    fi
+
+    if [[ -n "$DETECTED_SKU" ]]; then
+      info "RAM part number auto-detected: ${BOLD}${DETECTED_SKU}${NC}"
+      read -rp "Confirm? [Y/n]: " sku_confirm
+      if [[ "${sku_confirm:-Y}" =~ ^[Yy]$ ]]; then
+        MEMORY_SKU="$DETECTED_SKU"
+      else
+        ask "RAM part number (e.g. CMH64GX5M2B5200C40) [leave empty to skip]:" MEMORY_SKU
+      fi
+    else
+      warn "RAM part number not detected. Find it after install with: sudo dmidecode -t memory | grep 'Part Number'"
+      ask "RAM part number (e.g. CMH64GX5M2B5200C40) [leave empty to skip]:" MEMORY_SKU
+    fi
   fi
 fi
 
