@@ -25,8 +25,6 @@ let
   '';
 in
 {
-  imports = [ ./scx.nix ];
-
   options.roudix.gaming.enable = lib.mkOption {
     description = "Enable Roudix gaming configurations";
     type = lib.types.bool;

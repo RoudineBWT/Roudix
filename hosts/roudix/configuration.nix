@@ -12,6 +12,7 @@
     ../../modules/system/boot.nix
     ../../modules/system/kernel.nix
     ../../modules/system/gaming.nix
+    ../../modules/system/scx.nix
     ../../modules/system/flatpak.nix
     ../../modules/system/gpu.nix
     ../../modules/system/cpu.nix
@@ -31,7 +32,7 @@
   hardware.myGpu    = lib.mkDefault "amd";              # "amd", "nvidia" or "intel"
   hardware.myCpu    = lib.mkDefault "intel";            # "intel" or "amd"
   hardware.myKernel = lib.mkDefault "cachyos-lts-lto-v3"; # see README for all variants
-
+  roudix.rgb        = lib.mkDefault "none";           # "openlinkhub" (full Corsair), "openrgb" (mixed/other brands) or "none"
   # ── Features ────────────────────────────────────────────────────────────
   roudix.gaming.enable         = lib.mkDefault true;
   roudix.flatpak.enable        = lib.mkDefault false;

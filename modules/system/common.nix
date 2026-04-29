@@ -1,6 +1,10 @@
 { pkgs, inputs, config, lib, username, ... }:
 {
-  #imports = [ ./openrgb.nix ];
+  imports = (
+    if config.roudix.rgb == "openlinkhub" then [ ./openlinkhub.nix ]
+    else if config.roudix.rgb == "openrgb"    then [ ./openrgb.nix ]
+    else []
+  );
 
   # ── Nix settings ────────────────────────────────────────────────────────
   nix.settings = {

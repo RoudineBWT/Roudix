@@ -114,7 +114,8 @@
 
 - OBS Studio with pipewire + vkcapture plugins
 - GPU Screen Recorder
-- OpenRGB for LED control (extracted to `openrgb.nix`, i2c modules auto-loaded per CPU vendor)
+- RGB controller selectable via `roudix.rgb` — `openlinkhub` (Corsair iCUE Link / Commander, auto-updated via CI), `openrgb` (multi-brand: Razer, ASUS, MSI…), or `none`
+- OpenLinkHub web UI available at [http://127.0.0.1:27003](http://127.0.0.1:27003) once the service is running
 - PipeWire with rnnoise stereo noise suppression (nofail, LADSPA_PATH compat 25.11/26.05)
 - Flatpak with Flathub remote + daily auto-update (via nix-flatpak)
 - Blueman Bluetooth manager

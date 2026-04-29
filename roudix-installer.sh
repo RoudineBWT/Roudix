@@ -672,6 +672,11 @@ pick "System locale:" LOCALE \
   "el_GR.UTF-8|Ελληνικά (Ελλάδα)" \
   "C.UTF-8|C (POSIX minimal)"
 
+pick "RGB controller:" RGB \
+  "openlinkhub|OpenLinkHub — full Corsair setup (iCUE Link, Commander...)" \
+  "openrgb|OpenRGB — mixed brands (Razer, ASUS, MSI...)" \
+  "none|No RGB management"
+
 pick "Enable GTA Online fix? (blocks IP to play on linux)" GTA_FIX \
   "false|No" \
   "true|Yes"
@@ -698,6 +703,7 @@ fi
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
 
+sed -i "s/roudix\.rgb[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.rgb        = \"${RGB}\"/"          hosts/roudix/local.nix
 sed -i "s/hardware\.myGpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/roudix/local.nix
 sed -i -E "s/hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*(true|false)/hardware.nvidiaLaptop = ${NVIDIA_LAPTOP}/" hosts/roudix/local.nix
 sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/roudix/local.nix
@@ -727,6 +733,7 @@ success "Setup complete!"
 echo -e "${BOLD}══════════════════════════════════════${NC}"
 echo -e "
   ${BOLD}User          :${NC} $USERNAME
+  ${BOLD}RGB           :${NC} $RGB
   ${BOLD}GPU           :${NC} $GPU
   ${BOLD}CPU           :${NC} $CPU
   ${BOLD}Kernel        :${NC} $KERNEL

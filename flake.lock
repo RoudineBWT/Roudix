@@ -805,11 +805,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777418952,
-        "narHash": "sha256-VR1nV+UD2BSPz+wY/5tdv2pAA1VAwFXCrbBSEx17CKY=",
+        "lastModified": 1777461143,
+        "narHash": "sha256-t2NztMEbuG5jmADsgbqEte2BOAzPjFYGRNWT1cXtKZA=",
         "owner": "RoudineBWT",
         "repo": "Roudix-caches",
-        "rev": "30a9a42cfd9b05bb477fcfe507316a33a0f5a0aa",
+        "rev": "0e337b22fa1d66260bcb4a36bac9ed4c68b97aa6",
         "type": "github"
       },
       "original": {

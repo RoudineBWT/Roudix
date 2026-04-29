@@ -17,7 +17,7 @@ The installer handles everything interactively:
 - **Detects other OSes automatically** via EFI NVRAM (`efibootmgr`) — no manual PARTUUID lookup needed
 - **Detects GPU and CPU automatically** (`lspci` / `/proc/cpuinfo`) — pre-selects and asks for confirmation
 - **Detects if running in a VM** (`systemd-detect-virt`) — pre-enables VM guest mode and warns that GPU/CPU detection may be inaccurate
-- Asks about kernel, desktop, browser, locale, timezone, keymap, and optional modules
+- Asks about kernel, desktop, browser, locale, timezone, keymap, RGB controller, and optional modules
 - Builds and applies the configuration
 
 ---
@@ -79,6 +79,7 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   hardware.myKernel   = "cachyos-lts-lto-v3"; # see below
   roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable   = false;                # set to true to also install Zen Browser
+  roudix.rgb          = "openlinkhub";        # "openlinkhub", "openrgb" or "none" — see below
 
   # ── Locale / Timezone ───────────────────────────────────────────────────────
   time.timeZone                   = "Europe/Brussels"; # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -87,6 +88,14 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   console.keyMap                  = "us";              # console keyboard layout
 }
 ```
+
+**RGB controller options:**
+
+| Value | Description |
+|-------|-------------|
+| `openlinkhub` | OpenLinkHub — full Corsair setup (iCUE Link, Commander...) |
+| `openrgb` | OpenRGB — mixed brands (Razer, ASUS, MSI...) |
+| `none` | No RGB management |
 
 **Common timezone values:**
 
