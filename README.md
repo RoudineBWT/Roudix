@@ -138,8 +138,9 @@ roudix/
     │   ├── gpu.nix                  # GPU configuration (AMD/NVIDIA/Intel)
     │   ├── hosts-gta.nix            # BattlEye hosts block (GTA fix, optional)
     │   ├── kernel.nix               # CachyOS kernel variant selection
-    │   ├── openlinkhub.nix          # OpenLinkHub — Corsair iCUE Link driver (auto-updated via roudix-caches)
-    │   ├── openrgb.nix              # OpenRGB LED control (extracted from common.nix)
+    │   ├── openlinkhub.nix          # OpenLinkHub — Corsair iCUE Link driver + RAM RGB (roudix.memory.*)
+    │   ├── openrgb.nix              # OpenRGB LED control
+    │   ├── roudix-rgb.nix           # RGB controller routing (openlinkhub / openrgb / none)
     │   ├── pipewire.nix             # PipeWire audio + rnnoise noise suppression
     │   ├── update.nix               # Flake update configuration
     │   ├── version.nix              # Roudix OS branding (os-release, distroName)

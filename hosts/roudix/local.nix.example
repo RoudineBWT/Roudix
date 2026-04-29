@@ -23,6 +23,10 @@
 
   # ── Hardware ──────────────────────────────────────────────────────────────
   roudix.rgb        = "openlinkhub";           # "openlinkhub" (full Corsair), "openrgb" (mixed/other brands) or "none"
+  roudix.memory.enable  = false;          # true pour activer le RGB RAM
+  roudix.memory.type    = "ddr5";         # "ddr4" ou "ddr5"
+  roudix.memory.smBus   = "i2c-0";        # trouvé via: i2cdetect -l
+  roudix.memory.sku    = "CMH64GX5M2B5200C40"; # trouvé via: sudo dmidecode -t memory | grep 'Part Number'
   hardware.myGpu    = "amd";                  # "amd", "nvidia" or "intel"
   hardware.nvidiaLaptop = false;              # enable this only for Laptops with nvidia Dgpu
   hardware.myCpu    = "intel";               # "intel" or "amd"

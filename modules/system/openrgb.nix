@@ -1,5 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 {
+   config = lib.mkIf (config.roudix.rgb == "openrgb") {
   hardware.i2c.enable = true;
   environment.systemPackages = [ pkgs.openrgb-with-all-plugins ];
 
@@ -24,4 +25,5 @@
       '';
     };
   };
+ };
 }

@@ -15,6 +15,7 @@
     ../../modules/system/scx.nix
     ../../modules/system/flatpak.nix
     ../../modules/system/gpu.nix
+    ../../modules/system/roudix-rgb.nix
     ../../modules/system/cpu.nix
     ../../modules/system/pipewire.nix
     ../../modules/system/fstrim.nix
@@ -33,6 +34,10 @@
   hardware.myCpu    = lib.mkDefault "intel";            # "intel" or "amd"
   hardware.myKernel = lib.mkDefault "cachyos-lts-lto-v3"; # see README for all variants
   roudix.rgb        = lib.mkDefault "none";           # "openlinkhub" (full Corsair), "openrgb" (mixed/other brands) or "none"
+  roudix.memory.enable  = lib.mkDefault false;          # true pour activer le RGB RAM
+  roudix.memory.type    = lib.mkDefault "ddr5";         # "ddr4" ou "ddr5"
+  roudix.memory.smBus   = lib.mkDefault "i2c-0";        # trouvé via: i2cdetect -l
+  roudix.memory.sku    = lib.mkDefault "CMH64GX5M2B5200C40"; # trouvé via: sudo dmidecode -t memory | grep 'Part Number'
   # ── Features ────────────────────────────────────────────────────────────
   roudix.gaming.enable         = lib.mkDefault true;
   roudix.flatpak.enable        = lib.mkDefault false;

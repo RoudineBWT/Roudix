@@ -677,6 +677,32 @@ pick "RGB controller:" RGB \
   "openrgb|OpenRGB — mixed brands (Razer, ASUS, MSI...)" \
   "none|No RGB management"
 
+# ── Memory RGB (OpenLinkHub only) ─────────────────────────────────────────────
+MEMORY_ENABLE="false"
+MEMORY_TYPE="ddr5"
+MEMORY_SMBUS="i2c-0"
+MEMORY_SKU=""
+
+if [[ "$RGB" == "openlinkhub" ]]; then
+  pick "Enable RAM RGB control? (Corsair DDR4/DDR5 with RGB)" MEMORY_ENABLE \
+    "false|No" \
+    "true|Yes"
+
+  if [[ "$MEMORY_ENABLE" == "true" ]]; then
+    pick "RAM type:" MEMORY_TYPE \
+      "ddr5|DDR5" \
+      "ddr4|DDR4"
+
+    echo ""
+    info "To find your SMBus, run: sudo i2cdetect -l  (look for 'SMBus' or 'smbus')"
+    ask "SMBus device (e.g. i2c-9) [default: i2c-0]:" MEMORY_SMBUS
+    [[ -z "$MEMORY_SMBUS" ]] && MEMORY_SMBUS="i2c-0"
+
+    info "To find your RAM part number, run: sudo dmidecode -t memory | grep 'Part Number'"
+    ask "RAM part number (e.g. CMH64GX5M2B5200C40) [leave empty to skip]:" MEMORY_SKU
+  fi
+fi
+
 pick "Enable GTA Online fix? (blocks IP to play on linux)" GTA_FIX \
   "false|No" \
   "true|Yes"
@@ -725,6 +751,13 @@ sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)
 sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.autoupdate.enable    = ${AUTOUPDATE}/" hosts/roudix/local.nix
 sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
 
+if [[ "$RGB" == "openlinkhub" ]]; then
+  sed -i -E "s/roudix\.memory\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.memory.enable = ${MEMORY_ENABLE}/"   hosts/roudix/local.nix
+  sed -i "s/roudix\.memory\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.type   = \"${MEMORY_TYPE}\"/"       hosts/roudix/local.nix
+  sed -i "s/roudix\.memory\.smBus[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.smBus  = \"${MEMORY_SMBUS}\"/"     hosts/roudix/local.nix
+  sed -i "s/roudix\.memory\.sku[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.sku    = \"${MEMORY_SKU}\"/"         hosts/roudix/local.nix
+fi
+
 success "local.nix configured."
 
 # ── Summary ───────────────────────────────────────────────────────────────────
@@ -734,6 +767,7 @@ echo -e "${BOLD}═════════════════════�
 echo -e "
   ${BOLD}User          :${NC} $USERNAME
   ${BOLD}RGB           :${NC} $RGB
+  ${BOLD}RAM RGB       :${NC} $MEMORY_ENABLE $([ "$MEMORY_ENABLE" == "true" ] && echo "($MEMORY_TYPE, $MEMORY_SMBUS${MEMORY_SKU:+, SKU: $MEMORY_SKU})")
   ${BOLD}GPU           :${NC} $GPU
   ${BOLD}CPU           :${NC} $CPU
   ${BOLD}Kernel        :${NC} $KERNEL

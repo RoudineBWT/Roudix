@@ -1,11 +1,5 @@
 { pkgs, inputs, config, lib, username, ... }:
 {
-  imports = (
-    if config.roudix.rgb == "openlinkhub" then [ ./openlinkhub.nix ]
-    else if config.roudix.rgb == "openrgb"    then [ ./openrgb.nix ]
-    else []
-  );
-
   # ── Nix settings ────────────────────────────────────────────────────────
   nix.settings = {
     trusted-users = [ "root" "${username}" ];
@@ -80,6 +74,7 @@
     capitaine-cursors
     efibootmgr
     pciutils
+    dmidecode
     python3
     dust
     fd

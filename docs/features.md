@@ -116,6 +116,7 @@
 - GPU Screen Recorder
 - RGB controller selectable via `roudix.rgb` — `openlinkhub` (Corsair iCUE Link / Commander, auto-updated via CI), `openrgb` (multi-brand: Razer, ASUS, MSI…), or `none`
 - OpenLinkHub web UI available at [http://127.0.0.1:27003](http://127.0.0.1:27003) once the service is running
+- DDR4/DDR5 RAM RGB control via OpenLinkHub — enable with `roudix.memory.enable = true`, configure `roudix.memory.type`, `roudix.memory.smBus`, and `roudix.memory.sku` (see `installation.md`)
 - PipeWire with rnnoise stereo noise suppression (nofail, LADSPA_PATH compat 25.11/26.05)
 - Flatpak with Flathub remote + daily auto-update (via nix-flatpak)
 - Blueman Bluetooth manager
