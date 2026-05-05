@@ -42,7 +42,7 @@ lib.mkIf useLy {
 
   # UWSM gère lui-même graphical-session.target — le fake target de NixOS
   # le marque comme déjà actif avant le login, ce qui fait échouer UWSM.
-  systemd.user.targets.nixos-fake-graphical-session = {
+  systemd.user.targets.nixos-fake-graphical-session = lib.mkIf isHyprland {
     enable = false;
     unitConfig.DefaultDependencies = "no";
     wantedBy = lib.mkForce [];

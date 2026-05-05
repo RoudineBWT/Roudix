@@ -80,6 +80,7 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable   = false;                # set to true to also install Zen Browser
   roudix.rgb          = "openlinkhub";        # "openlinkhub", "openrgb" or "none" — see below
+  roudix.mesa.useGit  = false;                # true = mesa-git (experimental, build may fail), false = nixpkgs stable
 
   # ── Locale / Timezone ───────────────────────────────────────────────────────
   time.timeZone                   = "Europe/Brussels"; # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -334,6 +335,7 @@ roudix.vmGuest.enable        = true;   # enable only inside a VM
 roudix.hosts.gtaFix.enable   = true;   # block BattlEye telemetry (GTA fix)
 roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
 roudix.zen.enable            = false;  # install Zen Browser (disabled by default)
+roudix.mesa.useGit           = false;  # true = mesa-git (experimental, bleeding edge — build may fail), false = nixpkgs stable
 ```
 
 > **Reminder:** If you set `roudix.autoupdate.enable = true`, also configure the interval:

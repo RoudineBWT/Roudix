@@ -1,13 +1,12 @@
 { config, lib, pkgs, ... }:
 let
-  isMango    = config.roudix.desktop.type == "mangowc";
-  shellType  = config.roudix.desktop.shell or "noctalia";
-  isDms      = shellType == "dms";
+  isMango     = config.roudix.desktop.type == "mangowc";
+  shellType   = config.roudix.desktop.shell or "noctalia";
+  isDms       = shellType == "dms";
   needsPolkit = !isDms;
 in
 {
-  # ly.nix retiré — dankgreeter.nix gère le display manager
-  imports = [ ./dankgreeter.nix ];
+  imports = [ ./ly.nix ];
 
   config = lib.mkIf isMango {
     programs.mangowc.enable = true;
@@ -37,7 +36,7 @@ in
     };
 
     services.gnome.gnome-keyring.enable = true;
-    security.pam.services.dms-greeter.enableGnomeKeyring = true;
+    security.pam.services.ly.enableGnomeKeyring = true;
 
     programs.nautilus-open-any-terminal = {
       enable   = true;

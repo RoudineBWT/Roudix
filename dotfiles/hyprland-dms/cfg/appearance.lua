@@ -1,0 +1,37 @@
+-- ──────────────────────────────────────
+-- APPEARANCE
+-- ──────────────────────────────────────
+
+hl.config({
+    general = {
+        gaps_in = 4,
+        gaps_out = 9,
+        border_size = 2,
+        ["col.active_border"]   = "rgba(88888888)",
+        ["col.inactive_border"] = "rgba(44444488)",
+        layout = "dwindle",
+        resize_on_border = true,
+    },
+
+    decoration = {
+        rounding = 20, -- Window corner radius
+
+        blur = {
+            enabled = true,
+            size = 6,
+            passes = 2,
+        },
+
+        shadow = {
+            enabled = true,
+            range = 15,
+            render_power = 3,
+            color = "rgba(00000066)",
+        },
+    },
+
+    dwindle = {
+        preserve_split = true,
+        force_split = 2,
+    },
+})

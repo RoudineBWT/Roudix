@@ -6,7 +6,7 @@ let
   isDms       = shellType == "dms";
 in
 {
-  imports = [ ./ly.nix ./dankgreeter.nix ];
+  imports = [ ./ly.nix ];
 
 config = lib.mkIf isHyprland {
 

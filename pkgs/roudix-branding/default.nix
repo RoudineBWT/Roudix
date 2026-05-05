@@ -60,6 +60,7 @@ stdenvNoCC.mkDerivation {
     cp $src/wallpapers/roudix_wallpaper_cosmos.svg $out/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg
     cp $src/wallpapers/roudix_wallpaper_dark_logo.svg $out/share/backgrounds/roudix/roudix_wallpaper_dark_logo.svg
     cp $src/wallpapers/roudix_wallpaper_light_logo.svg $out/share/backgrounds/roudix/roudix_wallpaper_light_logo.svg
+    cp $src/wallpapers/Roudix_Moonrise.jpg $out/share/backgrounds/roudix/Roudix_Moonrise.jpg
 
     # ── Wallpapers PNG GNOME (libpng/librsvg crash workaround) ────────────────
     # -strip                   : supprime les métadonnées et profils ICC
@@ -225,6 +226,30 @@ JSONEOF
 }
 JSONEOF
 
+    # ── Wallpaper KDE Moonrise ────────────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixMoonrise/contents/images
+
+    cp $src/wallpapers/Roudix_Moonrise.jpg \
+      $out/share/wallpapers/RoudixMoonrise/contents/images/2560x1440.jpg
+
+    convert $src/wallpapers/Roudix_Moonrise.jpg \
+      -resize 400x250 \
+      $out/share/wallpapers/RoudixMoonrise/contents/screenshot.jpg
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixMoonrise/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixMoonrise",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Moonrise",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixMoonrise"
+}
+JSONEOF
+
     # ── Entrées GNOME background properties ───────────────────────────────────
     mkdir -p $out/share/gnome-background-properties
     cat <<XMLEOF > $out/share/gnome-background-properties/roudix.xml
@@ -243,6 +268,14 @@ JSONEOF
   <wallpaper deleted="false">
     <name>Roudix Cosmos</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#1e1e2e</pcolor>
+    <scolor>#1e1e2e</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Roudix Moonrise</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/Roudix_Moonrise.jpg</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
     <pcolor>#1e1e2e</pcolor>

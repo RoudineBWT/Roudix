@@ -11,6 +11,7 @@
       "https://nix-community.cachix.org"
       "http://37.59.123.5:8080/glf"
       "https://roudix.cachix.org"
+      "https://nix-cache.tokidoki.dev/tokidoki"
     ];
     extra-trusted-public-keys = [
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
@@ -20,6 +21,7 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCUSeBw="
       "glf:gLU8OSnfaopb5atQHiNJDgvS7/VbQ8HDQn3GOWT8w7Y="
       "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
+      "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
     ];
   };
 
@@ -36,12 +38,6 @@
 
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.noctalia-qs.follows = "noctalia-qs";
-    };
-
-    noctalia-qs = {
-      url = "github:noctalia-dev/noctalia-qs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -103,9 +99,13 @@
       url = "github:RoudineBWT/Roudix-caches";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-gaming-edge = {
+       url = "github:powerofthe69/nix-gaming-edge";
+       inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, noctalia-qs, caelestia-shell, dms, glf-os, spicetify-nix, millennium, helium, nix-flatpak, plasma-manager, brave-previews, roudix-caches, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, caelestia-shell, dms, glf-os, spicetify-nix, millennium, helium, nix-flatpak, plasma-manager, brave-previews, roudix-caches, nix-gaming-edge, ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
   # Create it with: echo '"yourusername"' > hosts/roudix/username.nix

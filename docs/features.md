@@ -20,13 +20,14 @@
 
 ## Gaming
 
-- Steam + Proton-GE + Gamescope session
+- Steam + Proton-GE + Proton-CachyOS (x86_64-v3) + Gamescope session
 - Millennium Steam client patcher
-- OBS capture env vars pre-configured (`OBS_VKCAPTURE`, `TZ`)
+- OBS capture env vars pre-configured (`OBS_VKCAPTURE` via `environment.sessionVariables`)
 - Custom horizontal MangoHud overlay
 - Controller support (Steam Hardware + game-devices-udev-rules)
 - 32-bit support for Wine/Steam
 - `game-performance` wrapper — switches CPU governor to performance for the duration of a game (usage: `game-performance %command%` in Steam launch options)
+- `ffmpegthumbnailer` available system-wide (video thumbnails in file managers)
 - `protonup-qt` on KDE, `protonplus` on other DEs
 - Heroic (via roudix-caches), Lutris + Faugus Launcher (via glf-os)
 
@@ -40,7 +41,7 @@
 - Discord with Vencord
 - Element Desktop with gnome-libsecret / kwallet6 (auto-detected per DE)
 - GNOME Polkit agent
-- GDM display manager
+- GDM display manager (Wayland)
 
 ## Desktop (MangoWC)
 
@@ -49,7 +50,7 @@
 - xdg-desktop-portal-gtk
 - Capitaine Cursors White (24 px)
 - GNOME Polkit agent
-- Ly display manager (Noctalia & DMS)
+- Ly display manager
 - adw-gtk3 + Papirus icons + Papirus Folders
 - Zoom open animation + official bezier curves
 - VRR + tearing enabled on gaming monitor (DP-1 1440p@240)
@@ -114,6 +115,8 @@
 
 - OBS Studio with pipewire + vkcapture plugins
 - GPU Screen Recorder
+- Mesa Git option for AMD — enable experimental/bleeding-edge Mesa via `roudix.mesa.useGit = true` in `local.nix` (default: stable nixpkgs Mesa) — ⚠️ **experimental**, the build may fail depending on nixpkgs state
+- AMD GPU stability kernel params applied automatically (`mem_sleep_default=deep`, `amdgpu.gpu_recovery=1`, `amdgpu.lockup_timeout=1000`, `amdgpu.runpm=0`, `amdgpu.sg_display=0`) — fixes random freezes and wake-from-sleep issues on RDNA2/RDNA3
 - RGB controller selectable via `roudix.rgb` — `openlinkhub` (Corsair iCUE Link / Commander, auto-updated via CI), `openrgb` (multi-brand: Razer, ASUS, MSI…), or `none`
 - OpenLinkHub web UI available at [http://127.0.0.1:27003](http://127.0.0.1:27003) once the service is running
 - DDR4/DDR5 RAM RGB control via OpenLinkHub — enable with `roudix.memory.enable = true`, configure `roudix.memory.type`, `roudix.memory.smBus`, and `roudix.memory.sku` (see `installation.md`)

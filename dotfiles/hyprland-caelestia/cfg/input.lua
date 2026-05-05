@@ -1,0 +1,25 @@
+-- ──────────────────────────────────────
+-- INPUT
+-- ──────────────────────────────────────
+
+hl.config({
+    input = {
+        kb_layout = "us",
+        kb_variant = "intl",
+        numlock_by_default = true,
+
+        follow_mouse = 1,       -- Focus follows mouse
+        mouse_refocus = true,
+        accel_profile = "flat", -- Flat mouse acceleration
+
+        touchpad = {
+            ["tap-to-click"] = true,
+            natural_scroll = true,
+        },
+    },
+
+    cursor = {
+        inactive_timeout = 1,   -- Hide cursor after 1s of inactivity
+        hide_on_key_press = true,
+    },
+})

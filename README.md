@@ -10,9 +10,11 @@
 
 <br/>
 
-![Screenshot](assets/screenshot/screenshot.png)
+| Niri + DankMaterialShell | Niri + Noctalia |
+|:---:|:---:|
+| ![Niri + DMS](assets/screenshot/my-dms-setup.png) | ![Niri + Noctalia](assets/screenshot/my-noctalia-setup.png) |
 
-<sub>Niri + DankMaterialShell — personal customization, yours will look different depending on your setup 👀</sub>
+<sub>Personal customization — yours will look different depending on your setup 👀</sub>
 
 </div>
 
@@ -169,7 +171,6 @@ roudix/
 | nixpkgs-stable | [nixos-25.11](https://github.com/NixOS/nixpkgs/tree/nixos-25.11) |
 | home-manager | [nix-community/home-manager](https://github.com/nix-community/home-manager) |
 | noctalia | [noctalia-dev/noctalia-shell](https://github.com/noctalia-dev/noctalia-shell) |
-| noctalia-qs | [noctalia-dev/noctalia-qs](https://github.com/noctalia-dev/noctalia-qs) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
 | dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
@@ -182,6 +183,7 @@ roudix/
 | plasma-manager | [nix-community/plasma-manager](https://github.com/nix-community/plasma-manager) |
 | brave-previews | [roudinebwt/brave-preview](https://github.com/roudinebwt/brave-preview) |
 | roudix-caches | [RoudineBWT/Roudix-caches](https://github.com/RoudineBWT/Roudix-caches) |
+| nix-gaming-edge | [powerofthe69/nix-gaming-edge](https://github.com/powerofthe69/nix-gaming-edge) |
 ---
 
 ## See also

@@ -33,7 +33,10 @@ in
 
   config = lib.mkIf config.roudix.gaming.enable {
 
-  # nixpkgs.overlays = [ inputs.millennium.overlays.default ];
+    nixpkgs.overlays = [
+      inputs.millennium.overlays.default
+      inputs.nix-gaming-edge.overlays.default
+    ];
   # ── Steam ────────────────────────────────────────────────────────────────
   programs.steam = {
     enable = true;
@@ -43,14 +46,9 @@ in
       enable = true;
       args = [ "--prefer-output" "DP-1" ];
     };
-    package = pkgs.steam.override {
-      extraEnv = {
-        TZ = ":/etc/localtime";
-        OBS_VKCAPTURE = "1";
-      };
-    };
-    extraCompatPackages = [
-      pkgs.proton-ge-bin
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+      proton-cachyos-x86_64-v3
     ];
   };
 
@@ -83,12 +81,16 @@ in
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
     game-performance  # Wrapper governor CPU performance (usage: game-performance %command%)
-    # millennium-steam
+    millennium-steam
   ];
 
   # ── Support manettes ─────────────────────────────────────────────────────
   hardware.steam-hardware.enable = true;
   services.udev.packages = [ pkgs.game-devices-udev-rules ];
+
+  environment.sessionVariables = {
+    OBS_VKCAPTURE = "1";
+  };
 
   };
 }

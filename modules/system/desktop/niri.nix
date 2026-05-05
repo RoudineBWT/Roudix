@@ -5,11 +5,15 @@ let
   isDms      = shellType == "dms";
 in
 {
-  imports = [ ./dankgreeter.nix ];
-
   config = lib.mkIf isNiri {
     programs.niri = {
       enable = true;
+    };
+
+    # GDM — display manager
+    services.displayManager.gdm = {
+      enable = true;
+      wayland = true;
     };
 
     xdg.portal = {
@@ -24,6 +28,7 @@ in
         "org.freedesktop.impl.portal.RemoteDesktop" = [ "gnome" ];
       };
     };
+
     programs.dank-material-shell = lib.mkIf isDms {
       enable = true;
       systemd.enable = true;
@@ -42,9 +47,8 @@ in
       };
     };
 
-    # GDM supprimé — dankgreeter.nix gère le display manager pour tous les shells
     services.gnome.gnome-keyring.enable = true;
-    security.pam.services.dms-greeter.enableGnomeKeyring = true;
+    security.pam.services.gdm.enableGnomeKeyring = true;
 
     programs.nautilus-open-any-terminal = {
       enable   = true;

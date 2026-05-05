@@ -39,6 +39,7 @@
   roudix.vmGuest.enable       = false;        # enable only inside a VM
   roudix.autoupdate.enable    = true;         # automatic NixOS updates
   roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
+  roudix.mesa.useGit = false;  # false = mesa stable
 
   # ── Misc ──────────────────────────────────────────────────────────────────
   roudix.hosts.gtaFix.enable  = false;      # fix GTA Online to play with your friends but they need to block battleye telemetry in /etc/hosts and if they are on windows in C:\Windows\System32\drivers\etc\hosts

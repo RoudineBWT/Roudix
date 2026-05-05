@@ -61,6 +61,28 @@ in
       '';
     };
 
+    xdg.configFile."hypr/hyprland.lua" = {
+      force = true;
+      text = ''
+        package.path = package.path .. ";${hyprDir}/cfg/?.lua"
+
+        require("environment")
+        require("monitors")
+        require("autostart")
+        require("input")
+        require("appearance")
+        require("animations")
+        require("workspaces")
+        require("rules")
+        require("keybinds")
+        require("misc")
+
+        -- ── User overrides (injected by Nix) ───────────────────────────────
+        package.path = package.path .. ";${config.home.homeDirectory}/.config/hypr/?.lua"
+        require("user")
+      '';
+    };
+
     # ── User overrides file ───────────────────────────────────────────────────
     # Empty by default — the user fills it in home/local.nix.
     xdg.configFile."hypr/user.conf" = {

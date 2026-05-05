@@ -23,6 +23,7 @@
     ../../modules/system/vm-guest.nix
     ../../modules/system/update.nix
     ../../modules/system/hosts-gta.nix
+    ../../modules/system/mesa-git.nix
      inputs.brave-previews.nixosModules.default
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
@@ -46,6 +47,7 @@
   roudix.vmGuest.enable        = lib.mkDefault false; # enable only inside a VM
   roudix.hosts.gtaFix.enable   = lib.mkDefault false;
   roudix.autoupdate.enable     = lib.mkDefault true;
+  roudix.mesa.useGit = lib.mkDefault false;  # false = mesa stable du nixpkgs
 
   # ── Network ─────────────────────────────────────────────────────────────
   networking.hostName = "roudix";
