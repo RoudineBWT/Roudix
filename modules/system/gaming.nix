@@ -34,7 +34,7 @@ in
   config = lib.mkIf config.roudix.gaming.enable {
 
     nixpkgs.overlays = [
-      inputs.millennium.overlays.default
+      #inputs.millennium.overlays.default
       inputs.nix-gaming-edge.overlays.default
     ];
   # ── Steam ────────────────────────────────────────────────────────────────
@@ -81,7 +81,7 @@ in
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
     game-performance  # Wrapper governor CPU performance (usage: game-performance %command%)
-    millennium-steam
+    #millennium-steam
   ];
 
   # ── Support manettes ─────────────────────────────────────────────────────

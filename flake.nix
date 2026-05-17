@@ -100,7 +100,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-gaming-edge = {
-       url = "github:powerofthe69/nix-gaming-edge";
+       url = "github:powerofthe69/nix-gaming-edge/master";
        inputs.nixpkgs.follows = "nixpkgs";
     };
   };

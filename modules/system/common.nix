@@ -100,7 +100,33 @@
 
   # ── Programs ────────────────────────────────────────────────────────────
   programs.fish.enable = true;
-
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    icu
+    openssl
+    zlib
+    libGL
+    fontconfig
+    freetype
+    libX11
+    libXext
+    libXrender
+    libXrandr
+    libXi
+    libXcursor
+    libXfixes
+    libXcomposite
+    libXdamage
+    libXinerama
+    libICE
+    libSM
+    libXtst
+    libXxf86vm
+    libxkbcommon
+    dbus
+    glib
+  ];
   # ── Services ────────────────────────────────────────────────────────────
   services.udisks2.enable = true;
   services.power-profiles-daemon.enable = true;
