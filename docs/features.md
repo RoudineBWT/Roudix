@@ -21,7 +21,6 @@
 ## Gaming
 
 - Steam + Proton-GE + Proton-CachyOS (x86_64-v3) + Gamescope session
-- Millennium Steam client patcher
 - OBS capture env vars pre-configured (`OBS_VKCAPTURE` via `environment.sessionVariables`)
 - Custom horizontal MangoHud overlay
 - Controller support (Steam Hardware + game-devices-udev-rules)
@@ -29,7 +28,7 @@
 - `game-performance` wrapper — switches CPU governor to performance for the duration of a game (usage: `game-performance %command%` in Steam launch options)
 - `ffmpegthumbnailer` available system-wide (video thumbnails in file managers)
 - `protonup-qt` on KDE, `protonplus` on other DEs
-- Heroic (via roudix-caches), Lutris + Faugus Launcher (via glf-os)
+- Heroic, Lutris + Faugus Launcher (via roudix-caches), Hytale
 
 ## Desktop (Niri)
 
@@ -113,6 +112,7 @@
 
 ## Other
 
+- `nix-ld` enabled system-wide — run unpatched dynamic binaries without a FHS environment (pre-configured with common libraries: glibc, openssl, zlib, libGL, X11, libxkbcommon, dbus, glib and more)
 - OBS Studio with pipewire + vkcapture plugins
 - GPU Screen Recorder
 - Mesa Git option for AMD — enable experimental/bleeding-edge Mesa via `roudix.mesa.useGit = true` in `local.nix` (default: stable nixpkgs Mesa) — ⚠️ **experimental**, the build may fail depending on nixpkgs state

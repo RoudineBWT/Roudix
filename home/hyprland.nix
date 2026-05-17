@@ -35,61 +35,10 @@ in
     # systemd service automatically. Just add the package in home.packages.
 
     # ── Config files ─────────────────────────────────────────────────────────
+    # On copie le dossier tel quel — format et structure gérés par l'utilisateur.
     xdg.configFile."hypr" = {
       source    = hyprDir;
       recursive = true;
-    };
-
-    # hyprland.conf est généré par Nix : chemins absolus vers le nix store
-    # + source absolu vers user.conf pour éviter tout conflit avec le récursif.
-    xdg.configFile."hypr/hyprland.conf" = {
-      force = true;
-      text = ''
-        source = ${hyprDir}/cfg/monitors.conf
-        source = ${hyprDir}/cfg/environment.conf
-        source = ${hyprDir}/cfg/autostart.conf
-        source = ${hyprDir}/cfg/input.conf
-        source = ${hyprDir}/cfg/appearance.conf
-        source = ${hyprDir}/cfg/animations.conf
-        source = ${hyprDir}/cfg/workspaces.conf
-        source = ${hyprDir}/cfg/rules.conf
-        source = ${hyprDir}/cfg/keybinds.conf
-        source = ${hyprDir}/cfg/misc.conf
-
-        # ── User overrides (injected by Nix) ───────────────────────────────
-        source = ${config.home.homeDirectory}/.config/hypr/user.conf
-      '';
-    };
-
-    xdg.configFile."hypr/hyprland.lua" = {
-      force = true;
-      text = ''
-        package.path = package.path .. ";${hyprDir}/cfg/?.lua"
-
-        require("environment")
-        require("monitors")
-        require("autostart")
-        require("input")
-        require("appearance")
-        require("animations")
-        require("workspaces")
-        require("rules")
-        require("keybinds")
-        require("misc")
-
-        -- ── User overrides (injected by Nix) ───────────────────────────────
-        package.path = package.path .. ";${config.home.homeDirectory}/.config/hypr/?.lua"
-        require("user")
-      '';
-    };
-
-    # ── User overrides file ───────────────────────────────────────────────────
-    # Empty by default — the user fills it in home/local.nix.
-    xdg.configFile."hypr/user.conf" = {
-      text = lib.mkDefault ''
-        # Personal Hyprland overrides — edit this in home/local.nix
-        # See home/local.nix.example for examples (monitors, keybinds, etc.)
-      '';
     };
 
     # ── Packages ─────────────────────────────────────────────────────────────

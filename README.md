@@ -105,8 +105,7 @@ roudix/
 │   ├── niri-dms/                    # Niri + DankMaterialShell dotfiles
 │   ├── niri-caelestia/              # Niri + Caelestia dotfiles
 │   ├── hyprland/                    # Hyprland + Noctalia dotfiles
-│   │   ├── cfg/                     # Hyprland split config
-│   │   └── hyprland.conf            # source injected by Nix at build time
+│   │   └── cfg/                     # Hyprland split config (managed by user — .conf, .lua, etc.)
 │   ├── hyprland-dms/                # Hyprland + DankMaterialShell dotfiles
 │   ├── hyprland-caelestia/          # Hyprland + Caelestia dotfiles
 │   └── perso/                       # Personal config (gitignored)
