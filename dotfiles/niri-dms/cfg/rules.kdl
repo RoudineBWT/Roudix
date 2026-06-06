@@ -76,12 +76,12 @@
     }
 
     window-rule {
-        match app-id="zen"
+        match app-id="zen-twilight"
         open-on-workspace "󰈹"
         open-maximized true
     }
     window-rule {
-        match title="About Zen"
+        match title="About Zen Twilight"
         open-on-workspace "󰈹"
         open-floating true
     }

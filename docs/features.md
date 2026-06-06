@@ -20,7 +20,7 @@
 
 ## Gaming
 
-- Steam + Proton-GE + Proton-CachyOS (x86_64-v3) + Gamescope session
+- Steam + Proton-GE + Proton-CachyOS (x86_64-v3) + Gamescope (gamescope-wsi, session disabled by default)
 - OBS capture env vars pre-configured (`OBS_VKCAPTURE` via `environment.sessionVariables`)
 - Custom horizontal MangoHud overlay
 - Controller support (Steam Hardware + game-devices-udev-rules)
@@ -33,21 +33,21 @@
 ## Desktop (Niri)
 
 - Niri scrollable tiling Wayland compositor
-- Noctalia modern shell
+- Noctalia (v5) modern shell
 - xdg-desktop-portal-gnome + gtk (screencast + remote desktop portals configured)
-- Capitaine Cursors White
+- Bibata Modern Ice cursor (24 px)
 - adw-gtk3 + Papirus icons + Papirus Folders
 - Discord with Vencord
 - Element Desktop with gnome-libsecret / kwallet6 (auto-detected per DE)
 - GNOME Polkit agent
-- GDM display manager (Wayland)
+- DMS Greeter (greetd)
 
 ## Desktop (MangoWC)
 
 - MangoWC Wayland compositor
 - Noctalia / DankMaterialShell
 - xdg-desktop-portal-gtk
-- Capitaine Cursors White (24 px)
+- Bibata Modern Ice cursor (24 px)
 - GNOME Polkit agent
 - Ly display manager
 - adw-gtk3 + Papirus icons + Papirus Folders
@@ -66,20 +66,20 @@
 - Hyprland dynamic tiling Wayland compositor launched via UWSM
 - Noctalia modern shell
 - xdg-desktop-portal-hyprland + gtk portal
-- Capitaine Cursors White
+- Bibata Modern Ice cursor (24 px)
 - GNOME Polkit agent (started via systemd user service)
 - swww wallpaper daemon
 - Screenshots with grim + slurp + satty (annotation) — 3 keybinds
 
 ## Desktop (GNOME)
 
-- GNOME 49.5 (follows nixos-unstable branch)
+- GNOME 50.x (follows nixos-unstable branch)
 - Curated extension set (blur, tiling, vitals, arcmenu...) — enabled via dconf
 - ArcMenu with Roudix logo as menu button icon
 - Bloat removed via `environment.gnome.excludePackages`
 - Papirus-Dark icon theme
 - adw-gtk3-dark GTK theme (dark mode by default)
-- Capitaine Cursors White
+- Bibata Modern Ice cursor (24 px)
 - Roudix wallpaper (light/dark based on system theme)
 - `color-scheme = prefer-dark` applied via dconf
 - Extension settings (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) pre-configured via `gnome-extensions.nix`
@@ -108,7 +108,7 @@
 
 - Configurable browser list via `roudix.browsers` option
 - Supports `brave`, `helium` (via helium-nix flake), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, or `[]` for none
-- Zen Browser available separately via `roudix.zen.enable = true` (disabled by default)
+- Zen Browser (Twilight) available separately via `roudix.zen.enable = true` (disabled by default)
 
 ## Other
 
@@ -120,8 +120,9 @@
 - RGB controller selectable via `roudix.rgb` — `openlinkhub` (Corsair iCUE Link / Commander, auto-updated via CI), `openrgb` (multi-brand: Razer, ASUS, MSI…), or `none`
 - OpenLinkHub web UI available at [http://127.0.0.1:27003](http://127.0.0.1:27003) once the service is running
 - DDR4/DDR5 RAM RGB control via OpenLinkHub — enable with `roudix.memory.enable = true`, configure `roudix.memory.type`, `roudix.memory.smBus`, and `roudix.memory.sku` (see `installation.md`)
-- PipeWire with rnnoise stereo noise suppression (nofail, LADSPA_PATH compat 25.11/26.05)
+- PipeWire with rnnoise stereo noise suppression (nofail, LADSPA_PATH compat 26.05/26.11)
 - Flatpak with Flathub remote + daily auto-update (via nix-flatpak)
 - Blueman Bluetooth manager
+- Waydroid (Android container) — optional, `roudix.waydroid.enable = true`
 - QEMU/KVM + Virt-Manager (optional)
 - VM guest optimizations module (clipboard sharing, auto-resize, QEMU agent, Spice)

@@ -5,7 +5,7 @@ let
   resolveNiriDotfiles = shell:
     let
       candidates = {
-        noctalia  = "${dotfiles}/niri";
+        noctalia  = "${dotfiles}/niri-noc-v5";
         dms       = "${dotfiles}/niri-dms";
       };
       desired  = candidates.${shell} or candidates.noctalia;
@@ -14,6 +14,9 @@ let
       if builtins.pathExists desired then desired else fallback;
 
   niriDir = resolveNiriDotfiles shellType;
+
+  isNoctalia = shellType == "noctalia";
+  isDms      = shellType == "dms";
 in
 {
   imports = [
@@ -24,7 +27,7 @@ in
   config = lib.mkIf (osConfig.roudix.desktop.type == "niri") {
 
     # ── Noctalia ─────────────────────────────────────────────────────────────
-    programs.noctalia-shell = lib.mkIf (shellType == "noctalia") {
+    programs.noctalia = lib.mkIf isNoctalia {
       enable = true;
       package = null;
     };
@@ -35,8 +38,6 @@ in
       recursive = true;
     };
 
-    # config.kdl est généré par Nix : chemins absolus vers le nix store
-    # + include absolu vers user.kdl (niri n'expand pas '~').
     xdg.configFile."niri/config.kdl" = {
       force = true;
       text = ''
@@ -47,10 +48,9 @@ in
         include "${niriDir}/cfg/layout.kdl"
         include "${niriDir}/cfg/rules.kdl"
         include "${niriDir}/cfg/misc.kdl"
-      '' + lib.optionalString (shellType == "noctalia") ''
+      '' + lib.optionalString isNoctalia ''
         include "${config.home.homeDirectory}/.config/niri/noctalia.kdl"
-      '' + ''
-      '' + lib.optionalString (shellType == "dms") ''
+      '' + lib.optionalString isDms ''
         include "${config.home.homeDirectory}/.config/niri/dms/alttab.kdl"
         include "${config.home.homeDirectory}/.config/niri/dms/wpblur.kdl"
         include "${config.home.homeDirectory}/.config/niri/dms/colors.kdl"
@@ -63,19 +63,17 @@ in
       '';
     };
 
-    # ── User overrides file ───────────────────────────────────────────────────
-    # Empty by default — the user fills it in home/local.nix.
     xdg.configFile."niri/user.kdl" = {
       text = lib.mkDefault ''
         // Personal Niri overrides — edit this in home/local.nix
-        // See home/local.nix.example for examples (outputs, keybinds, etc.)
       '';
     };
 
+
     # ── Packages ─────────────────────────────────────────────────────────────
     home.packages = with pkgs; [
-      # Niri / Wayland tools
-      awww
+      # Niri / Wayland tools (communs à tous les shells)
+      awww              # ex-swww, binaires swww/swww-daemon inchangés
       xwayland-satellite
       playerctl
       wl-clipboard
@@ -83,7 +81,7 @@ in
       kdePackages.qtmultimedia
       mpvpaper
 
-      # Apps
+      # Apps (communes)
       nautilus
       gnome-text-editor
       gnome-disk-utility
@@ -106,9 +104,9 @@ in
       gvfs
       cava
     ]
-    ++ lib.optionals (shellType == "noctalia") [
+    # Packages exclusifs à noctalia
+    ++ lib.optionals isNoctalia [
       inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ]
-    ;
+    ];
   };
 }

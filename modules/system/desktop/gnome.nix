@@ -49,10 +49,26 @@ in
     ] ++ cfg.extraExtensions;
 
     environment.gnome.excludePackages = with pkgs; [
-      tali iagno hitori atomix yelp geary xterm totem
-      epiphany gnome-tour gnome-software gnome-contacts
-      gnome-user-docs gnome-font-viewer gnome-music
-      gnome-backgrounds
+      tali
+       iagno
+       hitori
+       atomix
+       yelp
+       geary
+       xterm
+       totem
+
+       epiphany
+       packagekit
+
+       gnome-tour
+       gnome-software
+       gnome-contacts
+       gnome-user-docs
+       gnome-packagekit
+       gnome-font-viewer
+       gnome-music
+
     ];
   };
 }

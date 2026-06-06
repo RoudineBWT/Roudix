@@ -78,7 +78,7 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   hardware.myCpu      = "intel";              # "intel" or "amd"
   hardware.myKernel   = "cachyos-lts-lto-v3"; # see below
   roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
-  roudix.zen.enable   = false;                # set to true to also install Zen Browser
+  roudix.zen.enable   = false;                # set to true to also install Zen Browser (Twilight)
   roudix.rgb          = "openlinkhub";        # "openlinkhub", "openrgb" or "none" — see below
   roudix.mesa.useGit  = false;                # true = mesa-git (experimental, build may fail), false = nixpkgs stable
 

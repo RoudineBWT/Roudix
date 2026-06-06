@@ -1,21 +1,35 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, username, ... }:
 let
-  isNiri     = config.roudix.desktop.type == "niri";
-  shellType  = config.roudix.desktop.shell or "noctalia";
-  isDms      = shellType == "dms";
+  isNiri    = config.roudix.desktop.type == "niri";
+  shellType = config.roudix.desktop.shell or "noctalia";
+  isDms     = shellType == "dms";
 in
 {
   config = lib.mkIf isNiri {
-    programs.niri = {
-      enable = true;
-    };
+    programs.niri.enable = true;
 
-    # GDM — display manager
-    services.displayManager.gdm = {
-      enable = true;
-      wayland = true;
-    };
+    # ── Greeter ───────────────────────────────────────────────────────────
+    programs.dank-material-shell = lib.mkMerge [
+      {
+        greeter = {
+          enable = true;
+          compositor.name = "niri";
+          configHome = "/home/${username}";
+          logs = {
+            save = true;
+            path = "/tmp/dms-greeter.log";
+          };
+        };
+      }
 
+      # ── DMS ───────────────────────────────────────────────────────────
+      (lib.mkIf isDms {
+        enable = true;
+        systemd.enable = true;
+      })
+    ];
+
+    # ── Portals ───────────────────────────────────────────────────────────
     xdg.portal = {
       enable = true;
       extraPortals = with pkgs; [
@@ -24,16 +38,12 @@ in
       ];
       config.niri = {
         default = [ "gnome" "gtk" ];
-        "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+        "org.freedesktop.impl.portal.ScreenCast"    = [ "gnome" ];
         "org.freedesktop.impl.portal.RemoteDesktop" = [ "gnome" ];
       };
     };
 
-    programs.dank-material-shell = lib.mkIf isDms {
-      enable = true;
-      systemd.enable = true;
-    };
-
+    # ── Polkit ────────────────────────────────────────────────────────────
     systemd.user.services.polkit-gnome = {
       description = "GNOME Polkit authentication agent";
       wantedBy = [ "graphical-session.target" ];
@@ -47,8 +57,9 @@ in
       };
     };
 
+    # ── Keyring ───────────────────────────────────────────────────────────
     services.gnome.gnome-keyring.enable = true;
-    security.pam.services.gdm.enableGnomeKeyring = true;
+    security.pam.services.greetd.enableGnomeKeyring = true;
 
     programs.nautilus-open-any-terminal = {
       enable   = true;

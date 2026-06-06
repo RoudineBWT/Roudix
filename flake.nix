@@ -29,7 +29,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -37,8 +37,8 @@
     };
 
     noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:noctalia-dev/noctalia-shell/v5";
+      #inputs.nixpkgs.follows = "nixpkgs";
     };
 
     caelestia-shell = {
@@ -100,12 +100,30 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-gaming-edge = {
-       url = "github:powerofthe69/nix-gaming-edge/master";
+       url = "github:powerofthe69/nix-gaming-edge";
        inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nix-cachyos-kernel, zen-browser, noctalia, caelestia-shell, dms, glf-os, spicetify-nix, millennium, helium, nix-flatpak, plasma-manager, brave-previews, roudix-caches, nix-gaming-edge, ... }:
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    home-manager,
+    nix-cachyos-kernel,
+    zen-browser,
+    noctalia,
+    caelestia-shell,
+    dms,
+    glf-os,
+    spicetify-nix,
+    millennium,
+    helium,
+    nix-flatpak,
+    plasma-manager,
+    brave-previews,
+    roudix-caches,
+    nix-gaming-edge,
+    ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
   # Create it with: echo '"yourusername"' > hosts/roudix/username.nix
@@ -123,6 +141,7 @@
       specialArgs = specialArgs;
       modules = [
         inputs.dms.nixosModules.dank-material-shell
+        inputs.dms.nixosModules.greeter
         nix-flatpak.nixosModules.nix-flatpak
         ./hosts/roudix/configuration.nix
         ./version.nix

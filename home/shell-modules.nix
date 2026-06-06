@@ -5,5 +5,6 @@
   imports = [
     inputs.noctalia.homeModules.default
     inputs.caelestia-shell.homeManagerModules.default
+    inputs.dms.homeModules.dank-material-shell
   ];
 }

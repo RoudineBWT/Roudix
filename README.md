@@ -38,10 +38,10 @@
 | Bootloader | Limine |
 | Compositor | Niri (scrollable tiling) · Hyprland (dynamic tiling) |
 | Graphical shell | Noctalia · DankMaterialShell · Caelestia |
-| Display Manager | GDM / Ly / plasma-login-manager |
+| Display Manager | DMS Greeter (Niri) · Ly (MangoWC) · plasma-login-manager (KDE) |
 | Terminal | Ghostty |
 | Shell | Fish · Bash |
-| Browser | Configurable (Brave, Helium, Vivaldi, Firefox, LibreWolf, Chromium, Zen) |
+| Browser | Configurable (Brave, Helium, Vivaldi, Firefox, LibreWolf, Chromium, Zen Twilight) |
 | File Manager | Nautilus |
 | Editor | Zed |
 | Music | Spotify + Spicetify (Comfy theme) |
@@ -167,9 +167,9 @@ roudix/
 | Input | Source |
 |-------|--------|
 | nixpkgs | [nixos-unstable](https://github.com/NixOS/nixpkgs/tree/nixos-unstable) |
-| nixpkgs-stable | [nixos-25.11](https://github.com/NixOS/nixpkgs/tree/nixos-25.11) |
+| nixpkgs-stable | [nixos-26.05](https://github.com/NixOS/nixpkgs/tree/nixos-26.05) |
 | home-manager | [nix-community/home-manager](https://github.com/nix-community/home-manager) |
-| noctalia | [noctalia-dev/noctalia-shell](https://github.com/noctalia-dev/noctalia-shell) |
+| noctalia | [noctalia-dev/noctalia-shell](https://github.com/noctalia-dev/noctalia-shell) (v5) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
 | dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |

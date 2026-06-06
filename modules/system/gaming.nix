@@ -43,7 +43,7 @@ in
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = false;
     gamescopeSession = {
-      enable = true;
+      enable = false;
       args = [ "--prefer-output" "DP-1" ];
     };
     extraCompatPackages = with pkgs; [
@@ -81,6 +81,7 @@ in
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
     game-performance  # Wrapper governor CPU performance (usage: game-performance %command%)
+    gamescope-wsi
     #millennium-steam
   ];
 
@@ -91,6 +92,5 @@ in
   environment.sessionVariables = {
     OBS_VKCAPTURE = "1";
   };
-
   };
 }

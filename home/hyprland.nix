@@ -25,7 +25,7 @@ in
   config = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") {
 
     # ── Noctalia ─────────────────────────────────────────────────────────────
-    programs.noctalia-shell = lib.mkIf (shellType == "noctalia") {
+    programs.noctalia = lib.mkIf (shellType == "noctalia") {
       enable = true;
       package = null;
     };

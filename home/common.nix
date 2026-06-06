@@ -9,7 +9,7 @@ in
 {
   home.username = username;
   home.homeDirectory = "/home/${username}";
-  home.stateVersion = "26.05";
+  home.stateVersion = "26.11";
 
   imports = [
     ../modules/home/fastfetch.nix
@@ -67,6 +67,7 @@ in
     nh
     nvd
     capitaine-cursors
+    bibata-cursors
     deluge-gtk
     (discord.override { withVencord = true; })
     (element-desktop.override {
@@ -93,7 +94,7 @@ in
   ])
   # Zen Browser (optional)
   ++ lib.optional osConfig.roudix.zen.enable
-       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.beta;
+       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight;
 
   programs.home-manager.enable = true;
 }
