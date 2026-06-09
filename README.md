@@ -169,7 +169,7 @@ roudix/
 | nixpkgs | [nixos-unstable](https://github.com/NixOS/nixpkgs/tree/nixos-unstable) |
 | nixpkgs-stable | [nixos-26.05](https://github.com/NixOS/nixpkgs/tree/nixos-26.05) |
 | home-manager | [nix-community/home-manager](https://github.com/nix-community/home-manager) |
-| noctalia | [noctalia-dev/noctalia-shell](https://github.com/noctalia-dev/noctalia-shell) (v5) |
+| noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
 | dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
