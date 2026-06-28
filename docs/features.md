@@ -13,7 +13,7 @@
 
 ## Boot
 
-- Limine bootloader — modern, fast, multi-disk support
+- Limine bootloader (default) — modern, fast, multi-disk support — or systemd-boot, selectable via `roudix.boot.bootloader`
 - Automatic UEFI entry rename to "Roudix"
 - Multi-OS boot menu (Windows, other Linux distros on separate ESPs)
 - Boot label shows Roudix name + NixOS release version
@@ -22,13 +22,13 @@
 
 - Steam + Proton-GE + Proton-CachyOS (x86_64-v3) + Gamescope (gamescope-wsi, session disabled by default)
 - OBS capture env vars pre-configured (`OBS_VKCAPTURE` via `environment.sessionVariables`)
-- Custom horizontal MangoHud overlay
+- Custom horizontal MangoHud overlay (`Powered By Roudix` label)
 - Controller support (Steam Hardware + game-devices-udev-rules)
 - 32-bit support for Wine/Steam
 - `game-performance` wrapper — switches CPU governor to performance for the duration of a game (usage: `game-performance %command%` in Steam launch options)
 - `ffmpegthumbnailer` available system-wide (video thumbnails in file managers)
 - `protonup-qt` on KDE, `protonplus` on other DEs
-- Heroic, Lutris + Faugus Launcher (via roudix-caches), Hytale
+- Heroic, Lutris + Faugus Launcher (via roudix-caches)
 
 ## Desktop (Niri)
 
@@ -123,6 +123,8 @@
 - PipeWire with rnnoise stereo noise suppression (nofail, LADSPA_PATH compat 26.05/26.11)
 - Flatpak with Flathub remote + daily auto-update (via nix-flatpak)
 - Blueman Bluetooth manager
+- Matrix client — configurable via `roudix.matrixClient` (`element`, `cinny`, or `none`) — Element auto-selects kwallet6 on KDE, gnome-libsecret elsewhere
+- AppImage support enabled via `appimage.nix`
 - Waydroid (Android container) — optional, `roudix.waydroid.enable = true`
 - QEMU/KVM + Virt-Manager (optional)
 - VM guest optimizations module (clipboard sharing, auto-resize, QEMU agent, Spice)

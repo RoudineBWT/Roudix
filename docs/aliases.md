@@ -7,7 +7,7 @@
 | `rebuild` | Apply configuration immediately |
 | `update` | Update flake inputs + apply |
 | `cleanup` | Remove old generations + garbage collect |
-| `noctalia-reload` | Restart Quickshell without logging out |
+| `noctalia-reload` | Restart Noctalia without logging out |
 | `dms-reload` | Restart Quickshell without logging out |
 | `caelista-reload` | Restart Quickshell without logging out |
 | `roudix-switch <de>` | Switch desktop environment (applies on next reboot) |

@@ -23,7 +23,7 @@ in
       rebuild  = "nh os switch --accept-flake-config path:$NH_FLAKE";
       cleanup  = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-collect-garbage";
     } // lib.optionalAttrs (shellType == "noctalia") {
-      noctalia-reload  = "pkill -f quickshell; sleep 1; noctalia-shell --no-duplicate & disown";
+      noctalia-reload  = "pkill -f noctalia; sleep 1; noctalia & disown";
     } // lib.optionalAttrs (shellType == "dms") {
       dms-reload       = "dms restart";
     } // lib.optionalAttrs (shellType == "caelestia") {

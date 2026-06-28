@@ -14,7 +14,7 @@
     ../../modules/system/gaming.nix
     ../../modules/system/scx.nix
     ../../modules/system/flatpak.nix
-    ../../modules/system/gpu.nix
+    ../../modules/system/gpu
     ../../modules/system/roudix-rgb.nix
     ../../modules/system/cpu.nix
     ../../modules/system/pipewire.nix
@@ -25,6 +25,8 @@
     ../../modules/system/hosts-gta.nix
     ../../modules/system/mesa-git.nix
     ../../modules/system/waydroid.nix
+    ../../modules/system/matrix.nix
+    ../../modules/system/appimage.nix
      inputs.brave-previews.nixosModules.default
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
@@ -41,6 +43,7 @@
   roudix.memory.smBus   = lib.mkDefault "i2c-0";        # trouvé via: i2cdetect -l
   roudix.memory.sku    = lib.mkDefault "CMH64GX5M2B5200C40"; # trouvé via: sudo dmidecode -t memory | grep 'Part Number'
   # ── Features ────────────────────────────────────────────────────────────
+  roudix.boot.bootloader = lib.mkDefault "limine"; # "limine" or "systemd-boot"
   roudix.gaming.enable         = lib.mkDefault true;
   roudix.flatpak.enable        = lib.mkDefault false;
   roudix.fstrim.enable         = lib.mkDefault true;
@@ -50,7 +53,7 @@
   roudix.autoupdate.enable     = lib.mkDefault true;
   roudix.mesa.useGit = lib.mkDefault false;  # false = mesa stable du nixpkgs
   roudix.waydroid.enable = lib.mkDefault false;
-
+  roudix.matrixClient = lib.mkDefault "none"; # "element", "cinny" ou "none"
   # ── Network ─────────────────────────────────────────────────────────────
   networking.hostName = "roudix";
 }

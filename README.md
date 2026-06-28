@@ -35,7 +35,7 @@
 |-------|--------|
 | OS | Roudix (NixOS unstable) |
 | Kernel | CachyOS (linux-cachyos-lts-lto-v3) |
-| Bootloader | Limine |
+| Bootloader | Limine (default) · systemd-boot |
 | Compositor | Niri (scrollable tiling) · Hyprland (dynamic tiling) |
 | Graphical shell | Noctalia · DankMaterialShell · Caelestia |
 | Display Manager | DMS Greeter (Niri) · Ly (MangoWC) · plasma-login-manager (KDE) |
@@ -136,9 +136,11 @@ roudix/
     │   ├── flatpak.nix              # Flatpak service + auto update
     │   ├── fstrim.nix               # fstrim for SSD/NVMe
     │   ├── gaming.nix               # Steam, Gamescope, ananicy-cpp, game-performance
-    │   ├── gpu.nix                  # GPU configuration (AMD/NVIDIA/Intel)
+    │   ├── gpu/                     # GPU configuration (AMD/NVIDIA/Intel/VM — split per vendor)
     │   ├── hosts-gta.nix            # BattlEye hosts block (GTA fix, optional)
     │   ├── kernel.nix               # CachyOS kernel variant selection
+    │   ├── matrix.nix               # Matrix client selection (roudix.matrixClient)
+    │   ├── appimage.nix             # AppImage support
     │   ├── openlinkhub.nix          # OpenLinkHub — Corsair iCUE Link driver + RAM RGB (roudix.memory.*)
     │   ├── openrgb.nix              # OpenRGB LED control
     │   ├── roudix-rgb.nix           # RGB controller routing (openlinkhub / openrgb / none)
@@ -169,7 +171,7 @@ roudix/
 | nixpkgs | [nixos-unstable](https://github.com/NixOS/nixpkgs/tree/nixos-unstable) |
 | nixpkgs-stable | [nixos-26.05](https://github.com/NixOS/nixpkgs/tree/nixos-26.05) |
 | home-manager | [nix-community/home-manager](https://github.com/nix-community/home-manager) |
-| noctalia | [noctalia-dev/noctalia-shell](https://github.com/noctalia-dev/noctalia-shell) (v5) |
+| noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
 | dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |

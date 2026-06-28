@@ -5,6 +5,18 @@ let
   isHyprlandOrNiri = desktopType == "hyprland" || desktopType == "niri";
 
   brandingWallpaper = "${roudixBranding}/share/backgrounds/roudix/roudix-dark.png";
+
+  matrixClient = osConfig.roudix.matrixClient or "element";
+
+  matrixPackage = {
+    element = pkgs.element-desktop.override {
+      commandLineArgs = if osConfig.roudix.desktop.type == "kde"
+        then "--password-store=kwallet6"
+        else "--password-store=gnome-libsecret";
+    };
+    cinny  = pkgs.cinny-desktop;
+    none   = null;
+  }.${matrixClient};
 in
 {
   home.username = username;
@@ -70,11 +82,6 @@ in
     bibata-cursors
     deluge-gtk
     (discord.override { withVencord = true; })
-    (element-desktop.override {
-      commandLineArgs = if osConfig.roudix.desktop.type == "kde"
-        then "--password-store=kwallet6"
-        else "--password-store=gnome-libsecret";
-    })
     rustdesk-flutter
     kodi-wayland
     inkscape
@@ -92,6 +99,8 @@ in
       ];
     })
   ])
+  # Matrix client (optional)
+  ++ lib.optional (matrixPackage != null) matrixPackage
   # Zen Browser (optional)
   ++ lib.optional osConfig.roudix.zen.enable
        inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight;

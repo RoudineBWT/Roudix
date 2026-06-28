@@ -77,10 +77,12 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   hardware.myGpu      = "amd";                # "amd", "nvidia" or "intel"
   hardware.myCpu      = "intel";              # "intel" or "amd"
   hardware.myKernel   = "cachyos-lts-lto-v3"; # see below
+  roudix.boot.bootloader = "limine";          # "limine" or "systemd-boot"
   roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable   = false;                # set to true to also install Zen Browser (Twilight)
   roudix.rgb          = "openlinkhub";        # "openlinkhub", "openrgb" or "none" — see below
   roudix.mesa.useGit  = false;                # true = mesa-git (experimental, build may fail), false = nixpkgs stable
+  roudix.matrixClient = "none";               # "element", "cinny" or "none"
 
   # ── Locale / Timezone ───────────────────────────────────────────────────────
   time.timeZone                   = "Europe/Brussels"; # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -336,6 +338,8 @@ roudix.hosts.gtaFix.enable   = true;   # block BattlEye telemetry (GTA fix)
 roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
 roudix.zen.enable            = false;  # install Zen Browser (disabled by default)
 roudix.mesa.useGit           = false;  # true = mesa-git (experimental, bleeding edge — build may fail), false = nixpkgs stable
+roudix.boot.bootloader       = "limine";  # "limine" or "systemd-boot"
+roudix.matrixClient          = "none"; # "element", "cinny" or "none"
 ```
 
 > **Reminder:** If you set `roudix.autoupdate.enable = true`, also configure the interval:

@@ -7,7 +7,7 @@
 
   xdg.configFile."MangoHud/MangoHud.conf".text = ''
     legacy_layout=false
-    custom_text=Roudix
+    custom_text=Powered By Roudix
     gpu_stats
     gpu_load_change
     gpu_temp
