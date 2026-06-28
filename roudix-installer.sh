@@ -769,6 +769,19 @@ if [[ "$AUTOUPDATE" == "true" ]]; then
   [[ -n "$input_interval" ]] && AUTOUPDATE_INTERVAL="$input_interval"
 fi
 
+pick "Bootloader:" BOOTLOADER \
+  "limine|Limine — modern, fast, multi-disk support (recommended)" \
+  "systemd-boot|systemd-boot — simple UEFI bootloader"
+
+pick "Matrix client:" MATRIX_CLIENT \
+  "none|None" \
+  "element|Element Desktop — full-featured Matrix client" \
+  "cinny|Cinny — lightweight web-based Matrix client"
+
+pick "Enable Waydroid? (Android container)" WAYDROID \
+  "false|No" \
+  "true|Yes"
+
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
 
@@ -793,6 +806,9 @@ sed -i -E "s/roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix
 sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.virtualization.enable = ${VIRTUALIZATION}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.autoupdate.enable    = ${AUTOUPDATE}/" hosts/roudix/local.nix
 sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.waydroid.enable = ${WAYDROID}/" hosts/roudix/local.nix
 
 if [[ "$RGB" == "openlinkhub" ]]; then
   sed -i -E "s/roudix\.memory\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.memory.enable = ${MEMORY_ENABLE}/"   hosts/roudix/local.nix
@@ -828,6 +844,9 @@ echo -e "
   ${BOLD}Flatpak       :${NC} $FLATPAK
   ${BOLD}Virtualization:${NC} $VIRTUALIZATION
   ${BOLD}Auto-update   :${NC} $AUTOUPDATE $([ "$AUTOUPDATE" == "true" ] && echo "(every $AUTOUPDATE_INTERVAL)")
+  ${BOLD}Bootloader    :${NC} $BOOTLOADER
+  ${BOLD}Matrix client :${NC} $MATRIX_CLIENT
+  ${BOLD}Waydroid      :${NC} $WAYDROID
   ${BOLD}Config dir    :${NC} $INSTALL_DIR
 "
 

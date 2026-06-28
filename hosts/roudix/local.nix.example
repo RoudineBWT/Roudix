@@ -33,6 +33,8 @@
   hardware.myKernel = "cachyos-lts-lto-v3"; # see README for all variants
 
   # ── Optional modules ──────────────────────────────────────────────────────
+  roudix.boot.bootloader = "limine";   # "limine" or "systemd-boot"
+  roudix.matrixClient = "none";        # "element", "cinny" or "none"
   roudix.gaming.enable        = true;         # disable to skip Steam, Wine, etc.
   roudix.flatpak.enable       = false;        # enable Flatpak support
   roudix.virtualization.enable = false;       # enable libvirt / virt-manager
@@ -40,7 +42,7 @@
   roudix.autoupdate.enable    = true;         # automatic NixOS updates
   roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
   roudix.mesa.useGit = false;  # false = mesa stable
-
+  roudix.waydroid.enable = false;      # enable Android container
   # ── Misc ──────────────────────────────────────────────────────────────────
   roudix.hosts.gtaFix.enable  = false;      # fix GTA Online to play with your friends but they need to block battleye telemetry in /etc/hosts and if they are on windows in C:\Windows\System32\drivers\etc\hosts
   # roudix.autoupdate.branch   = "main";
