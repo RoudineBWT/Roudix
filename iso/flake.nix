@@ -9,7 +9,7 @@
     nixosConfigurations.roudix-iso = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical.nix"
+        "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-base.nix"
         ./iso-configuration.nix
       ];
     };
