@@ -36,10 +36,9 @@
     sandbox = false;
   };
 
-  # ── Autologin sur la live ─────────────────────────────────────────────────
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "nixos";
-  services.displayManager.defaultSession = "xfce";
+  # ── Autologin ─────────────────────────────────────────────────────────────
+  # Le module installation-cd-graphical-calamares.nix gère déjà l'autologin.
+  # On ne surcharge pas defaultSession — c'est nixpkgs qui le détermine.
 
   # ── Packages disponibles sur la live ─────────────────────────────────────
   environment.systemPackages = with pkgs; [
