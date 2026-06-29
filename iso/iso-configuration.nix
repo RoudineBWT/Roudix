@@ -98,6 +98,10 @@
     # Settings principal
     "calamares/settings.conf".source = ./calamares/settings.conf;
     "calamares/qml".source = "${pkgs.calamares}/share/calamares/qml";
+    "calamares/branding/roudix/branding.desc".source = ./calamares/branding/roudix/branding.desc;
+    "calamares/branding/roudix/show.qml".source      = ./calamares/branding/roudix/show.qml;
+    "calamares/branding/roudix/logo.png".source      = ./calamares/branding/roudix/logo.png;
+    "calamares/branding/roudix/languages.png".source = ./calamares/branding/roudix/languages.png;
 
     # Modules de config
     "calamares/modules/nixos.conf".source        = ./calamares/modules/nixos.conf;
@@ -118,6 +122,20 @@
       name: "nixos"
       interface: "python"
       script: "main.py"
+    '';
+  };
+
+
+  system.activationScripts.calamaresConfig = {
+    deps = [ "etc" ];
+    text = ''
+      if [ -L /etc/calamares/settings.conf ]; then
+        tmp=$(mktemp -d)
+        cp -rL /etc/calamares/. "$tmp/"
+        rm -rf /etc/calamares
+        cp -r "$tmp/." /etc/calamares/
+        rm -rf "$tmp"
+      fi
     '';
   };
 

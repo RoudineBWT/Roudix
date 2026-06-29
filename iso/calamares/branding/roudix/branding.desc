@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: no
+# SPDX-License-Identifier: CC0-1.0
+---
+componentName: roudix
+
+### WELCOME / OVERALL WORDING
+
+welcomeStyleCalamares: false
+
+welcomeExpandingLogo: true
+
+### STRINGS
+
+strings:
+    productName:         "Roudix"
+    shortProductName:    "Roudix"
+    version:             "Unstable"
+    shortVersion:        "unstable"
+    versionedName:       "Roudix (NixOS Unstable)"
+    shortVersionedName:  "Roudix"
+    bootloaderEntryName: "Roudix"
+    productUrl:          "https://github.com/roudix"
+    supportUrl:          "https://github.com/roudix/issues"
+    knownIssuesUrl:      "https://github.com/roudix/issues"
+    releaseNotesUrl:     "https://github.com/roudix"
+    donateUrl:           ""
+
+### IMAGES
+
+images:
+    productLogo:         "logo.png"
+    productIcon:         "logo.png"
+    productWelcome:      "languages.png"
+
+### SLIDESHOW
+
+slideshow:               "show.qml"
+
+slideshowAPI: 2
+
+### STYLE
+
+style:
+    sidebarBackground:    "#1b1f27"
+    sidebarText:          "#FFFFFF"
+    sidebarTextSelect:    "#4a90d9"
+    sidebarTextHighlight: "#4a90d9"
