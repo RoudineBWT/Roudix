@@ -1,0 +1,75 @@
+name: "💿 Build Roudix ISO"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache
+          sudo rm -rf /usr/local/share/boost
+          sudo docker image prune -af || true
+          df -h
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Prepare roudix-cfg (embed main flake into ISO)
+        run: |
+          mkdir -p iso/roudix-cfg
+          rsync -av \
+            --exclude='iso/' \
+            --exclude='.git/' \
+            --exclude='result' \
+            . iso/roudix-cfg/
+
+      - name: Build ISO
+        run: |
+          cd iso
+          nix build .#packages.x86_64-linux.iso \
+            --accept-flake-config \
+            --option sandbox false \
+            -L
+
+      - name: Rename ISO
+        run: |
+          ISO_PATH=$(readlink -f iso/result/iso/*.iso)
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          cp "$ISO_PATH" "roudix-${SHORT_SHA}.iso"
+          echo "ISO_NAME=roudix-${SHORT_SHA}.iso" >> $GITHUB_ENV
+
+      - name: Upload ISO as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: roudix-iso
+          path: roudix-*.iso
+          retention-days: 7
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: iso-${{ github.run_number }}
+          name: "Roudix ISO — build #${{ github.run_number }} (${{ github.sha }})"
+          files: roudix-*.iso
+          draft: true
+          body: |
+            ISO Roudix générée automatiquement depuis le commit `${{ github.sha }}`.
+
+            **Pour tester en VM :**
+            ```
+            qemu-system-x86_64 -m 4G -cdrom roudix-*.iso -boot d
+            ```
+
+            Cette release est en **draft** — à publier manuellement après validation.
