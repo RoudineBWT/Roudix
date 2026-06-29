@@ -101,7 +101,8 @@
     "calamares/branding/roudix/branding.desc".source = ./calamares/branding/roudix/branding.desc;
     "calamares/branding/roudix/show.qml".source      = ./calamares/branding/roudix/show.qml;
     "calamares/branding/roudix/logo.png".source      = ./calamares/branding/roudix/logo.png;
-    "calamares/branding/roudix/languages.png".source = ./calamares/branding/roudix/languages.png;
+    "calamares/branding/roudix/languages.png".source =
+      "${pkgs.calamares}/share/calamares/branding/default/languages.png";
 
     # Modules de config
     "calamares/modules/nixos.conf".source        = ./calamares/modules/nixos.conf;
