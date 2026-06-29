@@ -65,7 +65,7 @@
 
     # Nix
     nixos-install-tools
-    calamares-qt6
+    calamares
 
     # Calamares deps
     python3
