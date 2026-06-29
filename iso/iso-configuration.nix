@@ -82,7 +82,7 @@
     }
   ];
 
-  isoImage.isoName   = "roudix.iso";
+  image.fileName     = "roudix.iso";
   isoImage.volumeID  = "ROUDIX";
 
   # ── Config Calamares ──────────────────────────────────────────────────────

@@ -35,6 +35,12 @@ jobs:
             --exclude='result' \
             . iso/roudix-cfg/
 
+      - name: Track roudix-cfg in Git (requis par Nix flake)
+        run: |
+          git config user.email "ci@roudix"
+          git config user.name "Roudix CI"
+          git add -f iso/roudix-cfg
+
       - name: Build ISO
         run: |
           cd iso
