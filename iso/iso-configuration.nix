@@ -39,6 +39,7 @@
   # ── Autologin sur la live ─────────────────────────────────────────────────
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "nixos";
+  services.displayManager.defaultSession = "xfce";
 
   # ── Packages disponibles sur la live ─────────────────────────────────────
   environment.systemPackages = with pkgs; [
