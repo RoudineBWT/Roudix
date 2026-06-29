@@ -97,6 +97,7 @@
   environment.etc = {
     # Settings principal
     "calamares/settings.conf".source = ./calamares/settings.conf;
+    "calamares/qml".source = "${pkgs.calamares}/share/calamares/qml";
 
     # Modules de config
     "calamares/modules/nixos.conf".source        = ./calamares/modules/nixos.conf;
