@@ -13,7 +13,6 @@
   # ── Nix settings ─────────────────────────────────────────────────────────
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    # Tous les caches Roudix pour que nixos-install soit rapide
     substituters = [
       "https://cache.nixos.org"
       "https://roudix.cachix.org"
@@ -32,16 +31,10 @@
       "glf:gLU8OSnfaopb5atQHiNJDgvS7/VbQ8HDQn3GOWT8w7Y="
       "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
     ];
-    # Permettre à nixos-install de tourner sans sandbox depuis la live
     sandbox = false;
   };
 
   # ── Autologin ─────────────────────────────────────────────────────────────
-  # Requis par KPMCore (backend de partitionnement de Calamares)
-  # Sans udisks2 + polkit, le module partition détecte 0 device.
-  services.udisks2.enable = true;
-  security.polkit.enable = true;
-
   services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
@@ -50,26 +43,8 @@
     user = "nixos";
   };
 
-  # Lance Calamares automatiquement à la connexion (comme EndeavourOS/GLF-OS)
-  environment.etc."xdg/autostart/roudix-installer.desktop".text = ''
-    [Desktop Entry]
-    Type=Application
-    Name=Installateur Roudix
-    Exec=sudo calamares -c /etc/calamares/
-    Icon=calamares
-    Terminal=false
-    X-GNOME-Autostart-enabled=true
-  '';
-
-  # sudo sans mot de passe pour nixos (live only) — requis pour l'autostart ci-dessus
-  security.sudo.extraRules = [{
-    users = [ "nixos" ];
-    commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }];
-  }];
-
   # ── Packages disponibles sur la live ─────────────────────────────────────
   environment.systemPackages = with pkgs; [
-    # Outils d'installation
     git
     curl
     wget
@@ -81,19 +56,17 @@
     e2fsprogs
     btrfs-progs
     efibootmgr
-    pciutils       # lspci — détection GPU dans nixos.py
+    pciutils
     usbutils
     dmidecode
 
-    # Nix
     nixos-install-tools
     calamares
+    calamares-nixos-extensions  # contient désormais notre module + branding patchés
 
-    # Calamares deps
     python3
     xdg-user-dirs
 
-    # Utilitaires live utiles
     vim
     htop
     networkmanagerapplet
@@ -113,60 +86,7 @@
   image.fileName     = "roudix.iso";
   isoImage.volumeID  = "ROUDIX";
 
-  # ── Config Calamares ──────────────────────────────────────────────────────
-  # nixos.py est un module Python custom — il doit être dans un dossier
-  # "nixos" avec un descripteur module.desc pour que Calamares le charge.
-  environment.etc = {
-    # Settings principal
-    "calamares/settings.conf".source = ./calamares/settings.conf;
-    "calamares/qml".source = "${pkgs.calamares}/share/calamares/qml";
-    "calamares/branding/roudix/branding.desc".source = ./calamares/branding/roudix/branding.desc;
-    "calamares/branding/roudix/show.qml".source      = ./calamares/branding/roudix/show.qml;
-    "calamares/branding/roudix/logo.png".source      = ./calamares/branding/roudix/logo.png;
-    "calamares/branding/roudix/languages.png".source =
-      "${pkgs.calamares}/share/calamares/branding/default/languages.png";
-
-    # Modules de config
-    "calamares/modules/nixos.conf".source        = ./calamares/modules/nixos.conf;
-    "calamares/modules/users.conf".source        = ./calamares/modules/users.conf;
-    "calamares/modules/partition.conf".source    = ./calamares/modules/partition.conf;
-    "calamares/modules/locale.conf".source       = ./calamares/modules/locale.conf;
-    "calamares/modules/welcome.conf".source      = ./calamares/modules/welcome.conf;
-    "calamares/modules/packagechooser-desktop.conf".source = ./calamares/modules/packagechooser-desktop.conf;
-    "calamares/modules/packagechooser-shell.conf".source   = ./calamares/modules/packagechooser-shell.conf;
-    "calamares/modules/packagechooser-kernel.conf".source  = ./calamares/modules/packagechooser-kernel.conf;
-    "calamares/modules/packagechooser-browser.conf".source = ./calamares/modules/packagechooser-browser.conf;
-
-    # Module Python custom nixos — Calamares cherche le .py dans un sous-dossier
-    # portant le nom du module, avec un module.desc dedans.
-    "calamares/modules/nixos/main.py".source     = ./calamares/modules/nixos.py;
-    "calamares/modules/nixos/module.desc".text   = ''
-      ---
-      type: "job"
-      name: "nixos"
-      interface: "python"
-      script: "main.py"
-    '';
-  };
-
-
-  system.activationScripts.calamaresConfig = {
-    deps = [ "etc" ];
-    text = ''
-      if [ -L /etc/calamares/settings.conf ]; then
-        tmp=$(mktemp -d)
-        cp -rL /etc/calamares/. "$tmp/"
-        rm -rf /etc/calamares
-        cp -r "$tmp/." /etc/calamares/
-        rm -rf "$tmp"
-      fi
-    '';
-  };
-
   # ── Script post-install : clone le repo dans ~/.config/roudix ────────────
-  # NH_FLAKE dans common.nix pointe vers /home/<user>/.config/roudix
-  # Ce script est embarqué dans l'ISO et lancé par Calamares en fin d'install
-  # via un module shellprocess (à ajouter dans settings.conf si besoin).
   environment.etc."calamares/scripts/post-install.sh" = {
     mode = "0755";
     text = ''

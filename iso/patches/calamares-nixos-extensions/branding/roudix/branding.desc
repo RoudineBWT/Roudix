@@ -3,13 +3,8 @@
 ---
 componentName: roudix
 
-### WELCOME / OVERALL WORDING
-
 welcomeStyleCalamares: false
-
 welcomeExpandingLogo: true
-
-### STRINGS
 
 strings:
     productName:         "Roudix"
@@ -25,20 +20,13 @@ strings:
     releaseNotesUrl:     "https://github.com/roudix"
     donateUrl:           ""
 
-### IMAGES
-
 images:
     productLogo:         "logo.png"
     productIcon:         "logo.png"
     productWelcome:      "languages.png"
 
-### SLIDESHOW
-
 slideshow:               "show.qml"
-
 slideshowAPI: 2
-
-### STYLE
 
 style:
     sidebarBackground:    "#1b1f27"
