@@ -23,9 +23,6 @@
         calamares-nixos-extensions = prev.calamares-nixos-extensions.overrideAttrs (oldAttrs: {
           postInstall = (oldAttrs.postInstall or "") + ''
             mkdir -p $out/lib/calamares/modules/nixos
-            mkdir -p $out/lib/calamares/modules/roudixoptions
-            mkdir -p $out/lib/calamares/modules/roudixsoftware
-            mkdir -p $out/lib/calamares/modules/roudixextras
             mkdir -p $out/etc/calamares/modules
             mkdir -p $out/share/calamares/branding/roudix
 
@@ -35,35 +32,11 @@
             cp ${./patches/calamares-nixos-extensions/modules/nixos/module.desc} \
                $out/lib/calamares/modules/nixos/module.desc
 
-            # Module Roudix Options — page Matériel (GPU/CPU/VM)
-            cp ${./patches/calamares-nixos-extensions/modules/roudixoptions/module.desc} \
-               $out/lib/calamares/modules/roudixoptions/module.desc
-            cp ${./patches/calamares-nixos-extensions/modules/roudixoptions/main.qml} \
-               $out/lib/calamares/modules/roudixoptions/main.qml
-            cp ${./patches/calamares-nixos-extensions/modules/roudixoptions/viewmodule.py} \
-               $out/lib/calamares/modules/roudixoptions/viewmodule.py
-
-            # Module Roudix Software — page Logiciels (kernel/browser/desktop/shell/gaming)
-            cp ${./patches/calamares-nixos-extensions/modules/roudixsoftware/module.desc} \
-               $out/lib/calamares/modules/roudixsoftware/module.desc
-            cp ${./patches/calamares-nixos-extensions/modules/roudixsoftware/main.qml} \
-               $out/lib/calamares/modules/roudixsoftware/main.qml
-            cp ${./patches/calamares-nixos-extensions/modules/roudixsoftware/viewmodule.py} \
-               $out/lib/calamares/modules/roudixsoftware/viewmodule.py
-
-            # Module Roudix Extras — page Extras (gta/flatpak/virt/autoupdate/bootloader/matrix/waydroid)
-            cp ${./patches/calamares-nixos-extensions/modules/roudixextras/module.desc} \
-               $out/lib/calamares/modules/roudixextras/module.desc
-            cp ${./patches/calamares-nixos-extensions/modules/roudixextras/main.qml} \
-               $out/lib/calamares/modules/roudixextras/main.qml
-            cp ${./patches/calamares-nixos-extensions/modules/roudixextras/viewmodule.py} \
-               $out/lib/calamares/modules/roudixextras/viewmodule.py
-
             # settings.conf principal — écrase celui par défaut
             cp ${./patches/calamares-nixos-extensions/config/settings.conf} \
                $out/etc/calamares/settings.conf
 
-            # Configs des modules d'instance (packagechooser, users, locale, welcome...)
+            # Configs des modules d'instance (locale/nixos/welcome/users)
             cp ${./patches/calamares-nixos-extensions/config/modules/locale.conf} \
                $out/etc/calamares/modules/locale.conf
             cp ${./patches/calamares-nixos-extensions/config/modules/nixos.conf} \
@@ -72,14 +45,48 @@
                $out/etc/calamares/modules/welcome.conf
             cp ${./patches/calamares-nixos-extensions/config/modules/users.conf} \
                $out/etc/calamares/modules/users.conf
-            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-desktop.conf} \
-               $out/etc/calamares/modules/packagechooser-desktop.conf
-            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-shell.conf} \
-               $out/etc/calamares/modules/packagechooser-shell.conf
+
+            # Configs des instances packagechooser (matériel, logiciels, extras)
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-gpu.conf} \
+               $out/etc/calamares/modules/packagechooser-gpu.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-nvidialaptop.conf} \
+               $out/etc/calamares/modules/packagechooser-nvidialaptop.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-cpu.conf} \
+               $out/etc/calamares/modules/packagechooser-cpu.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-vmguest.conf} \
+               $out/etc/calamares/modules/packagechooser-vmguest.conf
             cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-kernel.conf} \
                $out/etc/calamares/modules/packagechooser-kernel.conf
             cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-browser.conf} \
                $out/etc/calamares/modules/packagechooser-browser.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-bravevariant.conf} \
+               $out/etc/calamares/modules/packagechooser-bravevariant.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-zen.conf} \
+               $out/etc/calamares/modules/packagechooser-zen.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-desktop.conf} \
+               $out/etc/calamares/modules/packagechooser-desktop.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-shell.conf} \
+               $out/etc/calamares/modules/packagechooser-shell.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-shelldefault.conf} \
+               $out/etc/calamares/modules/packagechooser-shelldefault.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-gaming.conf} \
+               $out/etc/calamares/modules/packagechooser-gaming.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-gtafix.conf} \
+               $out/etc/calamares/modules/packagechooser-gtafix.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-flatpak.conf} \
+               $out/etc/calamares/modules/packagechooser-flatpak.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-virtualization.conf} \
+               $out/etc/calamares/modules/packagechooser-virtualization.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-autoupdate.conf} \
+               $out/etc/calamares/modules/packagechooser-autoupdate.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-autoupdateinterval.conf} \
+               $out/etc/calamares/modules/packagechooser-autoupdateinterval.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-bootloader.conf} \
+               $out/etc/calamares/modules/packagechooser-bootloader.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-matrix.conf} \
+               $out/etc/calamares/modules/packagechooser-matrix.conf
+            cp ${./patches/calamares-nixos-extensions/config/modules/packagechooser-waydroid.conf} \
+               $out/etc/calamares/modules/packagechooser-waydroid.conf
 
             # Branding Roudix
             cp ${./patches/calamares-nixos-extensions/branding/roudix/branding.desc} \

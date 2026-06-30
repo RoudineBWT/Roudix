@@ -199,44 +199,43 @@ def run():
         f"Roudix: GPU détecté = {gpu}, CPU = {cpu}, microarch = {cpu_microarch}, VM = {is_vm}"
     )
 
-    # ── Récupération des choix Calamares (pages roudixoptions/software/extras) ──
-    hw      = gs.value("roudixHardware") or {}
-    sw      = gs.value("roudixSoftware") or {}
-    extras  = gs.value("roudixExtras")   or {}
+    # ── Récupération des choix Calamares (instances packagechooser) ─────────
+    # Chaque instance packagechooser stocke son choix dans globalstorage sous
+    # la clé "packagechooser_<id>" (id défini dans settings.conf > instances).
 
-    # Le GPU/CPU détecté par main.py (lspci/cpuinfo, ci-dessus) sert de
-    # fallback si la page roudixoptions n'a pas tourné ; sinon le choix
-    # (éventuellement corrigé) de l'utilisateur dans la page prévaut.
-    gpu            = hw.get("gpu") or gpu
-    nvidia_laptop  = "true" if hw.get("nvidiaLaptop") else "false"
-    cpu            = hw.get("cpu") or cpu
-    is_vm_raw     = hw.get("vmGuest", is_vm)
-    is_vm         = is_vm_raw if isinstance(is_vm_raw, bool) else str(is_vm_raw).lower() == "true"
+    # GPU/CPU : le choix de l'utilisateur (pages packagechooser) prévaut sur
+    # la détection automatique lspci/cpuinfo faite plus haut, qui sert de
+    # valeur par défaut affichée mais peut être corrigée par l'utilisateur.
+    gpu            = gs.value("packagechooser_gpu") or gpu
+    nvidia_laptop  = gs.value("packagechooser_nvidialaptop") or "false"
+    cpu            = gs.value("packagechooser_cpu") or cpu
+    vm_choice      = gs.value("packagechooser_vmguest")
+    is_vm          = (vm_choice == "true") if vm_choice is not None else is_vm
 
-    desktop_type  = sw.get("de")            or "niri"
-    desktop_shell = sw.get("desktopShell")  or "noctalia"
-    shell_default = sw.get("shellDefault")  or "fish"
-    browser_raw   = sw.get("browser")       or "brave"
-    zen           = "true" if sw.get("zen") else "false"
-    gaming        = "true" if sw.get("gaming", True) else "false"
-    # Calamares renvoie une string — on la transforme en liste Nix
-    browsers_nix  = " ".join([f'"{b}"' for b in browser_raw.split()]) if browser_raw != "none" else ""
+    desktop_type  = gs.value("packagechooser_desktop")  or "niri"
+    desktop_shell = gs.value("packagechooser_shell")    or "noctalia"
+    shell_default = gs.value("packagechooser_shelldefault") or "fish"
+    gaming        = gs.value("packagechooser_gaming")   or "true"
+
+    # Browser — si "brave" est choisi, la variante précise vient de
+    # l'instance packagechooser_bravevariant (sinon ignorée).
+    browser_choice = gs.value("packagechooser_browser") or "brave"
+    if browser_choice == "brave":
+        browser_choice = gs.value("packagechooser_bravevariant") or "brave"
+    zen = gs.value("packagechooser_zen") or "false"
+    browsers_nix = f'"{browser_choice}"' if browser_choice != "none" else ""
 
     rgb                 = "none"  # page RGB pas encore implémentée
-    gta_fix             = "true" if extras.get("gtaFix") else "false"
-    flatpak             = "true" if extras.get("flatpak", True) else "false"
-    virtualization      = "true" if extras.get("virtualization") else "false"
-    autoupdate          = "true" if extras.get("autoupdate", True) else "false"
-    autoupdate_interval = extras.get("autoupdateInterval") or "1h"
-    matrix_client       = extras.get("matrixClient") or "none"
-    waydroid            = "true" if extras.get("waydroid") else "false"
+    gta_fix             = gs.value("packagechooser_gtafix")         or "false"
+    flatpak             = gs.value("packagechooser_flatpak")        or "false"
+    virtualization      = gs.value("packagechooser_virtualization") or "false"
+    autoupdate          = gs.value("packagechooser_autoupdate")     or "true"
+    autoupdate_interval = gs.value("packagechooser_autoupdateinterval") or "1h"
+    matrix_client       = gs.value("packagechooser_matrix")         or "none"
+    waydroid            = gs.value("packagechooser_waydroid")       or "false"
 
-    # Kernel — l'utilisateur choisit la variante CachyOS complète dans
-    # roudixsoftware (déjà avec sa déclinaison v3/v4/lto/rc), donc on
-    # l'utilise telle quelle, sans recombiner avec la micro-architecture.
-    kernel = sw.get("kernel") or "cachyos-latest"
-
-    bootloader = extras.get("bootloader") or "limine"
+    kernel     = gs.value("packagechooser_kernel")    or "cachyos-latest"
+    bootloader = gs.value("packagechooser_bootloader") or "limine"
 
     # Timezone
     region   = gs.value("locationRegion") or "Europe"

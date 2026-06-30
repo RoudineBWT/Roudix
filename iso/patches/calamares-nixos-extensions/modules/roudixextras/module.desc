@@ -1,5 +1,0 @@
----
-type: "view"
-name: "roudixextras"
-interface: "qml"
-qmlName: "main.qml"
