@@ -76,6 +76,47 @@ def detect_cpu():
         pass
     return 'intel'
 
+# AMD Zen4 — Ryzen 7000/8000 desktop, 7040/8040 mobile, EPYC 9004/9005
+ZEN4_MODEL_HINTS = (
+    "ryzen 9 7", "ryzen 7 7", "ryzen 5 7", "ryzen 3 7",
+    "ryzen 9 8", "ryzen 7 8", "ryzen 5 8", "ryzen 3 8",
+    "ryzen threadripper 7", "epyc 9",
+)
+
+def detect_cpu_microarch():
+    """
+    Détermine la meilleure variante CachyOS selon le CPU :
+        'zen4'  : AMD Zen4 (Ryzen 7000/8000, EPYC 9004/9005)
+        'v4'    : CPU supportant AVX-512 (x86-64-v4)
+        'v3'    : CPU supportant AVX2 (x86-64-v3) — fallback le plus courant
+    On lit /proc/cpuinfo pour les flags et le modèle exact.
+    """
+    try:
+        with open('/proc/cpuinfo', 'r') as f:
+            content = f.read()
+    except Exception:
+        return 'v3'
+
+    content_lower = content.lower()
+
+    # Zen4 — basé sur le nom de modèle (le plus fiable pour ces gammes)
+    if any(hint in content_lower for hint in ZEN4_MODEL_HINTS):
+        return 'zen4'
+
+    # x86-64-v4 nécessite AVX-512 (entre autres) — on vérifie les flags
+    flags_line = next(
+        (line for line in content.splitlines() if line.lower().startswith("flags")),
+        ""
+    )
+    flags = set(flags_line.split(":")[-1].split()) if ":" in flags_line else set()
+
+    v4_required = {"avx512f", "avx512bw", "avx512cd", "avx512dq", "avx512vl"}
+    if v4_required.issubset(flags):
+        return 'v4'
+
+    # x86-64-v3 (AVX2) — fallback par défaut pour le matériel post-2013
+    return 'v3'
+
 # ── Templates local.nix ───────────────────────────────────────────────────────
 
 local_nix_template = """{{ lib, ... }}:
@@ -143,19 +184,35 @@ def run():
     vga_devices = get_vga_devices()
     gpu = detect_gpu(vga_devices)
     cpu = detect_cpu()
+    cpu_microarch = detect_cpu_microarch()
     is_vm = (gpu == 'vm')
     if is_vm:
         gpu = 'intel'  # fallback pour les VMs
 
-    libcalamares.utils.debug(f"Roudix: GPU détecté = {gpu}, CPU = {cpu}, VM = {is_vm}")
+    libcalamares.utils.debug(
+        f"Roudix: GPU détecté = {gpu}, CPU = {cpu}, microarch = {cpu_microarch}, VM = {is_vm}"
+    )
 
     # ── Récupération des choix Calamares ────────────────────────────────────
     desktop_type  = gs.value("packagechooser_desktop") or "niri"
     desktop_shell = gs.value("packagechooser_shell")   or "noctalia"
-    kernel        = gs.value("packagechooser_kernel")  or "cachyos-lts-lto-v3"
     browser_raw   = gs.value("packagechooser_browser") or "helium"
     # Calamares renvoie une string — on la transforme en liste Nix
     browsers_nix  = " ".join([f'"{b}"' for b in browser_raw.split()])
+
+    # Kernel — l'utilisateur choisit LTS/Latest (ou une variante spéciale
+    # comme BORE/Hardened), la micro-architecture (v3/v4/zen4) est ajoutée
+    # automatiquement selon le CPU détecté ci-dessus.
+    kernel_family = gs.value("packagechooser_kernel") or "cachyos-lts"
+    # Les variantes spéciales (bore, eevdf, hardened...) n'ont pas de
+    # déclinaison par micro-architecture dans kernel.nix — on les laisse
+    # telles quelles. Seules "cachyos-lts" et "cachyos-latest" se combinent.
+    if kernel_family in ("cachyos-lts", "cachyos-latest"):
+        kernel = f"{kernel_family}-lto-{cpu_microarch}"
+    else:
+        kernel = kernel_family
+
+    libcalamares.utils.debug(f"Roudix: kernel sélectionné = {kernel}")
 
     # Bootloader selon firmware
     fw_type    = gs.value("firmwareType")
@@ -209,11 +266,12 @@ def run():
     iso_cfg_src = "/iso/iso-cfg"
     nixos_dest  = os.path.join(root_mount_point, "etc/nixos")
 
-    # Backup hardware-configuration.nix avant écrasement
-    hw_cfg_dest = os.path.join(nixos_dest, "hardware-configuration.nix")
+    # Backup hardware-configuration.nix générée par nixos-generate-config
+    # avant que la copie du flake n'écrase /etc/nixos/
+    hw_cfg_generated = os.path.join(nixos_dest, "hardware-configuration.nix")
     hw_backup = ""
     try:
-        with open(hw_cfg_dest, "r") as f:
+        with open(hw_cfg_generated, "r") as f:
             hw_backup = f.read()
     except Exception as e:
         return ("Impossible de lire hardware-configuration.nix", str(e))
@@ -227,14 +285,19 @@ def run():
     except subprocess.CalledProcessError as e:
         return ("Échec de la copie du flake Roudix", str(e))
 
-    # Restaurer hardware-configuration.nix (la copie l'a peut-être écrasé)
+    # Écrire hardware-configuration.nix là où le flake l'attend :
+    # hosts/roudix/hardware-configuration.nix (pas /etc/nixos/ racine)
+    hw_cfg_dest = os.path.join(nixos_dest, "hosts/roudix/hardware-configuration.nix")
     try:
+        libcalamares.utils.host_env_process_output(
+            ["mkdir", "-p", os.path.dirname(hw_cfg_dest)], None
+        )
         libcalamares.utils.host_env_process_output(
             ["cp", "/dev/stdin", hw_cfg_dest], None, hw_backup
         )
         subprocess.run(["sudo", "chmod", "644", hw_cfg_dest], check=True)
     except Exception as e:
-        libcalamares.utils.warning(f"Impossible de restaurer hardware-configuration.nix: {e}")
+        return ("Impossible d'écrire hardware-configuration.nix", str(e))
 
     # ── Génération des fichiers gitignorés ───────────────────────────────────
     status = _("Génération de la configuration personnalisée")
