@@ -10,15 +10,17 @@
       system = "x86_64-linux";
 
       # ──────────────────────────────────────────────────────────────────
-      # Overlay : on patche calamares (le binaire réellement exécuté) pour
-      # y injecter notre module "nixos" custom, nos configs, et notre
-      # branding. Tout est copié DANS LE STORE de pkgs.calamares lui-même
-      # (pas dans /etc au runtime, et pas dans un paquet séparé comme
-      # calamares-nixos-extensions qui n'est PAS dans le même prefix que
-      # le binaire calamares exécuté -> "local" ne le trouverait jamais).
+      # Overlay : on patche calamares-nixos-extensions (PAS calamares lui-
+      # même). Le module officiel NixOS installe calamares ET
+      # calamares-nixos-extensions côte à côte dans environment.systemPackages.
+      # NixOS fusionne tous les paquets installés dans
+      # /run/current-system/sw/{bin,lib,share}/ : c'est CE chemin que
+      # Calamares utilise réellement comme search path (cf settings.conf
+      # -> modules-search inclut /run/current-system/sw/lib/calamares/modules),
+      # pas le $out du binaire calamares pris isolément.
       # ──────────────────────────────────────────────────────────────────
       roudixOverlay = final: prev: {
-        calamares = prev.calamares.overrideAttrs (oldAttrs: {
+        calamares-nixos-extensions = prev.calamares-nixos-extensions.overrideAttrs (oldAttrs: {
           postInstall = (oldAttrs.postInstall or "") + ''
             mkdir -p $out/lib/calamares/modules/nixos
             mkdir -p $out/etc/calamares/modules
@@ -30,7 +32,7 @@
             cp ${./patches/calamares-nixos-extensions/modules/nixos/module.desc} \
                $out/lib/calamares/modules/nixos/module.desc
 
-            # settings.conf principal — écrase celui par défaut de calamares
+            # settings.conf principal — écrase celui par défaut
             cp ${./patches/calamares-nixos-extensions/config/settings.conf} \
                $out/etc/calamares/settings.conf
 
@@ -58,12 +60,10 @@
             cp ${./patches/calamares-nixos-extensions/branding/roudix/show.qml} \
                $out/share/calamares/branding/roudix/show.qml
 
-            # Images : reprises du branding "default" déjà présent dans ce même $out
-            # (évite de committer des binaires ; remplace par tes propres assets
-            #  plus tard en les ajoutant dans patches/calamares-nixos-extensions/branding/roudix/)
-            cp $out/share/calamares/branding/default/languages.png \
+            # Images : reprises du branding "default" fourni par calamares lui-même
+            cp ${final.calamares}/share/calamares/branding/default/languages.png \
                $out/share/calamares/branding/roudix/languages.png
-            cp $out/share/calamares/branding/default/languages.png \
+            cp ${final.calamares}/share/calamares/branding/default/languages.png \
                $out/share/calamares/branding/roudix/logo.png
           '';
         });

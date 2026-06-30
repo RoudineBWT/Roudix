@@ -54,7 +54,10 @@
     dmidecode
 
     nixos-install-tools
-    calamares  # patché via overlay : module nixos + branding roudix déjà inclus
+    calamares
+    calamares-nixos-extensions  # patché via overlay : module nixos + branding roudix
+                                 # doit être installé À CÔTÉ de calamares pour que
+                                 # /run/current-system/sw fusionne les deux lib/calamares/modules
 
     python3
     xdg-user-dirs
@@ -79,6 +82,16 @@
   isoImage.volumeID  = "ROUDIX";
 
   # ── Script post-install : clone le repo dans ~/.config/roudix ────────────
+  # ── Branche /etc/calamares/settings.conf vers notre settings.conf patché ──
+  # calamares (le binaire) cherche son settings.conf dans son PROPRE /etc en
+  # priorité ; comme c'est un store path read-only différent de celui de
+  # calamares-nixos-extensions, on force NixOS à fusionner /etc/calamares/
+  # vers notre version Roudix patchée.
+  environment.etc."calamares/settings.conf".source =
+    "${pkgs.calamares-nixos-extensions}/etc/calamares/settings.conf";
+  environment.etc."calamares/modules".source =
+    "${pkgs.calamares-nixos-extensions}/etc/calamares/modules";
+
   environment.etc."calamares/scripts/post-install.sh" = {
     mode = "0755";
     text = ''
