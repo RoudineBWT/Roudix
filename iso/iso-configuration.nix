@@ -54,8 +54,7 @@
     dmidecode
 
     nixos-install-tools
-    calamares
-    calamares-nixos-extensions  # contient désormais notre module + branding patchés
+    calamares  # patché via overlay : module nixos + branding roudix déjà inclus
 
     python3
     xdg-user-dirs
