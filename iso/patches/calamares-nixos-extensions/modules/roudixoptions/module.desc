@@ -1,0 +1,5 @@
+---
+type: "view"
+name: "roudixoptions"
+interface: "qml"
+qmlName: "main.qml"

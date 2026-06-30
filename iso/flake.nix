@@ -23,6 +23,9 @@
         calamares-nixos-extensions = prev.calamares-nixos-extensions.overrideAttrs (oldAttrs: {
           postInstall = (oldAttrs.postInstall or "") + ''
             mkdir -p $out/lib/calamares/modules/nixos
+            mkdir -p $out/lib/calamares/modules/roudixoptions
+            mkdir -p $out/lib/calamares/modules/roudixsoftware
+            mkdir -p $out/lib/calamares/modules/roudixextras
             mkdir -p $out/etc/calamares/modules
             mkdir -p $out/share/calamares/branding/roudix
 
@@ -31,6 +34,30 @@
                $out/lib/calamares/modules/nixos/main.py
             cp ${./patches/calamares-nixos-extensions/modules/nixos/module.desc} \
                $out/lib/calamares/modules/nixos/module.desc
+
+            # Module Roudix Options — page Matériel (GPU/CPU/VM)
+            cp ${./patches/calamares-nixos-extensions/modules/roudixoptions/module.desc} \
+               $out/lib/calamares/modules/roudixoptions/module.desc
+            cp ${./patches/calamares-nixos-extensions/modules/roudixoptions/main.qml} \
+               $out/lib/calamares/modules/roudixoptions/main.qml
+            cp ${./patches/calamares-nixos-extensions/modules/roudixoptions/viewmodule.py} \
+               $out/lib/calamares/modules/roudixoptions/viewmodule.py
+
+            # Module Roudix Software — page Logiciels (kernel/browser/desktop/shell/gaming)
+            cp ${./patches/calamares-nixos-extensions/modules/roudixsoftware/module.desc} \
+               $out/lib/calamares/modules/roudixsoftware/module.desc
+            cp ${./patches/calamares-nixos-extensions/modules/roudixsoftware/main.qml} \
+               $out/lib/calamares/modules/roudixsoftware/main.qml
+            cp ${./patches/calamares-nixos-extensions/modules/roudixsoftware/viewmodule.py} \
+               $out/lib/calamares/modules/roudixsoftware/viewmodule.py
+
+            # Module Roudix Extras — page Extras (gta/flatpak/virt/autoupdate/bootloader/matrix/waydroid)
+            cp ${./patches/calamares-nixos-extensions/modules/roudixextras/module.desc} \
+               $out/lib/calamares/modules/roudixextras/module.desc
+            cp ${./patches/calamares-nixos-extensions/modules/roudixextras/main.qml} \
+               $out/lib/calamares/modules/roudixextras/main.qml
+            cp ${./patches/calamares-nixos-extensions/modules/roudixextras/viewmodule.py} \
+               $out/lib/calamares/modules/roudixextras/viewmodule.py
 
             # settings.conf principal — écrase celui par défaut
             cp ${./patches/calamares-nixos-extensions/config/settings.conf} \

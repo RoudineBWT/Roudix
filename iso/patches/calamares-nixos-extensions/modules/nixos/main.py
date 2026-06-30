@@ -124,21 +124,23 @@ local_nix_template = """{{ lib, ... }}:
   # ── Desktop & shell ──────────────────────────────────────────────────────
   roudix.desktop.type  = "{desktop_type}";
   roudix.desktop.shell = "{desktop_shell}";
+  roudix.shell          = "{shell_default}";
 
   # ── Hardware ─────────────────────────────────────────────────────────────
-  hardware.myGpu    = "{gpu}";
-  hardware.myCpu    = "{cpu}";
-  hardware.myKernel = "{kernel}";
+  hardware.myGpu        = "{gpu}";
+  hardware.nvidiaLaptop = {nvidia_laptop};
+  hardware.myCpu        = "{cpu}";
+  hardware.myKernel     = "{kernel}";
 
   # ── Boot ─────────────────────────────────────────────────────────────────
   roudix.boot.bootloader = "{bootloader}";
 
   # ── Software ─────────────────────────────────────────────────────────────
   roudix.browsers     = [ {browsers} ];
-  roudix.zen.enable   = false;
-  roudix.rgb          = "none";
+  roudix.zen.enable   = {zen};
+  roudix.rgb          = "{rgb}";
   roudix.mesa.useGit  = false;
-  roudix.matrixClient = "none";
+  roudix.matrixClient = "{matrix_client}";
 
   # ── Locale ───────────────────────────────────────────────────────────────
   time.timeZone                   = "{timezone}";
@@ -147,11 +149,15 @@ local_nix_template = """{{ lib, ... }}:
   console.keyMap                  = "{keymap}";
 
   # ── Modules optionnels ───────────────────────────────────────────────────
-  roudix.gaming.enable      = true;
-  roudix.flatpak.enable     = true;
-  roudix.fstrim.enable      = true;
-  roudix.virtualization.enable = false;
-  roudix.vmGuest.enable     = {vm_guest};
+  roudix.gaming.enable          = {gaming};
+  roudix.flatpak.enable         = {flatpak};
+  roudix.fstrim.enable          = true;
+  roudix.virtualization.enable  = {virtualization};
+  roudix.vmGuest.enable         = {vm_guest};
+  roudix.hosts.gtaFix.enable    = {gta_fix};
+  roudix.autoupdate.enable      = {autoupdate};
+  roudix.autoupdate.interval    = "{autoupdate_interval}";
+  roudix.waydroid.enable        = {waydroid};
 }}
 """
 
@@ -193,30 +199,44 @@ def run():
         f"Roudix: GPU détecté = {gpu}, CPU = {cpu}, microarch = {cpu_microarch}, VM = {is_vm}"
     )
 
-    # ── Récupération des choix Calamares ────────────────────────────────────
-    desktop_type  = gs.value("packagechooser_desktop") or "niri"
-    desktop_shell = gs.value("packagechooser_shell")   or "noctalia"
-    browser_raw   = gs.value("packagechooser_browser") or "helium"
+    # ── Récupération des choix Calamares (pages roudixoptions/software/extras) ──
+    hw      = gs.value("roudixHardware") or {}
+    sw      = gs.value("roudixSoftware") or {}
+    extras  = gs.value("roudixExtras")   or {}
+
+    # Le GPU/CPU détecté par main.py (lspci/cpuinfo, ci-dessus) sert de
+    # fallback si la page roudixoptions n'a pas tourné ; sinon le choix
+    # (éventuellement corrigé) de l'utilisateur dans la page prévaut.
+    gpu            = hw.get("gpu") or gpu
+    nvidia_laptop  = "true" if hw.get("nvidiaLaptop") else "false"
+    cpu            = hw.get("cpu") or cpu
+    is_vm_raw     = hw.get("vmGuest", is_vm)
+    is_vm         = is_vm_raw if isinstance(is_vm_raw, bool) else str(is_vm_raw).lower() == "true"
+
+    desktop_type  = sw.get("de")            or "niri"
+    desktop_shell = sw.get("desktopShell")  or "noctalia"
+    shell_default = sw.get("shellDefault")  or "fish"
+    browser_raw   = sw.get("browser")       or "brave"
+    zen           = "true" if sw.get("zen") else "false"
+    gaming        = "true" if sw.get("gaming", True) else "false"
     # Calamares renvoie une string — on la transforme en liste Nix
-    browsers_nix  = " ".join([f'"{b}"' for b in browser_raw.split()])
+    browsers_nix  = " ".join([f'"{b}"' for b in browser_raw.split()]) if browser_raw != "none" else ""
 
-    # Kernel — l'utilisateur choisit LTS/Latest (ou une variante spéciale
-    # comme BORE/Hardened), la micro-architecture (v3/v4/zen4) est ajoutée
-    # automatiquement selon le CPU détecté ci-dessus.
-    kernel_family = gs.value("packagechooser_kernel") or "cachyos-lts"
-    # Les variantes spéciales (bore, eevdf, hardened...) n'ont pas de
-    # déclinaison par micro-architecture dans kernel.nix — on les laisse
-    # telles quelles. Seules "cachyos-lts" et "cachyos-latest" se combinent.
-    if kernel_family in ("cachyos-lts", "cachyos-latest"):
-        kernel = f"{kernel_family}-lto-{cpu_microarch}"
-    else:
-        kernel = kernel_family
+    rgb                 = "none"  # page RGB pas encore implémentée
+    gta_fix             = "true" if extras.get("gtaFix") else "false"
+    flatpak             = "true" if extras.get("flatpak", True) else "false"
+    virtualization      = "true" if extras.get("virtualization") else "false"
+    autoupdate          = "true" if extras.get("autoupdate", True) else "false"
+    autoupdate_interval = extras.get("autoupdateInterval") or "1h"
+    matrix_client       = extras.get("matrixClient") or "none"
+    waydroid            = "true" if extras.get("waydroid") else "false"
 
-    libcalamares.utils.debug(f"Roudix: kernel sélectionné = {kernel}")
+    # Kernel — l'utilisateur choisit la variante CachyOS complète dans
+    # roudixsoftware (déjà avec sa déclinaison v3/v4/lto/rc), donc on
+    # l'utilise telle quelle, sans recombiner avec la micro-architecture.
+    kernel = sw.get("kernel") or "cachyos-latest"
 
-    # Bootloader selon firmware
-    fw_type    = gs.value("firmwareType")
-    bootloader = "limine" if fw_type == "efi" else "limine"  # Roudix supporte les deux
+    bootloader = extras.get("bootloader") or "limine"
 
     # Timezone
     region   = gs.value("locationRegion") or "Europe"
@@ -313,17 +333,29 @@ def run():
 
     # hosts/roudix/local.nix
     local_nix_content = local_nix_template.format(
-        desktop_type  = desktop_type,
-        desktop_shell = desktop_shell,
-        gpu           = gpu,
-        cpu           = cpu,
-        kernel        = kernel,
-        bootloader    = bootloader,
-        browsers      = browsers_nix,
-        timezone      = timezone,
-        locale        = locale,
-        keymap        = keymap,
-        vm_guest      = "true" if is_vm else "false",
+        desktop_type        = desktop_type,
+        desktop_shell       = desktop_shell,
+        shell_default       = shell_default,
+        gpu                 = gpu,
+        nvidia_laptop       = nvidia_laptop,
+        cpu                 = cpu,
+        kernel              = kernel,
+        bootloader          = bootloader,
+        browsers            = browsers_nix,
+        zen                 = zen,
+        rgb                 = rgb,
+        matrix_client       = matrix_client,
+        timezone            = timezone,
+        locale              = locale,
+        keymap              = keymap,
+        gaming              = gaming,
+        flatpak             = flatpak,
+        virtualization      = virtualization,
+        vm_guest            = "true" if is_vm else "false",
+        gta_fix             = gta_fix,
+        autoupdate          = autoupdate,
+        autoupdate_interval = autoupdate_interval,
+        waydroid            = waydroid,
     )
     local_nix_path = os.path.join(nixos_dest, "hosts/roudix/local.nix")
     libcalamares.utils.host_env_process_output(
