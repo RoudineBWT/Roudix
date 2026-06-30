@@ -74,7 +74,7 @@
   isoImage.contents = [
     {
       source = ./roudix-cfg;
-      target = "/iso/iso-cfg";
+      target = "/iso-cfg";
     }
   ];
 
