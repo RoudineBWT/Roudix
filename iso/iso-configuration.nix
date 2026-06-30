@@ -34,14 +34,7 @@
     sandbox = false;
   };
 
-  # ── Autologin ─────────────────────────────────────────────────────────────
-  services.xserver.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
-  services.displayManager.autoLogin = {
-    enable = true;
-    user = "nixos";
-  };
+  # ── Bureau / display manager : fourni par installation-cd-graphical-calamares-gnome.nix ──
 
   # ── Packages disponibles sur la live ─────────────────────────────────────
   environment.systemPackages = with pkgs; [
