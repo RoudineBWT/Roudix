@@ -363,12 +363,14 @@ def run():
 
     # home/local.nix
     home_local_path = os.path.join(nixos_dest, "home/local.nix")
+    os.makedirs(os.path.dirname(home_local_path), exist_ok=True)
     libcalamares.utils.host_env_process_output(
         ["cp", "/dev/stdin", home_local_path], None, home_local_nix.format()
     )
 
     # modules/system/boot.local.nix
     boot_local_path = os.path.join(nixos_dest, "modules/system/boot.local.nix")
+    os.makedirs(os.path.dirname(boot_local_path), exist_ok=True)
     libcalamares.utils.host_env_process_output(
         ["cp", "/dev/stdin", boot_local_path], None, boot_local_nix.format()
     )

@@ -1,0 +1,264 @@
+/*
+ * Roudix Calamares Theme
+ * Palette : pêche #E8956D, rose #D4849A, fond sombre #1E2030, surface #252839
+ */
+
+/* ── Fenêtre principale ─────────────────────────────────────────────────── */
+QDialog, QMainWindow {
+    background-color: #1E2030;
+    color: #CDD6F4;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────────────────── */
+#sidebarApp {
+    background-color: #181926;
+    border-right: 1px solid #313244;
+}
+
+#sidebarMenuApp {
+    background-color: #181926;
+    color: #CDD6F4;
+    padding: 4px 0;
+}
+
+/* Item normal */
+#sidebarApp QLabel {
+    color: #A6ADC8;
+    padding: 10px 16px;
+    font-size: 13px;
+}
+
+/* Item actif / sélectionné */
+#sidebarApp QLabel[selected="true"],
+#sidebarApp QLabel:hover {
+    color: #E8956D;
+    background-color: #252839;
+    border-left: 3px solid #E8956D;
+    padding-left: 13px;
+}
+
+/* ── Pages (zone de contenu) ────────────────────────────────────────────── */
+#viewStack, #mainApp {
+    background-color: #1E2030;
+}
+
+/* ── Boutons ────────────────────────────────────────────────────────────── */
+QPushButton {
+    background-color: #313244;
+    color: #CDD6F4;
+    border: 1px solid #45475A;
+    border-radius: 6px;
+    padding: 6px 18px;
+    font-size: 13px;
+    min-width: 80px;
+}
+
+QPushButton:hover {
+    background-color: #3D3F54;
+    border-color: #E8956D;
+    color: #E8956D;
+}
+
+QPushButton:pressed {
+    background-color: #E8956D;
+    color: #1E2030;
+    border-color: #E8956D;
+}
+
+QPushButton:disabled {
+    background-color: #252839;
+    color: #585B70;
+    border-color: #313244;
+}
+
+/* Bouton "Installer" mis en avant */
+QPushButton#nextButton, QPushButton#commitButton {
+    background-color: #E8956D;
+    color: #1E2030;
+    border: none;
+    font-weight: bold;
+}
+
+QPushButton#nextButton:hover, QPushButton#commitButton:hover {
+    background-color: #F0A882;
+}
+
+QPushButton#nextButton:disabled, QPushButton#commitButton:disabled {
+    background-color: #4A3328;
+    color: #7A5C4E;
+}
+
+/* ── Champs texte ───────────────────────────────────────────────────────── */
+QLineEdit, QTextEdit, QPlainTextEdit {
+    background-color: #252839;
+    color: #CDD6F4;
+    border: 1px solid #45475A;
+    border-radius: 6px;
+    padding: 5px 8px;
+    selection-background-color: #E8956D;
+    selection-color: #1E2030;
+}
+
+QLineEdit:focus, QTextEdit:focus {
+    border-color: #E8956D;
+}
+
+/* ── ComboBox ───────────────────────────────────────────────────────────── */
+QComboBox {
+    background-color: #252839;
+    color: #CDD6F4;
+    border: 1px solid #45475A;
+    border-radius: 6px;
+    padding: 5px 8px;
+}
+
+QComboBox:hover {
+    border-color: #E8956D;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #252839;
+    color: #CDD6F4;
+    border: 1px solid #45475A;
+    selection-background-color: #E8956D;
+    selection-color: #1E2030;
+    border-radius: 6px;
+}
+
+/* ── Listes (packagechooser) ────────────────────────────────────────────── */
+QListView, QTreeView {
+    background-color: #252839;
+    color: #CDD6F4;
+    border: 1px solid #45475A;
+    border-radius: 6px;
+    outline: none;
+}
+
+QListView::item, QTreeView::item {
+    padding: 8px;
+    border-radius: 4px;
+}
+
+QListView::item:selected, QTreeView::item:selected {
+    background-color: #E8956D;
+    color: #1E2030;
+}
+
+QListView::item:hover, QTreeView::item:hover {
+    background-color: #313244;
+}
+
+/* ── Labels / titres ────────────────────────────────────────────────────── */
+QLabel {
+    color: #CDD6F4;
+}
+
+QLabel#titleLabel {
+    color: #E8956D;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+QLabel#subtitleLabel {
+    color: #D4849A;
+    font-size: 14px;
+}
+
+/* ── Checkboxes / Radio ─────────────────────────────────────────────────── */
+QCheckBox, QRadioButton {
+    color: #CDD6F4;
+    spacing: 8px;
+}
+
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #585B70;
+    border-radius: 3px;
+    background-color: #252839;
+}
+
+QRadioButton::indicator {
+    border-radius: 8px;
+}
+
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background-color: #E8956D;
+    border-color: #E8956D;
+}
+
+QCheckBox::indicator:hover, QRadioButton::indicator:hover {
+    border-color: #E8956D;
+}
+
+/* ── ProgressBar ────────────────────────────────────────────────────────── */
+QProgressBar {
+    background-color: #252839;
+    border: 1px solid #45475A;
+    border-radius: 6px;
+    height: 8px;
+    text-align: center;
+    color: transparent;
+}
+
+QProgressBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #D4849A, stop:1 #E8956D);
+    border-radius: 6px;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
+QScrollBar:vertical {
+    background-color: #1E2030;
+    width: 8px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #45475A;
+    border-radius: 4px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #E8956D;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+    height: 0;
+}
+
+/* ── Onglets ────────────────────────────────────────────────────────────── */
+QTabBar::tab {
+    background-color: #252839;
+    color: #A6ADC8;
+    border: 1px solid #313244;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    padding: 6px 14px;
+}
+
+QTabBar::tab:selected {
+    background-color: #1E2030;
+    color: #E8956D;
+    border-bottom: 2px solid #E8956D;
+}
+
+/* ── Séparateurs ────────────────────────────────────────────────────────── */
+QFrame[frameShape="4"], QFrame[frameShape="5"] {
+    color: #313244;
+}
+
+/* ── Barre de boutons du bas ────────────────────────────────────────────── */
+#bottomBar {
+    background-color: #181926;
+    border-top: 1px solid #313244;
+    padding: 8px;
+}

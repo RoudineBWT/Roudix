@@ -93,12 +93,14 @@
                $out/share/calamares/branding/roudix/branding.desc
             cp ${./patches/calamares-nixos-extensions/branding/roudix/show.qml} \
                $out/share/calamares/branding/roudix/show.qml
+            cp ${./patches/calamares-nixos-extensions/branding/roudix/stylesheet.qss} \
+               $out/share/calamares/branding/roudix/stylesheet.qss
 
-            # Images : reprises du branding "default" fourni par calamares lui-même
-            cp ${final.calamares}/share/calamares/branding/default/languages.png \
-               $out/share/calamares/branding/roudix/languages.png
-            cp ${final.calamares}/share/calamares/branding/default/languages.png \
+            # Images branding Roudix (logo réel)
+            cp ${./pkgs/roudix-branding/roudix-logo.png} \
                $out/share/calamares/branding/roudix/logo.png
+            cp ${./pkgs/roudix-branding/roudix-logo.png} \
+               $out/share/calamares/branding/roudix/languages.png
           '';
         });
 
@@ -134,6 +136,9 @@
     {
       nixosConfigurations.roudix-iso = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = {
+          roudixBranding = nixpkgs.legacyPackages.${system}.callPackage ./pkgs/roudix-branding {};
+        };
         modules = [
           "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-gnome.nix"
           "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"

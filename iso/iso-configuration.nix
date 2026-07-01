@@ -1,7 +1,9 @@
-{ pkgs, lib, modulesPath, ... }:
+{ pkgs, lib, modulesPath, roudixBranding, ... }:
 
 {
   # ── Branding ─────────────────────────────────────────────────────────────
+  imports = [ ./branding.nix ];
+
   networking.hostName = "roudix-live";
   system.stateVersion = "26.11";
 
@@ -96,22 +98,24 @@
     mode = "0755";
     text = ''
       #!/usr/bin/env bash
-      # Appelé après nixos-install pour cloner le flake Roudix
-      # dans le home de l'utilisateur (pour que nh os switch fonctionne).
+      # Copie le flake Roudix final (avec hw-config, local.nix, username.nix
+      # générés par Calamares) dans ~/.config/roudix pour que nh os switch
+      # fonctionne directement après l'installation.
       set -euo pipefail
 
-      ROOT="$1"        # rootMountPoint passé par Calamares
+      ROOT="$1"        # rootMountPoint passé par nixos.py
       USERNAME="$2"    # username passé par nixos.py
 
+      NIXOS_DIR="$ROOT/etc/nixos"
       HOME_DIR="$ROOT/home/$USERNAME"
       CONFIG_DIR="$HOME_DIR/.config/roudix"
 
-      if [ ! -d "$CONFIG_DIR" ]; then
-        mkdir -p "$CONFIG_DIR"
-        cp -r /iso/iso-cfg/. "$CONFIG_DIR/"
-        chown -R 1000:1000 "$CONFIG_DIR"
-        echo "Roudix config copié dans $CONFIG_DIR"
-      fi
+      mkdir -p "$CONFIG_DIR"
+      # On copie /etc/nixos/ (version finale avec les fichiers dynamiques)
+      # et non /iso/iso-cfg/ (version source statique sans hw-config etc.)
+      cp -r "$NIXOS_DIR/." "$CONFIG_DIR/"
+      chown -R 1000:1000 "$HOME_DIR/.config"
+      echo "Roudix config copié dans $CONFIG_DIR"
     '';
   };
 }
