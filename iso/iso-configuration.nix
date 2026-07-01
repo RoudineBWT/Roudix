@@ -1,11 +1,17 @@
 { pkgs, lib, modulesPath, roudixBranding, ... }:
 
+let
+  roudixGrubTheme = pkgs.callPackage ./pkgs/roudix-grub-theme {};
+in
 {
   # ── Branding ─────────────────────────────────────────────────────────────
   imports = [ ./branding.nix ];
 
   networking.hostName = "roudix-live";
   system.stateVersion = "26.11";
+
+  # ── Boot menu GRUB ───────────────────────────────────────────────────────
+  isoImage.grubTheme = "${roudixGrubTheme}/roudix";
 
   # ── Locale par défaut (GeoIP override ça dans Calamares) ─────────────────
   time.timeZone = "Europe/Brussels";
