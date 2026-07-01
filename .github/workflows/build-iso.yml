@@ -53,29 +53,14 @@ jobs:
         run: |
           ISO_PATH=$(readlink -f iso/result/iso/*.iso)
           SHORT_SHA=$(git rev-parse --short HEAD)
-          cp "$ISO_PATH" "roudix-${SHORT_SHA}.iso"
-          echo "ISO_NAME=roudix-${SHORT_SHA}.iso" >> $GITHUB_ENV
+          ISO_NAME="roudix-${SHORT_SHA}.iso"
+          cp "$ISO_PATH" "$ISO_NAME"
+          echo "ISO_NAME=$ISO_NAME" >> $GITHUB_ENV
+          echo "ISO_PATH=$(pwd)/$ISO_NAME" >> $GITHUB_ENV
 
       - name: Upload ISO as artifact
         uses: actions/upload-artifact@v4
         with:
           name: roudix-iso
           path: roudix-*.iso
-          retention-days: 7
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: iso-${{ github.run_number }}
-          name: "Roudix ISO — build #${{ github.run_number }} (${{ github.sha }})"
-          files: roudix-*.iso
-          draft: true
-          body: |
-            ISO Roudix générée automatiquement depuis le commit `${{ github.sha }}`.
-
-            **Pour tester en VM :**
-            ```
-            qemu-system-x86_64 -m 4G -cdrom roudix-*.iso -boot d
-            ```
-
-            Cette release est en **draft** — à publier manuellement après validation.
+          retention-days: 90
