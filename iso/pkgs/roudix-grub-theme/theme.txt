@@ -1,34 +1,19 @@
-# Roudix GRUB Theme
-# Palette : fond #1E2030, pêche #E8956D, rose #D4849A, texte #CDD6F4
-
+# Roudix GRUB Theme — texte uniquement (pas de bitmap pour éviter l'erreur format)
 title-text: ""
 desktop-color: "#1E2030"
-desktop-image: ""
-
-terminal-box: "terminal_box_*.png"
-terminal-font: "Fixed Regular 14"
-
-+ image {
-    top = 20%
-    left = 50%-64
-    width = 128
-    height = 128
-    file = "logo.png"
-}
 
 + label {
-    top = 20%+140
+    top = 35%
     left = 0
     width = 100%
     align = "center"
-    id = "__title__"
-    text = "Roudix Installer"
+    text = "Roudix"
     color = "#E8956D"
-    font = "Fixed Regular 20"
+    font = "Fixed Regular 24"
 }
 
 + label {
-    top = 20%+168
+    top = 35%+36
     left = 0
     width = 100%
     align = "center"
@@ -38,16 +23,15 @@ terminal-font: "Fixed Regular 14"
 }
 
 + vbox {
-    top = 50%
-    left = 50%-200
-    width = 400
-    selected_item_color = "#1E2030"
+    top = 48%
+    left = 50%-220
+    width = 440
 
     + boot_menu {
-        width = 400
-        item_height = 36
+        width = 440
+        item_height = 38
         item_padding = 16
-        item_spacing = 4
+        item_spacing = 2
         item_font = "Fixed Regular 14"
         item_color = "#CDD6F4"
         selected_item_font = "Fixed Regular 14"
@@ -58,14 +42,14 @@ terminal-font: "Fixed Regular 14"
 }
 
 + hbox {
-    top = 100%-40
+    top = 100%-32
     left = 0
     width = 100%
 
     + label {
         width = 100%
         align = "center"
-        text = "↑↓ Naviguer   ENTRÉE Démarrer   e Éditer   c Console"
+        text = "↑↓ Naviguer   ENTRÉE Démarrer"
         color = "#585B70"
         font = "Fixed Regular 12"
     }

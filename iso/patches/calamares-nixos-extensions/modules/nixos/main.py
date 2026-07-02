@@ -76,47 +76,6 @@ def detect_cpu():
         pass
     return 'intel'
 
-# AMD Zen4 — Ryzen 7000/8000 desktop, 7040/8040 mobile, EPYC 9004/9005
-ZEN4_MODEL_HINTS = (
-    "ryzen 9 7", "ryzen 7 7", "ryzen 5 7", "ryzen 3 7",
-    "ryzen 9 8", "ryzen 7 8", "ryzen 5 8", "ryzen 3 8",
-    "ryzen threadripper 7", "epyc 9",
-)
-
-def detect_cpu_microarch():
-    """
-    Détermine la meilleure variante CachyOS selon le CPU :
-        'zen4'  : AMD Zen4 (Ryzen 7000/8000, EPYC 9004/9005)
-        'v4'    : CPU supportant AVX-512 (x86-64-v4)
-        'v3'    : CPU supportant AVX2 (x86-64-v3) — fallback le plus courant
-    On lit /proc/cpuinfo pour les flags et le modèle exact.
-    """
-    try:
-        with open('/proc/cpuinfo', 'r') as f:
-            content = f.read()
-    except Exception:
-        return 'v3'
-
-    content_lower = content.lower()
-
-    # Zen4 — basé sur le nom de modèle (le plus fiable pour ces gammes)
-    if any(hint in content_lower for hint in ZEN4_MODEL_HINTS):
-        return 'zen4'
-
-    # x86-64-v4 nécessite AVX-512 (entre autres) — on vérifie les flags
-    flags_line = next(
-        (line for line in content.splitlines() if line.lower().startswith("flags")),
-        ""
-    )
-    flags = set(flags_line.split(":")[-1].split()) if ":" in flags_line else set()
-
-    v4_required = {"avx512f", "avx512bw", "avx512cd", "avx512dq", "avx512vl"}
-    if v4_required.issubset(flags):
-        return 'v4'
-
-    # x86-64-v3 (AVX2) — fallback par défaut pour le matériel post-2013
-    return 'v3'
-
 # ── Templates local.nix ───────────────────────────────────────────────────────
 
 local_nix_template = """{{ lib, ... }}:
@@ -124,23 +83,21 @@ local_nix_template = """{{ lib, ... }}:
   # ── Desktop & shell ──────────────────────────────────────────────────────
   roudix.desktop.type  = "{desktop_type}";
   roudix.desktop.shell = "{desktop_shell}";
-  roudix.shell          = "{shell_default}";
 
   # ── Hardware ─────────────────────────────────────────────────────────────
-  hardware.myGpu        = "{gpu}";
-  hardware.nvidiaLaptop = {nvidia_laptop};
-  hardware.myCpu        = "{cpu}";
-  hardware.myKernel     = "{kernel}";
+  hardware.myGpu    = "{gpu}";
+  hardware.myCpu    = "{cpu}";
+  hardware.myKernel = "{kernel}";
 
   # ── Boot ─────────────────────────────────────────────────────────────────
   roudix.boot.bootloader = "{bootloader}";
 
   # ── Software ─────────────────────────────────────────────────────────────
   roudix.browsers     = [ {browsers} ];
-  roudix.zen.enable   = {zen};
-  roudix.rgb          = "{rgb}";
+  roudix.zen.enable   = false;
+  roudix.rgb          = "none";
   roudix.mesa.useGit  = false;
-  roudix.matrixClient = "{matrix_client}";
+  roudix.matrixClient = "none";
 
   # ── Locale ───────────────────────────────────────────────────────────────
   time.timeZone                   = "{timezone}";
@@ -149,15 +106,11 @@ local_nix_template = """{{ lib, ... }}:
   console.keyMap                  = "{keymap}";
 
   # ── Modules optionnels ───────────────────────────────────────────────────
-  roudix.gaming.enable          = {gaming};
-  roudix.flatpak.enable         = {flatpak};
-  roudix.fstrim.enable          = true;
-  roudix.virtualization.enable  = {virtualization};
-  roudix.vmGuest.enable         = {vm_guest};
-  roudix.hosts.gtaFix.enable    = {gta_fix};
-  roudix.autoupdate.enable      = {autoupdate};
-  roudix.autoupdate.interval    = "{autoupdate_interval}";
-  roudix.waydroid.enable        = {waydroid};
+  roudix.gaming.enable      = true;
+  roudix.flatpak.enable     = true;
+  roudix.fstrim.enable      = true;
+  roudix.virtualization.enable = false;
+  roudix.vmGuest.enable     = {vm_guest};
 }}
 """
 
@@ -190,64 +143,23 @@ def run():
     vga_devices = get_vga_devices()
     gpu = detect_gpu(vga_devices)
     cpu = detect_cpu()
-    cpu_microarch = detect_cpu_microarch()
     is_vm = (gpu == 'vm')
     if is_vm:
         gpu = 'intel'  # fallback pour les VMs
 
-    libcalamares.utils.debug(
-        f"Roudix: GPU détecté = {gpu}, CPU = {cpu}, microarch = {cpu_microarch}, VM = {is_vm}"
-    )
+    libcalamares.utils.debug(f"Roudix: GPU détecté = {gpu}, CPU = {cpu}, VM = {is_vm}")
 
-    # ── Récupération des choix Calamares (instances packagechooser) ─────────
-    # Chaque instance packagechooser stocke son choix dans globalstorage sous
-    # la clé "packagechooser_<id>" (id défini dans settings.conf > instances).
+    # ── Récupération des choix Calamares ────────────────────────────────────
+    desktop_type  = gs.value("packagechooser_desktop") or "niri"
+    desktop_shell = gs.value("packagechooser_shell")   or "noctalia"
+    kernel        = gs.value("packagechooser_kernel")  or "cachyos-lts-lto-v3"
+    browser_raw   = gs.value("packagechooser_browser") or "helium"
+    # Calamares renvoie une string — on la transforme en liste Nix
+    browsers_nix  = " ".join([f'"{b}"' for b in browser_raw.split()])
 
-    # GPU/CPU : le choix de l'utilisateur (pages packagechooser) prévaut sur
-    # la détection automatique lspci/cpuinfo faite plus haut, qui sert de
-    # valeur par défaut affichée mais peut être corrigée par l'utilisateur.
-    gpu            = gs.value("packagechooser_gpu") or gpu
-    nvidia_laptop_raw = gs.value("packagechooser_nvidialaptop") or "false"
-    # "na" = non-NVIDIA, traiter comme false
-    nvidia_laptop  = "true" if nvidia_laptop_raw == "true" else "false"
-    cpu            = gs.value("packagechooser_cpu") or cpu
-    vm_choice      = gs.value("packagechooser_vmguest")
-    is_vm          = (vm_choice == "true") if vm_choice is not None else is_vm
-
-    desktop_type  = gs.value("packagechooser_desktop")  or "niri"
-    # "plasma" est l'id Calamares, mais le flake Roudix utilise "kde"
-    if desktop_type == "plasma":
-        desktop_type = "kde"
-
-    # Shell de bureau — "na" = GNOME/KDE, pas de shell Wayland custom
-    shell_raw     = gs.value("packagechooser_shell") or "noctalia"
-    desktop_shell = "noctalia" if shell_raw == "na" else shell_raw
-
-    shell_default = gs.value("packagechooser_shelldefault") or "fish"
-    gaming        = gs.value("packagechooser_gaming")   or "true"
-
-    # Browser — si "brave" est choisi, la variante précise vient de bravevariant
-    # "na" dans bravevariant = pas Brave, ignorer
-    browser_choice = gs.value("packagechooser_browser") or "brave"
-    if browser_choice == "brave":
-        bv = gs.value("packagechooser_bravevariant") or "brave"
-        browser_choice = "brave" if bv == "na" else bv
-    zen = gs.value("packagechooser_zen") or "false"
-    browsers_nix = f'"{browser_choice}"' if browser_choice != "none" else ""
-
-    rgb                 = "none"
-    gta_fix             = gs.value("packagechooser_gtafix")         or "false"
-    flatpak             = gs.value("packagechooser_flatpak")        or "false"
-    virtualization      = gs.value("packagechooser_virtualization") or "false"
-    autoupdate          = gs.value("packagechooser_autoupdate")     or "true"
-    # "na" dans interval = autoupdate désactivé, fallback sur "1h"
-    interval_raw        = gs.value("packagechooser_autoupdateinterval") or "1h"
-    autoupdate_interval = "1h" if interval_raw == "na" else interval_raw
-    matrix_client       = gs.value("packagechooser_matrix")         or "none"
-    waydroid            = gs.value("packagechooser_waydroid")       or "false"
-
-    kernel     = gs.value("packagechooser_kernel")    or "cachyos-latest"
-    bootloader = gs.value("packagechooser_bootloader") or "limine"
+    # Bootloader selon firmware
+    fw_type    = gs.value("firmwareType")
+    bootloader = "limine" if fw_type == "efi" else "limine"  # Roudix supporte les deux
 
     # Timezone
     region   = gs.value("locationRegion") or "Europe"
@@ -297,12 +209,11 @@ def run():
     iso_cfg_src = "/iso/iso-cfg"
     nixos_dest  = os.path.join(root_mount_point, "etc/nixos")
 
-    # Backup hardware-configuration.nix générée par nixos-generate-config
-    # avant que la copie du flake n'écrase /etc/nixos/
-    hw_cfg_generated = os.path.join(nixos_dest, "hardware-configuration.nix")
+    # Backup hardware-configuration.nix avant écrasement
+    hw_cfg_dest = os.path.join(nixos_dest, "hardware-configuration.nix")
     hw_backup = ""
     try:
-        with open(hw_cfg_generated, "r") as f:
+        with open(hw_cfg_dest, "r") as f:
             hw_backup = f.read()
     except Exception as e:
         return ("Impossible de lire hardware-configuration.nix", str(e))
@@ -316,19 +227,14 @@ def run():
     except subprocess.CalledProcessError as e:
         return ("Échec de la copie du flake Roudix", str(e))
 
-    # Écrire hardware-configuration.nix là où le flake l'attend :
-    # hosts/roudix/hardware-configuration.nix (pas /etc/nixos/ racine)
-    hw_cfg_dest = os.path.join(nixos_dest, "hosts/roudix/hardware-configuration.nix")
+    # Restaurer hardware-configuration.nix (la copie l'a peut-être écrasé)
     try:
-        libcalamares.utils.host_env_process_output(
-            ["mkdir", "-p", os.path.dirname(hw_cfg_dest)], None
-        )
         libcalamares.utils.host_env_process_output(
             ["cp", "/dev/stdin", hw_cfg_dest], None, hw_backup
         )
         subprocess.run(["sudo", "chmod", "644", hw_cfg_dest], check=True)
     except Exception as e:
-        return ("Impossible d'écrire hardware-configuration.nix", str(e))
+        libcalamares.utils.warning(f"Impossible de restaurer hardware-configuration.nix: {e}")
 
     # ── Génération des fichiers gitignorés ───────────────────────────────────
     status = _("Génération de la configuration personnalisée")
@@ -344,29 +250,17 @@ def run():
 
     # hosts/roudix/local.nix
     local_nix_content = local_nix_template.format(
-        desktop_type        = desktop_type,
-        desktop_shell       = desktop_shell,
-        shell_default       = shell_default,
-        gpu                 = gpu,
-        nvidia_laptop       = nvidia_laptop,
-        cpu                 = cpu,
-        kernel              = kernel,
-        bootloader          = bootloader,
-        browsers            = browsers_nix,
-        zen                 = zen,
-        rgb                 = rgb,
-        matrix_client       = matrix_client,
-        timezone            = timezone,
-        locale              = locale,
-        keymap              = keymap,
-        gaming              = gaming,
-        flatpak             = flatpak,
-        virtualization      = virtualization,
-        vm_guest            = "true" if is_vm else "false",
-        gta_fix             = gta_fix,
-        autoupdate          = autoupdate,
-        autoupdate_interval = autoupdate_interval,
-        waydroid            = waydroid,
+        desktop_type  = desktop_type,
+        desktop_shell = desktop_shell,
+        gpu           = gpu,
+        cpu           = cpu,
+        kernel        = kernel,
+        bootloader    = bootloader,
+        browsers      = browsers_nix,
+        timezone      = timezone,
+        locale        = locale,
+        keymap        = keymap,
+        vm_guest      = "true" if is_vm else "false",
     )
     local_nix_path = os.path.join(nixos_dest, "hosts/roudix/local.nix")
     libcalamares.utils.host_env_process_output(
@@ -375,16 +269,14 @@ def run():
 
     # home/local.nix
     home_local_path = os.path.join(nixos_dest, "home/local.nix")
-    os.makedirs(os.path.dirname(home_local_path), exist_ok=True)
     libcalamares.utils.host_env_process_output(
-        ["cp", "/dev/stdin", home_local_path], None, home_local_nix.format()
+        ["cp", "/dev/stdin", home_local_path], None, home_local_nix
     )
 
     # modules/system/boot.local.nix
     boot_local_path = os.path.join(nixos_dest, "modules/system/boot.local.nix")
-    os.makedirs(os.path.dirname(boot_local_path), exist_ok=True)
     libcalamares.utils.host_env_process_output(
-        ["cp", "/dev/stdin", boot_local_path], None, boot_local_nix.format()
+        ["cp", "/dev/stdin", boot_local_path], None, boot_local_nix
     )
 
     # ── Mot de passe root ────────────────────────────────────────────────────

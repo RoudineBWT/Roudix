@@ -1,42 +1,52 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
-import QtQuick 2.0
+import QtQuick 2.15
 import calamares.slideshow 1.0
 
 Presentation {
     id: presentation
 
+    // Demande à Calamares d'afficher les logs par défaut
+    property bool showLogFile: true
+
     Timer {
-        interval: 5000
+        interval: 8000
         running: presentation.activatedInCalamares
         repeat: true
         onTriggered: presentation.goToNextSlide()
     }
 
     Slide {
-        Image {
-            id: background1
-            source: "languages.png"
-            width: 800
-            height: 440
-            fillMode: Image.PreserveAspectFit
-            anchors.centerIn: parent
-        }
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: background1.bottom
-            text: "Bienvenue sur Roudix"
-            font.pixelSize: 22
-            color: "#FFFFFF"
-        }
-    }
+        Rectangle {
+            anchors.fill: parent
+            color: "#1E2030"
 
-    Slide {
-        Text {
-            anchors.centerIn: parent
-            text: "Installation en cours…\nMerci de patienter."
-            font.pixelSize: 20
-            color: "#FFFFFF"
-            horizontalAlignment: Text.AlignHCenter
+            Image {
+                source: "logo.png"
+                width: 220
+                height: 220
+                fillMode: Image.PreserveAspectFit
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: -30
+            }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 60
+                text: "Installation de Roudix en cours…"
+                color: "#E8956D"
+                font.pixelSize: 18
+                font.bold: true
+            }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 36
+                text: "NixOS Unstable"
+                color: "#D4849A"
+                font.pixelSize: 14
+            }
         }
     }
 
