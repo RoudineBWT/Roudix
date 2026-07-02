@@ -63,9 +63,8 @@ in
 
     nixos-install-tools
     calamares
-    calamares-nixos-extensions  # patché via overlay : module nixos + branding roudix
-                                 # doit être installé À CÔTÉ de calamares pour que
-                                 # /run/current-system/sw fusionne les deux lib/calamares/modules
+    calamares-nixos-extensions
+    adwaita-qt6  # Thème Adwaita pour Qt6 — donne à Calamares les bordures GTK
 
     python3
     xdg-user-dirs
@@ -74,6 +73,11 @@ in
     htop
     networkmanagerapplet
   ];
+
+  # Applique le thème Adwaita à toutes les applis Qt6 (dont Calamares)
+  environment.sessionVariables = {
+    QT_STYLE_OVERRIDE = "adwaita-dark";
+  };
 
   # ── Embarquer le flake Roudix dans l'ISO ─────────────────────────────────
   # Le workflow rsync copie le repo principal dans iso/roudix-cfg/ au build time.

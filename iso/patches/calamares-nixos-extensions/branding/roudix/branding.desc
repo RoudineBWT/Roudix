@@ -28,10 +28,8 @@ images:
 slideshow:               "show.qml"
 slideshowAPI: 2
 
-stylesheet: stylesheet.qss
-
 style:
-    sidebarBackground:    "#181926"
-    sidebarText:          "#A6ADC8"
-    sidebarTextSelect:    "#E8956D"
-    sidebarTextHighlight: "#E8956D"
+    sidebarBackground:    "#1b1f27"
+    sidebarText:          "#FFFFFF"
+    sidebarTextSelect:    "#e8956d"
+    sidebarTextHighlight: "#e8956d"

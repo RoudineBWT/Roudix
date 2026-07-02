@@ -1,10 +1,11 @@
 /*
- * Roudix Calamares Theme
- * Palette : pêche #E8956D, rose #D4849A, fond sombre #1E2030, surface #252839
+ * Roudix Calamares Theme — Adwaita Dark + palette pêche/rose
+ * QT_STYLE_OVERRIDE=adwaita-dark gère les bordures/widgets de base,
+ * ce QSS raffine les couleurs Roudix par-dessus.
  */
 
 /* ── Fenêtre principale ─────────────────────────────────────────────────── */
-QDialog, QMainWindow {
+QDialog, QMainWindow, QWidget {
     background-color: #1E2030;
     color: #CDD6F4;
 }
@@ -13,24 +14,25 @@ QDialog, QMainWindow {
 #sidebarApp {
     background-color: #181926;
     border-right: 1px solid #313244;
+    min-width: 160px;
 }
 
 #sidebarMenuApp {
     background-color: #181926;
     color: #CDD6F4;
-    padding: 4px 0;
 }
 
-/* Item normal */
+/* Items sidebar normaux */
 #sidebarApp QLabel {
-    color: #A6ADC8;
+    color: #CDD6F4;
     padding: 10px 16px;
     font-size: 13px;
+    background-color: transparent;
 }
 
-/* Item actif / sélectionné */
-#sidebarApp QLabel[selected="true"],
-#sidebarApp QLabel:hover {
+/* Item actif */
+#sidebarApp QLabel[hovered="true"],
+#sidebarApp QLabel[selected="true"] {
     color: #E8956D;
     background-color: #252839;
     border-left: 3px solid #E8956D;
@@ -38,7 +40,7 @@ QDialog, QMainWindow {
 }
 
 /* ── Pages (zone de contenu) ────────────────────────────────────────────── */
-#viewStack, #mainApp {
+#viewStack {
     background-color: #1E2030;
 }
 
@@ -71,21 +73,26 @@ QPushButton:disabled {
     border-color: #313244;
 }
 
-/* Bouton "Installer" mis en avant */
-QPushButton#nextButton, QPushButton#commitButton {
+/* Bouton Suivant/Install mis en avant */
+QPushButton#nextButton,
+QPushButton#commitButton,
+QPushButton[default="true"] {
     background-color: #E8956D;
     color: #1E2030;
     border: none;
     font-weight: bold;
 }
 
-QPushButton#nextButton:hover, QPushButton#commitButton:hover {
+QPushButton#nextButton:hover,
+QPushButton#commitButton:hover {
     background-color: #F0A882;
 }
 
-QPushButton#nextButton:disabled, QPushButton#commitButton:disabled {
+QPushButton#nextButton:disabled,
+QPushButton#commitButton:disabled {
     background-color: #4A3328;
     color: #7A5C4E;
+    border: none;
 }
 
 /* ── Champs texte ───────────────────────────────────────────────────────── */
@@ -112,14 +119,9 @@ QComboBox {
     padding: 5px 8px;
 }
 
-QComboBox:hover {
-    border-color: #E8956D;
-}
+QComboBox:hover { border-color: #E8956D; }
 
-QComboBox::drop-down {
-    border: none;
-    width: 20px;
-}
+QComboBox::drop-down { border: none; width: 20px; }
 
 QComboBox QAbstractItemView {
     background-color: #252839;
@@ -128,45 +130,55 @@ QComboBox QAbstractItemView {
     selection-background-color: #E8956D;
     selection-color: #1E2030;
     border-radius: 6px;
+    outline: none;
 }
 
 /* ── Listes (packagechooser) ────────────────────────────────────────────── */
-QListView, QTreeView {
+QListView, QTreeView, QTableView {
     background-color: #252839;
     color: #CDD6F4;
     border: 1px solid #45475A;
     border-radius: 6px;
     outline: none;
+    gridline-color: #313244;
 }
 
-QListView::item, QTreeView::item {
+QListView::item, QTreeView::item, QTableView::item {
     padding: 8px;
     border-radius: 4px;
+    color: #CDD6F4;
 }
 
-QListView::item:selected, QTreeView::item:selected {
+QListView::item:selected,
+QTreeView::item:selected,
+QTableView::item:selected {
     background-color: #E8956D;
     color: #1E2030;
 }
 
-QListView::item:hover, QTreeView::item:hover {
+QListView::item:hover,
+QTreeView::item:hover,
+QTableView::item:hover {
     background-color: #313244;
 }
 
-/* ── Labels / titres ────────────────────────────────────────────────────── */
-QLabel {
-    color: #CDD6F4;
-}
-
-QLabel#titleLabel {
-    color: #E8956D;
-    font-size: 20px;
+QHeaderView::section {
+    background-color: #181926;
+    color: #A6ADC8;
+    border: none;
+    border-bottom: 1px solid #313244;
+    padding: 6px 8px;
     font-weight: bold;
 }
 
-QLabel#subtitleLabel {
-    color: #D4849A;
-    font-size: 14px;
+/* ── Labels ─────────────────────────────────────────────────────────────── */
+QLabel { color: #CDD6F4; }
+
+QLabel#labelWelcome,
+QLabel#titleLabel {
+    color: #E8956D;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 /* ── Checkboxes / Radio ─────────────────────────────────────────────────── */
@@ -183,32 +195,33 @@ QCheckBox::indicator, QRadioButton::indicator {
     background-color: #252839;
 }
 
-QRadioButton::indicator {
-    border-radius: 8px;
-}
+QRadioButton::indicator { border-radius: 8px; }
 
-QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+QCheckBox::indicator:checked,
+QRadioButton::indicator:checked {
     background-color: #E8956D;
     border-color: #E8956D;
 }
 
-QCheckBox::indicator:hover, QRadioButton::indicator:hover {
-    border-color: #E8956D;
-}
+QCheckBox::indicator:hover,
+QRadioButton::indicator:hover { border-color: #E8956D; }
 
-/* ── ProgressBar ────────────────────────────────────────────────────────── */
+/* ── ProgressBar (page install) ─────────────────────────────────────────── */
 QProgressBar {
     background-color: #252839;
     border: 1px solid #45475A;
     border-radius: 6px;
-    height: 8px;
+    height: 10px;
     text-align: center;
     color: transparent;
 }
 
 QProgressBar::chunk {
-    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-        stop:0 #D4849A, stop:1 #E8956D);
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:0,
+        stop:0 #D4849A,
+        stop:1 #E8956D
+    );
     border-radius: 6px;
 }
 
@@ -217,6 +230,7 @@ QScrollBar:vertical {
     background-color: #1E2030;
     width: 8px;
     border-radius: 4px;
+    margin: 0;
 }
 
 QScrollBar::handle:vertical {
@@ -225,14 +239,90 @@ QScrollBar::handle:vertical {
     min-height: 30px;
 }
 
-QScrollBar::handle:vertical:hover {
-    background-color: #E8956D;
-}
+QScrollBar::handle:vertical:hover { background-color: #E8956D; }
 
-QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
     background: none;
     height: 0;
+}
+
+QScrollBar:horizontal {
+    background-color: #1E2030;
+    height: 8px;
+    border-radius: 4px;
+    margin: 0;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #45475A;
+    border-radius: 4px;
+    min-width: 30px;
+}
+
+QScrollBar::handle:horizontal:hover { background-color: #E8956D; }
+
+/* ── Séparateurs ────────────────────────────────────────────────────────── */
+QFrame[frameShape="4"],
+QFrame[frameShape="5"] { color: #313244; }
+
+/* ── Barre de boutons du bas ────────────────────────────────────────────── */
+#bottomBar {
+    background-color: #181926;
+    border-top: 1px solid #313244;
+    padding: 8px;
+}
+
+/* ── Page de partitionnement ────────────────────────────────────────────── */
+/* Fond blanc → fond sombre */
+PartitionPage, #partitionPage {
+    background-color: #1E2030;
+}
+
+/* Boutons radio de mode (EFI / MBR) */
+#partitionBarCurrent,
+#partitionBarAfter {
+    border: 1px solid #45475A;
+    border-radius: 4px;
+    background-color: #252839;
+}
+
+/* Couleurs des partitions dans la barre */
+QWidget[partRole="efi"]  { background-color: #3B82F6; }
+QWidget[partRole="boot"] { background-color: #EF4444; }
+QWidget[partRole="root"] { background-color: #E8956D; }
+QWidget[partRole="home"] { background-color: #D4849A; }
+QWidget[partRole="swap"] { background-color: #8B5CF6; }
+QWidget[partRole="free"] { background-color: #313244; }
+
+/* ── Page Summary ────────────────────────────────────────────────────────── */
+#summaryPage QLabel { color: #CDD6F4; }
+#summaryPage QTextEdit {
+    background-color: #252839;
+    color: #CDD6F4;
+    border: 1px solid #45475A;
+    border-radius: 6px;
+    font-family: monospace;
+}
+
+/* Titres de section dans le résumé */
+#summaryPage QLabel[summary="true"] {
+    color: #E8956D;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/* ── Page install (log view) ─────────────────────────────────────────────── */
+#installationPage QTextEdit,
+#runPage QTextEdit {
+    background-color: #0D1117;
+    color: #58A6FF;
+    border: 1px solid #313244;
+    border-radius: 6px;
+    font-family: "Monospace", monospace;
+    font-size: 12px;
 }
 
 /* ── Onglets ────────────────────────────────────────────────────────────── */
@@ -251,14 +341,45 @@ QTabBar::tab:selected {
     border-bottom: 2px solid #E8956D;
 }
 
-/* ── Séparateurs ────────────────────────────────────────────────────────── */
-QFrame[frameShape="4"], QFrame[frameShape="5"] {
-    color: #313244;
+QTabWidget::pane {
+    border: 1px solid #313244;
+    border-radius: 0 6px 6px 6px;
+    background-color: #1E2030;
 }
 
-/* ── Barre de boutons du bas ────────────────────────────────────────────── */
-#bottomBar {
-    background-color: #181926;
-    border-top: 1px solid #313244;
-    padding: 8px;
+/* ── Tooltips ────────────────────────────────────────────────────────────── */
+QToolTip {
+    background-color: #252839;
+    color: #CDD6F4;
+    border: 1px solid #E8956D;
+    border-radius: 4px;
+    padding: 4px 8px;
 }
+
+/* ── GroupBox ─────────────────────────────────────────────────────────────── */
+QGroupBox {
+    border: 1px solid #45475A;
+    border-radius: 6px;
+    margin-top: 12px;
+    color: #CDD6F4;
+    font-weight: bold;
+}
+
+QGroupBox::title {
+    color: #E8956D;
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 6px;
+    left: 10px;
+}
+
+/* ── SpinBox / Slider ────────────────────────────────────────────────────── */
+QSpinBox, QDoubleSpinBox {
+    background-color: #252839;
+    color: #CDD6F4;
+    border: 1px solid #45475A;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+QSpinBox:focus, QDoubleSpinBox:focus { border-color: #E8956D; }

@@ -207,30 +207,42 @@ def run():
     # la détection automatique lspci/cpuinfo faite plus haut, qui sert de
     # valeur par défaut affichée mais peut être corrigée par l'utilisateur.
     gpu            = gs.value("packagechooser_gpu") or gpu
-    nvidia_laptop  = gs.value("packagechooser_nvidialaptop") or "false"
+    nvidia_laptop_raw = gs.value("packagechooser_nvidialaptop") or "false"
+    # "na" = non-NVIDIA, traiter comme false
+    nvidia_laptop  = "true" if nvidia_laptop_raw == "true" else "false"
     cpu            = gs.value("packagechooser_cpu") or cpu
     vm_choice      = gs.value("packagechooser_vmguest")
     is_vm          = (vm_choice == "true") if vm_choice is not None else is_vm
 
     desktop_type  = gs.value("packagechooser_desktop")  or "niri"
-    desktop_shell = gs.value("packagechooser_shell")    or "noctalia"
+    # "plasma" est l'id Calamares, mais le flake Roudix utilise "kde"
+    if desktop_type == "plasma":
+        desktop_type = "kde"
+
+    # Shell de bureau — "na" = GNOME/KDE, pas de shell Wayland custom
+    shell_raw     = gs.value("packagechooser_shell") or "noctalia"
+    desktop_shell = "noctalia" if shell_raw == "na" else shell_raw
+
     shell_default = gs.value("packagechooser_shelldefault") or "fish"
     gaming        = gs.value("packagechooser_gaming")   or "true"
 
-    # Browser — si "brave" est choisi, la variante précise vient de
-    # l'instance packagechooser_bravevariant (sinon ignorée).
+    # Browser — si "brave" est choisi, la variante précise vient de bravevariant
+    # "na" dans bravevariant = pas Brave, ignorer
     browser_choice = gs.value("packagechooser_browser") or "brave"
     if browser_choice == "brave":
-        browser_choice = gs.value("packagechooser_bravevariant") or "brave"
+        bv = gs.value("packagechooser_bravevariant") or "brave"
+        browser_choice = "brave" if bv == "na" else bv
     zen = gs.value("packagechooser_zen") or "false"
     browsers_nix = f'"{browser_choice}"' if browser_choice != "none" else ""
 
-    rgb                 = "none"  # page RGB pas encore implémentée
+    rgb                 = "none"
     gta_fix             = gs.value("packagechooser_gtafix")         or "false"
     flatpak             = gs.value("packagechooser_flatpak")        or "false"
     virtualization      = gs.value("packagechooser_virtualization") or "false"
     autoupdate          = gs.value("packagechooser_autoupdate")     or "true"
-    autoupdate_interval = gs.value("packagechooser_autoupdateinterval") or "1h"
+    # "na" dans interval = autoupdate désactivé, fallback sur "1h"
+    interval_raw        = gs.value("packagechooser_autoupdateinterval") or "1h"
+    autoupdate_interval = "1h" if interval_raw == "na" else interval_raw
     matrix_client       = gs.value("packagechooser_matrix")         or "none"
     waydroid            = gs.value("packagechooser_waydroid")       or "false"
 

@@ -101,6 +101,17 @@
                $out/share/calamares/branding/roudix/logo.png
             cp ${./pkgs/roudix-branding/roudix-logo.png} \
                $out/share/calamares/branding/roudix/languages.png
+
+            # Assets packagechooser (logos GPU/CPU/browser/desktop/shell/etc.)
+            mkdir -p $out/share/calamares/branding/roudix/assets/{gpu,cpu,kernel,browser,desktop,shell,bootloader,matrix,other}
+            cp ${./pkgs/roudix-branding/assets/gpu}/*.png      $out/share/calamares/branding/roudix/assets/gpu/
+            cp ${./pkgs/roudix-branding/assets/kernel}/*.png   $out/share/calamares/branding/roudix/assets/kernel/
+            cp ${./pkgs/roudix-branding/assets/browser}/*.png  $out/share/calamares/branding/roudix/assets/browser/
+            cp ${./pkgs/roudix-branding/assets/desktop}/*.png  $out/share/calamares/branding/roudix/assets/desktop/
+            cp ${./pkgs/roudix-branding/assets/shell}/*.png    $out/share/calamares/branding/roudix/assets/shell/
+            cp ${./pkgs/roudix-branding/assets/bootloader}/*.png $out/share/calamares/branding/roudix/assets/bootloader/
+            cp ${./pkgs/roudix-branding/assets/matrix}/*.png   $out/share/calamares/branding/roudix/assets/matrix/
+            cp ${./pkgs/roudix-branding/assets/other}/*.png    $out/share/calamares/branding/roudix/assets/other/
           '';
         });
 

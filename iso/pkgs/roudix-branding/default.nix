@@ -3,7 +3,6 @@
 stdenvNoCC.mkDerivation {
   name = "roudix-branding";
   version = "1.0";
-
   src = ./.;
 
   installPhase = ''
