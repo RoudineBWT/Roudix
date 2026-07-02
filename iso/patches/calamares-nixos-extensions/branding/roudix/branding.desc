@@ -31,7 +31,7 @@ slideshowAPI: 2
 stylesheet: stylesheet.qss
 
 style:
-    sidebarBackground:    "#1E2030"
-    sidebarText:          "#E8E8E8"
+    sidebarBackground:    "#252839"
+    sidebarText:          "#FFFFFF"
     sidebarTextSelect:    "#E8956D"
-    sidebarTextHighlight: "#E8956D"
+    sidebarTextHighlight: "#1E2030"

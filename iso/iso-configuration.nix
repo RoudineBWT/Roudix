@@ -1,8 +1,5 @@
 { pkgs, lib, modulesPath, roudixBranding, ... }:
 
-let
-  roudixGrubTheme = pkgs.callPackage ./pkgs/roudix-grub-theme {};
-in
 {
   # ── Branding ─────────────────────────────────────────────────────────────
   imports = [ ./branding.nix ];
@@ -10,8 +7,12 @@ in
   networking.hostName = "roudix-live";
   system.stateVersion = "26.11";
 
-  # ── Boot menu GRUB ───────────────────────────────────────────────────────
-  isoImage.grubTheme = "${roudixGrubTheme}/roudix";
+  # ── Boot menu ─────────────────────────────────────────────────────────────
+  # On désactive le thème GRUB custom (causait "bitmap unsupported format")
+  # et on laisse le thème GRUB par défaut de NixOS — propre et fonctionnel.
+  # Le titre de l'entrée est contrôlé par isoImage.appendToMenuLabel.
+  isoImage.grubTheme = null;
+  isoImage.appendToMenuLabel = " — Roudix Installer";
 
   # ── Locale par défaut (GeoIP override ça dans Calamares) ─────────────────
   time.timeZone = "Europe/Brussels";
