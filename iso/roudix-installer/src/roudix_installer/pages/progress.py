@@ -1,3 +1,4 @@
+import os
 import subprocess
 import threading
 from pathlib import Path
@@ -5,13 +6,6 @@ from pathlib import Path
 from gi.repository import Adw, GLib, Gtk
 
 from roudix_installer import config_gen, disko_gen
-
-STEPS = [
-    ("disko", "Partitionnement du disque"),
-    ("config", "Génération de la configuration"),
-    ("install", "Installation du système (nixos-install)"),
-    ("done", "Terminé"),
-]
 
 
 class ProgressPage(Adw.NavigationPage):
@@ -48,7 +42,7 @@ class ProgressPage(Adw.NavigationPage):
 
     def _run(self):
         try:
-            self._step_disko()
+            self._step_partition()
             self._step_config()
             self._step_install()
             GLib.idle_add(self._set_status, "Installation terminée 🎉", 1.0)
@@ -56,40 +50,86 @@ class ProgressPage(Adw.NavigationPage):
             GLib.idle_add(self._log, f"Erreur: {exc}")
             GLib.idle_add(self._set_status, "Échec de l'installation", 0.0)
 
+    def _priv(self, cmd: list[str]) -> list[str]:
+        """
+        Prefix with sudo when not already root. The autostart .desktop entry
+        already launches roudix-installer through `sudo --preserve-env`, so
+        this is a no-op there — it only matters when testing via `nix run`
+        as the plain live user (no root -> disko/mount/nixos-install would
+        otherwise fail with "Error is 13").
+        """
+        if os.geteuid() == 0:
+            return cmd
+        return ["sudo", "-n"] + cmd
+
     def _run_cmd(self, cmd: list[str]):
-        GLib.idle_add(self._log, f"$ {' '.join(cmd)}")
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        full = self._priv(cmd)
+        GLib.idle_add(self._log, f"$ {' '.join(full)}")
+        proc = subprocess.Popen(full, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         for line in proc.stdout:
             GLib.idle_add(self._log, line.rstrip())
         proc.wait()
         if proc.returncode != 0:
             raise RuntimeError(f"{cmd[0]} a échoué (code {proc.returncode})")
 
-    def _step_disko(self):
+    # ── Partitioning ──────────────────────────────────────────────────────
+
+    def _step_partition(self):
+        mode = self.state.disk.mode
+        if mode in ("simple", "advanced"):
+            self._partition_disko()
+        elif mode == "manual":
+            self._partition_manual()
+        else:
+            raise ValueError(f"Mode de partitionnement inconnu: {mode}")
+
+    def _partition_disko(self):
         GLib.idle_add(self._set_status, "Partitionnement du disque…", 0.15)
         disko_nix = disko_gen.generate(self.state.disk)
         Path("/tmp/roudix-disko.nix").write_text(disko_nix)
-        self._run_cmd([
-            "disko", "--mode", "disko",
-            "/tmp/roudix-disko.nix",
-        ])
+        self._run_cmd(["disko", "--mode", "disko", "/tmp/roudix-disko.nix"])
+
+    def _partition_manual(self):
+        """
+        Partitions were already made by hand in GParted. We just mount them
+        in the right order — root first, then boot, then swap — same result
+        as Calamares' manual partitioning, but via plain mount(8).
+        """
+        GLib.idle_add(self._set_status, "Montage des partitions…", 0.2)
+        mapping = self.state.disk.manual_partitions
+        root = next((dev for dev, mp in mapping.items() if mp == "/"), None)
+        if not root:
+            raise ValueError("Aucune partition assignée à / — impossible de continuer")
+
+        self._run_cmd(["mount", root, "/mnt"])
+
+        boot = next((dev for dev, mp in mapping.items() if mp == "/boot"), None)
+        if boot:
+            self._run_cmd(["mkdir", "-p", "/mnt/boot"])
+            self._run_cmd(["mount", boot, "/mnt/boot"])
+
+        swap = next((dev for dev, mp in mapping.items() if mp == "swap"), None)
+        if swap:
+            self._run_cmd(["swapon", swap])
+
+    # ── Configuration ─────────────────────────────────────────────────────
 
     def _step_config(self):
         GLib.idle_add(self._set_status, "Copie de la configuration…", 0.4)
-        # Récupère le flake principal embarqué dans l'ISO (iso/roudix-cfg
-        # au build time -> /iso-cfg sur le live env, cf isoImage.contents)
-        Path("/mnt/etc/nixos").mkdir(parents=True, exist_ok=True)
+        self._run_cmd(["mkdir", "-p", "/mnt/etc/nixos"])
         self._run_cmd(["cp", "-r", "/iso-cfg/.", "/mnt/etc/nixos/"])
 
         GLib.idle_add(self._set_status, "Détection du matériel…", 0.5)
-        self._run_cmd([
-            "nixos-generate-config", "--root", "/mnt", "--no-filesystems",
-        ])
+        # Manual mode already mounted the real target filesystems, so this
+        # picks them up like it would on physical hardware. Disko modes
+        # also work fine here since disko has already mounted everything.
+        self._run_cmd(["nixos-generate-config", "--root", "/mnt"])
 
-        GLib.idle_add(self._set_status, "Génération de la configuration…", 0.6)
-        cfg = config_gen.generate(self.state)
-        Path("/mnt/etc/nixos/roudix-options.nix").write_text(cfg)
-        GLib.idle_add(self._log, cfg)
+        GLib.idle_add(self._set_status, "Génération de local.nix / username.nix…", 0.6)
+        config_gen.write_config(self.state, Path("/mnt/etc/nixos"))
+        GLib.idle_add(self._log, "hosts/roudix/local.nix, username.nix, home/local.nix écrits.")
+
+    # ── Install ───────────────────────────────────────────────────────────
 
     def _step_install(self):
         GLib.idle_add(self._set_status, "Installation du système…", 0.75)

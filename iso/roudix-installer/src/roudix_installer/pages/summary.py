@@ -31,13 +31,31 @@ class SummaryPage(Adw.NavigationPage):
             child = nxt
 
         s = self.state
+        disk_label = {
+            "simple": f"{s.disk.device} (effacé, EFI+swap+root)",
+            "advanced": f"{s.disk.advanced_disko_path} (disko custom)",
+            "manual": ", ".join(f"{dev} → {mp}" for dev, mp in s.disk.manual_partitions.items()) or "aucune partition assignée",
+        }[s.disk.mode]
+
         rows = [
-            ("Disque", f"{s.disk.device or s.disk.advanced_disko_path} ({s.disk.mode})"),
-            ("Machine", f"{s.hostname} — utilisateur {s.username}"),
-            ("Bureau", f"{s.desktop} + {s.shell}"),
+            ("Disque", disk_label),
+            ("Utilisateur", s.username),
+            ("GPU", f"{s.gpu}" + (" (laptop Optimus)" if s.nvidia_laptop else "")),
+            ("CPU", s.cpu),
             ("Kernel", s.kernel),
+            ("Navigateur", s.browser + (" + Zen" if s.zen_browser else "")),
+            ("Bureau", f"{s.desktop}" + (f" + {s.desktop_shell}" if s.desktop in ("niri", "hyprland") else "")),
+            ("Shell", s.default_shell),
+            ("VM / Gaming", f"{'VM' if s.vm_guest else 'bare metal'} — gaming {'activé' if s.gaming else 'désactivé'}"),
+            ("Locale", f"{s.timezone} — {s.locale} — {s.keymap}"),
+            ("RGB", s.rgb + (f", RAM {s.memory_type}" if s.rgb == "openlinkhub" and s.memory_rgb_enable else "")),
+            ("Extras", ", ".join(filter(None, [
+                "GTA fix" if s.gta_fix else "",
+                "Flatpak" if s.flatpak else "",
+                "Virtualisation" if s.virtualization else "",
+                f"autoupdate {s.autoupdate_interval}" if s.autoupdate else "",
+            ])) or "aucun"),
             ("Bootloader", s.bootloader),
-            ("Navigateur", s.browser),
             ("Matrix", s.matrix_client),
             ("Waydroid", "activé" if s.waydroid_enable else "désactivé"),
         ]

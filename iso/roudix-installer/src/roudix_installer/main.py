@@ -70,14 +70,18 @@ class RoudixInstallerApp(Adw.Application):
 
 
 def main():
-    # Loading Catppuccin Mocha Peach CSS to match the rest of Roudix branding
+    # Loading Catppuccin Mocha Peach CSS to match the rest of Roudix branding.
+    # Uses importlib.resources so this works regardless of cwd — matters both
+    # for `nix run` (cwd = wherever you typed it) and the installed store path.
+    import importlib.resources
     from gi.repository import Gdk
 
     app = RoudixInstallerApp()
 
     def load_css(*_):
         provider = Gtk.CssProvider()
-        provider.load_from_path("src/roudix_installer/style.css")
+        css_path = importlib.resources.files("roudix_installer") / "style.css"
+        provider.load_from_path(str(css_path))
         Gtk.StyleContext.add_provider_for_display(
             Gdk.Display.get_default(),
             provider,

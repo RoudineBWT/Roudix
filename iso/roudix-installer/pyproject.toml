@@ -13,3 +13,6 @@ roudix-installer = "roudix_installer.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+roudix_installer = ["style.css"]
