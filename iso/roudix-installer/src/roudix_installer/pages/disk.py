@@ -71,7 +71,6 @@ class DiskPage(Adw.NavigationPage):
 
         # ── mode simple ──
         self.disk_group = Adw.PreferencesGroup(title="Choisis un disque")
-        self._populate_disk_group()
         box.append(self.disk_group)
 
         # ── mode avancé ──
@@ -101,6 +100,10 @@ class DiskPage(Adw.NavigationPage):
         self.manual_group.add(self.partitions_group)
         self.manual_group.set_visible(False)
         box.append(self.manual_group)
+
+        # Populated last: fills both disk_group (checkboxes) and
+        # manual_disk_row (dropdown) — both must already exist.
+        self._populate_disk_group()
 
         next_btn = Gtk.Button(label="Continuer", css_classes=["suggested-action", "pill"],
                                halign=Gtk.Align.END, margin_top=12)
