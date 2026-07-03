@@ -3,6 +3,8 @@ import subprocess
 
 from gi.repository import Adw, GLib, Gtk
 
+from roudix_installer.ui_helpers import page_with_header
+
 MOUNTPOINT_CHOICES = ["Ignorer", "/", "/boot (EFI)", "swap"]
 MOUNTPOINT_TO_STATE = {"/": "/", "/boot (EFI)": "/boot", "swap": "swap"}
 
@@ -110,7 +112,7 @@ class DiskPage(Adw.NavigationPage):
         next_btn.connect("clicked", self._validate)
         box.append(next_btn)
 
-        self.set_child(scroller)
+        self.set_child(page_with_header("Disque", scroller))
 
     def _populate_disk_group(self):
         try:

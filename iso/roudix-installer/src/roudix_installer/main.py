@@ -33,16 +33,12 @@ class RoudixInstallerWindow(Adw.ApplicationWindow):
 
         self.state = InstallState()
 
-        self.toolbar_view = Adw.ToolbarView()
-        self.header = Adw.HeaderBar()
-        self.toolbar_view.add_top_bar(self.header)
-
+        # NavigationView *is* the window content — each page brings its own
+        # Adw.ToolbarView/HeaderBar (see ui_helpers.page_with_header), which
+        # is what makes the automatic back button appear per page.
         self.stack = Adw.NavigationView()
-        self.toolbar_view.set_content(self.stack)
-        self.set_content(self.toolbar_view)
+        self.set_content(self.stack)
 
-        # Pages are pushed in order; each one calls self.goto_next()
-        # when the user validates it, passing control forward.
         self.pages = {
             "welcome": WelcomePage(self.state, on_next=lambda: self.goto("disk")),
             "disk": DiskPage(self.state, on_next=lambda: self.goto("options")),
@@ -70,15 +66,18 @@ class RoudixInstallerApp(Adw.Application):
 
 
 def main():
-    # Loading Catppuccin Mocha Peach CSS to match the rest of Roudix branding.
-    # Uses importlib.resources so this works regardless of cwd — matters both
-    # for `nix run` (cwd = wherever you typed it) and the installed store path.
     import importlib.resources
+
     from gi.repository import Gdk
 
     app = RoudixInstallerApp()
 
-    def load_css(*_):
+    def on_startup(*_):
+        # Roudix branding is a dark theme (Catppuccin Mocha) — force dark
+        # so libadwaita's own widgets (popovers, switches...) match instead
+        # of following the live ISO's system light/dark setting.
+        Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.FORCE_DARK)
+
         provider = Gtk.CssProvider()
         css_path = importlib.resources.files("roudix_installer") / "style.css"
         provider.load_from_path(str(css_path))
@@ -88,7 +87,7 @@ def main():
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
         )
 
-    app.connect("startup", load_css)
+    app.connect("startup", on_startup)
     return app.run(sys.argv)
 
 

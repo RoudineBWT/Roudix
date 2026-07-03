@@ -1,5 +1,7 @@
 from gi.repository import Adw, Gtk
 
+from roudix_installer.ui_helpers import page_with_header
+
 
 class SummaryPage(Adw.NavigationPage):
     def __init__(self, state, on_next):
@@ -7,8 +9,10 @@ class SummaryPage(Adw.NavigationPage):
         self.state = state
         self.on_next = on_next
 
+        scroller = Gtk.ScrolledWindow(vexpand=True)
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12,
                        margin_top=24, margin_bottom=24, margin_start=24, margin_end=24)
+        scroller.set_child(box)
 
         self.group = Adw.PreferencesGroup(title="Vérifie avant de lancer l'installation")
         box.append(self.group)
@@ -19,7 +23,7 @@ class SummaryPage(Adw.NavigationPage):
         install_btn.connect("clicked", lambda *_: self.on_next())
         box.append(install_btn)
 
-        self.set_child(box)
+        self.set_child(page_with_header("Résumé", scroller))
         self.connect("shown", lambda *_: self._refresh())
 
     def _refresh(self):

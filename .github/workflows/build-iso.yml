@@ -41,6 +41,11 @@ jobs:
           git config user.name "Roudix CI"
           git add -f iso/roudix-cfg
 
+      - name: Lock flake inputs (disko + roudix-installer)
+        run: |
+          cd iso
+          nix flake lock --accept-flake-config
+
       - name: Build ISO
         run: |
           cd iso

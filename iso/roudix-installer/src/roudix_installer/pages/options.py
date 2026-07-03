@@ -1,5 +1,7 @@
 from gi.repository import Adw, Gtk
 
+from roudix_installer.ui_helpers import page_with_header
+
 # ── Option lists, mirrored 1:1 from the pick() calls in roudix-installer.sh ──
 
 KERNELS = [
@@ -76,7 +78,8 @@ LOCALES = [
 
 KEYMAPS = [
     ("be-latin1", "Belge AZERTY"), ("fr", "Français AZERTY"), ("fr-latin9", "Français AZERTY (latin9)"),
-    ("us", "English (US) QWERTY"), ("uk", "English (UK) QWERTY"),
+    ("us", "English (US) QWERTY"), ("us-acentos", "English (US) International (touches mortes)"),
+    ("uk", "English (UK) QWERTY"),
     ("de", "Allemand QWERTZ"), ("ch", "Suisse QWERTZ"), ("nl", "Néerlandais QWERTY"),
     ("es", "Espagnol QWERTY"), ("it", "Italien QWERTY"), ("pt-latin1", "Portugais QWERTY"),
     ("pl2", "Polonais QWERTY"), ("ru", "Russe"), ("jp106", "Japonais 106 touches"),
@@ -235,7 +238,7 @@ class OptionsPage(Adw.NavigationPage):
         next_btn.connect("clicked", self._validate)
         box.append(next_btn)
 
-        self.set_child(scroller)
+        self.set_child(page_with_header("Options", scroller))
 
     # ── helpers ──────────────────────────────────────────────────────────
 

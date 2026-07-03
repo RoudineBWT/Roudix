@@ -15,4 +15,4 @@ roudix-installer = "roudix_installer.main:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-roudix_installer = ["style.css"]
+roudix_installer = ["style.css", "logo.svg"]

@@ -1,48 +1,77 @@
 /* Catppuccin Mocha, accent = Peach — matches the Limine bootloader theme
-   and the rest of Roudix's branding so the installer doesn't feel like
-   a bolted-on third-party tool. */
+   and the rest of Roudix's branding.
 
-@define-color rx_base   #1e1e2e;
-@define-color rx_mantle #181825;
-@define-color rx_text   #cdd6f4;
-@define-color rx_peach  #fab387;
-@define-color rx_mauve  #cba6f7;
-@define-color rx_red    #f38ba8;
+   This redefines libadwaita's own semantic color variables instead of
+   overriding individual widget classes. That's the supported theming
+   mechanism since libadwaita 1.6+, and it's what was missing before:
+   Adw.PreferencesGroup rows, ComboRow popovers, and banners all pull
+   their colors from --card-bg-color / --popover-bg-color / etc., not
+   from raw `button` / `window` selectors, so overriding only those
+   left rows and dropdown menus stuck on libadwaita's default light
+   palette (white text on white background in popovers = looked broken
+   / unselectable, not actually broken).
+*/
 
-window {
-  background-color: @rx_base;
-  color: @rx_text;
-}
+:root {
+  --window-bg-color: #1e1e2e;
+  --window-fg-color: #cdd6f4;
 
-headerbar {
-  background-color: @rx_mantle;
-  color: @rx_text;
-}
+  --view-bg-color: #181825;
+  --view-fg-color: #cdd6f4;
 
-button.suggested-action {
-  background-color: @rx_peach;
-  color: @rx_mantle;
-}
+  --headerbar-bg-color: #181825;
+  --headerbar-fg-color: #cdd6f4;
+  --headerbar-border-color: #cdd6f4;
+  --headerbar-backdrop-color: #181825;
+  --headerbar-shade-color: rgba(0, 0, 0, 0.36);
 
-button.suggested-action:hover {
-  background-color: shade(@rx_peach, 1.1);
-}
+  --card-bg-color: #313244;
+  --card-fg-color: #cdd6f4;
+  --card-shade-color: rgba(0, 0, 0, 0.36);
 
-button.destructive-action {
-  background-color: @rx_red;
-  color: @rx_mantle;
+  --dialog-bg-color: #1e1e2e;
+  --dialog-fg-color: #cdd6f4;
+
+  --popover-bg-color: #313244;
+  --popover-fg-color: #cdd6f4;
+
+  --sidebar-bg-color: #181825;
+  --sidebar-fg-color: #cdd6f4;
+
+  --accent-bg-color: #fab387;
+  --accent-fg-color: #1e1e2e;
+  --accent-color: #fab387;
+
+  --destructive-bg-color: #f38ba8;
+  --destructive-fg-color: #1e1e2e;
+  --destructive-color: #f38ba8;
+
+  --success-bg-color: #a6e3a1;
+  --success-fg-color: #1e1e2e;
+  --success-color: #a6e3a1;
+
+  --warning-bg-color: #f9e2af;
+  --warning-fg-color: #1e1e2e;
+  --warning-color: #f9e2af;
+
+  --error-bg-color: #f38ba8;
+  --error-fg-color: #1e1e2e;
+  --error-color: #f38ba8;
+
+  --shade-color: rgba(0, 0, 0, 0.5);
+  --scrollbar-outline-color: rgba(0, 0, 0, 0.5);
 }
 
 .title-1, .title-3 {
-  color: @rx_mauve;
-}
-
-progressbar > trough > progress {
-  background-color: @rx_peach;
+  color: #cba6f7; /* mauve, matches the Limine/gem branding accent */
 }
 
 textview {
-  background-color: @rx_mantle;
-  color: @rx_text;
+  background-color: #181825;
+  color: #cdd6f4;
   font-family: monospace;
+}
+
+progressbar > trough > progress {
+  background-color: #fab387;
 }

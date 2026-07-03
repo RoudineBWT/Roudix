@@ -1,4 +1,8 @@
+import importlib.resources
+
 from gi.repository import Adw, Gtk
+
+from roudix_installer.ui_helpers import page_with_header
 
 
 class WelcomePage(Adw.NavigationPage):
@@ -10,7 +14,12 @@ class WelcomePage(Adw.NavigationPage):
                        margin_top=48, margin_bottom=48, margin_start=48, margin_end=48,
                        valign=Gtk.Align.CENTER)
 
-        logo = Gtk.Image(icon_name="dev.roudix.Installer", pixel_size=96)
+        logo_path = importlib.resources.files("roudix_installer") / "logo.svg"
+        logo = Gtk.Picture.new_for_filename(str(logo_path))
+        logo.set_content_fit(Gtk.ContentFit.CONTAIN)
+        logo.set_size_request(120, 120)
+        logo.set_halign(Gtk.Align.CENTER)
+
         title = Gtk.Label(label="Roudix", css_classes=["title-1"])
         subtitle = Gtk.Label(
             label="On va installer Roudix sur cette machine. "
@@ -26,4 +35,4 @@ class WelcomePage(Adw.NavigationPage):
         for w in (logo, title, subtitle, start_btn):
             box.append(w)
 
-        self.set_child(box)
+        self.set_child(page_with_header("Bienvenue", box))

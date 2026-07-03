@@ -6,6 +6,7 @@ from pathlib import Path
 from gi.repository import Adw, GLib, Gtk
 
 from roudix_installer import config_gen, disko_gen
+from roudix_installer.ui_helpers import page_with_header
 
 
 class ProgressPage(Adw.NavigationPage):
@@ -26,7 +27,7 @@ class ProgressPage(Adw.NavigationPage):
         for w in (self.status_label, self.progress, scroller):
             box.append(w)
 
-        self.set_child(box)
+        self.set_child(page_with_header("Installation", box))
         self.connect("shown", lambda *_: self._start())
 
     def _log(self, text: str):
@@ -117,7 +118,21 @@ class ProgressPage(Adw.NavigationPage):
     def _step_config(self):
         GLib.idle_add(self._set_status, "Copie de la configuration…", 0.4)
         self._run_cmd(["mkdir", "-p", "/mnt/etc/nixos"])
-        self._run_cmd(["cp", "-r", "/iso-cfg/.", "/mnt/etc/nixos/"])
+
+        if Path("/iso-cfg").is_dir():
+            self._run_cmd(["cp", "-r", "/iso-cfg/.", "/mnt/etc/nixos/"])
+        else:
+            # /iso-cfg only exists inside an ISO actually built with the
+            # current iso-configuration.nix (isoImage.contents embeds it).
+            # Booted an older ISO, or testing outside one entirely? Fall
+            # back to a plain clone — same source roudix-installer.sh used
+            # before there was an ISO pipeline at all.
+            GLib.idle_add(
+                self._log,
+                "/iso-cfg introuvable (ISO pas (encore) reconstruite avec "
+                "isoImage.contents, ou test hors ISO) — clone direct depuis GitHub à la place.",
+            )
+            self._run_cmd(["git", "clone", "https://github.com/RoudineBWT/Roudix", "/mnt/etc/nixos"])
 
         GLib.idle_add(self._set_status, "Détection du matériel…", 0.5)
         # Manual mode already mounted the real target filesystems, so this
