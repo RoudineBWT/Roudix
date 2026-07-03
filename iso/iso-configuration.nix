@@ -1,4 +1,4 @@
-{ pkgs, lib, modulesPath, roudixBranding, roudix-installer, disko, ... }:
+{ pkgs, lib, modulesPath, roudix-installer, disko, ... }:
 
 {
   imports = [ ./branding.nix ];

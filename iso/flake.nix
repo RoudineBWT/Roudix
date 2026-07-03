@@ -16,7 +16,10 @@
       nixosConfigurations.roudix-iso = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {
-          roudixBranding = nixpkgs.legacyPackages.${system}.callPackage ./pkgs/roudix-branding {};
+          # ./roudix-cfg est la copie du repo principal embarquée par le
+          # rsync du workflow — pkgs/roudix-branding vit à la racine du
+          # repo, pas sous iso/, d'où le chemin qui pointe dans roudix-cfg.
+          roudixBranding = nixpkgs.legacyPackages.${system}.callPackage ./roudix-cfg/pkgs/roudix-branding {};
           inherit roudix-installer disko;
         };
         modules = [

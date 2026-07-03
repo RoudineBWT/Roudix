@@ -1,8 +1,11 @@
 import importlib.resources
+from pathlib import Path
 
 from gi.repository import Adw, Gtk
 
 from roudix_installer.ui_helpers import page_with_header
+
+REAL_LOGO = Path("/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png")
 
 
 class WelcomePage(Adw.NavigationPage):
@@ -14,7 +17,14 @@ class WelcomePage(Adw.NavigationPage):
                        margin_top=48, margin_bottom=48, margin_start=48, margin_end=48,
                        valign=Gtk.Align.CENTER)
 
-        logo_path = importlib.resources.files("roudix_installer") / "logo.svg"
+        # branding.nix installe le vrai logo Roudix sur le système live —
+        # on le préfère au placeholder embarqué dans le paquet installer
+        # dès qu'il est disponible.
+        if REAL_LOGO.exists():
+            logo_path = REAL_LOGO
+        else:
+            logo_path = importlib.resources.files("roudix_installer") / "logo.svg"
+
         logo = Gtk.Picture.new_for_filename(str(logo_path))
         logo.set_content_fit(Gtk.ContentFit.CONTAIN)
         logo.set_size_request(120, 120)
