@@ -1,4 +1,4 @@
-{ pkgs, lib, modulesPath, roudixBranding, ... }:
+{ pkgs, lib, modulesPath, roudixBranding, roudix-installer, disko, ... }:
 
 {
   # ── Branding ─────────────────────────────────────────────────────────────
@@ -8,13 +8,10 @@
   system.stateVersion = "26.11";
 
   # ── Boot menu ─────────────────────────────────────────────────────────────
-  # On désactive le thème GRUB custom (causait "bitmap unsupported format")
-  # et on laisse le thème GRUB par défaut de NixOS — propre et fonctionnel.
-  # Le titre de l'entrée est contrôlé par isoImage.appendToMenuLabel.
   isoImage.grubTheme = null;
   isoImage.appendToMenuLabel = " — Roudix Installer";
 
-  # ── Locale par défaut (GeoIP override ça dans Calamares) ─────────────────
+  # ── Locale par défaut ─────────────────────────────────────────────────────
   time.timeZone = "Europe/Brussels";
   i18n.defaultLocale = "fr_BE.UTF-8";
   console.keyMap = "be-latin1";
@@ -43,7 +40,7 @@
     sandbox = false;
   };
 
-  # ── Bureau / display manager : fourni par installation-cd-graphical-calamares-gnome.nix ──
+  # ── Bureau / display manager : fourni par installation-cd-graphical-gnome.nix ──
 
   # ── Packages disponibles sur la live ─────────────────────────────────────
   environment.systemPackages = with pkgs; [
@@ -63,9 +60,8 @@
     dmidecode
 
     nixos-install-tools
-    calamares
-    calamares-nixos-extensions
-    adwaita-qt6  # Thème Adwaita pour Qt6 — donne à Calamares les bordures GTK
+    roudix-installer.packages.${pkgs.system}.default
+    disko.packages.${pkgs.system}.disko
 
     python3
     xdg-user-dirs
@@ -75,14 +71,9 @@
     networkmanagerapplet
   ];
 
-  # Applique le thème Adwaita à toutes les applis Qt6 (dont Calamares)
-  environment.sessionVariables = {
-    QT_STYLE_OVERRIDE = "adwaita-dark";
-  };
-
   # ── Embarquer le flake Roudix dans l'ISO ─────────────────────────────────
   # Le workflow rsync copie le repo principal dans iso/roudix-cfg/ au build time.
-  # Calamares copiera /iso/iso-cfg/ vers /mnt/etc/nixos/ puis lancera :
+  # roudix-installer copie /iso/iso-cfg/ vers /mnt/etc/nixos/ puis lance :
   #   nixos-install --flake /mnt/etc/nixos#roudix
   isoImage.contents = [
     {
@@ -94,39 +85,23 @@
   image.fileName     = "roudix.iso";
   isoImage.volumeID  = "ROUDIX";
 
-  # ── Script post-install : clone le repo dans ~/.config/roudix ────────────
-  # ── Branche /etc/calamares/settings.conf vers notre settings.conf patché ──
-  # calamares (le binaire) cherche son settings.conf dans son PROPRE /etc en
-  # priorité ; comme c'est un store path read-only différent de celui de
-  # calamares-nixos-extensions, on force NixOS à fusionner /etc/calamares/
-  # vers notre version Roudix patchée.
-  environment.etc."calamares/settings.conf".source =
-    "${pkgs.calamares-nixos-extensions}/etc/calamares/settings.conf";
-  environment.etc."calamares/modules".source =
-    "${pkgs.calamares-nixos-extensions}/etc/calamares/modules";
-
-  environment.etc."calamares/scripts/post-install.sh" = {
-    mode = "0755";
-    text = ''
-      #!/usr/bin/env bash
-      # Copie le flake Roudix final (avec hw-config, local.nix, username.nix
-      # générés par Calamares) dans ~/.config/roudix pour que nh os switch
-      # fonctionne directement après l'installation.
-      set -euo pipefail
-
-      ROOT="$1"        # rootMountPoint passé par nixos.py
-      USERNAME="$2"    # username passé par nixos.py
-
-      NIXOS_DIR="$ROOT/etc/nixos"
-      HOME_DIR="$ROOT/home/$USERNAME"
-      CONFIG_DIR="$HOME_DIR/.config/roudix"
-
-      mkdir -p "$CONFIG_DIR"
-      # On copie /etc/nixos/ (version finale avec les fichiers dynamiques)
-      # et non /iso/iso-cfg/ (version source statique sans hw-config etc.)
-      cp -r "$NIXOS_DIR/." "$CONFIG_DIR/"
-      chown -R 1000:1000 "$HOME_DIR/.config"
-      echo "Roudix config copié dans $CONFIG_DIR"
-    '';
-  };
+  # ── Autostart de l'installeur ─────────────────────────────────────────────
+  # roudix-installer a besoin de root pour disko/nixos-install. Le live user
+  # ("nixos") est wheel + NOPASSWD + SETENV -> sudo --preserve-env transparent,
+  # même mécanisme que ce qu'utilisait Calamares pour Wayland.
+  environment.etc."xdg/autostart/roudix-installer.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Version=1.0
+    Name=Install Roudix
+    GenericName=System Installer
+    TryExec=roudix-installer
+    Exec=sh -c "sudo --preserve-env=WAYLAND_DISPLAY,XDG_RUNTIME_DIR,DISPLAY roudix-installer"
+    Comment=Roudix Installer
+    Icon=roudix
+    Terminal=false
+    StartupNotify=true
+    Categories=System;
+    X-AppStream-Ignore=true
+  '';
 }

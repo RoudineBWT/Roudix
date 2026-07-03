@@ -1,0 +1,48 @@
+/* Catppuccin Mocha, accent = Peach — matches the Limine bootloader theme
+   and the rest of Roudix's branding so the installer doesn't feel like
+   a bolted-on third-party tool. */
+
+@define-color rx_base   #1e1e2e;
+@define-color rx_mantle #181825;
+@define-color rx_text   #cdd6f4;
+@define-color rx_peach  #fab387;
+@define-color rx_mauve  #cba6f7;
+@define-color rx_red    #f38ba8;
+
+window {
+  background-color: @rx_base;
+  color: @rx_text;
+}
+
+headerbar {
+  background-color: @rx_mantle;
+  color: @rx_text;
+}
+
+button.suggested-action {
+  background-color: @rx_peach;
+  color: @rx_mantle;
+}
+
+button.suggested-action:hover {
+  background-color: shade(@rx_peach, 1.1);
+}
+
+button.destructive-action {
+  background-color: @rx_red;
+  color: @rx_mantle;
+}
+
+.title-1, .title-3 {
+  color: @rx_mauve;
+}
+
+progressbar > trough > progress {
+  background-color: @rx_peach;
+}
+
+textview {
+  background-color: @rx_mantle;
+  color: @rx_text;
+  font-family: monospace;
+}
