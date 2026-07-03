@@ -25,6 +25,10 @@
           pkgs.python3Packages.pygobject3
         ];
 
+        # PEP 517 backend declared in pyproject.toml — required explicitly,
+        # pypaBuildPhase otherwise can't import setuptools.build_meta.
+        build-system = [ pkgs.python3Packages.setuptools ];
+
         # Runtime tools the wizard shells out to.
         makeWrapperArgs = [
           "--prefix PATH : ${pkgs.lib.makeBinPath [
