@@ -1,7 +1,6 @@
 { pkgs, lib, modulesPath, roudixBranding, roudix-installer, disko, ... }:
 
 {
-  # ── Branding ─────────────────────────────────────────────────────────────
   imports = [ ./branding.nix ];
 
   networking.hostName = "roudix-live";
