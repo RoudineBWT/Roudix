@@ -39,17 +39,22 @@ class RoudixInstallerWindow(Adw.ApplicationWindow):
         self.stack = Adw.NavigationView()
         self.set_content(self.stack)
 
-        self.pages = {
-            "welcome": WelcomePage(self.state, on_next=lambda: self.goto("disk")),
-            "disk": DiskPage(self.state, on_next=lambda: self.goto("options")),
-            "options": OptionsPage(self.state, on_next=lambda: self.goto("summary")),
-            "summary": SummaryPage(self.state, on_next=lambda: self.goto("progress")),
-            "progress": ProgressPage(self.state),
+        self.pages = {}
+        self.page_factories = {
+            "disk": lambda: DiskPage(self.state, on_next=lambda: self.goto("options")),
+            "options": lambda: OptionsPage(self.state, on_next=lambda: self.goto("summary")),
+            "summary": lambda: SummaryPage(self.state, on_next=lambda: self.goto("progress")),
+            "progress": lambda: ProgressPage(self.state),
         }
 
-        self.stack.push(self.pages["welcome"])
+        welcome = WelcomePage(self.state, on_next=lambda: self.goto("disk"))
+        self.stack.push(welcome)
 
     def goto(self, name: str):
+        # Built on first visit (after language has been chosen on Welcome),
+        # then reused — Adw.NavigationView keeps popped pages alive anyway.
+        if name not in self.pages:
+            self.pages[name] = self.page_factories[name]()
         self.stack.push(self.pages[name])
 
 

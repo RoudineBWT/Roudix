@@ -16,7 +16,11 @@ from dataclasses import dataclass, field
 class DiskChoice:
     device: str = ""                # e.g. /dev/vda — used in "simple" mode
     mode: str = "simple"             # "simple" | "advanced" | "manual"
-    swap_size_gb: int = 8
+    filesystem: str = "ext4"         # "ext4" | "btrfs" — only used in "simple" mode
+    boot_size_gb: int = 4            # CachyOS + plusieurs générations Limine remplissent
+                                      # vite un /boot de 512M — 4G recommandé, 2G minimum
+    enable_swap: bool = False        # off par défaut : zram couvre déjà ce rôle
+    swap_size_gb: int = 8            # utilisé seulement si enable_swap
     advanced_disko_path: str = ""    # path to a custom disko.nix if mode == advanced
     # mode == "manual": partitions the user made themselves in GParted,
     # mapped to mountpoints. e.g. {"/dev/vda1": "/boot", "/dev/vda2": "swap", "/dev/vda3": "/"}

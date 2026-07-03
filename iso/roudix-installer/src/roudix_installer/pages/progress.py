@@ -5,20 +5,21 @@ from pathlib import Path
 
 from gi.repository import Adw, GLib, Gtk
 
-from roudix_installer import config_gen, disko_gen
+from roudix_installer import btrfs_patch, config_gen, disko_gen
+from roudix_installer.i18n import L
 from roudix_installer.ui_helpers import page_with_header
 
 
 class ProgressPage(Adw.NavigationPage):
     def __init__(self, state):
-        super().__init__(title="Installation", can_pop=False)
+        super().__init__(title=L("Installation", "Installation"), can_pop=False)
         self.state = state
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16,
                        margin_top=48, margin_bottom=48, margin_start=48, margin_end=48,
                        valign=Gtk.Align.CENTER)
 
-        self.status_label = Gtk.Label(label="Préparation…", css_classes=["title-3"])
+        self.status_label = Gtk.Label(label=L("Préparation…", "Preparing…"), css_classes=["title-3"])
         self.progress = Gtk.ProgressBar(show_text=False)
         self.log_view = Gtk.TextView(editable=False, monospace=True)
         scroller = Gtk.ScrolledWindow(min_content_height=220)
@@ -27,7 +28,7 @@ class ProgressPage(Adw.NavigationPage):
         for w in (self.status_label, self.progress, scroller):
             box.append(w)
 
-        self.set_child(page_with_header("Installation", box))
+        self.set_child(page_with_header(L("Installation", "Installation"), box))
         self.connect("shown", lambda *_: self._start())
 
     def _log(self, text: str):
@@ -46,10 +47,10 @@ class ProgressPage(Adw.NavigationPage):
             self._step_partition()
             self._step_config()
             self._step_install()
-            GLib.idle_add(self._set_status, "Installation terminée 🎉", 1.0)
+            GLib.idle_add(self._set_status, L("Installation terminée 🎉", "Installation complete 🎉"), 1.0)
         except Exception as exc:  # noqa: BLE001
-            GLib.idle_add(self._log, f"Erreur: {exc}")
-            GLib.idle_add(self._set_status, "Échec de l'installation", 0.0)
+            GLib.idle_add(self._log, f"{L('Erreur', 'Error')}: {exc}")
+            GLib.idle_add(self._set_status, L("Échec de l'installation", "Installation failed"), 0.0)
 
     def _priv(self, cmd: list[str]) -> list[str]:
         """
@@ -71,7 +72,7 @@ class ProgressPage(Adw.NavigationPage):
             GLib.idle_add(self._log, line.rstrip())
         proc.wait()
         if proc.returncode != 0:
-            raise RuntimeError(f"{cmd[0]} a échoué (code {proc.returncode})")
+            raise RuntimeError(f"{cmd[0]} {L('a échoué', 'failed')} (code {proc.returncode})")
 
     # ── Partitioning ──────────────────────────────────────────────────────
 
@@ -82,10 +83,10 @@ class ProgressPage(Adw.NavigationPage):
         elif mode == "manual":
             self._partition_manual()
         else:
-            raise ValueError(f"Mode de partitionnement inconnu: {mode}")
+            raise ValueError(f"{L('Mode de partitionnement inconnu', 'Unknown partitioning mode')}: {mode}")
 
     def _partition_disko(self):
-        GLib.idle_add(self._set_status, "Partitionnement du disque…", 0.15)
+        GLib.idle_add(self._set_status, L("Partitionnement du disque…", "Partitioning the disk…"), 0.15)
         disko_nix = disko_gen.generate(self.state.disk)
         Path("/tmp/roudix-disko.nix").write_text(disko_nix)
         self._run_cmd(["disko", "--mode", "disko", "/tmp/roudix-disko.nix"])
@@ -96,11 +97,11 @@ class ProgressPage(Adw.NavigationPage):
         in the right order — root first, then boot, then swap — same result
         as Calamares' manual partitioning, but via plain mount(8).
         """
-        GLib.idle_add(self._set_status, "Montage des partitions…", 0.2)
+        GLib.idle_add(self._set_status, L("Montage des partitions…", "Mounting partitions…"), 0.2)
         mapping = self.state.disk.manual_partitions
         root = next((dev for dev, mp in mapping.items() if mp == "/"), None)
         if not root:
-            raise ValueError("Aucune partition assignée à / — impossible de continuer")
+            raise ValueError(L("Aucune partition assignée à / — impossible de continuer", "No partition assigned to / — cannot continue"))
 
         self._run_cmd(["mount", root, "/mnt"])
 
@@ -116,7 +117,7 @@ class ProgressPage(Adw.NavigationPage):
     # ── Configuration ─────────────────────────────────────────────────────
 
     def _step_config(self):
-        GLib.idle_add(self._set_status, "Copie de la configuration…", 0.4)
+        GLib.idle_add(self._set_status, L("Copie de la configuration…", "Copying the configuration…"), 0.4)
         self._run_cmd(["mkdir", "-p", "/mnt/etc/nixos"])
 
         if Path("/iso-cfg").is_dir():
@@ -129,32 +130,64 @@ class ProgressPage(Adw.NavigationPage):
             # before there was an ISO pipeline at all.
             GLib.idle_add(
                 self._log,
-                "/iso-cfg introuvable (ISO pas (encore) reconstruite avec "
-                "isoImage.contents, ou test hors ISO) — clone direct depuis GitHub à la place.",
+                L(
+                    "/iso-cfg introuvable (ISO pas (encore) reconstruite avec "
+                    "isoImage.contents, ou test hors ISO) — clone direct depuis GitHub à la place.",
+                    "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, "
+                    "or testing outside an ISO) — cloning straight from GitHub instead.",
+                ),
             )
             self._run_cmd(["git", "clone", "https://github.com/RoudineBWT/Roudix", "/mnt/etc/nixos"])
 
-        GLib.idle_add(self._set_status, "Détection du matériel…", 0.5)
-        # Manual mode already mounted the real target filesystems, so this
-        # picks them up like it would on physical hardware. Disko modes
-        # also work fine here since disko has already mounted everything.
+        GLib.idle_add(self._set_status, L("Détection du matériel…", "Detecting hardware…"), 0.5)
+        # Generate into the default location then copy — same as
+        # roudix-installer.sh, which does this specifically to avoid
+        # stdout-capture truncation on btrfs. Manual mode already mounted
+        # the real target filesystems, so this picks them up like it
+        # would on physical hardware; disko modes work the same way
+        # since disko has already mounted everything by this point.
         self._run_cmd(["nixos-generate-config", "--root", "/mnt"])
+        hw_config = Path("/mnt/etc/nixos/hosts/roudix/hardware-configuration.nix")
+        self._run_cmd(["cp", "/mnt/etc/nixos/hardware-configuration.nix", str(hw_config)])
 
-        GLib.idle_add(self._set_status, "Génération de local.nix / username.nix…", 0.6)
+        patched = btrfs_patch.patch_hardware_config(hw_config)
+        if patched:
+            GLib.idle_add(
+                self._log,
+                L(
+                    f"btrfs détecté — options de montage auto-patchées pour: {', '.join(patched)}",
+                    f"btrfs detected — mount options auto-patched for: {', '.join(patched)}",
+                ),
+            )
+
+        GLib.idle_add(self._set_status, L("Génération de local.nix / username.nix…", "Generating local.nix / username.nix…"), 0.6)
         config_gen.write_config(self.state, Path("/mnt/etc/nixos"))
-        GLib.idle_add(self._log, "hosts/roudix/local.nix, username.nix, home/local.nix écrits.")
+        GLib.idle_add(self._log, L("hosts/roudix/local.nix, username.nix, home/local.nix écrits.", "hosts/roudix/local.nix, username.nix, home/local.nix written."))
+
+        # nixos-install --flake resolves /mnt/etc/nixos through Nix's
+        # git+file fetcher whenever that directory is a git repo (always
+        # true in the clone-fallback case, and also true if /iso-cfg was
+        # ever a git checkout at some point). That fetcher only sees
+        # *tracked* files — anything just written above (hardware-config,
+        # local.nix, username.nix...) is invisible to the flake until
+        # staged, even uncommitted. Skipping this step is exactly what
+        # produced "path ... does not exist" on nixos-install.
+        self._run_cmd([
+            "bash", "-c",
+            "if [ -d /mnt/etc/nixos/.git ]; then git -C /mnt/etc/nixos add -A; fi",
+        ])
 
     # ── Install ───────────────────────────────────────────────────────────
 
     def _step_install(self):
-        GLib.idle_add(self._set_status, "Installation du système…", 0.75)
+        GLib.idle_add(self._set_status, L("Installation du système…", "Installing the system…"), 0.75)
         self._run_cmd([
             "nixos-install",
             "--flake", "/mnt/etc/nixos#roudix",
             "--no-root-passwd",
         ])
 
-        GLib.idle_add(self._set_status, "Copie de la config pour nh os switch…", 0.95)
+        GLib.idle_add(self._set_status, L("Copie de la config pour nh os switch…", "Copying config for nh os switch…"), 0.95)
         config_dir = f"/mnt/home/{self.state.username}/.config/roudix"
         self._run_cmd(["mkdir", "-p", config_dir])
         self._run_cmd(["cp", "-r", "/mnt/etc/nixos/.", config_dir])
