@@ -28,8 +28,27 @@ class ProgressPage(Adw.NavigationPage):
         for w in (self.status_label, self.progress, scroller):
             box.append(w)
 
+        self.reboot_check = Gtk.CheckButton(label=L("Redémarrer maintenant", "Reboot now"), active=True)
+        self.reboot_check.set_halign(Gtk.Align.CENTER)
+        self.reboot_check.set_visible(False)
+        box.append(self.reboot_check)
+
+        self.finish_btn = Gtk.Button(label=L("Terminer", "Finish"),
+                                      css_classes=["suggested-action", "pill"],
+                                      halign=Gtk.Align.CENTER)
+        self.finish_btn.connect("clicked", self._on_finish_clicked)
+        self.finish_btn.set_visible(False)
+        box.append(self.finish_btn)
+
         self.set_child(page_with_header(L("Installation", "Installation"), box))
         self.connect("shown", lambda *_: self._start())
+
+    def _on_finish_clicked(self, _btn):
+        if self.reboot_check.get_active():
+            GLib.idle_add(self._log, L("Redémarrage…", "Rebooting…"))
+            subprocess.Popen(self._priv(["systemctl", "reboot"]))
+        else:
+            self.get_root().get_application().quit()
 
     def _log(self, text: str):
         buf = self.log_view.get_buffer()
@@ -48,9 +67,13 @@ class ProgressPage(Adw.NavigationPage):
             self._step_config()
             self._step_install()
             GLib.idle_add(self._set_status, L("Installation terminée 🎉", "Installation complete 🎉"), 1.0)
+            GLib.idle_add(self.reboot_check.set_visible, True)
+            GLib.idle_add(self.finish_btn.set_visible, True)
         except Exception as exc:  # noqa: BLE001
             GLib.idle_add(self._log, f"{L('Erreur', 'Error')}: {exc}")
             GLib.idle_add(self._set_status, L("Échec de l'installation", "Installation failed"), 0.0)
+            GLib.idle_add(self.reboot_check.set_active, False)
+            GLib.idle_add(self.finish_btn.set_visible, True)
 
     def _priv(self, cmd: list[str]) -> list[str]:
         """
@@ -79,6 +102,16 @@ class ProgressPage(Adw.NavigationPage):
         proc.wait()
         if proc.returncode != 0:
             raise RuntimeError(f"{cmd[0]} {L('a échoué', 'failed')} (code {proc.returncode})")
+
+    def _run_cmd_with_input(self, cmd: list[str], input_text: str):
+        """Like _run_cmd, but actually feeds stdin — for chpasswd."""
+        full = self._priv(cmd)
+        GLib.idle_add(self._log, f"$ {' '.join(cmd)}")  # never log input_text
+        proc = subprocess.run(full, input=input_text, capture_output=True, text=True)
+        if proc.stdout:
+            GLib.idle_add(self._log, proc.stdout.rstrip())
+        if proc.returncode != 0:
+            raise RuntimeError(f"{cmd[0]} {L('a échoué', 'failed')} (code {proc.returncode}): {proc.stderr.strip()}")
 
     # ── Partitioning ──────────────────────────────────────────────────────
 
@@ -199,6 +232,17 @@ class ProgressPage(Adw.NavigationPage):
             "--no-root-passwd",
             "--option", "accept-flake-config", "true",
         ])
+
+        if self.state.password:
+            GLib.idle_add(self._set_status, L("Configuration du mot de passe…", "Setting the password…"), 0.9)
+            # Sets it directly in the installed system's /etc/shadow via
+            # chroot — same place any other distro's installer would put
+            # it — rather than baking a password hash into the declarative
+            # config that ends up committed to git.
+            self._run_cmd_with_input(
+                ["nixos-enter", "--root", "/mnt", "-c", "chpasswd"],
+                f"{self.state.username}:{self.state.password}\n",
+            )
 
         GLib.idle_add(self._set_status, L("Copie de la config pour nh os switch…", "Copying config for nh os switch…"), 0.95)
         config_dir = f"/mnt/home/{self.state.username}/.config/roudix"

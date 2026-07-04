@@ -144,7 +144,18 @@ class OptionsPage(Adw.NavigationPage):
         self.username_row = Adw.EntryRow(title=L("Nom d'utilisateur", "Username"))
         self.username_row.set_text(state.username)
         user_group.add(self.username_row)
+
+        self.password_row = Adw.PasswordEntryRow(title=L("Mot de passe", "Password"))
+        user_group.add(self.password_row)
+
+        self.password_confirm_row = Adw.PasswordEntryRow(title=L("Confirmer le mot de passe", "Confirm password"))
+        user_group.add(self.password_confirm_row)
+
+        self.password_warning = Gtk.Label(
+            css_classes=["error", "caption"], wrap=True, xalign=0, visible=False,
+        )
         box.append(user_group)
+        box.append(self.password_warning)
 
         # ── Matériel ──
         hw_group = Adw.PreferencesGroup(title=L("Matériel", "Hardware"))
@@ -324,8 +335,23 @@ class OptionsPage(Adw.NavigationPage):
         self.autoupdate_interval_row.set_visible(self.autoupdate_row.get_active())
 
     def _validate(self, _btn):
+        password = self.password_row.get_text()
+        confirm = self.password_confirm_row.get_text()
+        if not password:
+            self.password_warning.set_label(L(
+                "Le mot de passe ne peut pas être vide.", "Password can't be empty."))
+            self.password_warning.set_visible(True)
+            return
+        if password != confirm:
+            self.password_warning.set_label(L(
+                "Les mots de passe ne correspondent pas.", "Passwords don't match."))
+            self.password_warning.set_visible(True)
+            return
+        self.password_warning.set_visible(False)
+
         s = self.state
         s.username = self.username_row.get_text()
+        s.password = password
         s.gpu = self._selected_value(self.gpu_row)
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()
         s.cpu = self._selected_value(self.cpu_row)

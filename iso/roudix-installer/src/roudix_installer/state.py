@@ -30,6 +30,7 @@ class DiskChoice:
 @dataclass
 class InstallState:
     username: str = "roudine"
+    password: str = ""  # plaintext, in-memory only — only the hash is ever written to disk
 
     disk: DiskChoice = field(default_factory=DiskChoice)
 

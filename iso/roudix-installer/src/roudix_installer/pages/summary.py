@@ -48,6 +48,7 @@ class SummaryPage(Adw.NavigationPage):
         rows = [
             (L("Disque", "Disk"), disk_label),
             (L("Utilisateur", "User"), s.username),
+            (L("Mot de passe", "Password"), L("défini ✓", "set ✓") if s.password else L("⚠ non défini", "⚠ not set")),
             ("GPU", f"{s.gpu}" + (L(" (laptop Optimus)", " (Optimus laptop)") if s.nvidia_laptop else "")),
             ("CPU", s.cpu),
             ("Kernel", s.kernel),
