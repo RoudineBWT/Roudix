@@ -1,0 +1,27 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gem" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cba6f7"/>
+      <stop offset="55%" stop-color="#b4befe"/>
+      <stop offset="100%" stop-color="#89b4fa"/>
+    </linearGradient>
+    <linearGradient id="gem-shine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5e0dc" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#f5e0dc" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- gem body: top table + facets -->
+  <polygon points="100,18 150,55 170,95 140,182 60,182 30,95 50,55"
+           fill="url(#gem)" stroke="#1e1e2e" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- facet lines -->
+  <polyline points="50,55 100,72 150,55" fill="none" stroke="#1e1e2e" stroke-width="2" stroke-linejoin="round" opacity="0.5"/>
+  <polyline points="30,95 100,72 170,95" fill="none" stroke="#1e1e2e" stroke-width="2" stroke-linejoin="round" opacity="0.5"/>
+  <polyline points="100,72 60,182" fill="none" stroke="#1e1e2e" stroke-width="2" opacity="0.4"/>
+  <polyline points="100,72 100,182" fill="none" stroke="#1e1e2e" stroke-width="2" opacity="0.4"/>
+  <polyline points="100,72 140,182" fill="none" stroke="#1e1e2e" stroke-width="2" opacity="0.4"/>
+
+  <!-- shine -->
+  <polygon points="100,18 150,55 100,72 50,55" fill="url(#gem-shine)"/>
+</svg>

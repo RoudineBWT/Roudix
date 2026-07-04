@@ -41,6 +41,11 @@ jobs:
           git config user.name "Roudix CI"
           git add -f iso/roudix-cfg
 
+      - name: Lock flake inputs (disko + roudix-installer)
+        run: |
+          cd iso
+          nix flake lock --accept-flake-config
+
       - name: Build ISO
         run: |
           cd iso
@@ -53,29 +58,32 @@ jobs:
         run: |
           ISO_PATH=$(readlink -f iso/result/iso/*.iso)
           SHORT_SHA=$(git rev-parse --short HEAD)
-          cp "$ISO_PATH" "roudix-${SHORT_SHA}.iso"
-          echo "ISO_NAME=roudix-${SHORT_SHA}.iso" >> $GITHUB_ENV
+          ISO_NAME="roudix-${SHORT_SHA}.iso"
+          cp "$ISO_PATH" "$ISO_NAME"
+          echo "ISO_NAME=$ISO_NAME" >> $GITHUB_ENV
+          echo "ISO_PATH=$(pwd)/$ISO_NAME" >> $GITHUB_ENV
 
-      - name: Upload ISO as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: roudix-iso
-          path: roudix-*.iso
-          retention-days: 7
+      - name: Configure AWS CLI for Cloudflare R2
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.R2_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.R2_SECRET_ACCESS_KEY }}"
+          aws configure set default.region auto
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: iso-${{ github.run_number }}
-          name: "Roudix ISO — build #${{ github.run_number }} (${{ github.sha }})"
-          files: roudix-*.iso
-          draft: true
-          body: |
-            ISO Roudix générée automatiquement depuis le commit `${{ github.sha }}`.
+      - name: Remove obsolete ISOs from R2
+        run: |
+          aws s3 rm "s3://${{ secrets.R2_BUCKET_NAME }}/" \
+            --recursive \
+            --exclude "*" \
+            --include "roudix-*.iso" \
+            --endpoint-url "https://${{ secrets.CF_ACCOUNT_ID }}.r2.cloudflarestorage.com"
 
-            **Pour tester en VM :**
-            ```
-            qemu-system-x86_64 -m 4G -cdrom roudix-*.iso -boot d
-            ```
+      - name: Upload new ISO to R2
+        run: |
+          aws s3 cp "$ISO_PATH" "s3://${{ secrets.R2_BUCKET_NAME }}/$ISO_NAME" \
+            --endpoint-url "https://${{ secrets.CF_ACCOUNT_ID }}.r2.cloudflarestorage.com"
 
-            Cette release est en **draft** — à publier manuellement après validation.
+      - name: Publish download link in job summary
+        run: |
+          echo "### 💿 Nouvelle ISO Roudix disponible" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "[$ISO_NAME](${{ secrets.R2_PUBLIC_URL }}/$ISO_NAME)" >> "$GITHUB_STEP_SUMMARY"

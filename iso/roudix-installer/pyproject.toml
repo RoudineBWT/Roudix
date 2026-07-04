@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "roudix-installer"
+version = "0.1.0"
+description = "GTK4/libadwaita installer wizard for Roudix, backed by disko"
+requires-python = ">=3.11"
+
+[project.scripts]
+roudix-installer = "roudix_installer.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+roudix_installer = ["style.css", "logo.svg"]

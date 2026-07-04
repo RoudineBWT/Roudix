@@ -1,0 +1,77 @@
+/* Catppuccin Mocha, accent = Peach — matches the Limine bootloader theme
+   and the rest of Roudix's branding.
+
+   This redefines libadwaita's own semantic color variables instead of
+   overriding individual widget classes. That's the supported theming
+   mechanism since libadwaita 1.6+, and it's what was missing before:
+   Adw.PreferencesGroup rows, ComboRow popovers, and banners all pull
+   their colors from --card-bg-color / --popover-bg-color / etc., not
+   from raw `button` / `window` selectors, so overriding only those
+   left rows and dropdown menus stuck on libadwaita's default light
+   palette (white text on white background in popovers = looked broken
+   / unselectable, not actually broken).
+*/
+
+:root {
+  --window-bg-color: #1e1e2e;
+  --window-fg-color: #cdd6f4;
+
+  --view-bg-color: #181825;
+  --view-fg-color: #cdd6f4;
+
+  --headerbar-bg-color: #181825;
+  --headerbar-fg-color: #cdd6f4;
+  --headerbar-border-color: #cdd6f4;
+  --headerbar-backdrop-color: #181825;
+  --headerbar-shade-color: rgba(0, 0, 0, 0.36);
+
+  --card-bg-color: #313244;
+  --card-fg-color: #cdd6f4;
+  --card-shade-color: rgba(0, 0, 0, 0.36);
+
+  --dialog-bg-color: #1e1e2e;
+  --dialog-fg-color: #cdd6f4;
+
+  --popover-bg-color: #313244;
+  --popover-fg-color: #cdd6f4;
+
+  --sidebar-bg-color: #181825;
+  --sidebar-fg-color: #cdd6f4;
+
+  --accent-bg-color: #fab387;
+  --accent-fg-color: #1e1e2e;
+  --accent-color: #fab387;
+
+  --destructive-bg-color: #f38ba8;
+  --destructive-fg-color: #1e1e2e;
+  --destructive-color: #f38ba8;
+
+  --success-bg-color: #a6e3a1;
+  --success-fg-color: #1e1e2e;
+  --success-color: #a6e3a1;
+
+  --warning-bg-color: #f9e2af;
+  --warning-fg-color: #1e1e2e;
+  --warning-color: #f9e2af;
+
+  --error-bg-color: #f38ba8;
+  --error-fg-color: #1e1e2e;
+  --error-color: #f38ba8;
+
+  --shade-color: rgba(0, 0, 0, 0.5);
+  --scrollbar-outline-color: rgba(0, 0, 0, 0.5);
+}
+
+.title-1, .title-3 {
+  color: #cba6f7; /* mauve, matches the Limine/gem branding accent */
+}
+
+textview {
+  background-color: #181825;
+  color: #cdd6f4;
+  font-family: monospace;
+}
+
+progressbar > trough > progress {
+  background-color: #fab387;
+}
