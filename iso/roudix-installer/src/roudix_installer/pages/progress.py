@@ -67,7 +67,13 @@ class ProgressPage(Adw.NavigationPage):
     def _run_cmd(self, cmd: list[str]):
         full = self._priv(cmd)
         GLib.idle_add(self._log, f"$ {' '.join(full)}")
-        proc = subprocess.Popen(full, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        proc = subprocess.Popen(
+            full, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+            # Without this, a child reading stdin (waiting for input a GUI
+            # app can never provide) hangs forever instead of failing fast —
+            # gets EOF immediately instead.
+            stdin=subprocess.DEVNULL,
+        )
         for line in proc.stdout:
             GLib.idle_add(self._log, line.rstrip())
         proc.wait()
@@ -191,6 +197,7 @@ class ProgressPage(Adw.NavigationPage):
             "nixos-install",
             "--flake", "/mnt/etc/nixos#roudix",
             "--no-root-passwd",
+            "--accept-flake-config",
         ])
 
         GLib.idle_add(self._set_status, L("Copie de la config pour nh os switch…", "Copying config for nh os switch…"), 0.95)

@@ -66,15 +66,28 @@ class DiskPage(Adw.NavigationPage):
         )
         box.append(self.warn_banner)
 
-        self.mode_row = Adw.ComboRow(
-            title=L("Mode de partitionnement", "Partitioning mode"),
-            model=Gtk.StringList.new([
-                L("Simple (EFI + swap + root, efface tout)", "Simple (EFI + swap + root, wipes everything)"),
-                L("Avancé (fichier disko.nix custom)", "Advanced (custom disko.nix file)"),
-                L("Manuel (partitionner soi-même)", "Manual (partition it yourself)"),
-            ]),
-        )
-        box.append(self.mode_row)
+        self.mode_group = Adw.PreferencesGroup(title=L("Mode de partitionnement", "Partitioning mode"))
+        mode_options = [
+            (L("Simple (EFI + swap + root, efface tout)", "Simple (EFI + swap + root, wipes everything)"), "simple"),
+            (L("Avancé (fichier disko.nix custom)", "Advanced (custom disko.nix file)"), "advanced"),
+            (L("Manuel (partitionner soi-même)", "Manual (partition it yourself)"), "manual"),
+        ]
+        self.mode_checks = {}
+        first_check = None
+        for label, value in mode_options:
+            row = Adw.ActionRow(title=label)
+            check = Gtk.CheckButton()
+            if first_check is None:
+                first_check = check
+                check.set_active(True)
+            else:
+                check.set_group(first_check)
+            row.add_prefix(check)
+            row.set_activatable_widget(check)
+            check.connect("toggled", self._on_mode_toggled, value)
+            self.mode_group.add(row)
+            self.mode_checks[value] = check
+        box.append(self.mode_group)
 
         # ── options du mode simple : filesystem, taille /boot, swap ──
         self.simple_options_group = Adw.PreferencesGroup(title=L("Options", "Options"))
@@ -166,15 +179,6 @@ class DiskPage(Adw.NavigationPage):
         # manual_disk_row (dropdown) — both must already exist.
         self._populate_disk_group()
 
-        # Connected here (not right after mode_row's creation above) because
-        # ComboRow can fire notify::selected synchronously while its model
-        # is still being assigned — connecting early meant this handler
-        # could run before simple_options_group/disk_group/advanced_group/
-        # manual_group existed yet, throwing a silently-swallowed
-        # AttributeError instead of actually toggling visibility.
-        self.mode_row.connect("notify::selected", self._on_mode_changed)
-        self._on_mode_changed(self.mode_row, None)
-
         next_btn = Gtk.Button(label=L("Continuer", "Continue"), css_classes=["suggested-action", "pill"],
                                halign=Gtk.Align.END, margin_top=12)
         next_btn.connect("clicked", self._validate)
@@ -204,9 +208,11 @@ class DiskPage(Adw.NavigationPage):
             check.connect("toggled", self._on_disk_toggled, d["path"])
             self.disk_group.add(row)
 
-    def _on_mode_changed(self, row, _pspec):
-        idx = row.get_selected()
-        self.state.disk.mode = ["simple", "advanced", "manual"][idx]
+    def _on_mode_toggled(self, check, value):
+        if not check.get_active():
+            return
+        self.state.disk.mode = value
+        idx = {"simple": 0, "advanced": 1, "manual": 2}[value]
         self.warn_banner.set_visible(idx == 0)
         self.simple_options_group.set_visible(idx == 0)
         self.disk_group.set_visible(idx == 0)
