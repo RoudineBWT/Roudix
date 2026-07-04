@@ -1,4 +1,4 @@
-{ pkgs, lib, modulesPath, roudix-installer, disko, ... }:
+{ pkgs, lib, modulesPath, roudix-installer, disko, roudixBranding, ... }:
 
 {
   imports = [ ./branding.nix ];
@@ -8,9 +8,64 @@
 
   # ── Boot menu ─────────────────────────────────────────────────────────────
   isoImage.appendToMenuLabel = " — Roudix Installer";
-  # Pas de thème GRUB custom pour l'instant — isoImage.grubTheme = null cassait
-  # le rendu (police sans les glyphes de bordure gfxterm). Le thème par défaut
-  # du module installation-cd-graphical-gnome.nix est déjà fonctionnel.
+
+  boot.loader.grub.theme = pkgs.runCommand "roudix-grub-theme" {} ''
+    mkdir -p $out
+    cp ${roudixBranding}/share/icons/hicolor/256x256/apps/roudix-logo.png $out/logo.png
+    cat > $out/theme.txt <<'THEMEEOF'
+    desktop-color: "#1e1e2e"
+    title-text: ""
+
+    + image {
+        top = 6%
+        left = 50%-100
+        width = 200
+        height = 200
+        file = "logo.png"
+    }
+
+    + boot_menu {
+        left = 15%
+        top = 42%
+        width = 70%
+        height = 48%
+        item_color = "#cdd6f4"
+        selected_item_color = "#fab387"
+        item_height = 32
+        item_padding = 4
+        item_spacing = 6
+    }
+    THEMEEOF
+  '';
+
+  # ── Entrées de boot par disposition clavier (façon GLF-OS) ────────────────
+  # Chaque specialisation = une entrée de menu séparée, générée automatiquement
+  # par NixOS (pas de grub.cfg écrit à la main). Couvre le clavier console
+  # (TTY) ET la disposition GNOME par défaut de la session live.
+  specialisation =
+    let
+      keyboardLayouts = {
+        us = { keymap = "us"; xkb = "us"; label = "QWERTY (English)"; };
+        be = { keymap = "be-latin1"; xkb = "be"; label = "AZERTY (Belge)"; };
+        fr = { keymap = "fr"; xkb = "fr"; label = "AZERTY (Français)"; };
+        de = { keymap = "de"; xkb = "de"; label = "QWERTZ (Deutsch)"; };
+        ch = { keymap = "ch"; xkb = "ch"; label = "QWERTZ (Suisse)"; };
+        uk = { keymap = "uk"; xkb = "gb"; label = "QWERTY (British)"; };
+      };
+    in
+    lib.mapAttrs (name: kb: {
+      inheritParentConfig = true;
+      configuration = {
+        console.keyMap = kb.keymap;
+        services.xserver.xkb.layout = kb.xkb;
+        environment.etc."dconf/db/local.d/01-roudix-keyboard".text = ''
+          [org/gnome/desktop/input-sources]
+          sources=[('xkb', '${kb.xkb}')]
+        '';
+        dconf.enable = true;
+        system.nixos.label = "Roudix Installer - ${kb.label}";
+      };
+    }) keyboardLayouts;
 
   # ── Locale par défaut ─────────────────────────────────────────────────────
   time.timeZone = "Europe/Brussels";
@@ -41,7 +96,9 @@
     sandbox = false;
   };
 
-  # ── Bureau / display manager : fourni par installation-cd-graphical-gnome.nix ──
+  # ── Bureau / display manager : GDM+GNOME de base fourni par
+  # installation-cd-graphical-gnome.nix, personnalisé par le vrai module
+  # modules/system/desktop/gnome.nix (importé via branding.nix ci-dessus).
 
   # ── Packages disponibles sur la live ─────────────────────────────────────
   environment.systemPackages = with pkgs; [

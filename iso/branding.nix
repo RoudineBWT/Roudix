@@ -1,21 +1,34 @@
 { pkgs, lib, roudixBranding, ... }:
 
-# Même logique que le branding.nix racine du repo — juste dupliqué ici
-# plutôt qu'importé directement, parce que le module principal (celui
-# à la racine, "./branding.nix" dans le flake.nix principal) attend un
-# arbre NixOS différent (config utilisateur, home-manager...) que l'ISO
-# n'a pas. Si les deux divergent avec le temps, penser à les resynchro.
-
 {
-  environment.systemPackages = with pkgs; [
-    (lib.hiPrio roudixBranding)
-  ];
+  # Ton vrai module GNOME (modules/system/desktop/gnome.nix), embarqué via
+  # roudix-cfg — active GDM, xdg-portal, gnome-tweaks/extension-manager,
+  # adw-gtk3, exclusion de paquets, exactement comme sur une install normale.
+  imports = [ ./roudix-cfg/modules/system/desktop/gnome.nix ];
 
-  environment.pathsToLink = [
-    "/share/icons" "/share/backgrounds" "/share/wallpapers" "/share/gnome-background-properties"
-  ];
+  # Dupliqué depuis modules/system/desktop/default.nix — on n'importe pas
+  # ce fichier tel quel pour éviter de tirer niri.nix/hyprland.nix/kde.nix/
+  # mangowc.nix, qui référencent probablement des inputs de flake (niri,
+  # hyprland...) qu'on n'a pas dans le flake de l'ISO.
+  options.roudix.desktop.type = lib.mkOption {
+    type = lib.types.enum [ "niri" "gnome" "kde" "hyprland" "mangowc" ];
+    default = "gnome";
+  };
+  roudix.desktop.type = "gnome";
 
-  # Logo GDM — identique au mécanisme de la config principale
+  environment.etc."roudix/branding".source = roudixBranding;
+
+  # Fond d'écran "Roudix Cosmos" (celui du screenshot violet/trou noir),
+  # chemin confirmé dans pkgs/roudix-branding/default.nix.
+  environment.etc."dconf/db/local.d/00-roudix-wallpaper".text = ''
+    [org/gnome/desktop/background]
+    picture-uri='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png'
+    picture-uri-dark='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png'
+    picture-options='zoom'
+  '';
+  dconf.enable = true;
+
+  # Logo GDM — même mécanisme que ton branding.nix racine.
   programs.dconf.profiles.gdm.databases = [{
     settings = {
       "org/gnome/login-screen" = {

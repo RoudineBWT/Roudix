@@ -20,6 +20,10 @@
           # rsync du workflow — pkgs/roudix-branding vit à la racine du
           # repo, pas sous iso/, d'où le chemin qui pointe dans roudix-cfg.
           roudixBranding = nixpkgs.legacyPackages.${system}.callPackage ./roudix-cfg/pkgs/roudix-branding {};
+          # gnome.nix (importé ci-dessous) attend un arg "inputs" dans sa
+          # signature même s'il ne s'en sert pas dans son corps — dummy
+          # vide, on n'a pas besoin des inputs du flake principal ici.
+          inputs = {};
           inherit roudix-installer disko;
         };
         modules = [
