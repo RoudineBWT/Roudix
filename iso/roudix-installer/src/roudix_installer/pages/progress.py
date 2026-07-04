@@ -197,7 +197,7 @@ class ProgressPage(Adw.NavigationPage):
             "nixos-install",
             "--flake", "/mnt/etc/nixos#roudix",
             "--no-root-passwd",
-            "--accept-flake-config",
+            "--option", "accept-flake-config", "true",
         ])
 
         GLib.idle_add(self._set_status, L("Copie de la config pour nh os switch…", "Copying config for nh os switch…"), 0.95)
