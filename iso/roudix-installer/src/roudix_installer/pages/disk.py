@@ -74,7 +74,6 @@ class DiskPage(Adw.NavigationPage):
                 L("Manuel (partitionner soi-même)", "Manual (partition it yourself)"),
             ]),
         )
-        self.mode_row.connect("notify::selected", self._on_mode_changed)
         box.append(self.mode_row)
 
         # ── options du mode simple : filesystem, taille /boot, swap ──
@@ -166,6 +165,15 @@ class DiskPage(Adw.NavigationPage):
         # Populated last: fills both disk_group (checkboxes) and
         # manual_disk_row (dropdown) — both must already exist.
         self._populate_disk_group()
+
+        # Connected here (not right after mode_row's creation above) because
+        # ComboRow can fire notify::selected synchronously while its model
+        # is still being assigned — connecting early meant this handler
+        # could run before simple_options_group/disk_group/advanced_group/
+        # manual_group existed yet, throwing a silently-swallowed
+        # AttributeError instead of actually toggling visibility.
+        self.mode_row.connect("notify::selected", self._on_mode_changed)
+        self._on_mode_changed(self.mode_row, None)
 
         next_btn = Gtk.Button(label=L("Continuer", "Continue"), css_classes=["suggested-action", "pill"],
                                halign=Gtk.Align.END, margin_top=12)

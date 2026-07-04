@@ -7,8 +7,10 @@
   system.stateVersion = "26.11";
 
   # ── Boot menu ─────────────────────────────────────────────────────────────
-  isoImage.grubTheme = null;
   isoImage.appendToMenuLabel = " — Roudix Installer";
+  # Pas de thème GRUB custom pour l'instant — isoImage.grubTheme = null cassait
+  # le rendu (police sans les glyphes de bordure gfxterm). Le thème par défaut
+  # du module installation-cd-graphical-gnome.nix est déjà fonctionnel.
 
   # ── Locale par défaut ─────────────────────────────────────────────────────
   time.timeZone = "Europe/Brussels";

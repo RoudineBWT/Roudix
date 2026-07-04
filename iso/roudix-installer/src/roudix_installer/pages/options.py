@@ -152,7 +152,6 @@ class OptionsPage(Adw.NavigationPage):
             ("amd", "AMD — RDNA / GCN 3+"), ("amd-legacy", L("AMD legacy — GCN 1.x/2.x", "AMD legacy — GCN 1.x/2.x")),
             ("nvidia", "NVIDIA"), ("intel", L("Intel intégré", "Intel integrated")),
         ], state.gpu)
-        self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
         hw_group.add(self.gpu_row)
 
         self.nvidia_laptop_row = Adw.SwitchRow(title=L(
@@ -173,7 +172,6 @@ class OptionsPage(Adw.NavigationPage):
         browsers = _browsers()
         self.browser_row = self._combo(L("Navigateur", "Browser"), browsers,
                                         state.browser if state.browser in dict(browsers) else "brave")
-        self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
         browser_group.add(self.browser_row)
 
         self.brave_variant_row = self._combo(L("Variante Brave", "Brave variant"), _brave_variants(), "brave")
@@ -188,7 +186,6 @@ class OptionsPage(Adw.NavigationPage):
         # ── Bureau ──
         desktop_group = Adw.PreferencesGroup(title=L("Bureau", "Desktop"))
         self.desktop_row = self._combo(L("Compositeur / bureau", "Compositor / desktop"), _desktops(), state.desktop)
-        self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
         desktop_group.add(self.desktop_row)
 
         self.shell_row = self._combo(L("Shell graphique (bar/UI)", "Graphical shell (bar/UI)"), _shells(), state.desktop_shell)
@@ -222,7 +219,6 @@ class OptionsPage(Adw.NavigationPage):
         # ── RGB ──
         rgb_group = Adw.PreferencesGroup(title="RGB")
         self.rgb_row = self._combo(L("Contrôleur RGB", "RGB controller"), _rgb_options(), state.rgb)
-        self.rgb_row.connect("notify::selected", lambda *_: self._sync_memory_rows())
         rgb_group.add(self.rgb_row)
 
         self.memory_rgb_row = Adw.SwitchRow(title=L("RGB RAM (Corsair DDR4/DDR5)", "RAM RGB (Corsair DDR4/DDR5)"))
@@ -260,7 +256,6 @@ class OptionsPage(Adw.NavigationPage):
 
         self.autoupdate_row = Adw.SwitchRow(title=L("Mises à jour automatiques", "Automatic updates"))
         self.autoupdate_row.set_active(state.autoupdate)
-        self.autoupdate_row.connect("notify::active", lambda *_: self._sync_autoupdate_row())
         extra_group.add(self.autoupdate_row)
 
         self.autoupdate_interval_row = Adw.EntryRow(title=L("Intervalle (ex: 1h, 6h, 24h)", "Interval (e.g. 1h, 6h, 24h)"))
@@ -278,6 +273,17 @@ class OptionsPage(Adw.NavigationPage):
         extra_group.add(self.waydroid_row)
         box.append(extra_group)
         self._sync_autoupdate_row()
+
+        # Connected here (not right after each row's creation above) because
+        # ComboRow/SwitchRow can fire their notify signal synchronously while
+        # still being constructed — connecting early meant these handlers could
+        # run before the widgets they toggle existed yet, throwing a silently-
+        # swallowed AttributeError instead of actually syncing visibility.
+        self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
+        self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
+        self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
+        self.rgb_row.connect("notify::selected", lambda *_: self._sync_memory_rows())
+        self.autoupdate_row.connect("notify::active", lambda *_: self._sync_autoupdate_row())
 
         next_btn = Gtk.Button(label=L("Continuer", "Continue"), css_classes=["suggested-action", "pill"],
                                halign=Gtk.Align.END, margin_top=12)

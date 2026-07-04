@@ -168,13 +168,19 @@ class ProgressPage(Adw.NavigationPage):
         # git+file fetcher whenever that directory is a git repo (always
         # true in the clone-fallback case, and also true if /iso-cfg was
         # ever a git checkout at some point). That fetcher only sees
-        # *tracked* files — anything just written above (hardware-config,
-        # local.nix, username.nix...) is invisible to the flake until
-        # staged, even uncommitted. Skipping this step is exactly what
-        # produced "path ... does not exist" on nixos-install.
+        # *tracked* files. Plain `git add -A` respects .gitignore, and the
+        # repo very likely ignores hardware-configuration.nix on purpose
+        # (it's machine-specific) — so it gets silently skipped unless we
+        # force-add the exact generated files.
         self._run_cmd([
             "bash", "-c",
-            "if [ -d /mnt/etc/nixos/.git ]; then git -C /mnt/etc/nixos add -A; fi",
+            "if [ -d /mnt/etc/nixos/.git ]; then "
+            "git -C /mnt/etc/nixos add -A; "
+            "for f in hosts/roudix/hardware-configuration.nix hosts/roudix/local.nix "
+            "hosts/roudix/username.nix home/local.nix modules/system/boot.local.nix; do "
+            "[ -f \"/mnt/etc/nixos/$f\" ] && git -C /mnt/etc/nixos add -f \"$f\"; "
+            "done; "
+            "fi",
         ])
 
     # ── Install ───────────────────────────────────────────────────────────

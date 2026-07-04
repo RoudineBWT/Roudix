@@ -63,9 +63,27 @@ jobs:
           echo "ISO_NAME=$ISO_NAME" >> $GITHUB_ENV
           echo "ISO_PATH=$(pwd)/$ISO_NAME" >> $GITHUB_ENV
 
-      - name: Upload ISO as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: roudix-iso
-          path: roudix-*.iso
-          retention-days: 90
+      - name: Configure AWS CLI for Cloudflare R2
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.R2_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.R2_SECRET_ACCESS_KEY }}"
+          aws configure set default.region auto
+
+      - name: Remove obsolete ISOs from R2
+        run: |
+          aws s3 rm "s3://${{ secrets.R2_BUCKET_NAME }}/" \
+            --recursive \
+            --exclude "*" \
+            --include "roudix-*.iso" \
+            --endpoint-url "https://${{ secrets.CF_ACCOUNT_ID }}.r2.cloudflarestorage.com"
+
+      - name: Upload new ISO to R2
+        run: |
+          aws s3 cp "$ISO_PATH" "s3://${{ secrets.R2_BUCKET_NAME }}/$ISO_NAME" \
+            --endpoint-url "https://${{ secrets.CF_ACCOUNT_ID }}.r2.cloudflarestorage.com"
+
+      - name: Publish download link in job summary
+        run: |
+          echo "### 💿 Nouvelle ISO Roudix disponible" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "[$ISO_NAME](${{ secrets.R2_PUBLIC_URL }}/$ISO_NAME)" >> "$GITHUB_STEP_SUMMARY"
