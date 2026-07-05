@@ -30,7 +30,7 @@
       picture-uri-dark='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png'
       picture-options='zoom'
     '';
-    dconf.enable = true;
+    programs.dconf.enable = true;
 
     # Logo GDM — même mécanisme que ton branding.nix racine.
     programs.dconf.profiles.gdm.databases = [{
