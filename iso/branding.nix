@@ -20,14 +20,24 @@
   config = {
     roudix.desktop.type = "gnome";
 
+    # Sans ça, même avec roudixBranding dans systemPackages (fait par
+    # gnome.nix), rien de son share/ n'est symlinké dans
+    # /run/current-system/sw/ — logo GDM et fond d'écran resteraient
+    # introuvables au runtime. Repris de ton vrai branding.nix racine.
+    environment.pathsToLink = [
+      "/share/icons" "/share/backgrounds" "/share/wallpapers" "/share/gnome-background-properties"
+    ];
+
     environment.etc."roudix/branding".source = roudixBranding;
 
-    # Fond d'écran "Roudix Cosmos" (celui du screenshot violet/trou noir),
-    # chemin confirmé dans pkgs/roudix-branding/default.nix.
+    # Fond d'écran "Roudix Cosmos". Attention au nom de fichier réel généré
+    # par pkgs/roudix-branding/default.nix : c'est ".svg.png" (double
+    # extension, coquille dans le script de build), pas juste ".png" comme
+    # les autres wallpapers du même fichier.
     environment.etc."dconf/db/local.d/00-roudix-wallpaper".text = ''
       [org/gnome/desktop/background]
-      picture-uri='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png'
-      picture-uri-dark='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png'
+      picture-uri='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg.png'
+      picture-uri-dark='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg.png'
       picture-options='zoom'
     '';
     programs.dconf.enable = true;

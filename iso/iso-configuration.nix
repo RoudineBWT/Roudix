@@ -62,8 +62,12 @@
           [org/gnome/desktop/input-sources]
           sources=[('xkb', '${kb.xkb}')]
         '';
-        programs.dconf.enable = true;
-        system.nixos.label = "Roudix Installer - ${kb.label}";
+        # programs.dconf.enable est déjà à true dans branding.nix (parent),
+        # hérité automatiquement — le redéfinir ici risquerait le même
+        # conflit de définitions que console.keyMap plus haut.
+        # system.nixos.label n'accepte que [a-zA-Z0-9_.-] — pas d'espaces
+        # ni de parenthèses, d'où le slug plutôt que kb.label directement.
+        system.nixos.label = "Roudix-Installer-${name}";
       };
     }) keyboardLayouts;
 
