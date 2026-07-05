@@ -58,13 +58,25 @@
       configuration = {
         console.keyMap = lib.mkForce kb.keymap;
         services.xserver.xkb.layout = lib.mkForce kb.xkb;
-        environment.etc."dconf/db/local.d/01-roudix-keyboard".text = ''
-          [org/gnome/desktop/input-sources]
-          sources=[('xkb', '${kb.xkb}')]
-        '';
+        # Même remarque que pour le wallpaper dans branding.nix : on passe
+        # par programs.dconf.profiles.user.databases (et pas par un
+        # environment.etc."dconf/db/..." à la main), car programs.dconf.
+        # profiles.* revendique tout /etc/dconf comme un seul symlink vers
+        # le store dès qu'il est utilisé quelque part (ici, dans le parent
+        # branding.nix). Un fichier etc manuel sous ce même sous-arbre fait
+        # planter etc.drv avec "mkdir: Permission denied" — c'était l'erreur
+        # du run CI (Roudix-Installer-de). La liste "databases" se
+        # concatène automatiquement avec celle du parent (inheritParentConfig),
+        # donc pas besoin de lib.mkForce ici, contrairement à console.keyMap.
+        programs.dconf.profiles.user.databases = [{
+          settings = {
+            "org/gnome/desktop/input-sources" = {
+              sources = [ (lib.gvariant.mkTuple [ "xkb" kb.xkb ]) ];
+            };
+          };
+        }];
         # programs.dconf.enable est déjà à true dans branding.nix (parent),
-        # hérité automatiquement — le redéfinir ici risquerait le même
-        # conflit de définitions que console.keyMap plus haut.
+        # hérité automatiquement.
         # system.nixos.label n'accepte que [a-zA-Z0-9_.-] — pas d'espaces
         # ni de parenthèses, d'où le slug plutôt que kb.label directement.
         system.nixos.label = "Roudix-Installer-${name}";

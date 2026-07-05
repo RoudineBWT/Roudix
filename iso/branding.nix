@@ -34,12 +34,26 @@
     # par pkgs/roudix-branding/default.nix : c'est ".svg.png" (double
     # extension, coquille dans le script de build), pas juste ".png" comme
     # les autres wallpapers du même fichier.
-    environment.etc."dconf/db/local.d/00-roudix-wallpaper".text = ''
-      [org/gnome/desktop/background]
-      picture-uri='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg.png'
-      picture-uri-dark='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg.png'
-      picture-options='zoom'
-    '';
+    #
+    # IMPORTANT : ceci NE DOIT PAS être un environment.etc."dconf/db/..."
+    # manuel. Dès que programs.dconf.profiles.* est utilisé (cf. profil
+    # "gdm" plus bas), le module nixpkgs programs/dconf.nix prend le
+    # contrôle de *tout* /etc/dconf via un seul environment.etc.dconf.source
+    # (symlinkJoin en lecture seule dans le store). Un environment.etc
+    # séparé qui essaie d'écrire un fichier sous ce même sous-arbre fait
+    # planer le builder etc.drv avec un "mkdir: Permission denied" (c'est
+    # l'erreur du run CI Roudix-Installer-de). On passe donc par un profil
+    # "user" au lieu d'un fichier etc à la main, pour que tout transite par
+    # le même mécanisme géré.
+    programs.dconf.profiles.user.databases = [{
+      settings = {
+        "org/gnome/desktop/background" = {
+          picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg.png";
+          picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg.png";
+          picture-options = "zoom";
+        };
+      };
+    }];
     programs.dconf.enable = true;
 
     # Logo GDM — même mécanisme que ton branding.nix racine.
