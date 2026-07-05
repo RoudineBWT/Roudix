@@ -56,8 +56,8 @@
     lib.mapAttrs (name: kb: {
       inheritParentConfig = true;
       configuration = {
-        console.keyMap = kb.keymap;
-        services.xserver.xkb.layout = kb.xkb;
+        console.keyMap = lib.mkForce kb.keymap;
+        services.xserver.xkb.layout = lib.mkForce kb.xkb;
         environment.etc."dconf/db/local.d/01-roudix-keyboard".text = ''
           [org/gnome/desktop/input-sources]
           sources=[('xkb', '${kb.xkb}')]
