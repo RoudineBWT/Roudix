@@ -62,7 +62,7 @@
           [org/gnome/desktop/input-sources]
           sources=[('xkb', '${kb.xkb}')]
         '';
-        dconf.enable = true;
+        programs.dconf.enable = true;
         system.nixos.label = "Roudix Installer - ${kb.label}";
       };
     }) keyboardLayouts;
