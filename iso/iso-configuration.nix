@@ -1,4 +1,4 @@
-{ pkgs, lib, modulesPath, roudix-installer, disko, roudixBranding, ... }:
+{ config, pkgs, lib, modulesPath, roudix-installer, disko, roudixBranding, ... }:
 
 {
   imports = [ ./branding.nix ];
@@ -9,9 +9,25 @@
   # ── Boot menu ─────────────────────────────────────────────────────────────
   isoImage.appendToMenuLabel = " — Roudix Installer";
 
+  # boot.loader.grub.theme s'applique au GRUB du système une fois installé
+  # sur le disque, mais PAS au menu graphique EFI affiché au démarrage de
+  # l'ISO elle-même : celui-là est piloté par isoImage.grubTheme, qui vaut
+  # pkgs.nixos-grub2-theme par défaut (le thème avec la baguette magique
+  # qu'on voit sur les captures — la preuve que notre thème custom n'était
+  # jamais utilisé). On réutilise la même dérivation pour les deux.
   boot.loader.grub.theme = pkgs.runCommand "roudix-grub-theme" {} ''
     mkdir -p $out
     cp ${roudixBranding}/share/icons/hicolor/256x256/apps/roudix-logo.png $out/logo.png
+
+    # IMPORTANT : le menu EFI de l'ISO ne charge une police que si elle est
+    # trouvée À L'INTÉRIEUR du dossier du thème (voir iso-image.nix :
+    # `find $\{grubTheme\} -iname '*.pf2' -printf "loadfont ..."`). Seule
+    # l'entrée cachée "Text mode" charge unicode.pf2 par défaut — le mode
+    # graphique avec thème, lui, n'aurait chargé AUCUNE police sans ça, et
+    # le menu risquait d'afficher du texte invisible. unicode.pf2 couvre
+    # aussi les accents (Français, etc.).
+    cp ${pkgs.grub2}/share/grub/unicode.pf2 $out/unicode.pf2
+
     cat > $out/theme.txt <<'THEMEEOF'
     desktop-color: "#1e1e2e"
     title-text: ""
@@ -37,6 +53,11 @@
     }
     THEMEEOF
   '';
+
+  # Sans ceci, l'ISO ignore complètement notre thème et affiche le thème
+  # par défaut de nixpkgs (pkgs.nixos-grub2-theme) au démarrage — c'est
+  # ça qu'on voyait sur la capture d'écran.
+  isoImage.grubTheme = config.boot.loader.grub.theme;
 
   # ── Entrées de boot par disposition clavier (façon GLF-OS) ────────────────
   # Chaque specialisation = une entrée de menu séparée, générée automatiquement
@@ -85,8 +106,8 @@
 
   # ── Locale par défaut ─────────────────────────────────────────────────────
   time.timeZone = "Europe/Brussels";
-  i18n.defaultLocale = "fr_BE.UTF-8";
-  console.keyMap = "be-latin1";
+  i18n.defaultLocale = "en_US.UTF-8";
+  console.keyMap = "us";
 
   # ── Nix settings ─────────────────────────────────────────────────────────
   nix.settings = {

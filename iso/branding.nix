@@ -48,8 +48,8 @@
     programs.dconf.profiles.user.databases = [{
       settings = {
         "org/gnome/desktop/background" = {
-          picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg.png";
-          picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg.png";
+          picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
+          picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
           picture-options = "zoom";
         };
       };
