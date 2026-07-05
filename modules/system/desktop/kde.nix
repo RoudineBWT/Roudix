@@ -46,6 +46,20 @@ lib.mkIf isKde {
   programs.kdeconnect.enable = true;
   documentation.nixos.enable = false;
 
+  # ── Polkit agent ──────────────────────────────────────────────────────────
+  # PLM (Plasma Login Manager) ne déclenche pas toujours l'autostart qui lance
+  # normalement polkit-kde-authentication-agent-1 (contrairement à SDDM).
+  # On le force via un service systemd user lié à la session graphique.
+  systemd.user.services.polkit-kde-agent = {
+    description = "PolicyKit KDE Authentication Agent";
+    wantedBy = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
+      Restart = "on-failure";
+    };
+  };
+
   # ── Excluded packages ─────────────────────────────────────────────────────
   environment.plasma6.excludePackages = with pkgs; [
     kdePackages.discover
