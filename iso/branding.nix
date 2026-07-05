@@ -14,26 +14,31 @@
     type = lib.types.enum [ "niri" "gnome" "kde" "hyprland" "mangowc" ];
     default = "gnome";
   };
-  roudix.desktop.type = "gnome";
 
-  environment.etc."roudix/branding".source = roudixBranding;
+  # Un module avec un "options" au niveau racine doit mettre tout le reste
+  # sous "config" explicite — sinon Nix refuse de mélanger les deux.
+  config = {
+    roudix.desktop.type = "gnome";
 
-  # Fond d'écran "Roudix Cosmos" (celui du screenshot violet/trou noir),
-  # chemin confirmé dans pkgs/roudix-branding/default.nix.
-  environment.etc."dconf/db/local.d/00-roudix-wallpaper".text = ''
-    [org/gnome/desktop/background]
-    picture-uri='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png'
-    picture-uri-dark='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png'
-    picture-options='zoom'
-  '';
-  dconf.enable = true;
+    environment.etc."roudix/branding".source = roudixBranding;
 
-  # Logo GDM — même mécanisme que ton branding.nix racine.
-  programs.dconf.profiles.gdm.databases = [{
-    settings = {
-      "org/gnome/login-screen" = {
-        logo = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
+    # Fond d'écran "Roudix Cosmos" (celui du screenshot violet/trou noir),
+    # chemin confirmé dans pkgs/roudix-branding/default.nix.
+    environment.etc."dconf/db/local.d/00-roudix-wallpaper".text = ''
+      [org/gnome/desktop/background]
+      picture-uri='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png'
+      picture-uri-dark='file:///run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png'
+      picture-options='zoom'
+    '';
+    dconf.enable = true;
+
+    # Logo GDM — même mécanisme que ton branding.nix racine.
+    programs.dconf.profiles.gdm.databases = [{
+      settings = {
+        "org/gnome/login-screen" = {
+          logo = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
+        };
       };
-    };
-  }];
+    }];
+  };
 }
