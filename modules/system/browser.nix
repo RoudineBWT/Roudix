@@ -7,6 +7,7 @@ let
     "brave"    = { package = pkgs.brave;                                     extras = []; };
     "brave-beta"    = { package = pkgs.brave-beta;                           extras = []; };
     "brave-nightly" = { package = pkgs.brave-nightly;                        extras = []; };
+    "brave-origin" = { package = pkgs.brave-origin;                extras = []; };
     "brave-origin-beta" = { package = pkgs.brave-origin-beta;                extras = []; };
     "brave-origin-nightly" = { package = pkgs.brave-origin-nightly;          extras = []; };
     "helium"   = { package = inputs.helium.packages.${pkgs.system}.helium-appimage;  extras = []; };

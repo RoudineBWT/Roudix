@@ -464,6 +464,7 @@ if [[ "$BROWSER" == "brave" ]]; then
     "brave|Stable (recommended)" \
     "brave-beta|Beta" \
     "brave-nightly|Nightly" \
+    "brave-origin|Origin Stable" \
     "brave-origin-beta|Origin Beta" \
     "brave-origin-nightly|Origin Nightly"
 fi

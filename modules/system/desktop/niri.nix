@@ -1,15 +1,16 @@
 { config, lib, pkgs, inputs, username, ... }:
 let
-  isNiri    = config.roudix.desktop.type == "niri";
-  shellType = config.roudix.desktop.shell or "noctalia";
-  isDms     = shellType == "dms";
+  isNiri     = config.roudix.desktop.type == "niri";
+  shellType  = config.roudix.desktop.shell or "noctalia";
+  isDms      = shellType == "dms";
+  isNoctalia = shellType == "noctalia";
 in
 {
   config = lib.mkIf isNiri {
     programs.niri.enable = true;
 
-    # ── Greeter ───────────────────────────────────────────────────────────
-    programs.dank-material-shell = lib.mkMerge [
+    # ── Greeter DMS (si shell != noctalia) ───────────────────────────────
+    programs.dank-material-shell = lib.mkIf (!isNoctalia) (lib.mkMerge [
       {
         greeter = {
           enable = true;
@@ -27,7 +28,19 @@ in
         enable = true;
         systemd.enable = true;
       })
-    ];
+    ]);
+
+    # ── Greeter Noctalia (si shell == noctalia) ──────────────────────────
+    programs.noctalia-greeter = lib.mkIf isNoctalia {
+      enable = true;
+      greeter-args = "--session niri";
+      settings = {
+        keyboard = {
+          layout  = "us";
+          variant = "intl";
+        };
+      };
+    };
 
     # ── Portals ───────────────────────────────────────────────────────────
     xdg.portal = {

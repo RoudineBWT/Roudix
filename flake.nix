@@ -41,6 +41,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     caelestia-shell = {
          url = "github:caelestia-dots/shell";
          inputs.nixpkgs.follows = "nixpkgs";
@@ -112,6 +117,7 @@
     nix-cachyos-kernel,
     zen-browser,
     noctalia,
+    noctalia-greeter,
     caelestia-shell,
     dms,
     glf-os,
@@ -142,6 +148,7 @@
       modules = [
         inputs.dms.nixosModules.dank-material-shell
         inputs.dms.nixosModules.greeter
+        inputs.noctalia-greeter.nixosModules.default
         nix-flatpak.nixosModules.nix-flatpak
         ./hosts/roudix/configuration.nix
         ./version.nix
