@@ -53,6 +53,53 @@
     nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
     nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
 
+    # Sysctl repris de 70-cachyos-settings.conf (paquet cachyos-settings)
+    # https://github.com/CachyOS/CachyOS-Settings/blob/master/usr/lib/sysctl.d/70-cachyos-settings.conf
+    boot.kernel.sysctl = {
+      # Réduit la tendance du noyau à libérer le cache VFS (dentries/inodes) par rapport au défaut (100)
+      "vm.vfs_cache_pressure" = 50;
+
+      # Seuil (en octets) à partir duquel un process qui écrit sur disque commence lui-même à flusher ses données sales
+      "vm.dirty_bytes" = 268435456; # 256 MiB
+
+      # Nombre de pages consécutives lues d'un coup depuis le swap (défaut 3) ; 0 recommandé si swap sur SSD/ZRAM
+      "vm.page-cluster" = 0;
+
+      # Seuil (en octets) à partir duquel les kernel flusher threads commencent à écrire en arrière-plan
+      "vm.dirty_background_bytes" = 67108864; # 64 MiB
+
+      # Intervalle (en centièmes de seconde) entre deux réveils des flusher threads (défaut 500)
+      "vm.dirty_writeback_centisecs" = 1500;
+
+      # Désactive le NMI watchdog : boot/shutdown plus rapide, un peu moins de conso
+      "kernel.nmi_watchdog" = 0;
+
+      # Autorise les utilisateurs non-root à créer des user namespaces (conteneurs non privilégiés)
+      "kernel.unprivileged_userns_clone" = 1;
+
+      # Masque les messages du noyau sur la console
+      "kernel.printk" = "3 3 3 3";
+
+      # Restreint l'accès aux pointeurs noyau exposés dans /proc
+      "kernel.kptr_restrict" = 2;
+
+      # Augmente la taille de la file de réception réseau, évite des pertes de paquets sous charge
+      "net.core.netdev_max_backlog" = 4096;
+
+      # Augmente le nombre max de file handles / inode cache
+      "fs.file-max" = 2097152;
+
+      # Nombre max de memory maps par process (utile pour certains jeux Proton/DayZ, etc.)
+      "vm.max_map_count" = 16777216;
+
+      # Limites inotify (surveillance de fichiers), utile pour IDE, Steam, sync tools, etc.
+      "fs.inotify.max_user_watches" = 524288;
+      "fs.inotify.max_user_instances" = 1024;
+
+      # Intervalle de keepalive TCP par défaut (en secondes)
+      "net.ipv4.tcp_keepalive_time" = 120;
+    };
+
     boot.kernelPackages =
       let
         kernels = {
