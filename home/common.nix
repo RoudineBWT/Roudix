@@ -31,6 +31,7 @@ in
     ../modules/home/ssh.nix
     ../modules/home/spicetify.nix
     ../modules/home/gaming-home.nix
+    ../modules/home/gitwatch.nix
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
   # ── Easyeffects preset ───────────────────────────────────────────────────

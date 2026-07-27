@@ -9,7 +9,7 @@
 
       logo = {
         type = "kitty-direct";
-        source = "${dotfiles}/fastfetch/roudix_logo_everforest.png";
+        source = "${dotfiles}/fastfetch/roudix_fox_icon_256.png";
         height = 100;
         padding = {
           right = 5;
