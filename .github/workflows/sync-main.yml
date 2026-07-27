@@ -1,0 +1,28 @@
+name: Sync testing to main
+
+on:
+  schedule:
+    - cron: '0 3 */2 * *'  # tous les 2 jours à 03h00 UTC
+  workflow_dispatch:
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge testing into main
+        run: |
+          git fetch origin testing
+          git merge origin/testing --no-edit
+
+      - name: Push
+        run: git push origin main
