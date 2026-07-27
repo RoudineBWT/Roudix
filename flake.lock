@@ -196,40 +196,6 @@
         "type": "github"
       }
     },
-    "element-desktop-glf": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1784633854,
-        "narHash": "sha256-kY3mCP2hs4FojvNF94oXw/q1QXSluQf9JVc5WKHUu7g=",
-        "ref": "main",
-        "rev": "f7d3df103b3930e0f10ac8d47796172ddd30e333",
-        "revCount": 7,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/element-desktop.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/element-desktop.git"
-      }
-    },
-    "faugus-launcher": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1779825676,
-        "narHash": "sha256-pmvxdIF/1Gaq91UTdPS1u53FIb/CJotE2f2kIJhScH4=",
-        "ref": "refs/tags/v1.20.3",
-        "rev": "6120659e765ddf4da12b9a976dc704387f8f86ee",
-        "revCount": 6,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/faugus-launcher.git"
-      },
-      "original": {
-        "ref": "refs/tags/v1.20.3",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/faugus-launcher.git"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -310,163 +276,6 @@
         "owner": "numtide",
         "repo": "flake-utils",
         "type": "github"
-      }
-    },
-    "glf-apps": {
-      "inputs": {
-        "element-desktop-glf": "element-desktop-glf",
-        "faugus-launcher": "faugus-launcher",
-        "glf-customizer": "glf-customizer",
-        "glffetch": "glffetch",
-        "glfos-nix-samba": "glfos-nix-samba",
-        "glfos-welcome-screen": "glfos-welcome-screen",
-        "goverlay-glf": "goverlay-glf",
-        "grub-theme-glfos": "grub-theme-glfos",
-        "logitech-rpm-indicator": "logitech-rpm-indicator",
-        "lutris": "lutris",
-        "nix-disk": "nix-disk",
-        "nix-firewall-mngt": "nix-firewall-mngt",
-        "nixpkgs": "nixpkgs_2",
-        "plymouth-glfos": "plymouth-glfos",
-        "proton-cachyos-bin": "proton-cachyos-bin",
-        "proton-ge-bin": "proton-ge-bin",
-        "utils": "utils",
-        "vksumi-glf": "vksumi-glf"
-      },
-      "locked": {
-        "path": "./modules/default/glf-apps",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/default/glf-apps",
-        "type": "path"
-      },
-      "parent": [
-        "glf-os"
-      ]
-    },
-    "glf-customizer": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1785064163,
-        "narHash": "sha256-s0bYVslrL6OLjUcg4GBiB0XluBl9bDeRyY8Ws/fqFQU=",
-        "ref": "main",
-        "rev": "ff6f3e56af7bef6e8abe36c1f1f1ff5ca39526b0",
-        "revCount": 31,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/glf-customizer.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/glf-customizer.git"
-      }
-    },
-    "glf-os": {
-      "inputs": {
-        "glf-apps": "glf-apps",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "nixpkgs-unstable": "nixpkgs-unstable"
-      },
-      "locked": {
-        "lastModified": 1784976301,
-        "narHash": "sha256-agpHHXuiZ/uqxYM48sM3PAoVy8bXtqonw8VrCnaPxiQ=",
-        "ref": "refs/heads/testing",
-        "rev": "d3961ee9e8d2e39a5407b4209d9cc028014bf5ca",
-        "revCount": 868,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/glf-os"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/glf-os"
-      }
-    },
-    "glffetch": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1781551305,
-        "narHash": "sha256-SpSFu7UpHfPIhaiiQsSTcnYarWubMSocJk+62VzZB2I=",
-        "ref": "feature/nix-packaging",
-        "rev": "31c4eea2adddefe26df240fee6ec9f43e5979633",
-        "revCount": 119,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/glffetch.git"
-      },
-      "original": {
-        "ref": "feature/nix-packaging",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/glffetch.git"
-      }
-    },
-    "glfos-nix-samba": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1781513925,
-        "narHash": "sha256-/VGChnlegqfbsHUCKhRKMTGQWqjJItfIvI/i4dxbypc=",
-        "ref": "main",
-        "rev": "ff30c23d0b2a4f83258a4c93f2d7f8eba0a19524",
-        "revCount": 8,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/glfos-nix-samba.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/glfos-nix-samba.git"
-      }
-    },
-    "glfos-welcome-screen": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1781513890,
-        "narHash": "sha256-V64GUP9l/49s952EuaSN3h+Ejo7CG4EigsC48wn4DhA=",
-        "ref": "main",
-        "rev": "a0bd05d17b4a4dfe8e6115f6c163420310f56aa1",
-        "revCount": 6,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/glfos-welcome-screen.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/glfos-welcome-screen.git"
-      }
-    },
-    "goverlay-glf": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1783380001,
-        "narHash": "sha256-F2JW14JD6sZSGpldTaAVIyH+AWIHTRQ5LbdxYCoPG+8=",
-        "ref": "main",
-        "rev": "dd3a351f02084b5f408830cfb20045379854f252",
-        "revCount": 5,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/goverlay.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/goverlay.git"
-      }
-    },
-    "grub-theme-glfos": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1781510793,
-        "narHash": "sha256-DBFfq4NS1jDZnIsGjKzViMzHMpJ7Lx4Sikko1+ByeMQ=",
-        "ref": "refs/tags/v1.0.0",
-        "rev": "8e51cd8eeab8eed2d42454cd9c6cc625e2ffcd81",
-        "revCount": 1,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/grub-theme-glfos.git"
-      },
-      "original": {
-        "ref": "refs/tags/v1.0.0",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/grub-theme-glfos.git"
       }
     },
     "helium": {
@@ -550,40 +359,6 @@
         "owner": "nix-community",
         "repo": "home-manager",
         "type": "github"
-      }
-    },
-    "logitech-rpm-indicator": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1784543639,
-        "narHash": "sha256-VGW02XSz8APukw2+msPs2YXTNsl5g34BFPTGIi2sqcY=",
-        "ref": "main",
-        "rev": "67990013009b64925efa44430458e02f7399aeed",
-        "revCount": 15,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/logitech-rpm-indicator.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/logitech-rpm-indicator.git"
-      }
-    },
-    "lutris": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1779262723,
-        "narHash": "sha256-0nFcuP6Zh0K7OPgPP54UZzIvfq8Kfjg/8uc9tLHIG+E=",
-        "ref": "refs/tags/v0.5.22",
-        "rev": "b99f9ab54e781f09c63f0d7a5f91fc5ad80b647e",
-        "revCount": 3,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/lutris.git"
-      },
-      "original": {
-        "ref": "refs/tags/v0.5.22",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/lutris.git"
       }
     },
     "m3shapes": {
@@ -707,7 +482,7 @@
         "cachyos-kernel-patches": "cachyos-kernel-patches",
         "flake-compat": "flake-compat_2",
         "flake-parts": "flake-parts",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1785091107,
@@ -722,40 +497,6 @@
         "ref": "release",
         "repo": "nix-cachyos-kernel",
         "type": "github"
-      }
-    },
-    "nix-disk": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1781208959,
-        "narHash": "sha256-A45AgDn0fR6atpAE6OemZb6fQFaDUtqEYcShyvm1VKY=",
-        "ref": "feat/advanced-storage-safety",
-        "rev": "32f5cfe82fb87bf7cdaa091f61392e1a8e1c268c",
-        "revCount": 30,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/nix-disk.git"
-      },
-      "original": {
-        "ref": "feat/advanced-storage-safety",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/nix-disk.git"
-      }
-    },
-    "nix-firewall-mngt": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1784546637,
-        "narHash": "sha256-Ceeai5vlMPriX6SZRN8FDBfcV7Pus74YP+NTz33mNfY=",
-        "ref": "main",
-        "rev": "fab059cf4210e35c6665d61e1b120ece1db98a41",
-        "revCount": 41,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/nix-firewall-mngt.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/nix-firewall-mngt.git"
       }
     },
     "nix-flatpak": {
@@ -856,39 +597,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-unstable": {
-      "locked": {
-        "lastModified": 1780749050,
-        "narHash": "sha256-3av0pIjlOWQ6rDbNOmpUSvbNnJkGORQKKjb4LtCZsIY=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a799d3e3886da994fa307f817a6bc705ae538eeb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1785104993,
-        "narHash": "sha256-eKbrvPoAOFutbYMdbB3r5EQVmFxKv24iKqHPPUXA0gM=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "8623c4c20aa4ca2f5fb81510d2944066c3fb0d96",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-26.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
       "locked": {
         "lastModified": 1785049614,
         "narHash": "sha256-egAcKSNrBM9rkCUC6m+0/9Y9HoExE0aulPI4bU9dzHA=",
@@ -904,7 +613,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1785090369,
         "narHash": "sha256-m0pDuRJG7EDo9ri+4Ksu83VsI+PlxNC9lNBfydejce4=",
@@ -920,7 +629,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_5": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1784796856,
         "narHash": "sha256-vwxWgF+Gj276WznzGb1LxGsK/39HaQwgQXiU3EkC844=",
@@ -935,7 +644,7 @@
     },
     "noctalia": {
       "inputs": {
-        "nixpkgs": "nixpkgs_5"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1785150509,
@@ -995,57 +704,6 @@
         "type": "github"
       }
     },
-    "plymouth-glfos": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1781510799,
-        "narHash": "sha256-mUQUvVpEe/zIz2pfcaqtts7da6jp8ZZxrx5VIYkL5sU=",
-        "ref": "refs/tags/v1.0.0",
-        "rev": "fddb2c5fded1a2b9b7e787a1b963c9844192cac3",
-        "revCount": 1,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/plymouth-glfos.git"
-      },
-      "original": {
-        "ref": "refs/tags/v1.0.0",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/plymouth-glfos.git"
-      }
-    },
-    "proton-cachyos-bin": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1784742540,
-        "narHash": "sha256-u/RzzoSdyOQD8gptlX+Et92Ik/gCo5nIoJ/FoZwVRC0=",
-        "ref": "main",
-        "rev": "c1969b1509e199a5c6b33ee71e59795fa7161513",
-        "revCount": 27,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/proton-cachyos-bin.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/proton-cachyos-bin.git"
-      }
-    },
-    "proton-ge-bin": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1785143886,
-        "narHash": "sha256-Gof9LS8TTd8Z723RY2zmAEbrFaef9SoWpPjz1KemozQ=",
-        "ref": "main",
-        "rev": "7b5b3e870de3fea871b23ccf4accc34a7fc7f551",
-        "revCount": 13,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/proton-ge-bin-glf.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/proton-ge-bin-glf.git"
-      }
-    },
     "quickshell": {
       "inputs": {
         "nixpkgs": [
@@ -1074,7 +732,6 @@
         "chaotic": "chaotic",
         "dank-greeter": "dank-greeter",
         "dms": "dms",
-        "glf-os": "glf-os",
         "helium": "helium",
         "home-manager": "home-manager_2",
         "millennium": "millennium",
@@ -1082,7 +739,7 @@
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nix-flatpak": "nix-flatpak",
         "nix-gaming-edge": "nix-gaming-edge",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_3",
         "nixpkgs-stable": "nixpkgs-stable_2",
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
@@ -1139,7 +796,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "systems": "systems_3"
+        "systems": "systems_2"
       },
       "locked": {
         "lastModified": 1785048222,
@@ -1183,56 +840,6 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
-      }
-    },
-    "systems_3": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "utils": {
-      "inputs": {
-        "systems": "systems_2"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "vksumi-glf": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1783380593,
-        "narHash": "sha256-1TxjHF8HOwIQLSfqtJbWNpA/7hwqr/YmFyw+ZNHY6Ew=",
-        "ref": "main",
-        "rev": "e0cced5a577b2990c75e698b749d731751d8a1bc",
-        "revCount": 3,
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/vksumi.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/vksumi.git"
       }
     },
     "xwayland-satellite-stable": {

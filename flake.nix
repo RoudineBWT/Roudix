@@ -80,11 +80,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    glf-os = {
-      url = "git+https://framagit.org/gaming-linux-fr/glf-os/glf-os";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -138,7 +133,6 @@
     caelestia-shell,
     dms,
     dank-greeter,
-    glf-os,
     spicetify-nix,
     millennium,
     helium,
