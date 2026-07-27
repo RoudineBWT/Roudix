@@ -83,7 +83,6 @@ in
     deluge-gtk
     (discord.override { withVencord = true; })
     rustdesk-flutter
-    kodi-wayland
     inkscape
     gimp
     starship
@@ -103,7 +102,13 @@ in
   ++ lib.optional (matrixPackage != null) matrixPackage
   # Zen Browser (optional)
   ++ lib.optional osConfig.roudix.zen.enable
-       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight;
+       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight
+++ lib.optional (desktopType != "kde") pkgs.xdg-user-dirs-gtk;
+
+       xdg.userDirs = {
+         enable = true;
+         createDirectories = true;
+       };
 
   programs.home-manager.enable = true;
 }

@@ -1,5 +1,5 @@
 {
-  description = "NixOS unstable — Niri + Noctalia + CachyOS Kernel";
+  description = "Roudix";
 
   # ── Binary caches ───────────────────────────────────────
   nixConfig = {
@@ -12,8 +12,11 @@
       "http://37.59.123.5:8080/glf"
       "https://roudix.cachix.org"
       "https://nix-cache.tokidoki.dev/tokidoki"
+      "https://nyx-cache.chaotic.cx/"
+      "https://niri.cachix.org"
     ];
     extra-trusted-public-keys = [
+      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
@@ -22,6 +25,7 @@
       "glf:gLU8OSnfaopb5atQHiNJDgvS7/VbQ8HDQn3GOWT8w7Y="
       "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
       "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
+      "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
     ];
   };
 
@@ -31,14 +35,20 @@
 
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     noctalia = {
-      url = "github:noctalia-dev/noctalia";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:noctalia-dev/noctalia/cachix";
     };
 
     noctalia-greeter = {
@@ -54,6 +64,11 @@
     dms ={
         url = "github:AvengeMedia/DankMaterialShell";
         inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  dank-greeter = {
+    url = "github:AvengeMedia/dank-greeter";
+    inputs.nixpkgs.follows = "nixpkgs";
   };
 
     nix-cachyos-kernel = {
@@ -113,6 +128,8 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    chaotic,
+    niri,
     home-manager,
     nix-cachyos-kernel,
     zen-browser,
@@ -120,6 +137,7 @@
     noctalia-greeter,
     caelestia-shell,
     dms,
+    dank-greeter,
     glf-os,
     spicetify-nix,
     millennium,
@@ -146,10 +164,12 @@
       system = "x86_64-linux";
       specialArgs = specialArgs;
       modules = [
+        niri.nixosModules.niri
         inputs.dms.nixosModules.dank-material-shell
-        inputs.dms.nixosModules.greeter
         inputs.noctalia-greeter.nixosModules.default
+        inputs.dank-greeter.nixosModules.default
         nix-flatpak.nixosModules.nix-flatpak
+        chaotic.nixosModules.default
         ./hosts/roudix/configuration.nix
         ./version.nix
         ./branding.nix

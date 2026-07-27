@@ -60,9 +60,16 @@
     # ── Rename boot profile label ─────────────────────────────────────────────
     system.nixos.label = lib.mkForce "${config.system.nixos.version}";
 
-    # ── Rename UEFI entry to "Roudix" ─────────────────────────────────────
-    system.activationScripts.renameUefiEntry = {
-      text = ''
+    # ── Rename UEFI entry to "Roudix" (à chaque boot, pas juste à l'activation) ──
+    systemd.services.rename-uefi-entry = {
+      description = "Rename UEFI boot entry to Roudix";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "local-fs.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      script = ''
         if [ -d /sys/firmware/efi ]; then
           ENTRY=$(${pkgs.efibootmgr}/bin/efibootmgr -v 2>/dev/null \
             | ${pkgs.gnugrep}/bin/grep -i "Linux Boot Manager\|Limine\|UEFI OS" \

@@ -1,0 +1,124 @@
+{ config, lib, pkgs, username, ... }:
+let
+  isHyprland  = config.roudix.desktop.type == "hyprland";
+  shellType   = config.roudix.desktop.shell or "noctalia";
+  needsPolkit = shellType != "dms";
+  isDms       = shellType == "dms";
+  isNoctalia  = shellType == "noctalia";
+in
+{
+
+config = lib.mkIf isHyprland {
+
+  # ── Greeter DMS (si shell == dms ou caelestia, donc !isNoctalia) ─────────
+  programs.dank-material-shell = lib.mkMerge [
+    (lib.mkIf (!isNoctalia) {
+      greeter = {
+        enable = true;
+        compositor.name = "hyprland";
+        configHome = "/home/${username}";
+        logs = {
+          save = true;
+          path = "/tmp/dms-greeter.log";
+        };
+      };
+    })
+
+    # ── DMS (shell) ───────────────────────────────────────────────────────
+    (lib.mkIf isDms {
+      enable = true;
+      systemd.enable = true;
+    })
+  ];
+
+  # ── Greeter Noctalia (si shell == noctalia) ──────────────────────────────
+  programs.noctalia-greeter = lib.mkIf isNoctalia {
+    enable = true;
+    greeter-args = "--session \"Hyprland (UWSM)\"";
+    settings = {
+      keyboard = {
+        layout  = "us";
+        variant = "intl";
+      };
+    };
+  };
+
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+    xwayland.enable = true;
+  };
+
+  # withUWSM = true (ci-dessus) câble déjà UWSM pour passer par start-hyprland.
+  # Ne pas redéfinir waylandCompositors.hyprland ici : ça écraserait ce câblage
+  # automatique en pointant UWSM vers le binaire brut, d'où les warnings
+  # "started without start-hyprland" / "XDG_CURRENT_DESKTOP managed externally".
+  programs.uwsm.enable = true;
+
+  # BUG connu nixpkgs (cf. hyprwm/Hyprland#12661, NixOS/nixpkgs#476375 & #471800) :
+  # l'entrée "hyprland.desktop" auto-générée que UWSM résout en interne pointe
+  # vers le binaire brut au lieu de start-hyprland, ET même en pointant vers
+  # start-hyprland, XDG_CURRENT_DESKTOP se retrouve avec la valeur "start-hyprland"
+  # au lieu de "Hyprland" si on ne force pas explicitement -e -D Hyprland.
+  # On écrase cette entrée avec une version corrigée qui combine les deux fixes.
+  services.displayManager.sessionPackages = [
+    (pkgs.writeTextFile {
+      name = "hyprland-uwsm-fixed";
+      text = ''
+        [Desktop Entry]
+        Name=Hyprland (UWSM)
+        Comment=Hyprland compositor managed by UWSM
+        Exec=${lib.getExe config.programs.uwsm.package} start -e -D Hyprland -F -- /run/current-system/sw/bin/start-hyprland
+        Type=Application
+        DesktopNames=Hyprland
+        Keywords=tiling;wayland;compositor;
+      '';
+      destination = "/share/wayland-sessions/hyprland-uwsm-fixed.desktop";
+      derivationArgs = {
+        passthru.providedSessions = [ "hyprland-uwsm-fixed" ];
+      };
+    })
+  ];
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
+    ];
+    config.common.default = "*";
+  };
+
+  # ── Polkit agent ────────────────────────────────────────────────────────
+  # DMS a son propre agent polkit intégré.
+  # Noctalia et Caelestia n'en ont pas — on lance polkit-gnome.
+  systemd.user.services.polkit-gnome = lib.mkIf needsPolkit {
+    description = "Polkit GNOME agent";
+    wantedBy = [ "graphical-session.target" ];
+    after    = [ "graphical-session.target" ];
+    partOf   = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type      = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart    = "on-failure";
+      RestartSec = "1s";
+    };
+  };
+
+  programs.nautilus-open-any-terminal = {
+    enable = true;
+    terminal = "ghostty";
+  };
+
+  # ── Keyring ───────────────────────────────────────────────────────────
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
+  security.polkit.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    awww
+    grimblast
+    playerctl
+  ] ++ lib.optionals needsPolkit [ polkit_gnome ];
+ };
+}

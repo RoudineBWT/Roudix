@@ -15,5 +15,5 @@ output "Lenovo Group Limited Legion 27Q-10 UNA07260" {
     scale 1
     transform "normal"
     position x=1920 y=0
-    variable-refresh-rate on-demand=true
+    //variable-refresh-rate on-demand=true
 }

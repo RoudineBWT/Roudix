@@ -11,8 +11,8 @@ lib.mkIf useLy {
   # Sessions exposées à Ly — une par compositeur activé
   environment.etc = lib.mkMerge [
     (lib.mkIf isHyprland {
-      "ly/wayland-sessions/hyprland-uwsm.desktop".source =
-        "/run/current-system/sw/share/wayland-sessions/hyprland-uwsm.desktop";
+      "ly/wayland-sessions/hyprland-uwsm-fixed.desktop".source =
+        "/run/current-system/sw/share/wayland-sessions/hyprland-uwsm-fixed.desktop";
     })
     (lib.mkIf isMango {
       "ly/wayland-sessions/mangowc.desktop".text = ''
@@ -31,7 +31,7 @@ lib.mkIf useLy {
       waylandsessions     = "/etc/ly/wayland-sessions";
       xsessions           = "";
       xinitrcpath         = "";
-      default_session     = if isMango then "mangowc" else "hyprland-uwsm";
+      default_session     = if isMango then "mangowc" else "hyprland-uwsm-fixed";
       animate             = true;
       hide_borders        = false;
       hide_version_string = true;

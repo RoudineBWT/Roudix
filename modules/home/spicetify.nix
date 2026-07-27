@@ -8,13 +8,13 @@ in
   programs.spicetify = {
     enable = true;
      theme = {
-    name = "Comfy";
-    src = ./spicetify/Comfy;
+    name = "Colorful";
+    src = ./spicetify/Colorful;
     injectCss = true;
     replaceColors = true;
     overwriteAssets = true;
   };
-  colorScheme = "Comfy";
+  colorScheme = "noctalia";
     enabledExtensions = with spicePkgs.extensions; [
       adblock
       hidePodcasts

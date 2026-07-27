@@ -13,8 +13,11 @@
       "http://37.59.123.5:8080/glf"
       "https://roudix.cachix.org"
       "https://nix-cache.tokidoki.dev/tokidoki"
+      "https://nyx-cache.chaotic.cx/"
+      "https://niri.cachix.org"
     ];
     extra-trusted-public-keys = [
+      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
@@ -23,6 +26,7 @@
       "glf:gLU8OSnfaopb5atQHiNJDgvS7/VbQ8HDQn3GOWT8w7Y="
       "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
       "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
+      "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
     ];
   };
 
@@ -145,6 +149,13 @@
   networking.firewall.checkReversePath = false;
   networking.firewall.allowedTCPPorts = [ 443 ];
   security.polkit.enable = true;
+  security.wrappers.pkexec = {
+    enable = lib.mkForce true;
+    owner  = "root";
+    group  = "root";
+    setuid = true;
+    source = lib.getExe' config.security.polkit.package "pkexec";
+  };
 
   system.stateVersion = "26.11";
 }

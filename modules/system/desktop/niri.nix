@@ -7,28 +7,23 @@ let
 in
 {
   config = lib.mkIf isNiri {
+    # Pour niri-unstable (dernier commit de main), décommenter ces 2 lignes :
+    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
+    programs.niri.package = pkgs.niri-unstable;
     programs.niri.enable = true;
 
     # ── Greeter DMS (si shell != noctalia) ───────────────────────────────
-    programs.dank-material-shell = lib.mkIf (!isNoctalia) (lib.mkMerge [
-      {
-        greeter = {
-          enable = true;
-          compositor.name = "niri";
-          configHome = "/home/${username}";
-          logs = {
-            save = true;
-            path = "/tmp/dms-greeter.log";
-          };
-        };
-      }
+    programs.dms-greeter = lib.mkIf (!isNoctalia) {
+      enable = true;
+      compositor.name = "niri";
+      configHome = "/home/${username}";
+    };
 
-      # ── DMS ───────────────────────────────────────────────────────────
-      (lib.mkIf isDms {
-        enable = true;
-        systemd.enable = true;
-      })
-    ]);
+    # ── DMS (shell) ─────────────────────────────────────────────────────
+    programs.dank-material-shell = lib.mkIf isDms {
+      enable = true;
+      systemd.enable = true;
+    };
 
     # ── Greeter Noctalia (si shell == noctalia) ──────────────────────────
     programs.noctalia-greeter = lib.mkIf isNoctalia {

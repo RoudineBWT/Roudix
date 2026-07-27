@@ -18,36 +18,36 @@
 
       display = {
         separator = "  ";
-        color = "33";
+        color = "#7aa2f7";
       };
 
       modules = [
         { type = "break"; }
         { type = "custom"; format = "─────────── System ───────────"; }
-        { type = "os";       key = "󱄅 OS";        keyColor = "33"; }
-        { type = "kernel";   key = " Kernel";     keyColor = "33"; }
-        { type = "uptime";   key = "󰔟 Uptime";    keyColor = "33"; }
+        { type = "os";       key = "󱄅 OS";        keyColor = "#7aa2f7"; }
+        { type = "kernel";   key = " Kernel";     keyColor = "#7aa2f7"; }
+        { type = "uptime";   key = "󰔟 Uptime";    keyColor = "#7aa2f7"; }
         {
           type = "command";
           key = "󱎫 OS Age";
-          keyColor = "33";
+          keyColor = "#7aa2f7";
           text = "b=$(stat -c %W /); n=$(date +%s); echo $(( (n - b) / 86400 )) days";
         }
         { type = "custom"; format = "────────── Hardware ──────────"; }
-        { type = "cpu";    key = " CPU";  showPeCoreCount = true; keyColor = "36"; }
-        { type = "gpu";    key = "󰍛 GPU";  keyColor = "36"; }
-        { type = "memory"; key = " Memory"; keyColor = "36"; }
+        { type = "cpu";    key = " CPU";  showPeCoreCount = true; keyColor = "#7dcfff"; }
+        { type = "gpu";    key = "󰍛 GPU";  keyColor = "#7dcfff"; }
+        { type = "memory"; key = " Memory"; keyColor = "#7dcfff"; }
         { type = "custom"; format = "────────── Software ─────────"; }
-        { type = "wm";       key = "󰇄 Compositor"; keyColor = "33"; }
-        { type = "terminal"; key = " Terminal";    keyColor = "33"; }
-        { type = "shell";    key = " Shell";       keyColor = "33"; }
-        { type = "packages"; key = " Packages";   keyColor = "33"; }
+        { type = "wm";       key = "󰇄 Compositor"; keyColor = "#bb9af7"; }
+        { type = "terminal"; key = " Terminal";    keyColor = "#bb9af7"; }
+        { type = "shell";    key = " Shell";       keyColor = "#bb9af7"; }
+        { type = "packages"; key = " Packages";   keyColor = "#bb9af7"; }
         { type = "custom"; format = "───────────────────────────────"; }
         { type = "custom"; format = "─────────── Challenge ───────────"; }
         {
           type = "command";
           key = " Challenge";
-          keyColor = "33";
+          keyColor = "#e0af68";
           text = ''
             start=$(stat -c %W /); end=$((start + 63072000)); now=$(date +%s)
             elapsed=$(( now - start )); total=$(( end - start ))

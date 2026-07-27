@@ -36,10 +36,10 @@ in
 
     # ── Config files ─────────────────────────────────────────────────────────
     # On copie le dossier tel quel — format et structure gérés par l'utilisateur.
-    xdg.configFile."hypr" = {
-      source    = hyprDir;
-      recursive = true;
-    };
+    # xdg.configFile."hypr" = {
+    #   source    = hyprDir;
+    #   recursive = true;
+    #  };
 
     # ── Packages ─────────────────────────────────────────────────────────────
     home.packages = with pkgs; [
@@ -47,6 +47,8 @@ in
       pwvucontrol
       kdePackages.qtmultimedia
       mpvpaper
+      hyprpicker
+      satty
 
       # Apps
       nautilus

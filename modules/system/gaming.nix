@@ -23,6 +23,10 @@ let
             -p performance -r "Launched with game-performance utility" -- "$@"
     fi
   '';
+  steamCompatTools = with pkgs; [
+     proton-ge-bin
+     proton-cachyos-x86_64-v3
+   ];
 in
 {
   options.roudix.gaming.enable = lib.mkOption {
@@ -46,10 +50,7 @@ in
       enable = false;
       args = [ "--prefer-output" "DP-1" ];
     };
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin
-      proton-cachyos-x86_64-v3
-    ];
+    extraCompatPackages = steamCompatTools;
   };
 
   # ── Gamescope ────────────────────────────────────────────────────────────

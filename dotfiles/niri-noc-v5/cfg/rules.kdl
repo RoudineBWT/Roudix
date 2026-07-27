@@ -47,6 +47,10 @@
  window-rule {
  	match at-startup=true app-id="com.mitchellh.ghostty"
  	open-floating true
+   background-effect {
+    blur true
+    xray false
+  }
     }
 
  window-rule {
@@ -134,14 +138,14 @@ window-rule {
         match app-id="^(steam_app_.*)$"
         open-on-workspace "󰊗"
         open-fullscreen true
-        variable-refresh-rate true
+        //variable-refresh-rate true
     }
 
     window-rule {
         match app-id=r#"^heroic$"#
         open-on-workspace "󰊗"
         open-fullscreen true
-        variable-refresh-rate true
+        //variable-refresh-rate true
     }
 
     window-rule {
@@ -154,7 +158,7 @@ window-rule {
         match app-id="Minecraft"
         open-on-workspace "󰊗"
         open-fullscreen true
-        variable-refresh-rate true
+        //variable-refresh-rate true
     }
 
     window-rule {
@@ -198,13 +202,13 @@ window-rule {
     }
 
 window-rule {
-        match app-id="spotify"
+        match app-id="Spotify"
         open-on-workspace "󰝚"
         open-maximized true
     }
 
 window-rule {
-        match app-id="com.github.wwmm.easyeffects"
+        match app-id="com.kde.easyeffects"
         open-on-workspace "󰝚"
     }
 
@@ -217,3 +221,41 @@ window-rule {
         match namespace="^noctalia-wallpaper*"
         place-within-backdrop true
     }
+
+/* Apps: blur them all without xray so it looks more realistic. */
+window-rule {
+  background-effect {
+    blur true
+    xray false
+  }
+}
+
+/*
+  Noctalia
+  Disable xray on all our surfaces so it looks more realistic.
+  Noctalia publishes blur regions automatically when ext-background-effects is available.
+*/
+layer-rule {
+  match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
+  background-effect {
+    xray false
+    // blur false
+  }
+}
+
+/* Enable blur on noctalia's window switcher and disable xray. */
+layer-rule {
+    match namespace="noctalia-window-switcher"
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+/* You can also fine-tune the blur effect globally. */
+blur {
+  passes 2        // more passes = stronger blur (default: 3)
+  offset 3.0      // sample distance per pass (default: 3.0)
+  noise 0.03      // grain overlay (default: 0.02)
+  saturation 1.0  // color saturation boost (default: 1.5)
+}
