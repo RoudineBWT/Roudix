@@ -9,7 +9,7 @@
 
       logo = {
         type = "kitty-direct";
-        source = "${dotfiles}/fastfetch/roudix_fox_icon_256.png";
+        source = "${dotfiles}/fastfetch/roudix-logo-tokyonight.png";
         height = 100;
         padding = {
           right = 5;
