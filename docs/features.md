@@ -3,7 +3,9 @@
 ## Kernel & Performance
 
 - CachyOS kernel with NTSync enabled (`ntsync` module)
-- 36 kernel variants available (set in `hosts/roudix/local.nix`)
+- Two kernel providers, selected automatically by `hardware.myGpu`:
+  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 32 variants (`hardware.myKernel`)
+  - Nvidia → Chaotic-Nyx, 4 variants (`hardware.myKernelChaotic`) — ships `nvidia_cachyos`, a precompiled driver matched to their kernel, so no local Nvidia module rebuild on kernel bumps
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)

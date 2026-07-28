@@ -48,6 +48,18 @@ def _kernels():
     ]
 
 
+def _kernels_chaotic():
+    # Chaotic-Nyx — set volontairement plus réduit que xddxdd (pas de LTO ici :
+    # les modules hors-arbre comme nvidia y sont plus fragiles). Requis pour
+    # nvidia_cachyos, le driver Nvidia précompilé matché à ce kernel.
+    return [
+        ("cachyos", L("Par défaut — LTO + BORE", "Default — LTO + BORE")),
+        ("cachyos-lts", L("Support long terme", "Long-term support")),
+        ("cachyos-server", L("Optimisé serveur (pas de tuning desktop)", "Server optimized (no desktop tuning)")),
+        ("cachyos-hardened", L("Sécurité renforcée", "Security hardened")),
+    ]
+
+
 def _browsers():
     return [
         ("none", L("Aucun", "None")),
@@ -293,6 +305,7 @@ class OptionsPage(Adw.NavigationPage):
         hw_group.add(self.kernel_row)
         box.append(hw_group)
         self._sync_nvidia_row()
+        self._sync_kernel_row()
 
         # ── Navigateur ──
         browser_group = Adw.PreferencesGroup(title=L("Navigateur", "Browser"))
@@ -468,6 +481,7 @@ class OptionsPage(Adw.NavigationPage):
         # run before the widgets they toggle existed yet, throwing a silently-
         # swallowed AttributeError instead of actually syncing visibility.
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
+        self.gpu_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
         self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
         self.rgb_row.connect("notify::selected", lambda *_: self._sync_memory_rows())
@@ -503,6 +517,21 @@ class OptionsPage(Adw.NavigationPage):
         self.nvidia_laptop_row.set_visible(
             self._selected_value(self.gpu_row) == "nvidia"
         )
+
+    def _sync_kernel_row(self):
+        is_nvidia = self._selected_value(self.gpu_row) == "nvidia"
+        pairs = _kernels_chaotic() if is_nvidia else _kernels()
+        current = self.state.kernel_chaotic if is_nvidia else self.state.kernel
+        values = [v for v, _ in pairs]
+        labels = [l for _, l in pairs]
+        self.kernel_row.set_title(
+            L("Kernel (Chaotic-Nyx)", "Kernel (Chaotic-Nyx)")
+            if is_nvidia
+            else L("Kernel (xddxdd)", "Kernel (xddxdd)")
+        )
+        self.kernel_row.set_model(Gtk.StringList.new(labels))
+        self.kernel_row.set_selected(values.index(current) if current in values else 0)
+        self._rows[id(self.kernel_row)] = values
 
     def _sync_brave_row(self):
         self.brave_variant_row.set_visible(
@@ -546,7 +575,11 @@ class OptionsPage(Adw.NavigationPage):
         s.gpu = self._selected_value(self.gpu_row)
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()
         s.cpu = self._selected_value(self.cpu_row)
-        s.kernel = self._selected_value(self.kernel_row)
+        kernel_value = self._selected_value(self.kernel_row)
+        if s.gpu == "nvidia":
+            s.kernel_chaotic = kernel_value
+        else:
+            s.kernel = kernel_value
 
         browser = self._selected_value(self.browser_row)
         s.browser = (

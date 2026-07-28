@@ -48,7 +48,7 @@ pkgs.stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "Switch CachyOS kernel variants on Roudix";
+    description = "Switch CachyOS kernel variants on Roudix (xddxdd or Chaotic-Nyx, depending on hardware.myGpu)";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
   };

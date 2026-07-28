@@ -76,7 +76,8 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   roudix.desktop.type = "niri";               # "niri", "hyprland", "gnome" or "kde"
   hardware.myGpu      = "amd";                # "amd", "nvidia" or "intel"
   hardware.myCpu      = "intel";              # "intel" or "amd"
-  hardware.myKernel   = "cachyos-lts-lto-v3"; # see below
+  hardware.myKernel        = "cachyos-lts-lto-v3"; # xddxdd kernel — used when hardware.myGpu != "nvidia"
+  hardware.myKernelChaotic = "cachyos";            # Chaotic-Nyx kernel — used only when hardware.myGpu == "nvidia"
   roudix.boot.bootloader = "limine";          # "limine" or "systemd-boot"
   roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable   = false;                # set to true to also install Zen Browser (Twilight)
@@ -190,7 +191,12 @@ Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfi
 
 ### 5. Configure kernel
 
-**Available kernel variants:**
+Roudix uses **two different kernel providers** depending on your GPU:
+
+- **`hardware.myGpu != "nvidia"`** (AMD or Intel) → kernel from [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), selected via `hardware.myKernel`. No Nvidia module to worry about, so the full 32-variant set is available.
+- **`hardware.myGpu == "nvidia"`** → kernel from **Chaotic-Nyx**, selected via `hardware.myKernelChaotic`. This is required to get **`nvidia_cachyos`**, a precompiled Nvidia driver matched to their kernel — otherwise the Nvidia kernel module rebuilds locally on every kernel bump. The variant set is smaller here on purpose (Chaotic-Nyx doesn't publish as many flavors, and `-lto` variants are more prone to breaking out-of-tree modules like Nvidia's).
+
+**`hardware.myKernel` variants (xddxdd — AMD/Intel only):**
 
 | Variant | Description |
 |---------|-------------|
@@ -230,6 +236,15 @@ Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfi
 | `cachyos-rt-bore-lto` | Real-time + BORE + LTO |
 | `cachyos-server` | Server optimized (no desktop tuning) |
 | `cachyos-server-lto` | Server optimized + LTO |
+
+**`hardware.myKernelChaotic` variants (Chaotic-Nyx — Nvidia only):**
+
+| Variant | Description |
+|---------|-------------|
+| `cachyos` | Default — LTO + BORE scheduler, comes with matching `nvidia_cachyos` |
+| `cachyos-lts` | Long-term support |
+| `cachyos-server` | Server optimized (no desktop tuning) |
+| `cachyos-hardened` | Security hardened |
 
 > **NVIDIA note:** Only GTX 20xx / RTX series and newer are supported. Open drivers enabled by default for RTX 20xx+ (Turing+). GTX 10xx/16xx are not supported.
 

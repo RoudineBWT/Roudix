@@ -36,7 +36,8 @@
   # ── Hardware ────────────────────────────────────────────────────────────
   hardware.myGpu    = lib.mkDefault "amd";              # "amd", "nvidia" or "intel"
   hardware.myCpu    = lib.mkDefault "intel";            # "intel" or "amd"
-  hardware.myKernel = lib.mkDefault "cachyos-lts-lto-v3"; # see README for all variants
+  hardware.myKernel = lib.mkDefault "cachyos-lts-lto-v3"; # xddxdd — used when hardware.myGpu != "nvidia", see README
+  hardware.myKernelChaotic = lib.mkDefault "cachyos";     # Chaotic-Nyx — used only when hardware.myGpu == "nvidia"
   roudix.rgb        = lib.mkDefault "none";           # "openlinkhub" (full Corsair), "openrgb" (mixed/other brands) or "none"
   roudix.memory.enable  = lib.mkDefault false;          # true pour activer le RGB RAM
   roudix.memory.type    = lib.mkDefault "ddr5";         # "ddr4" ou "ddr5"
