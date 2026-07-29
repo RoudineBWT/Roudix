@@ -260,13 +260,16 @@ while IFS= read -r line; do
 
   # Extract PARTUUID from the HD(...) GPT block
   # Format: HD(<part>,GPT,<PARTUUID>,...)
-  partuuid=$(echo "$line" | grep -oiP '(?<=GPT,)[0-9a-f-]{36}' | head -1)
+  # `|| true` : sous set -e + pipefail, un grep qui ne matche rien renvoie 1,
+  # ce qui ferait planter tout le script ici (simple affectation, pas de if/&&)
+  # même si le `[[ -z ]] && continue` juste après est censé gérer ce cas.
+  partuuid=$(echo "$line" | grep -oiP '(?<=GPT,)[0-9a-f-]{36}' | head -1 || true)
   [[ -z "$partuuid" ]] && continue
 
   # Extract EFI path — comes after HD(...)/  as \EFI\...\file.efi
   # efibootmgr sometimes appends garbage bytes after the .efi — strip them
   efi_path=$(echo "$line" | grep -oP 'HD\([^)]+\)/(?:\\[^\s\\,]+)+' | \
-    grep -oP '(?<=/)(?:\\[^\s\\,]+)+' | head -1 | tr '\\' '/')
+    grep -oP '(?<=/)(?:\\[^\s\\,]+)+' | head -1 | tr '\\' '/' || true)
   efi_path=$(echo "$efi_path" | sed 's/\(\.efi\).*/\1/i')
   [[ -z "$efi_path" ]] && continue
 
