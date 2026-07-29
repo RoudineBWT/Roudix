@@ -106,6 +106,7 @@ binds {
     MOD+CTRL+9                          { move-column-to-workspace 9; }
 
     MOD+TAB                             { focus-workspace-previous; }
+    Alt+Tab { spawn-sh "noctalia msg window-switcher"; }
 
     // ─── Layout Controls ───
     MOD+CTRL+F                          { expand-column-to-available-width; }
