@@ -38,7 +38,8 @@ class InstallState:
     gpu: str = "amd"                 # amd | amd-legacy | nvidia | intel
     nvidia_laptop: bool = False
     cpu: str = "amd"                 # amd | intel
-    kernel: str = "cachyos-latest-v3"
+    kernel: str = "cachyos-latest-v3"        # xddxdd — used when gpu != "nvidia"
+    kernel_chaotic: str = "cachyos"          # Chaotic-Nyx — used when gpu == "nvidia" (ships nvidia_cachyos, precompiled)
 
     # ── Browser ───────────────────────────────────────────────────────────
     browser: str = "brave"           # none | brave(-beta/-nightly/-origin-*) | helium | vivaldi
