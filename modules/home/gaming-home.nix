@@ -11,7 +11,7 @@ let
 in
 {
 
-  xdg.dataFile = lib.genAttrs' steamCompatTools (
+  xdg.dataFile = lib.mkIf isGaming (lib.genAttrs' steamCompatTools (
       tool:
       lib.nameValuePair "Steam/compatibilitytools.d/${lib.getName tool}" {
         source = tool.steamcompattool;
