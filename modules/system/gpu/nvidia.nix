@@ -2,14 +2,20 @@
 with lib;
 let
   cfg = config.roudix.nvidia_config;
-  nvidiaDriverPackage = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-    version = "595.84";
-    sha256_64bit = "sha256-mcQE5SExvye8ptoCaNzOPr7cenOrF0BxqZXPGmxeugY=";
-    sha256_aarch64 = "sha256-GloNdDFfmXFVu4FAlNNk2qzqLOuw2N5CKatKkcSrQxk=";
-    openSha256 = "sha256-pEmA2tUcOKwUPKy6N0QvS49Pdut4/7Phs/JhjdyBcNY=";
-    settingsSha256 = "sha256-QrnBM+sdWO4GanO62rxpHmRrjYkYpl5RD6fIiHq4C4A=";
-    persistencedSha256 = "sha256-50xYdgx7EEThbaMp4QS8GADbxj0mhBXh8QQN0tWMwRg=";
-  };
+
+  # nvidia_cachyos est fourni par Chaotic-Nyx, précompilé et matché au kernel
+  # Chaotic sélectionné via hardware.myKernelChaotic (voir modules/system/kernel.nix)
+  # => pas de rebuild local du module à chaque bump de kernel.
+  nvidiaDriverPackage =
+    let
+      drivers = {
+        "cachyos"          = pkgs.nvidia_cachyos;
+        "cachyos-lts"      = pkgs.nvidia_cachyos-lts;
+        "cachyos-server"   = pkgs.nvidia_cachyos-server;
+        "cachyos-hardened" = pkgs.nvidia_cachyos-hardened;
+      };
+    in
+      drivers.${config.hardware.myKernelChaotic};
 in
 {
   options.roudix.nvidia_config = {

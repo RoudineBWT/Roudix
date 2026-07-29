@@ -90,6 +90,18 @@ KERNELS = {
     ],
 }
 
+# Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == "nvidia" (ships
+# nvidia_cachyos, le driver Nvidia précompilé matché à ce kernel — pas de LTO
+# ici volontairement, plus fragile sur les modules hors-arbre comme nvidia)
+KERNELS_CHAOTIC = {
+    "Chaotic-Nyx": [
+        ("cachyos",          "Default  —  LTO + BORE, ships nvidia_cachyos"),
+        ("cachyos-lts",      "Long-term support"),
+        ("cachyos-server",   "Server optimised  —  no desktop tuning"),
+        ("cachyos-hardened", "Security hardened"),
+    ],
+}
+
 # ── SCX scheduler catalogue ───────────────────────────────────────────────────
 
 SCX_PROFILES = ["Auto", "Gaming", "LowLatency", "PowerSave", "Server"]
@@ -174,27 +186,38 @@ def strip_ansi(text: str) -> str:
     return ANSI_ESCAPE.sub('', text)
 
 
-def detect_current_kernel() -> str | None:
+def detect_current_gpu() -> str | None:
     try:
         text = open(CONFIG_FILE).read()
-        m = re.search(r'hardware\.myKernel\s*=\s*"([^"]+)"', text)
+        m = re.search(r'hardware\.myGpu\s*=\s*"([^"]+)"', text)
         return m.group(1) if m else None
     except OSError:
         return None
 
 
-def set_kernel(kernel: str) -> bool | str:
+def detect_current_kernel(is_nvidia: bool) -> str | None:
+    key = "myKernelChaotic" if is_nvidia else "myKernel"
+    try:
+        text = open(CONFIG_FILE).read()
+        m = re.search(rf'hardware\.{key}\s*=\s*"([^"]+)"', text)
+        return m.group(1) if m else None
+    except OSError:
+        return None
+
+
+def set_kernel(kernel: str, is_nvidia: bool) -> bool | str:
+    key = "myKernelChaotic" if is_nvidia else "myKernel"
     try:
         with open(CONFIG_FILE) as f:
             content = f.read()
         new = re.sub(
-            r'hardware\.myKernel\s*=\s*"[^"]*"',
-            f'hardware.myKernel = "{kernel}"',
+            rf'hardware\.{key}\s*=\s*"[^"]*"',
+            f'hardware.{key} = "{kernel}"',
             content,
         )
         with open(CONFIG_FILE, "w") as f:
             f.write(new)
-        log.info("Configuration updated: hardware.myKernel = '%s'.", kernel)
+        log.info("Configuration updated: hardware.%s = '%s'.", key, kernel)
         return True
     except Exception as e:
         log.error("Failed to write configuration: %s", e)
@@ -390,7 +413,9 @@ class KernelPage(Gtk.Box):
     def __init__(self, window: "KernelSwitcher"):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self._win      = window
-        self._current  = detect_current_kernel()
+        self._is_nvidia = detect_current_gpu() == "nvidia"
+        self._catalogue = KERNELS_CHAOTIC if self._is_nvidia else KERNELS
+        self._current  = detect_current_kernel(self._is_nvidia)
         self._selected = self._current
         self._anchor   = Gtk.CheckButton()
 
@@ -406,6 +431,26 @@ class KernelPage(Gtk.Box):
         body.set_margin_end(16)
         scroll.set_child(body)
 
+        source_label = "Chaotic-Nyx (GPU: nvidia)" if self._is_nvidia else "xddxdd"
+        source_note = Gtk.Label(label=f"Kernel source: {source_label}")
+        source_note.set_halign(Gtk.Align.START)
+        source_note.add_css_class("dim-label")
+        source_note.add_css_class("caption")
+        source_note.set_margin_bottom(8)
+        body.append(source_note)
+
+        if self._is_nvidia:
+            nvidia_note = Gtk.Label(
+                label="Nvidia GPU detected — only Chaotic-Nyx variants are shown, "
+                      "so nvidia_cachyos (precompiled driver) stays matched to your kernel."
+            )
+            nvidia_note.set_halign(Gtk.Align.START)
+            nvidia_note.set_wrap(True)
+            nvidia_note.add_css_class("dim-label")
+            nvidia_note.add_css_class("caption")
+            nvidia_note.set_margin_bottom(12)
+            body.append(nvidia_note)
+
         if self._current:
             banner = Adw.ActionRow()
             banner.set_title("Active kernel")
@@ -414,7 +459,7 @@ class KernelPage(Gtk.Box):
             banner.set_margin_bottom(16)
             body.append(banner)
 
-        for group_name, entries in KERNELS.items():
+        for group_name, entries in self._catalogue.items():
             grp_lbl = Gtk.Label(label=group_name.upper())
             grp_lbl.set_halign(Gtk.Align.START)
             grp_lbl.set_margin_top(8)
@@ -543,7 +588,7 @@ class KernelPage(Gtk.Box):
     def _on_confirm(self, dialog, response):
         if response != "confirm":
             return
-        result = set_kernel(self._selected)
+        result = set_kernel(self._selected, self._is_nvidia)
         if result is not True:
             self._status_lbl.set_label(f"✗ Error writing config: {result}")
             return

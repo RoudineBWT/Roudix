@@ -260,13 +260,16 @@ while IFS= read -r line; do
 
   # Extract PARTUUID from the HD(...) GPT block
   # Format: HD(<part>,GPT,<PARTUUID>,...)
-  partuuid=$(echo "$line" | grep -oiP '(?<=GPT,)[0-9a-f-]{36}' | head -1)
+  # `|| true` : sous set -e + pipefail, un grep qui ne matche rien renvoie 1,
+  # ce qui ferait planter tout le script ici (simple affectation, pas de if/&&)
+  # même si le `[[ -z ]] && continue` juste après est censé gérer ce cas.
+  partuuid=$(echo "$line" | grep -oiP '(?<=GPT,)[0-9a-f-]{36}' | head -1 || true)
   [[ -z "$partuuid" ]] && continue
 
   # Extract EFI path — comes after HD(...)/  as \EFI\...\file.efi
   # efibootmgr sometimes appends garbage bytes after the .efi — strip them
   efi_path=$(echo "$line" | grep -oP 'HD\([^)]+\)/(?:\\[^\s\\,]+)+' | \
-    grep -oP '(?<=/)(?:\\[^\s\\,]+)+' | head -1 | tr '\\' '/')
+    grep -oP '(?<=/)(?:\\[^\s\\,]+)+' | head -1 | tr '\\' '/' || true)
   efi_path=$(echo "$efi_path" | sed 's/\(\.efi\).*/\1/i')
   [[ -z "$efi_path" ]] && continue
 
@@ -437,15 +440,24 @@ else
     "intel|Intel CPU"
 fi
 
-pick "Kernel:" KERNEL \
-  "cachyos-latest|Standard latest CachyOS kernel" \
-  "cachyos-latest-v3|x86_64-v3 optimized (recommended for modern CPUs)" \
-  "cachyos-latest-lto|LTO build for better performance" \
-  "cachyos-latest-lto-v3|LTO + x86_64-v3 (best performance, modern CPUs only)" \
-  "cachyos-lts|Long-term support CachyOS kernel" \
-  "cachyos-lts-v3|LTS + x86_64-v3 optimized" \
-  "cachyos-lts-lto-v3|LTS + LTO + x86_64-v3 (stable + performance)" \
-  "cachyos-rc|Release candidate — bleeding edge, potentially unstable"
+if [[ "$GPU" == "nvidia" ]]; then
+  info "GPU Nvidia détecté — le kernel Chaotic-Nyx est utilisé pour bénéficier du driver nvidia_cachyos précompilé (pas de rebuild local du module)."
+  pick "Kernel (Chaotic-Nyx):" KERNEL_CHAOTIC \
+    "cachyos|CachyOS par défaut (LTO + BORE scheduler)" \
+    "cachyos-lts|CachyOS LTS — long-term support" \
+    "cachyos-server|CachyOS Server — sans tuning desktop" \
+    "cachyos-hardened|CachyOS Hardened — sécurité renforcée"
+else
+  pick "Kernel (xddxdd):" KERNEL \
+    "cachyos-latest|Standard latest CachyOS kernel" \
+    "cachyos-latest-v3|x86_64-v3 optimized (recommended for modern CPUs)" \
+    "cachyos-latest-lto|LTO build for better performance" \
+    "cachyos-latest-lto-v3|LTO + x86_64-v3 (best performance, modern CPUs only)" \
+    "cachyos-lts|Long-term support CachyOS kernel" \
+    "cachyos-lts-v3|LTS + x86_64-v3 optimized" \
+    "cachyos-lts-lto-v3|LTS + LTO + x86_64-v3 (stable + performance)" \
+    "cachyos-rc|Release candidate — bleeding edge, potentially unstable"
+fi
 
 pick "Browser:" BROWSER \
   "none|No browser" \
@@ -790,7 +802,12 @@ sed -i "s/roudix\.rgb[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.rgb        = \"$
 sed -i "s/hardware\.myGpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/roudix/local.nix
 sed -i -E "s/hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*(true|false)/hardware.nvidiaLaptop = ${NVIDIA_LAPTOP}/" hosts/roudix/local.nix
 sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/roudix/local.nix
-sed -i "s/hardware\.myKernel[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKernel = \"${KERNEL}\"/"  hosts/roudix/local.nix
+if [[ -n "${KERNEL:-}" ]]; then
+  sed -i "s/hardware\.myKernel[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKernel = \"${KERNEL}\"/"  hosts/roudix/local.nix
+fi
+if [[ -n "${KERNEL_CHAOTIC:-}" ]]; then
+  sed -i "s/hardware\.myKernelChaotic[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKernelChaotic = \"${KERNEL_CHAOTIC}\"/" hosts/roudix/local.nix
+fi
 sed -i "s/roudix\.browsers[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.browsers = [\"${BROWSER}\"]/"    hosts/roudix/local.nix
 sed -i -E "s/roudix\.zen\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.enable           = ${ZEN}/" hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
@@ -830,7 +847,7 @@ echo -e "
   ${BOLD}RAM RGB       :${NC} $MEMORY_ENABLE $([ "$MEMORY_ENABLE" == "true" ] && echo "($MEMORY_TYPE, $MEMORY_SMBUS${MEMORY_SKU:+, SKU: $MEMORY_SKU})")
   ${BOLD}GPU           :${NC} $GPU
   ${BOLD}CPU           :${NC} $CPU
-  ${BOLD}Kernel        :${NC} $KERNEL
+  ${BOLD}Kernel        :${NC} ${KERNEL:-$KERNEL_CHAOTIC} $([ "$GPU" == "nvidia" ] && echo "(Chaotic-Nyx)" || echo "(xddxdd)")
   ${BOLD}Browser       :${NC} $BROWSER
   ${BOLD}Zen Browser   :${NC} $ZEN
   ${BOLD}Desktop       :${NC} $DE

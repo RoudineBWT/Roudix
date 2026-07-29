@@ -29,10 +29,14 @@ roudix-switch mangowc
 roudix-switch gnome
 roudix-switch kde
 
-# Switch kernel variant — see docs/installation.md for the full list
+# Switch kernel variant — list depends on hardware.myGpu, see docs/installation.md
+# AMD/Intel (xddxdd):
 roudix-kernel-switch cachyos-latest-v3
 roudix-kernel-switch cachyos-lts-lto-v3
 roudix-kernel-switch cachyos-bore
+# Nvidia (Chaotic-Nyx — smaller set, needed for the nvidia_cachyos binary cache):
+roudix-kernel-switch cachyos
+roudix-kernel-switch cachyos-lts
 
 # Switch graphical shell (Niri, Hyprland & MangoWC only)
 roudix-shell-switch noctalia
@@ -41,3 +45,5 @@ roudix-shell-switch caelestia # only for hyprland
 ```
 
 All three commands edit `hosts/roudix/local.nix` automatically and run `nh os boot` — no manual rebuild needed. Changes apply on next reboot.
+
+> **Note:** `roudix-kernel-switch` writes to `hardware.myKernel` or `hardware.myKernelChaotic` automatically depending on your current `hardware.myGpu` — pass the variant name matching the list for your GPU (see table above).

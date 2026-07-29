@@ -45,13 +45,16 @@ class SummaryPage(Adw.NavigationPage):
                       or L("aucune partition assignée", "no partition assigned"),
         }[s.disk.mode]
 
+        kernel_display = s.kernel_chaotic if s.gpu == "nvidia" else s.kernel
+        kernel_source = "Chaotic-Nyx" if s.gpu == "nvidia" else "xddxdd"
+
         rows = [
             (L("Disque", "Disk"), disk_label),
             (L("Utilisateur", "User"), s.username),
             (L("Mot de passe", "Password"), L("défini ✓", "set ✓") if s.password else L("⚠ non défini", "⚠ not set")),
             ("GPU", f"{s.gpu}" + (L(" (laptop Optimus)", " (Optimus laptop)") if s.nvidia_laptop else "")),
             ("CPU", s.cpu),
-            ("Kernel", s.kernel),
+            ("Kernel", f"{kernel_display} ({kernel_source})"),
             (L("Navigateur", "Browser"), s.browser + (" + Zen" if s.zen_browser else "")),
             (L("Bureau", "Desktop"), f"{s.desktop}" + (f" + {s.desktop_shell}" if s.desktop in ("niri", "hyprland") else "")),
             (L("Shell", "Shell"), s.default_shell),

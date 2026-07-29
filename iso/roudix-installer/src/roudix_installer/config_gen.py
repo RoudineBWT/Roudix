@@ -35,6 +35,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_bool(t, "hardware.nvidiaLaptop", state.nvidia_laptop)
     t = _sub_string(t, "hardware.myCpu", state.cpu)
     t = _sub_string(t, "hardware.myKernel", state.kernel)
+    t = _sub_string(t, "hardware.myKernelChaotic", state.kernel_chaotic)
     t = _sub_list_single(t, "roudix.browsers", state.browser)
     t = _sub_bool(t, "roudix.zen.enable", state.zen_browser)
     t = _sub_string(t, "roudix.desktop.type", state.desktop)
