@@ -111,5 +111,11 @@ in
          createDirectories = true;
        };
 
+       dconf.settings = {
+         "org/gnome/desktop/interface" = {
+           gtk-enable-primary-paste = true;
+         };
+       };
+
   programs.home-manager.enable = true;
 }
