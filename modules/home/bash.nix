@@ -17,6 +17,9 @@ in
 {
   programs.bash = {
     enable = true;
+    sessionVariables = {
+          GTK_IM_MODULE = "simple";
+        };
     shellAliases = {
       rebuild  = "nh os switch --accept-flake-config path:$NH_FLAKE";
       update   = "sudo nix flake update --flake $NH_FLAKE && nh os switch --accept-flake-config path:$NH_FLAKE";
