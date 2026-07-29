@@ -16,7 +16,7 @@ in
       lib.nameValuePair "Steam/compatibilitytools.d/${lib.getName tool}" {
         source = tool.steamcompattool;
       }
-  );
+      ));
 
   # ── Gaming packages (user) ───────────────────────────────────────────────
   home.packages = with pkgs; (if isGaming then [
