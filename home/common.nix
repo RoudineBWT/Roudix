@@ -83,7 +83,7 @@ in
     bibata-cursors
     deluge-gtk
     (discord.override { withVencord = true; })
-    rustdesk-flutter
+    rustdesk
     inkscape
     gimp
     starship
