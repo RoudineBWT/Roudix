@@ -18,6 +18,9 @@ in
   # ── Fish ─────────────────────────────────────────────────────────────────
   programs.fish = {
     enable = true;
+    shellInit = ''
+    set -gx GTK_IM_MODULE simple
+    '';
     shellAliases = {
       update   = "sudo nix flake update --flake $NH_FLAKE && nh os switch --accept-flake-config path:$NH_FLAKE";
       rebuild  = "nh os switch --accept-flake-config path:$NH_FLAKE";

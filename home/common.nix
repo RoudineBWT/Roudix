@@ -83,7 +83,7 @@ in
     bibata-cursors
     deluge-gtk
     (discord.override { withVencord = true; })
-    rustdesk-flutter
+    rustdesk
     inkscape
     gimp
     starship
@@ -109,6 +109,12 @@ in
        xdg.userDirs = {
          enable = true;
          createDirectories = true;
+       };
+
+       dconf.settings = {
+         "org/gnome/desktop/interface" = {
+           gtk-enable-primary-paste = true;
+         };
        };
 
   programs.home-manager.enable = true;
