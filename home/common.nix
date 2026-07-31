@@ -14,7 +14,7 @@ let
         then "--password-store=kwallet6"
         else "--password-store=gnome-libsecret";
     };
-    cinny  = pkgs.cinny;
+    cinny  = pkgs.cinny-desktop;
     none   = null;
   }.${matrixClient};
 in
