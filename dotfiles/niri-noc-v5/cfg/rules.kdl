@@ -208,6 +208,10 @@ window-rule {
     }
 
 window-rule {
+        match app-id="com.kde.easyeffects"
+        open-on-workspace "󰝚"
+    }
+window-rule {
         match app-id="com.github.wwmm.easyeffects"
         open-on-workspace "󰝚"
     }
