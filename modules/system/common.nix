@@ -4,6 +4,7 @@
   nix.settings = {
     trusted-users = [ "root" "${username}" ];
     experimental-features = [ "nix-command" "flakes" ];
+    max-substitution-jobs = 4;
     extra-substituters = [
       "https://attic.xuyh0120.win/lantian"
       "https://cache.garnix.io"
