@@ -117,8 +117,6 @@
       "https://roudix.cachix.org"
       "https://noctalia.cachix.org"
       "https://nix-community.cachix.org"
-      "https://cache.garnix.io"
-      "http://37.59.123.5:8080/glf"
       "https://nix-cache.tokidoki.dev/tokidoki"
     ];
     trusted-public-keys = [
@@ -126,7 +124,6 @@
       "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCUSeBw="
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "glf:gLU8OSnfaopb5atQHiNJDgvS7/VbQ8HDQn3GOWT8w7Y="
       "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
     ];
