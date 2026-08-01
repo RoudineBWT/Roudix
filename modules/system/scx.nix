@@ -115,10 +115,14 @@ let
         _wait_for_scx_loader
 
         echo "Starting scx_''${SCHEDULER}..."
+        # scxctl refuse 'start' si un scheduler tourne déjà et demande 'switch' —
+        # on tente switch d'abord, fallback sur start si rien n'est encore actif.
         if [ -n "$MODE" ]; then
-          ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}" --mode "''${MODE}"
+          ${scxctl}/bin/scxctl switch --sched "scx_''${SCHEDULER}" --mode "''${MODE}" \
+            || ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}" --mode "''${MODE}"
         else
-          ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}"
+          ${scxctl}/bin/scxctl switch --sched "scx_''${SCHEDULER}" \
+            || ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}"
         fi
 
         if _ananicy_enabled; then
@@ -178,9 +182,11 @@ let
     done
 
     if [ -n "''${MODE:-}" ] && [ "''${MODE}" != "None" ]; then
-      ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}" --mode "''${MODE}"
+      ${scxctl}/bin/scxctl switch --sched "scx_''${SCHEDULER}" --mode "''${MODE}" \
+        || ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}" --mode "''${MODE}"
     else
-      ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}"
+      ${scxctl}/bin/scxctl switch --sched "scx_''${SCHEDULER}" \
+        || ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}"
     fi
   '';
 in
