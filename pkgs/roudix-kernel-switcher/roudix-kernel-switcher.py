@@ -407,6 +407,18 @@ def is_ananicy_active() -> bool:
         return False
 
 
+def is_ananicy_enabled() -> bool:
+    """False si roudix.gaming.ananicy.enable = false (opt-out) — dans ce cas
+    scx-switch persiste le scheduler choisi via scx-restore-default au lieu
+    de le perdre au reboot."""
+    try:
+        r = subprocess.run(["systemctl", "is-enabled", "ananicy-cpp"],
+                           capture_output=True, text=True)
+        return r.stdout.strip() == "enabled"
+    except Exception:
+        return False
+
+
 # ── Kernel page ───────────────────────────────────────────────────────────────
 
 class KernelPage(Gtk.Box):
@@ -809,6 +821,11 @@ class SchedulerPage(Gtk.Box):
         return f"{label}  •  {self._scx_profile_current}"
 
     def _refresh_ananicy_subtitle(self):
+        if not is_ananicy_enabled():
+            self._ananicy_row.set_subtitle(
+                "Disabled (opt-out) — your scheduler choice will persist after reboot"
+            )
+            return
         active = is_ananicy_active()
         if active:
             self._ananicy_row.set_subtitle(
@@ -834,12 +851,15 @@ class SchedulerPage(Gtk.Box):
                    self._scx_profile != self._scx_profile_current)
         self._apply_btn.set_sensitive(changed)
 
-        ananicy_active = is_ananicy_active()
         ananicy_note = ""
-        if sched_id == "none" and not ananicy_active:
-            ananicy_note = " — ananicy-cpp will be restarted."
-        elif sched_id != "none" and ananicy_active:
-            ananicy_note = " — ananicy-cpp will be stopped."
+        if is_ananicy_enabled():
+            ananicy_active = is_ananicy_active()
+            if sched_id == "none" and not ananicy_active:
+                ananicy_note = " — ananicy-cpp will be restarted."
+            elif sched_id != "none" and ananicy_active:
+                ananicy_note = " — ananicy-cpp will be stopped."
+        elif sched_id != "none":
+            ananicy_note = " — will persist after reboot."
 
         if sched_id == "none":
             self._status_lbl.set_label(f"Will stop SCX scheduler.{ananicy_note}")

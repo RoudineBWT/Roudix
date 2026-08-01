@@ -18,6 +18,10 @@
 let
   scxctl = inputs.roudix-caches.packages.x86_64-linux.scxctl;
 
+  # Fichier où scx-switch retient le dernier scheduler choisi manuellement,
+  # utilisé uniquement quand ananicy-cpp est désactivé (roudix.gaming.ananicy.enable = false).
+  scxStateFile = "/var/lib/scx-switch/last-scheduler";
+
   # ── D-Bus policy ───────────────────────────────────────────────────────────
   # Permet à scx_loader de s'enregistrer sous org.scx.Loader sur le system bus
   scx-dbus-policy = pkgs.writeTextDir "share/dbus-1/system.d/org.scx.Loader.conf" ''
@@ -63,6 +67,7 @@ let
   scx-switch = pkgs.writeShellScriptBin "scx-switch" ''
     set -euo pipefail
 
+    STATE_FILE="${scxStateFile}"
     CMD="''${1:-}"
 
     # Attend que scx_loader soit vraiment joignable sur D-Bus.
@@ -85,6 +90,11 @@ let
       return 1
     }
 
+    # ananicy-cpp n'est même pas installé si roudix.gaming.ananicy.enable = false
+    _ananicy_enabled() {
+      ${pkgs.systemd}/bin/systemctl is-enabled ananicy-cpp.service &>/dev/null
+    }
+
     case "$CMD" in
       set)
         SCHEDULER="''${2:-}"
@@ -95,8 +105,10 @@ let
           exit 1
         fi
 
-        echo "Stopping ananicy-cpp..."
-        ${pkgs.systemd}/bin/systemctl stop ananicy-cpp 2>/dev/null || true
+        if _ananicy_enabled; then
+          echo "Stopping ananicy-cpp..."
+          ${pkgs.systemd}/bin/systemctl stop ananicy-cpp 2>/dev/null || true
+        fi
 
         echo "Starting scx-loader..."
         ${pkgs.systemd}/bin/systemctl start scx-loader
@@ -108,6 +120,16 @@ let
         else
           ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}"
         fi
+
+        if _ananicy_enabled; then
+          # ananicy reprendra la main tout seul au prochain boot,
+          # inutile de persister quoi que ce soit
+          rm -f "''${STATE_FILE}"
+        else
+          # pas d'ananicy → on retient le choix pour qu'il survive au reboot
+          mkdir -p "$(dirname "''${STATE_FILE}")"
+          echo "''${SCHEDULER} ''${MODE}" > "''${STATE_FILE}"
+        fi
         ;;
 
       unset)
@@ -117,8 +139,12 @@ let
         echo "Stopping scx-loader..."
         ${pkgs.systemd}/bin/systemctl stop scx-loader 2>/dev/null || true
 
-        echo "Restarting ananicy-cpp..."
-        ${pkgs.systemd}/bin/systemctl start ananicy-cpp
+        if _ananicy_enabled; then
+          echo "Restarting ananicy-cpp..."
+          ${pkgs.systemd}/bin/systemctl start ananicy-cpp
+        fi
+
+        rm -f "''${STATE_FILE}"
         ;;
 
       *)
@@ -126,6 +152,36 @@ let
         exit 1
         ;;
     esac
+  '';
+
+  # Relit le state file au boot et relance le scheduler mémorisé.
+  # No-op si le fichier n'existe pas (ananicy activé, ou "none" sélectionné).
+  scx-restore = pkgs.writeShellScriptBin "scx-restore-default" ''
+    set -euo pipefail
+    STATE_FILE="${scxStateFile}"
+
+    [ -f "''${STATE_FILE}" ] || exit 0
+    read -r SCHEDULER MODE < "''${STATE_FILE}" || exit 0
+    [ -n "''${SCHEDULER:-}" ] || exit 0
+
+    ${pkgs.systemd}/bin/systemctl start scx-loader
+
+    i=0
+    while [ $i -lt 25 ]; do
+      if ${pkgs.dbus}/bin/dbus-send --system --print-reply \
+          --dest=org.scx.Loader /org/scx/Loader \
+          org.freedesktop.DBus.Peer.Ping 2>/dev/null; then
+        break
+      fi
+      sleep 0.2
+      i=$((i + 1))
+    done
+
+    if [ -n "''${MODE:-}" ] && [ "''${MODE}" != "None" ]; then
+      ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}" --mode "''${MODE}"
+    else
+      ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}"
+    fi
   '';
 in
 {
@@ -142,7 +198,30 @@ in
     scxctl
     pkgs.scx.full   # scx_bpfland, scx_lavd, scx_flash, etc.
     scx-switch
+    scx-restore
   ];
+
+  # Dossier pour le state file (dernier scheduler choisi, hors ananicy)
+  systemd.tmpfiles.rules = [
+    "d /var/lib/scx-switch 0755 root root -"
+  ];
+
+  # Relance le scheduler mémorisé au boot — pertinent seulement quand
+  # roudix.gaming.ananicy.enable = false (sinon le state file reste vide).
+  # Pas de mkIf sur l'option ici : le service est un no-op inoffensif
+  # tant que scx-switch n'a rien écrit dans le state file.
+  systemd.services.scx-restore-default = {
+    description = "Restore last selected SCX scheduler at boot (used when ananicy-cpp is off)";
+    after = [ "dbus.service" ];
+    wants = [ "dbus.service" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.scx.full ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${scx-restore}/bin/scx-restore-default";
+    };
+  };
 
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
