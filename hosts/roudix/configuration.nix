@@ -45,6 +45,7 @@
   # ── Features ────────────────────────────────────────────────────────────
   roudix.boot.bootloader = lib.mkDefault "limine"; # "limine" or "systemd-boot"
   roudix.gaming.enable         = lib.mkDefault true;
+  roudix.gaming.ananicy.enable = lib.mkDefault true;
   roudix.flatpak.enable        = lib.mkDefault false;
   roudix.fstrim.enable         = lib.mkDefault true;
   roudix.virtualization.enable = lib.mkDefault false;
