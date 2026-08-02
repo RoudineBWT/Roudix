@@ -14,6 +14,7 @@
     ../../modules/system/scx.nix
     ../../modules/system/flatpak.nix
     ../../modules/system/gpu
+    ../../modules/system/gpu/undervolt.nix
     ../../modules/system/roudix-rgb.nix
     ../../modules/system/cpu.nix
     ../../modules/system/pipewire.nix
