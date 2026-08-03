@@ -36,6 +36,7 @@
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
   roudix.gaming.enable        = true;         # disable to skip Steam, Wine, etc.
+  roudix.gaming.ananicy.enable = true;
   roudix.flatpak.enable       = false;        # enable Flatpak support
   roudix.virtualization.enable = false;       # enable libvirt / virt-manager
   roudix.vmGuest.enable       = false;        # enable only inside a VM

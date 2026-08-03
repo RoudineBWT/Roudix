@@ -35,6 +35,17 @@ in
     default = true;
   };
 
+  options.roudix.gaming.ananicy.enable = lib.mkOption {
+    description = ''
+      Active ananicy-cpp au boot (opt-in, désactivé par défaut). Si false,
+      roudix-kernel-switcher peut faire persister un scheduler SCX choisi
+      manuellement après reboot via scx-restore-default, au lieu de
+      retomber sur CFS/EEVDF à chaque démarrage.
+    '';
+    type = lib.types.bool;
+    default = false;
+  };
+
   config = lib.mkIf config.roudix.gaming.enable {
 
     nixpkgs.overlays = [
@@ -69,10 +80,14 @@ in
   #  };
   #};
 
-  # ── Ananicy-CPP (remplace GameMode) ──────────────────────────────────────
-  # Démarre au boot par défaut. Stoppé par scx-switch quand un scheduler SCX
-  # est activé, redémarré automatiquement quand on repasse sur None.
-  services.ananicy = {
+  # ── Ananicy-CPP (remplace GameMode, opt-in) ──────────────────────────────
+  # Si roudix.gaming.ananicy.enable = true : démarre au boot, stoppé par
+  # scx-switch quand un scheduler SCX est activé, redémarré automatiquement
+  # au reboot suivant (comportement d'origine).
+  # Si false (défaut) : ananicy-cpp n'est même pas installé. Le scheduler SCX
+  # choisi via roudix-kernel-switcher persiste après reboot à la place
+  # (voir scx-restore-default dans scx.nix).
+  services.ananicy = lib.mkIf config.roudix.gaming.ananicy.enable {
     enable = true;
     package = pkgs.ananicy-cpp;
     rulesProvider = pkgs.ananicy-rules-cachyos;
