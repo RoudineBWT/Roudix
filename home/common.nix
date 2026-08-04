@@ -81,7 +81,6 @@ in
     nvd
     capitaine-cursors
     bibata-cursors
-    deluge-gtk
     (discord.override { withVencord = true; })
     inkscape
     gimp
