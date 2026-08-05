@@ -723,11 +723,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1785908801,
-        "narHash": "sha256-maufSwxT1b79bObrUD/xXcUrOIlZiLLezdzkYtkdVDw=",
+        "lastModified": 1785959367,
+        "narHash": "sha256-kmThjrpKifXIj3I+vSMG5Y42llcXzqaCst9r5uPy/tU=",
         "owner": "RoudineBWT",
         "repo": "Roudix-caches",
-        "rev": "1619f55192bd8a56eabf22bf0fef5affa072aecc",
+        "rev": "e9dc13b3d02c03d3a184cdf16b7c9a1b257103ec",
         "type": "github"
       },
       "original": {
