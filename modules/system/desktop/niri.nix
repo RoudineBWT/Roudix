@@ -10,9 +10,7 @@ in
     # Pour niri-unstable (dernier commit de main), décommenter ces 2 lignes :
     nixpkgs.overlays = [ inputs.niri.overlays.niri
       (final: prev: {
-          niri-unstable = prev.niri-unstable.override {
             libdisplay-info_0_2 = final.libdisplay-info_0_3;
-          };
         })
     ];
     programs.niri.package = pkgs.niri-unstable;
