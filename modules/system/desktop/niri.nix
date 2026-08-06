@@ -8,7 +8,13 @@ in
 {
   config = lib.mkIf isNiri {
     # Pour niri-unstable (dernier commit de main), décommenter ces 2 lignes :
-    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
+    nixpkgs.overlays = [ inputs.niri.overlays.niri
+      (final: prev: {
+          niri-unstable = prev.niri-unstable.override {
+            libdisplay-info = final.libdisplay-info_0_3;
+          };
+        })
+    ];
     programs.niri.package = pkgs.niri-unstable;
     programs.niri.enable = true;
 
