@@ -398,15 +398,16 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1785857305,
-        "narHash": "sha256-25q05zpF1sqOCxPPUG9DPPGd+EDW7SiAOWCzBWRS7r0=",
-        "owner": "sodiboo",
+        "lastModified": 1786011639,
+        "narHash": "sha256-STlPf3cacpTQWhTkn+WzNVxL7LdHiW0CNAWNWF6C6tE=",
+        "owner": "rebizzz",
         "repo": "niri-flake",
-        "rev": "9ee3e13b60643448228353097880521658b2fe0e",
+        "rev": "c2cbcc99a8379150af7864ed1873d79303747dd2",
         "type": "github"
       },
       "original": {
-        "owner": "sodiboo",
+        "owner": "rebizzz",
+        "ref": "fix/libdisplay-info-dep",
         "repo": "niri-flake",
         "type": "github"
       }

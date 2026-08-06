@@ -34,7 +34,8 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     niri = {
-      url = "github:sodiboo/niri-flake"; # attente du push du fix
+      #url = "github:sodiboo/niri-flake";
+      url = "github:rebizzz/niri-flake/fix/libdisplay-info-dep"; # attente du push du fix
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
