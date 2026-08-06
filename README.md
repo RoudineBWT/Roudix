@@ -170,7 +170,7 @@ roudix/
 |-------|--------|
 | nixpkgs | [nixos-unstable](https://github.com/NixOS/nixpkgs/tree/nixos-unstable) |
 | nixpkgs-stable | [nixos-26.05](https://github.com/NixOS/nixpkgs/tree/nixos-26.05) |
-| niri | [sodiboo/niri-flake](https://github.com/sodiboo/niri-flake) |
+| niri | [epireyn/niri-flake](https://github.com/epireyn/niri-flake) |
 | home-manager | [nix-community/home-manager](https://github.com/nix-community/home-manager) |
 | noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
