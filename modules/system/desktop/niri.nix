@@ -11,7 +11,7 @@ in
     nixpkgs.overlays = [ inputs.niri.overlays.niri
       (final: prev: {
           niri-unstable = prev.niri-unstable.override {
-            libdisplay-info = final.libdisplay-info_0_3;
+            libdisplay-info_0_2 = final.libdisplay-info_0_3;
           };
         })
     ];
