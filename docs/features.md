@@ -34,7 +34,7 @@
 
 ## Desktop (Niri)
 
-- Niri scrollable tiling Wayland compositor — provided via [niri-flake](https://github.com/sodiboo/niri-flake) (sodiboo), using `niri-unstable` by default (stable release lags behind, e.g. 25.08 vs current 26.04), with the `niri.cachix.org` binary cache pre-configured
+- Niri scrollable tiling Wayland compositor — provided via [niri-flake](https://github.com/epireyn/niri-flake) (epireyn), using `niri-unstable` by default, with the `niri.cachix.org` binary cache pre-configured
 - Noctalia (v5) modern shell
 - xdg-desktop-portal-gnome + gtk (screencast + remote desktop portals configured)
 - Bibata Modern Ice cursor (24 px)
