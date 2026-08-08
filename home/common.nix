@@ -26,8 +26,8 @@ let
     alacritty = pkgs.alacritty;
     foot      = pkgs.foot;
     wezterm   = pkgs.wezterm;
-    ptyxis    = pkgs.ptyxis
-    konsole   = pkgs.kdePackages.konsole
+    ptyxis    = pkgs.ptyxis;
+    konsole   = pkgs.kdePackages.konsole;
   }.${terminalType};
 in
 {
