@@ -134,6 +134,7 @@ binds {
 
     // ─── Exit / Power ───
     CTRL+ALT+DELETE                     { quit; } // Also quits Niri
+    MOD+SHIFT+R                         {spawn-sh "noctalia msg config-reload"; } //reload noctalia config
     MOD+SHIFT+P                         { power-off-monitors; } // Turn off screens (useful for OLED or privacy)
     MOD+O                               repeat=false { toggle-overview; }
 }

@@ -17,6 +17,18 @@ let
     cinny  = pkgs.cinny-desktop;
     none   = null;
   }.${matrixClient};
+
+  terminalType = osConfig.roudix.terminal or "ghostty";
+
+  terminalPackage = {
+    ghostty   = pkgs.ghostty;
+    kitty     = pkgs.kitty;
+    alacritty = pkgs.alacritty;
+    foot      = pkgs.foot;
+    wezterm   = pkgs.wezterm;
+    ptyxis    = pkgs.ptyxis;
+    konsole   = pkgs.kdePackages.konsole;
+  }.${terminalType};
 in
 {
   home.username = username;
@@ -73,7 +85,6 @@ in
     # Common apps
     roudixSwitcher
     roudix-kernel-switcher
-    ghostty
     zed-editor
     btop
     ffmpeg
@@ -102,6 +113,8 @@ in
   # Zen Browser (optional)
   ++ lib.optional osConfig.roudix.zen.enable
        inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight
+  # Terminal choisi par l'utilisateur (roudix.terminal)
+  ++ [ terminalPackage ]
 ++ lib.optional (desktopType != "kde") pkgs.xdg-user-dirs-gtk;
 
        xdg.userDirs = {

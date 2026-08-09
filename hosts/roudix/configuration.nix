@@ -27,6 +27,7 @@
     ../../modules/system/waydroid.nix
     ../../modules/system/matrix.nix
     ../../modules/system/appimage.nix
+    ../../modules/system/terminal.nix
      inputs.brave-previews.nixosModules.default
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
@@ -45,6 +46,7 @@
   roudix.memory.sku    = lib.mkDefault "CMH64GX5M2B5200C40"; # trouvé via: sudo dmidecode -t memory | grep 'Part Number'
   # ── Features ────────────────────────────────────────────────────────────
   roudix.boot.bootloader = lib.mkDefault "limine"; # "limine" or "systemd-boot"
+  roudix.terminal        = lib.mkDefault "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
   roudix.gaming.enable         = lib.mkDefault true;
   roudix.gaming.ananicy.enable = lib.mkDefault true;
   roudix.flatpak.enable        = lib.mkDefault false;
