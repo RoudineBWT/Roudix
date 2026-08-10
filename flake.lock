@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786347613,
-        "narHash": "sha256-2vpA7qZFvyS+n9UA//cK+Chbm3EA3Lf2W0saUU8FHXQ=",
+        "lastModified": 1786388246,
+        "narHash": "sha256-jk7ziC2cywyjSmcuHK2pGtwPbOlKetwcGpUzYELYgnA=",
         "owner": "roudinebwt",
         "repo": "brave-preview",
-        "rev": "3dd9ad032a5c360b2e9a0d8c7637ba2dbb8ddd00",
+        "rev": "80a044a97805b69851dc8d5cdba907f59c6cec04",
         "type": "github"
       },
       "original": {
@@ -75,11 +75,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1786335695,
-        "narHash": "sha256-LTorR5cU8WsRVLgARrJZnF4WSfR2RhwvR2idPDtvDz8=",
+        "lastModified": 1786373615,
+        "narHash": "sha256-N+qcGJQpSllPWPNaqJAv+flcqiGH8YiiNGOoQO178Sc=",
         "owner": "chaotic-cx",
         "repo": "nyx",
-        "rev": "701afdd6edc7aab8ee5a193ea387a0a0f9cf6052",
+        "rev": "3b599e806222815806e277a20fdca62746381a1c",
         "type": "github"
       },
       "original": {
@@ -151,11 +151,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786309844,
-        "narHash": "sha256-UYzTw5DVjp0lw7JPvHjrTTxRh0Vs4eX+zZxaJC4NMU8=",
+        "lastModified": 1786389890,
+        "narHash": "sha256-9QM+kX+MQ7z82DdrwLVow4Ksv+f8it7WV/vT+pvqgMI=",
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
-        "rev": "db1ab5b7b42a222d5a4e7bcc9c4bc2c6efab65dd",
+        "rev": "c3c9b13ef651c26890649ba69b63b5a7945945be",
         "type": "github"
       },
       "original": {
@@ -275,11 +275,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786031233,
-        "narHash": "sha256-TIDlLTLI1/pB7IqgjzcKQjpODQsZE2oII4XGG9B6KjI=",
+        "lastModified": 1786286733,
+        "narHash": "sha256-7dN93WKkEERgutPtTjK7SY3ZarO2LAU33A1+vKu+7cc=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "7834e82588860aaf780cec1366524456a70898d7",
+        "rev": "367f7ef80856d18438953d54dda235d42a46ba31",
         "type": "github"
       },
       "original": {
@@ -355,11 +355,11 @@
       },
       "locked": {
         "dir": "packages/nix",
-        "lastModified": 1785944047,
-        "narHash": "sha256-5J7dUkGh2cxuAuwalNnNoX1NvuFGkqiGYDU5gg4tkHE=",
+        "lastModified": 1786390927,
+        "narHash": "sha256-rG9VwNR5bZIOzjYRjuY0SRqfx37spn0QQywPgITszQY=",
         "owner": "SteamClientHomebrew",
         "repo": "Millennium",
-        "rev": "1b61200b88b7479f8f9c1788364092f2cf270b20",
+        "rev": "816514f939ce8696ae8262b4e0c2123f593db08c",
         "type": "github"
       },
       "original": {
@@ -398,11 +398,11 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1786357562,
-        "narHash": "sha256-qf2W2caNt8EtvsZxTAD8qpfyAraJvFwgojYgYV8bB+Q=",
+        "lastModified": 1786381414,
+        "narHash": "sha256-mtcogsvqSiZDIDoHqIZDNjjn9e6y299kJ/WZ59hRoWE=",
         "owner": "epireyn",
         "repo": "niri-flake",
-        "rev": "e120f804cf61bb6eb597f84c6f60a30460223533",
+        "rev": "d15ec848082a1c743d272726cc500f2d9cf69790",
         "type": "github"
       },
       "original": {
@@ -431,11 +431,11 @@
     "niri-unstable": {
       "flake": false,
       "locked": {
-        "lastModified": 1786132078,
-        "narHash": "sha256-itOJjhjujC3R/V3LuTDr5J9fASyyAOR4BjOAKGsY0IA=",
+        "lastModified": 1786375226,
+        "narHash": "sha256-3d0BXYeT0Gifjh8wvER/4X02HauzIcrhKTbmb5/z7XY=",
         "owner": "niri-wm",
         "repo": "niri",
-        "rev": "59a10015610bb7d068a82ce1c386fcd8b44f6c52",
+        "rev": "464d45daa229f16934399ceb16e94783ed2c241c",
         "type": "github"
       },
       "original": {
@@ -613,11 +613,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1786338498,
-        "narHash": "sha256-qy3Cheg/FQ9ZaBPTIgdq4IkmkNtC6XBpmtC8nT+wU/Y=",
+        "lastModified": 1786388579,
+        "narHash": "sha256-PSfJXN6qwRkpWae6Ff6Wg5PyDniBRICOTYRA9F123Y4=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "45e721ba0fb47d6efc00ca47e156237954037c99",
+        "rev": "ec33edcddc296ba7c304adb0d5d8b0f6b43a0e9f",
         "type": "github"
       },
       "original": {
