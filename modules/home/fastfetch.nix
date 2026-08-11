@@ -1,4 +1,4 @@
-{ username, dotfiles, ... }:
+{ username, dotfiles, osConfig, ... }:
 {
 options.roudix.fastfetch = {
   useNix = lib.mkEnableOption "fastfetch via nix or not";
