@@ -1,7 +1,11 @@
 { username, dotfiles, osConfig, ... }:
 {
-options.roudix.fastfetch = {
-  useNix = lib.mkEnableOption "fastfetch via nix or not";
+  options.roudix.fastfetch = {
+    useNix = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "fastfetch via nix or not";
+    };
 };
 config = lib.mkIf config.roudix.fastfetch.useNix {
   # ── Fastfetch ────────────────────────────────────────────────────────────
