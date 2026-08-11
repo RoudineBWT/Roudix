@@ -55,7 +55,7 @@
   roudix.vmGuest.enable        = lib.mkDefault false; # enable only inside a VM
   roudix.hosts.gtaFix.enable   = lib.mkDefault false;
   roudix.autoupdate.enable     = lib.mkDefault true;
-  roudix.fastfetch.useNix = lib.mkDefault enable;  # false = your fastfetch config in ~/.config/fastfetch
+  roudix.fastfetch.useNix = lib.mkDefault true;  # false = your fastfetch config in ~/.config/fastfetch
   roudix.mesa.useGit = lib.mkDefault false;  # false = mesa stable du nixpkgs
   roudix.waydroid.enable = lib.mkDefault false;
   roudix.matrixClient = lib.mkDefault "none"; # "element", "cinny" ou "none"
