@@ -173,6 +173,7 @@
             imports = [
               ./home/common.nix
               ./home/niri.nix
+              ./home/jay.nix
               ./home/hyprland.nix
               ./home/mangowc.nix
               ./home/kde.nix
