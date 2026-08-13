@@ -23,6 +23,38 @@ let
             -p performance -r "Launched with game-performance utility" -- "$@"
     fi
   '';
+  scx-performance = pkgs.writeShellScriptBin "scx-performance" ''
+    # Helper script pour activer scx_lavd (latence, gaming) le temps du jeu,
+    # puis restaurer le scheduler précédent (celui choisi via
+    # roudix-kernel-switcher / scx-restore-default) à la sortie
+    if ! command -v ${pkgs.scx_loader}/bin/scxctl &>/dev/null; then
+        echo "Error: scxctl not found" >&2
+        exec "$@"
+    fi
+
+    # Ne rien casser si scx_loader n'est pas actif / pas de scheduler dispo
+    if ! ${pkgs.scx_loader}/bin/scxctl get &>/dev/null; then
+        exec "$@"
+    fi
+
+    # Récupère le scheduler actif pour restauration ultérieure
+    PREVIOUS_SCHED="$(${pkgs.scx_loader}/bin/scxctl get 2>/dev/null | awk '{print $1}')"
+
+    restore_scheduler() {
+        if [ -n "$PREVIOUS_SCHED" ] && [ "$PREVIOUS_SCHED" != "unknown" ]; then
+            ${pkgs.scx_loader}/bin/scxctl switch -s "$PREVIOUS_SCHED" &>/dev/null
+        else
+            ${pkgs.scx_loader}/bin/scxctl stop &>/dev/null
+        fi
+    }
+    trap restore_scheduler EXIT
+
+    ${pkgs.scx_loader}/bin/scxctl switch -s scx_lavd &>/dev/null
+
+    exec ${pkgs.systemd}/bin/systemd-inhibit \
+        --why "scx-performance is running" \
+        -- "$@"
+  '';
   steamCompatTools = with pkgs; [
      proton-ge-bin
      proton-cachyos-x86_64-v3
@@ -97,6 +129,7 @@ in
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
     game-performance  # Wrapper governor CPU performance (usage: game-performance %command%)
+    scx-performance   # Wrapper scheduler SCX gaming (usage: scx-performance %command%)
     gamescope-wsi
     #millennium-steam
   ];
