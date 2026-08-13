@@ -2,6 +2,7 @@
 let
   isJay  = config.roudix.desktop.type == "jay";
 in
+{
 config = lib.mkIf isJay {
 
   # ── Greeter Noctalia (si shell == noctalia) ──────────────────────────────
