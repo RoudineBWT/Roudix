@@ -1,6 +1,8 @@
 { config, lib, pkgs, inputs, username, ... }:
 let
   isJay  = config.roudix.desktop.type == "jay";
+  shellType   = config.roudix.desktop.shell or "noctalia";
+  needsPolkit = shellType != "dms";
 in
 {
 config = lib.mkIf isJay {
