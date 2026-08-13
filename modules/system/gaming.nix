@@ -58,9 +58,13 @@ let
 
     pkexec scx-switch set lavd &>/dev/null
 
-    exec ${pkgs.systemd}/bin/systemd-inhibit \
+    # Pas de "exec" ici : on a besoin que le shell survive à la commande
+    # pour que le trap EXIT (restauration) se déclenche après coup. Avec
+    # exec, ce process shell est remplacé et le trap ne se déclenche jamais.
+    ${pkgs.systemd}/bin/systemd-inhibit \
         --why "scx-performance is running" \
         -- "$@"
+    exit $?
   '';
   steamCompatTools = with pkgs; [
      proton-ge-bin
