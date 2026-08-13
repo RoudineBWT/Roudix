@@ -35,8 +35,6 @@ in
       pwvucontrol
       kdePackages.qtmultimedia
       mpvpaper
-      hyprpicker
-      satty
 
       # Apps
       nautilus

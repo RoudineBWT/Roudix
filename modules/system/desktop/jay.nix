@@ -55,6 +55,7 @@ config = lib.mkIf isJay {
 
   environment.systemPackages = with pkgs; [
     awww
+    jay
     grimblast
     playerctl
   ] ++ lib.optionals needsPolkit [ polkit_gnome ];
