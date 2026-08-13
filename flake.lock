@@ -398,11 +398,11 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1786597199,
-        "narHash": "sha256-5O3oUsn8/6f8v3LvF5CA/B/hzMBoOhCIO4JrHZNTdb4=",
+        "lastModified": 1786622244,
+        "narHash": "sha256-BK50MYL5Eg9DPseU++fAxY42Vucuh7iyArirtkL/fhM=",
         "owner": "epireyn",
         "repo": "niri-flake",
-        "rev": "2f180a4783f6f5afa302bf9362a4de9d0983d295",
+        "rev": "fd40cf3f523d67e9156dc79ba3fcbce091cb3324",
         "type": "github"
       },
       "original": {
@@ -487,11 +487,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786601538,
-        "narHash": "sha256-3gGjMS66dHEfqiYouOk1H14au6K818JN7ZxHuHDdMXw=",
+        "lastModified": 1786621922,
+        "narHash": "sha256-83GvFttRLC+9859tLCe5k4OVPz9cpVlZvotA5rAM+Do=",
         "owner": "powerofthe69",
         "repo": "nix-gaming-edge",
-        "rev": "11acf5fb8d9d633f566604abc3a66eced93a2b0d",
+        "rev": "b4c9a115226dcccde404c45888c8771ab4a16bc6",
         "type": "github"
       },
       "original": {
@@ -613,11 +613,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1786614852,
-        "narHash": "sha256-N6PmuyFTeZuBzh22oUwoS/Z5nZQE7zOyJNJG9VObElg=",
+        "lastModified": 1786620772,
+        "narHash": "sha256-r+rijNjl9Q+3V0Z+E+dvOgc/XbWJ6UoK/B9c/zCJpBs=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "b5999d053d3a8078271dbf87e1bb715ef104f6ea",
+        "rev": "713e6caa3ac6e9d5bf3aba678e150df6c1555194",
         "type": "github"
       },
       "original": {
