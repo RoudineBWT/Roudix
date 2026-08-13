@@ -23,33 +23,40 @@ let
             -p performance -r "Launched with game-performance utility" -- "$@"
     fi
   '';
+  # État persisté par scx-switch (voir scx.nix) — même fichier, lu ici pour
+  # capturer/restaurer l'état "avant jeu" sans dupliquer la logique ananicy /
+  # scx-loader / polkit, qui vit déjà entièrement dans scx-switch.
+  scxStateFile = "/var/lib/scx-switch/last-scheduler";
+
   scx-performance = pkgs.writeShellScriptBin "scx-performance" ''
     # Helper script pour activer scx_lavd (latence, gaming) le temps du jeu,
-    # puis restaurer le scheduler précédent (celui choisi via
-    # roudix-kernel-switcher / scx-restore-default) à la sortie
-    if ! command -v ${pkgs.scx-loader}/bin/scxctl &>/dev/null; then
-        echo "Error: scxctl not found" >&2
+    # via scx-switch (scx.nix), puis restaurer l'état exact d'avant (autre
+    # scheduler persistant, ou ananicy-cpp / CFS par défaut) à la sortie.
+    if ! command -v scx-switch &>/dev/null; then
+        echo "Error: scx-switch not found (voir scx.nix)" >&2
         exec "$@"
     fi
 
-    # Ne rien casser si scx_loader n'est pas actif / pas de scheduler dispo
-    if ! ${pkgs.scx-loader}/bin/scxctl get &>/dev/null; then
-        exec "$@"
+    STATE_FILE="${scxStateFile}"
+
+    # Capture l'état avant de basculer : un scheduler persistant s'il y en
+    # avait un (ananicy off), sinon vide (ananicy actif ou CFS/EEVDF par défaut).
+    PREV_SCHEDULER=""
+    PREV_MODE=""
+    if [ -f "$STATE_FILE" ]; then
+        read -r PREV_SCHEDULER PREV_MODE < "$STATE_FILE" || true
     fi
 
-    # Récupère le scheduler actif pour restauration ultérieure
-    PREVIOUS_SCHED="$(${pkgs.scx-loader}/bin/scxctl get 2>/dev/null | awk '{print $1}')"
-
-    restore_scheduler() {
-        if [ -n "$PREVIOUS_SCHED" ] && [ "$PREVIOUS_SCHED" != "unknown" ]; then
-            ${pkgs.scx-loader}/bin/scxctl switch -s "$PREVIOUS_SCHED" &>/dev/null
+    restore_previous() {
+        if [ -n "$PREV_SCHEDULER" ]; then
+            pkexec scx-switch set "$PREV_SCHEDULER" "$PREV_MODE" &>/dev/null
         else
-            ${pkgs.scx-loader}/bin/scxctl stop &>/dev/null
+            pkexec scx-switch unset &>/dev/null
         fi
     }
-    trap restore_scheduler EXIT
+    trap restore_previous EXIT
 
-    ${pkgs.scx-loader}/bin/scxctl switch -s scx_lavd &>/dev/null
+    pkexec scx-switch set lavd &>/dev/null
 
     exec ${pkgs.systemd}/bin/systemd-inhibit \
         --why "scx-performance is running" \
