@@ -88,6 +88,7 @@ in
       mission-center
       loupe
       clapper
+      clapper-enhancers
       gpu-screen-recorder
 
       # GTK theming
