@@ -22,6 +22,7 @@ in
   imports = [
     ../modules/home/mangohud.nix
     ../modules/home/papirus-folders.nix
+    ../modules/home/tela-icon.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "niri") {
