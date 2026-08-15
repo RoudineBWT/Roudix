@@ -39,14 +39,14 @@
           })
         ];
         wallpaperStyle = "stretched";
-        # ── Catppuccin Mocha Peach ─────────────────────────────────
+        # ── Roudix Roux ──────────────────────────────────────────────
         graphicalTerminal = {
-          foreground       = "fab387"; # peach
-          background       = "aa1e1e2e"; # base semi-transparent
-          brightForeground = "f5e0dc"; # rosewater
-          brightBackground = "ff1e1e2e"; # base opaque
-          palette       = "1e1e2e;f38ba8;a6e3a1;f9e2af;fab387;eba0ac;f2cdcd;cdd6f4";
-          brightPalette = "585b70;f38ba8;a6e3a1;f9e2af;fab387;eba0ac;f2cdcd;cdd6f4";
+          foreground       = "eab676"; # tan (logo)
+          background       = "aa150b05"; # near-black brown, semi-transparent
+          brightForeground = "f6e2c4"; # light cream
+          brightBackground = "ff150b05"; # near-black brown, opaque
+          palette       = "150b05;c9622d;8a9a5b;eab676;6b8ca3;b06a4a;c98450;eab676";
+          brightPalette = "5c2a12;e07a3f;a8b98a;f4c98f;89a8bd;c98a6a;dba06e;f6e2c4";
         };
       };
       # ── Extra boot entries for other OS on other ESPs ─────────────────
