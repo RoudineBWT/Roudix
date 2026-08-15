@@ -19,6 +19,11 @@
         user = "git";
         identityFile = "~/.ssh/id_ed25519";
       };
+      "minecraft-server" = {
+        hostname = "192.168.1.44";
+          user = "admin";
+          identityFile = "~/.ssh/minecraft-server";
+        };
     };
   };
 }
