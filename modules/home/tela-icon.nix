@@ -25,7 +25,8 @@ let
     # dossier temporaire, pour que ces symlinks restent valides -> contenu
     # complet, pas d'icônes d'app manquantes.
     for variant in Tela Tela-light Tela-dark; do
-      cp -r "$telaIconsOut/$variant/." "$build/$variant/"
+      mkdir -p "$build/$variant"
+      cp -r "${telaIconsOut}/$variant/." "$build/$variant/"
       chmod -R u+w "$build/$variant"
     done
 
@@ -40,6 +41,7 @@ let
     # gardes le choix entre les deux dans nwg-look.
     for variant in Tela Tela-light Tela-dark; do
       rm -rf "$dest/''${variant}-noctalia"
+      mkdir -p "$dest/''${variant}-noctalia"
       cp -rL "$build/$variant/." "$dest/''${variant}-noctalia/"
       ${pkgs.gnused}/bin/sed -i "s/^Name=.*/Name=''${variant} Noctalia/" \
         "$dest/''${variant}-noctalia/index.theme"

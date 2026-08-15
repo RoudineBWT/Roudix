@@ -32,7 +32,8 @@ let
     # déréférencer, dans un dossier temporaire, pour que ces symlinks
     # restent valides -> contenu complet, pas d'icônes d'app manquantes.
     for variant in Papirus Papirus-Light Papirus-Dark; do
-      cp -r "$papirusIconsOut/$variant/." "$build/$variant/"
+      mkdir -p "$build/$variant"
+      cp -r "${papirusIconsOut}/$variant/." "$build/$variant/"
       chmod -R u+w "$build/$variant"
     done
 
@@ -48,6 +49,7 @@ let
     # d'origine -> tu gardes le choix entre les deux dans nwg-look.
     for variant in Papirus Papirus-Light Papirus-Dark; do
       rm -rf "$dest/''${variant}-noctalia"
+      mkdir -p "$dest/''${variant}-noctalia"
       cp -rL "$build/$variant/." "$dest/''${variant}-noctalia/"
       ${pkgs.gnused}/bin/sed -i "s/^Name=.*/Name=''${variant} Noctalia/" \
         "$dest/''${variant}-noctalia/index.theme"
