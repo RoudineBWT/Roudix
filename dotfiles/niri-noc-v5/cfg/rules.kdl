@@ -138,14 +138,14 @@ window-rule {
         match app-id="^(steam_app_.*)$"
         open-on-workspace "󰊗"
         open-fullscreen true
-        //variable-refresh-rate true
+        variable-refresh-rate true
     }
 
     window-rule {
         match app-id=r#"^heroic$"#
         open-on-workspace "󰊗"
         open-fullscreen true
-        //variable-refresh-rate true
+        variable-refresh-rate true
     }
 
     window-rule {
@@ -158,7 +158,7 @@ window-rule {
         match app-id="Minecraft"
         open-on-workspace "󰊗"
         open-fullscreen true
-        //variable-refresh-rate true
+        variable-refresh-rate true
     }
 
     window-rule {
