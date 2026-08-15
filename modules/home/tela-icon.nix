@@ -13,21 +13,26 @@ let
     [ -f "$colors" ] || exit 0
 
     primary=$(${pkgs.jq}/bin/jq -r '.mPrimary' "$colors")
-    workdir="$HOME/.cache/tela-icon-theme-src"
+    dest="$HOME/.icons/Tela-noctalia"
 
-    mkdir -p "$workdir"
-    cp -rn ${telaSrc}/* "$workdir/" 2>/dev/null || true
-    chmod +x "$workdir/change_color.sh"
+    rm -rf "$dest"
+    mkdir -p "$dest"
+    cp -r ${telaSrc}/src/* "$dest/"
+    chmod -R u+w "$dest"
 
-    "$workdir/change_color.sh" -a "$primary" -d "$HOME/.icons"
+    ${pkgs.gnused}/bin/sed -i "s/#5294e2/$primary/g" \
+      "$dest/scalable/apps/"*.svg \
+      "$dest/scalable/places/"default-*.svg \
+      "$dest/16/places/"folder*.svg
+
     ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface icon-theme 'Tela-noctalia'
   '';
 in
 {
-  home.packages = [ telaSync pkgs.jq pkgs.glib ];
+  home.packages = [ telaSync pkgs.jq pkgs.gnused pkgs.glib ];
 
   xdg.configFile."noctalia/hooks.toml".text = ''
     [hooks]
-    colors_changed = "${telaSync}/bin/noctalia-tela-sync"
+    colors_changed = ["${telaSync}/bin/noctalia-tela-sync"]
   '';
 }
