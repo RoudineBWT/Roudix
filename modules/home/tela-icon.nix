@@ -16,7 +16,7 @@ let
     mkdir -p "$dest"
     # -L : déréférence les symlinks (scalable/32/... pointent vers le thème Tela
     # standard dans le store) pour obtenir un thème autonome et copiable tel quel
-    cp -rL "$telaDarkBase/." "$dest/"
+    cp -rL "${telaDarkBase}/." "$dest/"
     chmod -R u+w "$dest"
 
     # Nom lisible dans index.theme (par défaut "Tela dark")
