@@ -27,12 +27,16 @@ let
 
     ${pkgs.gnused}/bin/sed -i "s/^Name=.*/Name=Tela Noctalia/" "$dest/index.theme"
 
-    # On ne touche QUE les icônes de dossiers, tout le reste reste du Tela-dark pur
+    # On ne touche QUE le dossier "places" (icônes de dossiers/emplacements),
+    # sur TOUS les fichiers svg (pas juste default-folder*) : Tela a des dizaines
+    # d'alias (folder.svg, folder-open.svg, gnome-folder.svg, stock_folder.svg...)
+    # qui étaient des symlinks vers default-folder*.svg avant le cp -rL ci-dessus,
+    # et qui sont maintenant des copies indépendantes à recolorer aussi.
     ${pkgs.gnused}/bin/sed -i "s/#5294e2/$primary/g" \
-      "$dest/scalable/places/"default-folder*.svg \
-      "$dest/16/places/"folder*.svg \
-      "$dest/22/places/"folder*.svg \
-      "$dest/24/places/"folder*.svg
+      "$dest/scalable/places/"*.svg \
+      "$dest/16/places/"*.svg \
+      "$dest/22/places/"*.svg \
+      "$dest/24/places/"*.svg
 
     if command -v gtk-update-icon-cache >/dev/null 2>&1; then
       gtk-update-icon-cache -f -t "$dest" || true
