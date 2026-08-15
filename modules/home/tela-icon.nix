@@ -3,8 +3,8 @@ let
   telaSrc = pkgs.fetchFromGitHub {
     owner = "vinceliuice";
     repo = "Tela-icon-theme";
-    rev = "master";
-    sha256 = "sha256-e4Ysu9YE2jAib9+q9eYL0E3w1BBXbu/QYNTmSjk0CRY="
+    rev = "sha256-e4Ysu9YE2jAib9+q9eYL0E3w1BBXbu/QYNTmSjk0CRY=";
+    sha256 = "sha256-e4Ysu9YE2jAib9+q9eYL0E3w1BBXbu/QYNTmSjk0CRY=";
   };
 
   telaSync = pkgs.writeShellScriptBin "noctalia-tela-sync" ''
