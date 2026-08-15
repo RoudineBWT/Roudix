@@ -20,48 +20,40 @@ let
     r=$(( r * 80 / 100 )); g=$(( g * 80 / 100 )); b=$(( b * 80 / 100 ))
     darker=$(printf '#%02x%02x%02x' "$r" "$g" "$b")
 
-    dest="$HOME/.icons"
-    mkdir -p "$dest"
-
-    build=$(mktemp -d)
-    trap 'rm -rf "$build"' EXIT
-
-    # Étape 1 : Papirus, Papirus-Light et Papirus-Dark dépendent les uns des
-    # autres via des symlinks internes (ex: Papirus-Dark/48x48 ->
-    # ../Papirus/48x48). On les copie tous les 3 comme frères SANS
-    # déréférencer, dans un dossier temporaire, pour que ces symlinks
-    # restent valides -> contenu complet, pas d'icônes d'app manquantes.
     for variant in Papirus Papirus-Light Papirus-Dark; do
-      mkdir -p "$build/$variant"
-      # -L : par précaution/cohérence avec Tela, on déréférence tout de suite
-      # pour garantir du contenu réel et autonome, peu importe la structure
-      # exacte de symlinks du paquet.
-      cp -rL "${papirusIconsOut}/$variant/." "$build/$variant/"
-      chmod -R u+w "$build/$variant"
-    done
+      dest="$HOME/.icons/''${variant}-noctalia"
+      rm -rf "$dest"
+      mkdir -p "$dest"
 
-    # On ne touche QUE les dossiers "places", à toutes les tailles.
-    find "$build/Papirus" "$build/Papirus-Light" "$build/Papirus-Dark" \
-      -path '*/places/*.svg' -print0 \
-      | xargs -0 ${pkgs.gnused}/bin/sed -i \
-          -e "s/#5294e2/$primary/g" \
-          -e "s/#4877b1/$darker/g"
+      # On n'hérite du thème d'origine QUE pour ce qu'on ne fournit pas
+      # nous-mêmes -> aucune copie des icônes d'apps, zéro risque de casse.
+      cp "${papirusIconsOut}/$variant/index.theme" "$dest/index.theme"
+      ${pkgs.gnused}/bin/sed -i \
+        -e "s/^Inherits=.*/Inherits=$variant/" \
+        -e "s/^Name=.*/Name=''${variant} Noctalia/" \
+        "$dest/index.theme"
 
-    # Étape 2 : déréférencement (-L) vers les noms suffixés "-noctalia",
-    # thèmes autonomes distincts des Papirus/Papirus-Dark/Papirus-Light
-    # d'origine -> tu gardes le choix entre les deux dans nwg-look.
-    for variant in Papirus Papirus-Light Papirus-Dark; do
-      rm -rf "$dest/''${variant}-noctalia"
-      mkdir -p "$dest/''${variant}-noctalia"
-      cp -rL "$build/$variant/." "$dest/''${variant}-noctalia/"
-      ${pkgs.gnused}/bin/sed -i "s/^Name=.*/Name=''${variant} Noctalia/" \
-        "$dest/''${variant}-noctalia/index.theme"
+      # On ne copie QUE le dossier "places" de chaque taille disponible,
+      # en déréférençant (-L) les symlinks internes/entre variantes
+      # (ex: Papirus-Dark/48x48 -> ../Papirus/48x48).
+      for size in 16x16 22x22 24x24 32x32 48x48 64x64 96x96 128x128 scalable symbolic; do
+        src="${papirusIconsOut}/$variant/$size/places"
+        [ -d "$src" ] || continue
+        mkdir -p "$dest/$size/places"
+        cp -rL "$src/." "$dest/$size/places/"
+      done
+
+      find "$dest" -path '*/places/*.svg' -print0 \
+        | xargs -0 ${pkgs.gnused}/bin/sed -i \
+            -e "s/#5294e2/$primary/g" \
+            -e "s/#4877b1/$darker/g"
+
       if command -v gtk-update-icon-cache >/dev/null 2>&1; then
-        gtk-update-icon-cache -f -t "$dest/''${variant}-noctalia" || true
+        gtk-update-icon-cache -f -t "$dest" || true
       fi
     done
     # Thèmes générés dans ~/.icons/{Papirus,Papirus-Light,Papirus-Dark}-noctalia,
-    # pas appliqués automatiquement : choisis-les toi-même (nwg-look).
+    # mais pas appliqués automatiquement : choisis-les toi-même (nwg-look).
   '';
 in
 {
