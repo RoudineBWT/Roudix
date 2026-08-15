@@ -41,12 +41,12 @@ let
     if command -v gtk-update-icon-cache >/dev/null 2>&1; then
       gtk-update-icon-cache -f -t "$dest" || true
     fi
-
-    ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface icon-theme 'Tela-noctalia'
+    # Thème régénéré dans ~/.icons/Tela-noctalia, mais pas appliqué
+    # automatiquement : choisis-le toi-même (nwg-look, etc.) si tu veux.
   '';
 in
 {
-  home.packages = [ pkgs.tela-icon-theme telaSync pkgs.gnused pkgs.glib ];
+  home.packages = [ pkgs.tela-icon-theme telaSync pkgs.gnused ];
 
   # Le template ne contient QUE le hex de la couleur "primary" de la palette
   # active. Noctalia le régénère à chaque changement de thème/couleur.

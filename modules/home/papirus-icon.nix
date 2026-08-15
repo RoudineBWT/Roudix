@@ -46,12 +46,12 @@ let
     if command -v gtk-update-icon-cache >/dev/null 2>&1; then
       gtk-update-icon-cache -f -t "$dest" || true
     fi
-
-    ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Noctalia'
+    # Thème régénéré dans ~/.icons/Papirus-Noctalia, mais pas appliqué
+    # automatiquement : choisis-le toi-même (nwg-look, etc.) si tu veux.
   '';
 in
 {
-  home.packages = [ pkgs.papirus-icon-theme papirusSync pkgs.gnused pkgs.glib ];
+  home.packages = [ pkgs.papirus-icon-theme papirusSync pkgs.gnused ];
 
   # Réutilise le même template que Tela (~/.config/noctalia/templates/tela-primary.tmpl,
   # défini dans tela-icon.nix) mais avec son propre post_hook.
