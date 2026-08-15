@@ -39,12 +39,12 @@ let
     # autonomes et distincts des Tela/Tela-dark/Tela-light d'origine -> tu
     # gardes le choix entre les deux dans nwg-look.
     for variant in Tela Tela-light Tela-dark; do
-      rm -rf "$dest/${variant}-noctalia"
-      cp -rL "$build/$variant/." "$dest/${variant}-noctalia/"
-      ${pkgs.gnused}/bin/sed -i "s/^Name=.*/Name=${variant} Noctalia/" \
-        "$dest/${variant}-noctalia/index.theme"
+      rm -rf "$dest/''${variant}-noctalia"
+      cp -rL "$build/$variant/." "$dest/''${variant}-noctalia/"
+      ${pkgs.gnused}/bin/sed -i "s/^Name=.*/Name=''${variant} Noctalia/" \
+        "$dest/''${variant}-noctalia/index.theme"
       if command -v gtk-update-icon-cache >/dev/null 2>&1; then
-        gtk-update-icon-cache -f -t "$dest/${variant}-noctalia" || true
+        gtk-update-icon-cache -f -t "$dest/''${variant}-noctalia" || true
       fi
     done
     # Thèmes générés dans ~/.icons/{Tela,Tela-light,Tela-dark}-noctalia, mais
