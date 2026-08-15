@@ -1,11 +1,8 @@
 { pkgs, ... }:
 let
-  telaSrc = pkgs.fetchFromGitHub {
-    owner = "vinceliuice";
-    repo = "Tela-icon-theme";
-    rev = "sha256-e4Ysu9YE2jAib9+q9eYL0E3w1BBXbu/QYNTmSjk0CRY=";
-    sha256 = "sha256-e4Ysu9YE2jAib9+q9eYL0E3w1BBXbu/QYNTmSjk0CRY=";
-  };
+  # Thème Tela-dark déjà construit par le vrai install.sh de vinceliuice
+  # (index.theme valide, tailles/symlinks résolus, recolorage "dark" déjà appliqué)
+  telaDarkBase = "${pkgs.tela-icon-theme}/share/icons/Tela-dark";
 
   telaSync = pkgs.writeShellScriptBin "noctalia-tela-sync" ''
     set -euo pipefail
@@ -17,19 +14,30 @@ let
 
     rm -rf "$dest"
     mkdir -p "$dest"
-    cp -r ${telaSrc}/src/* "$dest/"
+    # -L : déréférence les symlinks (scalable/32/... pointent vers le thème Tela
+    # standard dans le store) pour obtenir un thème autonome et copiable tel quel
+    cp -rL "$telaDarkBase/." "$dest/"
     chmod -R u+w "$dest"
 
+    # Nom lisible dans index.theme (par défaut "Tela dark")
+    ${pkgs.gnused}/bin/sed -i "s/^Name=.*/Name=Tela Noctalia/" "$dest/index.theme"
+
+    # On ne touche QUE les icônes de dossiers, tout le reste reste du Tela-dark pur
     ${pkgs.gnused}/bin/sed -i "s/#5294e2/$primary/g" \
-      "$dest/scalable/apps/"*.svg \
-      "$dest/scalable/places/"default-*.svg \
-      "$dest/16/places/"folder*.svg
+      "$dest/scalable/places/"default-folder*.svg \
+      "$dest/16/places/"folder*.svg \
+      "$dest/22/places/"folder*.svg \
+      "$dest/24/places/"folder*.svg
+
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+      gtk-update-icon-cache -f -t "$dest" || true
+    fi
 
     ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface icon-theme 'Tela-noctalia'
   '';
 in
 {
-  home.packages = [ telaSync pkgs.jq pkgs.gnused pkgs.glib ];
+  home.packages = [ pkgs.tela-icon-theme telaSync pkgs.jq pkgs.gnused pkgs.glib ];
 
   xdg.configFile."noctalia/hooks.toml".text = ''
     [hooks]
