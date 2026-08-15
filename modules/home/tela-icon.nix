@@ -6,12 +6,18 @@ let
 
   telaSync = pkgs.writeShellScriptBin "noctalia-tela-sync" ''
     set -euo pipefail
-    colors="$HOME/.config/noctalia/colors.json"
-    [ -f "$colors" ] || exit 0
+    # Fichier généré par le template Noctalia (voir templates/tela-primary.tmpl
+    # ci-dessous) : contient juste le hex de la couleur "primary" active.
+    primaryFile="$HOME/.config/noctalia/generated/tela-primary.txt"
+    [ -f "$primaryFile" ] || exit 0
 
-    primary=$(${pkgs.jq}/bin/jq -r '.mPrimary' "$colors")
+    primary=$(tr -d '[:space:]' < "$primaryFile")
+    case "$primary" in
+      \#[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]) ;;
+      *) exit 0 ;;  # valeur vide/invalide (template pas encore rendu) -> on ne touche à rien
+    esac
+
     dest="$HOME/.icons/Tela-noctalia"
-
     rm -rf "$dest"
     mkdir -p "$dest"
     # -L : déréférence les symlinks (scalable/32/... pointent vers le thème Tela
@@ -19,7 +25,6 @@ let
     cp -rL "${telaDarkBase}/." "$dest/"
     chmod -R u+w "$dest"
 
-    # Nom lisible dans index.theme (par défaut "Tela dark")
     ${pkgs.gnused}/bin/sed -i "s/^Name=.*/Name=Tela Noctalia/" "$dest/index.theme"
 
     # On ne touche QUE les icônes de dossiers, tout le reste reste du Tela-dark pur
@@ -37,10 +42,21 @@ let
   '';
 in
 {
-  home.packages = [ pkgs.tela-icon-theme telaSync pkgs.jq pkgs.gnused pkgs.glib ];
+  home.packages = [ pkgs.tela-icon-theme telaSync pkgs.gnused pkgs.glib ];
 
-  xdg.configFile."noctalia/hooks.toml".text = ''
-    [hooks]
-    colors_changed = ["${telaSync}/bin/noctalia-tela-sync"]
+  # Le template ne contient QUE le hex de la couleur "primary" de la palette
+  # active. Noctalia le régénère à chaque changement de thème/couleur.
+  xdg.configFile."noctalia/templates/tela-primary.tmpl".text =
+    "{{colors.primary.default.hex}}";
+
+  # Syntaxe v5 : les templates utilisateur se déclarent dans un fichier .toml
+  # fusionné (~/.config/noctalia/*.toml est lu et fusionné alphabétiquement),
+  # sous [theme.templates.user.<id>], PAS dans un user-templates.toml séparé
+  # (ça c'était l'ancien format v4).
+  xdg.configFile."noctalia/50-tela-icons.toml".text = ''
+    [theme.templates.user.tela_primary]
+    input_path  = "~/.config/noctalia/templates/tela-primary.tmpl"
+    output_path = "~/.config/noctalia/generated/tela-primary.txt"
+    post_hook   = "${telaSync}/bin/noctalia-tela-sync"
   '';
 }
