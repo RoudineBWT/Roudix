@@ -26,7 +26,12 @@ let
     # complet, pas d'icônes d'app manquantes.
     for variant in Tela Tela-light Tela-dark; do
       mkdir -p "$build/$variant"
-      cp -r "${telaIconsOut}/$variant/." "$build/$variant/"
+      # -L : le paquet tela-icon-theme build ~350 variantes de couleur en une
+      # fois et déduplique les fichiers identiques entre elles via des
+      # symlinks (jdupes). En ne prenant que ces 3 variantes, certains de ces
+      # symlinks pointeraient vers une variante qu'on n'a pas copiée -> -L
+      # résout tout vers du contenu réel, peu importe où il vit dans le store.
+      cp -rL "${telaIconsOut}/$variant/." "$build/$variant/"
       chmod -R u+w "$build/$variant"
     done
 

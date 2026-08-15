@@ -33,7 +33,10 @@ let
     # restent valides -> contenu complet, pas d'icônes d'app manquantes.
     for variant in Papirus Papirus-Light Papirus-Dark; do
       mkdir -p "$build/$variant"
-      cp -r "${papirusIconsOut}/$variant/." "$build/$variant/"
+      # -L : par précaution/cohérence avec Tela, on déréférence tout de suite
+      # pour garantir du contenu réel et autonome, peu importe la structure
+      # exacte de symlinks du paquet.
+      cp -rL "${papirusIconsOut}/$variant/." "$build/$variant/"
       chmod -R u+w "$build/$variant"
     done
 
