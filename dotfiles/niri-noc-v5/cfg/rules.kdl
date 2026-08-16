@@ -83,11 +83,21 @@
         match app-id="zen-twilight"
         open-on-workspace "󰈹"
         open-maximized true
+        opacity 0.9
+        background-effect {
+        blur true
+        xray false
+     }
     }
     window-rule {
         match title="About Zen Twilight"
         open-on-workspace "󰈹"
         open-floating true
+        opacity 0.9
+        background-effect {
+        blur true
+        xray false
+     }
     }
 
   window-rule {
