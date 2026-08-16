@@ -83,7 +83,8 @@
         match app-id="zen-twilight"
         open-on-workspace "󰈹"
         open-maximized true
-        opacity 0.9
+        draw-border-with-background false
+        opacity 0.95
         background-effect {
         blur true
         xray false
@@ -93,7 +94,8 @@
         match title="About Zen Twilight"
         open-on-workspace "󰈹"
         open-floating true
-        opacity 0.9
+        draw-border-with-background false
+        opacity 0.95
         background-effect {
         blur true
         xray false
