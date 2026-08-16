@@ -85,10 +85,6 @@
         open-maximized true
         draw-border-with-background false
         opacity 0.95
-        background-effect {
-        blur true
-        xray false
-     }
     }
     window-rule {
         match title="About Zen Twilight"
