@@ -44,6 +44,9 @@ in
     ../modules/home/spicetify.nix
     ../modules/home/gaming-home.nix
     ../modules/home/gitwatch.nix
+    # Zen Browser HM module — imported unconditionally (lazy), only builds
+    # anything when `programs.zen-browser.enable` is actually true below.
+    inputs.zen-browser.homeModules.twilight
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
   # ── Easyeffects preset ───────────────────────────────────────────────────
@@ -110,9 +113,8 @@ in
   ])
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage
-  # Zen Browser (optional)
-  ++ lib.optional osConfig.roudix.zen.enable
-       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight
+  # Note: Zen Browser is no longer added here as a raw package — see
+  # `programs.zen-browser` below, driven by `osConfig.roudix.zen.*`.
   # Terminal choisi par l'utilisateur (roudix.terminal)
   ++ [ terminalPackage ]
 ++ lib.optional (desktopType != "kde") pkgs.xdg-user-dirs-gtk;
@@ -127,6 +129,17 @@ in
            gtk-enable-primary-paste = true;
          };
        };
+
+  programs.zen-browser = lib.mkIf osConfig.roudix.zen.enable {
+    enable = true;
+    profiles.default = {
+      sine = {
+        enable = osConfig.roudix.zen.sine.enable;
+        mods   = osConfig.roudix.zen.sine.mods;
+      };
+      mods = lib.mkIf (!osConfig.roudix.zen.sine.enable) osConfig.roudix.zen.mods;
+    };
+  };
 
   programs.home-manager.enable = true;
 }

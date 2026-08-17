@@ -41,15 +41,60 @@ in {
       '';
     };
 
-    zen.enable = lib.mkOption {
-      type    = lib.types.bool;
-      default = false;
-      description = "Install Zen Browser (from zen-browser flake input).";
+    zen = {
+      enable = lib.mkOption {
+        type    = lib.types.bool;
+        default = false;
+        description = "Install Zen Browser (from zen-browser flake input).";
+      };
+
+      mods = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [];
+        description = ''
+          Mod IDs to install from the native Zen theme store
+          (https://zen-browser.app/mods). Ignored if `zen.sine.enable = true`.
+        '';
+      };
+
+      sine = {
+        enable = lib.mkOption {
+          type    = lib.types.bool;
+          default = false;
+          description = ''
+            Enable the Sine mod loader (bootloader injected at build time,
+            no read-only store conflict). Disables the native `zen.mods`
+            option on this profile — upstream limitation, the two mod
+            systems don't coexist on the same profile.
+          '';
+        };
+
+        mods = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [];
+          description = ''
+            Mod IDs to install via the Sine store (falls back to the
+            Zen theme store automatically if not found on Sine).
+            Use this for mods only available on Sine.
+          '';
+        };
+      };
     };
 
   };
 
   config = {
     environment.systemPackages = selectedBrowserPkgs;
+
+    assertions = [
+      {
+        assertion = !(cfg.zen.sine.enable && cfg.zen.mods != []);
+        message = ''
+          roudix.zen: `mods` (Zen store) and `sine.enable` can't be used
+          together on the same profile. Use `zen.sine.mods` instead when
+          `sine.enable = true` (it falls back to the Zen theme store).
+        '';
+      }
+    ];
   };
 }

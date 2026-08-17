@@ -32,6 +32,8 @@
     fps_metrics=avg,0.01
     fps_limit_method=early
     fps_limit=120,,
+    vsync=0
+    gl_vsync=-1
     fps_value=30,60
     fps_color=cc0000,ffaa7f,92e79a
     frame_timing
