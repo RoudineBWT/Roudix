@@ -43,6 +43,7 @@
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
   roudix.terminal = "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
   roudix.gaming.enable        = true;         # disable to skip Steam, Wine, etc.
+  roudix.undervolt.only-amd.enable        = true;         # enable undervolting just for amd gpu.
   roudix.gaming.ananicy.enable = false;
   roudix.flatpak.enable       = true;        # enable Flatpak support
   roudix.virtualization.enable = true;       # enable libvirt / virt-manager
