@@ -28,21 +28,56 @@ def _sub_list_single(text: str, key: str, value: str) -> str:
     return pattern.sub(lambda m: f'{m.group(1)}["{value}"]', text)
 
 
+def _sub_list(text: str, key: str, values: list) -> str:
+    """key = [ ... ];  ->  key = ["a" "b" ...];  (Nix list, space-separated, no commas)
+    Empty list -> key = [];  — used for roudix.zen.mods / roudix.zen.sine.mods."""
+    pattern = re.compile(rf'({re.escape(key)}\s*=\s*)\[[^\]]*\]')
+    joined = " ".join(f'"{v}"' for v in values)
+    return pattern.sub(lambda m: f'{m.group(1)}[{joined}]', text)
+
+
+def _set_kernel_option(text: str, key: str, active: bool, value: str) -> str:
+    """
+    hardware.myKernel / hardware.myKernelChaotic are mutually exclusive —
+    only one should be uncommented at a time (see local.nix.example). This
+    toggles the leading '# ' marker to match `active` and, only when
+    active, rewrites the value. Matches the line whether it's currently
+    commented or not, so it's idempotent across repeated installer runs.
+    An inactive line still gets its value written (harmless since it's
+    commented out) — simpler than trying to preserve whatever was there.
+    """
+    pattern = re.compile(rf'^(\s*)(#\s*)?({re.escape(key)}\s*=\s*)"[^"]*"(.*)$', re.MULTILINE)
+
+    def repl(m):
+        indent, _hash, assign, tail = m.group(1), m.group(2), m.group(3), m.group(4)
+        prefix = "" if active else "# "
+        return f'{indent}{prefix}{assign}"{value}"{tail}'
+
+    return pattern.sub(repl, text)
+
+
 def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = local_nix_text
     t = _sub_string(t, "roudix.rgb", state.rgb)
     t = _sub_string(t, "hardware.myGpu", state.gpu)
     t = _sub_bool(t, "hardware.nvidiaLaptop", state.nvidia_laptop)
     t = _sub_string(t, "hardware.myCpu", state.cpu)
-    t = _sub_string(t, "hardware.myKernel", state.kernel)
-    t = _sub_string(t, "hardware.myKernelChaotic", state.kernel_chaotic)
+    is_nvidia = state.gpu == "nvidia"
+    t = _set_kernel_option(t, "hardware.myKernel", not is_nvidia, state.kernel)
+    t = _set_kernel_option(t, "hardware.myKernelChaotic", is_nvidia, state.kernel_chaotic)
     t = _sub_list_single(t, "roudix.browsers", state.browser)
     t = _sub_bool(t, "roudix.zen.enable", state.zen_browser)
+    t = _sub_bool(t, "roudix.zen.sine.enable", state.zen_sine_enable)
+    t = _sub_list(t, "roudix.zen.mods", state.zen_mods)
+    t = _sub_list(t, "roudix.zen.sine.mods", state.zen_sine_mods)
     t = _sub_string(t, "roudix.desktop.type", state.desktop)
     t = _sub_string(t, "roudix.desktop.shell", state.desktop_shell)
+    t = _sub_string(t, "roudix.terminal", state.terminal)
     t = _sub_string(t, "roudix.shell", state.default_shell)
     t = _sub_bool(t, "roudix.vmGuest.enable", state.vm_guest)
     t = _sub_bool(t, "roudix.gaming.enable", state.gaming)
+    t = _sub_bool(t, "roudix.gaming.ananicy.enable", state.ananicy_enable)
+    t = _sub_bool(t, "roudix.mesa.useGit", state.mesa_use_git)
     t = _sub_string(t, "time.timeZone", state.timezone)
     t = _sub_string(t, "environment.sessionVariables.TZ", state.timezone)
     t = _sub_string(t, "i18n.defaultLocale", state.locale)
@@ -59,9 +94,12 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     if state.rgb == "openlinkhub":
         t = _sub_bool(t, "roudix.memory.enable", state.memory_rgb_enable)
         t = _sub_string(t, "roudix.memory.type", state.memory_type)
-        # SMBus / SKU auto-detect not collected by the GUI yet (same TODO
-        # as EFI multi-boot + btrfs auto-patch) — left at local.nix.example
-        # defaults, editable by hand after install.
+        if state.memory_rgb_enable:
+            # smBus / sku are still manually entered by the user (i2cdetect -l /
+            # dmidecode), no auto-detect — but now wired through instead of being
+            # left at the local.nix.example placeholder values.
+            t = _sub_string(t, "roudix.memory.smBus", state.memory_smbus)
+            t = _sub_string(t, "roudix.memory.sku", state.memory_sku)
 
     return t
 

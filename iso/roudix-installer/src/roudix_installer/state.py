@@ -5,9 +5,13 @@ asks for and sed-writes into hosts/roudix/local.nix — same options,
 same defaults, just fed by GUI state instead of `read -p`.
 
 Deliberately NOT covered yet (same as the TODO list in the installer
-README): EFI multi-boot NVRAM detection, btrfs subvolume auto-patch
-of hardware-configuration.nix, and RAM RGB SMBus/SKU auto-detect.
-These stay manual/skipped for now — flagged, not silently dropped.
+README): EFI multi-boot NVRAM detection and btrfs subvolume auto-patch
+of hardware-configuration.nix. These stay manual/skipped for now —
+flagged, not silently dropped.
+
+RAM RGB SMBus/SKU are no longer auto-detect TODOs: local.nix.example
+now ships explicit roudix.memory.smBus / roudix.memory.sku keys, so
+they're tracked here as plain (still manually-entered) string fields.
 """
 from dataclasses import dataclass, field
 
@@ -38,14 +42,23 @@ class InstallState:
     gpu: str = "amd"                 # amd | amd-legacy | nvidia | intel
     nvidia_laptop: bool = False
     cpu: str = "amd"                 # amd | intel
-    kernel: str = "cachyos-latest-v3"        # xddxdd — used when gpu != "nvidia"
-    kernel_chaotic: str = "cachyos"          # Chaotic-Nyx — used when gpu == "nvidia" (ships nvidia_cachyos, precompiled)
+    kernel: str = "cachyos-latest-v3"        # hardware.myKernel (xddxdd) — used when gpu != "nvidia"
+    kernel_chaotic: str = "cachyos"          # hardware.myKernelChaotic (Chaotic-Nyx) — used when gpu == "nvidia"
+                                              # (ships nvidia_cachyos precompiled, no local module rebuild).
+                                              # NOTE: local.nix.example currently only has a hardware.myKernel
+                                              # line — the myKernelChaotic key exists in the module system and
+                                              # is actively sed-patched by roudix-installer.sh, but has no
+                                              # placeholder line in this particular example file to substitute
+                                              # into. Worth checking upstream / adding the line back.
 
     # ── Browser ───────────────────────────────────────────────────────────
     browser: str = "brave"           # none | brave(-beta/-nightly/-origin-*) | helium | vivaldi
                                       # | firefox | librewolf | google-chrome | microsoft-edge
                                       # | ungoogled-chromium | chromium
     zen_browser: bool = False
+    zen_sine_enable: bool = False    # roudix.zen.sine.enable
+    zen_mods: list = field(default_factory=list)       # roudix.zen.mods
+    zen_sine_mods: list = field(default_factory=list)  # roudix.zen.sine.mods
 
     # ── Desktop ───────────────────────────────────────────────────────────
     desktop: str = "niri"            # niri | gnome | kde | hyprland
@@ -63,6 +76,8 @@ class InstallState:
     rgb: str = "none"                # openlinkhub | openrgb | none
     memory_rgb_enable: bool = False
     memory_type: str = "ddr5"        # ddr5 | ddr4
+    memory_smbus: str = ""           # roudix.memory.smBus — find via: i2cdetect -l
+    memory_sku: str = ""             # roudix.memory.sku — find via: sudo dmidecode -t memory | grep 'Part Number'
 
     # ── Extras ────────────────────────────────────────────────────────────
     gta_fix: bool = False
@@ -73,3 +88,6 @@ class InstallState:
     bootloader: str = "limine"       # limine | systemd-boot
     matrix_client: str = "none"      # none | element | cinny
     waydroid_enable: bool = False
+    terminal: str = "ghostty"        # ghostty | kitty | alacritty | foot | wezterm
+    ananicy_enable: bool = False     # roudix.gaming.ananicy.enable — opt-in, only meaningful if gaming.enable
+    mesa_use_git: bool = False       # roudix.mesa.useGit — false = mesa stable
