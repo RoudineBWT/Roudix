@@ -16,6 +16,7 @@ class SummaryPage(Adw.NavigationPage):
         scroller.set_child(box)
 
         self.group = Adw.PreferencesGroup(title=L("Vérifie avant de lancer l'installation", "Check before starting the install"))
+        self._rows: list[Adw.ActionRow] = []
         box.append(self.group)
 
         install_btn = Gtk.Button(label=L("Installer Roudix", "Install Roudix"),
@@ -28,12 +29,14 @@ class SummaryPage(Adw.NavigationPage):
         self.connect("shown", lambda *_: self._refresh())
 
     def _refresh(self):
-        # Clear and repopulate in case options were changed after going back
-        child = self.group.get_first_child()
-        while child is not None:
-            nxt = child.get_next_sibling()
-            self.group.remove(child)
-            child = nxt
+        # Same Adw.PreferencesGroup gotcha as disk.py's partition list:
+        # get_first_child()/get_next_sibling() on the group walks its
+        # internal structure, not the rows added via .add(), so this
+        # never actually removed anything — every visit to Summary was
+        # stacking a fresh set of rows under the old ones.
+        for row in self._rows:
+            self.group.remove(row)
+        self._rows.clear()
 
         s = self.state
         swap_label = f", swap {s.disk.swap_size_gb}G" if s.disk.enable_swap else L(", pas de swap (zram)", ", no swap (zram)")
@@ -73,4 +76,6 @@ class SummaryPage(Adw.NavigationPage):
             ("Waydroid", L("activé", "enabled") if s.waydroid_enable else L("désactivé", "disabled")),
         ]
         for title, value in rows:
-            self.group.add(Adw.ActionRow(title=title, subtitle=value))
+            row = Adw.ActionRow(title=title, subtitle=value)
+            self.group.add(row)
+            self._rows.append(row)

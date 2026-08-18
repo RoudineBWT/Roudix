@@ -2,46 +2,147 @@ import os
 import subprocess
 import threading
 from pathlib import Path
+from typing import Optional
 
-from gi.repository import Adw, GLib, Gtk
+from gi.repository import Adw, Gdk, GLib, Gtk, Pango
 
 from roudix_installer import btrfs_patch, config_gen, disko_gen
 from roudix_installer.i18n import L
 from roudix_installer.ui_helpers import page_with_header
+
+# Catppuccin Mocha, same palette as the rest of Roudix's theming.
+_BASE = "#1e1e2e"
+_MANTLE = "#181825"
+_SURFACE0 = "#313244"
+_TEXT = "#cdd6f4"
+_BLUE = "#89b4fa"
+_RED = "#f38ba8"
+_YELLOW = "#f9e2af"
+_GREEN = "#a6e3a1"
+
+_TERMINAL_CSS = f"""
+textview.roudix-terminal,
+textview.roudix-terminal text {{
+  background-color: {_BASE};
+  color: {_TEXT};
+  caret-color: {_TEXT};
+}}
+textview.roudix-terminal {{
+  font-family: "JetBrainsMono Nerd Font", "Fira Code", monospace;
+  font-size: 11pt;
+  padding: 10px 14px;
+}}
+box.roudix-terminal-frame {{
+  border-radius: 12px;
+  border: 1px solid {_SURFACE0};
+}}
+box.roudix-terminal-titlebar {{
+  background-color: {_MANTLE};
+  padding: 8px 12px;
+}}
+box.roudix-term-dot {{
+  border-radius: 999px;
+  min-width: 11px;
+  min-height: 11px;
+}}
+box.roudix-term-dot.dot-red {{ background-color: {_RED}; }}
+box.roudix-term-dot.dot-yellow {{ background-color: {_YELLOW}; }}
+box.roudix-term-dot.dot-green {{ background-color: {_GREEN}; }}
+"""
+
+_css_loaded = False
+
+
+def _ensure_terminal_css():
+    # Scoped by unique CSS class names, so it's safe to load once for the
+    # whole app rather than per-page — guarded so repeated ProgressPage
+    # construction (shouldn't happen, main.py caches pages, but just in
+    # case) never stacks duplicate providers.
+    global _css_loaded
+    if _css_loaded:
+        return
+    provider = Gtk.CssProvider()
+    provider.load_from_string(_TERMINAL_CSS)
+    Gtk.StyleContext.add_provider_for_display(
+        Gdk.Display.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
+    )
+    _css_loaded = True
 
 
 class ProgressPage(Adw.NavigationPage):
     def __init__(self, state):
         super().__init__(title=L("Installation", "Installation"), can_pop=False)
         self.state = state
+        _ensure_terminal_css()
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16,
-                       margin_top=48, margin_bottom=48, margin_start=48, margin_end=48,
-                       valign=Gtk.Align.CENTER)
+                       margin_top=32, margin_bottom=32, margin_start=32, margin_end=32,
+                       vexpand=True)
 
-        self.status_label = Gtk.Label(label=L("Préparation…", "Preparing…"), css_classes=["title-3"])
+        self.status_label = Gtk.Label(label=L("Préparation…", "Preparing…"), css_classes=["title-3"],
+                                       halign=Gtk.Align.START)
         self.progress = Gtk.ProgressBar(show_text=False)
-        self.log_view = Gtk.TextView(editable=False, monospace=True)
-        scroller = Gtk.ScrolledWindow(min_content_height=220)
-        scroller.set_child(self.log_view)
+        box.append(self.status_label)
+        box.append(self.progress)
 
-        for w in (self.status_label, self.progress, scroller):
-            box.append(w)
+        # ── "terminal" ────────────────────────────────────────────────────
+        term_frame = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, vexpand=True,
+                              css_classes=["roudix-terminal-frame"])
+        term_frame.set_overflow(Gtk.Overflow.HIDDEN)  # clips children to the rounded corners
 
+        titlebar = Gtk.Box(spacing=10, css_classes=["roudix-terminal-titlebar"])
+        dots = Gtk.Box(spacing=6, valign=Gtk.Align.CENTER)
+        for dot_class in ("dot-red", "dot-yellow", "dot-green"):
+            dots.append(Gtk.Box(css_classes=["roudix-term-dot", dot_class]))
+        titlebar.append(dots)
+        titlebar.append(Gtk.Label(label=L("Journal d'installation", "Installation log"),
+                                   css_classes=["dim-label"], valign=Gtk.Align.CENTER))
+        titlebar.append(Gtk.Box(hexpand=True))  # spacer, pushes the copy button to the right
+        copy_btn = Gtk.Button(icon_name="edit-copy-symbolic", css_classes=["flat"],
+                               valign=Gtk.Align.CENTER,
+                               tooltip_text=L("Copier le journal", "Copy log"))
+        copy_btn.connect("clicked", self._on_copy_log_clicked)
+        titlebar.append(copy_btn)
+        term_frame.append(titlebar)
+
+        self.log_view = Gtk.TextView(editable=False, monospace=True, wrap_mode=Gtk.WrapMode.WORD_CHAR,
+                                      css_classes=["roudix-terminal"])
+        self._init_log_tags()
+
+        self.log_scroller = Gtk.ScrolledWindow(vexpand=True, min_content_height=340)
+        self.log_scroller.set_child(self.log_view)
+        term_frame.append(self.log_scroller)
+
+        box.append(term_frame)
+
+        bottom_row = Gtk.Box(spacing=12, halign=Gtk.Align.CENTER, margin_top=4)
         self.reboot_check = Gtk.CheckButton(label=L("Redémarrer maintenant", "Reboot now"), active=True)
-        self.reboot_check.set_halign(Gtk.Align.CENTER)
         self.reboot_check.set_visible(False)
-        box.append(self.reboot_check)
+        bottom_row.append(self.reboot_check)
 
         self.finish_btn = Gtk.Button(label=L("Terminer", "Finish"),
-                                      css_classes=["suggested-action", "pill"],
-                                      halign=Gtk.Align.CENTER)
+                                      css_classes=["suggested-action", "pill"])
         self.finish_btn.connect("clicked", self._on_finish_clicked)
         self.finish_btn.set_visible(False)
-        box.append(self.finish_btn)
+        bottom_row.append(self.finish_btn)
+        box.append(bottom_row)
 
         self.set_child(page_with_header(L("Installation", "Installation"), box))
         self.connect("shown", lambda *_: self._start())
+
+    def _init_log_tags(self):
+        buf = self.log_view.get_buffer()
+        buf.create_tag("cmd", foreground=_BLUE, weight=Pango.Weight.BOLD)
+        buf.create_tag("error", foreground=_RED, weight=Pango.Weight.BOLD)
+        buf.create_tag("success", foreground=_GREEN, weight=Pango.Weight.BOLD)
+
+    def _on_copy_log_clicked(self, _btn):
+        buf = self.log_view.get_buffer()
+        text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False)
+        try:
+            self.log_view.get_clipboard().set(text)
+        except Exception:  # noqa: BLE001 — clipboard access is best-effort, never worth crashing over
+            pass
 
     def _on_finish_clicked(self, _btn):
         if self.reboot_check.get_active():
@@ -50,9 +151,40 @@ class ProgressPage(Adw.NavigationPage):
         else:
             self.get_root().get_application().quit()
 
+    @staticmethod
+    def _tag_for_line(text: str) -> Optional[str]:
+        stripped = text.strip()
+        if stripped.startswith("$ "):
+            return "cmd"
+        lowered = stripped.lower()
+        if lowered.startswith(("erreur", "error")) or "traceback" in lowered:
+            return "error"
+        if "🎉" in stripped or "✓" in stripped:
+            return "success"
+        return None
+
     def _log(self, text: str):
         buf = self.log_view.get_buffer()
-        buf.insert(buf.get_end_iter(), text + "\n")
+
+        # Only auto-follow the tail if the user was already scrolled to the
+        # bottom before this line arrived — if they scrolled up to read
+        # something, new output shouldn't yank the view back down.
+        vadj = self.log_scroller.get_vadjustment()
+        was_at_bottom = True
+        if vadj is not None:
+            was_at_bottom = vadj.get_value() >= (vadj.get_upper() - vadj.get_page_size() - 8)
+
+        tag_name = self._tag_for_line(text)
+        end_iter = buf.get_end_iter()
+        if tag_name:
+            buf.insert_with_tags_by_name(end_iter, text + "\n", tag_name)
+        else:
+            buf.insert(end_iter, text + "\n")
+
+        if was_at_bottom:
+            end_mark = buf.create_mark(None, buf.get_end_iter(), left_gravity=False)
+            self.log_view.scroll_to_mark(end_mark, 0.0, True, 0.0, 1.0)
+            buf.delete_mark(end_mark)
 
     def _set_status(self, label: str, fraction: float):
         self.status_label.set_label(label)
