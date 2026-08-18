@@ -41,6 +41,7 @@ class InstallState:
     # ── Hardware ──────────────────────────────────────────────────────────
     gpu: str = "amd"                 # amd | amd-legacy | nvidia | intel
     nvidia_laptop: bool = False
+    undervolt_enable: bool = False   # roudix.undervolt.only-amd.enable — AMD/AMD-legacy only (lact)
     cpu: str = "amd"                 # amd | intel
     kernel: str = "cachyos-latest-v3"        # hardware.myKernel (xddxdd) — used when gpu != "nvidia"
     kernel_chaotic: str = "cachyos"          # hardware.myKernelChaotic (Chaotic-Nyx) — used when gpu == "nvidia"

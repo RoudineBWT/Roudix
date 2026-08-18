@@ -61,6 +61,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.rgb", state.rgb)
     t = _sub_string(t, "hardware.myGpu", state.gpu)
     t = _sub_bool(t, "hardware.nvidiaLaptop", state.nvidia_laptop)
+    t = _sub_bool(t, "roudix.undervolt.only-amd.enable", state.undervolt_enable)
     t = _sub_string(t, "hardware.myCpu", state.cpu)
     is_nvidia = state.gpu == "nvidia"
     t = _set_kernel_option(t, "hardware.myKernel", not is_nvidia, state.kernel)

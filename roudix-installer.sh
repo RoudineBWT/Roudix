@@ -448,6 +448,13 @@ else
   fi
 fi
 
+UNDERVOLT="false"
+if [[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]]; then
+  pick "Enable AMD GPU undervolting? (lact + amdgpu.ppfeaturemask)" UNDERVOLT \
+    "false|No" \
+    "true|Yes"
+fi
+
 # Auto-detect CPU vendor
 DETECTED_CPU=""
 if grep -q "AuthenticAMD" /proc/cpuinfo 2>/dev/null; then
@@ -889,6 +896,7 @@ sed -i "s/roudix\.terminal[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.terminal = 
 sed -i "s/roudix\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.shell = \"${SHELL_DEFAULT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.undervolt\.only-amd\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.undervolt.only-amd.enable        = ${UNDERVOLT}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.gaming\.ananicy\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.ananicy.enable = ${ANANICY}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*(true|false)/roudix.mesa.useGit = ${MESA_GIT}/" hosts/roudix/local.nix
 sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
@@ -934,6 +942,7 @@ echo -e "
   ${BOLD}VM Guest      :${NC} $VM_GUEST
   ${BOLD}Gaming        :${NC} $GAMING
   ${BOLD}Ananicy       :${NC} $([ "$GAMING" == "true" ] && echo "$ANANICY" || echo "n/a")
+  ${BOLD}Undervolt AMD :${NC} $([[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]] && echo "$UNDERVOLT" || echo "n/a")
   ${BOLD}Mesa-git      :${NC} $MESA_GIT
   ${BOLD}Timezone      :${NC} $TIMEZONE
   ${BOLD}Locale        :${NC} $LOCALE

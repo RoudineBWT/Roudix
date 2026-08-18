@@ -306,6 +306,15 @@ class OptionsPage(Adw.NavigationPage):
         self.nvidia_laptop_row.set_active(state.nvidia_laptop)
         hw_group.add(self.nvidia_laptop_row)
 
+        self.undervolt_row = Adw.SwitchRow(
+            title=L(
+                "Undervolting GPU AMD (lact, amdgpu.ppfeaturemask)",
+                "AMD GPU undervolting (lact, amdgpu.ppfeaturemask)",
+            )
+        )
+        self.undervolt_row.set_active(state.undervolt_enable)
+        hw_group.add(self.undervolt_row)
+
         self.cpu_row = self._combo(
             "CPU", [("amd", "AMD"), ("intel", "Intel")], state.cpu
         )
@@ -315,6 +324,7 @@ class OptionsPage(Adw.NavigationPage):
         hw_group.add(self.kernel_row)
         box.append(hw_group)
         self._sync_nvidia_row()
+        self._sync_undervolt_row()
         self._sync_kernel_row()
 
         # ── Navigateur ──
@@ -548,6 +558,7 @@ class OptionsPage(Adw.NavigationPage):
         # run before the widgets they toggle existed yet, throwing a silently-
         # swallowed AttributeError instead of actually syncing visibility.
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
+        self.gpu_row.connect("notify::selected", lambda *_: self._sync_undervolt_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
         self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
@@ -591,6 +602,11 @@ class OptionsPage(Adw.NavigationPage):
     def _sync_nvidia_row(self):
         self.nvidia_laptop_row.set_visible(
             self._selected_value(self.gpu_row) == "nvidia"
+        )
+
+    def _sync_undervolt_row(self):
+        self.undervolt_row.set_visible(
+            self._selected_value(self.gpu_row) in ("amd", "amd-legacy")
         )
 
     def _sync_kernel_row(self):
@@ -659,6 +675,7 @@ class OptionsPage(Adw.NavigationPage):
         s.password = password
         s.gpu = self._selected_value(self.gpu_row)
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()
+        s.undervolt_enable = self.undervolt_row.get_active()
         s.cpu = self._selected_value(self.cpu_row)
         kernel_value = self._selected_value(self.kernel_row)
         if s.gpu == "nvidia":
