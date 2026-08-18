@@ -33,7 +33,8 @@
   hardware.myGpu    = "amd";                  # "amd", "nvidia" or "intel"
   hardware.nvidiaLaptop = false;              # enable this only for Laptops with nvidia Dgpu
   hardware.myCpu    = "intel";               # "intel" or "amd"
-  hardware.myKernel = "cachyos-latest-v3"; # see README for all variants
+  hardware.myKernel = "cachyos-latest-v3"; # ... used when hardware.myGpu != "nvidia" see README for all variants
+# hardware.myKernelChaotic = "cachyos"; # ... used when hardware.myGpu == "nvidia", ships nvidia_cachyos precompiled
 
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
