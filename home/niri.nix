@@ -50,7 +50,7 @@ in
         include "${niriDir}/cfg/rules.kdl"
         include "${niriDir}/cfg/misc.kdl"
       '' + lib.optionalString isNoctalia ''
-        include "${config.home.homeDirectory}/.config/niri/noctalia.kdl"
+        include optional=true "${config.home.homeDirectory}/.config/niri/noctalia.kdl"
       '' + lib.optionalString isDms ''
         include "${config.home.homeDirectory}/.config/niri/dms/alttab.kdl"
         include "${config.home.homeDirectory}/.config/niri/dms/wpblur.kdl"
