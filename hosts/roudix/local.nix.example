@@ -33,8 +33,11 @@
   hardware.myGpu    = "amd";                  # "amd", "nvidia" or "intel"
   hardware.nvidiaLaptop = false;              # enable this only for Laptops with nvidia Dgpu
   hardware.myCpu    = "intel";               # "intel" or "amd"
-  hardware.myKernel = "cachyos-latest-v3"; # ... used when hardware.myGpu != "nvidia" see README for all variants
-# hardware.myKernelChaotic = "cachyos"; # ... used when hardware.myGpu == "nvidia", ships nvidia_cachyos precompiled
+  hardware.myKernel = "cachyos-latest-v3"; # see README for all variants — used when hardware.myGpu != "nvidia"
+  # hardware.myKernelChaotic = "cachyos"; # Chaotic-Nyx variant (cachyos, cachyos-lts, cachyos-server, cachyos-hardened) — used when hardware.myGpu == "nvidia", ships nvidia_cachyos precompiled
+  # ↑ Only one of the two should be active (uncommented) at a time — comment
+  #   out hardware.myKernel and uncomment hardware.myKernelChaotic if you're
+  #   on nvidia, and vice versa. The installer does this toggle for you.
 
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
