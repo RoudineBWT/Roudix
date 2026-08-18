@@ -28,7 +28,7 @@
     ../../modules/system/appimage.nix
     ../../modules/system/terminal.nix
      inputs.brave-previews.nixosModules.default
-  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix; ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
+  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix; ++ lib.optional (builtins.pathExists ../../modules/system/gpu/undervolt.nix) ../../modules/system/gpu/undervolt.nix;
 
 
   # ── Choose your favorite chromium base browser ───────────────────────────
