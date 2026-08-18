@@ -23,49 +23,6 @@ let
             -p performance -r "Launched with game-performance utility" -- "$@"
     fi
   '';
-  # État persisté par scx-switch (voir scx.nix) — même fichier, lu ici pour
-  # capturer/restaurer l'état "avant jeu" sans dupliquer la logique ananicy /
-  # scx-loader / polkit, qui vit déjà entièrement dans scx-switch.
-  scxStateFile = "/var/lib/scx-switch/last-scheduler";
-
-  scx-performance = pkgs.writeShellScriptBin "scx-performance" ''
-    # Helper script pour activer scx_lavd (latence, gaming) le temps du jeu,
-    # via scx-switch (scx.nix), puis restaurer l'état exact d'avant (autre
-    # scheduler persistant, ou ananicy-cpp / CFS par défaut) à la sortie.
-    if ! command -v scx-switch &>/dev/null; then
-        echo "Error: scx-switch not found (voir scx.nix)" >&2
-        exec "$@"
-    fi
-
-    STATE_FILE="${scxStateFile}"
-
-    # Capture l'état avant de basculer : un scheduler persistant s'il y en
-    # avait un (ananicy off), sinon vide (ananicy actif ou CFS/EEVDF par défaut).
-    PREV_SCHEDULER=""
-    PREV_MODE=""
-    if [ -f "$STATE_FILE" ]; then
-        read -r PREV_SCHEDULER PREV_MODE < "$STATE_FILE" || true
-    fi
-
-    restore_previous() {
-        if [ -n "$PREV_SCHEDULER" ]; then
-            pkexec scx-switch set "$PREV_SCHEDULER" "$PREV_MODE" &>/dev/null
-        else
-            pkexec scx-switch unset &>/dev/null
-        fi
-    }
-    trap restore_previous EXIT
-
-    pkexec scx-switch set lavd &>/dev/null
-
-    # Pas de "exec" ici : on a besoin que le shell survive à la commande
-    # pour que le trap EXIT (restauration) se déclenche après coup. Avec
-    # exec, ce process shell est remplacé et le trap ne se déclenche jamais.
-    ${pkgs.systemd}/bin/systemd-inhibit \
-        --why "scx-performance is running" \
-        -- "$@"
-    exit $?
-  '';
   steamCompatTools = with pkgs; [
      proton-ge-bin
      proton-cachyos-x86_64-v3
@@ -140,7 +97,6 @@ in
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
     game-performance  # Wrapper governor CPU performance (usage: game-performance %command%)
-    scx-performance   # Wrapper scheduler SCX gaming (usage: scx-performance %command%)
     gamescope-wsi
     #millennium-steam
   ];

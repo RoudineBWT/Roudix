@@ -86,4 +86,4 @@ jobs:
         run: |
           echo "### 💿 Nouvelle ISO Roudix disponible" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "[$ISO_NAME](${{ secrets.R2_PUBLIC_URL }}/$ISO_NAME)" >> "$GITHUB_STEP_SUMMARY"
+          echo "[$ISO_NAME](${{ vars.R2_PUBLIC_URL }}/$ISO_NAME)" >> "$GITHUB_STEP_SUMMARY"

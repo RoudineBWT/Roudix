@@ -14,7 +14,6 @@
     ../../modules/system/scx.nix
     ../../modules/system/flatpak.nix
     ../../modules/system/gpu
-    ../../modules/system/gpu/undervolt.nix
     ../../modules/system/roudix-rgb.nix
     ../../modules/system/cpu.nix
     ../../modules/system/pipewire.nix
@@ -29,7 +28,9 @@
     ../../modules/system/appimage.nix
     ../../modules/system/terminal.nix
      inputs.brave-previews.nixosModules.default
-  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
+  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
+  ++ lib.optional (builtins.pathExists ../../modules/system/gpu/undervolt.nix) ../../modules/system/gpu/undervolt.nix;
+
 
   # ── Choose your favorite chromium base browser ───────────────────────────
   roudix.browsers = lib.mkDefault ["helium"]; # brave or helium or vivaldi

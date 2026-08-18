@@ -48,6 +48,38 @@ pick() {
   done
 }
 
+nix_list_from_csv() {
+  # "Arc-2.0, unloaded-tabs ,context-menu-icons" -> '"Arc-2.0" "unloaded-tabs" "context-menu-icons"'
+  # Used for roudix.zen.mods / roudix.zen.sine.mods (comma-separated free-text input).
+  local raw="$1"
+  local IFS=','
+  local -a arr=($raw)
+  local out=""
+  for item in "${arr[@]}"; do
+    item="$(echo "$item" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+    [[ -z "$item" ]] && continue
+    out+="\"$item\" "
+  done
+  echo -n "${out% }"
+}
+
+set_kernel_option() {
+  # set_kernel_option <file> <key> <active:true|false> <value>
+  # hardware.myKernel / hardware.myKernelChaotic are mutually exclusive in
+  # local.nix.example — only one is uncommented at a time. This sets the
+  # value and toggles the leading '# ' marker to match <active>, whether
+  # the line is currently commented or not (idempotent across re-runs,
+  # e.g. switching from an nvidia to an amd/intel GPU on a reinstall).
+  local file="$1" key="$2" active="$3" value="$4"
+  local escaped_key
+  escaped_key=$(printf '%s' "$key" | sed 's/[.[\*^$]/\\&/g')
+  if [[ "$active" == "true" ]]; then
+    sed -i -E "s|^([[:space:]]*)#?[[:space:]]*(${escaped_key}[[:space:]]*=[[:space:]]*)\"[^\"]*\"|\1\2\"${value}\"|" "$file"
+  else
+    sed -i -E "s|^([[:space:]]*)#?[[:space:]]*(${escaped_key}[[:space:]]*=[[:space:]]*)\"[^\"]*\"|\1# \2\"${value}\"|" "$file"
+  fi
+}
+
 # ── Bootstrap: git + nix flakes ──────────────────────────────────────────────
 info "Bootstrapping environment (git + nix flakes)..."
 
@@ -416,6 +448,13 @@ else
   fi
 fi
 
+UNDERVOLT="false"
+if [[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]]; then
+  pick "Enable AMD GPU undervolting? (lact + amdgpu.ppfeaturemask)" UNDERVOLT \
+    "false|No" \
+    "true|Yes"
+fi
+
 # Auto-detect CPU vendor
 DETECTED_CPU=""
 if grep -q "AuthenticAMD" /proc/cpuinfo 2>/dev/null; then
@@ -440,6 +479,8 @@ else
     "intel|Intel CPU"
 fi
 
+KERNEL="cachyos-latest-v3"
+KERNEL_CHAOTIC="cachyos"
 if [[ "$GPU" == "nvidia" ]]; then
   info "GPU Nvidia détecté — le kernel Chaotic-Nyx est utilisé pour bénéficier du driver nvidia_cachyos précompilé (pas de rebuild local du module)."
   pick "Kernel (Chaotic-Nyx):" KERNEL_CHAOTIC \
@@ -486,6 +527,23 @@ pick "Install Zen Browser?" ZEN \
   "false|No" \
   "true|Yes"
 
+ZEN_SINE="false"
+ZEN_MODS=""
+ZEN_SINE_MODS=""
+if [[ "$ZEN" == "true" ]]; then
+  echo -e "\n${BOLD}Zen mods (roudix.zen.mods) — comma-separated, leave empty for none:${NC}"
+  read -rp "Mods: " ZEN_MODS
+
+  pick "Enable Sine mod manager for Zen Browser?" ZEN_SINE \
+    "false|No" \
+    "true|Yes"
+
+  if [[ "$ZEN_SINE" == "true" ]]; then
+    echo -e "\n${BOLD}Sine mods (roudix.zen.sine.mods) — comma-separated, e.g. Arc-2.0,unloaded-tabs:${NC}"
+    read -rp "Sine mods: " ZEN_SINE_MODS
+  fi
+fi
+
 pick "Desktop environment:" DE \
   "niri|Niri" \
   "gnome|GNOME" \
@@ -508,6 +566,13 @@ pick "Default shell:" SHELL_DEFAULT \
   "fish|Fish — smart, user-friendly shell (recommended)" \
   "bash|Bash — classic Unix shell"
 
+pick "Terminal emulator:" TERMINAL \
+  "ghostty|Ghostty — GPU-accelerated, modern (recommended)" \
+  "kitty|Kitty — GPU-accelerated, feature-rich" \
+  "alacritty|Alacritty — minimal, fast" \
+  "foot|Foot — lightweight, Wayland-native" \
+  "wezterm|WezTerm — GPU-accelerated, cross-platform"
+
 # Auto-detect VM via systemd-detect-virt or DMI vendor
 DETECTED_VIRT=$(systemd-detect-virt 2>/dev/null || echo "none")
 if [[ "$DETECTED_VIRT" != "none" && "$DETECTED_VIRT" != "" ]]; then
@@ -522,6 +587,17 @@ fi
 pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
   "true|Yes" \
   "false|No"
+
+ANANICY="false"
+if [[ "$GAMING" == "true" ]]; then
+  pick "Enable ananicy-cpp? (auto-nice scheduler tweaks for gaming/apps)" ANANICY \
+    "false|No — off by default" \
+    "true|Yes"
+fi
+
+pick "Use mesa-git? (bleeding-edge Mesa drivers, AMD/Intel)" MESA_GIT \
+  "false|No — stable Mesa (recommended)" \
+  "true|Yes — mesa-git (latest features/perf, less stable)"
 
 pick "Timezone:" TIMEZONE \
   "Europe/Brussels|Belgique" \
@@ -802,19 +878,27 @@ sed -i "s/roudix\.rgb[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.rgb        = \"$
 sed -i "s/hardware\.myGpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/roudix/local.nix
 sed -i -E "s/hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*(true|false)/hardware.nvidiaLaptop = ${NVIDIA_LAPTOP}/" hosts/roudix/local.nix
 sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/roudix/local.nix
-if [[ -n "${KERNEL:-}" ]]; then
-  sed -i "s/hardware\.myKernel[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKernel = \"${KERNEL}\"/"  hosts/roudix/local.nix
-fi
-if [[ -n "${KERNEL_CHAOTIC:-}" ]]; then
-  sed -i "s/hardware\.myKernelChaotic[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myKernelChaotic = \"${KERNEL_CHAOTIC}\"/" hosts/roudix/local.nix
+if [[ "$GPU" == "nvidia" ]]; then
+  set_kernel_option hosts/roudix/local.nix "hardware.myKernel" "false" "${KERNEL}"
+  set_kernel_option hosts/roudix/local.nix "hardware.myKernelChaotic" "true" "${KERNEL_CHAOTIC}"
+else
+  set_kernel_option hosts/roudix/local.nix "hardware.myKernel" "true" "${KERNEL}"
+  set_kernel_option hosts/roudix/local.nix "hardware.myKernelChaotic" "false" "${KERNEL_CHAOTIC}"
 fi
 sed -i "s/roudix\.browsers[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.browsers = [\"${BROWSER}\"]/"    hosts/roudix/local.nix
 sed -i -E "s/roudix\.zen\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.enable           = ${ZEN}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.zen\.sine\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.sine.enable = ${ZEN_SINE}/" hosts/roudix/local.nix
+sed -i "s/roudix\.zen\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.mods = [$(nix_list_from_csv "$ZEN_MODS")]/" hosts/roudix/local.nix
+sed -i "s/roudix\.zen\.sine\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.sine.mods = [$(nix_list_from_csv "$ZEN_SINE_MODS")]/" hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.shell = \"${DESKTOP_SHELL}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.terminal[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.terminal = \"${TERMINAL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.shell = \"${SHELL_DEFAULT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.undervolt\.only-amd\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.undervolt.only-amd.enable        = ${UNDERVOLT}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.gaming\.ananicy\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.ananicy.enable = ${ANANICY}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*(true|false)/roudix.mesa.useGit = ${MESA_GIT}/" hosts/roudix/local.nix
 sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
 sed -i "s|environment\.sessionVariables\.TZ[[:space:]]*=[[:space:]]*\"[^\"]*\"|environment.sessionVariables.TZ      = \"${TIMEZONE}\"|" hosts/roudix/local.nix
 sed -i "s|i18n\.defaultLocale[[:space:]]*=[[:space:]]*\"[^\"]*\"|i18n.defaultLocale                   = \"${LOCALE}\"|"       hosts/roudix/local.nix
@@ -847,14 +931,19 @@ echo -e "
   ${BOLD}RAM RGB       :${NC} $MEMORY_ENABLE $([ "$MEMORY_ENABLE" == "true" ] && echo "($MEMORY_TYPE, $MEMORY_SMBUS${MEMORY_SKU:+, SKU: $MEMORY_SKU})")
   ${BOLD}GPU           :${NC} $GPU
   ${BOLD}CPU           :${NC} $CPU
-  ${BOLD}Kernel        :${NC} ${KERNEL:-$KERNEL_CHAOTIC} $([ "$GPU" == "nvidia" ] && echo "(Chaotic-Nyx)" || echo "(xddxdd)")
+  ${BOLD}Kernel        :${NC} $([ "$GPU" == "nvidia" ] && echo "$KERNEL_CHAOTIC (Chaotic-Nyx)" || echo "$KERNEL (xddxdd)")
   ${BOLD}Browser       :${NC} $BROWSER
   ${BOLD}Zen Browser   :${NC} $ZEN
+  ${BOLD}Sine (Zen)    :${NC} $([ "$ZEN" == "true" ] && echo "$ZEN_SINE" || echo "n/a")
   ${BOLD}Desktop       :${NC} $DE
   ${BOLD}Desktop shell :${NC} $DESKTOP_SHELL
   ${BOLD}Shell         :${NC} $SHELL_DEFAULT
+  ${BOLD}Terminal      :${NC} $TERMINAL
   ${BOLD}VM Guest      :${NC} $VM_GUEST
   ${BOLD}Gaming        :${NC} $GAMING
+  ${BOLD}Ananicy       :${NC} $([ "$GAMING" == "true" ] && echo "$ANANICY" || echo "n/a")
+  ${BOLD}Undervolt AMD :${NC} $([[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]] && echo "$UNDERVOLT" || echo "n/a")
+  ${BOLD}Mesa-git      :${NC} $MESA_GIT
   ${BOLD}Timezone      :${NC} $TIMEZONE
   ${BOLD}Locale        :${NC} $LOCALE
   ${BOLD}Keymap        :${NC} $KEYMAP

@@ -63,6 +63,7 @@
     nerd-fonts.hack
     nerd-fonts.iosevka
     nerd-fonts.hurmit
+    nerd-fonts.fantasque-sans-mono
   ];
 
   # ── User ────────────────────────────────────────────────────────────────

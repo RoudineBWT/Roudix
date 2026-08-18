@@ -5,4 +5,3 @@ hosts/roudix/username.nix
 modules/system/boot.local.nix
 dotfiles/perso/*
 !dotfiles/perso/README.md
-modules/system/gpu/undervolt.nix

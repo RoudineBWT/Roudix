@@ -50,6 +50,7 @@ class DiskPage(Adw.NavigationPage):
         self.on_next = on_next
         self.selected_disk = None
         self.partition_dropdowns: dict[str, Gtk.DropDown] = {}
+        self._partition_rows: list[Adw.ActionRow] = []
         self.mountpoint_choices = [
             L("Ignorer", "Skip"), "/", L("/boot (EFI)", "/boot (EFI)"), L("swap", "swap"),
         ]
@@ -269,11 +270,16 @@ class DiskPage(Adw.NavigationPage):
         threading.Thread(target=run, daemon=True).start()
 
     def _refresh_partitions(self, disk_path: str):
-        child = self.partitions_group.get_first_child()
-        while child is not None:
-            nxt = child.get_next_sibling()
-            self.partitions_group.remove(child)
-            child = nxt
+        # Adw.PreferencesGroup wraps rows added via .add() in an internal
+        # listbox — get_first_child()/get_next_sibling() on the group
+        # itself walks its *structural* children (title box, etc.), not
+        # the rows, so that pattern silently fails to remove anything here
+        # and every refresh was stacking new rows on top of the old ones.
+        # Tracking exactly what we added and removing those specific
+        # widgets is the reliable way to clear an Adw.PreferencesGroup.
+        for row in self._partition_rows:
+            self.partitions_group.remove(row)
+        self._partition_rows.clear()
         self.partition_dropdowns.clear()
 
         try:
@@ -287,6 +293,7 @@ class DiskPage(Adw.NavigationPage):
             dropdown.set_valign(Gtk.Align.CENTER)
             row.add_suffix(dropdown)
             self.partitions_group.add(row)
+            self._partition_rows.append(row)
             self.partition_dropdowns[p["path"]] = dropdown
 
     def _validate(self, _btn):

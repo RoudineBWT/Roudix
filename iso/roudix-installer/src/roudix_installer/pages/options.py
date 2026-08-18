@@ -114,6 +114,16 @@ def _default_shells():
     return [("fish", L("Fish (recommandé)", "Fish (recommended)")), ("bash", "Bash")]
 
 
+def _terminals():
+    return [
+        ("ghostty", L("Ghostty (recommandé)", "Ghostty (recommended)")),
+        ("kitty", "Kitty"),
+        ("alacritty", "Alacritty"),
+        ("foot", L("Foot (natif Wayland, léger)", "Foot (native Wayland, lightweight)")),
+        ("wezterm", "WezTerm"),
+    ]
+
+
 def _rgb_options():
     return [
         ("openlinkhub", "OpenLinkHub — Corsair (iCUE Link, Commander...)"),
@@ -296,6 +306,15 @@ class OptionsPage(Adw.NavigationPage):
         self.nvidia_laptop_row.set_active(state.nvidia_laptop)
         hw_group.add(self.nvidia_laptop_row)
 
+        self.undervolt_row = Adw.SwitchRow(
+            title=L(
+                "Undervolting GPU AMD (lact, amdgpu.ppfeaturemask)",
+                "AMD GPU undervolting (lact, amdgpu.ppfeaturemask)",
+            )
+        )
+        self.undervolt_row.set_active(state.undervolt_enable)
+        hw_group.add(self.undervolt_row)
+
         self.cpu_row = self._combo(
             "CPU", [("amd", "AMD"), ("intel", "Intel")], state.cpu
         )
@@ -305,6 +324,7 @@ class OptionsPage(Adw.NavigationPage):
         hw_group.add(self.kernel_row)
         box.append(hw_group)
         self._sync_nvidia_row()
+        self._sync_undervolt_row()
         self._sync_kernel_row()
 
         # ── Navigateur ──
@@ -327,8 +347,27 @@ class OptionsPage(Adw.NavigationPage):
         )
         self.zen_row.set_active(state.zen_browser)
         browser_group.add(self.zen_row)
+
+        self.zen_mods_row = Adw.EntryRow(
+            title=L("Mods Zen (séparés par des virgules)", "Zen mods (comma-separated)")
+        )
+        self.zen_mods_row.set_text(", ".join(state.zen_mods))
+        browser_group.add(self.zen_mods_row)
+
+        self.zen_sine_row = Adw.SwitchRow(
+            title=L("Activer Sine (moteur de mods Zen)", "Enable Sine (Zen mod engine)")
+        )
+        self.zen_sine_row.set_active(state.zen_sine_enable)
+        browser_group.add(self.zen_sine_row)
+
+        self.zen_sine_mods_row = Adw.EntryRow(
+            title=L("Mods Sine (séparés par des virgules)", "Sine mods (comma-separated)")
+        )
+        self.zen_sine_mods_row.set_text(", ".join(state.zen_sine_mods))
+        browser_group.add(self.zen_sine_mods_row)
         box.append(browser_group)
         self._sync_brave_row()
+        self._sync_zen_rows()
 
         # ── Bureau ──
         desktop_group = Adw.PreferencesGroup(title=L("Bureau", "Desktop"))
@@ -352,6 +391,11 @@ class OptionsPage(Adw.NavigationPage):
             state.default_shell,
         )
         desktop_group.add(self.default_shell_row)
+
+        self.terminal_row = self._combo(
+            L("Terminal", "Terminal"), _terminals(), state.terminal
+        )
+        desktop_group.add(self.terminal_row)
         box.append(desktop_group)
         self._sync_shell_row()
 
@@ -372,6 +416,24 @@ class OptionsPage(Adw.NavigationPage):
         self.gaming_row.set_active(state.gaming)
         sys_group.add(self.gaming_row)
 
+        self.ananicy_row = Adw.SwitchRow(
+            title=L(
+                "Ananicy (ordonnancement auto pour le gaming)",
+                "Ananicy (automatic gaming scheduling)",
+            )
+        )
+        self.ananicy_row.set_active(state.ananicy_enable)
+        sys_group.add(self.ananicy_row)
+
+        self.mesa_git_row = Adw.SwitchRow(
+            title=L(
+                "Mesa git (pilotes graphiques bleeding edge)",
+                "Mesa git (bleeding-edge graphics drivers)",
+            )
+        )
+        self.mesa_git_row.set_active(state.mesa_use_git)
+        sys_group.add(self.mesa_git_row)
+
         self.timezone_row = self._combo(
             L("Fuseau horaire", "Timezone"), _timezones(), state.timezone
         )
@@ -389,6 +451,7 @@ class OptionsPage(Adw.NavigationPage):
         )
         sys_group.add(self.keymap_row)
         box.append(sys_group)
+        self._sync_ananicy_row()
 
         # ── RGB ──
         rgb_group = Adw.PreferencesGroup(title="RGB")
@@ -409,13 +472,27 @@ class OptionsPage(Adw.NavigationPage):
             state.memory_type,
         )
         rgb_group.add(self.memory_type_row)
+
+        self.memory_smbus_row = Adw.EntryRow(
+            title=L("SMBus (ex: i2c-1)", "SMBus (e.g. i2c-1)")
+        )
+        self.memory_smbus_row.set_text(state.memory_smbus)
+        rgb_group.add(self.memory_smbus_row)
+
+        self.memory_sku_row = Adw.EntryRow(
+            title=L("SKU RAM (numéro de pièce)", "RAM SKU (part number)")
+        )
+        self.memory_sku_row.set_text(state.memory_sku)
+        rgb_group.add(self.memory_sku_row)
         box.append(rgb_group)
         self._sync_memory_rows()
 
         rgb_note = Gtk.Label(
             label=L(
-                "Détection SMBus / SKU RAM non automatisée ici — éditable dans local.nix après install.",
-                "SMBus / RAM SKU detection isn't automated here — editable in local.nix after install.",
+                "SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via "
+                "« i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' ».",
+                "SMBus / RAM SKU aren't auto-detected — find them via "
+                "\"i2cdetect -l\" and \"sudo dmidecode -t memory | grep 'Part Number'\".",
             ),
             css_classes=["dim-label", "caption"],
             wrap=True,
@@ -481,10 +558,15 @@ class OptionsPage(Adw.NavigationPage):
         # run before the widgets they toggle existed yet, throwing a silently-
         # swallowed AttributeError instead of actually syncing visibility.
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
+        self.gpu_row.connect("notify::selected", lambda *_: self._sync_undervolt_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
         self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
         self.rgb_row.connect("notify::selected", lambda *_: self._sync_memory_rows())
+        self.memory_rgb_row.connect("notify::active", lambda *_: self._sync_memory_rows())
+        self.zen_row.connect("notify::active", lambda *_: self._sync_zen_rows())
+        self.zen_sine_row.connect("notify::active", lambda *_: self._sync_zen_rows())
+        self.gaming_row.connect("notify::active", lambda *_: self._sync_ananicy_row())
         self.autoupdate_row.connect(
             "notify::active", lambda *_: self._sync_autoupdate_row()
         )
@@ -513,9 +595,18 @@ class OptionsPage(Adw.NavigationPage):
     def _selected_value(self, row):
         return self._rows[id(row)][row.get_selected()]
 
+    @staticmethod
+    def _split_list(text):
+        return [part.strip() for part in text.split(",") if part.strip()]
+
     def _sync_nvidia_row(self):
         self.nvidia_laptop_row.set_visible(
             self._selected_value(self.gpu_row) == "nvidia"
+        )
+
+    def _sync_undervolt_row(self):
+        self.undervolt_row.set_visible(
+            self._selected_value(self.gpu_row) in ("amd", "amd-legacy")
         )
 
     def _sync_kernel_row(self):
@@ -545,9 +636,19 @@ class OptionsPage(Adw.NavigationPage):
     def _sync_memory_rows(self):
         is_openlinkhub = self._selected_value(self.rgb_row) == "openlinkhub"
         self.memory_rgb_row.set_visible(is_openlinkhub)
-        self.memory_type_row.set_visible(
-            is_openlinkhub and self.memory_rgb_row.get_active()
-        )
+        memory_rgb_active = is_openlinkhub and self.memory_rgb_row.get_active()
+        self.memory_type_row.set_visible(memory_rgb_active)
+        self.memory_smbus_row.set_visible(memory_rgb_active)
+        self.memory_sku_row.set_visible(memory_rgb_active)
+
+    def _sync_zen_rows(self):
+        zen_active = self.zen_row.get_active()
+        self.zen_mods_row.set_visible(zen_active)
+        self.zen_sine_row.set_visible(zen_active)
+        self.zen_sine_mods_row.set_visible(zen_active and self.zen_sine_row.get_active())
+
+    def _sync_ananicy_row(self):
+        self.ananicy_row.set_visible(self.gaming_row.get_active())
 
     def _sync_autoupdate_row(self):
         self.autoupdate_interval_row.set_visible(self.autoupdate_row.get_active())
@@ -574,6 +675,7 @@ class OptionsPage(Adw.NavigationPage):
         s.password = password
         s.gpu = self._selected_value(self.gpu_row)
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()
+        s.undervolt_enable = self.undervolt_row.get_active()
         s.cpu = self._selected_value(self.cpu_row)
         kernel_value = self._selected_value(self.kernel_row)
         if s.gpu == "nvidia":
@@ -588,13 +690,19 @@ class OptionsPage(Adw.NavigationPage):
             else browser
         )
         s.zen_browser = self.zen_row.get_active()
+        s.zen_sine_enable = self.zen_sine_row.get_active()
+        s.zen_mods = self._split_list(self.zen_mods_row.get_text())
+        s.zen_sine_mods = self._split_list(self.zen_sine_mods_row.get_text())
 
         s.desktop = self._selected_value(self.desktop_row)
         s.desktop_shell = self._selected_value(self.shell_row)
         s.default_shell = self._selected_value(self.default_shell_row)
+        s.terminal = self._selected_value(self.terminal_row)
 
         s.vm_guest = self.vm_guest_row.get_active()
         s.gaming = self.gaming_row.get_active()
+        s.ananicy_enable = self.ananicy_row.get_active()
+        s.mesa_use_git = self.mesa_git_row.get_active()
         s.timezone = self._selected_value(self.timezone_row)
         s.locale = self._selected_value(self.locale_row)
         s.keymap = self._selected_value(self.keymap_row)
@@ -602,6 +710,8 @@ class OptionsPage(Adw.NavigationPage):
         s.rgb = self._selected_value(self.rgb_row)
         s.memory_rgb_enable = self.memory_rgb_row.get_active()
         s.memory_type = self._selected_value(self.memory_type_row)
+        s.memory_smbus = self.memory_smbus_row.get_text()
+        s.memory_sku = self.memory_sku_row.get_text()
 
         s.gta_fix = self.gta_fix_row.get_active()
         s.flatpak = self.flatpak_row.get_active()
