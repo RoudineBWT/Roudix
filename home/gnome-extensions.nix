@@ -53,8 +53,9 @@ in
       custom-menu-button-text = "Roudix";
       dash-to-panel-standalone = false;
       menu-button-appearance = "Icon_Text";
-      menu-button-icon = "Custom_Icon";
-      menu-layout = "GnomeOverview";
+      menu-button-icon = "roudix-logo";
+      menu-button-text = "Roudix";
+      menu-layout = "gnome-overview";
       multi-monitor = true;
       search-entry-border-radius = lib.hm.gvariant.mkTuple [ true 25 ];
       show-activities-button = false;

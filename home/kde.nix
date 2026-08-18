@@ -44,6 +44,7 @@ in
       panels = [
         {
           location = "bottom";
+          floating = true;
           widgets = [
             {
               kickoff.icon = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
