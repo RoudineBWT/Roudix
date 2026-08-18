@@ -18,34 +18,38 @@
   roudix.desktop.shell = "noctalia";
 
   # ── Browser ───────────────────────────────────────────────────────────────
-  roudix.browsers = ["helium"];               # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
-  roudix.zen.enable           = false;        # install Zen Browser (from zen-browser flake input)
+  roudix.browsers = ["helium" "brave-origin-beta" ];               # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
+  roudix.zen.enable           = true;        # install Zen Browser (from zen-browser flake input)
+  roudix.zen.sine.enable = true;       # true sur la machine où tu veux Sine
+  roudix.zen.mods        = [];
+  roudix.zen.sine.mods   = [ "Arc-2.0" "unloaded-tabs" "context-menu-icons" "floating-statusbar" ];   # ← utilise celle-là à la place
 
   # ── Hardware ──────────────────────────────────────────────────────────────
   roudix.rgb        = "openlinkhub";           # "openlinkhub" (full Corsair), "openrgb" (mixed/other brands) or "none"
-  roudix.memory.enable  = false;          # true pour activer le RGB RAM
+  roudix.memory.enable  = true;          # true pour activer le RGB RAM
   roudix.memory.type    = "ddr5";         # "ddr4" ou "ddr5"
-  roudix.memory.smBus   = "i2c-0";        # trouvé via: i2cdetect -l
+  roudix.memory.smBus   = "i2c-9";        # trouvé via: i2cdetect -l
   roudix.memory.sku    = "CMH64GX5M2B5200C40"; # trouvé via: sudo dmidecode -t memory | grep 'Part Number'
   hardware.myGpu    = "amd";                  # "amd", "nvidia" or "intel"
   hardware.nvidiaLaptop = false;              # enable this only for Laptops with nvidia Dgpu
   hardware.myCpu    = "intel";               # "intel" or "amd"
-  hardware.myKernel = "cachyos-lts-lto-v3"; # see README for all variants
+  hardware.myKernel = "cachyos-latest-v3"; # see README for all variants
 
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
   roudix.terminal = "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
   roudix.gaming.enable        = true;         # disable to skip Steam, Wine, etc.
-  roudix.flatpak.enable       = false;        # enable Flatpak support
-  roudix.virtualization.enable = false;       # enable libvirt / virt-manager
-  roudix.vmGuest.enable       = false;        # enable only inside a VM
-  roudix.autoupdate.enable    = true;         # automatic NixOS updates
+  roudix.gaming.ananicy.enable = false;
+  roudix.flatpak.enable       = true;        # enable Flatpak support
+  roudix.virtualization.enable = true;       # enable libvirt / virt-manager
+  roudix.vmGuest.enable       = true;        # enable only inside a VM
+  roudix.autoupdate.enable    = false;         # automatic NixOS updates
   roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
   roudix.mesa.useGit = false;  # false = mesa stable
-  roudix.matrixClient = "none"; # "element", "cinny" ou "none"
-
+  roudix.waydroid.enable = false;
+  roudix.matrixClient = "element"; # "element", "cinny" ou "none"
   # ── Misc ──────────────────────────────────────────────────────────────────
-  roudix.hosts.gtaFix.enable  = false;      # fix GTA Online to play with your friends but they need to block battleye telemetry in /etc/hosts and if they are on windows in C:\Windows\System32\drivers\etc\hosts
+  roudix.hosts.gtaFix.enable  = true;      # fix GTA Online to play with your friends but they need to block battleye telemetry in /etc/hosts and if they are on windows in C:\Windows\System32\drivers\etc\hosts
   # roudix.autoupdate.branch   = "main";
 
   # ── Locale / Timezone ─────────────────────────────────────────────────────
