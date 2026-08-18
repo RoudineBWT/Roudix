@@ -38,7 +38,7 @@
           { type = "break"; }
           { type = "custom"; format = "─────────── System ───────────"; }
           { type = "os";       key = "󱄅 OS";        keyColor = "#7aa2f7"; }
-          { type = "kernel";   key = " Kernel";     keyColor = "#7aa2f7"; }
+          { type = "kernel";   key = " Kernel";     keyColor = "#7aa2f7"; }
           { type = "uptime";   key = "󰔟 Uptime";    keyColor = "#7aa2f7"; }
           {
             type = "command";
@@ -47,19 +47,19 @@
             text = "b=$(stat -c %W /); n=$(date +%s); echo $(( (n - b) / 86400 )) days";
           }
           { type = "custom"; format = "────────── Hardware ──────────"; }
-          { type = "cpu";    key = " CPU";  showPeCoreCount = true; keyColor = "#7dcfff"; }
+          { type = "cpu";    key = " CPU";  showPeCoreCount = true; keyColor = "#7dcfff"; }
           { type = "gpu";    key = "󰍛 GPU";  keyColor = "#7dcfff"; }
-          { type = "memory"; key = " Memory"; keyColor = "#7dcfff"; }
+          { type = "memory"; key = " Memory"; keyColor = "#7dcfff"; }
           { type = "custom"; format = "────────── Software ─────────"; }
           { type = "wm";       key = "󰇄 Compositor"; keyColor = "#bb9af7"; }
-          { type = "terminal"; key = " Terminal";    keyColor = "#bb9af7"; }
-          { type = "shell";    key = " Shell";       keyColor = "#bb9af7"; }
-          { type = "packages"; key = " Packages";   keyColor = "#bb9af7"; }
+          { type = "terminal"; key = " Terminal";    keyColor = "#bb9af7"; }
+          { type = "shell";    key = " Shell";       keyColor = "#bb9af7"; }
+          { type = "packages"; key = " Packages";   keyColor = "#bb9af7"; }
           { type = "custom"; format = "───────────────────────────────"; }
           { type = "custom"; format = "─────────── Challenge ───────────"; }
           {
             type = "command";
-            key = " Challenge";
+            key = "󰔸 Challenge";
             keyColor = "#e0af68";
             text = ''
               start=$(stat -c %W /); end=$((start + 63072000)); now=$(date +%s)
