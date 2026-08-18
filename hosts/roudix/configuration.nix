@@ -28,7 +28,8 @@
     ../../modules/system/appimage.nix
     ../../modules/system/terminal.nix
      inputs.brave-previews.nixosModules.default
-  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
+  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix; ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
+
 
   # ── Choose your favorite chromium base browser ───────────────────────────
   roudix.browsers = lib.mkDefault ["helium"]; # brave or helium or vivaldi
