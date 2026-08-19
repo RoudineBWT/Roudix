@@ -17,6 +17,14 @@ let
 
   isNoctalia = shellType == "noctalia";
   isDms      = shellType == "dms";
+
+  terminalCmd = osConfig.roudix.terminal or "ghostty";
+
+  browserDefault = osConfig.roudix.browser.default or null;
+  browserCmd     = osConfig.roudix.browser.command or null;
+  browserList    = osConfig.roudix.browser.commands or [ ];
+  # Les navigateurs restants (hors default) reçoivent un bind supplémentaire.
+  extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
 in
 {
   imports = [
@@ -44,6 +52,10 @@ in
       text = ''
         include "${niriDir}/cfg/autostart.kdl"
         include "${niriDir}/cfg/keybinds.kdl"
+
+        // ── Terminal / navigateur (résolus depuis roudix.terminal / roudix.browser) ──
+        include optional=true "${config.home.homeDirectory}/.config/niri/apps.kdl"
+
         include "${niriDir}/cfg/input.kdl"
         include "${niriDir}/cfg/display.kdl"
         include "${niriDir}/cfg/layout.kdl"
@@ -61,6 +73,23 @@ in
 
         // ── User overrides (injected by Nix) ─────────────────────────────
         include "${config.home.homeDirectory}/.config/niri/user.kdl"
+      '';
+    };
+
+    xdg.configFile."niri/apps.kdl" = {
+      force = true;
+      text = ''
+        // ── Généré par Nix depuis roudix.terminal / roudix.browser ──
+        // Ce fichier override les binds MOD+RETURN / MOD+B définis dans keybinds.kdl,
+        // et ajoute un bind par navigateur supplémentaire de `roudix.browsers`.
+        binds {
+            MOD+RETURN hotkey-overlay-title="Open Terminal: ${terminalCmd}" { spawn "${terminalCmd}"; }
+      '' + lib.optionalString (browserCmd != null) ''
+            MOD+B hotkey-overlay-title="Open Browser: ${browserCmd}" { spawn "${browserCmd}"; }
+      '' + lib.concatStrings (lib.imap1 (i: b: ''
+            MOD+CTRL+ALT+${toString i} hotkey-overlay-title="Open Browser: ${b.name}" { spawn "${b.command}"; }
+      '') extraBrowsers) + ''
+        }
       '';
     };
 

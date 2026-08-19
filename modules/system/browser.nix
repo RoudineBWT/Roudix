@@ -3,21 +3,24 @@
 let
   cfg = config.roudix;
 
+  # `command` = binaire réellement lancé (utilisé par les keybinds niri).
+  # Ajuste-le ici si un de tes paquets custom (brave-origin-*) expose un
+  # binaire différent du nom de l'attribut.
   browserDefs = {
-    "brave"    = { package = pkgs.brave;                                     extras = []; };
-    "brave-beta"    = { package = pkgs.brave-beta;                           extras = []; };
-    "brave-nightly" = { package = pkgs.brave-nightly;                        extras = []; };
-    "brave-origin" = { package = pkgs.brave-origin;                extras = []; };
-    "brave-origin-beta" = { package = pkgs.brave-origin-beta;                extras = []; };
-    "brave-origin-nightly" = { package = pkgs.brave-origin-nightly;          extras = []; };
-    "helium"   = { package = inputs.helium.packages.${pkgs.system}.helium-appimage;  extras = []; };
-    "vivaldi"  = { package = pkgs.vivaldi;                                   extras = [ pkgs.vivaldi-ffmpeg-codecs ]; };
-    "chromium" = { package = pkgs.chromium;                                  extras = []; };
-    "firefox"  = { package = pkgs.firefox;                                   extras = []; };
-    "librewolf"= { package = pkgs.librewolf;                                 extras = []; };
-    "google-chrome"       = { package = pkgs.google-chrome;                  extras = []; };
-    "microsoft-edge"      = { package = pkgs.microsoft-edge;                 extras = []; };
-    "ungoogled-chromium"  = { package = pkgs.ungoogled-chromium;             extras = []; };
+    "brave"    = { package = pkgs.brave;                                     command = "brave";                 extras = []; };
+    "brave-beta"    = { package = pkgs.brave-beta;                           command = "brave-beta";            extras = []; };
+    "brave-nightly" = { package = pkgs.brave-nightly;                        command = "brave-nightly";         extras = []; };
+    "brave-origin" = { package = pkgs.brave-origin;                command = "brave-origin";                    extras = []; };
+    "brave-origin-beta" = { package = pkgs.brave-origin-beta;                command = "brave-origin-beta";     extras = []; };
+    "brave-origin-nightly" = { package = pkgs.brave-origin-nightly;          command = "brave-origin-nightly";  extras = []; };
+    "helium"   = { package = inputs.helium.packages.${pkgs.system}.helium-appimage;  command = "helium";        extras = []; };
+    "vivaldi"  = { package = pkgs.vivaldi;                                   command = "vivaldi";               extras = [ pkgs.vivaldi-ffmpeg-codecs ]; };
+    "chromium" = { package = pkgs.chromium;                                  command = "chromium";              extras = []; };
+    "firefox"  = { package = pkgs.firefox;                                   command = "firefox";               extras = []; };
+    "librewolf"= { package = pkgs.librewolf;                                 command = "librewolf";             extras = []; };
+    "google-chrome"       = { package = pkgs.google-chrome;                  command = "google-chrome";  extras = []; };
+    "microsoft-edge"      = { package = pkgs.microsoft-edge;                 command = "microsoft-edge";        extras = []; };
+    "ungoogled-chromium"  = { package = pkgs.ungoogled-chromium;             command = "chromium";              extras = []; };
   };
 
   # Collect packages for all selected browsers
@@ -78,6 +81,41 @@ in {
             Use this for mods only available on Sine.
           '';
         };
+      };
+    };
+
+    browser = {
+      default = lib.mkOption {
+        type = lib.types.nullOr (lib.types.enum (lib.attrNames browserDefs));
+        default = if cfg.browsers != [ ] then lib.head cfg.browsers else null;
+        description = ''
+          Navigateur lié au raccourci niri MOD+B. Défaut : le premier
+          élément de `roudix.browsers`. Mets `null` (ou une liste vide de
+          `browsers`) pour désactiver le bind niri.
+        '';
+      };
+
+      command = lib.mkOption {
+        type     = lib.types.nullOr lib.types.str;
+        readOnly = true;
+        default  = if cfg.browser.default != null
+                   then browserDefs.${cfg.browser.default}.command
+                   else null;
+        description = ''
+          Binaire résolu à partir de `roudix.browser.default`.
+          Lecture seule, consommée par le module niri pour générer le bind.
+        '';
+      };
+
+      commands = lib.mkOption {
+        type     = lib.types.listOf (lib.types.attrsOf lib.types.str);
+        readOnly = true;
+        default  = map (n: { name = n; command = browserDefs.${n}.command; }) cfg.browsers;
+        description = ''
+          Liste ordonnée `{ name; command; }` pour chaque navigateur de
+          `roudix.browsers`. Le module niri s'en sert pour générer un bind
+          par navigateur (le premier correspond à `roudix.browser.default`).
+        '';
       };
     };
 

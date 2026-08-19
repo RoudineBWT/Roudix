@@ -69,11 +69,6 @@ in
     services.gnome.gnome-keyring.enable = true;
     security.pam.services.greetd.enableGnomeKeyring = true;
 
-    programs.nautilus-open-any-terminal = {
-      enable   = true;
-      terminal = "ghostty";
-    };
-
     environment.systemPackages = with pkgs; [ polkit_gnome ];
   };
 }
