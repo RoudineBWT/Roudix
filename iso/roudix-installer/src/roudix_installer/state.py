@@ -62,7 +62,7 @@ class InstallState:
     zen_sine_mods: list = field(default_factory=list)  # roudix.zen.sine.mods
 
     # ── Desktop ───────────────────────────────────────────────────────────
-    desktop: str = "niri"            # niri | gnome | kde | hyprland
+    desktop: str = "niri"            # niri | gnome | kde | hyprland | mangowc
     desktop_shell: str = "noctalia"  # noctalia | dms | caelestia (only for niri/hyprland)
     default_shell: str = "fish"      # fish | bash
 

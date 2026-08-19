@@ -1,5 +1,6 @@
 from gi.repository import Adw, Gtk
 
+from roudix_installer.hardware_detect import detect_cpu, detect_gpu
 from roudix_installer.i18n import L
 from roudix_installer.ui_helpers import page_with_header
 
@@ -92,6 +93,17 @@ def _desktops():
         ("gnome", "GNOME"),
         ("kde", "KDE Plasma"),
         ("hyprland", "Hyprland"),
+        ("mangowc", "MangoWC"),
+    ]
+
+
+def _mark_detected(pairs, detected_value):
+    """Appends '(détecté)' to the label of the auto-detected entry, if any."""
+    if not detected_value:
+        return pairs
+    return [
+        (value, f"{label} {L('(détecté)', '(detected)')}" if value == detected_value else label)
+        for value, label in pairs
     ]
 
 
@@ -290,18 +302,33 @@ class OptionsPage(Adw.NavigationPage):
         box.append(self.password_warning)
 
         # ── Matériel ──
+        gpu_detected, nvidia_laptop_detected = detect_gpu()
+        cpu_detected = detect_cpu()
+        # Detection only picks a sensible default — never overrides a
+        # value the user already set on a prior visit to this page (this
+        # page is only ever built once per session, so at this point
+        # `state` still holds nothing but its dataclass defaults).
+        if gpu_detected:
+            state.gpu = gpu_detected
+            state.nvidia_laptop = nvidia_laptop_detected
+        if cpu_detected:
+            state.cpu = cpu_detected
+
         hw_group = Adw.PreferencesGroup(title=L("Matériel", "Hardware"))
         self.gpu_row = self._combo(
             L("GPU", "GPU"),
-            [
-                ("amd", "AMD — RDNA / GCN 3+"),
-                (
-                    "amd-legacy",
-                    L("AMD legacy — GCN 1.x/2.x", "AMD legacy — GCN 1.x/2.x"),
-                ),
-                ("nvidia", "NVIDIA"),
-                ("intel", L("Intel intégré", "Intel integrated")),
-            ],
+            _mark_detected(
+                [
+                    ("amd", "AMD — RDNA / GCN 3+"),
+                    (
+                        "amd-legacy",
+                        L("AMD legacy — GCN 1.x/2.x", "AMD legacy — GCN 1.x/2.x"),
+                    ),
+                    ("nvidia", "NVIDIA"),
+                    ("intel", L("Intel intégré", "Intel integrated")),
+                ],
+                gpu_detected,
+            ),
             state.gpu,
         )
         hw_group.add(self.gpu_row)
@@ -325,13 +352,28 @@ class OptionsPage(Adw.NavigationPage):
         hw_group.add(self.undervolt_row)
 
         self.cpu_row = self._combo(
-            "CPU", [("amd", "AMD"), ("intel", "Intel")], state.cpu
+            "CPU",
+            _mark_detected([("amd", "AMD"), ("intel", "Intel")], cpu_detected),
+            state.cpu,
         )
         hw_group.add(self.cpu_row)
 
         self.kernel_row = self._combo(L("Kernel", "Kernel"), _kernels(), state.kernel)
         hw_group.add(self.kernel_row)
         box.append(hw_group)
+
+        if gpu_detected or cpu_detected:
+            hw_note = Gtk.Label(
+                label=L(
+                    "GPU / CPU détectés automatiquement — modifiable ci-dessus si besoin.",
+                    "GPU / CPU auto-detected — change them above if needed.",
+                ),
+                css_classes=["dim-label", "caption"],
+                wrap=True,
+                xalign=0,
+            )
+            box.append(hw_note)
+
         self._sync_nvidia_row()
         self._sync_undervolt_row()
         self._sync_kernel_row()
@@ -414,6 +456,10 @@ class OptionsPage(Adw.NavigationPage):
         desktop_group.add(self.file_manager_row)
         box.append(desktop_group)
         self._sync_shell_row()
+        self._sync_file_manager_row()
+        self.desktop_row.connect(
+            "notify::selected", lambda *_: self._sync_file_manager_row()
+        )
 
         # ── Système ──
         sys_group = Adw.PreferencesGroup(title=L("Système", "System"))
@@ -611,6 +657,11 @@ class OptionsPage(Adw.NavigationPage):
     def _selected_value(self, row):
         return self._rows[id(row)][row.get_selected()]
 
+    def _set_combo_value(self, row, value):
+        values = self._rows[id(row)]
+        if value in values:
+            row.set_selected(values.index(value))
+
     @staticmethod
     def _split_list(text):
         return [part.strip() for part in text.split(",") if part.strip()]
@@ -647,7 +698,19 @@ class OptionsPage(Adw.NavigationPage):
 
     def _sync_shell_row(self):
         desktop = self._selected_value(self.desktop_row)
-        self.shell_row.set_visible(desktop in ("niri", "hyprland"))
+        self.shell_row.set_visible(desktop in ("niri", "hyprland", "mangowc"))
+
+    def _sync_file_manager_row(self):
+        # GNOME/KDE have one obvious native file manager, so default to
+        # it — but only ever nudge the selection, never lock the row:
+        # the combo stays fully editable either way. niri/hyprland/mangowc
+        # don't ship an opinionated file manager, so leave whatever the
+        # user already picked untouched when landing on one of those.
+        desktop = self._selected_value(self.desktop_row)
+        if desktop == "gnome":
+            self._set_combo_value(self.file_manager_row, "nautilus")
+        elif desktop == "kde":
+            self._set_combo_value(self.file_manager_row, "dolphin")
 
     def _sync_memory_rows(self):
         is_openlinkhub = self._selected_value(self.rgb_row) == "openlinkhub"
