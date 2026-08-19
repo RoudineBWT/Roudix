@@ -92,6 +92,14 @@ in
     package = pkgs.ananicy-cpp;
     rulesProvider = pkgs.ananicy-rules-cachyos;
   };
+  systemd.services.ananicy-cpp = {
+     serviceConfig = {
+       # Permet au service de créer et gérer ses propres sous-groupes de cgroups
+       Delegate = true;
+       # Lui donne les droits pour lire/écrire dans les dossiers de cgroups
+       DeviceAllow = "/sys/fs/cgroup rw";
+     };
+  };
 
   # ── Paquets système gaming ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
