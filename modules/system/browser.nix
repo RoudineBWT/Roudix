@@ -18,7 +18,7 @@ let
     "chromium" = { package = pkgs.chromium;                                  command = "chromium";              extras = []; };
     "firefox"  = { package = pkgs.firefox;                                   command = "firefox";               extras = []; };
     "librewolf"= { package = pkgs.librewolf;                                 command = "librewolf";             extras = []; };
-    "google-chrome"       = { package = pkgs.google-chrome;                  command = "google-chrome-stable";  extras = []; };
+    "google-chrome"       = { package = pkgs.google-chrome;                  command = "google-chrome";  extras = []; };
     "microsoft-edge"      = { package = pkgs.microsoft-edge;                 command = "microsoft-edge";        extras = []; };
     "ungoogled-chromium"  = { package = pkgs.ungoogled-chromium;             command = "chromium";              extras = []; };
   };
