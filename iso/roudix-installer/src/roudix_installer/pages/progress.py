@@ -113,6 +113,16 @@ class ProgressPage(Adw.NavigationPage):
         self.log_scroller.set_child(self.log_view)
         term_frame.append(self.log_scroller)
 
+        # Whether new output should auto-scroll the view to the bottom.
+        # Set in _log() right before each insert (based on whether the
+        # user was already at the bottom), then actually applied once the
+        # adjustment's `upper` catches up with the new content — see
+        # _on_log_extent_changed().
+        self._log_follow_tail = True
+        log_vadj = self.log_scroller.get_vadjustment()
+        if log_vadj is not None:
+            log_vadj.connect("notify::upper", self._on_log_extent_changed)
+
         box.append(term_frame)
 
         bottom_row = Gtk.Box(spacing=12, halign=Gtk.Align.CENTER, margin_top=4)
@@ -170,9 +180,8 @@ class ProgressPage(Adw.NavigationPage):
         # bottom before this line arrived — if they scrolled up to read
         # something, new output shouldn't yank the view back down.
         vadj = self.log_scroller.get_vadjustment()
-        was_at_bottom = True
         if vadj is not None:
-            was_at_bottom = vadj.get_value() >= (vadj.get_upper() - vadj.get_page_size() - 8)
+            self._log_follow_tail = vadj.get_value() >= (vadj.get_upper() - vadj.get_page_size() - 8)
 
         tag_name = self._tag_for_line(text)
         end_iter = buf.get_end_iter()
@@ -181,10 +190,23 @@ class ProgressPage(Adw.NavigationPage):
         else:
             buf.insert(end_iter, text + "\n")
 
-        if was_at_bottom:
-            end_mark = buf.create_mark(None, buf.get_end_iter(), left_gravity=False)
-            self.log_view.scroll_to_mark(end_mark, 0.0, True, 0.0, 1.0)
-            buf.delete_mark(end_mark)
+        # Try scrolling right away — this works when the view's layout is
+        # already up to date. If it isn't yet (GTK only recomputes
+        # vadj.upper on its next layout pass, which can lag when nothing
+        # else is forcing a redraw — e.g. the mouse never enters the
+        # terminal), _on_log_extent_changed() below catches it the moment
+        # the adjustment actually grows, so the log never looks stuck.
+        if self._log_follow_tail and vadj is not None:
+            self._scroll_log_to_bottom()
+
+    def _on_log_extent_changed(self, _vadj, _pspec):
+        if self._log_follow_tail:
+            self._scroll_log_to_bottom()
+
+    def _scroll_log_to_bottom(self):
+        vadj = self.log_scroller.get_vadjustment()
+        if vadj is not None:
+            vadj.set_value(max(0.0, vadj.get_upper() - vadj.get_page_size()))
 
     def _set_status(self, label: str, fraction: float):
         self.status_label.set_label(label)

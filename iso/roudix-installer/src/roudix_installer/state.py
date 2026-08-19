@@ -90,5 +90,6 @@ class InstallState:
     matrix_client: str = "none"      # none | element | cinny
     waydroid_enable: bool = False
     terminal: str = "ghostty"        # ghostty | kitty | alacritty | foot | wezterm
+    file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo
     ananicy_enable: bool = False     # roudix.gaming.ananicy.enable — opt-in, only meaningful if gaming.enable
     mesa_use_git: bool = False       # roudix.mesa.useGit — false = mesa stable

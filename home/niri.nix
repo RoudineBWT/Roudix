@@ -20,6 +20,8 @@ let
 
   terminalCmd = osConfig.roudix.terminal or "ghostty";
 
+  fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
+
   browserDefault = osConfig.roudix.browser.default or null;
   browserCmd     = osConfig.roudix.browser.command or null;
   browserList    = osConfig.roudix.browser.commands or [ ];
@@ -84,6 +86,7 @@ in
         // et ajoute un bind par navigateur supplémentaire de `roudix.browsers`.
         binds {
             MOD+RETURN hotkey-overlay-title="Open Terminal: ${terminalCmd}" { spawn "${terminalCmd}"; }
+            MOD+E hotkey-overlay-title="File Manager: ${fileManagerCmd}" { spawn "${fileManagerCmd}"; }
       '' + lib.optionalString (browserCmd != null) ''
             MOD+B hotkey-overlay-title="Open Browser: ${browserCmd}" { spawn "${browserCmd}"; }
       '' + lib.concatStrings (lib.imap1 (i: b: ''
@@ -112,7 +115,6 @@ in
       mpvpaper
 
       # Apps (communes)
-      nautilus
       gnome-text-editor
       gnome-disk-utility
       mission-center

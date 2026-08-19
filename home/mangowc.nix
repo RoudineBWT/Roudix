@@ -89,7 +89,6 @@ in
 
 
       # Apps
-      nautilus
       gnome-text-editor
       gnome-disk-utility
       mission-center

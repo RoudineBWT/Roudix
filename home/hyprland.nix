@@ -51,7 +51,6 @@ in
       satty
 
       # Apps
-      nautilus
       gnome-text-editor
       gnome-disk-utility
       mission-center
