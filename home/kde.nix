@@ -1,4 +1,4 @@
-{ lib, osConfig, inputs, ... }:
+{ lib, pkgs, osConfig, inputs, ... }:
 let
   wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
 in
@@ -23,7 +23,12 @@ in
         # ── Thème sombre ──────────────────────────────────────────────────
         lookAndFeel = "org.kde.breezedark.desktop";
         colorScheme = "BreezeDark";
-        iconTheme   = "Papirus-Dark";
+        # iconTheme retiré d'ici volontairement : plasma-manager transforme
+        # sinon kdeglobals en symlink read-only vers le store Nix, ce qui
+        # empêche ensuite papirusSync/telaSync (hooks noctalia) de patcher
+        # la clé [Icons] Theme= avec sed. La valeur par défaut est posée
+        # plus bas via home.activation + kwriteconfig6, sur un fichier
+        # kdeglobals resté normal/mutable.
         cursorTheme = "capitaine-cursors-white";
 
 
@@ -58,5 +63,15 @@ in
         }
       ];
     };
+
+    # ── Thème d'icônes KDE, hors plasma-manager ────────────────────────────
+    # Écrit avec kwriteconfig6 (mutateur natif KDE) au lieu de laisser
+    # plasma-manager gérer kdeglobals : le fichier reste un fichier texte
+    # normal, éditable ensuite par papirusSync/telaSync sans conflit avec
+    # le symlink immuable que produirait la voie déclarative.
+    home.activation.setKdeIconTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+        --file kdeglobals --group Icons --key Theme "Papirus-Dark"
+    '';
   };
 }
