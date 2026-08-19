@@ -548,10 +548,11 @@ pick "Desktop environment:" DE \
   "niri|Niri" \
   "gnome|GNOME" \
   "kde|KDE Plasma" \
-  "hyprland|Hyprland"
+  "hyprland|Hyprland" \
+  "mangowc|MangoWC"
 
 DESKTOP_SHELL="noctalia"
-if [[ "$DE" == "niri" ]]; then
+if [[ "$DE" == "niri" || "$DE" == "mangowc" ]]; then
   pick "Desktop shell (bar/UI stack):" DESKTOP_SHELL \
     "noctalia|Noctalia — default Roudix shell" \
     "dms|DankMaterialShell — Material 3 design"
@@ -573,11 +574,19 @@ pick "Terminal emulator:" TERMINAL \
   "foot|Foot — lightweight, Wayland-native" \
   "wezterm|WezTerm — GPU-accelerated, cross-platform"
 
-pick "File manager:" FILE_MANAGER \
-  "nautilus|Nautilus — GNOME Files (recommended)" \
-  "dolphin|Dolphin — KDE file manager" \
-  "thunar|Thunar — XFCE, lightweight" \
-  "nemo|Nemo — Cinnamon, GNOME Files fork"
+if [[ "$DE" == "gnome" ]]; then
+  FILE_MANAGER="nautilus"
+  info "Desktop = GNOME → file manager: Nautilus."
+elif [[ "$DE" == "kde" ]]; then
+  FILE_MANAGER="dolphin"
+  info "Desktop = KDE Plasma → file manager: Dolphin."
+else
+  pick "File manager:" FILE_MANAGER \
+    "nautilus|Nautilus — GNOME Files (recommended)" \
+    "dolphin|Dolphin — KDE file manager" \
+    "thunar|Thunar — XFCE, lightweight" \
+    "nemo|Nemo — Cinnamon, GNOME Files fork"
+fi
 
 # Auto-detect VM via systemd-detect-virt or DMI vendor
 DETECTED_VIRT=$(systemd-detect-virt 2>/dev/null || echo "none")
