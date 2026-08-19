@@ -42,6 +42,7 @@
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
   roudix.terminal = "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
+  roudix.fileManager = "nautilus"; # dolphin, thunar, nautilus, nemo
   roudix.gaming.enable        = true;         # disable to skip Steam, Wine, etc.
   roudix.undervolt.only-amd.enable        = true;         # enable undervolting just for amd gpu.
   roudix.gaming.ananicy.enable = false;
