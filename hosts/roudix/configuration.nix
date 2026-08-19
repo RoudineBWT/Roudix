@@ -26,6 +26,7 @@
     ../../modules/system/waydroid.nix
     ../../modules/system/matrix.nix
     ../../modules/system/appimage.nix
+    ../../modules/system/filemanager.nix
     ../../modules/system/terminal.nix
      inputs.brave-previews.nixosModules.default
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
