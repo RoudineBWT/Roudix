@@ -7,17 +7,13 @@ let
 
   terminalCmd = osConfig.roudix.terminal or "ghostty";
   fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
-
-  browserDefault = osConfig.roudix.browser.default or null;
-  browserCmd     = osConfig.roudix.browser.command or null;
-  browserList    = osConfig.roudix.browser.commands or [ ];
-  # Les navigateurs restants (hors default) reçoivent un bind supplémentaire.
-  extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
+  browserCmd = osConfig.roudix.browser.default or null;
 in
 {
   imports = [
     ../modules/home/mangohud.nix
-    ../modules/home/papirus-folders.nix
+    ../modules/home/papirus-icon.nix
+    ../modules/home/tela-icon.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "mangowc") {
@@ -37,7 +33,8 @@ in
         source = ${mangowcDir}/cfg/appearance.conf
         source = ${mangowcDir}/cfg/animations.conf
         source = ${mangowcDir}/cfg/input.conf
-        source = ${mangowcDir}/cfg/workspace.conf
+        source = ${mangowcDir}/cfg/layout.conf
+        source = ${mangowcDir}/cfg/workspaces.conf
         source = ${mangowcDir}/cfg/monitors.conf
         source = ${mangowcDir}/cfg/rules.conf
         source = ${mangowcDir}/cfg/keybinds.conf
@@ -54,20 +51,23 @@ in
     };
 
     # apps.conf est généré par Nix : override SUPER+Return / SUPER+E / SUPER+B
-    # définis dans keybinds.conf, avec les commandes résolues depuis roudix.*.
+    # (définis dans keybinds.conf) + les env TERM/TERMINAL (définis dans environment.conf),
+    # avec les commandes résolues depuis roudix.*. Sourcé après ces deux fichiers dans
+    # config.conf donc les valeurs ci-dessous gagnent.
+    # Note : SUPER+SHIFT,B (zen-twilight) reste géré à la main dans keybinds.conf,
+    # ce n'est pas un "extra" généré ici.
     xdg.configFile."mango/apps.conf" = {
       force = true;
       text = ''
-        # ── Généré par Nix depuis roudix.terminal / roudix.browser ──
-        # Ce fichier override les binds SUPER+RETURN / SUPER+E / SUPER+B définis dans keybinds.conf,
-        # et ajoute un bind par navigateur supplémentaire de `roudix.browser.commands`.
+        # ── Généré par Nix depuis roudix.terminal / roudix.fileManager / roudix.browser ──
+        env=TERM,${terminalCmd}
+        env=TERMINAL,${terminalCmd}
+
         bind=SUPER,Return,spawn,${terminalCmd}
         bind=SUPER,E,spawn,${fileManagerCmd}
       '' + lib.optionalString (browserCmd != null) ''
         bind=SUPER,B,spawn,${browserCmd}
-      '' + lib.concatStrings (lib.imap1 (i: b: ''
-        bind=SUPER+CTRL+ALT,${toString i},spawn,${b.command}
-      '') extraBrowsers);
+      '';
     };
 
     # ── User overrides file ───────────────────────────────────────────────────
@@ -142,9 +142,6 @@ in
     ]
     ++ lib.optionals (shellType == "noctalia") [
       inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-      (pkgs.writeShellScriptBin "noctalia-ipc" ''
-        exec ${inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/noctalia-shell ipc "$@"
-      '')
     ]
     ;
   };
