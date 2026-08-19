@@ -431,8 +431,8 @@ if [[ -n "$DETECTED_GPU" ]]; then
     # If user manually picked nvidia, ask about laptop
     if [[ "$GPU" == "nvidia" ]]; then
       pick "Laptop with NVIDIA dGPU (Optimus)?" NVIDIA_LAPTOP \
-        "false|No — desktop or standalone NVIDIA" \
-        "true|Yes — laptop Intel/AMD + NVIDIA"
+        "true|Yes — laptop Intel/AMD + NVIDIA" \
+        "false|No — desktop or standalone NVIDIA"
     fi
   fi
 else
@@ -443,16 +443,16 @@ else
     "intel|Intel integrated GPU"
   if [[ "$GPU" == "nvidia" ]]; then
     pick "Laptop avec NVIDIA dGPU (Optimus) ?" NVIDIA_LAPTOP \
-      "false|Non — desktop ou NVIDIA seul" \
-      "true|Oui — laptop Intel/AMD + NVIDIA"
+      "true|Oui — laptop Intel/AMD + NVIDIA" \
+      "false|Non — desktop ou NVIDIA seul"
   fi
 fi
 
 UNDERVOLT="false"
 if [[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]]; then
   pick "Enable AMD GPU undervolting? (lact + amdgpu.ppfeaturemask)" UNDERVOLT \
-    "false|No" \
-    "true|Yes"
+    "true|Yes" \
+    "false|No"
 fi
 
 # Auto-detect CPU vendor
@@ -524,8 +524,8 @@ fi
 
 
 pick "Install Zen Browser?" ZEN \
-  "false|No" \
-  "true|Yes"
+  "true|Yes" \
+  "false|No"
 
 ZEN_SINE="false"
 ZEN_MODS=""
@@ -535,8 +535,8 @@ if [[ "$ZEN" == "true" ]]; then
   read -rp "Mods: " ZEN_MODS
 
   pick "Enable Sine mod manager for Zen Browser?" ZEN_SINE \
-    "false|No" \
-    "true|Yes"
+    "true|Yes" \
+    "false|No"
 
   if [[ "$ZEN_SINE" == "true" ]]; then
     echo -e "\n${BOLD}Sine mods (roudix.zen.sine.mods) — comma-separated, e.g. Arc-2.0,unloaded-tabs:${NC}"
@@ -595,8 +595,8 @@ if [[ "$DETECTED_VIRT" != "none" && "$DETECTED_VIRT" != "" ]]; then
   info "VM auto-detected: ${BOLD}${DETECTED_VIRT}${NC} — vmGuest enabled."
 else
   pick "Running inside a VM?" VM_GUEST \
-    "false|No — bare metal install" \
-    "true|Yes — enable VM guest optimizations"
+    "true|Yes — enable VM guest optimizations" \
+    "false|No — bare metal install"
 fi
 
 pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
@@ -606,13 +606,13 @@ pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
 ANANICY="false"
 if [[ "$GAMING" == "true" ]]; then
   pick "Enable ananicy-cpp? (auto-nice scheduler tweaks for gaming/apps)" ANANICY \
-    "false|No — off by default" \
-    "true|Yes"
+    "true|Yes" \
+    "false|No — off by default"
 fi
 
 pick "Use mesa-git? (bleeding-edge Mesa drivers, AMD/Intel)" MESA_GIT \
-  "false|No — stable Mesa (recommended)" \
-  "true|Yes — mesa-git (latest features/perf, less stable)"
+  "true|Yes — mesa-git (latest features/perf, less stable)" \
+  "false|No — stable Mesa (recommended)"
 
 pick "Timezone:" TIMEZONE \
   "Europe/Brussels|Belgique" \
@@ -799,8 +799,8 @@ if [[ "$RGB" == "openlinkhub" ]]; then
   fi
 
   pick "Enable RAM RGB control? (Corsair DDR4/DDR5 with RGB)" MEMORY_ENABLE \
-    "false|No" \
-    "true|Yes"
+    "true|Yes" \
+    "false|No"
 
   if [[ "$MEMORY_ENABLE" == "true" ]]; then
     pick "RAM type:" MEMORY_TYPE \
@@ -851,16 +851,16 @@ if [[ "$RGB" == "openlinkhub" ]]; then
 fi
 
 pick "Enable GTA Online fix? (blocks IP to play on linux)" GTA_FIX \
-  "false|No" \
-  "true|Yes"
+  "true|Yes" \
+  "false|No"
 
 pick "Enable Flatpak?" FLATPAK \
-  "false|No" \
-  "true|Yes"
+  "true|Yes" \
+  "false|No"
 
 pick "Enable virtualization? (libvirt, virt-manager...)" VIRTUALIZATION \
-  "false|No" \
-  "true|Yes"
+  "true|Yes" \
+  "false|No"
 
 pick "Enable automatic updates?" AUTOUPDATE \
   "true|Yes" \
@@ -883,8 +883,8 @@ pick "Matrix client:" MATRIX_CLIENT \
   "cinny|Cinny — lightweight web-based Matrix client"
 
 pick "Enable Waydroid? (Android container)" WAYDROID \
-  "false|No" \
-  "true|Yes"
+  "true|Yes" \
+  "false|No"
 
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
