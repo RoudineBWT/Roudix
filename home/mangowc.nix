@@ -4,6 +4,15 @@ let
   mangowcDir = if shellType == "dms"
                then dotfiles + "/mangowc-dms"
                else dotfiles + "/mangowc";
+
+  terminalCmd = osConfig.roudix.terminal or "ghostty";
+  fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
+
+  browserDefault = osConfig.roudix.browser.default or null;
+  browserCmd     = osConfig.roudix.browser.command or null;
+  browserList    = osConfig.roudix.browser.commands or [ ];
+  # Les navigateurs restants (hors default) reçoivent un bind supplémentaire.
+  extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
 in
 {
   imports = [
@@ -32,12 +41,33 @@ in
         source = ${mangowcDir}/cfg/monitors.conf
         source = ${mangowcDir}/cfg/rules.conf
         source = ${mangowcDir}/cfg/keybinds.conf
+
+        # ── Terminal / navigateur / gestionnaire de fichiers (résolus depuis roudix.*) ──
+        source = ${config.home.homeDirectory}/.config/mango/apps.conf
+
         source = ${mangowcDir}/cfg/autostart.conf
         source = ${mangowcDir}/cfg/misc.conf
 
         # ── User overrides (injected by Nix) ─────────────────────────────
         source = ${config.home.homeDirectory}/.config/mango/user.conf
       '';
+    };
+
+    # apps.conf est généré par Nix : override SUPER+Return / SUPER+E / SUPER+B
+    # définis dans keybinds.conf, avec les commandes résolues depuis roudix.*.
+    xdg.configFile."mango/apps.conf" = {
+      force = true;
+      text = ''
+        # ── Généré par Nix depuis roudix.terminal / roudix.browser ──
+        # Ce fichier override les binds SUPER+RETURN / SUPER+E / SUPER+B définis dans keybinds.conf,
+        # et ajoute un bind par navigateur supplémentaire de `roudix.browser.commands`.
+        bind=SUPER,Return,spawn,${terminalCmd}
+        bind=SUPER,E,spawn,${fileManagerCmd}
+      '' + lib.optionalString (browserCmd != null) ''
+        bind=SUPER,B,spawn,${browserCmd}
+      '' + lib.concatStrings (lib.imap1 (i: b: ''
+        bind=SUPER+CTRL+ALT,${toString i},spawn,${b.command}
+      '') extraBrowsers);
     };
 
     # ── User overrides file ───────────────────────────────────────────────────
