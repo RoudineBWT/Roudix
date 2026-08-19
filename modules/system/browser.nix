@@ -106,6 +106,17 @@ in {
           Lecture seule, consommée par le module niri pour générer le bind.
         '';
       };
+
+      commands = lib.mkOption {
+        type     = lib.types.listOf (lib.types.attrsOf lib.types.str);
+        readOnly = true;
+        default  = map (n: { name = n; command = browserDefs.${n}.command; }) cfg.browsers;
+        description = ''
+          Liste ordonnée `{ name; command; }` pour chaque navigateur de
+          `roudix.browsers`. Le module niri s'en sert pour générer un bind
+          par navigateur (le premier correspond à `roudix.browser.default`).
+        '';
+      };
     };
 
   };
