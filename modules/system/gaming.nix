@@ -91,6 +91,11 @@ in
     enable = true;
     package = pkgs.ananicy-cpp;
     rulesProvider = pkgs.ananicy-rules-cachyos;
+    settings = {
+      cgroup_load = false;
+      apply_cgroup = false;
+      cgroup_realtime_workaround = lib.mkForce false;
+    };
   };
 
   # ── Paquets système gaming ────────────────────────────────────────────────
