@@ -74,6 +74,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.desktop.type", state.desktop)
     t = _sub_string(t, "roudix.desktop.shell", state.desktop_shell)
     t = _sub_string(t, "roudix.terminal", state.terminal)
+    t = _sub_string(t, "roudix.fileManager", state.file_manager)
     t = _sub_string(t, "roudix.shell", state.default_shell)
     t = _sub_bool(t, "roudix.vmGuest.enable", state.vm_guest)
     t = _sub_bool(t, "roudix.gaming.enable", state.gaming)

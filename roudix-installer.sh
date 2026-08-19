@@ -573,6 +573,12 @@ pick "Terminal emulator:" TERMINAL \
   "foot|Foot — lightweight, Wayland-native" \
   "wezterm|WezTerm — GPU-accelerated, cross-platform"
 
+pick "File manager:" FILE_MANAGER \
+  "nautilus|Nautilus — GNOME Files (recommended)" \
+  "dolphin|Dolphin — KDE file manager" \
+  "thunar|Thunar — XFCE, lightweight" \
+  "nemo|Nemo — Cinnamon, GNOME Files fork"
+
 # Auto-detect VM via systemd-detect-virt or DMI vendor
 DETECTED_VIRT=$(systemd-detect-virt 2>/dev/null || echo "none")
 if [[ "$DETECTED_VIRT" != "none" && "$DETECTED_VIRT" != "" ]]; then
@@ -893,6 +899,7 @@ sed -i "s/roudix\.zen\.sine\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.s
 sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.shell = \"${DESKTOP_SHELL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.terminal[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.terminal = \"${TERMINAL}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.fileManager[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.fileManager = \"${FILE_MANAGER}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.shell = \"${SHELL_DEFAULT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/roudix/local.nix
@@ -939,6 +946,7 @@ echo -e "
   ${BOLD}Desktop shell :${NC} $DESKTOP_SHELL
   ${BOLD}Shell         :${NC} $SHELL_DEFAULT
   ${BOLD}Terminal      :${NC} $TERMINAL
+  ${BOLD}File manager  :${NC} $FILE_MANAGER
   ${BOLD}VM Guest      :${NC} $VM_GUEST
   ${BOLD}Gaming        :${NC} $GAMING
   ${BOLD}Ananicy       :${NC} $([ "$GAMING" == "true" ] && echo "$ANANICY" || echo "n/a")

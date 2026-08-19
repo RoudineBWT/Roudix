@@ -124,6 +124,15 @@ def _terminals():
     ]
 
 
+def _file_managers():
+    return [
+        ("nautilus", L("Nautilus — GNOME Files (recommandé)", "Nautilus — GNOME Files (recommended)")),
+        ("dolphin", L("Dolphin — KDE", "Dolphin — KDE")),
+        ("thunar", L("Thunar — XFCE, léger", "Thunar — XFCE, lightweight")),
+        ("nemo", L("Nemo — Cinnamon", "Nemo — Cinnamon")),
+    ]
+
+
 def _rgb_options():
     return [
         ("openlinkhub", "OpenLinkHub — Corsair (iCUE Link, Commander...)"),
@@ -396,6 +405,13 @@ class OptionsPage(Adw.NavigationPage):
             L("Terminal", "Terminal"), _terminals(), state.terminal
         )
         desktop_group.add(self.terminal_row)
+
+        self.file_manager_row = self._combo(
+            L("Gestionnaire de fichiers", "File manager"),
+            _file_managers(),
+            state.file_manager,
+        )
+        desktop_group.add(self.file_manager_row)
         box.append(desktop_group)
         self._sync_shell_row()
 
@@ -698,6 +714,7 @@ class OptionsPage(Adw.NavigationPage):
         s.desktop_shell = self._selected_value(self.shell_row)
         s.default_shell = self._selected_value(self.default_shell_row)
         s.terminal = self._selected_value(self.terminal_row)
+        s.file_manager = self._selected_value(self.file_manager_row)
 
         s.vm_guest = self.vm_guest_row.get_active()
         s.gaming = self.gaming_row.get_active()
