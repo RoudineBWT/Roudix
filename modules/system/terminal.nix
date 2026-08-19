@@ -12,7 +12,8 @@ with lib;
     # de gnome-terminal. Toutes les valeurs de l'enum ci-dessus sont
     # supportées par l'extension (ghostty, kitty, alacritty, foot,
     # wezterm, ptyxis, konsole).
-    programs.nautilus-open-any-terminal = {
+    # Ignoré sur KDE : Dolphin n'utilise pas Nautilus/cette extension.
+    programs.nautilus-open-any-terminal = mkIf (config.roudix.desktop.type != "kde") {
       enable   = true;
       terminal = config.roudix.terminal;
     };
