@@ -48,6 +48,30 @@ pick() {
   done
 }
 
+pick_bool() {
+  # pick_bool "Question" VAR_NAME "true desc" "false desc"
+  # Yes/no questions only — numbered false=0, true=1 (the usual boolean
+  # convention), unlike pick() above which stays 1-based for every other
+  # multi-choice menu (GPU, timezone, browser...).
+  local prompt="$1"
+  local var_name="$2"
+  local true_desc="$3"
+  local false_desc="$4"
+
+  echo -e "\n${BOLD}$prompt${NC}"
+  printf "  ${CYAN}%2d)${NC} %-6s %s\n" 0 "false" "$false_desc"
+  printf "  ${CYAN}%2d)${NC} %-6s %s\n" 1 "true" "$true_desc"
+
+  while true; do
+    read -rp "Choice [0-1]: " choice
+    case "$choice" in
+      0) printf -v "$var_name" '%s' "false"; break ;;
+      1) printf -v "$var_name" '%s' "true"; break ;;
+      *) warn "Invalid choice, please try again." ;;
+    esac
+  done
+}
+
 nix_list_from_csv() {
   # "Arc-2.0, unloaded-tabs ,context-menu-icons" -> '"Arc-2.0" "unloaded-tabs" "context-menu-icons"'
   # Used for roudix.zen.mods / roudix.zen.sine.mods (comma-separated free-text input).
@@ -430,9 +454,8 @@ if [[ -n "$DETECTED_GPU" ]]; then
       "intel|Intel integrated GPU"
     # If user manually picked nvidia, ask about laptop
     if [[ "$GPU" == "nvidia" ]]; then
-      pick "Laptop with NVIDIA dGPU (Optimus)?" NVIDIA_LAPTOP \
-        "true|Yes — laptop Intel/AMD + NVIDIA" \
-        "false|No — desktop or standalone NVIDIA"
+      pick_bool "Laptop with NVIDIA dGPU (Optimus)?" NVIDIA_LAPTOP \
+        "Yes — laptop Intel/AMD + NVIDIA" "No — desktop or standalone NVIDIA"
     fi
   fi
 else
@@ -442,17 +465,15 @@ else
     "nvidia|NVIDIA GPU" \
     "intel|Intel integrated GPU"
   if [[ "$GPU" == "nvidia" ]]; then
-    pick "Laptop avec NVIDIA dGPU (Optimus) ?" NVIDIA_LAPTOP \
-      "true|Oui — laptop Intel/AMD + NVIDIA" \
-      "false|Non — desktop ou NVIDIA seul"
+    pick_bool "Laptop avec NVIDIA dGPU (Optimus) ?" NVIDIA_LAPTOP \
+      "Oui — laptop Intel/AMD + NVIDIA" "Non — desktop ou NVIDIA seul"
   fi
 fi
 
 UNDERVOLT="false"
 if [[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]]; then
-  pick "Enable AMD GPU undervolting? (lact + amdgpu.ppfeaturemask)" UNDERVOLT \
-    "true|Yes" \
-    "false|No"
+  pick_bool "Enable AMD GPU undervolting? (lact + amdgpu.ppfeaturemask)" UNDERVOLT \
+    "Yes" "No"
 fi
 
 # Auto-detect CPU vendor
@@ -523,9 +544,8 @@ if [[ "$BROWSER" == "brave" ]]; then
 fi
 
 
-pick "Install Zen Browser?" ZEN \
-  "true|Yes" \
-  "false|No"
+pick_bool "Install Zen Browser?" ZEN \
+  "Yes" "No"
 
 ZEN_SINE="false"
 ZEN_MODS=""
@@ -534,9 +554,8 @@ if [[ "$ZEN" == "true" ]]; then
   echo -e "\n${BOLD}Zen mods (roudix.zen.mods) — comma-separated, leave empty for none:${NC}"
   read -rp "Mods: " ZEN_MODS
 
-  pick "Enable Sine mod manager for Zen Browser?" ZEN_SINE \
-    "true|Yes" \
-    "false|No"
+  pick_bool "Enable Sine mod manager for Zen Browser?" ZEN_SINE \
+    "Yes" "No"
 
   if [[ "$ZEN_SINE" == "true" ]]; then
     echo -e "\n${BOLD}Sine mods (roudix.zen.sine.mods) — comma-separated, e.g. Arc-2.0,unloaded-tabs:${NC}"
@@ -594,25 +613,21 @@ if [[ "$DETECTED_VIRT" != "none" && "$DETECTED_VIRT" != "" ]]; then
   VM_GUEST="true"
   info "VM auto-detected: ${BOLD}${DETECTED_VIRT}${NC} — vmGuest enabled."
 else
-  pick "Running inside a VM?" VM_GUEST \
-    "true|Yes — enable VM guest optimizations" \
-    "false|No — bare metal install"
+  pick_bool "Running inside a VM?" VM_GUEST \
+    "Yes — enable VM guest optimizations" "No — bare metal install"
 fi
 
-pick "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
-  "true|Yes" \
-  "false|No"
+pick_bool "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
+  "Yes" "No"
 
 ANANICY="false"
 if [[ "$GAMING" == "true" ]]; then
-  pick "Enable ananicy-cpp? (auto-nice scheduler tweaks for gaming/apps)" ANANICY \
-    "true|Yes" \
-    "false|No — off by default"
+  pick_bool "Enable ananicy-cpp? (auto-nice scheduler tweaks for gaming/apps)" ANANICY \
+    "Yes" "No — off by default"
 fi
 
-pick "Use mesa-git? (bleeding-edge Mesa drivers, AMD/Intel)" MESA_GIT \
-  "true|Yes — mesa-git (latest features/perf, less stable)" \
-  "false|No — stable Mesa (recommended)"
+pick_bool "Use mesa-git? (bleeding-edge Mesa drivers, AMD/Intel)" MESA_GIT \
+  "Yes — mesa-git (latest features/perf, less stable)" "No — stable Mesa (recommended)"
 
 pick "Timezone:" TIMEZONE \
   "Europe/Brussels|Belgique" \
@@ -798,9 +813,8 @@ if [[ "$RGB" == "openlinkhub" ]]; then
     nix-env -iA nixos.dmidecode 2>/dev/null || warn "Could not install dmidecode — SKU detection will be manual."
   fi
 
-  pick "Enable RAM RGB control? (Corsair DDR4/DDR5 with RGB)" MEMORY_ENABLE \
-    "true|Yes" \
-    "false|No"
+  pick_bool "Enable RAM RGB control? (Corsair DDR4/DDR5 with RGB)" MEMORY_ENABLE \
+    "Yes" "No"
 
   if [[ "$MEMORY_ENABLE" == "true" ]]; then
     pick "RAM type:" MEMORY_TYPE \
@@ -850,21 +864,17 @@ if [[ "$RGB" == "openlinkhub" ]]; then
   fi
 fi
 
-pick "Enable GTA Online fix? (blocks IP to play on linux)" GTA_FIX \
-  "true|Yes" \
-  "false|No"
+pick_bool "Enable GTA Online fix? (blocks IP to play on linux)" GTA_FIX \
+  "Yes" "No"
 
-pick "Enable Flatpak?" FLATPAK \
-  "true|Yes" \
-  "false|No"
+pick_bool "Enable Flatpak?" FLATPAK \
+  "Yes" "No"
 
-pick "Enable virtualization? (libvirt, virt-manager...)" VIRTUALIZATION \
-  "true|Yes" \
-  "false|No"
+pick_bool "Enable virtualization? (libvirt, virt-manager...)" VIRTUALIZATION \
+  "Yes" "No"
 
-pick "Enable automatic updates?" AUTOUPDATE \
-  "true|Yes" \
-  "false|No"
+pick_bool "Enable automatic updates?" AUTOUPDATE \
+  "Yes" "No"
 
 AUTOUPDATE_INTERVAL="1h"
 if [[ "$AUTOUPDATE" == "true" ]]; then
@@ -882,9 +892,8 @@ pick "Matrix client:" MATRIX_CLIENT \
   "element|Element Desktop — full-featured Matrix client" \
   "cinny|Cinny — lightweight web-based Matrix client"
 
-pick "Enable Waydroid? (Android container)" WAYDROID \
-  "true|Yes" \
-  "false|No"
+pick_bool "Enable Waydroid? (Android container)" WAYDROID \
+  "Yes" "No"
 
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
