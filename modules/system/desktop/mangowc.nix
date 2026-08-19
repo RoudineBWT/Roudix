@@ -3,6 +3,7 @@ let
   isMango     = config.roudix.desktop.type == "mangowc";
   shellType   = config.roudix.desktop.shell or "noctalia";
   isDms       = shellType == "dms";
+  isNoctalia  = shellType == "noctalia";
   needsPolkit = !isDms;
 in
 {
@@ -22,6 +23,18 @@ in
       systemd.enable = true;
     };
 
+    # ── Greeter Noctalia (remplace ly quand shell == noctalia) ────────────
+    programs.noctalia-greeter = lib.mkIf isNoctalia {
+      enable = true;
+      greeter-args = "--session mangowc";
+      settings = {
+        keyboard = {
+          layout  = "us";
+          variant = "intl";
+        };
+      };
+    };
+
     systemd.user.services.polkit-gnome = lib.mkIf needsPolkit {
       description = "GNOME Polkit authentication agent";
       wantedBy = [ "graphical-session.target" ];
@@ -36,12 +49,8 @@ in
     };
 
     services.gnome.gnome-keyring.enable = true;
-    security.pam.services.ly.enableGnomeKeyring = true;
-
-    programs.nautilus-open-any-terminal = {
-      enable   = true;
-      terminal = "ghostty";
-    };
+    security.pam.services.ly.enableGnomeKeyring     = lib.mkIf (!isNoctalia) true;
+    security.pam.services.greetd.enableGnomeKeyring = lib.mkIf isNoctalia true;
 
     environment.systemPackages = lib.optionals needsPolkit [ pkgs.polkit_gnome ];
   };
