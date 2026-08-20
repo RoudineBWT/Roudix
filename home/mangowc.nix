@@ -34,8 +34,8 @@ in
         source = ${mangowcDir}/cfg/animations.conf
         source = ${mangowcDir}/cfg/input.conf
         source = ${mangowcDir}/cfg/layout.conf
-        source = ${mangowcDir}/cfg/workspaces.conf
         source = ${mangowcDir}/cfg/monitors.conf
+        source = ${mangowcDir}/cfg/workspaces.conf
         source = ${mangowcDir}/cfg/rules.conf
         source = ${mangowcDir}/cfg/keybinds.conf
 
