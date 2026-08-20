@@ -41,6 +41,23 @@ in
     #   recursive = true;
     #  };
 
+    # ── Plugins Hyprland ─────────────────────────────────────────────────────
+    # hyprscroller : REQUIS — layout.lua active `general.layout = "scroller"` et
+    # configure `plugin.scroller.*`, mais sans cette déclaration le plugin n'est
+    # jamais chargé et le layout scroller ne fonctionne pas.
+    # Package désormais natif dans nixpkgs unstable (plus besoin d'un flake input
+    # séparé comme pour les plugins "first-party" de hyprland-plugins).
+    #
+    # hypr-dynamic-cursors : curseur qui s'incline/accélère selon le mouvement,
+    # cohérent avec le côté "fluide" des animations spring déjà configurées.
+    # borders-plus-plus : double bordure — permet d'ajouter un liseré extérieur
+    # en plus du dégradé teal déjà défini sur active_border dans decorations.lua.
+    wayland.windowManager.hyprland.plugins = [
+      pkgs.hyprlandPlugins.hyprscroller
+      pkgs.hyprlandPlugins.hypr-dynamic-cursors
+      pkgs.hyprlandPlugins.borders-plus-plus
+    ];
+
     # ── Packages ─────────────────────────────────────────────────────────────
     home.packages = with pkgs; [
       wl-clipboard
