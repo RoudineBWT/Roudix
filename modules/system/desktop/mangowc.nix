@@ -20,7 +20,7 @@ in
           extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
           config.common.default = "wlr";
           # Explicitly set screencast to wlr to avoid gtk taking over
-          config.common."org.freedesktop.impl.portal.Screencast" = "wlr";
+          config.common."org.freedesktop.impl.portal.ScreenCast" = "wlr";
         };
 
     programs.dank-material-shell = lib.mkIf isDms {
