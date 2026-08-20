@@ -14,11 +14,14 @@ in
           enable = true;
         };
 
-    xdg.portal = {
-      enable = true;
-      extraPortals = with pkgs; [ xdg-desktop-portal-gtk xdg-desktop-portal-wlr ];
-      config.common.default = [ "wlr" "gtk" ];
-    };
+        xdg.portal = {
+          enable = true;
+          wlr.enable = true;
+          extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+          config.common.default = "wlr";
+          # Explicitly set screencast to wlr to avoid gtk taking over
+          config.common."org.freedesktop.impl.portal.Screencast" = "wlr";
+        };
 
     programs.dank-material-shell = lib.mkIf isDms {
       enable = true;
