@@ -42,23 +42,9 @@ in
     #  };
 
     # ── Plugins Hyprland ─────────────────────────────────────────────────────
-    # IMPORTANT : depuis Hyprland 0.55+, si un hyprland.lua existe, il est chargé
-    # à la place de hyprland.conf (choix fait une seule fois au démarrage). Or
-    # l'option HM `wayland.windowManager.hyprland.plugins` écrit ses `plugin = ...`
-    # dans le hyprland.conf généré — qui n'est donc JAMAIS lu ici. On la garde
-    # quand même pour forcer la construction des paquets dans le store/closure,
-    # mais le chargement réel doit se faire depuis le Lua via hl.plugin.load(path)
-    # (et non hl.plugin(path) — hl.plugin est un namespace/table, pas une fonction).
-    #
-    # hyprscroller a été retiré : plus maintenu upstream, et "scrolling" est
-    # désormais un layout NATIF de Hyprland (au même titre que dwindle/master),
-    # plus besoin de plugin pour ça — voir layout.lua. hyprscrolling (plugin
-    # officiel hyprwm/hyprland-plugins) ajoute juste des options en plus
-    # (column_width, fullscreen_on_one_column) par-dessus ce layout natif.
     xdg.configFile."hypr/config/nix-plugins.lua".text =
       let
         hyprPlugins = [
-          pkgs.hyprlandPlugins.hypr-dynamic-cursors
           pkgs.hyprlandPlugins.borders-plus-plus
         ];
 
@@ -84,7 +70,6 @@ in
         header + lib.concatMapStrings loadPluginSoFrom hyprPlugins;
 
     wayland.windowManager.hyprland.plugins = [
-      pkgs.hyprlandPlugins.hypr-dynamic-cursors
       pkgs.hyprlandPlugins.borders-plus-plus
     ];
 
