@@ -10,7 +10,9 @@ in
   imports = [ ./ly.nix ];
 
   config = lib.mkIf isMango {
-    programs.mangowc.enable = true;
+    programs.mango = {
+          enable = true;
+        };
 
     xdg.portal = {
       enable = true;
