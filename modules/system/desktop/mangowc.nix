@@ -21,6 +21,15 @@ in
           config.common.default = "wlr";
           # Explicitly set screencast to wlr to avoid gtk taking over
           config.common."org.freedesktop.impl.portal.ScreenCast" = "wlr";
+
+          # xdg-desktop-portal-wlr.service tourne avec un PATH minimal
+          # (coreutils only, via son propre overrides.conf) : il ne trouve
+          # jamais slurp/rofi/etc installés dans le profil home-manager.
+          # Chemin absolu obligatoire pour que le chooser fonctionne.
+          wlr.settings.screencast = {
+            chooser_type = "simple";
+            chooser_cmd  = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
+          };
         };
 
     programs.dank-material-shell = lib.mkIf isDms {

@@ -39,14 +39,6 @@ in
       recursive = true;
     };
 
-    xdg.configFile."xdg-desktop-portal-wlr/config" = {
-      text = ''
-        [screencast]
-        chooser_type=simple
-        chooser_cmd=${pkgs.slurp}/bin/slurp -f %o -o
-      '';
-    };
-
     # mango.conf est généré par Nix : chemins absolus vers le nix store
     # + source absolu vers user.conf pour éviter tout conflit avec le récursif.
     xdg.configFile."mango/config.conf" = {
