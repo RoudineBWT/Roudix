@@ -25,7 +25,10 @@ config = lib.mkIf isHyprland {
   # ── Greeter Noctalia (si shell == noctalia) ──────────────────────────────
   programs.noctalia-greeter = lib.mkIf isNoctalia {
     enable = true;
-    greeter-args = "--session hyprland";
+    # "hyprland" tout court bypass UWSM (pas de graphical-session.target
+    # atteint → xdg-desktop-portal.service échoue en dépendance). Il faut
+    # la session générée par withUWSM = true : hyprland-uwsm.desktop.
+    greeter-args = "--session hyprland-uwsm";
     settings = {
       keyboard = {
         layout  = "us";
