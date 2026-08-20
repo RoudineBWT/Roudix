@@ -77,12 +77,10 @@ in
       ''
       + loadPluginSoFrom pkgs.hyprlandPlugins.hypr-dynamic-cursors
       + loadPluginSoFrom pkgs.hyprlandPlugins.borders-plus-plus
-      + loadPluginSoFrom pkgs.hyprlandPlugins.hyprscrolling;
 
     wayland.windowManager.hyprland.plugins = [
       pkgs.hyprlandPlugins.hypr-dynamic-cursors
       pkgs.hyprlandPlugins.borders-plus-plus
-      pkgs.hyprlandPlugins.hyprscrolling
     ];
 
     # ── Packages ─────────────────────────────────────────────────────────────
