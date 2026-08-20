@@ -44,10 +44,6 @@ in
     xdg.configFile."mango/config.conf" = {
       force = true;
       text = ''
-        # ── Bootstrap systemd/dbus (nécessaire pour xdg-desktop-portal, cf. mango-session.target) ──
-        exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-        exec-once=systemctl --user start mango-session.target
-
         source = ${mangowcDir}/cfg/environment.conf
         source = ${mangowcDir}/cfg/appearance.conf
         source = ${mangowcDir}/cfg/animations.conf
