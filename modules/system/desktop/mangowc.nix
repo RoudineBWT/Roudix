@@ -51,6 +51,7 @@ in
     };
 
     services.gnome.gnome-keyring.enable = true;
+    services.dbus.enable = true;
     security.pam.services.ly.enableGnomeKeyring     = lib.mkIf (!isNoctalia) true;
     security.pam.services.greetd.enableGnomeKeyring = lib.mkIf isNoctalia true;
 
