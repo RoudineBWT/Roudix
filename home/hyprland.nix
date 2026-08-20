@@ -57,6 +57,11 @@ in
     # (column_width, fullscreen_on_one_column) par-dessus ce layout natif.
     xdg.configFile."hypr/config/nix-plugins.lua".text =
       let
+        hyprPlugins = [
+          pkgs.hyprlandPlugins.hypr-dynamic-cursors
+          pkgs.hyprlandPlugins.borders-plus-plus
+        ];
+
         loadPluginSoFrom = pkg: ''
           do
               local p = io.popen('find "${pkg}/lib" -maxdepth 1 -name "*.so" 2>/dev/null')
@@ -68,15 +73,15 @@ in
               end
           end
         '';
+
+        header = ''
+          -- Généré par hyprland.nix — NE PAS ÉDITER À LA MAIN.
+          -- Charge les plugins Hyprland construits par Nix. Doit être require()
+          -- en tout premier dans hyprland.lua, avant tout hl.config() qui touche
+          -- aux clés plugin.dynamic_cursors / plugin.borders_plus_plus / plugin.hyprscrolling.
+        '';
       in
-      ''
-        -- Généré par hyprland.nix — NE PAS ÉDITER À LA MAIN.
-        -- Charge les plugins Hyprland construits par Nix. Doit être require()
-        -- en tout premier dans hyprland.lua, avant tout hl.config() qui touche
-        -- aux clés plugin.dynamic_cursors / plugin.borders_plus_plus / plugin.hyprscrolling.
-      ''
-      + loadPluginSoFrom pkgs.hyprlandPlugins.hypr-dynamic-cursors
-      + loadPluginSoFrom pkgs.hyprlandPlugins.borders-plus-plus
+        header + lib.concatMapStrings loadPluginSoFrom hyprPlugins;
 
     wayland.windowManager.hyprland.plugins = [
       pkgs.hyprlandPlugins.hypr-dynamic-cursors
