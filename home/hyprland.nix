@@ -81,12 +81,10 @@ in
         -- en tout premier dans hyprland.lua, avant tout hl.config() qui touche
         -- aux clés plugin.scroller / plugin["dynamic-cursors"] / plugin["borders-plus-plus"].
       ''
-      + loadPluginSoFrom pkgs.hyprlandPlugins.hyprscroller
       + loadPluginSoFrom pkgs.hyprlandPlugins.hypr-dynamic-cursors
       + loadPluginSoFrom pkgs.hyprlandPlugins.borders-plus-plus;
 
     wayland.windowManager.hyprland.plugins = [
-      pkgs.hyprlandPlugins.hyprscroller
       pkgs.hyprlandPlugins.hypr-dynamic-cursors
       pkgs.hyprlandPlugins.borders-plus-plus
     ];
