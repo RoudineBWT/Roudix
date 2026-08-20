@@ -10,10 +10,7 @@ in
   imports = [ ./ly.nix ];
 
   config = lib.mkIf isMango {
-    programs.mangowc = {
-      enable = true;
-      systemd.enable = true;
-    };
+    programs.mangowc.enable = true;
 
     xdg.portal = {
       enable = true;
