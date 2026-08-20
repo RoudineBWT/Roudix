@@ -47,20 +47,14 @@ in
     # l'option HM `wayland.windowManager.hyprland.plugins` écrit ses `plugin = ...`
     # dans le hyprland.conf généré — qui n'est donc JAMAIS lu ici. On la garde
     # quand même pour forcer la construction des paquets dans le store/closure,
-    # mais le chargement réel doit se faire depuis le Lua via hl.plugin(path).
+    # mais le chargement réel doit se faire depuis le Lua via hl.plugin.load(path)
+    # (et non hl.plugin(path) — hl.plugin est un namespace/table, pas une fonction).
     #
-    # On génère donc un fichier Lua à part (nix-plugins.lua) avec les vrais
-    # chemins Nix store injectés par interpolation. Il découvre le .so au
-    # runtime avec `find` plutôt que de deviner le nom de fichier exact (celui-ci
-    # a déjà changé une fois côté nixpkgs pour hyprscroller — mieux vaut ne pas
-    # le hardcoder).
-    #
-    # CÔTÉ DOTFILES (hyprland.lua, hors gestion Nix) : ajoute impérativement
-    #   require("config.nix-plugins")
-    # comme TOUT PREMIER require, avant colors/decorations/layout — sinon les
-    # clés `plugin.scroller.*`, `plugin["dynamic-cursors"]` et
-    # `plugin["borders-plus-plus"]` resteront "unknown config key" même une fois
-    # le plugin chargé, car hl.config() aura été appelé avant hl.plugin().
+    # hyprscroller a été retiré : plus maintenu upstream, et "scrolling" est
+    # désormais un layout NATIF de Hyprland (au même titre que dwindle/master),
+    # plus besoin de plugin pour ça — voir layout.lua. hyprscrolling (plugin
+    # officiel hyprwm/hyprland-plugins) ajoute juste des options en plus
+    # (column_width, fullscreen_on_one_column) par-dessus ce layout natif.
     xdg.configFile."hypr/config/nix-plugins.lua".text =
       let
         loadPluginSoFrom = pkg: ''
@@ -68,7 +62,7 @@ in
               local p = io.popen('find "${pkg}/lib" -maxdepth 1 -name "*.so" 2>/dev/null')
               if p then
                   for so in p:lines() do
-                      hl.plugin(so)
+                      hl.plugin.load(so)
                   end
                   p:close()
               end
@@ -79,14 +73,16 @@ in
         -- Généré par hyprland.nix — NE PAS ÉDITER À LA MAIN.
         -- Charge les plugins Hyprland construits par Nix. Doit être require()
         -- en tout premier dans hyprland.lua, avant tout hl.config() qui touche
-        -- aux clés plugin.scroller / plugin["dynamic-cursors"] / plugin["borders-plus-plus"].
+        -- aux clés plugin.dynamic_cursors / plugin.borders_plus_plus / plugin.hyprscrolling.
       ''
       + loadPluginSoFrom pkgs.hyprlandPlugins.hypr-dynamic-cursors
-      + loadPluginSoFrom pkgs.hyprlandPlugins.borders-plus-plus;
+      + loadPluginSoFrom pkgs.hyprlandPlugins.borders-plus-plus
+      + loadPluginSoFrom pkgs.hyprlandPlugins.hyprscrolling;
 
     wayland.windowManager.hyprland.plugins = [
       pkgs.hyprlandPlugins.hypr-dynamic-cursors
       pkgs.hyprlandPlugins.borders-plus-plus
+      pkgs.hyprlandPlugins.hyprscrolling
     ];
 
     # ── Packages ─────────────────────────────────────────────────────────────
