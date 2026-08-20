@@ -141,7 +141,7 @@
     brave-previews,
     roudix-caches,
     nix-gaming-edge,
-    mango
+    mango,
     ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
