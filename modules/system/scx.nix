@@ -21,7 +21,7 @@ let
   # roudix-scheduler vit maintenant dans pkgs/roudix-scheduler-switcher/,
   # exposé via l'overlay du flake (voir flake.nix) — ici on se contente
   # de le référencer comme n'importe quel autre paquet.
-  roudix-scheduler-switcher = pkgs.roudix-scheduler-switcher;
+  roudix-scheduler-switcher = inputs.self.packages.${pkgs.system}.roudix-scheduler;
 
   # Fichier où scx-switch retient le dernier scheduler choisi manuellement,
   # utilisé uniquement quand ananicy-cpp est désactivé (roudix.gaming.ananicy.enable = false).
@@ -240,7 +240,7 @@ in
     pkgs.scx.full   # scx_bpfland, scx_lavd, scx_flash, etc.
     scx-switch
     scx-restore
-    roudix-scheduler
+    roudix-scheduler-switcher
   ];
 
   # Dossier pour le state file (dernier scheduler choisi, hors ananicy)
