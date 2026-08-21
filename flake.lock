@@ -610,16 +610,16 @@
     },
     "nixpkgs-scx": {
       "locked": {
-        "lastModified": 1787352310,
-        "narHash": "sha256-wxXTHPB+ZEaURBtLVTDnp1LGbJTzLVvSKnNqOJkeNgQ=",
+        "lastModified": 1787335676,
+        "narHash": "sha256-560O++SuQEUdb+SAh4/jN8zOEENzqIghFUzSh3ySlug=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "45d15e2420066cedaaacae48e03c04b7ff53d321",
+        "rev": "c6f9a47aa1ff065ebf4b7c41f27ef33ec3dd6669",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "master",
+        "ref": "staging-next",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -818,11 +818,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1787352580,
-        "narHash": "sha256-vbCM932y+GJMe+L5Pez/f37ZNw9E33h6ZF5XkQoHZwg=",
+        "lastModified": 1787353562,
+        "narHash": "sha256-uUs/Wo41gIOmBwlUVpcit0zk8jostsiG6wiWmgrx9Ds=",
         "owner": "RoudineBWT",
         "repo": "Roudix-caches",
-        "rev": "b08c5e86b8973d757e93b2c85820356e727d5d5d",
+        "rev": "27acb2e480d7c1f7341e30154614ff99287b27d2",
         "type": "github"
       },
       "original": {
