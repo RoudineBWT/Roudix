@@ -150,7 +150,9 @@
     roudixSwitcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-switcher {};
     roudixBranding  = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-branding {};
     roudix-kernel-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-kernel-switcher {};
-    roudix-scheduler-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-scheduler-switcher {};
+    roudix-scheduler-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-scheduler-switcher {
+      scxctl = roudix-caches.packages.x86_64-linux.scxctl;
+    };
     specialArgs = { inherit inputs username roudixSwitcher roudixBranding roudix-kernel-switcher roudix-scheduler-switcher ; dotfiles = self + /dotfiles; };
   in
   {

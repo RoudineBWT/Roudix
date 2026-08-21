@@ -23,11 +23,16 @@ stdenv.mkDerivation {
   buildInputs = [ gtk4 libadwaita ];
 
   installPhase = ''
-    mkdir -p $out/bin $out/share/applications
+    mkdir -p $out/bin $out/share/applications $out/share/icons/hicolor/scalable/apps
 
     install -Dm755 $src $out/bin/roudix-scheduler
     substituteInPlace $out/bin/roudix-scheduler \
       --replace "#!/usr/bin/env python3" "#!${pythonEnv}/bin/python3"
+
+    install -Dm644 ${./io.roudix.scheduler-dark.svg} \
+      $out/share/icons/hicolor/scalable/apps/io.roudix.scheduler.svg
+    install -Dm644 ${./io.roudix.scheduler-light.svg} \
+      $out/share/icons/hicolor/scalable/apps/io.roudix.scheduler-light.svg
 
     wrapProgram $out/bin/roudix-scheduler \
       --prefix PATH : ${lib.makeBinPath [ scxctl systemd ]} \
@@ -39,7 +44,7 @@ stdenv.mkDerivation {
     Name=Roudix Scheduler
     Comment=Choose and apply an SCX scheduler
     Exec=$out/bin/roudix-scheduler
-    Icon=utilities-system-monitor
+    Icon=io.roudix.scheduler
     Categories=System;Settings;
     EOF
   '';
