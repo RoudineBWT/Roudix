@@ -163,33 +163,42 @@ def save_state(scheduler: str, profile: str, extra: str):
 
 
 # ── Current running state (live, read-only) ───────────────────────────────────
+# `scxctl get` renvoie du texte simple : "running <sched> in <mode> mode"
+# (ex: "running bpfland in auto mode"), et "running unknown in auto mode"
+# quand rien ne tourne (CurrentScheduler D-Bus vaut "unknown"). Pas de
+# sous-commande `status` ni de flag `--json` chez scxctl — à ne pas inventer.
+
+_SCXCTL_GET_RE = re.compile(r"running\s+(\S+)\s+in\s+(\S+)\s+mode", re.IGNORECASE)
+
 
 def get_current_scx() -> tuple[str, str]:
     if not has_scxctl():
         return "none", "Auto"
     try:
         out = subprocess.check_output(
-            ["scxctl", "status", "--json"], text=True, stderr=subprocess.DEVNULL
-        )
-        data  = json.loads(out)
-        sched = data.get("scheduler", "").replace("scx_", "")
-        mode  = data.get("mode", "auto")
-        if sched not in SCX_SCHEDULERS:
-            sched = "none"
-        mode_map = {v: k for k, v in PROFILE_MODE.items() if v}
-        profile = mode_map.get(mode.lower(), "Auto")
-        return sched, profile
-    except Exception:
-        try:
-            out = subprocess.check_output(
-                ["scxctl", "status"], text=True, stderr=subprocess.DEVNULL
-            )
-            m = re.search(r"[Ss]cheduler[:\s]+scx_(\w+)", out)
-            if m and m.group(1) in SCX_SCHEDULERS:
-                return m.group(1), "Auto"
-        except Exception:
-            pass
+            ["scxctl", "get"], text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except Exception as e:
+        log.debug("scxctl get failed: %s", e)
         return "none", "Auto"
+
+    m = _SCXCTL_GET_RE.search(out)
+    if not m:
+        log.debug("scxctl get: unrecognized output: %r", out)
+        return "none", "Auto"
+
+    sched = m.group(1).strip().lower().removeprefix("scx_")
+    mode  = m.group(2).strip().lower()
+
+    if sched in ("unknown", "none", ""):
+        return "none", "Auto"
+    if sched not in SCX_SCHEDULERS:
+        log.debug("scxctl get: unrecognized scheduler name: %r", sched)
+        return "none", "Auto"
+
+    mode_map = {v: k for k, v in PROFILE_MODE.items() if v}
+    profile = mode_map.get(mode, "Auto")
+    return sched, profile
 
 
 def is_ananicy_enabled() -> bool:
@@ -448,6 +457,9 @@ class App(Adw.Application):
     def __init__(self):
         super().__init__(application_id="io.roudix.scheduler",
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
+        # L'icône (io.roudix.scheduler.svg) est résolue automatiquement par le
+        # compositeur/DE via l'application_id ↔ le .desktop installé par le
+        # package Nix, à condition qu'il matche bien "io.roudix.scheduler".
         self.connect("activate", lambda app: SchedulerWindow(app).present())
 
 
