@@ -232,7 +232,7 @@ in
   environment.systemPackages = [
     scx-polkit-policy
     scxctl
-    inputs.roudix-caches.packages.x86_64-linux.scx.full   # scx_bpfland, scx_lavd, scx_flash, etc.
+    pkgs.scx.full   # scx_bpfland, scx_lavd, scx_flash, etc.
     scx-switch
     scx-restore
     roudix-scheduler-switcher
