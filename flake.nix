@@ -114,6 +114,10 @@
        url = "github:powerofthe69/nix-gaming-edge";
        inputs.nixpkgs.follows = "nixpkgs";
     };
+    mango = {
+        url = "github:DreamMaoMao/mango";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
   };
 
   outputs = inputs @ {
@@ -137,6 +141,7 @@
     brave-previews,
     roudix-caches,
     nix-gaming-edge,
+    mango,
     ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
@@ -159,6 +164,7 @@
         inputs.noctalia-greeter.nixosModules.default
         inputs.dank-greeter.nixosModules.default
         nix-flatpak.nixosModules.nix-flatpak
+        inputs.mango.nixosModules.mango
         chaotic.nixosModules.default
         ./hosts/roudix/configuration.nix
         ./version.nix

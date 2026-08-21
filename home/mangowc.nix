@@ -4,14 +4,34 @@ let
   mangowcDir = if shellType == "dms"
                then dotfiles + "/mangowc-dms"
                else dotfiles + "/mangowc";
+
+  terminalCmd = osConfig.roudix.terminal or "ghostty";
+  fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
+  browserCmd = osConfig.roudix.browser.default or null;
 in
 {
   imports = [
     ../modules/home/mangohud.nix
-    ../modules/home/papirus-folders.nix
+    ../modules/home/papirus-icon.nix
+    ../modules/home/tela-icon.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "mangowc") {
+
+    # ── Session target ──────────────────────────────────────────────────────
+    # graphical-session.target est "static" (RefuseManualStart=yes) : il ne peut
+    # être atteint que via un target qui lui est BindsTo. mango n'a pas ce
+    # mécanisme intégré ici (on n'utilise pas wayland.windowManager.mango), donc
+    # on le recrée nous-mêmes. C'est lui qui débloque xdg-desktop-portal.service.
+    systemd.user.targets.mango-session = {
+      Unit = {
+        Description = "mango compositor session";
+        Documentation = [ "man:systemd.special(7)" ];
+        BindsTo = [ "graphical-session.target" ];
+        Wants = [ "graphical-session-pre.target" ];
+        After = [ "graphical-session-pre.target" ];
+      };
+    };
 
     # ── Config files ─────────────────────────────────────────────────────────
     xdg.configFile."mango" = {
@@ -28,15 +48,40 @@ in
         source = ${mangowcDir}/cfg/appearance.conf
         source = ${mangowcDir}/cfg/animations.conf
         source = ${mangowcDir}/cfg/input.conf
-        source = ${mangowcDir}/cfg/workspace.conf
+        source = ${mangowcDir}/cfg/layout.conf
         source = ${mangowcDir}/cfg/monitors.conf
+        source = ${mangowcDir}/cfg/workspaces.conf
         source = ${mangowcDir}/cfg/rules.conf
         source = ${mangowcDir}/cfg/keybinds.conf
+
+        # ── Terminal / navigateur / gestionnaire de fichiers (résolus depuis roudix.*) ──
+        source = ${config.home.homeDirectory}/.config/mango/apps.conf
+
         source = ${mangowcDir}/cfg/autostart.conf
         source = ${mangowcDir}/cfg/misc.conf
 
         # ── User overrides (injected by Nix) ─────────────────────────────
         source = ${config.home.homeDirectory}/.config/mango/user.conf
+      '';
+    };
+
+    # apps.conf est généré par Nix : override SUPER+Return / SUPER+E / SUPER+B
+    # (définis dans keybinds.conf) + les env TERM/TERMINAL (définis dans environment.conf),
+    # avec les commandes résolues depuis roudix.*. Sourcé après ces deux fichiers dans
+    # config.conf donc les valeurs ci-dessous gagnent.
+    # Note : SUPER+SHIFT,B (zen-twilight) reste géré à la main dans keybinds.conf,
+    # ce n'est pas un "extra" généré ici.
+    xdg.configFile."mango/apps.conf" = {
+      force = true;
+      text = ''
+        # ── Généré par Nix depuis roudix.terminal / roudix.fileManager / roudix.browser ──
+        env=TERM,${terminalCmd}
+        env=TERMINAL,${terminalCmd}
+
+        bind=SUPER,Return,spawn,${terminalCmd}
+        bind=SUPER,E,spawn,${fileManagerCmd}
+      '' + lib.optionalString (browserCmd != null) ''
+        bind=SUPER,B,spawn,${browserCmd}
       '';
     };
 
@@ -112,9 +157,6 @@ in
     ]
     ++ lib.optionals (shellType == "noctalia") [
       inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-      (pkgs.writeShellScriptBin "noctalia-ipc" ''
-        exec ${inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/noctalia-shell ipc "$@"
-      '')
     ]
     ;
   };

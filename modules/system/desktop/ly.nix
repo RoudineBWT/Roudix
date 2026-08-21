@@ -3,7 +3,9 @@
 let
   isHyprland = config.roudix.desktop.type == "hyprland";
   isMango    = config.roudix.desktop.type == "mangowc";
-  useLy      = isHyprland || isMango;
+  shellType  = config.roudix.desktop.shell or "noctalia";
+  isNoctalia = shellType == "noctalia";
+  useLy      = isHyprland || (isMango && !isNoctalia);
 in
 
 lib.mkIf useLy {

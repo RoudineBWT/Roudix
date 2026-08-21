@@ -41,6 +41,38 @@ in
     #   recursive = true;
     #  };
 
+    # ── Plugins Hyprland ─────────────────────────────────────────────────────
+    xdg.configFile."hypr/config/nix-plugins.lua".text =
+      let
+        hyprPlugins = [
+          pkgs.hyprlandPlugins.borders-plus-plus
+        ];
+
+        loadPluginSoFrom = pkg: ''
+          do
+              local p = io.popen('find "${pkg}/lib" -maxdepth 1 -name "*.so" 2>/dev/null')
+              if p then
+                  for so in p:lines() do
+                      hl.plugin.load(so)
+                  end
+                  p:close()
+              end
+          end
+        '';
+
+        header = ''
+          -- Généré par hyprland.nix — NE PAS ÉDITER À LA MAIN.
+          -- Charge les plugins Hyprland construits par Nix. Doit être require()
+          -- en tout premier dans hyprland.lua, avant tout hl.config() qui touche
+          -- aux clés plugin.dynamic_cursors / plugin.borders_plus_plus / plugin.hyprscrolling.
+        '';
+      in
+        header + lib.concatMapStrings loadPluginSoFrom hyprPlugins;
+
+    wayland.windowManager.hyprland.plugins = [
+      pkgs.hyprlandPlugins.borders-plus-plus
+    ];
+
     # ── Packages ─────────────────────────────────────────────────────────────
     home.packages = with pkgs; [
       wl-clipboard

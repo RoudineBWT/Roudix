@@ -7,7 +7,7 @@ let
     "nautilus"   = { package = pkgs.nautilus;             command = "nautilus";   extras = [ pkgs.gvfs ]; };
     "dolphin"    = { package = pkgs.kdePackages.dolphin;   command = "dolphin";    extras = []; };
     "nemo"       = { package = pkgs.nemo;                  command = "nemo";       extras = [ pkgs.gvfs ]; };
-    "thunar"     = { package = pkgs.xfce.thunar;           command = "thunar";     extras = [ pkgs.gvfs pkgs.xfce.thunar-volman ]; };
+    "thunar"     = { package = pkgs.thunar;           command = "thunar";     extras = [ pkgs.gvfs pkgs.thunar-volman ]; };
     "pcmanfm-qt" = { package = pkgs.libsForQt5.pcmanfm-qt; command = "pcmanfm-qt"; extras = []; };
   };
 in
