@@ -4,6 +4,7 @@
 , gtk4
 , libadwaita
 , gobject-introspection
+, wrapGAppsHook4
 , makeWrapper
 , scxctl        # passé depuis flake.nix / callPackage (inputs.roudix-caches.packages.${system}.scxctl)
 , systemd
@@ -19,10 +20,17 @@ stdenv.mkDerivation {
   src = ./roudix-scheduler.py;
   dontUnpack = true;
 
-  nativeBuildInputs = [ makeWrapper gobject-introspection ];
+  # wrapGAppsHook4 wrappe automatiquement tout exécutable sous $out/bin
+  # durant fixupPhase, en injectant GI_TYPELIB_PATH / XDG_DATA_DIRS /
+  # GSETTINGS_SCHEMA_DIR calculés sur toute la fermeture transitive de
+  # buildInputs (gtk4 propage déjà Pango, GdkPixbuf, Graphene, HarfBuzz,
+  # GLib...). Évite d'avoir à lister les typelibs à la main un par un.
+  nativeBuildInputs = [ makeWrapper wrapGAppsHook4 gobject-introspection ];
   buildInputs = [ gtk4 libadwaita ];
 
   installPhase = ''
+    runHook preInstall
+
     mkdir -p $out/bin $out/share/applications $out/share/icons/hicolor/scalable/apps
 
     install -Dm755 $src $out/bin/roudix-scheduler
@@ -34,10 +42,6 @@ stdenv.mkDerivation {
     install -Dm644 ${./io.roudix.scheduler-light.svg} \
       $out/share/icons/hicolor/scalable/apps/io.roudix.scheduler-light.svg
 
-    wrapProgram $out/bin/roudix-scheduler \
-      --prefix PATH : ${lib.makeBinPath [ scxctl systemd ]} \
-      --set GI_TYPELIB_PATH "${lib.makeSearchPath "lib/girepository-1.0" [ gtk4 libadwaita ]}"
-
     cat > $out/share/applications/io.roudix.scheduler.desktop <<EOF
     [Desktop Entry]
     Type=Application
@@ -47,6 +51,14 @@ stdenv.mkDerivation {
     Icon=io.roudix.scheduler
     Categories=System;Settings;
     EOF
+
+    runHook postInstall
+  '';
+
+  # Ajoute scxctl/systemd au PATH, en plus de tout ce que wrapGAppsHook4
+  # configure déjà automatiquement pour GTK4/Adwaita.
+  preFixup = ''
+    gappsWrapperArgs+=(--prefix PATH : ${lib.makeBinPath [ scxctl systemd ]})
   '';
 
   meta = {
