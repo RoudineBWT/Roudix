@@ -7,6 +7,9 @@
     ./keybinds.nix
     ./autostart.nix
     ./rules.nix
+    ../../modules/home/mangohud.nix
+    ../../modules/home/papirus-icon.nix
+    ../../modules/home/tela-icon.nix
   ];
 
   programs.umbriel = {
