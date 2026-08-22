@@ -6,6 +6,7 @@
     ./settings.nix
     ./keybinds.nix
     ./autostart.nix
+    ./rules.nix
   ];
 
   programs.umbriel.enable = true;
