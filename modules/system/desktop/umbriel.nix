@@ -6,6 +6,8 @@ let
   isNoctalia = shellType == "noctalia";
 in
 {
+  imports = [ inputs.umbriel.nixosModules.default ];
+
   config = lib.mkIf isUmbriel {
     # ── Compositeur ────────────────────────────────────────────────────
     # inputs.umbriel = { url = "github:noctalia-dev/umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
@@ -15,7 +17,6 @@ in
       inputs.xdg-desktop-portal-umbriel.overlays.default
     ];
 
-    imports = [ inputs.umbriel.nixosModules.default ];
     programs.umbriel.enable = true;
     # programs.umbriel.package est déjà réglé par défaut par le module sur
     # inputs.umbriel.packages.${system}.default
