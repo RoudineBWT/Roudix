@@ -194,7 +194,7 @@
             imports = [
               ./home/common.nix
               ./home/niri.nix
-              ./home/jay.nix
+              ./home/umbriel.nix
               ./home/hyprland.nix
               ./home/mangowc.nix
               ./home/kde.nix
