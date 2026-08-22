@@ -192,6 +192,7 @@
           home-manager.extraSpecialArgs = specialArgs;
           home-manager.users.${username} = { ... }: {
             imports = [
+              inputs.umbriel.homeModules.default
               ./home/common.nix
               ./home/niri.nix
               ./home/umbriel.nix
