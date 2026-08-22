@@ -9,10 +9,6 @@ in
     # ── Umbriel compositor ──────────────────────────────────────────────
     # Umbriel s'active via le package (pas de module NixOS spécifique)
     # L'activation se fait via le greeter ou directement
-    environment.systemPackages = with pkgs; [
-      inputs.umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs.xdg-desktop-portal-umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ];
 
     # ── Greeter ──────────────────────────────────────────────────────────
     # Noctalia greeter pour Umbriel (si shell = noctalia)
@@ -61,7 +57,12 @@ in
     services.gnome.gnome-keyring.enable = true;
     security.pam.services.greetd.enableGnomeKeyring = true;
 
+    # ── Packages (fusionné) ──────────────────────────────────────────────
     environment.systemPackages = with pkgs; [
+      # Umbriel et son portail
+      inputs.umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.xdg-desktop-portal-umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default
+      # Polkit
       polkit_gnome
     ];
   };
