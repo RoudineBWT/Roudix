@@ -12,7 +12,7 @@ in
     # inputs.umbriel-portal = { url = "github:noctalia-dev/xdg-desktop-portal-umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
     nixpkgs.overlays = [
       inputs.umbriel.overlays.default
-      inputs.umbriel-xdg-desktop-portal.overlays.default
+      inputs.xdg-desktop-portal-umbriel.overlays.default
     ];
 
     imports = [ inputs.umbriel.nixosModules.default ];
