@@ -16,7 +16,7 @@
 # DP-1 / DP-3 plus bas par les vrais noms de connecteur
 # (ex: DP-1, HDMI-A-1). niri accepte les noms "Marque Modèle Série" mais
 # Umbriel veut le nom du connecteur physique.
-autostart = ["noctalia", "discord", "openrgb", "swww-daemon"]
+autostart = ["noctalia", "discord"]
 # ⚠ "xwayland-satellite" n'est PAS remis dans autostart : Umbriel le
 # lance lui-même via xwayland=true (spawn intégré au compositeur, pas
 # un binaire à lancer à la main comme sous niri).
