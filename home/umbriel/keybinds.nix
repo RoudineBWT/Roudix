@@ -30,7 +30,7 @@ in
     # ─── Applications ──────────────────────────────────────────────────────
     "Mod+Return" = "spawn:${terminal}";
     "Mod+E" = "spawn:${fileManager}";
-
+    "Mod+Shift+B" = "spawn:zen-twilight"
     # Navigateurs
   } // (if browser != null then {
     "Mod+B" = "spawn:${browser}";
