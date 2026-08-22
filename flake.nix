@@ -52,6 +52,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    umbriel = {
+      url = "github:noctalia-dev/umbriel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    xdg-desktop-portal-umbriel = {
+      url = "github:noctalia-dev/xdg-desktop-portal-umbriel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     caelestia-shell = {
          url = "github:caelestia-dots/shell";
          inputs.nixpkgs.follows = "nixpkgs";
@@ -142,6 +152,8 @@
     roudix-caches,
     nix-gaming-edge,
     mango,
+    umbriel,
+    xdg-desktop-portal-umbriel,
     ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
