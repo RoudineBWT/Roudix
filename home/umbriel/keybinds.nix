@@ -26,9 +26,8 @@ in
     "Mod+Alt+L" = "spawn:${noctalia} msg screen-lock";
     "Mod+Shift+Q" = "spawn:${noctalia} msg panel-toggle session";
     "Mod+Shift+R" = "spawn:${noctalia} msg config-reload";
-    "Mod+Shift+B" = "spawn:${browser}";
 
-    # Navigateurs supplémentaires (MOD+CTRL+ALT+1,2,3...)
+    # Navigateurs
   } // (if browser != null then {
     "Mod+B" = "spawn:${browser}";
   } else {}) // (lib.listToAttrs (lib.imap1 (i: b: {
@@ -36,18 +35,18 @@ in
     value = "spawn:${b.command}";
   }) extraBrowsers)) // {
 
-    # ─── Audio (Niri avait XF86) ──────────────────────────────────────────
-    "XF86AudioRaiseVolume" = "spawn:${noctalia} msg volume-up";
-    "XF86AudioLowerVolume" = "spawn:${noctalia} msg volume-down";
-    "XF86AudioMute" = "spawn:${noctalia} msg volume-mute";
-    "XF86AudioMicMute" = "spawn:${noctalia} msg mic-mute";
+    # ─── Audio ─────────────────────────────────────────────────────────────
+    "XF86AudioRaiseVolume" = { action = "spawn:${noctalia} msg volume-up"; allow-when-locked = true; };
+    "XF86AudioLowerVolume" = { action = "spawn:${noctalia} msg volume-down"; allow-when-locked = true; };
+    "XF86AudioMute" = { action = "spawn:${noctalia} msg volume-mute"; allow-when-locked = true; };
+    "XF86AudioMicMute" = { action = "spawn:${noctalia} msg mic-mute"; allow-when-locked = true; };
 
     # ─── Media ─────────────────────────────────────────────────────────────
-    "XF86AudioPlay" = "spawn:${playerctl} play-pause";
-    "XF86AudioPrev" = "spawn:${playerctl} previous";
-    "XF86AudioNext" = "spawn:${playerctl} next";
+    "XF86AudioPlay" = { action = "spawn:${playerctl} play-pause"; allow-when-locked = true; };
+    "XF86AudioPrev" = { action = "spawn:${playerctl} previous"; allow-when-locked = true; };
+    "XF86AudioNext" = { action = "spawn:${playerctl} next"; allow-when-locked = true; };
 
-    # ─── Window / Focus (adapté de Niri) ──────────────────────────────────
+    # ─── Window / Focus ────────────────────────────────────────────────────
     "Mod+Q" = "window-close";
     "Mod+Left" = "window-focus-left";
     "Mod+H" = "window-focus-left";
@@ -68,7 +67,7 @@ in
     "Mod+Ctrl+Down" = "window-move-down";
     "Mod+Ctrl+J" = "window-move-down";
 
-    # ─── Workspace Navigation (Niri avait MOD+WheelScroll) ───────────────
+    # ─── Workspace Navigation ─────────────────────────────────────────────
     "Mod+WheelScrollDown" = "workspace-switch-down";
     "Mod+WheelScrollUp" = "workspace-switch-up";
     "Mod+Ctrl+WheelScrollDown" = "window-move-to-workspace-down";
@@ -99,10 +98,10 @@ in
     "Alt+Tab" = "spawn:${noctalia} msg window-switcher";
 
     # ─── Layout ────────────────────────────────────────────────────────────
-    "Mod+Ctrl+F" = "window-toggle-maximize";  # Niri avait expand-column-to-available-width
-    "Mod+C" = "column-center";  # Niri avait center-column
-    "Mod+Ctrl+C" = "workspace-center";  # Niri avait center-visible-columns
-    "Mod+minus" = "column-resize:-10%";
+    "Mod+Ctrl+F" = "window-toggle-maximize";
+    "Mod+C" = "column-center";
+    "Mod+Ctrl+C" = "workspace-center";
+    "Mod+minus" = "column-resize:-10%";   # ATTENTION : vérifie si ça marche
     "Mod+equal" = "column-resize:+10%";
     "Mod+Shift+minus" = "window-resize:-10%";
     "Mod+Shift+equal" = "window-resize:+10%";
@@ -110,10 +109,10 @@ in
     # ─── Modes ─────────────────────────────────────────────────────────────
     "Mod+T" = "window-toggle-floating";
     "Mod+F" = "window-toggle-fullscreen";
-    "Mod+W" = "window-toggle-tabbed";  # Niri avait toggle-column-tabbed-display
+    "Mod+W" = "window-toggle-tabbed";
 
     # ─── Screenshots ──────────────────────────────────────────────────────
-    "Ctrl+Shift+1" = "screenshot";
+    "Ctrl+Shift+1" = "screenshot-output";
     "Ctrl+Shift+2" = "screenshot-output";
     "Ctrl+Shift+3" = "screenshot-window";
 
