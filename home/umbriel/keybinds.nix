@@ -103,10 +103,10 @@ in
     "Mod+F" = "window-toggle-fullscreen";
     "Mod+T" = "window-toggle-floating";
 
-    # ─── Screenshots ──────────────────────────────────────────────────────
-    "Ctrl+Shift+1" = "{noctalia} msg screenshot-region";  # Ou "screenshot-window" selon ce que tu veux
-    "Ctrl+Shift+2" = "{noctalia} msg screenshot-fullscreen";
-    "Ctrl+Shift+3" = "{noctalia} screenshot-fullscreen pick";
+    # ─── Screenshots via Noctalia ──────────────────────────────────────────
+    "Ctrl+Shift+1" = "spawn:${noctalia} msg screenshot-region";
+    "Ctrl+Shift+2" = "spawn:${noctalia} msg screenshot-fullscreen";
+    "Ctrl+Shift+3" = "spawn:${noctalia} msg screenshot-fullscreen pick";
 
     # ─── Exit ─────────────────────────────────────────────────────────────
     "Ctrl+Alt+Delete" = "session-quit";
