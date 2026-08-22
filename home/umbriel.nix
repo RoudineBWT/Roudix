@@ -45,3 +45,43 @@ in
     recursive = true;
   };
 }
+# ── Packages (mêmes packages communs que niri/hyprland) ──────────────
+home.packages = with pkgs; [
+  # Wayland tools (communs à tous les shells)
+  awww
+  xwayland-satellite
+  playerctl
+  wl-clipboard
+  pwvucontrol
+  kdePackages.qtmultimedia
+  mpvpaper
+
+  # Apps (communes)
+  gnome-text-editor
+  gnome-disk-utility
+  mission-center
+  loupe
+  clapper
+  clapper-enhancers
+  gpu-screen-recorder
+
+  # GTK theming
+  nwg-look
+  adw-gtk3
+  papirus-icon-theme
+  papirus-folders
+
+  # Qt theming
+  qt6Packages.qt6ct
+  libsForQt5.qt5ct
+
+  # Misc
+  gvfs
+  cava
+]
+# Packages exclusifs à noctalia
+++ lib.optionals isNoctalia [
+  inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+];
+};
+}
