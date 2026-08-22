@@ -32,13 +32,13 @@
     output = {
       "DP-1" = {
         mode = "2560x1440@240.000";
-        position = [ 0 0 ];
+        position = [ 1920 0 ];
         scale = 1.0;
         transform = "normal";
       };
       "DP-3" = {
         mode = "1920x1080@165.001";
-        position = [ 2560 0 ];
+        position = [ 0 0 ];
         scale = 1.0;
         transform = "normal";
       };
