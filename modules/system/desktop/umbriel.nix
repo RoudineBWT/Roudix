@@ -7,6 +7,17 @@
 
   programs.umbriel.enable = true;
 
+  programs.noctalia-greeter = {
+    enable = true;
+    greeter-args = "start-umbriel";
+    settings = {
+      keyboard = {
+        layout  = "us";
+        variant = "intl";
+      };
+    };
+  };
+
   # ─── Portals ───────────────────────────────────────────────────────────
   xdg.portal = {
     enable = true;
