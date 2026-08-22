@@ -22,7 +22,7 @@ in
     '';
   };
 
-  config = mkIf (elem config.roudix.desktop.type [ "niri" "hyprland" "mangowc" ]) {
+  config = mkIf (elem config.roudix.desktop.type [ "niri" "hyprland" "mangowc" "umbriel" ]) {
     environment.systemPackages =
       [ fileManagerDefs.${config.roudix.fileManager}.package ]
       ++ fileManagerDefs.${config.roudix.fileManager}.extras;
