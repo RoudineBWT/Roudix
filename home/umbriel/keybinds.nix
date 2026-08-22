@@ -14,18 +14,22 @@ let
   browserDefault = osConfig.roudix.browser.default or null;
   extraBrowsers = lib.filter (b: b.name != browserDefault) browserList;
 
+  # Récupération de Noctalia via le package
   noctalia = lib.getExe config.programs.noctalia.package;
   playerctl = "${pkgs.playerctl}/bin/playerctl";
 in
 {
   programs.umbriel.settings.keybinds = {
-    # ─── Applications ──────────────────────────────────────────────────────
-    "Mod+Return" = "spawn:${terminal}";
-    "Mod+E" = "spawn:${fileManager}";
+    # ─── Noctalia Shell ───────────────────────────────────────────────────
     "Mod+D" = "spawn:${noctalia} msg panel-toggle launcher";
     "Mod+Alt+L" = "spawn:${noctalia} msg screen-lock";
     "Mod+Shift+Q" = "spawn:${noctalia} msg panel-toggle session";
     "Mod+Shift+R" = "spawn:${noctalia} msg config-reload";
+    "Alt+Tab" = "spawn:${noctalia} msg window-switcher";
+
+    # ─── Applications ──────────────────────────────────────────────────────
+    "Mod+Return" = "spawn:${terminal}";
+    "Mod+E" = "spawn:${fileManager}";
 
     # Navigateurs
   } // (if browser != null then {
@@ -36,15 +40,15 @@ in
   }) extraBrowsers)) // {
 
     # ─── Audio ─────────────────────────────────────────────────────────────
-    "XF86AudioRaiseVolume" = { action = "spawn:${noctalia} msg volume-up"; };
-    "XF86AudioLowerVolume" = { action = "spawn:${noctalia} msg volume-down"; };
-    "XF86AudioMute" = { action = "spawn:${noctalia} msg volume-mute"; };
-    "XF86AudioMicMute" = { action = "spawn:${noctalia} msg mic-mute"; };
+    "XF86AudioRaiseVolume" = "spawn:${noctalia} msg volume-up";
+    "XF86AudioLowerVolume" = "spawn:${noctalia} msg volume-down";
+    "XF86AudioMute" = "spawn:${noctalia} msg volume-mute";
+    "XF86AudioMicMute" = "spawn:${noctalia} msg mic-mute";
 
     # ─── Media ─────────────────────────────────────────────────────────────
-    "XF86AudioPlay" = { action = "spawn:${playerctl} play-pause"; };
-    "XF86AudioPrev" = { action = "spawn:${playerctl} previous"; };
-    "XF86AudioNext" = { action = "spawn:${playerctl} next"; };
+    "XF86AudioPlay" = "spawn:${playerctl} play-pause";
+    "XF86AudioPrev" = "spawn:${playerctl} previous";
+    "XF86AudioNext" = "spawn:${playerctl} next";
 
     # ─── Window / Focus ────────────────────────────────────────────────────
     "Mod+Q" = "window-close";
@@ -70,10 +74,6 @@ in
     # ─── Workspace Navigation ─────────────────────────────────────────────
     # Utiliser les touches directionnelles avec le bouton du milieu ?
     # Supprimer MOD+WheelScrollDown/Up car non supportés
-    # "Mod+WheelScrollDown" = "workspace-switch-down";
-    # "Mod+WheelScrollUp" = "workspace-switch-up";
-    # "Mod+Ctrl+WheelScrollDown" = "window-move-to-workspace-down";
-    # "Mod+Ctrl+WheelScrollUp" = "window-move-to-workspace-up";
 
     # ─── Workspace Quick Switch ───────────────────────────────────────────
     "Mod+1" = "workspace-switch:1";
@@ -96,34 +96,20 @@ in
     "Mod+Ctrl+8" = "window-move-to-workspace:8";
     "Mod+Ctrl+9" = "window-move-to-workspace:9";
 
-    #"Mod+Tab" = "workspace-switch-next";  # ou "workspace-switch-previous"
-    "Alt+Tab" = "spawn:${noctalia} msg window-switcher";
+    "Mod+Tab" = "workspace-switch-next";
 
     # ─── Layout ────────────────────────────────────────────────────────────
     "Mod+Ctrl+F" = "window-toggle-maximize";
     "Mod+F" = "window-toggle-fullscreen";
     "Mod+T" = "window-toggle-floating";
-    "Mod+C" = "window-center";  # Vérifier si existe
-    # "Mod+Ctrl+C" = "workspace-center";  # Supprimé
-    # "Mod+W" = "window-toggle-tabbed";  # Supprimé
-
-    # Redimensionnement (à vérifier si supporté)
-    # "Mod+Minus" = "column-resize -10%";
-    # "Mod+Equal" = "column-resize +10%";
-    # "Mod+Shift+Minus" = "window-resize -10%";
-    # "Mod+Shift+Equal" = "window-resize +10%";
 
     # ─── Screenshots ──────────────────────────────────────────────────────
     "Ctrl+Shift+1" = "{noctalia} msg screenshot-region";  # Ou "screenshot-window" selon ce que tu veux
     "Ctrl+Shift+2" = "{noctalia} msg screenshot-fullscreen";
     "Ctrl+Shift+3" = "{noctalia} screenshot-fullscreen pick";
 
-    # ─── Emergency ─────────────────────────────────────────────────────────
-    # "Mod+Escape" = "shortcuts-inhibit-toggle";  # Supprimé
-
-    # ─── Exit / Power ─────────────────────────────────────────────────────
+    # ─── Exit ─────────────────────────────────────────────────────────────
     "Ctrl+Alt+Delete" = "session-quit";
-    # "Mod+Shift+P" = "outputs-power-off";  # Supprimé
     "Mod+O" = "overview-toggle";
   };
 }

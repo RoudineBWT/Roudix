@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, lib, config, ... }:
 
 {
   imports = [
@@ -9,5 +9,13 @@
     ./rules.nix
   ];
 
-  programs.umbriel.enable = true;
+  programs.umbriel = {
+    enable = true;
+  };
+
+  # Activation de Noctalia
+  programs.noctalia = {
+    enable = true;
+    package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  };
 }
