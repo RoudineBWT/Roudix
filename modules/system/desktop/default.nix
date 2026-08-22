@@ -6,7 +6,7 @@
     ./kde.nix
     ./hyprland.nix
     ./mangowc.nix
-    ./jay.nix
+    ./umbriel.nix
   ];
 
   # ── Desktop environment option ───────────────────────────────────────────
