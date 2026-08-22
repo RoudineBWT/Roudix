@@ -1,9 +1,17 @@
 { pkgs, config, lib, osConfig, ... }:
 
 {
+  # Variables d'environnement pour Noctalia
+  home.sessionVariables = {
+    XDG_CURRENT_DESKTOP = "Umbriel";
+    XDG_SESSION_TYPE = "wayland";
+    XDG_SESSION_DESKTOP = "Umbriel";
+    NOCTALIA_SHELL = "noctalia";
+  };
+
   programs.umbriel.settings = {
     general = {
-      # screenshot_path = "~/Pictures/...";  # Supprimé (non supporté)
+      # Noctalia sera lancé via autostart
     };
 
     appearance = {
@@ -18,7 +26,6 @@
       mode = "scrolling";
       gap = 9;
       width_presets = [ 0.33333 0.5 0.66667 ];
-      # scrolling.always_center_single_column = false;  # Supprimé
     };
 
     # ─── Outputs ──────────────────────────────────────────────────────────
@@ -44,7 +51,6 @@
         variant = "intl";
         repeat_rate = 25;
         repeat_delay = 600;
-        # numlock = true;  # Supprimé (non supporté)
       };
       touchpad = {
         tap = true;
@@ -57,7 +63,6 @@
         theme = "Bibata-Modern-Ice";
         size = 24;
         hide_when_typing = true;
-        # hide_after_inactive_ms = 1000;  # Supprimé (non supporté)
       };
       focus = {
         follows_mouse = true;
