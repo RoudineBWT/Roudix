@@ -109,7 +109,7 @@
     {
       match.app_id = "steam";
       match.title = "^notificationtoasts_\d+_desktop$";
-      default_floating_position = { x = 10; y = 10; relative_to = "bottom-right"; };
+      # default_floating_position = { x = 10; y = 10; relative_to = "bottom-right"; };  # Supprimé (non supporté)
     }
     {
       match.title = "Friends List";

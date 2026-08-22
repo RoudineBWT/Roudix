@@ -36,15 +36,15 @@ in
   }) extraBrowsers)) // {
 
     # ─── Audio ─────────────────────────────────────────────────────────────
-    "XF86AudioRaiseVolume" = { action = "spawn:${noctalia} msg volume-up"; allow-when-locked = true; };
-    "XF86AudioLowerVolume" = { action = "spawn:${noctalia} msg volume-down"; allow-when-locked = true; };
-    "XF86AudioMute" = { action = "spawn:${noctalia} msg volume-mute"; allow-when-locked = true; };
-    "XF86AudioMicMute" = { action = "spawn:${noctalia} msg mic-mute"; allow-when-locked = true; };
+    "XF86AudioRaiseVolume" = { action = "spawn:${noctalia} msg volume-up"; };
+    "XF86AudioLowerVolume" = { action = "spawn:${noctalia} msg volume-down"; };
+    "XF86AudioMute" = { action = "spawn:${noctalia} msg volume-mute"; };
+    "XF86AudioMicMute" = { action = "spawn:${noctalia} msg mic-mute"; };
 
     # ─── Media ─────────────────────────────────────────────────────────────
-    "XF86AudioPlay" = { action = "spawn:${playerctl} play-pause"; allow-when-locked = true; };
-    "XF86AudioPrev" = { action = "spawn:${playerctl} previous"; allow-when-locked = true; };
-    "XF86AudioNext" = { action = "spawn:${playerctl} next"; allow-when-locked = true; };
+    "XF86AudioPlay" = { action = "spawn:${playerctl} play-pause"; };
+    "XF86AudioPrev" = { action = "spawn:${playerctl} previous"; };
+    "XF86AudioNext" = { action = "spawn:${playerctl} next"; };
 
     # ─── Window / Focus ────────────────────────────────────────────────────
     "Mod+Q" = "window-close";
@@ -68,10 +68,12 @@ in
     "Mod+Ctrl+J" = "window-move-down";
 
     # ─── Workspace Navigation ─────────────────────────────────────────────
-    "Mod+WheelScrollDown" = "workspace-switch-down";
-    "Mod+WheelScrollUp" = "workspace-switch-up";
-    "Mod+Ctrl+WheelScrollDown" = "window-move-to-workspace-down";
-    "Mod+Ctrl+WheelScrollUp" = "window-move-to-workspace-up";
+    # Utiliser les touches directionnelles avec le bouton du milieu ?
+    # Supprimer MOD+WheelScrollDown/Up car non supportés
+    # "Mod+WheelScrollDown" = "workspace-switch-down";
+    # "Mod+WheelScrollUp" = "workspace-switch-up";
+    # "Mod+Ctrl+WheelScrollDown" = "window-move-to-workspace-down";
+    # "Mod+Ctrl+WheelScrollUp" = "window-move-to-workspace-up";
 
     # ─── Workspace Quick Switch ───────────────────────────────────────────
     "Mod+1" = "workspace-switch:1";
@@ -94,34 +96,34 @@ in
     "Mod+Ctrl+8" = "window-move-to-workspace:8";
     "Mod+Ctrl+9" = "window-move-to-workspace:9";
 
-    "Mod+Tab" = "workspace-switch-previous";
+    "Mod+Tab" = "workspace-switch-next";  # ou "workspace-switch-previous"
     "Alt+Tab" = "spawn:${noctalia} msg window-switcher";
 
     # ─── Layout ────────────────────────────────────────────────────────────
     "Mod+Ctrl+F" = "window-toggle-maximize";
-    "Mod+C" = "column-center";
-    "Mod+Ctrl+C" = "workspace-center";
-    "Mod+minus" = "column-resize:-10%";   # ATTENTION : vérifie si ça marche
-    "Mod+equal" = "column-resize:+10%";
-    "Mod+Shift+minus" = "window-resize:-10%";
-    "Mod+Shift+equal" = "window-resize:+10%";
-
-    # ─── Modes ─────────────────────────────────────────────────────────────
-    "Mod+T" = "window-toggle-floating";
     "Mod+F" = "window-toggle-fullscreen";
-    "Mod+W" = "window-toggle-tabbed";
+    "Mod+T" = "window-toggle-floating";
+    "Mod+C" = "window-center";  # Vérifier si existe
+    # "Mod+Ctrl+C" = "workspace-center";  # Supprimé
+    # "Mod+W" = "window-toggle-tabbed";  # Supprimé
+
+    # Redimensionnement (à vérifier si supporté)
+    # "Mod+Minus" = "column-resize -10%";
+    # "Mod+Equal" = "column-resize +10%";
+    # "Mod+Shift+Minus" = "window-resize -10%";
+    # "Mod+Shift+Equal" = "window-resize +10%";
 
     # ─── Screenshots ──────────────────────────────────────────────────────
-    "Ctrl+Shift+1" = "screenshot-output";
-    "Ctrl+Shift+2" = "screenshot-output";
+    "Ctrl+Shift+1" = "screenshot";  # Ou "screenshot-window" selon ce que tu veux
+    "Ctrl+Shift+2" = "screenshot";
     "Ctrl+Shift+3" = "screenshot-window";
 
     # ─── Emergency ─────────────────────────────────────────────────────────
-    "Mod+Escape" = "shortcuts-inhibit-toggle";
+    # "Mod+Escape" = "shortcuts-inhibit-toggle";  # Supprimé
 
     # ─── Exit / Power ─────────────────────────────────────────────────────
     "Ctrl+Alt+Delete" = "session-quit";
-    "Mod+Shift+P" = "outputs-power-off";
+    # "Mod+Shift+P" = "outputs-power-off";  # Supprimé
     "Mod+O" = "overview-toggle";
   };
 }
