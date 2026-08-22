@@ -96,7 +96,7 @@ in
     "Mod+Ctrl+8" = "window-move-to-workspace:8";
     "Mod+Ctrl+9" = "window-move-to-workspace:9";
 
-    "Mod+Tab" = "workspace-switch-next";  # ou "workspace-switch-previous"
+    #"Mod+Tab" = "workspace-switch-next";  # ou "workspace-switch-previous"
     "Alt+Tab" = "spawn:${noctalia} msg window-switcher";
 
     # ─── Layout ────────────────────────────────────────────────────────────
@@ -114,9 +114,9 @@ in
     # "Mod+Shift+Equal" = "window-resize +10%";
 
     # ─── Screenshots ──────────────────────────────────────────────────────
-    "Ctrl+Shift+1" = "screenshot";  # Ou "screenshot-window" selon ce que tu veux
-    "Ctrl+Shift+2" = "screenshot";
-    "Ctrl+Shift+3" = "screenshot-window";
+    "Ctrl+Shift+1" = "{noctalia} msg screenshot-region";  # Ou "screenshot-window" selon ce que tu veux
+    "Ctrl+Shift+2" = "{noctalia} msg screenshot-fullscreen";
+    "Ctrl+Shift+3" = "{noctalia} screenshot-fullscreen pick";
 
     # ─── Emergency ─────────────────────────────────────────────────────────
     # "Mod+Escape" = "shortcuts-inhibit-toggle";  # Supprimé
