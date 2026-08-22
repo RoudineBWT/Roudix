@@ -9,6 +9,5 @@ in
     "${pkgs.xwayland-satellite}/bin/xwayland-satellite"
     "${pkgs.swww}/bin/swww-daemon"
     "${pkgs.discord}/bin/discord"
-    "${pkgs.openrgb}/bin/openrgb"
   ];
 }
