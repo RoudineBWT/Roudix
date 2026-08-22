@@ -1,7 +1,7 @@
 { pkgs, inputs, config, lib, osConfig, dotfiles, ... }:
 let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
-  isUmbriel = shellType == "umbriel";
+  isUmbriel = osConfig.roudix.desktop.type == "umbriel";
 
   terminalCmd = osConfig.roudix.terminal or "ghostty";
   fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
@@ -11,21 +11,16 @@ let
   extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
 in
 {
-  config = lib.mkIf (osConfig.roudix.desktop.type == "umbriel") {
+  config = lib.mkIf isUmbriel {
 
-    # ── Umbriel ─────────────────────────────────────────────────────────────
-    programs.umbriel = {
-      enable = true;
-      package = inputs.umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default;
-    };
-
-    # ── Noctalia shell sur Umbriel (optionnel) ────────────────────────────
-    programs.noctalia = lib.mkIf isUmbriel {
+    # ── Noctalia shell sur Umbriel ──────────────────────────────────────
+    programs.noctalia = lib.mkIf (shellType == "noctalia") {
       enable = true;
       package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
     };
 
     # ── Configuration Umbriel ──────────────────────────────────────────────
+    # On crée manuellement le fichier de config car pas de module home-manager
     xdg.configFile."umbriel" = {
       source    = "${dotfiles}/umbriel";
       recursive = true;
@@ -145,7 +140,6 @@ in
         saturation = 1.0
 
         # ─── Outputs ──────────────────────────────────────────
-        # Adapte avec tes écrans
         [output."HKC OVERSEAS LIMITED 24E4 0000000000001"]
         mode = "1920x1080@165.001"
         scale = 1
@@ -450,7 +444,6 @@ in
         repeat = false
 
         # ─── Window Rules ──────────────────────────────────────
-        # Rayon de coin arrondi pour toutes les fenêtres
         geometry-corner-radius = 20
         clip-to-geometry = true
 
@@ -661,6 +654,7 @@ in
 
     # ── Packages ─────────────────────────────────────────────────────────────
     home.packages = with pkgs; [
+      inputs.umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default
       awww
       xwayland-satellite
       playerctl
