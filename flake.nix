@@ -195,7 +195,7 @@
               inputs.umbriel.homeModules.default
               ./home/common.nix
               ./home/niri.nix
-              ./home/umbriel.nix
+              ./home/umbriel/default.nix
               ./home/hyprland.nix
               ./home/mangowc.nix
               ./home/kde.nix
