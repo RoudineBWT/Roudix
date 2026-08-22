@@ -11,9 +11,23 @@ let
       candidates.${shell} or candidates.noctalia;
 
   umbrielDir = resolveUmbrielDotfiles shellType;
+  terminalCmd = osConfig.roudix.terminal or "ghostty";
+
+  fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
+
+  browserDefault = osConfig.roudix.browser.default or null;
+  browserCmd     = osConfig.roudix.browser.command or null;
+  browserList    = osConfig.roudix.browser.commands or [ ];
+  # Les navigateurs restants (hors default) reçoivent un bind supplémentaire.
+  extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
 in
 {
-  imports = [ inputs.umbriel.homeModules.default ];
+  imports = [
+    inputs.umbriel.homeModules.default
+    ../modules/home/mangohud.nix
+    ../modules/home/papirus-icon.nix
+    ../modules/home/tela-icon.nix
+  ];
 
   programs.umbriel = {
     enable = true;
