@@ -11,6 +11,10 @@ let
       candidates.${shell} or candidates.noctalia;
 
   umbrielDir = resolveUmbrielDotfiles shellType;
+
+  isNoctalia = shellType == "noctalia";
+  isDms      = shellType == "dms";
+
   terminalCmd = osConfig.roudix.terminal or "ghostty";
 
   fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
@@ -29,59 +33,68 @@ in
     ../modules/home/tela-icon.nix
   ];
 
-  programs.umbriel = {
-    enable = true;
-    validateConfig = true;   # umbriel valide le TOML au build (via `umbriel validate`)
+  config = lib.mkIf (osConfig.roudix.desktop.type == "umbriel") {
 
-    # Le fichier ci-contre (config.toml) est la traduction de tes 9 fichiers
-    # niri .kdl. Il est chargé tel quel — remplace LEGION-OUTPUT/HKC-OUTPUT
-    # dedans par les vrais noms de connecteur avant le premier build
-    # (`umbriel outputs` une fois en session pour les récupérer).
-    #settings = ./config.toml;
+    # ── Noctalia (shell) ─────────────────────────────────────────────────
+    programs.noctalia = lib.mkIf isNoctalia {
+      enable = true;
+      package = null;
+    };
+
+    # ── Umbriel config ──────────────────────────────────────────────────
+    programs.umbriel = {
+      enable = true;
+      validateConfig = true;   # umbriel valide le TOML au build (via `umbriel validate`)
+
+      # Le fichier ci-contre (config.toml) est la traduction de tes 9 fichiers
+      # niri .kdl. Il est chargé tel quel — remplace LEGION-OUTPUT/HKC-OUTPUT
+      # dedans par les vrais noms de connecteur avant le premier build
+      # (`umbriel outputs` une fois en session pour les récupérer).
+      #settings = ./config.toml;
+    };
+
+    xdg.configFile."umbriel" = {
+      source    = umbrielDir;
+      recursive = true;
+    };
+
+    # ── Packages (mêmes packages communs que niri/hyprland) ──────────────
+    home.packages = with pkgs; [
+      # Wayland tools (communs à tous les shells)
+      awww
+      xwayland-satellite
+      playerctl
+      wl-clipboard
+      pwvucontrol
+      kdePackages.qtmultimedia
+      mpvpaper
+
+      # Apps (communes)
+      gnome-text-editor
+      gnome-disk-utility
+      mission-center
+      loupe
+      clapper
+      clapper-enhancers
+      gpu-screen-recorder
+
+      # GTK theming
+      nwg-look
+      adw-gtk3
+      papirus-icon-theme
+      papirus-folders
+
+      # Qt theming
+      qt6Packages.qt6ct
+      libsForQt5.qt5ct
+
+      # Misc
+      gvfs
+      cava
+    ]
+    # Packages exclusifs à noctalia
+    ++ lib.optionals isNoctalia [
+      inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ];
   };
-
-  xdg.configFile."umbriel" = {
-    source    = umbrielDir;
-    recursive = true;
-  };
-}
-# ── Packages (mêmes packages communs que niri/hyprland) ──────────────
-home.packages = with pkgs; [
-  # Wayland tools (communs à tous les shells)
-  awww
-  xwayland-satellite
-  playerctl
-  wl-clipboard
-  pwvucontrol
-  kdePackages.qtmultimedia
-  mpvpaper
-
-  # Apps (communes)
-  gnome-text-editor
-  gnome-disk-utility
-  mission-center
-  loupe
-  clapper
-  clapper-enhancers
-  gpu-screen-recorder
-
-  # GTK theming
-  nwg-look
-  adw-gtk3
-  papirus-icon-theme
-  papirus-folders
-
-  # Qt theming
-  qt6Packages.qt6ct
-  libsForQt5.qt5ct
-
-  # Misc
-  gvfs
-  cava
-]
-# Packages exclusifs à noctalia
-++ lib.optionals isNoctalia [
-  inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-];
-};
 }
