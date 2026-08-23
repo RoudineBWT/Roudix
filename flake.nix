@@ -74,12 +74,10 @@
       # SceneFX en submodule git (cf. "Removed input umbriel/scenefx" dans le
       # lock), il faut le fetcher git générique pour que ça checkout.
       url = "git+https://github.com/noctalia-dev/umbriel";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     xdg-desktop-portal-umbriel = {
       url = "github:noctalia-dev/xdg-desktop-portal-umbriel";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     caelestia-shell = {
