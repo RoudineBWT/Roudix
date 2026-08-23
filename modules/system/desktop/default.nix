@@ -6,13 +6,13 @@
     ./kde.nix
     ./hyprland.nix
     ./mangowc.nix
-    ./jay.nix
+    ./umbriel.nix
   ];
 
   # ── Desktop environment option ───────────────────────────────────────────
   options.roudix.desktop.type = lib.mkOption {
     description = "Desktop environment selection. Use 'roudix-switch <de>' to change.";
-    type = lib.types.enum [ "niri" "gnome" "kde" "hyprland" "mangowc" "jay" ];
+    type = lib.types.enum [ "niri" "gnome" "kde" "hyprland" "mangowc" "umbriel" ];
     default = "niri";
   };
   # ── Desktop shell option ─────────────────────────────────────────────────

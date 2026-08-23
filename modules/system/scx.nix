@@ -14,7 +14,7 @@
 # NOTE: après un reboot, ananicy-cpp redémarre automatiquement et SCX n'est pas actif.
 #       Utiliser roudix-kernel-switcher pour réactiver le scheduler souhaité.
 
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, roudix-scheduler-switcher, ... }:
 let
   scxctl = inputs.roudix-caches.packages.x86_64-linux.scxctl;
 
@@ -99,9 +99,12 @@ let
       set)
         SCHEDULER="''${2:-}"
         MODE="''${3:-}"
+        # flags additionnels, passés comme une seule chaîne "--foo --bar baz"
+        # (pas de support des guillemets imbriqués — cas d'usage simple uniquement)
+        EXTRA="''${4:-}"
 
         if [ -z "$SCHEDULER" ]; then
-          echo "Usage: scx-switch set <scheduler> [mode]" >&2
+          echo "Usage: scx-switch set <scheduler> [mode] [extra-flags]" >&2
           exit 1
         fi
 
@@ -114,16 +117,28 @@ let
         ${pkgs.systemd}/bin/systemctl start scx-loader
         _wait_for_scx_loader
 
+        # IMPORTANT : ne JAMAIS utiliser `scxctl switch` pour passer d'un
+        # scheduler à un autre. Le hot-switch ne décharge pas complètement
+        # le struct_ops / les kptrs BPF (cpumasks) du scheduler précédent
+        # avant que le nouveau ne s'initialise, ce qui provoque une erreur
+        # scx_bpf_error "kptr already had cpumask" côté kernel — vu en
+        # particulier en sortant de scx_rusty. On fait donc systématiquement
+        # un stop propre, puis un start frais.
+        echo "Stopping any currently running scheduler..."
+        ${scxctl}/bin/scxctl stop 2>/dev/null || true
+        # Laisse le kernel finir de démonter le struct_ops précédent avant
+        # de recharger un nouveau programme BPF.
+        sleep 0.3
+
         echo "Starting scx_''${SCHEDULER}..."
-        # scxctl refuse 'start' si un scheduler tourne déjà et demande 'switch' —
-        # on tente switch d'abord, fallback sur start si rien n'est encore actif.
-        if [ -n "$MODE" ]; then
-          ${scxctl}/bin/scxctl switch --sched "scx_''${SCHEDULER}" --mode "''${MODE}" \
-            || ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}" --mode "''${MODE}"
-        else
-          ${scxctl}/bin/scxctl switch --sched "scx_''${SCHEDULER}" \
-            || ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}"
+        CMD_ARGS=(start --sched "scx_''${SCHEDULER}")
+        [ -n "$MODE" ] && CMD_ARGS+=(--mode "''${MODE}")
+        if [ -n "$EXTRA" ]; then
+          # shellcheck disable=SC2206
+          EXTRA_ARR=($EXTRA)
+          CMD_ARGS+=("''${EXTRA_ARR[@]}")
         fi
+        ${scxctl}/bin/scxctl "''${CMD_ARGS[@]}"
 
         if _ananicy_enabled; then
           # ananicy reprendra la main tout seul au prochain boot,
@@ -131,8 +146,13 @@ let
           rm -f "''${STATE_FILE}"
         else
           # pas d'ananicy → on retient le choix pour qu'il survive au reboot
+          # (3 lignes : scheduler / mode / extra-flags)
           mkdir -p "$(dirname "''${STATE_FILE}")"
-          echo "''${SCHEDULER} ''${MODE}" > "''${STATE_FILE}"
+          {
+            echo "''${SCHEDULER}"
+            echo "''${MODE}"
+            echo "''${EXTRA}"
+          } > "''${STATE_FILE}"
         fi
         ;;
 
@@ -165,7 +185,8 @@ let
     STATE_FILE="${scxStateFile}"
 
     [ -f "''${STATE_FILE}" ] || exit 0
-    read -r SCHEDULER MODE < "''${STATE_FILE}" || exit 0
+    # format 3 lignes : scheduler / mode / extra-flags (mode et extra peuvent être vides)
+    { read -r SCHEDULER || true; read -r MODE || true; read -r EXTRA || true; } < "''${STATE_FILE}"
     [ -n "''${SCHEDULER:-}" ] || exit 0
 
     ${pkgs.systemd}/bin/systemctl start scx-loader
@@ -181,13 +202,22 @@ let
       i=$((i + 1))
     done
 
+    # Pas de switch ici non plus (cf. commentaire dans scx-switch) : au boot
+    # rien ne tourne encore normalement, mais on stop quand même par sécurité
+    # au cas où scx-loader aurait déjà auto-chargé un scheduler par défaut.
+    ${scxctl}/bin/scxctl stop 2>/dev/null || true
+    sleep 0.3
+
+    CMD_ARGS=(start --sched "scx_''${SCHEDULER}")
     if [ -n "''${MODE:-}" ] && [ "''${MODE}" != "None" ]; then
-      ${scxctl}/bin/scxctl switch --sched "scx_''${SCHEDULER}" --mode "''${MODE}" \
-        || ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}" --mode "''${MODE}"
-    else
-      ${scxctl}/bin/scxctl switch --sched "scx_''${SCHEDULER}" \
-        || ${scxctl}/bin/scxctl start --sched "scx_''${SCHEDULER}"
+      CMD_ARGS+=(--mode "''${MODE}")
     fi
+    if [ -n "''${EXTRA:-}" ]; then
+      # shellcheck disable=SC2206
+      EXTRA_ARR=($EXTRA)
+      CMD_ARGS+=("''${EXTRA_ARR[@]}")
+    fi
+    ${scxctl}/bin/scxctl "''${CMD_ARGS[@]}"
   '';
 in
 {
@@ -202,9 +232,10 @@ in
   environment.systemPackages = [
     scx-polkit-policy
     scxctl
-    pkgs.scx.full   # scx_bpfland, scx_lavd, scx_flash, etc.
+    inputs.roudix-caches.packages.x86_64-linux.scx.full   # scx_bpfland, scx_lavd, scx_flash, etc.
     scx-switch
     scx-restore
+    roudix-scheduler-switcher
   ];
 
   # Dossier pour le state file (dernier scheduler choisi, hors ananicy)
