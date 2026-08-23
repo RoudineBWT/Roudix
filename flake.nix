@@ -73,7 +73,7 @@
       # github: ne supporte pas l'attribut submodules — umbriel a vendored
       # SceneFX en submodule git (cf. "Removed input umbriel/scenefx" dans le
       # lock), il faut le fetcher git générique pour que ça checkout.
-      url = "git+https://github.com/noctalia-dev/umbriel?submodules=1";
+      url = "git+https://github.com/noctalia-dev/umbriel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
