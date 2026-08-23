@@ -30,15 +30,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # Overlay du flake Hyprland : garde pkgs.hyprland cohérent avec
-  # programs.hyprland.package partout où du code référence pkgs.hyprland
-  # (ex: certains paquets nixpkgs qui le prennent en dépendance).
-  # Les plugins Hyprland (borders-plus-plus, etc.) viennent eux du flake
-  # hyprland-plugins dédié (cf. home/hyprland.nix), pas de
-  # pkgs.hyprlandPlugins — l'input hyprland.follows dans hyprland-plugins
-  # garantit la correspondance exacte de version.
-  nixpkgs.overlays = [ inputs.hyprland.overlays.default ];
-
   # ── Kernel ──────────────────────────────────────────────────────────────
   boot.kernelModules = [ "ntsync" ];
   boot.kernelParams = [ "zswap.enabled=0" ];
