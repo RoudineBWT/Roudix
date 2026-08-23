@@ -57,7 +57,7 @@
       url = "github:hyprwm/hyprland-plugins";
       # Verrouille exactement la même révision Hyprland que ci-dessus, pour
       # éviter le mismatch d'ABI qu'on aurait avec pkgs.hyprlandPlugins.
-      inputs.hyprland.follows = "hyprland";
+      inputs.hyprland.follows = "hyprland-modules";
     };
 
     home-manager = {

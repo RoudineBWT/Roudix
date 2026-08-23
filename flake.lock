@@ -800,7 +800,7 @@
     "hyprland-plugins": {
       "inputs": {
         "hyprland": [
-          "hyprland"
+          "hyprland-modules"
         ],
         "nixpkgs": [
           "hyprland-plugins",
