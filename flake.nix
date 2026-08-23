@@ -48,7 +48,7 @@
       # recompilation locale de Hyprland + deps (mesa, ffmpeg...).
     };
 
-    hyprland-module = {
+    hyprland-modules = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -201,7 +201,7 @@
       specialArgs = specialArgs;
       modules = [
         niri.nixosModules.niri
-        inputs.hyprland-module.nixosModules.default
+        inputs.hyprland-modules.nixosModules.default
         inputs.dms.nixosModules.dank-material-shell
         inputs.noctalia-greeter.nixosModules.default
         inputs.dank-greeter.nixosModules.default
