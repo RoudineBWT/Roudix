@@ -41,6 +41,8 @@ config = lib.mkIf isHyprland {
     enable = true;
     withUWSM = true;
     xwayland.enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
   };
 
   programs.uwsm.enable = true;
@@ -48,7 +50,6 @@ config = lib.mkIf isHyprland {
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
     ];
     # "*" laisse l'arbitrage D-Bus décider tout seul entre hyprland/gtk pour

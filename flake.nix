@@ -12,6 +12,7 @@
       "https://nix-cache.tokidoki.dev/tokidoki"
       "https://nyx-cache.chaotic.cx/"
       "https://niri-epireyn.cachix.org"
+      "https://hyprland.cachix.org"
     ];
     extra-trusted-public-keys = [
       "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
@@ -22,6 +23,7 @@
       "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
       "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
       "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     ];
   };
 
@@ -36,6 +38,21 @@
     niri = {
       url = "github:epireyn/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      # Pas de nixpkgs.follows ici : le cachix hyprland.cachix.org cache des
+      # builds faites avec LEUR nixpkgs épinglé. Si on force notre
+      # nixos-unstable, les hash de dérivation divergent → cache miss →
+      # recompilation locale de Hyprland + deps (mesa, ffmpeg...).
+    };
+
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      # Verrouille exactement la même révision Hyprland que ci-dessus, pour
+      # éviter le mismatch d'ABI qu'on aurait avec pkgs.hyprlandPlugins.
+      inputs.hyprland.follows = "hyprland";
     };
 
     home-manager = {
@@ -135,6 +152,8 @@
     nixpkgs,
     chaotic,
     niri,
+    hyprland,
+    hyprland-plugins,
     home-manager,
     nix-cachyos-kernel,
     zen-browser,
@@ -175,6 +194,7 @@
       specialArgs = specialArgs;
       modules = [
         niri.nixosModules.niri
+        inputs.hyprland.nixosModules.default
         inputs.dms.nixosModules.dank-material-shell
         inputs.noctalia-greeter.nixosModules.default
         inputs.dank-greeter.nixosModules.default

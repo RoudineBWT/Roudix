@@ -45,7 +45,7 @@ in
     xdg.configFile."hypr/config/nix-plugins.lua".text =
       let
         hyprPlugins = [
-          pkgs.hyprlandPlugins.borders-plus-plus
+          inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.borders-plus-plus
         ];
 
         loadPluginSoFrom = pkg: ''
@@ -70,7 +70,7 @@ in
         header + lib.concatMapStrings loadPluginSoFrom hyprPlugins;
 
     wayland.windowManager.hyprland.plugins = [
-      pkgs.hyprlandPlugins.borders-plus-plus
+      inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.borders-plus-plus
     ];
 
     # ── Packages ─────────────────────────────────────────────────────────────
