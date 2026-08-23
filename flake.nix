@@ -41,7 +41,7 @@
     };
 
     hyprland = {
-      url = "github:hyprwm/Hyprland";
+      url = "github:hyprwm/hyprnix";
       # Pas de nixpkgs.follows ici : le cachix hyprland.cachix.org cache des
       # builds faites avec LEUR nixpkgs épinglé. Si on force notre
       # nixos-unstable, les hash de dérivation divergent → cache miss →
