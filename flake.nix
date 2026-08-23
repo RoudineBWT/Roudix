@@ -40,26 +40,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland = {
-      url = "github:hyprwm/hyprnix";
-      # Pas de nixpkgs.follows ici : le cachix hyprland.cachix.org cache des
-      # builds faites avec LEUR nixpkgs épinglé. Si on force notre
-      # nixos-unstable, les hash de dérivation divergent → cache miss →
-      # recompilation locale de Hyprland + deps (mesa, ffmpeg...).
-    };
-
-    hyprland-modules = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      # Verrouille exactement la même révision Hyprland que ci-dessus, pour
-      # éviter le mismatch d'ABI qu'on aurait avec pkgs.hyprlandPlugins.
-      inputs.hyprland.follows = "hyprland-modules";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -158,9 +138,6 @@
     nixpkgs,
     chaotic,
     niri,
-    hyprland,
-    hyprland-modules,
-    hyprland-plugins,
     home-manager,
     nix-cachyos-kernel,
     zen-browser,
@@ -201,7 +178,6 @@
       specialArgs = specialArgs;
       modules = [
         niri.nixosModules.niri
-        inputs.hyprland-modules.nixosModules.default
         inputs.dms.nixosModules.dank-material-shell
         inputs.noctalia-greeter.nixosModules.default
         inputs.dank-greeter.nixosModules.default
