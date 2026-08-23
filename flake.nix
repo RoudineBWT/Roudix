@@ -48,6 +48,11 @@
       # recompilation locale de Hyprland + deps (mesa, ffmpeg...).
     };
 
+    hyprland-module = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       # Verrouille exactement la même révision Hyprland que ci-dessus, pour
@@ -154,6 +159,7 @@
     chaotic,
     niri,
     hyprland,
+    hyprland-modules,
     hyprland-plugins,
     home-manager,
     nix-cachyos-kernel,
@@ -195,7 +201,7 @@
       specialArgs = specialArgs;
       modules = [
         niri.nixosModules.niri
-        inputs.hyprland.nixosModules.default
+        inputs.hyprland-module.nixosModules.default
         inputs.dms.nixosModules.dank-material-shell
         inputs.noctalia-greeter.nixosModules.default
         inputs.dank-greeter.nixosModules.default
