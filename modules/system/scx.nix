@@ -143,7 +143,10 @@ let
           # shellcheck disable=SC2206
           EXTRA_ARR=($EXTRA)
           EXTRA_CSV=$(IFS=,; echo "''${EXTRA_ARR[*]}")
-          CMD_ARGS+=(--args "''${EXTRA_CSV}")
+          # `=` obligatoire : sinon clap voit "-m,..." comme un flag inconnu
+          # juste après --args (valeur commençant par '-') et refuse de la
+          # consommer → "error: a value is required for '--args'".
+          CMD_ARGS+=("--args=''${EXTRA_CSV}")
         fi
         ${scxctl}/bin/scxctl "''${CMD_ARGS[@]}"
 
@@ -225,7 +228,7 @@ let
       # shellcheck disable=SC2206
       EXTRA_ARR=($EXTRA)
       EXTRA_CSV=$(IFS=,; echo "''${EXTRA_ARR[*]}")
-      CMD_ARGS+=(--args "''${EXTRA_CSV}")
+      CMD_ARGS+=("--args=''${EXTRA_CSV}")
     fi
     ${scxctl}/bin/scxctl "''${CMD_ARGS[@]}"
   '';
