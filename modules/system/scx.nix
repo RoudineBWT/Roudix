@@ -131,8 +131,9 @@ let
         sleep 0.3
 
         echo "Starting scx_''${SCHEDULER}..."
-        CMD_ARGS=(start --sched "scx_''${SCHEDULER}")
-        [ -n "$MODE" ] && CMD_ARGS+=(--mode "''${MODE}")
+        # NOTE : --sched attend le nom nu (ex: "bpfland"), PAS "scx_bpfland" —
+        # scxctl préfixe lui-même en interne.
+        CMD_ARGS=(start --sched "''${SCHEDULER}")
         if [ -n "$EXTRA" ]; then
           # scxctl attend ses flags extra en une seule chaîne CSV
           # (ex: --args="-c,75,-m,0-15"), PAS façon ligne de commande.
@@ -146,7 +147,16 @@ let
           # `=` obligatoire : sinon clap voit "-m,..." comme un flag inconnu
           # juste après --args (valeur commençant par '-') et refuse de la
           # consommer → "error: a value is required for '--args'".
+          #
+          # IMPORTANT : --mode et --args sont mutuellement exclusifs chez
+          # scxctl (aucun exemple officiel ne les combine ; clap renvoie
+          # "the argument '--mode <MODE>' cannot be used with '--args
+          # <ARGS>'" sinon). Nos flags par défaut par profil encodent déjà
+          # l'équivalent du mode, donc --args remplace --mode ici plutôt
+          # que s'y ajouter.
           CMD_ARGS+=("--args=''${EXTRA_CSV}")
+        elif [ -n "$MODE" ]; then
+          CMD_ARGS+=(--mode "''${MODE}")
         fi
         ${scxctl}/bin/scxctl "''${CMD_ARGS[@]}"
 
@@ -218,17 +228,18 @@ let
     ${scxctl}/bin/scxctl stop 2>/dev/null || true
     sleep 0.3
 
-    CMD_ARGS=(start --sched "scx_''${SCHEDULER}")
-    if [ -n "''${MODE:-}" ] && [ "''${MODE}" != "None" ]; then
-      CMD_ARGS+=(--mode "''${MODE}")
-    fi
+    # NOTE : --sched attend le nom nu (ex: "bpfland"), PAS "scx_bpfland".
+    CMD_ARGS=(start --sched "''${SCHEDULER}")
     if [ -n "''${EXTRA:-}" ]; then
       # cf. commentaire dans scx-switch : format CSV attendu par scxctl,
-      # pas façon ligne de commande.
+      # pas façon ligne de commande. --mode et --args sont mutuellement
+      # exclusifs côté scxctl, donc --args prime ici s'il est renseigné.
       # shellcheck disable=SC2206
       EXTRA_ARR=($EXTRA)
       EXTRA_CSV=$(IFS=,; echo "''${EXTRA_ARR[*]}")
       CMD_ARGS+=("--args=''${EXTRA_CSV}")
+    elif [ -n "''${MODE:-}" ] && [ "''${MODE}" != "None" ]; then
+      CMD_ARGS+=(--mode "''${MODE}")
     fi
     ${scxctl}/bin/scxctl "''${CMD_ARGS[@]}"
   '';
