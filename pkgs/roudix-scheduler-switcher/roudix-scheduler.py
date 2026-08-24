@@ -12,7 +12,7 @@
 import gi  # noqa: I001 — ordre requis : require_version() AVANT l'import du repository, ne pas trier
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw, GLib, Gio, Pango  # noqa: E402, I001
+from gi.repository import Gtk, Adw, GLib, Gio, Pango  # noqa: I001
 
 import json
 import logging
@@ -71,59 +71,59 @@ PROFILE_MODE = {
 SCX_SCHEDULERS = {
     "none":       ("None",       "Default kernel scheduler — CFS/EEVDF",
                    SCX_PROFILES[:1]),
-    "bpfland":    ("bpfland",    "vruntime-based, interactive-first — best all-around "
-                                 "(gaming, desktop, heavy load); cache-topology aware",
+    "bpfland":    ("bpfland",    ("vruntime-based, interactive-first — best all-around "
+                                  "(gaming, desktop, heavy load); cache-topology aware"),
                    SCX_PROFILES),
-    "lavd":       ("lavd",       "Latency-Aware Virtual Deadline — gaming + interactive; "
-                                 "core compaction at low load; autopilot adjusts mode automatically",
+    "lavd":       ("lavd",       ("Latency-Aware Virtual Deadline — gaming + interactive; "
+                                  "core compaction at low load; autopilot adjusts mode automatically"),
                    SCX_PROFILES[:4]),
-    "flash":      ("flash",      "Fairness-focused, low-latency — good for mixed "
-                                 "desktop + compile workloads",
+    "flash":      ("flash",      ("Fairness-focused, low-latency — good for mixed "
+                                  "desktop + compile workloads"),
                    SCX_PROFILES),
-    "p2dq":       ("p2dq",      "Pick-2 load balancing, two-level queue — "
-                                 "general purpose; good cache locality",
+    "p2dq":       ("p2dq",      ("Pick-2 load balancing, two-level queue — "
+                                  "general purpose; good cache locality"),
                    SCX_PROFILES),
-    "rusty":      ("rusty",     "Multi-domain load balancer — scales well on large/NUMA systems; "
-                                 "no per-mode tuning",
+    "rusty":      ("rusty",     ("Multi-domain load balancer — scales well on large/NUMA systems; "
+                                  "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "rustland":   ("rustland",   "Userspace Rust scheduler (proof-of-concept) — "
-                                 "no per-mode tuning",
+    "rustland":   ("rustland",   ("Userspace Rust scheduler (proof-of-concept) — "
+                                  "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "cosmos":     ("cosmos",     "Lightweight locality-first — successor to bpfland, "
-                                 "in active development",
+    "cosmos":     ("cosmos",     ("Lightweight locality-first — successor to bpfland, "
+                                  "in active development"),
                    SCX_PROFILES),
-    "beerland":   ("beerland",   "Experimental — in active development; "
-                                 "no per-mode tuning",
+    "beerland":   ("beerland",   ("Experimental — in active development; "
+                                  "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "tickless":   ("tickless",   "Server/HPC-oriented — reduces OS noise via tick suppression; "
-                                 "requires nohz_full kernel param; NOT for desktop/gaming",
+    "tickless":   ("tickless",   ("Server/HPC-oriented — reduces OS noise via tick suppression; "
+                                  "requires nohz_full kernel param; NOT for desktop/gaming"),
                    SCX_PROFILES),
-    "layered":    ("layered",    "Layer-based — classify tasks into cgroups and apply a "
-                                 "different policy per layer; highly configurable via TOML",
+    "layered":    ("layered",    ("Layer-based — classify tasks into cgroups and apply a "
+                                  "different policy per layer; highly configurable via TOML"),
                    SCX_PROFILES[:1]),
-    "cake":       ("cake",       "Profile-driven — simple Gaming/Esports/Battery profiles; "
-                                 "in active development",
+    "cake":       ("cake",       ("Profile-driven — simple Gaming/Esports/Battery profiles; "
+                                  "in active development"),
                    SCX_PROFILES),
-    "chaos":      ("chaos",      "Stress-test / debugging only — amplifies race conditions; "
-                                 "NOT for production use",
+    "chaos":      ("chaos",      ("Stress-test / debugging only — amplifies race conditions; "
+                                  "NOT for production use"),
                    SCX_PROFILES[:1]),
-    "mitosis":    ("mitosis",    "Experimental cell-division scheduler — "
-                                 "in active development",
+    "mitosis":    ("mitosis",    ("Experimental cell-division scheduler — "
+                                  "in active development"),
                    SCX_PROFILES[:1]),
-    "pandemonium": ("pandemonium", "Experimental — in active development; "
-                                   "no per-mode tuning",
+    "pandemonium": ("pandemonium", ("Experimental — in active development; "
+                                    "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "rlfifo":     ("rlfifo",     "Round-robin FIFO userspace scheduler — "
-                                 "educational / proof-of-concept",
+    "rlfifo":     ("rlfifo",     ("Round-robin FIFO userspace scheduler — "
+                                  "educational / proof-of-concept"),
                    SCX_PROFILES[:1]),
-    "wd40":       ("wd40",       "Experimental fork of rusty using BPF arenas — "
-                                 "in active development",
+    "wd40":       ("wd40",       ("Experimental fork of rusty using BPF arenas — "
+                                  "in active development"),
                    SCX_PROFILES[:1]),
-    "flow":       ("flow",       "Task-budget driven — every decision derived directly "
-                                 "from budget, no Gaming/PowerSave/etc. profiles",
+    "flow":       ("flow",       ("Task-budget driven — every decision derived directly "
+                                  "from budget, no Gaming/PowerSave/etc. profiles"),
                    SCX_PROFILES[:1]),
-    "forge":      ("forge",      "AI-agent-oriented — tuned via scx_forge_agent and a "
-                                 "spec.toml optimization loop rather than manual profiles",
+    "forge":      ("forge",      ("AI-agent-oriented — tuned via scx_forge_agent and a "
+                                  "spec.toml optimization loop rather than manual profiles"),
                    SCX_PROFILES[:1]),
 }
 
@@ -220,7 +220,7 @@ def available_sched_ids() -> list[str]:
     dropdown des schedulers (ex: scx_forge, pas encore packagé partout) qui
     échoueraient à l'Apply avec une erreur peu claire côté scxctl."""
     available = ["none"]
-    missing = []
+    missing: list[str] = []
     for sched_id in SCHED_IDS:
         if sched_id == "none":
             continue
@@ -236,11 +236,11 @@ def available_sched_ids() -> list[str]:
 
 # ── Persisted UI state (survives across launches, independent of what's applied) ──
 
-def load_state() -> dict:
-    default = {"scheduler": "none", "profile": "Auto", "extra": ""}
+def load_state() -> dict[str, str]:
+    default: dict[str, str] = {"scheduler": "none", "profile": "Auto", "extra": ""}
     try:
         with open(CONFIG_FILE) as f:
-            data = json.load(f)
+            data: dict[str, str] = json.load(f)
         default["scheduler"] = data.get("scheduler", "none")
         default["profile"]   = data.get("profile", "Auto")
         default["extra"]     = data.get("extra", "")
