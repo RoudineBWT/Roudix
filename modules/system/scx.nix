@@ -134,9 +134,16 @@ let
         CMD_ARGS=(start --sched "scx_''${SCHEDULER}")
         [ -n "$MODE" ] && CMD_ARGS+=(--mode "''${MODE}")
         if [ -n "$EXTRA" ]; then
+          # scxctl attend ses flags extra en une seule chaîne CSV
+          # (ex: --args="-c,75,-m,0-15"), PAS façon ligne de commande.
+          # Si on les ajoute en arguments bruts, les flags courts du
+          # scheduler sous-jacent (ex: bpfland "-m performance") entrent
+          # en collision avec les flags courts de scxctl lui-même
+          # (-s/-m/-a) → "unexpected argument" côté scxctl.
           # shellcheck disable=SC2206
           EXTRA_ARR=($EXTRA)
-          CMD_ARGS+=("''${EXTRA_ARR[@]}")
+          EXTRA_CSV=$(IFS=,; echo "''${EXTRA_ARR[*]}")
+          CMD_ARGS+=(--args "''${EXTRA_CSV}")
         fi
         ${scxctl}/bin/scxctl "''${CMD_ARGS[@]}"
 
@@ -213,9 +220,12 @@ let
       CMD_ARGS+=(--mode "''${MODE}")
     fi
     if [ -n "''${EXTRA:-}" ]; then
+      # cf. commentaire dans scx-switch : format CSV attendu par scxctl,
+      # pas façon ligne de commande.
       # shellcheck disable=SC2206
       EXTRA_ARR=($EXTRA)
-      CMD_ARGS+=("''${EXTRA_ARR[@]}")
+      EXTRA_CSV=$(IFS=,; echo "''${EXTRA_ARR[*]}")
+      CMD_ARGS+=(--args "''${EXTRA_CSV}")
     fi
     ${scxctl}/bin/scxctl "''${CMD_ARGS[@]}"
   '';
