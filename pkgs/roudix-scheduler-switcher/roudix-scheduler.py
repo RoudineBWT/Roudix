@@ -9,19 +9,19 @@
 # Toute la logique root passe par un seul appel `pkexec scx-switch`
 # (installé par scx.nix) → un seul prompt de mot de passe par action.
 
-import gi
+import gi  # noqa: I001 — ordre requis : require_version() AVANT l'import du repository, ne pas trier
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw, GLib, Gio, Pango
+from gi.repository import Gtk, Adw, GLib, Gio, Pango  # noqa: E402, I001
 
 import json
+import logging
 import os
 import re
 import shutil
 import subprocess
-import threading
-import logging
 import sys
+import threading
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
