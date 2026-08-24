@@ -54,17 +54,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    umbriel = {
-      # github: ne supporte pas l'attribut submodules — umbriel a vendored
-      # SceneFX en submodule git (cf. "Removed input umbriel/scenefx" dans le
-      # lock), il faut le fetcher git générique pour que ça checkout.
-      url = "git+https://github.com/noctalia-dev/umbriel";
-    };
-
-    xdg-desktop-portal-umbriel = {
-      url = "github:noctalia-dev/xdg-desktop-portal-umbriel";
-    };
-
     caelestia-shell = {
          url = "github:caelestia-dots/shell";
          inputs.nixpkgs.follows = "nixpkgs";
@@ -155,8 +144,6 @@
     roudix-caches,
     nix-gaming-edge,
     mango,
-    umbriel,
-    xdg-desktop-portal-umbriel,
     ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
@@ -197,7 +184,6 @@
             imports = [
               ./home/common.nix
               ./home/niri.nix
-              ./home/umbriel.nix
               ./home/hyprland.nix
               ./home/mangowc.nix
               ./home/kde.nix
