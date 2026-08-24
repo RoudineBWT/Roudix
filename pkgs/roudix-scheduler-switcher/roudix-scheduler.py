@@ -119,9 +119,88 @@ SCX_SCHEDULERS = {
     "wd40":       ("wd40",       "Experimental fork of rusty using BPF arenas — "
                                  "in active development",
                    SCX_PROFILES[:1]),
+    "flow":       ("flow",       "Task-budget driven — every decision derived directly "
+                                 "from budget, no Gaming/PowerSave/etc. profiles",
+                   SCX_PROFILES[:1]),
+    "forge":      ("forge",      "AI-agent-oriented — tuned via scx_forge_agent and a "
+                                 "spec.toml optimization loop rather than manual profiles",
+                   SCX_PROFILES[:1]),
 }
 
 SCHED_IDS = list(SCX_SCHEDULERS.keys())
+
+
+# ── Default per-scheduler/per-mode flags ────────────────────────────────────────
+# Source de vérité : sched-ext/scx-loader, crates/scx_loader/src/config.rs,
+# fonction get_default_scx_flags_for_mode() (commit main, cf. licence GPL-2.0,
+# © 2024-2025 Vladislav Nepogodin/CachyOS). Reproduit ici pour l'auto-fill du
+# champ "extra flags", façon "CachyOS Configure sched-ext" (cf. screenshot
+# scx_bpfland + Powersave → "-m powersave").
+#
+# Clés : identique à PROFILE_MODE ("auto", "gaming", "lowlatency", "powersave",
+# "server"). Schedulers absents de cette table (rusty, rustland, beerland,
+# pandemonium, flash, chaos, mitosis, wd40, rlfifo, layered) n'ont pas de
+# tuning par mode côté scx_loader — le champ reste vide/laissé tel quel.
+
+SCX_DEFAULT_FLAGS = {
+    "bpfland": {
+        "auto":       ["-m", "auto"],
+        "gaming":     ["-m", "all"],
+        "lowlatency": ["-m", "performance", "-w"],
+        "powersave":  ["-s", "20000", "-m", "powersave", "-I", "100", "-t", "100"],
+        "server":     ["-s", "20000", "-S"],
+    },
+    "lavd": {
+        "auto":       ["--autopilot", "--pinned-slice-us", "500"],
+        "gaming":     ["--performance", "--pinned-slice-us", "500"],
+        "lowlatency": ["--performance", "--pinned-slice-us", "500"],
+        "powersave":  ["--powersave", "--pinned-slice-us", "500"],
+        "server":     ["--performance", "--slice-min-us", "3000",
+                        "--slice-max-us", "10000", "--pinned-slice-us", "3000"],
+    },
+    "p2dq": {
+        "auto":       ["--sched-mode", "default"],
+        "gaming":     ["--task-slice", "true", "-f", "--sched-mode", "performance"],
+        "lowlatency": ["-y", "-f", "--task-slice", "true"],
+        "powersave":  ["--sched-mode", "efficiency"],
+        "server":     ["--keep-running"],
+    },
+    "tickless": {
+        "auto":       [],
+        "gaming":     ["-f", "5000", "-s", "5000"],
+        "lowlatency": ["-f", "5000", "-s", "1000"],
+        "powersave":  ["-f", "50"],
+        "server":     ["-f", "100"],
+    },
+    "cosmos": {
+        "auto":       [],
+        "gaming":     ["-s", "700"],
+        "lowlatency": ["-s", "700", "-m", "performance", "-w"],
+        "powersave":  ["-m", "powersave"],
+        "server":     [],
+    },
+    "cake": {
+        "auto":       ["--profile", "default"],
+        "gaming":     ["--profile", "gaming"],
+        "lowlatency": ["--profile", "esports"],
+        "powersave":  ["--profile", "battery"],
+        "server":     ["--profile", "gaming"],
+    },
+}
+
+
+def default_flags_for(scheduler: str, profile: str) -> str | None:
+    """Retourne les flags par défaut (façon scx_loader) pour un couple
+    scheduler/profil donné, ou None si ce scheduler n'a pas de tuning par
+    mode (auto-fill à ne pas déclencher dans ce cas)."""
+    mode = PROFILE_MODE.get(profile) or "auto"
+    sched_flags = SCX_DEFAULT_FLAGS.get(scheduler)
+    if sched_flags is None:
+        return None
+    flags = sched_flags.get(mode)
+    if flags is None:
+        return None
+    return " ".join(flags)
 
 
 # ── Backend detection ──────────────────────────────────────────────────────────
@@ -132,6 +211,27 @@ def has_scxctl() -> bool:
 
 def has_scx_switch() -> bool:
     return shutil.which("scx-switch") is not None
+
+
+def available_sched_ids() -> list[str]:
+    """Filtre SCHED_IDS pour ne garder que 'none' + les schedulers dont le
+    binaire scx_<id> est réellement présent dans le PATH (donc buildé dans
+    le scx.full de roudix-caches à l'instant T). Évite de proposer dans le
+    dropdown des schedulers (ex: scx_forge, pas encore packagé partout) qui
+    échoueraient à l'Apply avec une erreur peu claire côté scxctl."""
+    available = ["none"]
+    missing = []
+    for sched_id in SCHED_IDS:
+        if sched_id == "none":
+            continue
+        if shutil.which(f"scx_{sched_id}"):
+            available.append(sched_id)
+        else:
+            missing.append(sched_id)
+    if missing:
+        log.info("Schedulers absents du PATH (masqués du dropdown) : %s",
+                  ", ".join(missing))
+    return available
 
 
 # ── Persisted UI state (survives across launches, independent of what's applied) ──
@@ -258,6 +358,14 @@ class SchedulerWindow(Adw.ApplicationWindow):
         self._profile   = state["profile"]
         self._extra     = state["extra"]
 
+        # Ne propose que les schedulers dont le binaire est vraiment présent
+        # (cf. available_sched_ids) — évite un Apply qui échoue silencieusement
+        # sur un scheduler pas encore packagé (ex: scx_forge).
+        self._sched_ids = available_sched_ids()
+        if self._scheduler not in self._sched_ids:
+            # binaire disparu depuis le dernier lancement (rebuild, etc.)
+            self._scheduler = "none"
+
         toolbar_view = Adw.ToolbarView()
         self.set_content(toolbar_view)
         toolbar_view.add_top_bar(Adw.HeaderBar())
@@ -292,10 +400,10 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
         sched_row = Adw.ActionRow()
         sched_row.set_title("Select scheduler")
-        sched_labels = [SCX_SCHEDULERS[s][0] for s in SCHED_IDS]
+        sched_labels = [SCX_SCHEDULERS[s][0] for s in self._sched_ids]
         self._sched_combo = Gtk.DropDown.new_from_strings(sched_labels)
         self._sched_combo.set_valign(Gtk.Align.CENTER)
-        self._sched_combo.set_selected(SCHED_IDS.index(self._scheduler))
+        self._sched_combo.set_selected(self._sched_ids.index(self._scheduler))
         self._sched_combo.connect("notify::selected", self._on_sched_changed)
         sched_row.add_suffix(self._sched_combo)
         select_lb.append(sched_row)
@@ -412,17 +520,31 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
     def _on_sched_changed(self, combo, _param):
         idx = combo.get_selected()
-        self._scheduler = SCHED_IDS[idx] if idx < len(SCHED_IDS) else "none"
+        self._scheduler = self._sched_ids[idx] if idx < len(self._sched_ids) else "none"
         self._update_sched_desc()
         self._update_profile_sensitivity()
+        self._autofill_extra()
         save_state(self._scheduler, self._profile, self._extra)
         self._status_lbl.set_label("")
 
     def _on_profile_changed(self, combo, _param):
         idx = combo.get_selected()
         self._profile = SCX_PROFILES[idx] if idx < len(SCX_PROFILES) else "Auto"
+        self._autofill_extra()
         save_state(self._scheduler, self._profile, self._extra)
         self._status_lbl.set_label("")
+
+    def _autofill_extra(self):
+        """Pré-remplit le champ 'extra flags' avec le template par défaut du
+        couple scheduler/profil (façon CachyOS Configure sched-ext). Écrase
+        volontairement toute valeur précédente — comme dans l'app CachyOS,
+        le champ reste ensuite éditable à la main avant Apply. Ne touche à
+        rien si ce scheduler n'a pas de tuning par mode connu (rusty, etc.)."""
+        flags = default_flags_for(self._scheduler, self._profile)
+        if flags is None:
+            return
+        self._extra = flags
+        self._extra_row.set_text(flags)
 
     def _on_extra_changed(self, entry_row):
         self._extra = entry_row.get_text()
@@ -468,6 +590,7 @@ def main():
     log.info("=== Roudix Scheduler started ===")
     log.info("scxctl available: %s", has_scxctl())
     log.info("scx-switch available: %s", has_scx_switch())
+    log.info("scx schedulers detected: %s", ", ".join(available_sched_ids()))
     App().run(sys.argv)
 
 
