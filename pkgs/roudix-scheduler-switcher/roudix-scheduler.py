@@ -12,7 +12,7 @@
 import gi  # noqa: I001 — ordre requis : require_version() AVANT l'import du repository, ne pas trier
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw, GLib, Gio, Pango  # noqa: I001
+from gi.repository import Gtk, Adw, GLib, Gio, Pango  # noqa: I001  # pyright: ignore[reportAttributeAccessIssue]
 
 import json
 import logging
@@ -566,12 +566,25 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
     def _run_apply(self, scheduler, profile, extra):
         ok, msg = apply_scx(scheduler, profile, extra)
-        GLib.idle_add(self._finish, ok, f"{'✓' if ok else '✗'} {msg}")
+        GLib.idle_add(self._finish, ok, f"{'✓' if ok else '✗'} {msg}", scheduler, profile)
 
-    def _finish(self, ok, msg):
+    def _finish(self, ok, msg, scheduler=None, profile=None):
         self._status_lbl.set_label(msg)
         self._apply_btn.set_sensitive(True)
-        self._refresh_running()
+        if ok and scheduler is not None:
+            # On sait avec certitude ce qui vient d'être appliqué (scx-switch
+            # a renvoyé un code 0) : on l'affiche direct plutôt que de
+            # dépendre de `scxctl get`, qui peut être en retard — ou renvoyer
+            # "unknown" — juste après un démarrage via --args (le chemin
+            # StartSchedulerWithArgs côté scx_loader semble moins fiable pour
+            # mettre à jour CurrentScheduler que le --mode classique).
+            if scheduler == "none":
+                self._running_row.set_subtitle("None — CFS/EEVDF")
+            else:
+                label = SCX_SCHEDULERS.get(scheduler, (scheduler, "", []))[0]
+                self._running_row.set_subtitle(f"{label} · {profile}")
+        else:
+            self._refresh_running()
         self._refresh_ananicy()
 
 
