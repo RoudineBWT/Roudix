@@ -28,7 +28,6 @@ in
       winetricks
       wineWow64Packages.staging
       mangohud
-      hytale
       (if isKde then protonup-qt else protonplus)
     ] else []);
 }
