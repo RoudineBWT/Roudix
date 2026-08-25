@@ -111,7 +111,7 @@ position = [1920, 0]
 scale = 1
 vrr = "fullscreen"                # niri: variable-refresh-rate on-demand=true
 # 5 workspaces nommés, dans l'ordre déclaré dans ton rules.kdl :
-workspaces = ["\uf0239", "\ue8da", "\ue795", "\uf0297", "\uf024b"]
+workspaces = ["󰈹", "\ue8da", "\ue795", "\uf0297", "\uf024b"]
 
 [output.DP-3]              # HKC 24E4, 1920x1080@165
 mode = "1920x1080@165.001"
