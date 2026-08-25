@@ -120,6 +120,9 @@
         url = "github:DreamMaoMao/mango";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+
+    umbriel.url = "git+https://github.com/noctalia-dev/umbriel";
+    xdg-desktop-portal-umbriel.url = "github:noctalia-dev/xdg-desktop-portal-umbriel";
   };
 
   outputs = inputs @ {
@@ -144,6 +147,8 @@
     roudix-caches,
     nix-gaming-edge,
     mango,
+    umbriel,
+    xdg-desktop-portal-umbriel,
     ... }:
   let
   # ← username is defined in hosts/roudix/username.nix (gitignored)
@@ -186,6 +191,7 @@
               ./home/niri.nix
               ./home/hyprland.nix
               ./home/mangowc.nix
+              ./home/umbriel.nix
               ./home/kde.nix
               ./home/gnome.nix
               ./home/local.nix
