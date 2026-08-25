@@ -5,5 +5,3 @@ hosts/roudix/username.nix
 modules/system/boot.local.nix
 dotfiles/perso/*
 !dotfiles/perso/README.md
-modules/system/desktop/umbriel.nix
-home/umbriel.nix
