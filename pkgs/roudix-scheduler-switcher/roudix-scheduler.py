@@ -9,19 +9,19 @@
 # Toute la logique root passe par un seul appel `pkexec scx-switch`
 # (installé par scx.nix) → un seul prompt de mot de passe par action.
 
-import gi
+import gi  # noqa: I001 — ordre requis : require_version() AVANT l'import du repository, ne pas trier
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw, GLib, Gio, Pango
+from gi.repository import Gtk, Adw, GLib, Gio, Pango  # noqa: I001  # pyright: ignore[reportAttributeAccessIssue]
 
 import json
+import logging
 import os
 import re
 import shutil
 import subprocess
-import threading
-import logging
 import sys
+import threading
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
@@ -71,57 +71,136 @@ PROFILE_MODE = {
 SCX_SCHEDULERS = {
     "none":       ("None",       "Default kernel scheduler — CFS/EEVDF",
                    SCX_PROFILES[:1]),
-    "bpfland":    ("bpfland",    "vruntime-based, interactive-first — best all-around "
-                                 "(gaming, desktop, heavy load); cache-topology aware",
+    "bpfland":    ("bpfland",    ("vruntime-based, interactive-first — best all-around "
+                                  "(gaming, desktop, heavy load); cache-topology aware"),
                    SCX_PROFILES),
-    "lavd":       ("lavd",       "Latency-Aware Virtual Deadline — gaming + interactive; "
-                                 "core compaction at low load; autopilot adjusts mode automatically",
+    "lavd":       ("lavd",       ("Latency-Aware Virtual Deadline — gaming + interactive; "
+                                  "core compaction at low load; autopilot adjusts mode automatically"),
                    SCX_PROFILES[:4]),
-    "flash":      ("flash",      "Fairness-focused, low-latency — good for mixed "
-                                 "desktop + compile workloads",
+    "flash":      ("flash",      ("Fairness-focused, low-latency — good for mixed "
+                                  "desktop + compile workloads"),
                    SCX_PROFILES),
-    "p2dq":       ("p2dq",      "Pick-2 load balancing, two-level queue — "
-                                 "general purpose; good cache locality",
+    "p2dq":       ("p2dq",      ("Pick-2 load balancing, two-level queue — "
+                                  "general purpose; good cache locality"),
                    SCX_PROFILES),
-    "rusty":      ("rusty",     "Multi-domain load balancer — scales well on large/NUMA systems; "
-                                 "no per-mode tuning",
+    "rusty":      ("rusty",     ("Multi-domain load balancer — scales well on large/NUMA systems; "
+                                  "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "rustland":   ("rustland",   "Userspace Rust scheduler (proof-of-concept) — "
-                                 "no per-mode tuning",
+    "rustland":   ("rustland",   ("Userspace Rust scheduler (proof-of-concept) — "
+                                  "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "cosmos":     ("cosmos",     "Lightweight locality-first — successor to bpfland, "
-                                 "in active development",
+    "cosmos":     ("cosmos",     ("Lightweight locality-first — successor to bpfland, "
+                                  "in active development"),
                    SCX_PROFILES),
-    "beerland":   ("beerland",   "Experimental — in active development; "
-                                 "no per-mode tuning",
+    "beerland":   ("beerland",   ("Experimental — in active development; "
+                                  "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "tickless":   ("tickless",   "Server/HPC-oriented — reduces OS noise via tick suppression; "
-                                 "requires nohz_full kernel param; NOT for desktop/gaming",
+    "tickless":   ("tickless",   ("Server/HPC-oriented — reduces OS noise via tick suppression; "
+                                  "requires nohz_full kernel param; NOT for desktop/gaming"),
                    SCX_PROFILES),
-    "layered":    ("layered",    "Layer-based — classify tasks into cgroups and apply a "
-                                 "different policy per layer; highly configurable via TOML",
+    "layered":    ("layered",    ("Layer-based — classify tasks into cgroups and apply a "
+                                  "different policy per layer; highly configurable via TOML"),
                    SCX_PROFILES[:1]),
-    "cake":       ("cake",       "Profile-driven — simple Gaming/Esports/Battery profiles; "
-                                 "in active development",
+    "cake":       ("cake",       ("Profile-driven — simple Gaming/Esports/Battery profiles; "
+                                  "in active development"),
                    SCX_PROFILES),
-    "chaos":      ("chaos",      "Stress-test / debugging only — amplifies race conditions; "
-                                 "NOT for production use",
+    "chaos":      ("chaos",      ("Stress-test / debugging only — amplifies race conditions; "
+                                  "NOT for production use"),
                    SCX_PROFILES[:1]),
-    "mitosis":    ("mitosis",    "Experimental cell-division scheduler — "
-                                 "in active development",
+    "mitosis":    ("mitosis",    ("Experimental cell-division scheduler — "
+                                  "in active development"),
                    SCX_PROFILES[:1]),
-    "pandemonium": ("pandemonium", "Experimental — in active development; "
-                                   "no per-mode tuning",
+    "pandemonium": ("pandemonium", ("Experimental — in active development; "
+                                    "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "rlfifo":     ("rlfifo",     "Round-robin FIFO userspace scheduler — "
-                                 "educational / proof-of-concept",
+    "rlfifo":     ("rlfifo",     ("Round-robin FIFO userspace scheduler — "
+                                  "educational / proof-of-concept"),
                    SCX_PROFILES[:1]),
-    "wd40":       ("wd40",       "Experimental fork of rusty using BPF arenas — "
-                                 "in active development",
+    "wd40":       ("wd40",       ("Experimental fork of rusty using BPF arenas — "
+                                  "in active development"),
+                   SCX_PROFILES[:1]),
+    "flow":       ("flow",       ("Task-budget driven — every decision derived directly "
+                                  "from budget, no Gaming/PowerSave/etc. profiles"),
+                   SCX_PROFILES[:1]),
+    "forge":      ("forge",      ("AI-agent-oriented — tuned via scx_forge_agent and a "
+                                  "spec.toml optimization loop rather than manual profiles"),
                    SCX_PROFILES[:1]),
 }
 
 SCHED_IDS = list(SCX_SCHEDULERS.keys())
+
+
+# ── Default per-scheduler/per-mode flags ────────────────────────────────────────
+# Source de vérité : sched-ext/scx-loader, crates/scx_loader/src/config.rs,
+# fonction get_default_scx_flags_for_mode() (commit main, cf. licence GPL-2.0,
+# © 2024-2025 Vladislav Nepogodin/CachyOS). Reproduit ici pour l'auto-fill du
+# champ "extra flags", façon "CachyOS Configure sched-ext" (cf. screenshot
+# scx_bpfland + Powersave → "-m powersave").
+#
+# Clés : identique à PROFILE_MODE ("auto", "gaming", "lowlatency", "powersave",
+# "server"). Schedulers absents de cette table (rusty, rustland, beerland,
+# pandemonium, flash, chaos, mitosis, wd40, rlfifo, layered) n'ont pas de
+# tuning par mode côté scx_loader — le champ reste vide/laissé tel quel.
+
+SCX_DEFAULT_FLAGS = {
+    "bpfland": {
+        "auto":       ["-m", "auto"],
+        "gaming":     ["-m", "all"],
+        "lowlatency": ["-m", "performance", "-w"],
+        "powersave":  ["-s", "20000", "-m", "powersave", "-I", "100", "-t", "100"],
+        "server":     ["-s", "20000", "-S"],
+    },
+    "lavd": {
+        "auto":       ["--autopilot", "--pinned-slice-us", "500"],
+        "gaming":     ["--performance", "--pinned-slice-us", "500"],
+        "lowlatency": ["--performance", "--pinned-slice-us", "500"],
+        "powersave":  ["--powersave", "--pinned-slice-us", "500"],
+        "server":     ["--performance", "--slice-min-us", "3000",
+                        "--slice-max-us", "10000", "--pinned-slice-us", "3000"],
+    },
+    "p2dq": {
+        "auto":       ["--sched-mode", "default"],
+        "gaming":     ["--task-slice", "true", "-f", "--sched-mode", "performance"],
+        "lowlatency": ["-y", "-f", "--task-slice", "true"],
+        "powersave":  ["--sched-mode", "efficiency"],
+        "server":     ["--keep-running"],
+    },
+    "tickless": {
+        "auto":       [],
+        "gaming":     ["-f", "5000", "-s", "5000"],
+        "lowlatency": ["-f", "5000", "-s", "1000"],
+        "powersave":  ["-f", "50"],
+        "server":     ["-f", "100"],
+    },
+    "cosmos": {
+        "auto":       [],
+        "gaming":     ["-s", "700"],
+        "lowlatency": ["-s", "700", "-m", "performance", "-w"],
+        "powersave":  ["-m", "powersave"],
+        "server":     [],
+    },
+    "cake": {
+        "auto":       ["--profile", "default"],
+        "gaming":     ["--profile", "gaming"],
+        "lowlatency": ["--profile", "esports"],
+        "powersave":  ["--profile", "battery"],
+        "server":     ["--profile", "gaming"],
+    },
+}
+
+
+def default_flags_for(scheduler: str, profile: str) -> str | None:
+    """Retourne les flags par défaut (façon scx_loader) pour un couple
+    scheduler/profil donné, ou None si ce scheduler n'a pas de tuning par
+    mode (auto-fill à ne pas déclencher dans ce cas)."""
+    mode = PROFILE_MODE.get(profile) or "auto"
+    sched_flags = SCX_DEFAULT_FLAGS.get(scheduler)
+    if sched_flags is None:
+        return None
+    flags = sched_flags.get(mode)
+    if flags is None:
+        return None
+    return " ".join(flags)
 
 
 # ── Backend detection ──────────────────────────────────────────────────────────
@@ -134,13 +213,34 @@ def has_scx_switch() -> bool:
     return shutil.which("scx-switch") is not None
 
 
+def available_sched_ids() -> list[str]:
+    """Filtre SCHED_IDS pour ne garder que 'none' + les schedulers dont le
+    binaire scx_<id> est réellement présent dans le PATH (donc buildé dans
+    le scx.full de roudix-caches à l'instant T). Évite de proposer dans le
+    dropdown des schedulers (ex: scx_forge, pas encore packagé partout) qui
+    échoueraient à l'Apply avec une erreur peu claire côté scxctl."""
+    available = ["none"]
+    missing: list[str] = []
+    for sched_id in SCHED_IDS:
+        if sched_id == "none":
+            continue
+        if shutil.which(f"scx_{sched_id}"):
+            available.append(sched_id)
+        else:
+            missing.append(sched_id)
+    if missing:
+        log.info("Schedulers absents du PATH (masqués du dropdown) : %s",
+                  ", ".join(missing))
+    return available
+
+
 # ── Persisted UI state (survives across launches, independent of what's applied) ──
 
-def load_state() -> dict:
-    default = {"scheduler": "none", "profile": "Auto", "extra": ""}
+def load_state() -> dict[str, str]:
+    default: dict[str, str] = {"scheduler": "none", "profile": "Auto", "extra": ""}
     try:
         with open(CONFIG_FILE) as f:
-            data = json.load(f)
+            data: dict[str, str] = json.load(f)
         default["scheduler"] = data.get("scheduler", "none")
         default["profile"]   = data.get("profile", "Auto")
         default["extra"]     = data.get("extra", "")
@@ -258,6 +358,14 @@ class SchedulerWindow(Adw.ApplicationWindow):
         self._profile   = state["profile"]
         self._extra     = state["extra"]
 
+        # Ne propose que les schedulers dont le binaire est vraiment présent
+        # (cf. available_sched_ids) — évite un Apply qui échoue silencieusement
+        # sur un scheduler pas encore packagé (ex: scx_forge).
+        self._sched_ids = available_sched_ids()
+        if self._scheduler not in self._sched_ids:
+            # binaire disparu depuis le dernier lancement (rebuild, etc.)
+            self._scheduler = "none"
+
         toolbar_view = Adw.ToolbarView()
         self.set_content(toolbar_view)
         toolbar_view.add_top_bar(Adw.HeaderBar())
@@ -292,10 +400,10 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
         sched_row = Adw.ActionRow()
         sched_row.set_title("Select scheduler")
-        sched_labels = [SCX_SCHEDULERS[s][0] for s in SCHED_IDS]
+        sched_labels = [SCX_SCHEDULERS[s][0] for s in self._sched_ids]
         self._sched_combo = Gtk.DropDown.new_from_strings(sched_labels)
         self._sched_combo.set_valign(Gtk.Align.CENTER)
-        self._sched_combo.set_selected(SCHED_IDS.index(self._scheduler))
+        self._sched_combo.set_selected(self._sched_ids.index(self._scheduler))
         self._sched_combo.connect("notify::selected", self._on_sched_changed)
         sched_row.add_suffix(self._sched_combo)
         select_lb.append(sched_row)
@@ -412,17 +520,31 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
     def _on_sched_changed(self, combo, _param):
         idx = combo.get_selected()
-        self._scheduler = SCHED_IDS[idx] if idx < len(SCHED_IDS) else "none"
+        self._scheduler = self._sched_ids[idx] if idx < len(self._sched_ids) else "none"
         self._update_sched_desc()
         self._update_profile_sensitivity()
+        self._autofill_extra()
         save_state(self._scheduler, self._profile, self._extra)
         self._status_lbl.set_label("")
 
     def _on_profile_changed(self, combo, _param):
         idx = combo.get_selected()
         self._profile = SCX_PROFILES[idx] if idx < len(SCX_PROFILES) else "Auto"
+        self._autofill_extra()
         save_state(self._scheduler, self._profile, self._extra)
         self._status_lbl.set_label("")
+
+    def _autofill_extra(self):
+        """Pré-remplit le champ 'extra flags' avec le template par défaut du
+        couple scheduler/profil (façon CachyOS Configure sched-ext). Écrase
+        volontairement toute valeur précédente — comme dans l'app CachyOS,
+        le champ reste ensuite éditable à la main avant Apply. Ne touche à
+        rien si ce scheduler n'a pas de tuning par mode connu (rusty, etc.)."""
+        flags = default_flags_for(self._scheduler, self._profile)
+        if flags is None:
+            return
+        self._extra = flags
+        self._extra_row.set_text(flags)
 
     def _on_extra_changed(self, entry_row):
         self._extra = entry_row.get_text()
@@ -444,12 +566,25 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
     def _run_apply(self, scheduler, profile, extra):
         ok, msg = apply_scx(scheduler, profile, extra)
-        GLib.idle_add(self._finish, ok, f"{'✓' if ok else '✗'} {msg}")
+        GLib.idle_add(self._finish, ok, f"{'✓' if ok else '✗'} {msg}", scheduler, profile)
 
-    def _finish(self, ok, msg):
+    def _finish(self, ok, msg, scheduler=None, profile=None):
         self._status_lbl.set_label(msg)
         self._apply_btn.set_sensitive(True)
-        self._refresh_running()
+        if ok and scheduler is not None:
+            # On sait avec certitude ce qui vient d'être appliqué (scx-switch
+            # a renvoyé un code 0) : on l'affiche direct plutôt que de
+            # dépendre de `scxctl get`, qui peut être en retard — ou renvoyer
+            # "unknown" — juste après un démarrage via --args (le chemin
+            # StartSchedulerWithArgs côté scx_loader semble moins fiable pour
+            # mettre à jour CurrentScheduler que le --mode classique).
+            if scheduler == "none":
+                self._running_row.set_subtitle("None — CFS/EEVDF")
+            else:
+                label = SCX_SCHEDULERS.get(scheduler, (scheduler, "", []))[0]
+                self._running_row.set_subtitle(f"{label} · {profile}")
+        else:
+            self._refresh_running()
         self._refresh_ananicy()
 
 
@@ -468,6 +603,7 @@ def main():
     log.info("=== Roudix Scheduler started ===")
     log.info("scxctl available: %s", has_scxctl())
     log.info("scx-switch available: %s", has_scx_switch())
+    log.info("scx schedulers detected: %s", ", ".join(available_sched_ids()))
     App().run(sys.argv)
 
 
