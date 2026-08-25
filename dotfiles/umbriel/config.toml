@@ -111,14 +111,14 @@ position = [1920, 0]
 scale = 1
 vrr = "fullscreen"                # niri: variable-refresh-rate on-demand=true
 # 5 workspaces nommés, dans l'ordre déclaré dans ton rules.kdl :
-workspaces = ["󰈹", "\ue8da", "\ue795", "\uf0297", "\uf024b"]
+workspaces = ["󰈹", "", "", "󰊗", "󰉋"]
 
 [output.DP-3]              # HKC 24E4, 1920x1080@165
 mode = "1920x1080@165.001"
 position = [0, 0]
 scale = 1
 # 3 workspaces nommés :
-workspaces = ["\uf1ff", "\uf075a", "\ue743"]
+workspaces = ["", "󰝚", ""]
 
 # ── Input (depuis input.kdl + misc.kdl) ─────────────────────────────────
 [input]
@@ -245,23 +245,23 @@ hide_timeout_ms = 1000            # niri: hide-after-inactive-ms 1000
 # nommé précis, peu importe le output où tu es (comportement absolu, pas
 # relatif comme avant). Les noms restent uniques entre les deux outputs
 # donc pas besoin de suffixe /output.
-"Mod+1" = "workspace-switch:\uf0239"   # Firefox / Zen / Brave (Legion #1)
-"Mod+2" = "workspace-switch:\ue8da"    # Zed (Legion #2)
-"Mod+3" = "workspace-switch:\ue795"    # kitty / Ptyxis (Legion #3)
-"Mod+4" = "workspace-switch:\uf0297"   # Steam / jeux (Legion #4)
-"Mod+5" = "workspace-switch:\uf024b"   # Fichiers (Legion #5)
-"Mod+6" = "workspace-switch:\uf1ff"    # Discord / Element / Telegram (HKC #1)
-"Mod+7" = "workspace-switch:\uf075a"   # Spotify / EasyEffects (HKC #2)
-"Mod+8" = "workspace-switch:\ue743"    # brave-browser (HKC #3)
+"Mod+1" = "workspace-switch:󰈹"   # Firefox / Zen / Brave (Legion #1)
+"Mod+2" = "workspace-switch:"    # Zed (Legion #2)
+"Mod+3" = "workspace-switch:"    # kitty / Ptyxis (Legion #3)
+"Mod+4" = "workspace-switch:󰊗"   # Steam / jeux (Legion #4)
+"Mod+5" = "workspace-switch:󰉋"   # Fichiers (Legion #5)
+"Mod+6" = "workspace-switch:"    # Discord / Element / Telegram (HKC #1)
+"Mod+7" = "workspace-switch:󰝚"   # Spotify / EasyEffects (HKC #2)
+"Mod+8" = "workspace-switch:"    # brave-browser (HKC #3)
 
-"Mod+Ctrl+1" = "window-move-to-workspace:\uf0239"
-"Mod+Ctrl+2" = "window-move-to-workspace:\ue8da"
-"Mod+Ctrl+3" = "window-move-to-workspace:\ue795"
-"Mod+Ctrl+4" = "window-move-to-workspace:\uf0297"
-"Mod+Ctrl+5" = "window-move-to-workspace:\uf024b"
-"Mod+Ctrl+6" = "window-move-to-workspace:\uf1ff"
-"Mod+Ctrl+7" = "window-move-to-workspace:\uf075a"
-"Mod+Ctrl+8" = "window-move-to-workspace:\ue743"
+"Mod+Ctrl+1" = "window-move-to-workspace:󰈹"
+"Mod+Ctrl+2" = "window-move-to-workspace:"
+"Mod+Ctrl+3" = "window-move-to-workspace:"
+"Mod+Ctrl+4" = "window-move-to-workspace:󰊗"
+"Mod+Ctrl+5" = "window-move-to-workspace:󰉋"
+"Mod+Ctrl+6" = "window-move-to-workspace:"
+"Mod+Ctrl+7" = "window-move-to-workspace:󰝚"
+"Mod+Ctrl+8" = "window-move-to-workspace:"
 
 # ⚠ niri: MOD+TAB -> focus-workspace-previous (bascule MRU vers le
 # dernier workspace actif). workspace-previous d'Umbriel est
