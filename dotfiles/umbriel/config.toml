@@ -127,10 +127,10 @@ workspaces = ["\uf1ff", "\uf075a", "\ue743"]
 [input.keyboard]
 layout = "us"
 variant = "intl"
-# ⚠ niri: keyboard { numlock } (numlock activé au démarrage) — je n'ai
-# trouvé AUCUNE clé Umbriel équivalente dans la doc consultée. Solution
-# de contournement possible : lancer `numlockx on` (ou équivalent) dans
-# `general.autostart` si le paquet est disponible.
+# niri: keyboard { numlock } (numlock activé au démarrage) -> équivalent
+# natif trouvé dans la doc Umbriel : numlock_toggle (true = active le
+# NumLock à la connexion d'un clavier).
+numlock_toggle = true
 
 [input.touchpad]
 tap = true
@@ -309,9 +309,10 @@ hide_timeout_ms = 1000            # niri: hide-after-inactive-ms 1000
 
 "Ctrl+Alt+Delete" = "session-quit"
 "Mod+Shift+R" = "spawn:noctalia msg config-reload"
-# ⚠ niri: MOD+SHIFT+P -> power-off-monitors (éteint les écrans, DPMS).
-# Aucune action Umbriel native trouvée. Possible contournement externe :
-# un outil wlr-output-power-management (ex: wlopm) si packagé, à tester.
+# niri: MOD+SHIFT+P -> power-off-monitors (éteint les écrans, DPMS).
+# Umbriel a en fait une action native pour ça (pas besoin de spawn/wlopm) :
+"Mod+Shift+P" = "dpms-off"
+"Mod+Shift+Alt+P" = "dpms-on"
 "Mod+O" = { action = "overview-toggle", repeat = false }
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -391,14 +392,11 @@ default_output = "DP-1"
 default_workspace = 1
 default_maximize = true
 
-[[window_rule]]
-# ⚠ niri: open-focused true sur la boîte "Save As" de Nautilus. Aucun
-# champ Umbriel "focus new window on open" trouvé — focus_on_activate ne
-# couvre que les requêtes d'activation, pas le comportement au mappage
-# initial. Règle conservée pour le matching mais sans effet garanti ;
-# à vérifier en pratique (peut-être déjà le comportement par défaut).
-match.app_id = "^org\\.gnome\\.Nautilus$"
-match.title = "^Save As$"
+# niri: open-focused true sur la boîte "Save As" de Nautilus. Umbriel a
+# bien un champ pour ça : default_focused (bool). Il vaut déjà true par
+# défaut, donc la règle qui matchait juste "Save As" sans clé ne servait
+# à rien (no-op) — supprimée. Pas besoin de la réintroduire sauf si le
+# comportement par défaut change un jour côté Umbriel.
 
 [[window_rule]]
 match.app_id = "^steam$"
