@@ -1,8 +1,8 @@
 { osConfig, lib, pkgs, inputs, username, ... }:
 {
   imports = [
-    ../modules/home/mangohud.nix
-    ../modules/home/papirus-folders.nix
+    ./mangohud.nix
+    ./papirus-folders.nix
     ./gnome-extensions.nix
   ];
 

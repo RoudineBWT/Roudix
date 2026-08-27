@@ -1,36 +1,40 @@
 { config, lib, pkgs, inputs, dotfiles, osConfig, ... }:
 let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
-
-  resolveUmbrielDotfiles = shell:
-    let
-      candidates = {
-        noctalia = "${dotfiles}/umbriel";
-      };
-    in
-      candidates.${shell} or candidates.noctalia;
-
-  umbrielDir = resolveUmbrielDotfiles shellType;
-
   isNoctalia = shellType == "noctalia";
-  isDms      = shellType == "dms";
 
   terminalCmd = osConfig.roudix.terminal or "ghostty";
-
   fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
 
   browserDefault = osConfig.roudix.browser.default or null;
   browserCmd     = osConfig.roudix.browser.command or null;
   browserList    = osConfig.roudix.browser.commands or [ ];
-  # Les navigateurs restants (hors default) reçoivent un bind supplémentaire.
   extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
+
+  # ── Assemblage déclaratif de programs.umbriel.settings ──────────────────
+  # Chaque fichier _foo.nix ne renvoie qu'un fragment de l'attrset TOML
+  # final (general/environment/..., appearance/..., animation, input,
+  # layout, output/workspace, keybinds, window_rule/layer_rule). Umbriel
+  # sérialise cet attrset en TOML via pkgs.formats.toml — pas besoin de
+  # gérer un fichier config.toml séparé.
+  umbrielSettings = lib.foldl' lib.recursiveUpdate { } [
+    (import ./_general.nix    { inherit lib pkgs; })
+    (import ./_appearance.nix { inherit lib pkgs; })
+    (import ./_animation.nix  { inherit lib pkgs; })
+    (import ./_input.nix      { inherit lib pkgs; })
+    (import ./_layout.nix     { inherit lib pkgs; })
+    (import ./_output.nix     { inherit lib pkgs; })
+    (import ./_binds.nix      { inherit lib pkgs; })
+    (import ./_rules.nix      { inherit lib pkgs; })
+    (import ./_noctalia-include.nix      { inherit lib pkgs; })
+  ];
 in
 {
   imports = [
     inputs.umbriel.homeModules.default
-    ../modules/home/mangohud.nix
-    ../modules/home/papirus-icon.nix
-    ../modules/home/tela-icon.nix
+    ../../mangohud.nix
+    ../../papirus-icon.nix
+    ../../tela-icon.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "umbriel") {
@@ -44,19 +48,16 @@ in
     # ── Umbriel config ──────────────────────────────────────────────────
     programs.umbriel = {
       enable = true;
-      validateConfig = true;   # umbriel valide le TOML au build (via `umbriel validate`)
-
-      # Le fichier ci-contre (config.toml) est la traduction de tes 9 fichiers
-      # niri .kdl. Il est chargé tel quel — remplace LEGION-OUTPUT/HKC-OUTPUT
-      # dedans par les vrais noms de connecteur avant le premier build
-      # (`umbriel outputs` une fois en session pour les récupérer).
-      #settings = ./config.toml;
+      validateConfig = true;   # umbriel valide le TOML généré au build
+      settings = umbrielSettings;
     };
 
-    xdg.configFile."umbriel" = {
-      source    = umbrielDir;
-      recursive = true;
-    };
+    # Note : on ne copie plus ${dotfiles}/umbriel vers ~/.config/umbriel —
+    # programs.umbriel.settings génère désormais le config.toml lui-même.
+    # S'il te reste d'autres assets Umbriel dans le dépôt dotfiles (pas du
+    # config.toml), remonte-les avec un xdg.configFile plus ciblé plutôt
+    # qu'un `recursive = true` sur tout le dossier, pour éviter un conflit
+    # avec le fichier généré.
 
     # ── Packages (mêmes packages communs que niri/hyprland) ──────────────
     home.packages = with pkgs; [
@@ -68,6 +69,10 @@ in
       pwvucontrol
       kdePackages.qtmultimedia
       mpvpaper
+
+      # Capture d'écran (utilisé par le bind Ctrl+Shift+3 dans _binds.nix)
+      grim
+      slurp
 
       # Apps (communes)
       gnome-text-editor

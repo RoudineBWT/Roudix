@@ -5,8 +5,8 @@ in
 {
   imports = [
     inputs.plasma-manager.homeModules.plasma-manager
-    ../modules/home/mangohud.nix
-    ../modules/home/papirus-folders.nix
+    ./mangohud.nix
+    ./papirus-folders.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "kde") {

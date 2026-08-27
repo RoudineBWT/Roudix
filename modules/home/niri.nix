@@ -30,9 +30,9 @@ let
 in
 {
   imports = [
-    ../modules/home/mangohud.nix
-    ../modules/home/papirus-icon.nix
-    ../modules/home/tela-icon.nix
+    ./mangohud.nix
+    ./papirus-icon.nix
+    ./tela-icon.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "niri") {

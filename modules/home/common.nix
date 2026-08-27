@@ -36,14 +36,14 @@ in
   home.stateVersion = "26.11";
 
   imports = [
-    ../modules/home/fastfetch.nix
-    ../modules/home/fish.nix
-    ../modules/home/bash.nix
-    ../modules/home/git.nix
-    ../modules/home/ssh.nix
-    ../modules/home/spicetify.nix
-    ../modules/home/gaming-home.nix
-    ../modules/home/gitwatch.nix
+    ./fastfetch.nix
+    ./fish.nix
+    ./bash.nix
+    ./git.nix
+    ./ssh.nix
+    ./spicetify.nix
+    ./gaming-home.nix
+    ./gitwatch.nix
     # Zen Browser HM module — imported unconditionally (lazy), only builds
     # anything when `programs.zen-browser.enable` is actually true below.
     inputs.zen-browser.homeModules.twilight
