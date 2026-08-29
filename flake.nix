@@ -187,15 +187,15 @@
           home-manager.extraSpecialArgs = specialArgs;
           home-manager.users.${username} = { ... }: {
             imports = [
-              ./home/common.nix
-              ./home/niri.nix
-              ./home/hyprland.nix
-              ./home/mangowc.nix
-              ./home/umbriel.nix
-              ./home/kde.nix
-              ./home/gnome.nix
-              ./home/local.nix
-              ./home/shell-modules.nix
+              ./modules/home/common.nix
+              ./modules/home/desktop/niri/default.nix
+              ./modules/home/hyprland.nix
+              ./modules/home/mangowc.nix
+              ./modules/home/desktop/umbriel/default.nix
+              ./modules/home/kde.nix
+              ./modules/home/gnome.nix
+              ./modules/home/local.nix
+              ./modules/home/shell-modules.nix
             ];
           };
         }

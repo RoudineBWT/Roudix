@@ -1,0 +1,40 @@
+{ osConfig, lib, pkgs, inputs, username, ... }:
+{
+  imports = [
+    ./mangohud.nix
+    ./papirus-folders.nix
+    ./gnome-extensions.nix
+  ];
+
+  config = lib.mkIf (osConfig.roudix.desktop.type == "gnome") {
+    home.packages = with pkgs; [
+      papirus-icon-theme
+      capitaine-cursors
+    ];
+
+    home.pointerCursor = {
+      name    = "capitaine-cursors-white";
+      package = pkgs.capitaine-cursors;
+      size    = 24;
+      gtk.enable = true;
+    };
+
+    dconf.settings = {
+      "org/gnome/desktop/background" = {
+        picture-uri      = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-light.png";
+        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
+        picture-options  = "zoom";
+      };
+      "org/gnome/desktop/screensaver" = {
+        picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
+      };
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        icon-theme   = "Papirus-Dark";
+        gtk-theme    = "adw-gtk3-dark";
+        cursor-theme = "capitaine-cursors-white";
+        cursor-size  = 24;
+      };
+    };
+  };
+}
