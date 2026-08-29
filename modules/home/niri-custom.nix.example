@@ -1,0 +1,39 @@
+{ lib, ... }:
+{
+  # ── Overrides niri personnels ─────────────────────────────────────────────
+  # Copie ce fichier en niri-custom.nix (sans .example) à côté de local.nix —
+  # il est auto-importé (voir `imports` dans local.nix) et gitignoré comme lui.
+  #
+  # Règle simple :
+  #  - Nouvelle clé (nouvel output, nouveau bind, une règle en plus)
+  #    → assignation normale, ça se fusionne tout seul avec le dépôt.
+  #  - Clé DÉJÀ définie par le dépôt (même output, même combinaison de
+  #    touches) → il faut lib.mkForce, sinon Nix râle ("conflicting
+  #    definitions").
+  #  - Remplacer une section entière → lib.mkForce sur toute la section.
+
+  # -- Changer la résolution/position de tes écrans -------------------------
+  # (lance `niri msg outputs` en session pour avoir les vrais noms)
+  # programs.niri.settings.outputs."Lenovo Group Limited Legion 27Q-10 UNA07260".mode =
+  #   lib.mkForce { width = 3840; height = 2160; refresh = 144.0; };
+
+  # -- Remapper un bind existant ----------------------------------------------
+  # programs.niri.settings.binds."Mod+T" = lib.mkForce {
+  #   action.spawn = [ "alacritty" ];
+  # };
+
+  # -- Ajouter un bind qui n'existe pas encore (pas besoin de mkForce) -------
+  # programs.niri.settings.binds."Mod+Shift+V".action.spawn = [ "pavucontrol" ];
+
+  # -- Ajouter une règle de fenêtre en plus -----------------------------------
+  # (les listes se fusionnent par CONCATÉNATION dans le système de modules
+  # Home Manager : ta règle vient s'ajouter après celles du dépôt)
+  # programs.niri.settings.window-rules = [
+  #   { matches = [ { app-id = "mpv"; } ]; open-floating = true; }
+  # ];
+
+  # -- Remplacer toute la section animations ----------------------------------
+  # programs.niri.settings.animations = lib.mkForce {
+  #   window-open.duration-ms = 0; # tout désactiver, par ex. sur un vieux PC
+  # };
+}

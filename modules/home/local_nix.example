@@ -1,0 +1,141 @@
+{ pkgs, lib, osConfig, roudixSwitch, dotfiles, ... }:
+{
+  # ── Fichiers d'overrides optionnels par compositeur ──────────────────────
+  # Si tu personnalises beaucoup un compositeur en particulier (surtout
+  # mango, dont l'override est un gros bloc de texte brut plutôt que
+  # quelques lignes Nix), crée le fichier correspondant à côté de local.nix
+  # et il sera importé automatiquement s'il existe — rien à activer à la
+  # main. Voir niri-custom.nix.example / umbriel-custom.nix.example /
+  # mango-custom.nix.example pour des exemples concrets à copier-coller.
+  imports =
+    lib.optional (builtins.pathExists ./niri-custom.nix) ./niri-custom.nix
+    ++ lib.optional (builtins.pathExists ./umbriel-custom.nix) ./umbriel-custom.nix
+    ++ lib.optional (builtins.pathExists ./mango-custom.nix) ./mango-custom.nix;
+
+ # ── Personal Home Manager overrides ─────────────────────────────────────
+  # This file is gitignored and never touched by git pull.
+  # Copy this file to home/local.nix and add your personal overrides here.
+
+  # Examples:
+
+  # Add personal packages
+  # home.packages = with pkgs; [
+  #   vlc
+  #   telegram-desktop
+  # ];
+
+  # Override dotfiles source
+  # xdg.configFile."hypr" = {
+  #   source = "${dotfiles}/perso/hyprland";
+  #   recursive = true;
+  # };
+
+  # Custom shell aliases
+  # programs.fish.shellAliases = {
+  #   myalias = "echo hello";
+  # };
+
+  # ── Niri / Umbriel / MangoWC overrides ──────────────────────────────────
+  # Pour des overrides courts (2-3 lignes), tu peux les coller directement
+  # ici. Pour un vrai fichier de perso par compositeur, voir
+  # niri-custom.nix.example / umbriel-custom.nix.example /
+  # mango-custom.nix.example — ils sont auto-importés (cf. `imports`
+  # ci-dessus) dès que tu les copies sans le suffixe `.example`.
+  # ── Add personal packages ────────────────────────────────────────────────
+  # home.packages = with pkgs; [
+  #   vlc
+  #   telegram-desktop
+  # ];
+
+  # ── Custom shell aliases ─────────────────────────────────────────────────
+  # programs.fish.shellAliases = {
+  #   myalias = "echo hello";
+  # };
+
+  # ── Fastfetch ────────────────────────────────────────────────────────────
+
+  # Override logo with a custom image (kitty terminal required)
+  # programs.fastfetch.settings.logo = {
+  #   type = "kitty-direct";
+  #   source = "/home/youruser/Pictures/roudix-logo-blue.png";
+  #   padding = { top = 1; left = 3; };
+  #   width = 38;
+  # };
+
+  # Override logo with a custom ASCII file
+  # programs.fastfetch.settings.logo = {
+  #   type = "file";
+  #   source = "/home/youruser/.config/fastfetch/my-logo.txt";
+  #   padding = { top = 1; left = 3; };
+  #   width = 38;
+  # };
+
+  # Override display color (ANSI color code)
+  # programs.fastfetch.settings.display.color = "35"; # purple
+
+  # Override entire fastfetch config (overwrites everything)
+  # programs.fastfetch.settings = lib.mkForce {
+  #   "$schema" = "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json";
+  #   logo = {
+  #     type = "kitty-direct";
+  #     source = "/home/youruser/Pictures/my-logo.png";
+  #     padding = { top = 1; left = 3; };
+  #     width = 38;
+  #   };
+  #   display = {
+  #     separator = "  ";
+  #     color = "33";
+  #   };
+  #   modules = [
+  #     { type = "os"; key = "󱄅 OS"; keyColor = "33"; }
+  #     { type = "kernel"; key = " Kernel"; keyColor = "33"; }
+  #   ];
+  # };
+
+  # ── KDE overrides ────────────────────────────────────────────────────────
+
+  # Override wallpaper
+  # programs.plasma.workspace.wallpaper = lib.mkForce "/home/youruser/Pictures/my-wallpaper.jpg";
+
+  # Override color scheme
+  # programs.plasma.colorscheme = lib.mkForce "Catppuccin-Mocha";
+
+  # Override Kickoff icon
+  # programs.plasma.panels = lib.mkForce [{ ... }];
+
+  # ── GNOME overrides ──────────────────────────────────────────────────────
+
+  # Override light wallpaper
+  # dconf.settings."org/gnome/desktop/background".picture-uri =
+  #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper.png";
+
+  # Override dark wallpaper
+  # dconf.settings."org/gnome/desktop/background".picture-uri-dark =
+  #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+
+  # Override screensaver wallpaper
+  # dconf.settings."org/gnome/desktop/screensaver".picture-uri =
+  #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+
+  # Override light/dark mode
+  # dconf.settings."org/gnome/desktop/interface".color-scheme =
+  #   lib.mkForce "prefer-light"; # or "prefer-dark"
+
+  # Override GTK theme
+  # dconf.settings."org/gnome/desktop/interface".gtk-theme =
+  #   lib.mkForce "adw-gtk3";
+
+  # Override icon theme
+  # dconf.settings."org/gnome/desktop/interface".icon-theme =
+  #   lib.mkForce "Papirus";
+
+  # Override cursor theme
+  # dconf.settings."org/gnome/desktop/interface".cursor-theme =
+  #   lib.mkForce "capitaine-cursors";
+  # dconf.settings."org/gnome/desktop/interface".cursor-size =
+  #   lib.mkForce 32;
+
+  # Override system font
+  # dconf.settings."org/gnome/desktop/interface".font-name =
+  #   lib.mkForce "Inter 11";
+}

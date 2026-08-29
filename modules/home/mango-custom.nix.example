@@ -1,0 +1,28 @@
+{ lib, ... }:
+{
+  # ── Overrides MangoWC personnels ──────────────────────────────────────────
+  # Copie ce fichier en mango-custom.nix (sans .example) à côté de local.nix
+  # — auto-importé (voir `imports` dans local.nix), gitignoré comme lui.
+  #
+  # ⚠ Différent de niri/umbriel : MangoWC n'a pas de module Nix typé mature
+  # (même en cherchant des configs multi-compositeurs réelles, personne ne
+  # l'utilise en pratique — juste du texte brut généré via xdg.configFile).
+  # Il n'y a donc PAS de fusion clé par clé possible ici : le seul point
+  # d'override est le fichier `user.conf`, sourcé en DERNIER dans
+  # config.conf (voir mangowc.nix) — tout ce que tu mets ici gagne sur
+  # tout le reste, dans l'ordre où mango lit le fichier de haut en bas.
+  #
+  # Comme c'est un remplacement total du fichier, pas la peine de
+  # lib.mkForce partiel : mets tout ton contenu personnel d'un coup.
+
+  xdg.configFile."mango/user.conf".text = lib.mkForce ''
+    # Tes binds/règles perso, au format MangoWC (voir cfg/*.conf du dépôt
+    # pour la syntaxe : bind=MOD,touche,action,argument / windowrule=...).
+
+    # Exemple : remapper un bind
+    # bind=SUPER,T,spawn,alacritty
+
+    # Exemple : une règle de fenêtre en plus
+    # windowrule=tags:3,appid:^mpv$
+  '';
+}
