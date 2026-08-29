@@ -1,7 +1,10 @@
 hosts/roudix/local.nix
 hosts/roudix/hardware-configuration.nix
-home/local.nix
+modules/home/local.nix
 hosts/roudix/username.nix
 modules/system/boot.local.nix
 dotfiles/perso/*
 !dotfiles/perso/README.md
+modules/home/niri-custom.nix
+modules/home/mangowc-custom.nix
+modules/home/umbriel-custom.nix
