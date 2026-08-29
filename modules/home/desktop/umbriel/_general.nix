@@ -34,6 +34,7 @@
     CLUTTER_BACKEND = "wayland";
     TERM = "ghostty";
     TERMINAL = "ghostty";
+    QT_QPA_PLATFORM= "xcb";
     _JAVA_AWT_WM_NONREPARENTING = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     QT_QPA_PLATFORMTHEME = "qt6ct";
