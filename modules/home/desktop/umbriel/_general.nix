@@ -23,9 +23,6 @@
   environment = {
     LD_PRELOAD = "";
     MOZ_ENABLE_WAYLAND = "1";
-    XDG_SESSION_TYPE = "wayland";
-    XDG_CURRENT_DESKTOP = "Umbriel";
-    XDG_SESSION_DESKTOP = "Umbriel";
     MOZ_DBUS_REMOTE = "1";
     GDK_BACKEND = "wayland";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
