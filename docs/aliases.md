@@ -26,6 +26,7 @@
 roudix-switch niri
 roudix-switch hyprland
 roudix-switch mangowc
+roudix-switch umbriel
 roudix-switch gnome
 roudix-switch kde
 

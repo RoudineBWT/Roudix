@@ -73,7 +73,7 @@ Edit `hosts/roudix/local.nix` to match your hardware:
 ```nix
 { lib, ... }:
 {
-  roudix.desktop.type = "niri";               # "niri", "hyprland", "gnome" or "kde"
+  roudix.desktop.type = "niri";               # "niri", "hyprland", "mangowc", "umbriel", "gnome" or "kde"
   hardware.myGpu      = "amd";                # "amd", "nvidia" or "intel"
   hardware.myCpu      = "intel";              # "intel" or "amd"
   hardware.myKernel        = "cachyos-lts-lto-v3"; # xddxdd kernel — used when hardware.myGpu != "nvidia"
