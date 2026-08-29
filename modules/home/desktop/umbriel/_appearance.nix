@@ -12,7 +12,7 @@
   programs.umbriel.settings = {
     appearance = {
       prefer_no_csd = true;
-      corner_radius = 20;
+      corner_radius = 0;
 
       blur = {
         enabled = true;
