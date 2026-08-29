@@ -88,6 +88,9 @@ KERNELS = {
         ("cachyos-rc",              "Release candidate  —  unstable"),
         ("cachyos-rc-lto",          "RC + LTO"),
     ],
+    "Zen (nixpkgs)": [
+        ("zen", "linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay"),
+    ],
 }
 
 # Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == "nvidia" (ships
@@ -99,6 +102,10 @@ KERNELS_CHAOTIC = {
         ("cachyos-lts",      "Long-term support"),
         ("cachyos-server",   "Server optimised  —  no desktop tuning"),
         ("cachyos-hardened", "Security hardened"),
+    ],
+    "Zen (nixpkgs)": [
+        ("zen", "linux-zen — nvidia module cached only with the open driver; "
+                "closed driver compiles locally on every bump"),
     ],
 }
 
