@@ -3,6 +3,7 @@
 ## Doc : https://docs.noctalia.dev/umbriel/layout/
 { ... }:
 {
+  programs.umbriel.settings = {
   layout = {
     mode = "scrolling";
     gap = 9; # niri: layout { gaps 9 }
@@ -20,5 +21,6 @@
       # focus). center_underfull_strip est un concept différent (centrer
       # la bande entière si elle est plus étroite que l'écran).
     };
+  };
   };
 }

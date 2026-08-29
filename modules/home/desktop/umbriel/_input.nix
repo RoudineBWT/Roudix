@@ -4,6 +4,7 @@
 ## Doc : https://docs.noctalia.dev/umbriel/input/
 { ... }:
 {
+  programs.umbriel.settings = {
   input = {
     # middle_click_paste laissé au défaut (true), pas configuré côté niri.
 
@@ -28,5 +29,6 @@
       hide_when_typing = true;
       hide_timeout_ms = 1000; # niri: hide-after-inactive-ms 1000
     };
+  };
   };
 }

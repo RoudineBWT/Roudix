@@ -1,7 +1,8 @@
-{ lib, pkgs, inputs, osConfig, ... }:
+{ pkgs, inputs, lib, osConfig, ... }:
 let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
   isNoctalia = shellType == "noctalia";
+  isDms      = shellType == "dms";
 
   terminalCmd = osConfig.roudix.terminal or "ghostty";
   fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
@@ -12,33 +13,41 @@ let
   extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
 in
 {
+  # ⚠ PAS d'import de `inputs.niri.homeModules.niri` ici : il est déjà
+  # importé automatiquement au niveau système (le module NixOS niri
+  # l'enregistre pour home-manager-as-module). L'importer une 2e fois ici
+  # provoque `error: The option 'programs.niri.finalConfig' ... is
+  # already declared` — c'est l'erreur qu'on a eue.
+  #
+  # Les fichiers _general/_animation/etc. posent programs.niri.settings.*
+  # directement (pas de lib.mkIf à l'intérieur) : on ne les importe donc
+  # QUE si niri est le compositeur actif, pour ne rien toucher côté niri
+  # sur un host qui utilise un autre desktop.
   imports = [
-    inputs.umbriel.homeModules.default
     ../../mangohud.nix
     ../../papirus-icon.nix
     ../../tela-icon.nix
   ]
-  # Les fichiers _foo.nix posent programs.umbriel.settings.* directement
-  # (sans lib.mkIf) : on ne les importe que si umbriel est le compositeur
-  # actif, pour ne rien toucher côté umbriel sur un host qui utilise un
-  # autre desktop. Les LISTES (window_rule/layer_rule) et l'include se
-  # fusionnent automatiquement entre ces fichiers via le système de
-  # modules — pas de merge manuel nécessaire ici.
-  ++ lib.optionals (osConfig.roudix.desktop.type == "umbriel") [
+  ++ lib.optionals (osConfig.roudix.desktop.type == "niri") ([
     ./_general.nix
-    ./_appearance.nix
     ./_animation.nix
     ./_input.nix
     ./_layout.nix
     ./_output.nix
-    ./_binds.nix
-    ./_rules.nix
+    ./_rules-common.nix
   ]
-  ++ lib.optionals (osConfig.roudix.desktop.type == "umbriel" && isNoctalia) [
+  ++ lib.optionals isNoctalia [
+    ./_binds-noctalia.nix
+    ./_rules-noctalia.nix
     ./_include-noctalia.nix
-  ];
+  ]
+  ++ lib.optionals isDms [
+    ./_binds-dms.nix
+    ./_rules-dms.nix
+    ./_include-dms.nix
+  ]);
 
-  config = lib.mkIf (osConfig.roudix.desktop.type == "umbriel") {
+  config = lib.mkIf (osConfig.roudix.desktop.type == "niri") {
 
     # ── Noctalia (shell) ─────────────────────────────────────────────────
     programs.noctalia = lib.mkIf isNoctalia {
@@ -46,25 +55,33 @@ in
       package = null;
     };
 
-    programs.umbriel = {
-      enable = true;
-      validateConfig = true; # umbriel valide le TOML généré au build
-    };
-
     # ── Terminal / navigateur / fichiers résolus depuis roudix.* ──────────
-    # Même clé ("Mod+Return" etc.) que dans _binds.nix : attrsOf → un
-    # point de fusion par bind, donc lib.mkForce pour que cette valeur
-    # gagne (même principe qu'un override côté local.nix).
-    programs.umbriel.settings.keybinds = {
-      "Mod+Return" = lib.mkForce "spawn:${terminalCmd}";
-      "Mod+E" = lib.mkForce "spawn:${fileManagerCmd}";
+    # Ces binds sont DÉJÀ définis par _binds-noctalia.nix / _binds-dms.nix ;
+    # comme c'est la même clé (attrsOf, un point de fusion par bind), il
+    # faut lib.mkForce pour que la valeur ci-dessous gagne — exactement le
+    # même principe que pour un override dans local.nix.
+    programs.niri.settings.binds = {
+      "Mod+Return" = lib.mkForce {
+        hotkey-overlay.title = "Open Terminal: ${terminalCmd}";
+        action.spawn = [ terminalCmd ];
+      };
+      "Mod+E" = lib.mkForce {
+        hotkey-overlay.title = "File Manager: ${fileManagerCmd}";
+        action.spawn = [ fileManagerCmd ];
+      };
     }
     // lib.optionalAttrs (browserCmd != null) {
-      "Mod+B" = lib.mkForce "spawn:${browserCmd}";
+      "Mod+B" = lib.mkForce {
+        hotkey-overlay.title = "Open Browser: ${browserCmd}";
+        action.spawn = [ browserCmd ];
+      };
     }
     // (lib.listToAttrs (lib.imap1 (i: b: {
       name = "Mod+Ctrl+Alt+${toString i}";
-      value = "spawn:${b.command}";
+      value = {
+        hotkey-overlay.title = "Open Browser: ${b.name}";
+        action.spawn = [ b.command ];
+      };
     }) extraBrowsers));
 
     # ── Packages ─────────────────────────────────────────────────────────
@@ -76,9 +93,6 @@ in
       pwvucontrol
       kdePackages.qtmultimedia
       mpvpaper
-
-      grim
-      slurp
 
       gnome-text-editor
       gnome-disk-utility

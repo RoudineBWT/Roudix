@@ -23,32 +23,53 @@
   #   myalias = "echo hello";
   # };
 
-  # ── Niri user overrides ──────────────────────────────────────────────────
-  # Included at the end of config.kdl — put your outputs, keybinds,
-  # and any personal tweaks here. Overrides anything set by the dotfiles.
-  # Only active when roudix.desktop.type = "niri".
+  # ── Niri / Umbriel overrides (config Nix native) ─────────────────────────
+  # Depuis que niri et Umbriel sont configurés via programs.niri.settings /
+  # programs.umbriel.settings (de vrais attrsets Nix, plus de fichier .kdl
+  # ou .toml généré à part), tu n'as plus besoin d'un fichier user.kdl
+  # séparé : tu peux surcharger n'importe quelle clé directement ici, et le
+  # système de modules Nix fusionne ça avec ce que met le dépôt.
   #
-  # To get info for your monitors type on the terminal : niri msg outputs
-  #
-  # xdg.configFile."niri/user.kdl" = lib.mkIf (osConfig.roudix.desktop.type == "niri") (lib.mkForce {
-  # text = ''
-  /*   // ── Outputs ─────────────────────────────────────────────────────────
-     output "DP-1" {
-       mode "2560x1440@240.000"
-       position x=0 y=0
-     }
-     output "HDMI-A-1" {
-       mode "1920x1080@60.000
-       position x=2560 y=0
-     }
+  # Règle simple :
+  #  - Ajouter une clé qui n'existe pas encore (nouvel output, nouveau bind,
+  #    une règle en plus) → assignation normale, ça se fusionne tout seul.
+  #  - Changer une clé DÉJÀ définie par le dépôt (même sortie, même
+  #    combinaison de touches) → il faut lib.mkForce, sinon Nix râle
+  #    ("conflicting definitions").
+  #  - Remplacer une section entière (vider toutes les règles de fenêtre
+  #    par ex.) → lib.mkForce sur toute la section.
 
-     // ── Keybinds ─────────────────────────────────────────────────────────
-     binds {
-       Mod+T { spawn "alacritty"; }
-     }
-   '';
-   });
-*/
+  # -- Niri : changer la résolution/position de tes écrans -----------------
+  # (lance `niri msg outputs` en session pour avoir les vrais noms)
+  # programs.niri.settings.outputs."Lenovo Group Limited Legion 27Q-10 UNA07260".mode =
+  #   lib.mkForce { width = 3840; height = 2160; refresh = 144.0; };
+
+  # -- Niri : remapper un bind existant -------------------------------------
+  # programs.niri.settings.binds."Mod+T" = lib.mkForce {
+  #   action.spawn = [ "alacritty" ];
+  # };
+
+  # -- Niri : ajouter un bind qui n'existe pas encore (pas besoin de mkForce)
+  # programs.niri.settings.binds."Mod+Shift+V".action.spawn = [ "pavucontrol" ];
+
+  # -- Niri : ajouter une règle de fenêtre en plus --------------------------
+  # (les listes se fusionnent par CONCATÉNATION dans le système de modules
+  # Home Manager : ta règle vient s'ajouter après celles du dépôt)
+  # programs.niri.settings.window-rules = [
+  #   { matches = [ { app-id = "mpv"; } ]; open-floating = true; }
+  # ];
+
+  # -- Umbriel : changer la résolution/position de tes écrans ---------------
+  # (lance `umbriel outputs` en session pour les vrais noms de connecteur)
+  # programs.umbriel.settings.output."DP-1".mode = lib.mkForce "3840x2160@144";
+
+  # -- Umbriel : remapper un bind existant -----------------------------------
+  # programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn:some-command";
+
+  # -- Umbriel : remplacer toute la section animation ------------------------
+  # programs.umbriel.settings.animation = lib.mkForce {
+  #   enabled = false; # tout désactiver, par ex. sur un vieux PC
+  # };
   # ── Add personal packages ────────────────────────────────────────────────
   # home.packages = with pkgs; [
   #   vlc

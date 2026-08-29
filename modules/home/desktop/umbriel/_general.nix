@@ -5,6 +5,7 @@
 ##       https://docs.noctalia.dev/umbriel/workspace-overview/
 { ... }:
 {
+  programs.umbriel.settings = {
   general = {
     autostart = [ "noctalia" "discord" ];
     # ⚠ "xwayland-satellite" n'est pas dans autostart : Umbriel le spawn
@@ -23,8 +24,8 @@
     LD_PRELOAD = "";
     MOZ_ENABLE_WAYLAND = "1";
     XDG_SESSION_TYPE = "wayland";
-    XDG_CURRENT_DESKTOP = "umbriel";
-    XDG_SESSION_DESKTOP = "umbriel";
+    XDG_CURRENT_DESKTOP = "Umbriel";
+    XDG_SESSION_DESKTOP = "Umbriel";
     MOZ_DBUS_REMOTE = "1";
     GDK_BACKEND = "wayland";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
@@ -60,5 +61,6 @@
     enabled = true;
     delay_ms = 300;
     action = "overview-toggle";
+  };
   };
 }

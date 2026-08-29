@@ -5,6 +5,7 @@
 ##       https://docs.noctalia.dev/umbriel/scratchpads/
 { ... }:
 {
+  programs.umbriel.settings = {
   keybinds = {
     # ─── Applications ───
     "Mod+Q" = "window-close";
@@ -153,5 +154,6 @@
     "Mod+Space" = "scratchpad-toggle";
     "Mod+Ctrl+Space" = "window-restore-from-scratchpad";
     "Mod+Alt+Space" = "scratchpad-focus-next";
+  };
   };
 }

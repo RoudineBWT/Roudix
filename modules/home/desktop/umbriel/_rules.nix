@@ -6,6 +6,7 @@
 ## Doc : https://docs.noctalia.dev/umbriel/rules/
 { ... }:
 {
+  programs.umbriel.settings = {
   window_rule = [
     # Discord / Element : pas d'équivalent "largeur fixe en pixels tuilée"
     # côté Umbriel (default_width n'accepte qu'une fraction) → flottant
@@ -228,4 +229,5 @@
       blur_ignore_alpha = 0.0;
     }
   ];
+  };
 }

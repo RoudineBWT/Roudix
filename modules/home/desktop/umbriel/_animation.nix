@@ -8,6 +8,7 @@
 ## Doc : https://docs.noctalia.dev/umbriel/animation/
 { ... }:
 {
+  programs.umbriel.settings = {
   animation = {
     enabled = true;
     duration_ms = 250;
@@ -79,5 +80,6 @@
       duration_ms = 200;
       curve = "easeout";
     };
+  };
   };
 }

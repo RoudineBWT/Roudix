@@ -188,7 +188,7 @@
           home-manager.users.${username} = { ... }: {
             imports = [
               ./modules/home/common.nix
-              ./modules/home/niri.nix
+              ./modules/home/desktop/niri/default.nix
               ./modules/home/hyprland.nix
               ./modules/home/mangowc.nix
               ./modules/home/desktop/umbriel/default.nix

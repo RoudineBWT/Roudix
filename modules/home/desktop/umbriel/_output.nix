@@ -10,6 +10,7 @@
 ##       https://docs.noctalia.dev/umbriel/workspaces/#workspace-rules
 { ... }:
 {
+  programs.umbriel.settings = {
   output = {
     "DP-1" = { # Lenovo Legion 27Q-10, 2560x1440@240
       mode = "2560x1440@240.000";
@@ -46,4 +47,5 @@
       layout.gap = 0;
     }
   ];
+  };
 }
