@@ -7,15 +7,22 @@ let
   # Chaotic sélectionné via hardware.myKernelChaotic (voir modules/system/kernel.nix)
   # => pas de rebuild local du module à chaque bump de kernel.
   nvidiaDriverPackage =
-    let
-      drivers = {
-        "cachyos"          = pkgs.nvidia_cachyos;
-        "cachyos-lts"      = pkgs.nvidia_cachyos-lts;
-        "cachyos-server"   = pkgs.nvidia_cachyos-server;
-        "cachyos-hardened" = pkgs.nvidia_cachyos-hardened;
-      };
-    in
-      drivers.${config.hardware.myKernelChaotic};
+    # "zen" : pas de module précompilé côté Chaotic-Nyx pour linux-zen, donc on
+    # laisse nixpkgs builder localement le module nvidia contre le kernel choisi
+    # (config.boot.kernelPackages == pkgs.linuxPackages_zen, cf. kernel.nix).
+    # Pour toutes les autres variantes on garde le module nvidia_cachyos précompilé.
+    if config.hardware.myKernelChaotic == "zen" then
+      config.boot.kernelPackages.nvidiaPackages.stable
+    else
+      let
+        drivers = {
+          "cachyos"          = pkgs.nvidia_cachyos;
+          "cachyos-lts"      = pkgs.nvidia_cachyos-lts;
+          "cachyos-server"   = pkgs.nvidia_cachyos-server;
+          "cachyos-hardened" = pkgs.nvidia_cachyos-hardened;
+        };
+      in
+        drivers.${config.hardware.myKernelChaotic};
 in
 {
   options.roudix.nvidia_config = {
@@ -44,6 +51,13 @@ in
   };
 
   config = mkMerge [
+    {
+      warnings = lib.optional
+        (config.hardware.myGpu == "nvidia"
+          && config.hardware.myKernelChaotic == "zen"
+          && !config.hardware.nvidiaOpen)
+        "hardware.myKernelChaotic = \"zen\" with a closed-source NVIDIA driver (hardware.nvidiaOpen = false): the kernel module is not available from any binary cache (nixpkgs only caches the open module for zen; Chaotic-Nyx doesn't build zen at all) and will be compiled locally on every driver bump.";
+    }
     # Active nvidia_config quand myGpu == "nvidia"
     (mkIf (config.hardware.myGpu == "nvidia") {
       roudix.nvidia_config = {

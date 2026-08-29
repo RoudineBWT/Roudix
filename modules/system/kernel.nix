@@ -41,9 +41,11 @@
       "cachyos-rt-bore-lto"
       "cachyos-server"
       "cachyos-server-lto"
+      # Zen (nixpkgs, pas CachyOS)
+      "zen"
     ];
     default = "cachyos-latest-v3";
-    description = "Variant de kernel CachyOS (xddxdd) — utilisé quand hardware.myGpu != \"nvidia\"";
+    description = "Variant de kernel CachyOS (xddxdd) — utilisé quand hardware.myGpu != \"nvidia\". \"zen\" bascule sur pkgs.linuxPackages_zen (nixpkgs), hors overlay xddxdd.";
   };
 
   # Set de variants nettement plus réduit chez Chaotic-Nyx (pas de x86_64-v2/v3/v4/zen4
@@ -54,9 +56,12 @@
       "cachyos-lts"
       "cachyos-server"
       "cachyos-hardened"
+      # Zen (nixpkgs) : kernel linuxPackages_zen + module nvidia buildé
+      # localement via nvidiaPackages.stable (pas de cache Chaotic pour ce cas)
+      "zen"
     ];
     default = "cachyos";
-    description = "Variant de kernel Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == \"nvidia\", pour bénéficier du cache nvidia_cachyos précompilé";
+    description = "Variant de kernel Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == \"nvidia\", pour bénéficier du cache nvidia_cachyos précompilé. \"zen\" sort de ce cache : kernel nixpkgs + module nvidia recompilé localement (voir nvidia.nix)";
   };
 
   config = lib.mkMerge [
@@ -118,6 +123,10 @@
       nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
 
       boot.kernelPackages =
+        if config.hardware.myKernel == "zen" then
+          # linux-zen de nixpkgs, indépendant de l'overlay xddxdd
+          pkgs.linuxPackages_zen
+        else
         let
           kernels = {
             # Latest
@@ -170,6 +179,11 @@
     # soit nvidia ou non)
     (lib.mkIf (config.hardware.myGpu == "nvidia") {
       boot.kernelPackages =
+        if config.hardware.myKernelChaotic == "zen" then
+          # linux-zen de nixpkgs ; le module nvidia associé (nvidiaPackages.stable,
+          # buildé localement) est sélectionné dans nvidia.nix
+          pkgs.linuxPackages_zen
+        else
         let
           kernels = {
             "cachyos"          = pkgs.linuxPackages_cachyos;
