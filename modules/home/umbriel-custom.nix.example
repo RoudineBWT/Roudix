@@ -1,0 +1,28 @@
+{ lib, ... }:
+{
+  # ── Overrides Umbriel personnels ──────────────────────────────────────────
+  # Copie ce fichier en umbriel-custom.nix (sans .example) à côté de
+  # local.nix — auto-importé (voir `imports` dans local.nix), gitignoré.
+  # Même règle que niri-custom.nix.example : nouvelle clé = assignation
+  # normale ; clé déjà définie par le dépôt = lib.mkForce.
+
+  # -- Changer la résolution/position de tes écrans -------------------------
+  # (lance `umbriel outputs` en session pour les vrais noms de connecteur)
+  # programs.umbriel.settings.output."DP-1".mode = lib.mkForce "3840x2160@144";
+
+  # -- Remapper un bind existant -----------------------------------------------
+  # programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn:some-command";
+
+  # -- Ajouter un bind qui n'existe pas encore --------------------------------
+  # programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn:pavucontrol";
+
+  # -- Ajouter une règle de fenêtre en plus -----------------------------------
+  # programs.umbriel.settings.window_rule = [
+  #   { match.app_id = "^mpv$"; default_floating = true; }
+  # ];
+
+  # -- Remplacer toute la section animation -----------------------------------
+  # programs.umbriel.settings.animation = lib.mkForce {
+  #   enabled = false; # tout désactiver, par ex. sur un vieux PC
+  # };
+}

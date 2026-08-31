@@ -4,7 +4,7 @@
     set config_file "$NH_FLAKE/hosts/roudix/local.nix"
 
     if test -z "$de"
-      echo "Usage: roudix-switch [niri|gnome|kde|hyprland|mangowc]"
+      echo "Usage: roudix-switch [niri|gnome|kde|hyprland|mangowc|umbriel]"
       echo ""
       echo "Available desktop environments:"
       echo "  niri     — Niri scrollable tiling compositor + Noctalia"
@@ -12,12 +12,13 @@
       echo "  kde      — KDE Plasma"
       echo "  hyprland — Dynamic tiling Wayland compositor + Noctalia shell"
       echo "  mangowc  — Lightweight dynamic tiling Wayland compositor"
+      echo "  umbriel  — Umbriel scrollable tiling compositor (Noctalia-only)"
       return 1
     end
 
-    if not contains $de niri gnome kde hyprland mangowc
+    if not contains $de niri gnome kde hyprland mangowc umbriel
       echo "Unknown desktop environment: $de"
-      echo "Available: niri, gnome, kde, hyprland, mangowc"
+      echo "Available: niri, gnome, kde, hyprland, mangowc, umbriel"
       return 1
     end
 
@@ -34,7 +35,7 @@
       local config_file="$NH_FLAKE/hosts/roudix/local.nix"
 
       if [[ -z "$de" ]]; then
-        echo "Usage: roudix-switch [niri|gnome|kde|hyprland|mangowc]"
+        echo "Usage: roudix-switch [niri|gnome|kde|hyprland|mangowc|umbriel]"
         echo ""
         echo "Available desktop environments:"
         echo "  niri     — Niri scrollable tiling compositor + Noctalia"
@@ -42,14 +43,15 @@
         echo "  kde      — KDE Plasma"
         echo "  hyprland — Dynamic tiling Wayland compositor + Noctalia shell"
         echo "  mangowc  — Lightweight dynamic tiling Wayland compositor"
+        echo "  umbriel  — Umbriel scrollable tiling compositor (Noctalia-only)"
         return 1
       fi
 
       case "$de" in
-        niri|gnome|kde|hyprland|mangowc) ;;
+        niri|gnome|kde|hyprland|mangowc|umbriel) ;;
         *)
           echo "Unknown desktop environment: $de"
-          echo "Available: niri, gnome, kde, hyprland, mangowc"
+          echo "Available: niri, gnome, kde, hyprland, mangowc, umbriel"
           return 1
           ;;
       esac

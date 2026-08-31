@@ -2,7 +2,10 @@
 let
   onNiri     = (osConfig.roudix.desktop.type or "") == "niri";
   onHyprland = (osConfig.roudix.desktop.type or "") == "hyprland";
-  onTilingDE = onNiri || onHyprland;
+  onMangoWC  = (osConfig.roudix.desktop.type or "") == "mangowc";
+  # ⚠ Umbriel n'est PAS ajouté ici : compositeur Noctalia-only, pas de
+  # shell à switcher (pas de roudix-shell-switch pour lui).
+  onTilingDE = onNiri || onHyprland || onMangoWC;
   shellType  = osConfig.roudix.desktop.shell or "noctalia";
   shellList  = if onHyprland then "noctalia dms caelestia" else "noctalia dms";
 

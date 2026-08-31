@@ -2,7 +2,7 @@
 
 When `roudix.autoupdate.enable = true`, the system checks GitHub every hour (and 5 min after boot).
 If new commits are detected on `main`, it pulls and runs `nh os boot path:...` — the new config applies on next reboot.
-Your `local.nix` files, `username.nix`, `hardware-configuration.nix` and everything under `dotfiles/perso/` are gitignored and never touched by the pull.
+Your `local.nix` files, `username.nix`, `hardware-configuration.nix`, the optional `home/niri-custom.nix` / `home/umbriel-custom.nix` / `home/mango-custom.nix` and everything under `dotfiles/perso/` are gitignored and never touched by the pull.
 
 To configure the interval or branch, override in `local.nix`:
 

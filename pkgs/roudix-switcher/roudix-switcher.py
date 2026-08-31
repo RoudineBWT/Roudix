@@ -53,6 +53,13 @@ ENVIRONMENTS = [
         "subtitle": "Lightweight dynamic tiling Wayland compositor",
         "icon":     "mangowc.svg",
     },
+
+     {
+         "id":       "umbriel",
+         "name":     "Umbriel",
+         "subtitle": "a Wayland compositor designed for daily use, with scrolling, dwindle, and master layouts, per-output workspaces, window rules, blur, shadows, and fluid animations.",
+         "icon":     "umbriel.svg",
+     },
 ]
 
 # Shells graphiques — disponibles uniquement pour niri et hyprland
@@ -80,13 +87,26 @@ CAELESTIA = [
     },
 ]
 
+UMBRIEL = [
+    {
+        "id":       "noctalia",
+        "name":     "Noctalia",
+        "subtitle": "Roudix default shell — sleek and feature-complete",
+        "icon":     "noctalia.svg",
+    },
+
+]
+
 # Compositeurs qui supportent le choix de shell graphique
-SHELL_SUPPORTED_DE    = {"niri", "hyprland", "mangowc"}
+SHELL_SUPPORTED_DE    = {"niri", "hyprland", "mangowc", "umbriel"}
 CAELESTIA_SUPPORTED_DE = {"hyprland"}
+UMBRIEL_SUPPORTED_DE = {"umbriel"}
 
 
 def shells_for_de(de_id: str) -> list:
     """Return the shell list appropriate for the given DE."""
+    if de_id in UMBRIEL_SUPPORTED_DE:
+        return UMBRIEL
     return SHELLS + (CAELESTIA if de_id in CAELESTIA_SUPPORTED_DE else [])
 
 
@@ -283,6 +303,27 @@ class SelectorGroup(Gtk.Box):
                 self.rows[first].set_active(True)
                 self.selected_id = first
 
+    def sync_items(self, items: list):
+        """Reconcile displayed rows with the given item list (add missing, remove extras)."""
+        wanted_ids = [item["id"] for item in items]
+
+        # Retirer les lignes qui ne doivent plus apparaître
+        for existing_id in list(self._row_widgets.keys()):
+            if existing_id not in wanted_ids:
+                self.remove_item(existing_id)
+
+        # Ajouter les lignes manquantes
+        for item in items:
+            if item["id"] not in self._row_widgets:
+                self.add_item(item)
+
+        # Sécurité : si la sélection actuelle n'est plus valide
+        if self.selected_id not in wanted_ids and wanted_ids:
+            first = wanted_ids[0]
+            if first in self.rows:
+                self.rows[first].set_active(True)
+                self.selected_id = first
+
     def _on_toggled(self, check, item_id):
         if check.get_active():
             self.selected_id = item_id
@@ -369,7 +410,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             check.connect("toggled", self._on_de_toggled)
         main_box.append(self.de_selector)
 
-        # ── Shell selector (niri/hyprland uniquement) ─────────────────────
+        # ── Shell selector (niri/hyprland/mangowc/umbriel uniquement) ─────
         # Construire avec la liste correcte selon le DE actuel
         initial_shells = shells_for_de(current_de)
         # Si le shell sauvegardé n'est pas dispo pour ce DE, fallback noctalia
@@ -526,18 +567,15 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if not visible:
             return
 
-        # Ajouter ou retirer caelestia selon le DE
-        if new_de in CAELESTIA_SUPPORTED_DE:
-            for item in CAELESTIA:
-                self.shell_selector.add_item(item)
-        else:
-            for item in CAELESTIA:
-                self.shell_selector.remove_item(item["id"])
+        # Réconcilie la liste des shells affichés avec celle attendue pour ce DE
+        # (ex: bascule vers Umbriel → uniquement Noctalia; retour vers Hyprland
+        # → Noctalia/DMS + Caelestia, etc.)
+        self.shell_selector.sync_items(shells_for_de(new_de))
 
         log.debug(
-            "DE changed to '%s' — shell selector updated (caelestia: %s)",
+            "DE changed to '%s' — shell selector mis à jour (shells: %s)",
             new_de,
-            new_de in CAELESTIA_SUPPORTED_DE,
+            [item["id"] for item in shells_for_de(new_de)],
         )
 
     def on_theme_changed(self, style_manager, _param):
@@ -555,7 +593,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         de_changed = new_de != cur_de
 
-        # Le shell n'est pertinent que pour niri/hyprland
+        # Le shell n'est pertinent que pour niri/hyprland/mangowc/umbriel
         shell_relevant = new_de in SHELL_SUPPORTED_DE
         new_shell      = self.shell_selector.selected_id if shell_relevant else cur_shell
         shell_changed  = shell_relevant and (new_shell != cur_shell)

@@ -35,6 +35,8 @@
 ## Desktop (Niri)
 
 - Niri scrollable tiling Wayland compositor — provided via [niri-flake](https://github.com/epireyn/niri-flake) (epireyn), using `niri-unstable` by default, with the `niri.cachix.org` binary cache pre-configured
+- Config is Nix-native (`programs.niri.settings`), split by topic (general, animations, input, layout, outputs, binds, rules) and validated at build time via `niri validate` — a broken config fails the build instead of the compositor at login
+- Noctalia/DMS live theme sync (matugen/DMS-generated colors, alt-tab, blur) is preserved by appending an `include` to the generated config rather than baking it in statically
 - Noctalia (v5) modern shell
 - xdg-desktop-portal-gnome + gtk (screencast + remote desktop portals configured)
 - Bibata Modern Ice cursor (24 px)
@@ -58,10 +60,21 @@
 - Screenshots with grim + slurp + satty (annotation) — 3 keybinds
 - rofi window switcher (Alt+Tab)
 - XDG Desktop Portal env vars pre-configured (Pipewire screen capture, OBS, Discord Go Live)
-- force_tearing + indleinhibit_when_focus on all gaming apps (Steam, Heroic, Minecraft, Lutris, Bottles)
+- force_tearing + idleinhibit_when_focus on all gaming apps (Steam, Heroic, Minecraft, Lutris, Bottles)
 - Unfocused window opacity (0.85)
 - Hotarea overview (corner mouse gesture)
 - Floating snap + drag tile-to-tile
+
+## Desktop (Umbriel)
+
+- Umbriel scrollable tiling Wayland compositor — Noctalia's own native compositor, provided via [noctalia-dev/umbriel](https://github.com/noctalia-dev/umbriel) (Noctalia-only, no shell switching)
+- Config is Nix-native (`programs.umbriel.settings`), split by topic (general, appearance, animation, input, layout, outputs, binds, rules) and validated at build time (`validateConfig = true`)
+- Noctalia's live theme sync (matugen-generated colors) preserved via Umbriel's native `include.files` mechanism, no static color snapshot
+- Bibata Modern Ice cursor (24 px)
+- adw-gtk3 + Papirus icons + Papirus Folders
+- Hot corners (overview on mouse-to-corner) and a workspace overview (Mod+O)
+- Scratchpad support (move/toggle/restore a floating window on demand)
+- Per-workspace layout overrides (e.g. no gap on the gaming workspace)
 
 ## Desktop (Hyprland)
 
