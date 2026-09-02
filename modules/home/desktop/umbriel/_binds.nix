@@ -18,6 +18,15 @@
     "Mod+Shift+Q" = "spawn:noctalia msg panel-toggle session";
     "Mod+Shift+Escape" = "cheatsheet-toggle";
 
+    # ─── Panneaux Noctalia additionnels ───
+    # Repris tel quel de l'exemple officiel "Noctalia shell integration"
+    # de la doc keybinds — absents de ta config d'origine (tu n'avais que
+    # le launcher, pas les autres panneaux Noctalia).
+    "Mod+V" = "spawn:noctalia msg panel-toggle clipboard";  # gestionnaire de presse-papier
+    "Mod+W" = "spawn:noctalia msg panel-toggle wallpaper";  # sélecteur de wallpaper
+    "Mod+Z" = "spawn:noctalia msg panel-toggle launcher /emo"; # sélecteur d'emoji
+    "Mod+N" = "spawn:noctalia msg panel-toggle noctalia/notes:panel"; # panneau notes
+
     # ─── Audio ───
     # Fix : `allow_when_locked` (n'existait pas dans ta première traduction
     # niri→umbriel) permet à ces raccourcis de fonctionner même écran
@@ -141,7 +150,7 @@
     # submap).
 
     "Ctrl+Alt+Delete" = "session-quit";
-    "Mod+Shift+R" = "spawn:noctalia msg config-reload";
+    "Mod+Shift+R" = "config-reload";
     "Mod+Shift+P" = "dpms-off";
     "Mod+Shift+Alt+P" = "dpms-on";
     "Mod+O" = { action = "overview-toggle"; repeat = false; };
