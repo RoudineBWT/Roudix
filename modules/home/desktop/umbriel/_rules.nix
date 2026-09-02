@@ -162,6 +162,20 @@
       default_workspace = 4;
       default_floating = true;
     }
+    # Dialogues/utilitaires génériques — repris tel quel de l'exemple
+    # officiel de la doc (docs.noctalia.dev/umbriel/rules/). S'applique à
+    # N'IMPORTE QUEL parent (pas seulement Nautilus) : sélecteurs de
+    # fichiers via xdg-desktop-portal, zenity, pavucontrol, calculatrice...
+    # Absent de ta config d'origine puisque niri n'a pas de règle globale
+    # équivalente aussi générique.
+    {
+      match.app_id = "^(Emulator|zenity|xdg-desktop-portal|qalculate-gtk|org\\.pulseaudio\\.pavucontrol)$";
+      default_floating = true;
+    }
+    {
+      match.title = "^(Open File|Select|Choose a wallpaper|Open Folder|Save As|Library|Choose Where to Download|File Operation Progress|Rename|Copy Files|Move Files|Search Files)";
+      default_floating = true;
+    }
     {
       # ⚠ Le (?i) insensible à la casse de niri n'est pas confirmé pris en
       # charge par Umbriel (regex ECMAScript, pas de mention de flags dans
