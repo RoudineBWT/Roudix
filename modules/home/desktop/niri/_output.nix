@@ -30,12 +30,24 @@ in
       };
     };
 
+    # ⚠ niri-flake crée les workspaces nommés triés par CLÉ de l'attrset
+    # (doc officielle : "Workspaces will be created in a specific order:
+    # sorted by key. [...] you can use the key to order them, and a `name`
+    # attribute to have a friendlier name."). Comme nos clés étaient
+    # directement les glyphes Nerd Font (des codepoints Unicode), l'ordre
+    # affiché dans la barre finissait trié par valeur numérique de
+    # codepoint — d'où l'ordre incohérent (term, code, web, files, games
+    # au lieu de web, code, term, games, files). Fix : la clé devient un
+    # préfixe numérique explicite (ordre voulu, par output), et le glyphe
+    # réel part dans le champ `name` — c'est `name` qui est utilisé comme
+    # nom de workspace niri (donc par _rules-*.nix / _binds-*.nix via
+    # `ws.xxx`), la clé ne sert plus qu'à trier.
     workspaces = {
-      "${ws.web}"      = { open-on-output = legion; };
-      "${ws.code}"     = { open-on-output = legion; };
-      "${ws.chat}"     = { open-on-output = hkc; };
-      "${ws.term}"     = { open-on-output = legion; };
-      "${ws.games}"    = {
+      "1-${ws.web}"   = { name = ws.web; open-on-output = legion; };
+      "2-${ws.code}"  = { name = ws.code; open-on-output = legion; };
+      "3-${ws.term}"  = { name = ws.term; open-on-output = legion; };
+      "4-${ws.games}" = {
+        name = ws.games;
         open-on-output = legion;
         # Nouveau (niri 25.11) : override de layout par workspace nommé.
         # Pas de gap sur le workspace jeux — Steam/Heroic/PrismLauncher/
@@ -43,9 +55,11 @@ in
         # _rules-*.nix), un gap visible en jeu n'a pas de sens ici.
         layout.gaps = 0;
       };
-      "${ws.files}"    = { open-on-output = legion; };
-      "${ws.music}"    = { open-on-output = hkc; };
-      "${ws.browser2}" = { open-on-output = hkc; };
+      "5-${ws.files}"    = { name = ws.files; open-on-output = legion; };
+
+      "1-${ws.chat}"     = { name = ws.chat; open-on-output = hkc; };
+      "2-${ws.music}"    = { name = ws.music; open-on-output = hkc; };
+      "3-${ws.browser2}" = { name = ws.browser2; open-on-output = hkc; };
     };
   };
 }
