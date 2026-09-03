@@ -37,6 +37,12 @@ in
       TERMINAL = "ghostty";
       _JAVA_AWT_WM_NONREPARENTING = "1";
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
+      # Recommandé par epireyn/niri-flake pour les apps Electron (VS Code,
+      # Discord...) — beaucoup de wrappers nixpkgs cherchent spécifiquement
+      # cette variable pour ajouter --ozone-platform=wayland automatiquement.
+      # Ne fonctionne que si niri est lancé via `niri-session` (pas juste
+      # `niri`) — vérifie que c'est bien le cas côté display manager/greetd.
+      NIXOS_OZONE_WL = "1";
       QT_QPA_PLATFORMTHEME = "qt6ct";
       QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
     }
