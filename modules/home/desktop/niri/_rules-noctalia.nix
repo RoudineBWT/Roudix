@@ -58,7 +58,9 @@ in
 
   layer-rules = [
     {
-      matches = [ { namespace = "^noctalia-wallpaper*"; } ];
+      # Le "*" ne portait que sur le "r" précédent (regex), pas sur tout
+      # "wallpaper" : ancrage simple, conforme à la doc officielle.
+      matches = [ { namespace = "^noctalia-wallpaper"; } ];
       place-within-backdrop = true;
     }
     {

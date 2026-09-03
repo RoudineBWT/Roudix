@@ -24,7 +24,9 @@
 
       shadow = {
         enabled = true;
-        color = "#00000070";
+        # `color` n'est plus une clé de [appearance.shadow] : la couleur de
+        # l'ombre est [colors].shadow, gérée par le noctalia.toml inclus
+        # (regénéré par matugen à chaque wallpaper).
       };
     };
   };

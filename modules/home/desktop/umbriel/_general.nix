@@ -47,8 +47,10 @@
   overview = {
     zoom = 0.5;
     background_blur = true;
-    background_tint = "#10101430";
-    workspace_background = "#00000044";
+    # background_tint / workspace_background ne sont plus des clés de
+    # [overview] : ce sont des couleurs, déplacées vers [colors.overview],
+    # géré par le noctalia.toml inclus (regénéré par matugen à chaque
+    # wallpaper). Voir _include-noctalia.nix.
   };
 
   # ── Hot corners ──────────────────────────────────────────────────────────
