@@ -16,7 +16,9 @@
     "Mod+D" = { hotkey-overlay.title = "Open App Launcher: noctalia launcher"; action.spawn-sh = [ "noctalia msg panel-toggle launcher" ]; };
     "Mod+Shift+B" = { hotkey-overlay.title = "Open Browser: Zen"; action.spawn = [ "zen-twilight" ]; };
     "Mod+B" = { hotkey-overlay.title = "Open Browser: brave"; action.spawn = [ "brave-origin-beta" ]; };
-    "Mod+Alt+L" = { hotkey-overlay.title = "Lock Screen: noctalia lock"; action.spawn-sh = [ "noctalia msg screen-lock" ]; };
+    # v5 : le namespace IPC est "session", pas "screen-lock" (voir
+    # docs.noctalia.dev/noctalia/ipc/shell#session).
+    "Mod+Alt+L" = { hotkey-overlay.title = "Lock Screen: noctalia lock"; action.spawn-sh = [ "noctalia msg session lock" ]; };
     "Mod+E" = { hotkey-overlay.title = "File Manager: Nautilus"; action.spawn = [ "nautilus" ]; };
     "Mod+Shift+Q".action.spawn-sh = [ "noctalia msg panel-toggle session" ];
 

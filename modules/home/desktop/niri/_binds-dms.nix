@@ -5,7 +5,9 @@
 {
   programs.niri.settings = {
   binds = {
-    "Mod+Shift+Escape".action.spawn-sh = [ "dms ipc call keybinds toggle niri" ];
+    # DMS n'a pas de cheatsheet de bindings pour niri (seul "hypr toggleBinds"
+    # existe et il est spécifique à Hyprland) : on utilise l'overlay natif niri.
+    "Mod+Shift+Escape".action = "show-hotkey-overlay";
 
     # ─── Applications ───
     "Mod+Return" = { hotkey-overlay.title = "Open Terminal: Ghostty"; action.spawn = [ "ghostty" ]; };
