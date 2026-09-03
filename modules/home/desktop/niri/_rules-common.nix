@@ -136,7 +136,7 @@ in
       # = un groupe de critères vide = s'applique à tout ; matches = []
       # — liste vide — ne matche RIEN, contrairement à l'intuition).
       matches = [ { } ];
-      geometry-corner-radius = { top-left = 20.0; top-right = 20.0; bottom-left = 20.0; bottom-right = 20.0; };
+      geometry-corner-radius = { top-left = 0.0; top-right = 0.0; bottom-left = 0.0; bottom-right = 0.0; };
       clip-to-geometry = true;
     }
   ];
