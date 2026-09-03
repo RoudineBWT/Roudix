@@ -115,13 +115,11 @@ in
       open-floating = true;
     }
     {
-      matches = [ {
-        app-id = "^org\\.gnome\\.Nautilus$";
-        excludes = [
-          { app-id = "^xdg-desktop-portal(-gtk)?$"; }
-          { title = "(?i)^(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$"; }
-        ];
-      } ];
+      matches = [ { app-id = "^org\\.gnome\\.Nautilus$"; } ];
+      excludes = [
+        { app-id = "^xdg-desktop-portal(-gtk)?$"; }
+        { title = "(?i)^(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$"; }
+      ];
       open-on-workspace = ws.files;
       open-maximized = true;
     }
