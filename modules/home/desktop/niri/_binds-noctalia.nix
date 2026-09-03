@@ -135,7 +135,7 @@
     "Mod+Escape" = { allow-inhibiting = false; action = "toggle-keyboard-shortcuts-inhibit"; };
 
     # ─── Sortie / Alimentation ───
-    "Ctrl+Alt+Delete".action = "quit";
+    "Ctrl+Alt+Delete".action.quit = { };
     "Mod+Shift+R".action.spawn-sh = [ "noctalia msg config-reload" ];
     "Mod+Shift+P".action = "power-off-monitors";
     "Mod+O" = { repeat = false; action = "toggle-overview"; };
