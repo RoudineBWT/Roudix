@@ -58,14 +58,16 @@ in
 
   layer-rules = [
     {
-      # Le "*" ne portait que sur le "r" précédent (regex), pas sur tout
-      # "wallpaper" : ancrage simple, conforme à la doc officielle.
-      matches = [ { namespace = "^noctalia-wallpaper"; } ];
+      matches = [ { namespace = "^noctalia-wallpaper*"; } ];
       place-within-backdrop = true;
     }
     {
       matches = [ { namespace = "^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"; } ];
       background-effect.xray = false;
+      # Nouveau (niri 26.04) : étend l'effet de fond aux popups générés
+      # par ces surfaces (ex. menus déroulants des quick-settings) —
+      # sans ça, seule la barre elle-même était floutée, pas ses popups.
+      popups.background-effect.xray = false;
     }
     {
       matches = [ { namespace = "noctalia-window-switcher"; } ];

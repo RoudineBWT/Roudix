@@ -5,9 +5,7 @@
 {
   programs.niri.settings = {
   binds = {
-    # DMS n'a pas de cheatsheet de bindings pour niri (seul "hypr toggleBinds"
-    # existe et il est spécifique à Hyprland) : on utilise l'overlay natif niri.
-    "Mod+Shift+Escape".action = "show-hotkey-overlay";
+    "Mod+Shift+Escape".action.spawn-sh = [ "dms ipc call keybinds toggle niri" ];
 
     # ─── Applications ───
     "Mod+Return" = { hotkey-overlay.title = "Open Terminal: Ghostty"; action.spawn = [ "ghostty" ]; };
@@ -115,6 +113,9 @@
     "Mod+T".action = "toggle-window-floating";
     "Mod+F".action = "fullscreen-window";
     "Mod+W".action = "toggle-column-tabbed-display";
+    # Nouveau (niri 25.11) : vrai maximize Wayland, cf. commentaire dans
+    # _binds-noctalia.nix.
+    "Mod+M".action = "maximize-window-to-edges";
 
     # ─── Captures d'écran ───
     "Ctrl+Shift+1".action.screenshot = { };

@@ -30,7 +30,14 @@ in
       "${ws.code}"     = { open-on-output = legion; };
       "${ws.chat}"     = { open-on-output = hkc; };
       "${ws.term}"     = { open-on-output = legion; };
-      "${ws.games}"    = { open-on-output = legion; };
+      "${ws.games}"    = {
+        open-on-output = legion;
+        # Nouveau (niri 25.11) : override de layout par workspace nommé.
+        # Pas de gap sur le workspace jeux — Steam/Heroic/PrismLauncher/
+        # Minecraft s'y ouvrent déjà maximisés ou en plein écran (voir
+        # _rules-*.nix), un gap visible en jeu n'a pas de sens ici.
+        layout.gaps = 0;
+      };
       "${ws.files}"    = { open-on-output = legion; };
       "${ws.music}"    = { open-on-output = hkc; };
       "${ws.browser2}" = { open-on-output = hkc; };

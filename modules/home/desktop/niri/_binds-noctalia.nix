@@ -16,9 +16,7 @@
     "Mod+D" = { hotkey-overlay.title = "Open App Launcher: noctalia launcher"; action.spawn-sh = [ "noctalia msg panel-toggle launcher" ]; };
     "Mod+Shift+B" = { hotkey-overlay.title = "Open Browser: Zen"; action.spawn = [ "zen-twilight" ]; };
     "Mod+B" = { hotkey-overlay.title = "Open Browser: brave"; action.spawn = [ "brave-origin-beta" ]; };
-    # v5 : le namespace IPC est "session", pas "screen-lock" (voir
-    # docs.noctalia.dev/noctalia/ipc/shell#session).
-    "Mod+Alt+L" = { hotkey-overlay.title = "Lock Screen: noctalia lock"; action.spawn-sh = [ "noctalia msg session lock" ]; };
+    "Mod+Alt+L" = { hotkey-overlay.title = "Lock Screen: noctalia lock"; action.spawn-sh = [ "noctalia msg screen-lock" ]; };
     "Mod+E" = { hotkey-overlay.title = "File Manager: Nautilus"; action.spawn = [ "nautilus" ]; };
     "Mod+Shift+Q".action.spawn-sh = [ "noctalia msg panel-toggle session" ];
 
@@ -120,6 +118,13 @@
     "Mod+T".action = "toggle-window-floating";
     "Mod+F".action = "fullscreen-window";
     "Mod+W".action = "toggle-column-tabbed-display";
+    # Nouveau (niri 25.11) : vrai maximize Wayland ("bouton maximiser" /
+    # double-clic sur la barre de titre côté client) — distinct de
+    # Mod+Ctrl+F qui maximise la COLONNE (garde gaps/bordures/struts).
+    # Celui-ci occupe tout l'espace utile sans gap ni bordure. Bind par
+    # défaut de niri lui-même (Mod+M), absent de ta config d'origine
+    # puisque la fonctionnalité n'existait pas encore.
+    "Mod+M".action = "maximize-window-to-edges";
 
     # ─── Captures d'écran ───
     "Ctrl+Shift+1".action.screenshot = { };
