@@ -61,9 +61,7 @@ in
     spawn-at-startup =
       [
         { command = [ "xwayland-satellite" ]; }
-        { command = [ "swww-daemon" ]; }
         { command = [ "discord" ]; }
-        { command = [ "openrgb" ]; }
       ]
       ++ (if isNoctalia then [
         { command = [ "noctalia" ]; }
