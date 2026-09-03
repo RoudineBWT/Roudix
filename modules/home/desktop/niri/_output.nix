@@ -26,7 +26,7 @@ in
         mode = { width = 2560; height = 1440; refresh = 240.000; };
         scale = 1.0;
         position = { x = 1920; y = 0; };
-        variable-refresh-rate.on-demand = true;
+        variable-refresh-rate = "on-demand";
       };
     };
 
