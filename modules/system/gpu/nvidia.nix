@@ -6,12 +6,17 @@ let
   # nvidia_cachyos est fourni par Chaotic-Nyx, précompilé et matché au kernel
   # Chaotic sélectionné via hardware.myKernelChaotic (voir modules/system/kernel.nix)
   # => pas de rebuild local du module à chaque bump de kernel.
+  # Variantes hors cache Chaotic-Nyx : pas de module nvidia_cachyos précompilé
+  # pour ces kernels nixpkgs (linux-zen, LTS par défaut, dernier mainline).
+  nixpkgsKernelVariants = [ "zen" "nixpkgs-lts" "nixpkgs-latest" ];
+
   nvidiaDriverPackage =
-    # "zen" : pas de module précompilé côté Chaotic-Nyx pour linux-zen, donc on
-    # laisse nixpkgs builder localement le module nvidia contre le kernel choisi
-    # (config.boot.kernelPackages == pkgs.linuxPackages_zen, cf. kernel.nix).
+    # "zen" / "nixpkgs-lts" / "nixpkgs-latest" : pas de module précompilé côté
+    # Chaotic-Nyx pour ces kernels nixpkgs, donc on laisse nixpkgs builder
+    # localement le module nvidia contre le kernel choisi (config.boot.kernelPackages
+    # == pkgs.linuxPackages_zen / linuxPackages / linuxPackages_latest, cf. kernel.nix).
     # Pour toutes les autres variantes on garde le module nvidia_cachyos précompilé.
-    if config.hardware.myKernelChaotic == "zen" then
+    if builtins.elem config.hardware.myKernelChaotic nixpkgsKernelVariants then
       config.boot.kernelPackages.nvidiaPackages.stable
     else
       let
@@ -54,9 +59,9 @@ in
     {
       warnings = lib.optional
         (config.hardware.myGpu == "nvidia"
-          && config.hardware.myKernelChaotic == "zen"
+          && builtins.elem config.hardware.myKernelChaotic nixpkgsKernelVariants
           && !config.hardware.nvidiaOpen)
-        "hardware.myKernelChaotic = \"zen\" with a closed-source NVIDIA driver (hardware.nvidiaOpen = false): the kernel module is not available from any binary cache (nixpkgs only caches the open module for zen; Chaotic-Nyx doesn't build zen at all) and will be compiled locally on every driver bump.";
+        "hardware.myKernelChaotic = \"${config.hardware.myKernelChaotic}\" with a closed-source NVIDIA driver (hardware.nvidiaOpen = false): the kernel module is not available from any binary cache (nixpkgs only caches the open module for zen/nixpkgs kernels; Chaotic-Nyx doesn't build these at all) and will be compiled locally on every driver bump.";
     }
     # Active nvidia_config quand myGpu == "nvidia"
     (mkIf (config.hardware.myGpu == "nvidia") {

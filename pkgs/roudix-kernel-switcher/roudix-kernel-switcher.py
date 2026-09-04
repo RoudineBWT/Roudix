@@ -88,8 +88,10 @@ KERNELS = {
         ("cachyos-rc",              "Release candidate  —  unstable"),
         ("cachyos-rc-lto",          "RC + LTO"),
     ],
-    "Zen (nixpkgs)": [
-        ("zen", "linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay"),
+    "Nixpkgs": [
+        ("zen",            "linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay"),
+        ("nixpkgs-lts",    "linux LTS — nixpkgs default kernel, cached on cache.nixos.org"),
+        ("nixpkgs-latest", "linux latest — newest mainline stable, cached on cache.nixos.org"),
     ],
 }
 
@@ -103,9 +105,11 @@ KERNELS_CHAOTIC = {
         ("cachyos-server",   "Server optimised  —  no desktop tuning"),
         ("cachyos-hardened", "Security hardened"),
     ],
-    "Zen (nixpkgs)": [
-        ("zen", "linux-zen — nvidia module cached only with the open driver; "
-                "closed driver compiles locally on every bump"),
+    "Nixpkgs": [
+        ("zen",            "linux-zen — nvidia module cached only with the open driver; "
+                            "closed driver compiles locally on every bump"),
+        ("nixpkgs-lts",    "linux LTS — same nvidia module caveat as zen"),
+        ("nixpkgs-latest", "linux latest — same nvidia module caveat as zen"),
     ],
 }
 
