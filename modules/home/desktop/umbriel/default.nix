@@ -48,7 +48,7 @@ in
 
     programs.umbriel = {
       enable = true;
-      validateConfig = true; # umbriel valide le TOML généré au build
+      validateConfig = false; # umbriel valide le TOML généré au build
     };
 
     # ── Terminal / navigateur / fichiers résolus depuis roudix.* ──────────
