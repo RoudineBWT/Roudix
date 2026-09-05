@@ -41,11 +41,13 @@
       "cachyos-rt-bore-lto"
       "cachyos-server"
       "cachyos-server-lto"
-      # Zen (nixpkgs, pas CachyOS)
+      # Zen + LTS/latest (nixpkgs, pas CachyOS)
       "zen"
+      "nixpkgs-lts"
+      "nixpkgs-latest"
     ];
     default = "cachyos-latest-v3";
-    description = "Variant de kernel CachyOS (xddxdd) — utilisé quand hardware.myGpu != \"nvidia\". \"zen\" bascule sur pkgs.linuxPackages_zen (nixpkgs), hors overlay xddxdd.";
+    description = "Variant de kernel CachyOS (xddxdd) — utilisé quand hardware.myGpu != \"nvidia\". \"zen\" bascule sur pkgs.linuxPackages_zen, \"nixpkgs-lts\" sur pkgs.linuxPackages (LTS par défaut de nixpkgs), \"nixpkgs-latest\" sur pkgs.linuxPackages_latest — tous trois hors overlay xddxdd.";
   };
 
   # Set de variants nettement plus réduit chez Chaotic-Nyx (pas de x86_64-v2/v3/v4/zen4
@@ -56,12 +58,14 @@
       "cachyos-lts"
       "cachyos-server"
       "cachyos-hardened"
-      # Zen (nixpkgs) : kernel linuxPackages_zen + module nvidia buildé
-      # localement via nvidiaPackages.stable (pas de cache Chaotic pour ce cas)
+      # Zen + LTS/latest (nixpkgs) : kernel nixpkgs + module nvidia buildé
+      # localement via nvidiaPackages.stable (pas de cache Chaotic pour ces cas)
       "zen"
+      "nixpkgs-lts"
+      "nixpkgs-latest"
     ];
     default = "cachyos";
-    description = "Variant de kernel Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == \"nvidia\", pour bénéficier du cache nvidia_cachyos précompilé. \"zen\" sort de ce cache : kernel nixpkgs + module nvidia recompilé localement (voir nvidia.nix)";
+    description = "Variant de kernel Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == \"nvidia\", pour bénéficier du cache nvidia_cachyos précompilé. \"zen\", \"nixpkgs-lts\" et \"nixpkgs-latest\" sortent de ce cache : kernel nixpkgs (linuxPackages_zen / linuxPackages / linuxPackages_latest) + module nvidia recompilé localement (voir nvidia.nix)";
   };
 
   config = lib.mkMerge [
@@ -126,6 +130,12 @@
         if config.hardware.myKernel == "zen" then
           # linux-zen de nixpkgs, indépendant de l'overlay xddxdd
           pkgs.linuxPackages_zen
+        else if config.hardware.myKernel == "nixpkgs-lts" then
+          # LTS par défaut de nixpkgs, indépendant de l'overlay xddxdd
+          pkgs.linuxPackages
+        else if config.hardware.myKernel == "nixpkgs-latest" then
+          # Dernier stable mainline de nixpkgs, indépendant de l'overlay xddxdd
+          pkgs.linuxPackages_latest
         else
         let
           kernels = {
@@ -183,6 +193,12 @@
           # linux-zen de nixpkgs ; le module nvidia associé (nvidiaPackages.stable,
           # buildé localement) est sélectionné dans nvidia.nix
           pkgs.linuxPackages_zen
+        else if config.hardware.myKernelChaotic == "nixpkgs-lts" then
+          # LTS par défaut de nixpkgs ; module nvidia buildé localement (nvidia.nix)
+          pkgs.linuxPackages
+        else if config.hardware.myKernelChaotic == "nixpkgs-latest" then
+          # Dernier stable mainline de nixpkgs ; module nvidia buildé localement (nvidia.nix)
+          pkgs.linuxPackages_latest
         else
         let
           kernels = {

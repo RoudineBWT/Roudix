@@ -24,27 +24,73 @@
       # tearing visible en dehors des jeux.
       tearing = true;
       # 5 workspaces nommés, dans l'ordre de ton rules.kdl d'origine :
-      workspaces = [ "󰈹" "" "" "󰊗" "󰉋" ];
+      workspaces = [ "󰈹" "" "" "󰊗" "󰉋" "6" "7" "8" "9"  ];
     };
 
     "DP-3" = { # HKC 24E4, 1920x1080@165
       mode = "1920x1080@165.001";
       position = [ 0 0 ];
       scale = 1;
-      workspaces = [ "" "󰝚" "" ];
+      workspaces = [ "" "󰝚" "" "4" "5" "6" "7" "8" "9" ];
     };
   };
 
   # ── Règles de workspace ──────────────────────────────────────────────────
-  # Fonctionnalité sans équivalent niri direct dans ta config d'origine.
-  # Ici : pas de gap sur le workspace "jeux" (position 4 sur DP-1), vu que
-  # Steam/Heroic/PrismLauncher/Minecraft s'y ouvrent déjà maximisés ou en
-  # plein écran (voir _rules.nix) — évite un liseré de gap visible en jeu.
+  # Mode global (_layout.nix) : "scrolling". Chaque workspace reçoit ici sa
+  # propre règle layout.mode ("scrolling", "dwindle" ou "master").
+  #
+  # Web (DP-1/1, DP-3/3)      → scrolling
+  # Zed (DP-1/2)              → dwindle
+  # Term (DP-1/3)             → dwindle
+  # Jeux (DP-1/4)             → master
+  # Fichiers (DP-1/5)         → dwindle
+  # Chat (DP-3/1)             → master
+  # Musique (DP-3/2)          → dwindle
   workspace = [
     {
       output = "DP-1";
-      index = 4;
+      index = 1; # web (firefox / zen / brave-origin-beta)
+      layout.mode = "scrolling";
+    }
+    {
+      output = "DP-1";
+      index = 2; # zed
+      layout.mode = "dwindle";
+    }
+    {
+      output = "DP-1";
+      index = 3; # term (kitty / ptyxis)
+      layout.mode = "dwindle";
+    }
+    {
+      output = "DP-1";
+      index = 4; # jeux — pas de gap vu que Steam/Heroic/PrismLauncher/
+                 # Minecraft s'ouvrent déjà maximisés ou en plein écran
+                 # (voir _rules.nix) — évite un liseré de gap visible en jeu.
+      layout.mode = "master";
       layout.gap = 0;
+    }
+    {
+      output = "DP-1";
+      index = 5; # fichiers (nautilus / gnome-text-editor)
+      layout.mode = "dwindle";
+    }
+    {
+      output = "DP-3";
+      index = 1; # chat (discord / element / telegram — déjà en floating
+                 # dans _rules.nix, donc le mode n'affecte que ce que tu
+                 # ouvrirais en plus en tuilé sur ce workspace)
+      layout.mode = "master";
+    }
+    {
+      output = "DP-3";
+      index = 2; # musique (spotify / easyeffects)
+      layout.mode = "dwindle";
+    }
+    {
+      output = "DP-3";
+      index = 3; # web (brave-browser)
+      layout.mode = "scrolling";
     }
   ];
   };

@@ -5,9 +5,21 @@
 {
   programs.umbriel.settings = {
   layout = {
+    # Correction : layout.mode dans une règle [[workspace]] accepte bien
+    # "scrolling", "dwindle" ET "master" directement (doc à jour :
+    # docs.noctalia.dev/umbriel/workspaces/#available-fields). Pas besoin de
+    # changer le mode global : il reste "scrolling" comme avant, et chat/jeux
+    # reçoivent chacun une règle explicite layout.mode = "master" dans
+    # _output.nix.
     mode = "scrolling";
     gap = 9; # niri: layout { gaps 9 }
     width_presets = [ 0.33333 0.5 0.66667 ];
+
+    master = {
+      position = "left";        # colonne principale à gauche, pile à droite
+      default_width_fraction = 0.55;
+      new_on_top = true;        # une nouvelle fenêtre rejoint le haut de la pile
+    };
 
     scrolling = {
       direction = "horizontal"; # niri scrollait horizontalement (colonnes)

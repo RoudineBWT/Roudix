@@ -58,18 +58,31 @@ in
 
   layer-rules = [
     {
-      # Le "*" ne portait que sur le "r" précédent (regex), pas sur tout
-      # "wallpaper" : ancrage simple, conforme à la doc officielle.
-      matches = [ { namespace = "^noctalia-wallpaper"; } ];
+      matches = [ { namespace = "^noctalia-wallpaper*"; } ];
       place-within-backdrop = true;
     }
     {
       matches = [ { namespace = "^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"; } ];
       background-effect.xray = false;
+      # Nouveau (niri 26.04) : étend l'effet de fond aux popups générés
+      # par ces surfaces (ex. menus déroulants des quick-settings) —
+      # sans ça, seule la barre elle-même était floutée, pas ses popups.
+      popups.background-effect.xray = false;
     }
     {
       matches = [ { namespace = "noctalia-window-switcher"; } ];
       background-effect = { blur = true; xray = false; };
+    }
+    # Masque uniquement les TOASTS de notification des captures d'écran/
+    # stream (OBS, Discord Go Live...) — pas la barre ni le dock, qui
+    # restent visibles. Le classique "un DM privé s'affiche 3 secondes en
+    # plein stream" sans jamais avoir à réfléchir à quoi cacher app par
+    # app. Si une appli en particulier doit aussi être masquée (un
+    # gestionnaire de mots de passe par ex.), ajoute une window-rule avec
+    # `block-out-from = "screencast";` dans niri-custom.nix.
+    {
+      matches = [ { namespace = "^noctalia-notification$"; } ];
+      block-out-from = "screencast";
     }
   ];
 

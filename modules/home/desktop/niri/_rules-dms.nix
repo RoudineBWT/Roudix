@@ -22,6 +22,16 @@
         matches = [ { namespace = "^dms:clipboard$"; } ];
         block-out-from = "screencast";
       }
+      # Même logique que côté noctalia (_rules-noctalia.nix) : masque les
+      # toasts de notification des captures/stream, pas la barre/dock.
+      # ⚠ Namespace à vérifier avec `niri msg layers` en session DMS — je
+      # n'ai pas de confirmation directe que c'est exactement "dms:osd"
+      # pour les notifications (par analogie avec dms:bar/dms:dock/
+      # dms:clipboard déjà confirmés).
+      {
+        matches = [ { namespace = "^dms:osd$"; } ];
+        block-out-from = "screencast";
+      }
       {
         matches = [ { namespace = "^dms:bar$"; } { namespace = "^dms:dock$"; } ];
         shadow = {
