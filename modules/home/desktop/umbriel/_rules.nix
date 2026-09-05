@@ -15,7 +15,7 @@
       match.app_id = "^(discord|Element)$";
       default_output = "DP-3";
       default_workspace = 1;
-      default_floating = true;
+      default_floating = false;
       default_size = [ 1316 1011 ];
       default_position = { x = 0; y = 0; anchor = "top_left"; };
     }
@@ -23,7 +23,7 @@
       match.app_id = "^org\\.telegram\\.desktop$";
       default_output = "DP-3";
       default_workspace = 1;
-      default_floating = true;
+      default_floating = false;
       default_size = [ 555 1011 ];
       default_position = { x = 0; y = 0; anchor = "top_right"; };
     }
