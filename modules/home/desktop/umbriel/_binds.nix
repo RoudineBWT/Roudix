@@ -90,26 +90,28 @@
     "Mod+Ctrl+Shift+WheelDown" = "column-move-right";
     "Mod+Ctrl+Shift+WheelUp" = "column-move-left";
 
-    # ─── Workspaces nommés (Mod+1..8) ───
-    # ⚠ Comportement absolu (pas relatif au output courant comme sous niri) :
-    # workspace-switch résout un nom exact et global, cf. doc Actions.
-    "Mod+1" = "workspace-switch:󰈹"; # Firefox / Zen / Brave (Legion #1)
-    "Mod+2" = "workspace-switch:";  # Zed (Legion #2)
-    "Mod+3" = "workspace-switch:";  # kitty / Ptyxis (Legion #3)
-    "Mod+4" = "workspace-switch:󰊗"; # Steam / jeux (Legion #4)
-    "Mod+5" = "workspace-switch:󰉋"; # Fichiers (Legion #5)
-    "Mod+6" = "workspace-switch:";  # Discord / Element / Telegram (HKC #1)
-    "Mod+7" = "workspace-switch:󰝚"; # Spotify / EasyEffects (HKC #2)
-    "Mod+8" = "workspace-switch:";  # brave-browser (HKC #3)
+    # ─── Workspaces (Mod+1..5) ───
+    # Comportement RELATIF au moniteur qui a le focus (comme sous niri), et
+    # non plus un saut absolu vers un nom précis : voir doc Workspaces
+    # #workspace-selectors — "when no exact numeric name exists, the number
+    # selects that 1-based position on the preferred output" (le moniteur
+    # focus, qui suit ta souris vu focus.follows_mouse=true). Comme aucun
+    # workspace ne s'appelle littéralement "1", "2"... (ce sont des icônes),
+    # Mod+1 résout donc TOUJOURS vers "position 1 du moniteur focus" :
+    # Legion (DP-1) → web, HKC (DP-3) → chat. Mod+6/7/8 disparaissent : HKC
+    # n'a que 3 positions, donc au-delà de Mod+3 ça n'a de sens que sur
+    # Legion (positions 4 et 5).
+    "Mod+1" = "workspace-switch:1"; # Legion: web · HKC: chat
+    "Mod+2" = "workspace-switch:2"; # Legion: zed · HKC: musique
+    "Mod+3" = "workspace-switch:3"; # Legion: term · HKC: web (brave)
+    "Mod+4" = "workspace-switch:4"; # Legion: jeux
+    "Mod+5" = "workspace-switch:5"; # Legion: fichiers
 
-    "Mod+Ctrl+1" = "window-move-to-workspace:󰈹";
-    "Mod+Ctrl+2" = "window-move-to-workspace:";
-    "Mod+Ctrl+3" = "window-move-to-workspace:";
-    "Mod+Ctrl+4" = "window-move-to-workspace:󰊗";
-    "Mod+Ctrl+5" = "window-move-to-workspace:󰉋";
-    "Mod+Ctrl+6" = "window-move-to-workspace:";
-    "Mod+Ctrl+7" = "window-move-to-workspace:󰝚";
-    "Mod+Ctrl+8" = "window-move-to-workspace:";
+    "Mod+Ctrl+1" = "window-move-to-workspace:1";
+    "Mod+Ctrl+2" = "window-move-to-workspace:2";
+    "Mod+Ctrl+3" = "window-move-to-workspace:3";
+    "Mod+Ctrl+4" = "window-move-to-workspace:4";
+    "Mod+Ctrl+5" = "window-move-to-workspace:5";
 
     # ⚠ workspace-previous reste positionnel (pas de wrap, pas de "dernier
     # actif" comme le MRU de niri) — toujours une approximation.
