@@ -17,12 +17,10 @@
   # Examples:
 
   # Add personal packages
-   home.packages = with pkgs; [
+  # home.packages = with pkgs; [
   #   vlc
   #   telegram-desktop
-   mpv
-   yt-dlp
-   ];
+  # ];
 
   # Override dotfiles source
   # xdg.configFile."hypr" = {
@@ -90,6 +88,8 @@
      opencode-desktop
      qbittorrent
      tela-icon-theme
+     mpv
+     yt-dlp
    ];
 
   # ── Custom shell aliases ─────────────────────────────────────────────────
