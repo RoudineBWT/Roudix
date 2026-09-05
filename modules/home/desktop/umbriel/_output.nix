@@ -24,14 +24,14 @@
       # tearing visible en dehors des jeux.
       tearing = true;
       # 5 workspaces nommés, dans l'ordre de ton rules.kdl d'origine :
-      workspaces = [ "󰈹" "" "" "󰊗" "󰉋" ];
+      workspaces = [ "󰈹" "" "" "󰊗" "󰉋" "6" "7" "8" "9"  ];
     };
 
     "DP-3" = { # HKC 24E4, 1920x1080@165
       mode = "1920x1080@165.001";
       position = [ 0 0 ];
       scale = 1;
-      workspaces = [ "" "󰝚" "" ];
+      workspaces = [ "" "󰝚" "" "4" "5" "6" "7" "8" "9" ];
     };
   };
 
