@@ -465,11 +465,11 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1788772778,
-        "narHash": "sha256-TaTuoGfnML4YHxK090KrI7p/qwK+idJZBOr/RrVC8Ho=",
+        "lastModified": 1788810570,
+        "narHash": "sha256-bdH5SvWoG5RvWlJ8zkch/jgb+sIkpnqW42D0DMLD2wA=",
         "owner": "epireyn",
         "repo": "niri-flake",
-        "rev": "bbf600c5cd9d62f88ccaa02d39832b08db923572",
+        "rev": "1f312c52f77dab3fdc2fb2d76578aa028ca6b386",
         "type": "github"
       },
       "original": {
@@ -554,11 +554,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788648258,
-        "narHash": "sha256-M5L6GJL+LEzPBzZMhOIYsHKkti0F985qXcHB2vUfAIg=",
+        "lastModified": 1788810694,
+        "narHash": "sha256-L6bavjFWdQLrWbrdA1GI/YwISNvYdI5YjKgOthoHcHY=",
         "owner": "powerofthe69",
         "repo": "nix-gaming-edge",
-        "rev": "a9f40bbea8bc3c361d0849509d7aa8b18ceaebb0",
+        "rev": "3bab17aaa6d1dff744847a56dc912576d5266682",
         "type": "github"
       },
       "original": {
@@ -980,11 +980,11 @@
         "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel"
       },
       "locked": {
-        "lastModified": 1788800171,
-        "narHash": "sha256-RJ+dQN4Kn9H/j5mBorXw3rA8JexLC4jbiFvo6RFQn0M=",
+        "lastModified": 1788815495,
+        "narHash": "sha256-Pjb+XYpCZhCrE4KvsbX9iTvWMwvWunNDp3IC94NKDUU=",
         "ref": "refs/heads/main",
-        "rev": "80bfe57460db1ec88b9a741b604fba87635afeea",
-        "revCount": 853,
+        "rev": "017c221eaa50a384ed538ab8140b0bdba9f7e02f",
+        "revCount": 856,
         "type": "git",
         "url": "https://github.com/noctalia-dev/umbriel"
       },
