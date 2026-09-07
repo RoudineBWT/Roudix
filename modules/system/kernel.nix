@@ -2,6 +2,11 @@
 {
   options.hardware.myKernel = lib.mkOption {
     type = lib.types.enum [
+      # Zen + LTS/latest/testing (nixpkgs, pas CachyOS)
+      "zen"
+      "nixpkgs-lts"
+      "nixpkgs-latest"
+      "nixpkgs-testing"
       # Latest
       "cachyos-latest"
       "cachyos-latest-v2"
@@ -41,31 +46,28 @@
       "cachyos-rt-bore-lto"
       "cachyos-server"
       "cachyos-server-lto"
-      # Zen + LTS/latest (nixpkgs, pas CachyOS)
-      "zen"
-      "nixpkgs-lts"
-      "nixpkgs-latest"
     ];
     default = "cachyos-latest-v3";
-    description = "Variant de kernel CachyOS (xddxdd) — utilisé quand hardware.myGpu != \"nvidia\". \"zen\" bascule sur pkgs.linuxPackages_zen, \"nixpkgs-lts\" sur pkgs.linuxPackages (LTS par défaut de nixpkgs), \"nixpkgs-latest\" sur pkgs.linuxPackages_latest — tous trois hors overlay xddxdd.";
+    description = "Variant de kernel CachyOS (xddxdd) — utilisé quand hardware.myGpu != \"nvidia\". \"zen\" bascule sur pkgs.linuxPackages_zen, \"nixpkgs-lts\" sur pkgs.linuxPackages (LTS par défaut de nixpkgs), \"nixpkgs-latest\" sur pkgs.linuxPackages_latest, \"nixpkgs-testing\" sur pkgs.linuxPackages_testing (linux_testing — noyau RC/mainline candidat) — tous hors overlay xddxdd.";
   };
 
   # Set de variants nettement plus réduit chez Chaotic-Nyx (pas de x86_64-v2/v3/v4/zen4
   # ni de LTO séparé pour chaque famille comme chez xddxdd).
   options.hardware.myKernelChaotic = lib.mkOption {
     type = lib.types.enum [
-      "cachyos"        # défaut Chaotic-Nyx, LTO+BORE
-      "cachyos-lts"
-      "cachyos-server"
-      "cachyos-hardened"
-      # Zen + LTS/latest (nixpkgs) : kernel nixpkgs + module nvidia buildé
+      # Zen + LTS/latest/testing (nixpkgs) : kernel nixpkgs + module nvidia buildé
       # localement via nvidiaPackages.stable (pas de cache Chaotic pour ces cas)
       "zen"
       "nixpkgs-lts"
       "nixpkgs-latest"
+      "nixpkgs-testing"
+      "cachyos"        # défaut Chaotic-Nyx, LTO+BORE
+      "cachyos-lts"
+      "cachyos-server"
+      "cachyos-hardened"
     ];
     default = "cachyos";
-    description = "Variant de kernel Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == \"nvidia\", pour bénéficier du cache nvidia_cachyos précompilé. \"zen\", \"nixpkgs-lts\" et \"nixpkgs-latest\" sortent de ce cache : kernel nixpkgs (linuxPackages_zen / linuxPackages / linuxPackages_latest) + module nvidia recompilé localement (voir nvidia.nix)";
+    description = "Variant de kernel Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == \"nvidia\", pour bénéficier du cache nvidia_cachyos précompilé. \"zen\", \"nixpkgs-lts\", \"nixpkgs-latest\" et \"nixpkgs-testing\" sortent de ce cache : kernel nixpkgs (linuxPackages_zen / linuxPackages / linuxPackages_latest / linuxPackages_testing) + module nvidia recompilé localement (voir nvidia.nix)";
   };
 
   config = lib.mkMerge [
@@ -136,6 +138,9 @@
         else if config.hardware.myKernel == "nixpkgs-latest" then
           # Dernier stable mainline de nixpkgs, indépendant de l'overlay xddxdd
           pkgs.linuxPackages_latest
+        else if config.hardware.myKernel == "nixpkgs-testing" then
+          # linux_testing — noyau RC/mainline candidat de nixpkgs, indépendant de l'overlay xddxdd
+          pkgs.linuxPackages_testing
         else
         let
           kernels = {
@@ -199,6 +204,9 @@
         else if config.hardware.myKernelChaotic == "nixpkgs-latest" then
           # Dernier stable mainline de nixpkgs ; module nvidia buildé localement (nvidia.nix)
           pkgs.linuxPackages_latest
+        else if config.hardware.myKernelChaotic == "nixpkgs-testing" then
+          # linux_testing — noyau RC/mainline candidat ; module nvidia buildé localement (nvidia.nix)
+          pkgs.linuxPackages_testing
         else
         let
           kernels = {
