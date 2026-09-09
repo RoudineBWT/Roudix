@@ -33,18 +33,22 @@
       # sans rien à faire d'autre que supprimer cette clé.
       default_width_fraction = 0.5;
       center_underfull_strip = true;
-      # Nouveau (absent avant) : remplit tout le viewport quand une
-      # workspace n'a qu'une seule colonne tuilée, comme le fait la config
-      # packagée d'Umbriel. N'affecte que l'affichage, pas la fraction
-      # stockée : dès qu'une 2e colonne apparaît, la largeur configurée
-      # reprend.
-      expand_single_column = true;
-      # Nouveau : équivalent (partiel) du "center-focused-column" de
-      # niri, absent jusqu'ici. `true` centre systématiquement la colonne
-      # focus (≈ "always" côté niri). Contrairement à niri, il n'y a que
-      # bool ici : pas d'équivalent "on-overflow". Laissé à `false`
-      # (comportement précédent, pas de centrage forcé au focus) —
-      # décommente si tu veux ce centrage permanent.
+      # ⚠ Retiré : `expand_single_column` — testé et rejeté par `umbriel
+      # validate` ("unknown key layout.scrolling.expand_single_column").
+      # Je ne le retrouve pas confirmé dans la doc actuelle à cet
+      # emplacement ; possible que ce soit un nom différent, un autre
+      # chemin, ou une clé qui n'existe pas dans la version que tu as.
+      # Umbriel bouge vite (le README prévient que les clés changent
+      # entre versions) — à re-tester plus tard si tu veux vraiment ce
+      # comportement (remplir le viewport avec une seule colonne), plutôt
+      # que de deviner un autre nom.
+      #
+      # ⚠ `center_focused` ci-dessous est dans le même cas : je l'avais
+      # noté comme nouveau (équivalent partiel du center-focused-column de
+      # niri) mais je n'ai pas pu reconfirmer son existence/emplacement
+      # exact après le rejet de expand_single_column. Laissé en commentaire
+      # par précaution — décommente pour tester, mais vérifie le résultat
+      # de `umbriel validate` avant de recharger.
       # center_focused = true;
     };
   };
