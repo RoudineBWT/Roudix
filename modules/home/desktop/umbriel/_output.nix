@@ -23,15 +23,24 @@
       # tearing=true dans _rules.nix). Retire cette ligne si tu vois du
       # tearing visible en dehors des jeux.
       tearing = true;
-      # 5 workspaces nommés, dans l'ordre de ton rules.kdl d'origine :
-      workspaces = [ "󰈹" "" "" "󰊗" "󰉋" "6" "7" "8" "9"  ];
+      # ⚠ Bug Mod+1..9 : un nom de workspace purement numérique ("4", "5"...)
+      # qui n'existe QUE sur cet output devient un nom global unique. La
+      # doc (docs.noctalia.dev/umbriel/actions/) précise que les sélecteurs
+      # de workspace résolvent d'abord les noms exacts globalement, et
+      # qu'un nom unique saute sur SON output -- même si un autre moniteur a
+      # le focus. C'était le cas de "4"/"5" côté DP-3 (uniques) : Mod+4 et
+      # Mod+5 sautaient toujours sur le HKC. Les "6".."9" préfixés L/H
+      # ci-dessous ne sont plus des noms numériques exacts, donc
+      # Mod+1..9 retombe systématiquement sur la résolution "position N du
+      # moniteur focus" que tu veux, indépendamment par écran.
+      workspaces = [ "󰈹" "" "" "󰊗" "󰉋" "L6" "L7" "L8" "L9"  ];
     };
 
     "DP-3" = { # HKC 24E4, 1920x1080@165
       mode = "1920x1080@165.001";
       position = [ 0 0 ];
       scale = 1;
-      workspaces = [ "" "󰝚" "" "4" "5" "6" "7" "8" "9" ];
+      workspaces = [ "" "󰝚" "" "H4" "H5" "H6" "H7" "H8" "H9" ];
     };
   };
 
