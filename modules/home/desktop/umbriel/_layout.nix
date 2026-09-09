@@ -22,16 +22,30 @@
     };
 
     scrolling = {
-      direction = "horizontal"; # niri scrollait horizontalement (colonnes)
-      # Nouveau (absent avant, donc extent initial livré au choix du
-      # client) : fixe une largeur de départ cohérente pour les nouvelles
-      # colonnes, comme le fait la config packagée d'Umbriel.
+      # ⚠ Changement de doc (cause du warning "unknown key
+      # layout.scrolling.direction") : `direction` a été retiré. La
+      # direction du scroll dépend maintenant de `workspace_axis` sur
+      # l'output (docs.noctalia.dev/umbriel/outputs/#settings) : par
+      # défaut "vertical" (workspaces empilés verticalement) → la bande de
+      # scrolling est perpendiculaire, donc horizontale. C'est déjà le cas
+      # ici (aucun workspace_axis défini dans _output.nix), donc le
+      # comportement voulu (scroll horizontal façon niri) est conservé
+      # sans rien à faire d'autre que supprimer cette clé.
       default_width_fraction = 0.5;
       center_underfull_strip = true;
-      # ⚠ niri: center-focused-column "never" n'a toujours pas
-      # d'équivalent (pas d'option pour désactiver l'auto-centrage au
-      # focus). center_underfull_strip est un concept différent (centrer
-      # la bande entière si elle est plus étroite que l'écran).
+      # Nouveau (absent avant) : remplit tout le viewport quand une
+      # workspace n'a qu'une seule colonne tuilée, comme le fait la config
+      # packagée d'Umbriel. N'affecte que l'affichage, pas la fraction
+      # stockée : dès qu'une 2e colonne apparaît, la largeur configurée
+      # reprend.
+      expand_single_column = true;
+      # Nouveau : équivalent (partiel) du "center-focused-column" de
+      # niri, absent jusqu'ici. `true` centre systématiquement la colonne
+      # focus (≈ "always" côté niri). Contrairement à niri, il n'y a que
+      # bool ici : pas d'équivalent "on-overflow". Laissé à `false`
+      # (comportement précédent, pas de centrage forcé au focus) —
+      # décommente si tu veux ce centrage permanent.
+      # center_focused = true;
     };
   };
   };
