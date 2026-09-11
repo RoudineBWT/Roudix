@@ -138,7 +138,34 @@
   ];
   # ── Services ────────────────────────────────────────────────────────────
   services.udisks2.enable = true;
-  services.power-profiles-daemon.enable = true;
+  # power-profiles-daemon a été remplacé par tuned (comportement par défaut de
+  # Fedora depuis F41). tuned-ppd (ppdSupport) fournit la même API D-Bus, donc
+  # `powerprofilesctl` (utilisé par game-performance) continue de fonctionner
+  # sans changement côté script.
+  services.power-profiles-daemon.enable = false;
+  services.tuned = {
+    enable = true;
+    ppdSupport = true;
+    # Profil custom Roudix pour le gaming : base = throughput-performance
+    # (governor performance + tuning I/O/réseau) SANS le verrouillage des
+    # C-states de latency-performance, qui pourrait aggraver l'instabilité
+    # CPU déjà suspectée (cf. crashs liés au SMT). Point d'extension pour
+    # ajouter des tweaks Roudix-spécifiques plus tard sans dépendre d'un
+    # profil stock.
+    profiles."roudix-gaming" = {
+      main = {
+        include = "throughput-performance";
+      };
+    };
+    # Le profil "performance" exposé via powerprofilesctl (donc via
+    # game-performance) pointe vers notre profil custom au lieu du défaut
+    # tuned-ppd (throughput-performance directement).
+    ppdSettings.profiles = {
+      "power-saver" = "powersave";
+      balanced = "balanced";
+      performance = "roudix-gaming";
+    };
+  };
   services.upower.enable = true;
   services.gvfs.enable = true;
   hardware.bluetooth.enable = true;

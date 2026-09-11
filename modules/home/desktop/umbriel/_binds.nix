@@ -90,28 +90,43 @@
     "Mod+Ctrl+Shift+WheelDown" = "column-move-right";
     "Mod+Ctrl+Shift+WheelUp" = "column-move-left";
 
-    # ─── Workspaces (Mod+1..5) ───
+    # ─── Workspaces (Mod+1..9) ───
     # Comportement RELATIF au moniteur qui a le focus (comme sous niri), et
-    # non plus un saut absolu vers un nom précis : voir doc Workspaces
-    # #workspace-selectors — "when no exact numeric name exists, the number
-    # selects that 1-based position on the preferred output" (le moniteur
-    # focus, qui suit ta souris vu focus.follows_mouse=true). Comme aucun
-    # workspace ne s'appelle littéralement "1", "2"... (ce sont des icônes),
-    # Mod+1 résout donc TOUJOURS vers "position 1 du moniteur focus" :
-    # Legion (DP-1) → web, HKC (DP-3) → chat. Mod+6/7/8 disparaissent : HKC
-    # n'a que 3 positions, donc au-delà de Mod+3 ça n'a de sens que sur
-    # Legion (positions 4 et 5).
+    # non plus un saut absolu vers un nom précis : voir doc Actions —
+    # "Workspace selectors first resolve exact names globally, including
+    # numeric names. A unique name selects its workspace on any output.
+    # [...] When no exact numeric name exists, the number selects that
+    # 1-based position on the preferred output." (le moniteur focus, qui
+    # suit ta souris vu focus.follows_mouse=true).
+    # ⚠ Piège corrigé dans _output.nix : les positions 6-9 s'appelaient
+    # littéralement "6".."7".."8".."9" sur les DEUX outputs (noms
+    # dupliqués → OK, résolvent sur le focus), mais "4" et "5" n'étaient
+    # numériques-littéraux QUE sur DP-3 → noms uniques globalement → Mod+4
+    # et Mod+5 sautaient TOUJOURS sur le HKC, focus ou pas. Renommés en
+    # "L6".."L9" (Legion) / "H4".."H9" (HKC) : plus aucun nom n'est un
+    # numérique exact, donc Mod+1..9 résout maintenant TOUJOURS par
+    # position sur le moniteur focus, sur les deux écrans :
+    # Legion (DP-1) → 1 web, 2 zed, 3 term, 4 jeux, 5 fichiers, 6-9 vides.
+    # HKC (DP-3)    → 1 chat, 2 musique, 3 web (brave), 4-9 vides.
     "Mod+1" = "workspace-switch:1"; # Legion: web · HKC: chat
     "Mod+2" = "workspace-switch:2"; # Legion: zed · HKC: musique
     "Mod+3" = "workspace-switch:3"; # Legion: term · HKC: web (brave)
-    "Mod+4" = "workspace-switch:4"; # Legion: jeux
-    "Mod+5" = "workspace-switch:5"; # Legion: fichiers
+    "Mod+4" = "workspace-switch:4"; # Legion: jeux · HKC: vide (H4)
+    "Mod+5" = "workspace-switch:5"; # Legion: fichiers · HKC: vide (H5)
+    "Mod+6" = "workspace-switch:6"; # vide des deux côtés (L6 / H6)
+    "Mod+7" = "workspace-switch:7"; # vide des deux côtés (L7 / H7)
+    "Mod+8" = "workspace-switch:8"; # vide des deux côtés (L8 / H8)
+    "Mod+9" = "workspace-switch:9"; # vide des deux côtés (L9 / H9)
 
     "Mod+Ctrl+1" = "window-move-to-workspace:1";
     "Mod+Ctrl+2" = "window-move-to-workspace:2";
     "Mod+Ctrl+3" = "window-move-to-workspace:3";
     "Mod+Ctrl+4" = "window-move-to-workspace:4";
     "Mod+Ctrl+5" = "window-move-to-workspace:5";
+    "Mod+Ctrl+6" = "window-move-to-workspace:6";
+    "Mod+Ctrl+7" = "window-move-to-workspace:7";
+    "Mod+Ctrl+8" = "window-move-to-workspace:8";
+    "Mod+Ctrl+9" = "window-move-to-workspace:9";
 
     # ⚠ workspace-previous reste positionnel (pas de wrap, pas de "dernier
     # actif" comme le MRU de niri) — toujours une approximation.

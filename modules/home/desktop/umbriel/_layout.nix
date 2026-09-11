@@ -22,16 +22,34 @@
     };
 
     scrolling = {
-      direction = "horizontal"; # niri scrollait horizontalement (colonnes)
-      # Nouveau (absent avant, donc extent initial livré au choix du
-      # client) : fixe une largeur de départ cohérente pour les nouvelles
-      # colonnes, comme le fait la config packagée d'Umbriel.
+      # ⚠ Changement de doc (cause du warning "unknown key
+      # layout.scrolling.direction") : `direction` a été retiré. La
+      # direction du scroll dépend maintenant de `workspace_axis` sur
+      # l'output (docs.noctalia.dev/umbriel/outputs/#settings) : par
+      # défaut "vertical" (workspaces empilés verticalement) → la bande de
+      # scrolling est perpendiculaire, donc horizontale. C'est déjà le cas
+      # ici (aucun workspace_axis défini dans _output.nix), donc le
+      # comportement voulu (scroll horizontal façon niri) est conservé
+      # sans rien à faire d'autre que supprimer cette clé.
       default_width_fraction = 0.5;
       center_underfull_strip = true;
-      # ⚠ niri: center-focused-column "never" n'a toujours pas
-      # d'équivalent (pas d'option pour désactiver l'auto-centrage au
-      # focus). center_underfull_strip est un concept différent (centrer
-      # la bande entière si elle est plus étroite que l'écran).
+      # ⚠ Retiré : `expand_single_column` — testé et rejeté par `umbriel
+      # validate` ("unknown key layout.scrolling.expand_single_column").
+      # Je ne le retrouve pas confirmé dans la doc actuelle à cet
+      # emplacement ; possible que ce soit un nom différent, un autre
+      # chemin, ou une clé qui n'existe pas dans la version que tu as.
+      # Umbriel bouge vite (le README prévient que les clés changent
+      # entre versions) — à re-tester plus tard si tu veux vraiment ce
+      # comportement (remplir le viewport avec une seule colonne), plutôt
+      # que de deviner un autre nom.
+      #
+      # ⚠ `center_focused` ci-dessous est dans le même cas : je l'avais
+      # noté comme nouveau (équivalent partiel du center-focused-column de
+      # niri) mais je n'ai pas pu reconfirmer son existence/emplacement
+      # exact après le rejet de expand_single_column. Laissé en commentaire
+      # par précaution — décommente pour tester, mais vérifie le résultat
+      # de `umbriel validate` avant de recharger.
+      # center_focused = true;
     };
   };
   };

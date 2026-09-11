@@ -15,15 +15,23 @@
       echo ""
       if test "$key" = "myKernelChaotic"
         echo "GPU: nvidia — variants come from Chaotic-Nyx (hardware.myKernelChaotic)"
+        echo "  ── Nixpkgs ─────────────────────────────────────────────────"
+        echo "  zen                        linux-zen — nvidia module cached only with the open driver"
+        echo "  nixpkgs-lts                linux LTS — same nvidia module caveat as zen"
+        echo "  nixpkgs-latest             linux latest — same nvidia module caveat as zen"
+        echo "  nixpkgs-testing            linux_testing (RC) — same nvidia module caveat as zen"
         echo "  ── Chaotic-Nyx ─────────────────────────────────────────────"
         echo "  cachyos                    Default — LTO + BORE, ships nvidia_cachyos"
         echo "  cachyos-lts                Long-term support"
         echo "  cachyos-server             Server optimized — no desktop tuning"
         echo "  cachyos-hardened           Security hardened"
-        echo "  ── Zen (nixpkgs) ───────────────────────────────────────────"
-        echo "  zen                        linux-zen — nvidia module cached only with the open driver"
       else
         echo "GPU: non-nvidia — variants come from xddxdd (hardware.myKernel)"
+        echo "  ── Nixpkgs ─────────────────────────────────────────────────"
+        echo "  zen                        linux-zen, cached on cache.nixos.org"
+        echo "  nixpkgs-lts                linux LTS, cached on cache.nixos.org"
+        echo "  nixpkgs-latest             linux latest, cached on cache.nixos.org"
+        echo "  nixpkgs-testing            linux_testing (RC), cached on cache.nixos.org"
         echo "  ── Latest ──────────────────────────────────────────────────"
         echo "  cachyos-latest             Standard latest"
         echo "  cachyos-latest-v3          x86_64-v3 (recommended modern CPUs)"
@@ -59,14 +67,12 @@
         echo "  cachyos-server-lto         Server + LTO"
         echo "  cachyos-rc                 Release candidate (unstable)"
         echo "  cachyos-rc-lto             RC + LTO"
-        echo "  ── Zen (nixpkgs) ───────────────────────────────────────────"
-        echo "  zen                        linux-zen, cached on cache.nixos.org"
       end
       return 1
     end
 
     if test "$key" = "myKernelChaotic"
-      set valid cachyos cachyos-lts cachyos-server cachyos-hardened zen
+      set valid cachyos cachyos-lts cachyos-server cachyos-hardened zen nixpkgs-lts nixpkgs-latest nixpkgs-testing
     else
       set valid \
         cachyos-latest cachyos-latest-v2 cachyos-latest-v3 cachyos-latest-v4 cachyos-latest-zen4 \
@@ -77,7 +83,7 @@
         cachyos-deckify cachyos-deckify-lto cachyos-eevdf cachyos-eevdf-lto \
         cachyos-hardened cachyos-hardened-lto cachyos-rc cachyos-rc-lto \
         cachyos-rt-bore cachyos-rt-bore-lto cachyos-server cachyos-server-lto \
-        zen
+        zen nixpkgs-lts nixpkgs-latest nixpkgs-testing
     end
 
     if not contains $kernel $valid
@@ -109,15 +115,23 @@
         echo ""
         if [[ "$key" == "myKernelChaotic" ]]; then
           echo "GPU: nvidia — variants come from Chaotic-Nyx (hardware.myKernelChaotic)"
+          echo "  ── Nixpkgs ─────────────────────────────────────────────────"
+          echo "  zen                        linux-zen — nvidia module cached only with the open driver"
+          echo "  nixpkgs-lts                linux LTS — same nvidia module caveat as zen"
+          echo "  nixpkgs-latest             linux latest — same nvidia module caveat as zen"
+          echo "  nixpkgs-testing            linux_testing (RC) — same nvidia module caveat as zen"
           echo "  ── Chaotic-Nyx ─────────────────────────────────────────────"
           echo "  cachyos                    Default — LTO + BORE, ships nvidia_cachyos"
           echo "  cachyos-lts                Long-term support"
           echo "  cachyos-server             Server optimized — no desktop tuning"
           echo "  cachyos-hardened           Security hardened"
-          echo "  ── Zen (nixpkgs) ───────────────────────────────────────────"
-          echo "  zen                        linux-zen — nvidia module cached only with the open driver"
         else
           echo "GPU: non-nvidia — variants come from xddxdd (hardware.myKernel)"
+          echo "  ── Nixpkgs ─────────────────────────────────────────────────"
+          echo "  zen                        linux-zen, cached on cache.nixos.org"
+          echo "  nixpkgs-lts                linux LTS, cached on cache.nixos.org"
+          echo "  nixpkgs-latest             linux latest, cached on cache.nixos.org"
+          echo "  nixpkgs-testing            linux_testing (RC), cached on cache.nixos.org"
           echo "  ── Latest ──────────────────────────────────────────────────"
           echo "  cachyos-latest             Standard latest"
           echo "  cachyos-latest-v3          x86_64-v3 (recommended modern CPUs)"
@@ -153,15 +167,13 @@
           echo "  cachyos-server-lto         Server + LTO"
           echo "  cachyos-rc                 Release candidate (unstable)"
           echo "  cachyos-rc-lto             RC + LTO"
-          echo "  ── Zen (nixpkgs) ───────────────────────────────────────────"
-          echo "  zen                        linux-zen, cached on cache.nixos.org"
         fi
         return 1
       fi
 
       if [[ "$key" == "myKernelChaotic" ]]; then
         case "$kernel" in
-          cachyos|cachyos-lts|cachyos-server|cachyos-hardened|zen) ;;
+          cachyos|cachyos-lts|cachyos-server|cachyos-hardened|zen|nixpkgs-lts|nixpkgs-latest|nixpkgs-testing) ;;
           *)
             echo "Unknown kernel variant: $kernel"
             echo "Run roudix-kernel-switch without arguments to see all variants."
@@ -178,7 +190,7 @@
           cachyos-deckify|cachyos-deckify-lto|cachyos-eevdf|cachyos-eevdf-lto|\
           cachyos-hardened|cachyos-hardened-lto|cachyos-rc|cachyos-rc-lto|\
           cachyos-rt-bore|cachyos-rt-bore-lto|cachyos-server|cachyos-server-lto|\
-          zen) ;;
+          zen|nixpkgs-lts|nixpkgs-latest|nixpkgs-testing) ;;
           *)
             echo "Unknown kernel variant: $kernel"
             echo "Run roudix-kernel-switch without arguments to see all variants."

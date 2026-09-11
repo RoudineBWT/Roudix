@@ -50,6 +50,12 @@ log = logging.getLogger("roudix-kernel-switcher")
 # ── Kernel catalogue ──────────────────────────────────────────────────────────
 
 KERNELS = {
+    "Nixpkgs": [
+        ("zen",             "linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay"),
+        ("nixpkgs-lts",     "linux LTS — nixpkgs default kernel, cached on cache.nixos.org"),
+        ("nixpkgs-latest",  "linux latest — newest mainline stable, cached on cache.nixos.org"),
+        ("nixpkgs-testing", "linux_testing — mainline RC/testing kernel, cached on cache.nixos.org"),
+    ],
     "Latest": [
         ("cachyos-latest",          "Standard latest"),
         ("cachyos-latest-v3",       "x86_64-v3  —  recommended for modern CPUs"),
@@ -88,28 +94,24 @@ KERNELS = {
         ("cachyos-rc",              "Release candidate  —  unstable"),
         ("cachyos-rc-lto",          "RC + LTO"),
     ],
-    "Nixpkgs": [
-        ("zen",            "linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay"),
-        ("nixpkgs-lts",    "linux LTS — nixpkgs default kernel, cached on cache.nixos.org"),
-        ("nixpkgs-latest", "linux latest — newest mainline stable, cached on cache.nixos.org"),
-    ],
 }
 
 # Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == "nvidia" (ships
 # nvidia_cachyos, le driver Nvidia précompilé matché à ce kernel — pas de LTO
 # ici volontairement, plus fragile sur les modules hors-arbre comme nvidia)
 KERNELS_CHAOTIC = {
+    "Nixpkgs": [
+        ("zen",             "linux-zen — nvidia module cached only with the open driver; "
+                             "closed driver compiles locally on every bump"),
+        ("nixpkgs-lts",     "linux LTS — same nvidia module caveat as zen"),
+        ("nixpkgs-latest",  "linux latest — same nvidia module caveat as zen"),
+        ("nixpkgs-testing", "linux_testing — mainline RC/testing kernel, same nvidia module caveat as zen"),
+    ],
     "Chaotic-Nyx": [
         ("cachyos",          "Default  —  LTO + BORE, ships nvidia_cachyos"),
         ("cachyos-lts",      "Long-term support"),
         ("cachyos-server",   "Server optimised  —  no desktop tuning"),
         ("cachyos-hardened", "Security hardened"),
-    ],
-    "Nixpkgs": [
-        ("zen",            "linux-zen — nvidia module cached only with the open driver; "
-                            "closed driver compiles locally on every bump"),
-        ("nixpkgs-lts",    "linux LTS — same nvidia module caveat as zen"),
-        ("nixpkgs-latest", "linux latest — same nvidia module caveat as zen"),
     ],
 }
 
