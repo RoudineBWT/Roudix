@@ -138,7 +138,15 @@
   ];
   # ── Services ────────────────────────────────────────────────────────────
   services.udisks2.enable = true;
-  services.power-profiles-daemon.enable = true;
+  services.tuned = {
+    enable = true;
+    ppdSupport = true;
+    # On laisse le mapping par défaut de tuned-ppd (performance ->
+    # throughput-performance) plutôt que latency-performance : ce dernier
+    # verrouille les C-states bas en continu, ce qui pourrait aggraver
+    # l'instabilité CPU déjà suspectée (cf. crashs liés au SMT). Governor
+    # performance + sysctl I/O/réseau, sans le blocage agressif des C-states.
+  };
   services.upower.enable = true;
   services.gvfs.enable = true;
   hardware.bluetooth.enable = true;
