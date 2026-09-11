@@ -1,26 +1,45 @@
 { config, pkgs, lib, inputs, ... }:
 let
   game-performance = pkgs.writeShellScriptBin "game-performance" ''
-    # Helper script to enable the performance gov with proton or others
-    if ! command -v ${pkgs.power-profiles-daemon}/bin/powerprofilesctl &>/dev/null; then
-        echo "Error: powerprofilesctl not found" >&2
-        exit 1
-    fi
+    # Helper script to switch to the Roudix tuned gaming profile while a game
+    # or Proton is running, then restore the previous profile afterwards.
+    #
+    # Parle directement à tuned-adm plutôt qu'à powerprofilesctl/tuned-ppd :
+    # on évite la couche de compat PPD (connue pour des switches de profil
+    # pas toujours fiables) et on cible directement le profil roudix-gaming
+    # par son nom réel.
+    set -u
 
-    # Don't fail if the CPU driver doesn't support performance power profile
-    if ! ${pkgs.power-profiles-daemon}/bin/powerprofilesctl list | grep -q 'performance:'; then
+    TUNED_ADM=${pkgs.tuned}/bin/tuned-adm
+    GAME_PROFILE=roudix-gaming
+
+    if ! command -v "$TUNED_ADM" &>/dev/null; then
+        echo "Error: tuned-adm not found" >&2
         exec "$@"
     fi
 
-    # Set performance governors, as long the game is launched
-    if [ -n "$GAME_PERFORMANCE_SCREENSAVER_ON" ]; then
-        exec ${pkgs.power-profiles-daemon}/bin/powerprofilesctl launch -p performance \
-            -r "Launched with game-performance utility" -- "$@"
+    # Ne rien faire si tuned est down ou si le profil n'existe pas
+    if ! "$TUNED_ADM" list 2>/dev/null | grep -q "$GAME_PROFILE"; then
+        exec "$@"
+    fi
+
+    previous_profile=$("$TUNED_ADM" active 2>/dev/null | sed -n 's/^Current active profile: //p')
+
+    restore_profile() {
+        if [ -n "''${previous_profile:-}" ]; then
+            "$TUNED_ADM" profile "$previous_profile" >/dev/null 2>&1 || true
+        fi
+    }
+    trap restore_profile EXIT
+
+    "$TUNED_ADM" profile "$GAME_PROFILE"
+
+    # Empêche la mise en veille/écran de veille pendant que le jeu tourne,
+    # sauf si explicitement désactivé
+    if [ -n "''${GAME_PERFORMANCE_SCREENSAVER_ON:-}" ]; then
+        "$@"
     else
-        exec ${pkgs.systemd}/bin/systemd-inhibit \
-            --why "game-performance is running" \
-            ${pkgs.power-profiles-daemon}/bin/powerprofilesctl launch \
-            -p performance -r "Launched with game-performance utility" -- "$@"
+        ${pkgs.systemd}/bin/systemd-inhibit --why "game-performance is running" -- "$@"
     fi
   '';
   steamCompatTools = with pkgs; [
