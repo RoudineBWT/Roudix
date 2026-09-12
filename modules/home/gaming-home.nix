@@ -23,7 +23,7 @@ in
       (callPackage "${roudixPkgs}/heroic" {})
       (callPackage "${roudixPkgs}/lutris" {})
       (callPackage "${roudixPkgs}/faugus" {})
-      prismlauncher
+      (callPackage "${roudixPkgs}/prismlauncher" {})
       vintagestory
       winetricks
       wineWow64Packages.staging
