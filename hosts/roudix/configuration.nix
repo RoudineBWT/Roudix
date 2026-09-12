@@ -1,7 +1,7 @@
 { pkgs, inputs, config, lib, username, ... }:
 {
   imports = [
-    /etc/nixos/hardware-configuration.nix
+    ./hardware-configuration.nix
     ../../modules/system/shell.nix
     ../../modules/system/autoupdate.nix
     ../../modules/system/common.nix
