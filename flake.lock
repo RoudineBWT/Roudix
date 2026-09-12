@@ -615,11 +615,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1789180092,
-        "narHash": "sha256-6HuaOfNczUheBd3fWwReaQPzviPXTv5MxVECqP30/GQ=",
+        "lastModified": 1789181251,
+        "narHash": "sha256-8yaO1XLoObzYgb6Uj+0IkUxbkCI6kBLuImoZAuAHzB4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d7ec4866050129bb77ded86df8e3c684a7dff0ed",
+        "rev": "f496248152e1ad8c61b59a6739cc499b447168e4",
         "type": "github"
       },
       "original": {
@@ -868,11 +868,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1789180456,
-        "narHash": "sha256-2zMpUF/1ql5ECl5FKVc55znzCUxoJ5RGBv0h1kJPKW8=",
+        "lastModified": 1789182063,
+        "narHash": "sha256-wY215YlmMWoQlgByZ6pF1uGzMR4WxvtjpmppYlFCxI4=",
         "owner": "RoudineBWT",
         "repo": "Roudix-caches",
-        "rev": "6935dfd3ce438401a31c5d93464febffe8dc58e7",
+        "rev": "fff08fffe8bbad0a245623f1efc10449301a0437",
         "type": "github"
       },
       "original": {
