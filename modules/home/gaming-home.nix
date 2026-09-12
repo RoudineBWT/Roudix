@@ -21,11 +21,11 @@ in
   # ── Gaming packages (user) ───────────────────────────────────────────────
   home.packages = with pkgs; (if isGaming then [
       (callPackage "${roudixPkgs}/heroic" {})
-      (callPackage "${roudixPkgs}/lutris" {})
       (callPackage "${roudixPkgs}/faugus" {})
       (callPackage "${roudixPkgs}/prismlauncher/wrapped.nix" {
         prismlauncher-unwrapped = callPackage "${roudixPkgs}/prismlauncher" {};
       })
+      lutris
       vintagestory
       winetricks
       wineWow64Packages.staging
