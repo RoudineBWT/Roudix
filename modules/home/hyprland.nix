@@ -83,7 +83,7 @@ in
       satty
 
       # Apps
-      #gnome-text-editor
+      gnome-text-editor
       gnome-disk-utility
       mission-center
       loupe
