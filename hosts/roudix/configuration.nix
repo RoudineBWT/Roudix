@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/system/shell.nix
+    ../../modules/system/nixpkgs-compat.nix
     ../../modules/system/autoupdate.nix
     ../../modules/system/common.nix
     ../../modules/system/desktop
