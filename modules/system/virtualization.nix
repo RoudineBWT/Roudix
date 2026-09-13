@@ -65,7 +65,7 @@
     environment.systemPackages = with pkgs; [
       virt-viewer
       spice-gtk
-      virtio-win
+      #virtio-win
     ];
   };
 }
