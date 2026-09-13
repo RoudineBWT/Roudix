@@ -1,46 +1,62 @@
 { config, pkgs, lib, inputs, ... }:
 let
   game-performance = pkgs.writeShellScriptBin "game-performance" ''
-    # Helper script to switch to the Roudix tuned gaming profile while a game
-    # or Proton is running, then restore the previous profile afterwards.
+    #!${pkgs.runtimeShell}
+    # Wrapper "à la CachyOS" (game-performance de cachyos-settings), réécrit
+    # pour tuned-adm au lieu de powerprofilesctl, et sans dépendre de
+    # GameMode (incompatible avec ananicy-cpp chez nous).
     #
-    # Parle directement à tuned-adm plutôt qu'à powerprofilesctl/tuned-ppd :
-    # on évite la couche de compat PPD (connue pour des switches de profil
-    # pas toujours fiables) et on cible directement le profil roudix-gaming
-    # par son nom réel.
-    set -u
+    # powerprofilesctl launch fonctionne en interne via un scope systemd
+    # (cgroup), qui n'est "terminé" que lorsque TOUS les process du cgroup
+    # ont quitté — pas juste le process de premier niveau. C'est ce qui
+    # manquait à la version précédente (trap bash sur la sortie de "$@") :
+    # Steam peut forker/détacher avant que le vrai jeu démarre, faisant
+    # revenir le profil en "balanced" après 2 secondes. On réplique donc le
+    # même mécanisme avec systemd-run --scope, qui bloque naturellement
+    # jusqu'à ce que le cgroup entier soit vide.
 
     TUNED_ADM=${pkgs.tuned}/bin/tuned-adm
     GAME_PROFILE=roudix-gaming
+    FALLBACK_PROFILE=balanced
 
     if ! command -v "$TUNED_ADM" &>/dev/null; then
         echo "Error: tuned-adm not found" >&2
         exec "$@"
     fi
 
-    # Ne rien faire si tuned est down ou si le profil n'existe pas
-    if ! "$TUNED_ADM" list 2>/dev/null | grep -q "$GAME_PROFILE"; then
+    # Don't fail if the profile doesn't exist, just run the command
+    if ! "$TUNED_ADM" list | grep -q "$GAME_PROFILE"; then
         exec "$@"
     fi
 
-    previous_profile=$("$TUNED_ADM" active 2>/dev/null | sed -n 's/^Current active profile: //p')
+    # Save the current profile before changing it
+    CURRENT_PROFILE=$("$TUNED_ADM" active | awk '{print $NF}')
 
+    # Function to restore profile on exit
     restore_profile() {
-        if [ -n "''${previous_profile:-}" ]; then
-            "$TUNED_ADM" profile "$previous_profile" >/dev/null 2>&1 || true
-        fi
+        "$TUNED_ADM" profile "''${CURRENT_PROFILE:-$FALLBACK_PROFILE}" &>/dev/null
     }
-    trap restore_profile EXIT
 
+    # Set trap to restore profile when script exits
+    trap restore_profile EXIT INT TERM
+
+    # Set performance profile and launch the game
     "$TUNED_ADM" profile "$GAME_PROFILE"
 
-    # Empêche la mise en veille/écran de veille pendant que le jeu tourne,
-    # sauf si explicitement désactivé
+    # Scope systemd dédié : bloque jusqu'à ce que tout le cgroup se vide,
+    # pas juste le process de premier niveau (le "%command%" de Steam)
     if [ -n "''${GAME_PERFORMANCE_SCREENSAVER_ON:-}" ]; then
-        "$@"
+        ${pkgs.systemd}/bin/systemd-run --user --scope --quiet -- "$@"
     else
-        ${pkgs.systemd}/bin/systemd-inhibit --why "game-performance is running" -- "$@"
+        ${pkgs.systemd}/bin/systemd-inhibit --why "game-performance is running" -- \
+            ${pkgs.systemd}/bin/systemd-run --user --scope --quiet -- "$@"
     fi
+
+    # Store exit code to return it properly
+    EXIT_CODE=$?
+
+    # The trap will automatically restore the profile here
+    exit $EXIT_CODE
   '';
   steamCompatTools = with pkgs; [
      proton-ge-bin
@@ -90,6 +106,9 @@ in
   };
 
   # ── GameMode ─────────────────────────────────────────────────────────────
+  # Désactivé : incompatible avec ananicy-cpp chez nous. game-performance
+  # (via systemd-run --scope) gère maintenant le tracking du process de
+  # façon fiable sans passer par GameMode.
   #programs.gamemode = {
   #  enable = true;
   #  settings = {
@@ -120,7 +139,7 @@ in
   # ── Paquets système gaming ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
-    game-performance  # Wrapper governor CPU performance (usage: game-performance %command%)
+    game-performance  # Wrapper tuned CPU performance (usage: game-performance %command%)
     gamescope-wsi
     #millennium-steam
   ];
