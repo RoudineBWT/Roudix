@@ -58,6 +58,12 @@ in {
       default = "1h";
       description = "How often to check for updates";
     };
+
+    minFreeSpaceGB = lib.mkOption {
+      type = lib.types.int;
+      default = 5;
+      description = "Minimum free space on /nix/store required to attempt an update";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -77,12 +83,41 @@ in {
         TimeoutStartSec  = "120";
       };
       script = ''
-        set -euo pipefail
+        set -uo pipefail
 
-        cd ${cfg.configPath}
+        # ── Failure notification ─────────────────────────────────────────
+        # set -e is deliberately NOT used: on any error we want to notify
+        # before exiting, not die silently mid-script with only journalctl
+        # as a trace (which nobody in the family will ever check).
+        _fail() {
+          local reason="$1"
+          echo "[roudix-autoupdate] FAILED: $reason" >&2
+          ${notify} \
+            "Roudix — Échec de la mise à jour" \
+            "La mise à jour automatique a échoué ($reason). Voir : journalctl -u roudix-autoupdate" \
+            "dialog-error"
+          exit 1
+        }
+
+        # ── Avoid overlapping runs ────────────────────────────────────────
+        # (manual `update` command + timer, or two timers after a suspend
+        # catch-up, touching the same clone at the same time)
+        exec 9>/run/lock/roudix-autoupdate.lock
+        if ! ${pkgs.util-linux}/bin/flock --nonblock 9; then
+          echo "[roudix-autoupdate] Another run is already in progress, skipping."
+          exit 0
+        fi
+
+        cd ${cfg.configPath} || _fail "config directory missing"
+
+        # ── Disk space check ──────────────────────────────────────────────
+        AVAILABLE_GB=$(( $(${pkgs.coreutils}/bin/df /nix/store | ${pkgs.gawk}/bin/awk 'NR==2 {print $4}') / 1024 / 1024 ))
+        if [ "$AVAILABLE_GB" -lt "${toString cfg.minFreeSpaceGB}" ]; then
+          _fail "only ''${AVAILABLE_GB}GB free on /nix/store, need ${toString cfg.minFreeSpaceGB}GB"
+        fi
 
         echo "[roudix-autoupdate] Fetching origin..."
-        ${pkgs.git}/bin/git fetch origin ${cfg.branch}
+        ${pkgs.git}/bin/git fetch origin ${cfg.branch} || _fail "git fetch failed (network?)"
 
         LOCAL=$(${pkgs.git}/bin/git rev-parse HEAD)
         REMOTE=$(${pkgs.git}/bin/git rev-parse origin/${cfg.branch})
@@ -92,20 +127,30 @@ in {
           exit 0
         fi
 
-        echo "[roudix-autoupdate] Changes detected — pulling..."
+        echo "[roudix-autoupdate] Changes detected — updating..."
         echo "  local:  $LOCAL"
         echo "  remote: $REMOTE"
 
         # Notify: update detected
         ${notify} \
           "Roudix — Update detected" \
-          "New changes found on ${cfg.branch}. Pulling and scheduling rebuild..." \
+          "New changes found on ${cfg.branch}. Updating and scheduling rebuild..." \
           "software-update-available"
 
-        sudo -u ${username} ${pkgs.git}/bin/git pull --rebase origin ${cfg.branch}
+        # `reset --hard` instead of `pull --rebase`: nobody but the maintainer
+        # commits locally on a Roudix machine, so there is nothing to rebase —
+        # only something that can conflict if upstream history was rewritten
+        # (force-push). A hard reset to the fetched ref can't conflict, and
+        # it only touches git-tracked files: local.nix, username.nix,
+        # hardware-configuration.nix and everything else in .gitignore are
+        # left exactly as they are.
+        sudo -u ${username} ${pkgs.git}/bin/git reset --hard "origin/${cfg.branch}" \
+          || _fail "git reset --hard failed"
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
-        ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}#roudix
+        if ! ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}#roudix; then
+          _fail "build failed for revision $REMOTE — repo is on the new commit but the next boot was NOT scheduled; the current generation is untouched"
+        fi
 
         echo "[roudix-autoupdate] Done — reboot to apply the new config."
 
@@ -118,9 +163,9 @@ in {
     };
 
     systemd.timers.roudix-autoupdate = {
-      description  = "Roudix — periodic config update check";
-      wantedBy     = [ "timers.target" ];
-      timerConfig  = {
+      description = "Roudix — periodic config update check";
+      wantedBy    = [ "timers.target" ];
+      timerConfig = {
         OnBootSec       = cfg.onBootDelay;
         OnUnitActiveSec = cfg.interval;
         Persistent      = true; # catch up on missed checks after suspend
