@@ -113,7 +113,7 @@ def write_config(state: InstallState, config_root: Path):
     copied verbatim, boot.local.nix copied verbatim (EFI detection TODO).
     """
     hosts_dir = config_root / "hosts" / "roudix"
-    home_dir = config_root / "home"
+    home_dir = config_root / "modules" / "home"
     boot_local = config_root / "modules" / "system" / "boot.local.nix"
 
     (hosts_dir / "username.nix").write_text(f'"{state.username}"\n')
