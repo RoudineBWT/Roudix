@@ -469,10 +469,11 @@ class ToggleListGroup(Gtk.Box):
     def __init__(self, title: str, items: list, current: dict):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
-        label = Gtk.Label()
-        label.set_markup(f"<b>{title}</b>")
-        label.set_halign(Gtk.Align.START)
-        self.append(label)
+        if title:
+            label = Gtk.Label()
+            label.set_markup(f"<b>{title}</b>")
+            label.set_halign(Gtk.Align.START)
+            self.append(label)
 
         self.switches: dict[str, Gtk.Switch] = {}
 
@@ -501,8 +502,8 @@ class ToggleListGroup(Gtk.Box):
 class RoudixSwitcherWindow(Adw.ApplicationWindow):
     def __init__(self, app):
         super().__init__(application=app)
-        self.set_title("Roudix — Desktop Switcher")
-        self.set_default_size(480, 640)
+        self.set_title("Roudix — Customizer")
+        self.set_default_size(760, 640)
         self.set_resizable(True)
 
         current_de    = get_current_de()
@@ -528,8 +529,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         scroll.set_vexpand(True)
 
         clamp = Adw.Clamp()
-        clamp.set_maximum_size(800)
-        clamp.set_tightening_threshold(440)
+        clamp.set_maximum_size(920)
+        clamp.set_tightening_threshold(600)
 
         main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
         main_box.set_margin_top(16)
@@ -548,22 +549,88 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         desc.set_wrap(True)
         main_box.append(desc)
 
-        # ── DE selector ───────────────────────────────────────────────────
+        # ── Sidebar (categories) + content pages ────────────────────────────
+        # Layout inspiré d'un panneau de préférences façon "GLF Customizer" :
+        # une liste de catégories à gauche, le détail de la catégorie choisie
+        # à droite. Chaque page reste fidèle à la forme réelle de l'option
+        # Nix sous-jacente (liste à choix unique pour un enum, switches
+        # indépendants pour un ensemble de booléens) plutôt que de forcer
+        # tout en cases à cocher.
+        split_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        split_row.set_vexpand(True)
+
+        sidebar_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        sidebar_box.set_size_request(190, -1)
+
+        self.category_list = Gtk.ListBox()
+        self.category_list.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        self.category_list.add_css_class("navigation-sidebar")
+        self.category_list.set_vexpand(True)
+
+        CATEGORIES = [
+            ("desktop",     "Desktop"),
+            ("gaming",      "Gaming"),
+            ("editor",      "Editor"),
+            ("integration", "Integration"),
+        ]
+        self._category_rows = {}
+        for cat_id, cat_name in CATEGORIES:
+            row = Gtk.ListBoxRow()
+            row_label = Gtk.Label(label=cat_name, halign=Gtk.Align.START)
+            row_label.set_margin_start(10)
+            row_label.set_margin_top(8)
+            row_label.set_margin_bottom(8)
+            row.set_child(row_label)
+            row.category_id = cat_id
+            self._category_rows[cat_id] = row
+            self.category_list.append(row)
+
+        sidebar_box.append(self.category_list)
+
+        # Seule "Gaming" a une vraie notion de "N/M activés" (des paquets
+        # qu'on installe ou pas) — les autres catégories sont des choix
+        # exclusifs sans équivalent honnête à ce compteur.
+        self.gaming_counter_label = Gtk.Label(xalign=0)
+        self.gaming_counter_label.add_css_class("dim-label")
+        self.gaming_counter_label.set_margin_start(10)
+        self.gaming_counter_label.set_margin_top(6)
+        self.gaming_counter_label.set_margin_bottom(10)
+        sidebar_box.append(self.gaming_counter_label)
+
+        split_row.append(sidebar_box)
+        split_row.append(Gtk.Separator(orientation=Gtk.Orientation.VERTICAL))
+
+        self.content_stack = Gtk.Stack()
+        self.content_stack.set_hexpand(True)
+        self.content_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+
+        content_scroll = Gtk.ScrolledWindow()
+        content_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        content_scroll.set_hexpand(True)
+        content_scroll.set_vexpand(True)
+        content_scroll.set_child(self.content_stack)
+        split_row.append(content_scroll)
+
+        main_box.append(split_row)
+
+        # ── "Desktop" page: DE + shell ───────────────────────────────────
+        desktop_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        desktop_page.set_margin_top(4)
+        desktop_page.set_margin_start(16)
+        desktop_page.set_margin_end(16)
+        desktop_page.set_margin_bottom(16)
+
         self.de_selector = SelectorGroup(
             "Desktop environment",
             ENVIRONMENTS,
             current_de,
             dark,
         )
-        # Écouter les changements de DE pour afficher/cacher/mettre à jour le shell selector
         for de_id, check in self.de_selector.rows.items():
             check.connect("toggled", self._on_de_toggled)
-        main_box.append(self.de_selector)
+        desktop_page.append(self.de_selector)
 
-        # ── Shell selector (niri/hyprland/mangowc/umbriel uniquement) ─────
-        # Construire avec la liste correcte selon le DE actuel
         initial_shells = shells_for_de(current_de)
-        # Si le shell sauvegardé n'est pas dispo pour ce DE, fallback noctalia
         if current_shell not in {s["id"] for s in initial_shells}:
             current_shell = "noctalia"
 
@@ -574,9 +641,70 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             dark,
         )
         self.shell_selector.set_visible(current_de in SHELL_SUPPORTED_DE)
-        main_box.append(self.shell_selector)
+        desktop_page.append(self.shell_selector)
 
-        # ── Desktop integration (keyring/portal, niri/hyprland/mangowc/umbriel) ──
+        self.content_stack.add_named(desktop_page, "desktop")
+
+        # ── "Gaming" page: master switch + apps checklist ─────────────────
+        gaming_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        gaming_page.set_margin_top(4)
+        gaming_page.set_margin_start(16)
+        gaming_page.set_margin_end(16)
+        gaming_page.set_margin_bottom(16)
+
+        gaming_header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        gaming_title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        gtitle = Gtk.Label(label="Gaming", halign=Gtk.Align.START)
+        gtitle.add_css_class("title-2")
+        gsubtitle = Gtk.Label(
+            label="Launchers and tools installed for gaming.",
+            halign=Gtk.Align.START,
+        )
+        gsubtitle.add_css_class("dim-label")
+        gaming_title_box.append(gtitle)
+        gaming_title_box.append(gsubtitle)
+        gaming_title_box.set_hexpand(True)
+        gaming_header.append(gaming_title_box)
+
+        cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
+        self.gaming_master_switch = Gtk.Switch()
+        self.gaming_master_switch.set_valign(Gtk.Align.CENTER)
+        self.gaming_master_switch.set_active(cur_gaming_master)
+        gaming_header.append(self.gaming_master_switch)
+        gaming_page.append(gaming_header)
+        gaming_page.append(Gtk.Separator())
+
+        gaming_current = {app["id"]: get_bool_option(app["key"], True) for app in GAMING_APPS}
+        self.gaming_apps_group = ToggleListGroup("", GAMING_APPS, gaming_current)
+        self.gaming_apps_group.set_sensitive(cur_gaming_master)
+        gaming_page.append(self.gaming_apps_group)
+
+        self.gaming_master_switch.connect("notify::active", self._on_gaming_master_toggled)
+        for sw in self.gaming_apps_group.switches.values():
+            sw.connect("notify::active", lambda *_: self._update_gaming_counter())
+
+        self.content_stack.add_named(gaming_page, "gaming")
+
+        # ── "Editor" page ──────────────────────────────────────────────────
+        editor_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        editor_page.set_margin_top(4)
+        editor_page.set_margin_start(16)
+        editor_page.set_margin_end(16)
+        editor_page.set_margin_bottom(16)
+
+        current_editor = get_string_option("roudix.editor", "zed")
+        self.editor_selector = SelectorGroup("Default editor", EDITORS, current_editor, dark)
+        editor_page.append(self.editor_selector)
+
+        self.content_stack.add_named(editor_page, "editor")
+
+        # ── "Integration" page: keyring/portal backend ─────────────────────
+        integration_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        integration_page.set_margin_top(4)
+        integration_page.set_margin_start(16)
+        integration_page.set_margin_end(16)
+        integration_page.set_margin_bottom(16)
+
         current_integration = get_string_option("roudix.desktopIntegration", "gnome")
         self.integration_selector = SelectorGroup(
             "Keyring & portal backend",
@@ -584,18 +712,25 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             current_integration,
             dark,
         )
-        self.integration_selector.set_visible(current_de in DESKTOP_INTEGRATION_SUPPORTED_DE)
-        main_box.append(self.integration_selector)
+        integration_page.append(self.integration_selector)
 
-        # ── Default editor ──────────────────────────────────────────────────
-        current_editor = get_string_option("roudix.editor", "zed")
-        self.editor_selector = SelectorGroup("Default editor", EDITORS, current_editor, dark)
-        main_box.append(self.editor_selector)
+        integration_note = Gtk.Label(
+            label="Only applies to niri, Hyprland, MangoWC and Umbriel — "
+                  "GNOME and KDE always keep their own native stack.",
+        )
+        integration_note.add_css_class("dim-label")
+        integration_note.set_wrap(True)
+        integration_note.set_halign(Gtk.Align.START)
+        integration_page.append(integration_note)
 
-        # ── Gaming apps ──────────────────────────────────────────────────────
-        gaming_current = {app["id"]: get_bool_option(app["key"], True) for app in GAMING_APPS}
-        self.gaming_apps_group = ToggleListGroup("Gaming apps", GAMING_APPS, gaming_current)
-        main_box.append(self.gaming_apps_group)
+        self.content_stack.add_named(integration_page, "integration")
+
+        self.content_stack.set_visible_child_name("desktop")
+        self.category_list.select_row(self._category_rows["desktop"])
+        self.category_list.connect("row-selected", self._on_category_selected)
+
+        self._update_gaming_counter()
+        self._update_integration_visibility(current_de)
 
         # ── Integrated terminal ───────────────────────────────────────────
         term_frame = Gtk.Frame()
@@ -729,12 +864,39 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             self._pulse_source = None
         self.progress_bar.set_visible(False)
 
+    def _on_category_selected(self, listbox, row):
+        if row is None:
+            return
+        self.content_stack.set_visible_child_name(row.category_id)
+
+    def _on_gaming_master_toggled(self, sw, _param):
+        active = sw.get_active()
+        self.gaming_apps_group.set_sensitive(active)
+        self._update_gaming_counter()
+
+    def _update_gaming_counter(self):
+        if not self.gaming_master_switch.get_active():
+            self.gaming_counter_label.set_label("Gaming disabled")
+            return
+        states = self.gaming_apps_group.get_states()
+        enabled = sum(1 for v in states.values() if v)
+        self.gaming_counter_label.set_label(f"{enabled}/{len(states)} gaming apps enabled")
+
+    def _update_integration_visibility(self, de_id: str):
+        """Cache la page Integration pour gnome/kde (sans effet dessus) et
+        retombe sur Desktop si elle était sélectionnée."""
+        supported = de_id in DESKTOP_INTEGRATION_SUPPORTED_DE
+        row = self._category_rows["integration"]
+        row.set_visible(supported)
+        if not supported and self.category_list.get_selected_row() is row:
+            self.category_list.select_row(self._category_rows["desktop"])
+
     def _on_de_toggled(self, check, *_):
         """Affiche/cache le shell selector et met à jour la liste selon le DE choisi."""
         new_de  = self.de_selector.selected_id
         visible = new_de in SHELL_SUPPORTED_DE
         self.shell_selector.set_visible(visible)
-        self.integration_selector.set_visible(new_de in DESKTOP_INTEGRATION_SUPPORTED_DE)
+        self._update_integration_visibility(new_de)
 
         if not visible:
             return
@@ -792,7 +954,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if new_val != cur_val:
                 gaming_changes[app["id"]] = (app["key"], new_val, app["name"])
 
-        if not any([de_changed, shell_changed, integration_changed, editor_changed, gaming_changes]):
+        # Interrupteur maître du groupe gaming
+        cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
+        new_gaming_master = self.gaming_master_switch.get_active()
+        gaming_master_changed = new_gaming_master != cur_gaming_master
+
+        if not any([de_changed, shell_changed, integration_changed, editor_changed,
+                    gaming_changes, gaming_master_changed]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
                 "<span color='gray'>No changes detected — nothing to do.</span>"
@@ -809,6 +977,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"Keyring/portal: <b>{cur_integration}</b> → <b>{new_integration}</b>")
         if editor_changed:
             changes.append(f"Editor: <b>{cur_editor}</b> → <b>{new_editor}</b>")
+        if gaming_master_changed:
+            changes.append(f"Gaming: <b>{'enabled' if new_gaming_master else 'disabled'}</b>")
         for _key, new_val, name in gaming_changes.values():
             changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
         body_changes = "\n".join(changes)
@@ -818,6 +988,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "shell_changed": shell_changed, "new_shell": new_shell,
             "integration_changed": integration_changed, "new_integration": new_integration,
             "editor_changed": editor_changed, "new_editor": new_editor,
+            "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
             "gaming_changes": gaming_changes,
         }
 
@@ -868,6 +1039,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing editor config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["gaming_master_changed"]:
+            result = set_bool_option("roudix.gaming.enable", pending["new_gaming_master"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing gaming config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 
