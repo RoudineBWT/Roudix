@@ -1,7 +1,7 @@
 { lib, pkgs }:
 pkgs.stdenv.mkDerivation {
   pname = "roudix-switcher";
-  version = "1.1.0";
+  version = "1.2.0";
   src = ./.;
   nativeBuildInputs = with pkgs; [
     wrapGAppsHook4
@@ -35,7 +35,7 @@ pkgs.stdenv.mkDerivation {
     cat > $out/share/applications/io.roudix.switcher.desktop << EOF
     [Desktop Entry]
     Name=Roudix Desktop Switcher
-    Comment=Switch between desktop environments
+    Comment=Switch desktop environment and customize your Roudix
     Exec=roudix-switcher
     Icon=io.roudix.switcher
     Terminal=false

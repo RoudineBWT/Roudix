@@ -102,6 +102,47 @@ SHELL_SUPPORTED_DE    = {"niri", "hyprland", "mangowc", "umbriel"}
 CAELESTIA_SUPPORTED_DE = {"hyprland"}
 UMBRIEL_SUPPORTED_DE = {"umbriel"}
 
+# ── Tweaks: éditeur, keyring/portal, apps gaming ───────────────────────────
+# Ces trois catégories suivent le même principe que DE/shell : une valeur
+# choisie parmi plusieurs (enum, écrit comme string dans local.nix) ou un
+# ensemble de booléens indépendants. Voir roudix.editor,
+# roudix.desktopIntegration et roudix.gaming.apps.* côté Nix.
+
+EDITORS = [
+    {"id": "zed",    "name": "Zed",     "subtitle": "Fast GPU-accelerated editor (Roudix default)", "icon": "zed.svg"},
+    {"id": "vscode", "name": "VS Code", "subtitle": "Microsoft's editor, huge extension ecosystem",  "icon": "vscode.svg"},
+    {"id": "neovim", "name": "Neovim",  "subtitle": "Terminal-based, keyboard-driven",                "icon": "neovim.svg"},
+    {"id": "none",   "name": "None",    "subtitle": "Don't install a default editor",                 "icon": "none.svg"},
+]
+
+DESKTOP_INTEGRATIONS = [
+    {
+        "id": "gnome",
+        "name": "GNOME",
+        "subtitle": "gnome-keyring + xdg-desktop-portal-gtk/-gnome (default)",
+        "icon": "gnome.svg",
+    },
+    {
+        "id": "kde",
+        "name": "KDE",
+        "subtitle": "KWallet + xdg-desktop-portal-kde",
+        "icon": "kde.svg",
+    },
+]
+# Seuls les compositeurs "bruts" respectent ce choix — gnome/kde gardent
+# toujours leur propre stack native.
+DESKTOP_INTEGRATION_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
+
+# name -> option Nix (roudix.gaming.apps.<id>.enable), toutes true par défaut
+GAMING_APPS = [
+    {"id": "lutris",        "name": "Lutris",         "key": "roudix.gaming.apps.lutris.enable"},
+    {"id": "heroic",        "name": "Heroic",         "key": "roudix.gaming.apps.heroic.enable"},
+    {"id": "faugus",        "name": "Faugus Launcher","key": "roudix.gaming.apps.faugus.enable"},
+    {"id": "prismlauncher", "name": "Prism Launcher", "key": "roudix.gaming.apps.prismlauncher.enable"},
+    {"id": "vintagestory",  "name": "Vintage Story",  "key": "roudix.gaming.apps.vintagestory.enable"},
+    {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable"},
+]
+
 
 def shells_for_de(de_id: str) -> list:
     """Return the shell list appropriate for the given DE."""
@@ -158,6 +199,80 @@ def get_current_shell():
     except Exception:
         pass
     return "noctalia"
+
+
+def _insert_before_closing_brace(content: str, line: str) -> str:
+    """Same insert-if-absent strategy as set_shell: append just before the
+    final closing brace, or at EOF if the file doesn't end with one."""
+    new = content.rstrip()
+    if new.endswith("}"):
+        return new[:-1] + f"  {line}\n}}"
+    return content + f"\n{line}\n"
+
+
+def get_string_option(key: str, default: str) -> str:
+    """Read a `key = "value";` line (roudix.editor, roudix.desktopIntegration...)."""
+    try:
+        with open(CONFIG_FILE) as f:
+            for line in f:
+                if key in line:
+                    m = re.search(re.escape(key) + r'\s*=\s*"([^"]*)"', line)
+                    if m:
+                        return m.group(1)
+    except Exception:
+        pass
+    return default
+
+
+def set_string_option(key: str, value: str):
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+        pattern = re.escape(key) + r'\s*=\s*"[^"]*"'
+        if re.search(pattern, content):
+            new = re.sub(pattern, f'{key} = "{value}"', content)
+        else:
+            new = _insert_before_closing_brace(content, f'{key} = "{value}";')
+        with open(CONFIG_FILE, "w") as f:
+            f.write(new)
+        log.info("Configuration updated: %s set to '%s'.", key, value)
+        return True
+    except Exception as e:
+        log.error("Failed to write configuration: %s", e)
+        return str(e)
+
+
+def get_bool_option(key: str, default: bool) -> bool:
+    """Read a `key = true;`/`key = false;` line (roudix.gaming.apps.*.enable...)."""
+    try:
+        with open(CONFIG_FILE) as f:
+            for line in f:
+                if key in line:
+                    m = re.search(re.escape(key) + r"\s*=\s*(true|false)", line)
+                    if m:
+                        return m.group(1) == "true"
+    except Exception:
+        pass
+    return default
+
+
+def set_bool_option(key: str, value: bool):
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+        val = "true" if value else "false"
+        pattern = re.escape(key) + r"\s*=\s*(true|false)"
+        if re.search(pattern, content):
+            new = re.sub(pattern, f"{key} = {val}", content)
+        else:
+            new = _insert_before_closing_brace(content, f"{key} = {val};")
+        with open(CONFIG_FILE, "w") as f:
+            f.write(new)
+        log.info("Configuration updated: %s set to %s.", key, val)
+        return True
+    except Exception as e:
+        log.error("Failed to write configuration: %s", e)
+        return str(e)
 
 
 def set_de(de_id):
@@ -346,6 +461,41 @@ class SelectorGroup(Gtk.Box):
                     img_widget.set_from_file(fallback)
 
 
+class ToggleListGroup(Gtk.Box):
+    """List of independent on/off switches (not mutually exclusive) — used
+    for the gaming apps checklist. Unlike SelectorGroup, any number of items
+    can be active at once."""
+
+    def __init__(self, title: str, items: list, current: dict):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        label = Gtk.Label()
+        label.set_markup(f"<b>{title}</b>")
+        label.set_halign(Gtk.Align.START)
+        self.append(label)
+
+        self.switches: dict[str, Gtk.Switch] = {}
+
+        list_box = Gtk.ListBox()
+        list_box.set_selection_mode(Gtk.SelectionMode.NONE)
+        list_box.add_css_class("boxed-list")
+        self.append(list_box)
+
+        for item in items:
+            row = Adw.ActionRow()
+            row.set_title(item["name"])
+            sw = Gtk.Switch()
+            sw.set_valign(Gtk.Align.CENTER)
+            sw.set_active(current.get(item["id"], True))
+            row.add_suffix(sw)
+            row.set_activatable_widget(sw)
+            self.switches[item["id"]] = sw
+            list_box.append(row)
+
+    def get_states(self) -> dict:
+        return {item_id: sw.get_active() for item_id, sw in self.switches.items()}
+
+
 # ── Main window ───────────────────────────────────────────────────────────────
 
 class RoudixSwitcherWindow(Adw.ApplicationWindow):
@@ -390,9 +540,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         # ── Description ───────────────────────────────────────────────────
         desc = Gtk.Label()
         desc.set_markup(
-            "<b>Select your desktop environment</b>\n"
-            "<span size='small'>The system will rebuild after your selection.\n"
-            "This may take a few minutes.</span>"
+            "<b>Customize your Roudix</b>\n"
+            "<span size='small'>Pick your desktop, shell and tweaks below.\n"
+            "The system will rebuild after your selection — this may take a few minutes.</span>"
         )
         desc.set_justify(Gtk.Justification.CENTER)
         desc.set_wrap(True)
@@ -425,6 +575,27 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         )
         self.shell_selector.set_visible(current_de in SHELL_SUPPORTED_DE)
         main_box.append(self.shell_selector)
+
+        # ── Desktop integration (keyring/portal, niri/hyprland/mangowc/umbriel) ──
+        current_integration = get_string_option("roudix.desktopIntegration", "gnome")
+        self.integration_selector = SelectorGroup(
+            "Keyring & portal backend",
+            DESKTOP_INTEGRATIONS,
+            current_integration,
+            dark,
+        )
+        self.integration_selector.set_visible(current_de in DESKTOP_INTEGRATION_SUPPORTED_DE)
+        main_box.append(self.integration_selector)
+
+        # ── Default editor ──────────────────────────────────────────────────
+        current_editor = get_string_option("roudix.editor", "zed")
+        self.editor_selector = SelectorGroup("Default editor", EDITORS, current_editor, dark)
+        main_box.append(self.editor_selector)
+
+        # ── Gaming apps ──────────────────────────────────────────────────────
+        gaming_current = {app["id"]: get_bool_option(app["key"], True) for app in GAMING_APPS}
+        self.gaming_apps_group = ToggleListGroup("Gaming apps", GAMING_APPS, gaming_current)
+        main_box.append(self.gaming_apps_group)
 
         # ── Integrated terminal ───────────────────────────────────────────
         term_frame = Gtk.Frame()
@@ -563,6 +734,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_de  = self.de_selector.selected_id
         visible = new_de in SHELL_SUPPORTED_DE
         self.shell_selector.set_visible(visible)
+        self.integration_selector.set_visible(new_de in DESKTOP_INTEGRATION_SUPPORTED_DE)
 
         if not visible:
             return
@@ -583,6 +755,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         log.debug("Theme changed — dark: %s", dark)
         self.de_selector.update_icons(dark)
         self.shell_selector.update_icons(dark)
+        self.integration_selector.update_icons(dark)
+        self.editor_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 
@@ -598,7 +772,27 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_shell      = self.shell_selector.selected_id if shell_relevant else cur_shell
         shell_changed  = shell_relevant and (new_shell != cur_shell)
 
-        if not de_changed and not shell_changed:
+        # Keyring/portal — pertinent uniquement pour les compositeurs bruts
+        integration_relevant = new_de in DESKTOP_INTEGRATION_SUPPORTED_DE
+        cur_integration = get_string_option("roudix.desktopIntegration", "gnome")
+        new_integration = self.integration_selector.selected_id if integration_relevant else cur_integration
+        integration_changed = integration_relevant and (new_integration != cur_integration)
+
+        # Éditeur par défaut
+        cur_editor = get_string_option("roudix.editor", "zed")
+        new_editor = self.editor_selector.selected_id
+        editor_changed = new_editor != cur_editor
+
+        # Apps gaming : booléens indépendants, on ne touche que celles qui ont changé
+        gaming_states = self.gaming_apps_group.get_states()
+        gaming_changes = {}
+        for app in GAMING_APPS:
+            cur_val = get_bool_option(app["key"], True)
+            new_val = gaming_states[app["id"]]
+            if new_val != cur_val:
+                gaming_changes[app["id"]] = (app["key"], new_val, app["name"])
+
+        if not any([de_changed, shell_changed, integration_changed, editor_changed, gaming_changes]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
                 "<span color='gray'>No changes detected — nothing to do.</span>"
@@ -611,7 +805,21 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"Desktop: <b>{cur_de}</b> → <b>{new_de}</b>")
         if shell_changed:
             changes.append(f"Shell: <b>{cur_shell}</b> → <b>{new_shell}</b>")
+        if integration_changed:
+            changes.append(f"Keyring/portal: <b>{cur_integration}</b> → <b>{new_integration}</b>")
+        if editor_changed:
+            changes.append(f"Editor: <b>{cur_editor}</b> → <b>{new_editor}</b>")
+        for _key, new_val, name in gaming_changes.values():
+            changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
         body_changes = "\n".join(changes)
+
+        pending = {
+            "de_changed": de_changed, "new_de": new_de,
+            "shell_changed": shell_changed, "new_shell": new_shell,
+            "integration_changed": integration_changed, "new_integration": new_integration,
+            "editor_changed": editor_changed, "new_editor": new_editor,
+            "gaming_changes": gaming_changes,
+        }
 
         dialog = Adw.AlertDialog()
         dialog.set_heading("Apply changes?")
@@ -623,27 +831,51 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         dialog.add_response("confirm", "Apply & Rebuild")
         dialog.set_response_appearance("confirm", Adw.ResponseAppearance.SUGGESTED)
         dialog.set_default_response("confirm")
-        dialog.connect("response", self.on_confirm_response, new_de, new_shell, de_changed, shell_changed)
+        dialog.connect("response", self.on_confirm_response, pending)
         dialog.present(self)
 
-    def on_confirm_response(self, dialog, response, new_de, new_shell, de_changed, shell_changed):
+    def on_confirm_response(self, dialog, response, pending):
         if response != "confirm":
             log.info("User cancelled the rebuild dialog.")
             return
 
-        if de_changed:
-            result = set_de(new_de)
+        if pending["de_changed"]:
+            result = set_de(pending["new_de"])
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing DE config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 
-        if shell_changed:
-            result = set_shell(new_shell)
+        if pending["shell_changed"]:
+            result = set_shell(pending["new_shell"])
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing shell config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["integration_changed"]:
+            result = set_string_option("roudix.desktopIntegration", pending["new_integration"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing keyring/portal config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["editor_changed"]:
+            result = set_string_option("roudix.editor", pending["new_editor"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing editor config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        for key, new_val, name in pending["gaming_changes"].values():
+            result = set_bool_option(key, new_val)
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 

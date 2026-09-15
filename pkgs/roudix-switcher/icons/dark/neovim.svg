@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 135.46667 135.46668" width="135.46667" height="135.46667"
+     version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <!-- Generic chevron glyph (not a reproduction of any editor's logo) -->
+  <path d="M 25,25 L 67.7,105 L 110.5,25"
+        fill="none" stroke="#57a143" stroke-width="14"
+        stroke-linecap="round" stroke-linejoin="round" />
+</svg>
