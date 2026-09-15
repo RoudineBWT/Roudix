@@ -143,6 +143,38 @@ GAMING_APPS = [
     {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable"},
 ]
 
+TERMINALS = [
+    {"id": "ghostty",   "name": "Ghostty",   "icon": "ghostty.svg"},
+    {"id": "kitty",     "name": "Kitty",     "icon": "kitty.svg"},
+    {"id": "alacritty", "name": "Alacritty", "icon": "alacritty.svg"},
+    {"id": "foot",      "name": "Foot",      "icon": "foot.svg"},
+    {"id": "wezterm",   "name": "WezTerm",   "icon": "wezterm.svg"},
+    {"id": "ptyxis",    "name": "Ptyxis",    "icon": "ptyxis.svg"},
+    {"id": "konsole",   "name": "Konsole",   "icon": "konsole.svg"},
+]
+
+# roudix.browsers est une LISTE (pas un enum) : plusieurs navigateurs peuvent
+# être installés en même temps. On l'expose donc en checklist, pas en
+# sélecteur exclusif. Le premier coché de cette liste devient le défaut
+# (raccourci niri MOD+B) — c'est exactement la logique déjà utilisée côté
+# Nix (roudix.browser.default = lib.head cfg.browsers).
+BROWSERS = [
+    {"id": "brave",                 "name": "Brave"},
+    {"id": "brave-beta",            "name": "Brave Beta"},
+    {"id": "brave-nightly",         "name": "Brave Nightly"},
+    {"id": "brave-origin",          "name": "Brave (Origin)"},
+    {"id": "brave-origin-beta",     "name": "Brave (Origin) Beta"},
+    {"id": "brave-origin-nightly",  "name": "Brave (Origin) Nightly"},
+    {"id": "helium",                "name": "Helium"},
+    {"id": "vivaldi",                "name": "Vivaldi"},
+    {"id": "chromium",              "name": "Chromium"},
+    {"id": "firefox",               "name": "Firefox"},
+    {"id": "librewolf",             "name": "LibreWolf"},
+    {"id": "google-chrome",         "name": "Google Chrome"},
+    {"id": "microsoft-edge",        "name": "Microsoft Edge"},
+    {"id": "ungoogled-chromium",    "name": "Ungoogled Chromium"},
+]
+
 
 def shells_for_de(de_id: str) -> list:
     """Return the shell list appropriate for the given DE."""
@@ -269,6 +301,38 @@ def set_bool_option(key: str, value: bool):
         with open(CONFIG_FILE, "w") as f:
             f.write(new)
         log.info("Configuration updated: %s set to %s.", key, val)
+        return True
+    except Exception as e:
+        log.error("Failed to write configuration: %s", e)
+        return str(e)
+
+
+def get_list_option(key: str, default: list) -> list:
+    """Read a `key = [ "a" "b" ];` line (roudix.browsers...)."""
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+        m = re.search(re.escape(key) + r"\s*=\s*\[([^\]]*)\]", content)
+        if m:
+            return re.findall(r'"([^"]*)"', m.group(1))
+    except Exception:
+        pass
+    return default
+
+
+def set_list_option(key: str, values: list):
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+        rendered = "[ " + " ".join(f'"{v}"' for v in values) + " ]" if values else "[ ]"
+        pattern = re.escape(key) + r"\s*=\s*\[[^\]]*\]"
+        if re.search(pattern, content):
+            new = re.sub(pattern, f"{key} = {rendered}", content)
+        else:
+            new = _insert_before_closing_brace(content, f"{key} = {rendered};")
+        with open(CONFIG_FILE, "w") as f:
+            f.write(new)
+        log.info("Configuration updated: %s set to %s.", key, rendered)
         return True
     except Exception as e:
         log.error("Failed to write configuration: %s", e)
@@ -571,6 +635,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             ("desktop",     "Desktop"),
             ("gaming",      "Gaming"),
             ("editor",      "Editor"),
+            ("terminal",    "Terminal"),
+            ("browser",     "Browser"),
             ("integration", "Integration"),
         ]
         self._category_rows = {}
@@ -697,6 +763,67 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         editor_page.append(self.editor_selector)
 
         self.content_stack.add_named(editor_page, "editor")
+
+        # ── "Terminal" page ─────────────────────────────────────────────────
+        terminal_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        terminal_page.set_margin_top(4)
+        terminal_page.set_margin_start(16)
+        terminal_page.set_margin_end(16)
+        terminal_page.set_margin_bottom(16)
+
+        current_terminal = get_string_option("roudix.terminal", "ghostty")
+        self.terminal_selector = SelectorGroup("Default terminal", TERMINALS, current_terminal, dark)
+        terminal_page.append(self.terminal_selector)
+
+        self.content_stack.add_named(terminal_page, "terminal")
+
+        # ── "Browser" page: checklist (roudix.browsers is a list) ──────────
+        browser_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        browser_page.set_margin_top(4)
+        browser_page.set_margin_start(16)
+        browser_page.set_margin_end(16)
+        browser_page.set_margin_bottom(16)
+
+        btitle = Gtk.Label(label="Browser", halign=Gtk.Align.START)
+        btitle.add_css_class("title-2")
+        bsubtitle = Gtk.Label(
+            label="Pick any number — the first one checked below becomes the "
+                  "default (niri's MOD+B shortcut).",
+            halign=Gtk.Align.START,
+        )
+        bsubtitle.add_css_class("dim-label")
+        bsubtitle.set_wrap(True)
+        browser_page.append(btitle)
+        browser_page.append(bsubtitle)
+        browser_page.append(Gtk.Separator())
+
+        current_browsers = set(get_list_option("roudix.browsers", ["brave"]))
+        browser_current = {b["id"]: (b["id"] in current_browsers) for b in BROWSERS}
+        self.browser_group = ToggleListGroup("", BROWSERS, browser_current)
+        browser_page.append(self.browser_group)
+
+        # Zen Browser vit à part côté Nix (flake input séparé, pas dans
+        # browserDefs) — switch indépendant plutôt que dans la checklist.
+        zen_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        zen_row.set_margin_top(8)
+        zen_label = Gtk.Label(label="Zen Browser", halign=Gtk.Align.START)
+        zen_label.set_hexpand(True)
+        self.zen_switch = Gtk.Switch()
+        self.zen_switch.set_valign(Gtk.Align.CENTER)
+        self.zen_switch.set_active(get_bool_option("roudix.zen.enable", False))
+        zen_row.append(zen_label)
+        zen_row.append(self.zen_switch)
+        browser_page.append(zen_row)
+
+        zen_note = Gtk.Label(
+            label="Zen mods (roudix.zen.mods / zen.sine) stay manual — edit local.nix directly for those.",
+        )
+        zen_note.add_css_class("dim-label")
+        zen_note.set_wrap(True)
+        zen_note.set_halign(Gtk.Align.START)
+        browser_page.append(zen_note)
+
+        self.content_stack.add_named(browser_page, "browser")
 
         # ── "Integration" page: keyring/portal backend ─────────────────────
         integration_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
@@ -919,6 +1046,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.shell_selector.update_icons(dark)
         self.integration_selector.update_icons(dark)
         self.editor_selector.update_icons(dark)
+        self.terminal_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 
@@ -945,6 +1073,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_editor = self.editor_selector.selected_id
         editor_changed = new_editor != cur_editor
 
+        # Terminal par défaut
+        cur_terminal = get_string_option("roudix.terminal", "ghostty")
+        new_terminal = self.terminal_selector.selected_id
+        terminal_changed = new_terminal != cur_terminal
+
+        # Navigateurs (liste) + Zen (switch séparé)
+        cur_browsers = get_list_option("roudix.browsers", ["brave"])
+        new_browsers = [b["id"] for b in BROWSERS if self.browser_group.get_states()[b["id"]]]
+        browsers_changed = new_browsers != cur_browsers
+
+        cur_zen = get_bool_option("roudix.zen.enable", False)
+        new_zen = self.zen_switch.get_active()
+        zen_changed = new_zen != cur_zen
+
         # Apps gaming : booléens indépendants, on ne touche que celles qui ont changé
         gaming_states = self.gaming_apps_group.get_states()
         gaming_changes = {}
@@ -960,6 +1102,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         gaming_master_changed = new_gaming_master != cur_gaming_master
 
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
+                    terminal_changed, browsers_changed, zen_changed,
                     gaming_changes, gaming_master_changed]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
@@ -977,6 +1120,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"Keyring/portal: <b>{cur_integration}</b> → <b>{new_integration}</b>")
         if editor_changed:
             changes.append(f"Editor: <b>{cur_editor}</b> → <b>{new_editor}</b>")
+        if terminal_changed:
+            changes.append(f"Terminal: <b>{cur_terminal}</b> → <b>{new_terminal}</b>")
+        if browsers_changed:
+            changes.append(f"Browsers: <b>{', '.join(new_browsers) or 'none'}</b>")
+        if zen_changed:
+            changes.append(f"Zen Browser: <b>{'enabled' if new_zen else 'disabled'}</b>")
         if gaming_master_changed:
             changes.append(f"Gaming: <b>{'enabled' if new_gaming_master else 'disabled'}</b>")
         for _key, new_val, name in gaming_changes.values():
@@ -988,6 +1137,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "shell_changed": shell_changed, "new_shell": new_shell,
             "integration_changed": integration_changed, "new_integration": new_integration,
             "editor_changed": editor_changed, "new_editor": new_editor,
+            "terminal_changed": terminal_changed, "new_terminal": new_terminal,
+            "browsers_changed": browsers_changed, "new_browsers": new_browsers,
+            "zen_changed": zen_changed, "new_zen": new_zen,
             "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
             "gaming_changes": gaming_changes,
         }
@@ -1039,6 +1191,30 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing editor config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["terminal_changed"]:
+            result = set_string_option("roudix.terminal", pending["new_terminal"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing terminal config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["browsers_changed"]:
+            result = set_list_option("roudix.browsers", pending["new_browsers"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing browsers config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["zen_changed"]:
+            result = set_bool_option("roudix.zen.enable", pending["new_zen"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing Zen Browser config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 
