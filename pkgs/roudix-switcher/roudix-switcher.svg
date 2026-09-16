@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
-  <title>Roudix Switcher</title>
+  <title>Roudix Customizer</title>
+  <desc>Trois sliders aux couleurs du logo Roudix (peach, flamingo, maroon) sur fond Catppuccin Mocha.</desc>
+
+  <!-- Badge (ombre + fond, même structure que les autres icônes Roudix) -->
   <rect opacity="0.2" width="46" height="46" x="1" y="2" rx="11"/>
-  <rect fill="#1e2b3c" width="46" height="46" x="1" y="1" rx="11"/>
-  <path fill="#fff" opacity="0.08"
+  <rect fill="#1e1e2e" width="46" height="46" x="1" y="1" rx="11"/>
+  <path fill="#fff" opacity="0.06"
     d="M12,1 C6,1 1,6 1,12 v1 C1,7 6,2 12,2 h24 c6,0 11,5 11,11 v-1 C47,6 42,1 36,1 Z"/>
-  <rect opacity="0.25" width="36" height="24" x="6" y="7" rx="3"/>
-  <rect fill="#2d3f55" width="36" height="24" x="6" y="6" rx="3"/>
-  <rect fill="#1a2736" width="32" height="19" x="8" y="8" rx="2"/>
-  <rect fill="#2d3f55" width="5" height="5" x="21.5" y="30" rx="1"/>
-  <rect fill="#2d3f55" width="16" height="3" x="16" y="34.5" rx="2"/>
-  <rect fill="#000" opacity="0.15" width="16" height="1" x="16" y="37.3" rx="0.5"/>
-  <rect fill="#3a6be0" width="14" height="17" x="9" y="9" rx="1.5"/>
-  <rect fill="#1d9e75" width="14" height="8" x="25" y="9" rx="1.5"/>
-  <rect fill="#1d9e75" opacity="0.6" width="14" height="7" x="25" y="19" rx="1.5"/>
-  <circle opacity="0.3" cx="38" cy="38.5" r="10"/>
-  <circle fill="#27ae60" cx="38" cy="37.5" r="10"/>
-  <path fill="#fff" opacity="0.15"
-    d="M31,31 C28,33 27.5,36.5 29,39 C29,34.5 32,31 37,30 C35,29.5 33,30 31,31 Z"/>
-  <path fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
-    d="M 31.5,35 H 41 L 38,32"/>
-  <path fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
-    d="M 44.5,40 H 35 L 38,43"/>
+
+  <!-- Slider 1 : peach, curseur proche du début -->
+  <rect fill="#45475a" width="30" height="4" x="9" y="12" rx="2"/>
+  <rect fill="#fab387" width="16" height="4" x="9" y="12" rx="2"/>
+  <circle fill="#181825" cx="25" cy="14" r="5.5"/>
+  <circle fill="#fab387" cx="25" cy="14" r="4.5"/>
+
+  <!-- Slider 2 : flamingo, curseur au milieu -->
+  <rect fill="#45475a" width="30" height="4" x="9" y="22" rx="2"/>
+  <rect fill="#f2cdcd" width="22" height="4" x="9" y="22" rx="2"/>
+  <circle fill="#181825" cx="31" cy="24" r="5.5"/>
+  <circle fill="#f2cdcd" cx="31" cy="24" r="4.5"/>
+
+  <!-- Slider 3 : maroon, curseur proche de la fin -->
+  <rect fill="#45475a" width="30" height="4" x="9" y="32" rx="2"/>
+  <rect fill="#eba0ac" width="9" height="4" x="9" y="32" rx="2"/>
+  <circle fill="#181825" cx="18" cy="34" r="5.5"/>
+  <circle fill="#eba0ac" cx="18" cy="34" r="4.5"/>
 </svg>
