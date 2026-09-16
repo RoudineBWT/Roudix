@@ -93,16 +93,24 @@ config = lib.mkIf isHyprland {
   };
 
   # ── Keyring ───────────────────────────────────────────────────────────
-  # ⚠ Branche kde pas testée en session réelle. Point de vigilance connu :
-  # le service PAM "greetd" ne substack pas "login" (nixpkgs#357201), ce
-  # qui a déjà cassé l'auto-unlock kwallet pour d'autres utilisateurs de
-  # greetd — cf. discourse.nixos.org "Auto-Unlock kwallet with greetd
-  # login-manager". Si le wallet reste verrouillé après un login, il
-  # faudra probablement substack "login" à la main dans le texte PAM de
-  # greetd (comme le font déjà gdm.nix/lightdm.nix pour ce cas).
+  # ⚠ Branche kde pas testée en session réelle. ly.nix active "ly" comme
+  # display manager pour hyprland de façon inconditionnelle (useLy =
+  # isHyprland, sans regarder isNoctalia) alors que ce bloc garde
+  # noctalia-greeter (greetd) actif quand isNoctalia — les deux DM peuvent
+  # donc tourner en même temps si isNoctalia == true, ce qui est un conflit
+  # préexistant côté ly.nix, pas introduit ici. En attendant que ça soit
+  # tranché côté ly.nix (soit isHyprland && !isNoctalia, soit suppression du
+  # bloc noctalia-greeter dans ce fichier), on branche le keyring sur les
+  # deux services PAM possibles pour rester correct dans les deux cas.
+  # Point de vigilance connu par ailleurs : le service PAM "greetd" ne
+  # substack pas "login" (nixpkgs#357201), ce qui a déjà cassé l'auto-unlock
+  # kwallet pour d'autres utilisateurs de greetd — cf. discourse.nixos.org
+  # "Auto-Unlock kwallet with greetd login-manager".
   services.gnome.gnome-keyring.enable = !isKdeIntegration;
-  security.pam.services.greetd.enableGnomeKeyring = !isKdeIntegration;
-  security.pam.services.greetd.kwallet.enable = isKdeIntegration;
+  security.pam.services.ly.enableGnomeKeyring     = lib.mkIf (!isKdeIntegration) true;
+  security.pam.services.greetd.enableGnomeKeyring = lib.mkIf (isNoctalia && !isKdeIntegration) true;
+  security.pam.services.ly.kwallet.enable         = lib.mkIf isKdeIntegration true;
+  security.pam.services.greetd.kwallet.enable     = lib.mkIf (isNoctalia && isKdeIntegration) true;
 
 
   environment.systemPackages = with pkgs; [
