@@ -1248,8 +1248,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         log.info(
             "Starting NixOS rebuild — DE: %s, shell: %s",
-            new_de if de_changed else "(unchanged)",
-            new_shell if shell_changed else "(unchanged)",
+            pending["new_de"] if pending["de_changed"] else "(unchanged)",
+            pending["new_shell"] if pending["shell_changed"] else "(unchanged)",
         )
 
         import threading
