@@ -175,6 +175,54 @@ BROWSERS = [
     {"id": "ungoogled-chromium",    "name": "Ungoogled Chromium"},
 ]
 
+# roudix.shell : le shell de LOGIN (fish/bash) — à ne pas confondre avec le
+# "shell" graphique (noctalia/dms/caelestia) de la page Desktop.
+LOGIN_SHELLS = [
+    {"id": "fish", "name": "fish", "subtitle": "Shell interactif convivial (défaut Roudix)", "icon": "fish.svg"},
+    {"id": "bash", "name": "bash", "subtitle": "Le shell POSIX classique",                    "icon": "bash.svg"},
+]
+
+FILE_MANAGERS = [
+    {"id": "nautilus",   "name": "Nautilus (Files)", "subtitle": "Gestionnaire de fichiers de GNOME",   "icon": "nautilus.svg"},
+    {"id": "dolphin",    "name": "Dolphin",           "subtitle": "Gestionnaire de fichiers de KDE",     "icon": "dolphin.svg"},
+    {"id": "nemo",       "name": "Nemo",              "subtitle": "Gestionnaire de fichiers de Cinnamon","icon": "nemo.svg"},
+    {"id": "thunar",     "name": "Thunar",            "subtitle": "Léger, celui de XFCE",                "icon": "thunar.svg"},
+    {"id": "pcmanfm-qt", "name": "PCManFM-Qt",        "subtitle": "Léger, en Qt",                        "icon": "pcmanfm-qt.svg"},
+]
+# Comme Integration : sans effet sur gnome/kde, qui gardent leur gestionnaire natif.
+FILE_MANAGER_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
+
+MATRIX_CLIENTS = [
+    {"id": "element", "name": "Element", "subtitle": "Client Matrix complet (défaut)",      "icon": "element.svg"},
+    {"id": "cinny",   "name": "Cinny",   "subtitle": "Client Matrix léger",                 "icon": "cinny.svg"},
+    {"id": "none",    "name": "None",    "subtitle": "N'installer aucun client Matrix",     "icon": "none.svg"},
+]
+
+RGB_BACKENDS = [
+    {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": "Pour périphériques compatibles Corsair iCUE", "icon": "openlinkhub.svg"},
+    {"id": "openrgb",     "name": "OpenRGB",      "subtitle": "Support RGB multi-marques",                   "icon": "openrgb.svg"},
+    {"id": "none",        "name": "None",         "subtitle": "Aucun backend RGB",                           "icon": "none.svg"},
+]
+
+# Tweaks gaming annexes (à côté des launchers) — mêmes clés booléennes que
+# GAMING_APPS mais affichés dans un groupe séparé sur la page Gaming.
+GAMING_EXTRAS = [
+    {"id": "ananicy", "name": "Ananicy (ordonnanceur process)", "key": "roudix.gaming.ananicy.enable"},
+    {"id": "gtaFix",  "name": "Correctif hosts GTA Online",     "key": "roudix.hosts.gtaFix.enable"},
+]
+
+# Interrupteurs système indépendants, sans rapport les uns avec les autres —
+# regroupés dans une page "System" plutôt que de créer une catégorie par
+# option.
+SYSTEM_TOGGLES = [
+    {"id": "flatpak",        "name": "Flatpak",                          "key": "roudix.flatpak.enable"},
+    {"id": "virtualization", "name": "Virtualisation (QEMU/KVM)",        "key": "roudix.virtualization.enable"},
+    {"id": "waydroid",       "name": "Waydroid (apps Android)",          "key": "roudix.waydroid.enable"},
+    {"id": "mesaGit",        "name": "Mesa-git (pilotes GPU bleeding-edge)", "key": "roudix.mesa.useGit"},
+    {"id": "autoupdate",     "name": "Auto-update (git pull + rebuild programmé)", "key": "roudix.autoupdate.enable"},
+    {"id": "undervoltAmd",   "name": "Undervolt GPU AMD (LACT)",         "key": "roudix.undervolt.only-amd.enable"},
+]
+
 
 def shells_for_de(de_id: str) -> list:
     """Return the shell list appropriate for the given DE."""
@@ -337,6 +385,19 @@ def set_list_option(key: str, values: list):
     except Exception as e:
         log.error("Failed to write configuration: %s", e)
         return str(e)
+
+
+def _diff_bool_items(items: list, states: dict, default: bool) -> dict:
+    """Compare each item's current Nix value to its widget state; return
+    {id: (key, new_val, name)} for the ones that changed. Shared by every
+    checklist group (gaming apps, gaming extras, system toggles)."""
+    changes = {}
+    for item in items:
+        cur_val = get_bool_option(item["key"], default)
+        new_val = states[item["id"]]
+        if new_val != cur_val:
+            changes[item["id"]] = (item["key"], new_val, item["name"])
+    return changes
 
 
 def set_de(de_id):
@@ -637,6 +698,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             ("editor",      "Editor"),
             ("terminal",    "Terminal"),
             ("browser",     "Browser"),
+            ("login_shell", "Login Shell"),
+            ("filemanager", "File Manager"),
+            ("chat",        "Chat Client"),
+            ("system",      "System"),
             ("integration", "Integration"),
         ]
         self._category_rows = {}
@@ -745,6 +810,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.gaming_apps_group.set_sensitive(cur_gaming_master)
         gaming_page.append(self.gaming_apps_group)
 
+        extras_label = Gtk.Label(halign=Gtk.Align.START)
+        extras_label.set_markup("<b>Tweaks</b>")
+        extras_label.set_margin_top(8)
+        gaming_page.append(extras_label)
+        gaming_extras_current = {e["id"]: get_bool_option(e["key"], False) for e in GAMING_EXTRAS}
+        self.gaming_extras_group = ToggleListGroup("", GAMING_EXTRAS, gaming_extras_current)
+        gaming_page.append(self.gaming_extras_group)
+
         self.gaming_master_switch.connect("notify::active", self._on_gaming_master_toggled)
         for sw in self.gaming_apps_group.switches.values():
             sw.connect("notify::active", lambda *_: self._update_gaming_counter())
@@ -825,6 +898,71 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.content_stack.add_named(browser_page, "browser")
 
+        # ── "Login Shell" page ──────────────────────────────────────────────
+        login_shell_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        login_shell_page.set_margin_top(4)
+        login_shell_page.set_margin_start(16)
+        login_shell_page.set_margin_end(16)
+        login_shell_page.set_margin_bottom(16)
+
+        current_login_shell = get_string_option("roudix.shell", "fish")
+        self.login_shell_selector = SelectorGroup("Login shell", LOGIN_SHELLS, current_login_shell, dark)
+        login_shell_page.append(self.login_shell_selector)
+
+        login_shell_note = Gtk.Label(
+            label="This is your terminal login shell — not the graphical shell "
+                  "under Desktop (noctalia/dms/caelestia).",
+        )
+        login_shell_note.add_css_class("dim-label")
+        login_shell_note.set_wrap(True)
+        login_shell_note.set_halign(Gtk.Align.START)
+        login_shell_page.append(login_shell_note)
+
+        self.content_stack.add_named(login_shell_page, "login_shell")
+
+        # ── "File Manager" page (niri/hyprland/mangowc/umbriel only) ───────
+        filemanager_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        filemanager_page.set_margin_top(4)
+        filemanager_page.set_margin_start(16)
+        filemanager_page.set_margin_end(16)
+        filemanager_page.set_margin_bottom(16)
+
+        current_filemanager = get_string_option("roudix.fileManager", "nautilus")
+        self.filemanager_selector = SelectorGroup("File manager", FILE_MANAGERS, current_filemanager, dark)
+        filemanager_page.append(self.filemanager_selector)
+
+        self.content_stack.add_named(filemanager_page, "filemanager")
+
+        # ── "Chat Client" page ──────────────────────────────────────────────
+        chat_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        chat_page.set_margin_top(4)
+        chat_page.set_margin_start(16)
+        chat_page.set_margin_end(16)
+        chat_page.set_margin_bottom(16)
+
+        current_matrix = get_string_option("roudix.matrixClient", "element")
+        self.matrix_selector = SelectorGroup("Matrix client", MATRIX_CLIENTS, current_matrix, dark)
+        chat_page.append(self.matrix_selector)
+
+        self.content_stack.add_named(chat_page, "chat")
+
+        # ── "System" page: independent toggles + RGB backend ───────────────
+        system_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        system_page.set_margin_top(4)
+        system_page.set_margin_start(16)
+        system_page.set_margin_end(16)
+        system_page.set_margin_bottom(16)
+
+        system_current = {t["id"]: get_bool_option(t["key"], False) for t in SYSTEM_TOGGLES}
+        self.system_group = ToggleListGroup("Toggles", SYSTEM_TOGGLES, system_current)
+        system_page.append(self.system_group)
+
+        current_rgb = get_string_option("roudix.rgb", "none")
+        self.rgb_selector = SelectorGroup("RGB backend", RGB_BACKENDS, current_rgb, dark)
+        system_page.append(self.rgb_selector)
+
+        self.content_stack.add_named(system_page, "system")
+
         # ── "Integration" page: keyring/portal backend ─────────────────────
         integration_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
         integration_page.set_margin_top(4)
@@ -858,6 +996,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self._update_gaming_counter()
         self._update_integration_visibility(current_de)
+        self._update_filemanager_visibility(current_de)
 
         # ── Integrated terminal ───────────────────────────────────────────
         term_frame = Gtk.Frame()
@@ -1018,12 +1157,22 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if not supported and self.category_list.get_selected_row() is row:
             self.category_list.select_row(self._category_rows["desktop"])
 
+    def _update_filemanager_visibility(self, de_id: str):
+        """Cache la page File Manager pour gnome/kde (sans effet dessus) et
+        retombe sur Desktop si elle était sélectionnée."""
+        supported = de_id in FILE_MANAGER_SUPPORTED_DE
+        row = self._category_rows["filemanager"]
+        row.set_visible(supported)
+        if not supported and self.category_list.get_selected_row() is row:
+            self.category_list.select_row(self._category_rows["desktop"])
+
     def _on_de_toggled(self, check, *_):
         """Affiche/cache le shell selector et met à jour la liste selon le DE choisi."""
         new_de  = self.de_selector.selected_id
         visible = new_de in SHELL_SUPPORTED_DE
         self.shell_selector.set_visible(visible)
         self._update_integration_visibility(new_de)
+        self._update_filemanager_visibility(new_de)
 
         if not visible:
             return
@@ -1047,6 +1196,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.integration_selector.update_icons(dark)
         self.editor_selector.update_icons(dark)
         self.terminal_selector.update_icons(dark)
+        self.login_shell_selector.update_icons(dark)
+        self.filemanager_selector.update_icons(dark)
+        self.matrix_selector.update_icons(dark)
+        self.rgb_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 
@@ -1088,22 +1241,45 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         zen_changed = new_zen != cur_zen
 
         # Apps gaming : booléens indépendants, on ne touche que celles qui ont changé
-        gaming_states = self.gaming_apps_group.get_states()
-        gaming_changes = {}
-        for app in GAMING_APPS:
-            cur_val = get_bool_option(app["key"], True)
-            new_val = gaming_states[app["id"]]
-            if new_val != cur_val:
-                gaming_changes[app["id"]] = (app["key"], new_val, app["name"])
+        gaming_changes = _diff_bool_items(GAMING_APPS, self.gaming_apps_group.get_states(), True)
+
+        # Tweaks gaming annexes (ananicy, correctif GTA)
+        gaming_extras_changes = _diff_bool_items(GAMING_EXTRAS, self.gaming_extras_group.get_states(), False)
 
         # Interrupteur maître du groupe gaming
         cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
         new_gaming_master = self.gaming_master_switch.get_active()
         gaming_master_changed = new_gaming_master != cur_gaming_master
 
+        # Shell de login (fish/bash)
+        cur_login_shell = get_string_option("roudix.shell", "fish")
+        new_login_shell = self.login_shell_selector.selected_id
+        login_shell_changed = new_login_shell != cur_login_shell
+
+        # Gestionnaire de fichiers — pertinent uniquement sur les compositeurs bruts
+        filemanager_relevant = new_de in FILE_MANAGER_SUPPORTED_DE
+        cur_filemanager = get_string_option("roudix.fileManager", "nautilus")
+        new_filemanager = self.filemanager_selector.selected_id if filemanager_relevant else cur_filemanager
+        filemanager_changed = filemanager_relevant and (new_filemanager != cur_filemanager)
+
+        # Client Matrix
+        cur_matrix = get_string_option("roudix.matrixClient", "element")
+        new_matrix = self.matrix_selector.selected_id
+        matrix_changed = new_matrix != cur_matrix
+
+        # Interrupteurs système indépendants
+        system_changes = _diff_bool_items(SYSTEM_TOGGLES, self.system_group.get_states(), False)
+
+        # Backend RGB
+        cur_rgb = get_string_option("roudix.rgb", "none")
+        new_rgb = self.rgb_selector.selected_id
+        rgb_changed = new_rgb != cur_rgb
+
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
                     terminal_changed, browsers_changed, zen_changed,
-                    gaming_changes, gaming_master_changed]):
+                    gaming_changes, gaming_extras_changes, gaming_master_changed,
+                    login_shell_changed, filemanager_changed, matrix_changed,
+                    system_changes, rgb_changed]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
                 "<span color='gray'>No changes detected — nothing to do.</span>"
@@ -1126,9 +1302,21 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"Browsers: <b>{', '.join(new_browsers) or 'none'}</b>")
         if zen_changed:
             changes.append(f"Zen Browser: <b>{'enabled' if new_zen else 'disabled'}</b>")
+        if login_shell_changed:
+            changes.append(f"Login shell: <b>{cur_login_shell}</b> → <b>{new_login_shell}</b>")
+        if filemanager_changed:
+            changes.append(f"File manager: <b>{cur_filemanager}</b> → <b>{new_filemanager}</b>")
+        if matrix_changed:
+            changes.append(f"Matrix client: <b>{cur_matrix}</b> → <b>{new_matrix}</b>")
+        if rgb_changed:
+            changes.append(f"RGB backend: <b>{cur_rgb}</b> → <b>{new_rgb}</b>")
         if gaming_master_changed:
             changes.append(f"Gaming: <b>{'enabled' if new_gaming_master else 'disabled'}</b>")
         for _key, new_val, name in gaming_changes.values():
+            changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
+        for _key, new_val, name in gaming_extras_changes.values():
+            changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
+        for _key, new_val, name in system_changes.values():
             changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
         body_changes = "\n".join(changes)
 
@@ -1140,8 +1328,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "terminal_changed": terminal_changed, "new_terminal": new_terminal,
             "browsers_changed": browsers_changed, "new_browsers": new_browsers,
             "zen_changed": zen_changed, "new_zen": new_zen,
+            "login_shell_changed": login_shell_changed, "new_login_shell": new_login_shell,
+            "filemanager_changed": filemanager_changed, "new_filemanager": new_filemanager,
+            "matrix_changed": matrix_changed, "new_matrix": new_matrix,
+            "rgb_changed": rgb_changed, "new_rgb": new_rgb,
             "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
             "gaming_changes": gaming_changes,
+            "gaming_extras_changes": gaming_extras_changes,
+            "system_changes": system_changes,
         }
 
         dialog = Adw.AlertDialog()
@@ -1218,6 +1412,38 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 )
                 return
 
+        if pending["login_shell_changed"]:
+            result = set_string_option("roudix.shell", pending["new_login_shell"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing login shell config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["filemanager_changed"]:
+            result = set_string_option("roudix.fileManager", pending["new_filemanager"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing file manager config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["matrix_changed"]:
+            result = set_string_option("roudix.matrixClient", pending["new_matrix"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing Matrix client config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["rgb_changed"]:
+            result = set_string_option("roudix.rgb", pending["new_rgb"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing RGB backend config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
         if pending["gaming_master_changed"]:
             result = set_bool_option("roudix.gaming.enable", pending["new_gaming_master"])
             if result is not True:
@@ -1227,6 +1453,22 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 return
 
         for key, new_val, name in pending["gaming_changes"].values():
+            result = set_bool_option(key, new_val)
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        for key, new_val, name in pending["gaming_extras_changes"].values():
+            result = set_bool_option(key, new_val)
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        for key, new_val, name in pending["system_changes"].values():
             result = set_bool_option(key, new_val)
             if result is not True:
                 self.status.set_markup(
