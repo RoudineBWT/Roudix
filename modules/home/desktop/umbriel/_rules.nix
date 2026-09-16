@@ -3,7 +3,21 @@
 ## Chaque règle qui matche contribue ses réglages ; en cas de conflit sur
 ## une même clé, la règle la PLUS BAS dans la liste gagne.
 ##
-## Doc : https://docs.noctalia.dev/umbriel/rules/
+## Fix (validate : "unknown key window_rule.default_size") : `default_size`
+## (taille flottante en pixels) a été retiré au profit de deux clés
+## distinctes plus explicites — `default_floating_size_px = [w, h]` pour du
+## pixel-perfect (ce qu'on utilise ci-dessous, comportement identique à
+## l'ancien default_size), ou `default_floating_size = [fraction_w,
+## fraction_h]` pour une taille en fraction de la zone utilisable (mieux si
+## tu changes souvent de résolution). Source : PR "Default Size Refactor"
+## (noctalia-dev/umbriel#229) — le README de la page Window Rules de la doc
+## (docs.noctalia.dev/umbriel/window-rules/) n'a pas encore été régénéré
+## avec ce renommage au moment où j'écris ceci (17/09), d'où le fait qu'il
+## montre encore `default_size` alors que ton `umbriel validate` le rejette
+## déjà : ton binaire umbriel (suivant `main` du flake) est plus à jour que
+## cette page précise de la doc.
+##
+## Doc : https://docs.noctalia.dev/umbriel/window-rules/
 { ... }:
 {
   programs.umbriel.settings = {
@@ -16,7 +30,7 @@
       default_output = "DP-3";
       default_workspace = 1;
       default_floating = false;
-      default_size = [ 1316 1011 ];
+      default_floating_size_px = [ 1316 1011 ];
       default_position = { x = 0; y = 0; anchor = "top_left"; };
     }
     {
@@ -24,13 +38,13 @@
       default_output = "DP-3";
       default_workspace = 1;
       default_floating = false;
-      default_size = [ 555 1011 ];
+      default_floating_size_px = [ 555 1011 ];
       default_position = { x = 0; y = 0; anchor = "top_right"; };
     }
     {
       match.app_id = "^com\\.mitchellh\\.ghostty$";
       default_floating = true;
-      default_size = [ 1505 755 ];
+      default_floating_size_px = [ 1505 755 ];
       blur = true;
     }
     {
@@ -209,13 +223,13 @@
     {
       match.app_id = "^dev\\.noctalia\\.Noctalia$";
       default_floating = true;
-      default_size = [ 1020 900 ];
+      default_floating_size_px = [ 1020 900 ];
       blur_popups = false;
     }
     {
       match.app_id = "^dev\\.noctalia\\.UmbrielSharePicker$";
       default_floating = true;
-      default_size = [ 800 600 ];
+      default_floating_size_px = [ 800 600 ];
       default_position = { x = 32; y = 32; anchor = "bottom_right"; };
     }
     # Blur global (niri: window-rule global { background-effect { blur true;

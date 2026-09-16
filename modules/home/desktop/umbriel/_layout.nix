@@ -13,7 +13,24 @@
     # _output.nix.
     mode = "scrolling";
     gap = 9; # niri: layout { gaps 9 }
-    width_presets = [ 0.33333 0.5 0.66667 ];
+
+    # ⚠ Fix partiel (validate : "unknown key layout.width_presets") : cette
+    # clé était documentée jusqu'à récemment (docs.noctalia.dev/umbriel/layout/
+    # montre encore `[layout] width_presets = [...]` au 17/09, utilisée par
+    # window-cycle-width/-back). Mais l'action window-cycle-width elle-même
+    # n'existe plus dans la doc Actions à jour (remplacée par
+    # window-cycle-primary-extent/-back, cohérent avec le renommage
+    # width→primary-extent qu'on voit aussi dans _binds.nix) : la doc
+    # Layout/Keybinds n'a juste pas encore été régénérée après ce
+    # renommage, contrairement à la doc Actions qui l'est déjà. Donc la
+    # clé existe très probablement encore sous un autre nom (un truc du
+    # genre `primary_extent_presets`), mais je n'ai trouvé aucune source
+    # confirmant le nom exact — je préfère commenter plutôt que deviner et
+    # te faire retomber sur un nouveau "unknown key". Regarde
+    # `examples/config.toml` du paquet umbriel réellement installé
+    # (résultat de `readlink -f $(which umbriel)`, cherche le dossier
+    # share/umbriel/ à côté) pour le nom à jour, ou `umbriel msg --help`.
+    # width_presets = [ 0.33333 0.5 0.66667 ];
 
     master = {
       position = "left";        # colonne principale à gauche, pile à droite
@@ -31,7 +48,22 @@
       # ici (aucun workspace_axis défini dans _output.nix), donc le
       # comportement voulu (scroll horizontal façon niri) est conservé
       # sans rien à faire d'autre que supprimer cette clé.
-      default_width_fraction = 0.5;
+      # ⚠ Fix partiel (validate : "unknown key
+      # layout.scrolling.default_width_fraction") : même souci que
+      # width_presets ci-dessus — toujours documentée (layout/ et rules/),
+      # toujours utilisée comme référence par la doc Window Rules
+      # ("layout.scrolling.default_width_fraction" y est citée telle
+      # quelle), mais rejetée par ton binaire. Fait notable : le
+      # `default_width_fraction` de [layout.master] (juste au-dessus) N'EST
+      # PAS rejeté par validate — seule la variante scrolling l'est — donc
+      # ce n'est pas un renommage global de `default_width_fraction`, plutôt
+      # un déplacement/renommage spécifique à [layout.scrolling], peut-être
+      # vers un réglage par output (la doc Layout mentionne justement "The
+      # initial scrolling width can also have an output-specific default").
+      # Sans confirmation du nom exact, commenté pour l'instant — les
+      # nouvelles colonnes garderont juste la taille choisie par le client
+      # tant que ce n'est pas remis en place.
+      # default_width_fraction = 0.5;
       center_underfull_strip = true;
       # ⚠ Retiré : `expand_single_column` — testé et rejeté par `umbriel
       # validate` ("unknown key layout.scrolling.expand_single_column").
