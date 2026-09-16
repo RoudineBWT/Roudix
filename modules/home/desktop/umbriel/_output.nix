@@ -76,7 +76,7 @@
       index = 4; # jeux — pas de gap vu que Steam/Heroic/PrismLauncher/
                  # Minecraft s'ouvrent déjà maximisés ou en plein écran
                  # (voir _rules.nix) — évite un liseré de gap visible en jeu.
-      layout.mode = "master";
+      layout.mode = "scrolling";
       layout.gap = 0;
     }
     {
