@@ -144,13 +144,13 @@ GAMING_APPS = [
 ]
 
 TERMINALS = [
-    {"id": "ghostty",   "name": "Ghostty",   "icon": "ghostty.svg"},
-    {"id": "kitty",     "name": "Kitty",     "icon": "kitty.svg"},
-    {"id": "alacritty", "name": "Alacritty", "icon": "alacritty.svg"},
-    {"id": "foot",      "name": "Foot",      "icon": "foot.svg"},
-    {"id": "wezterm",   "name": "WezTerm",   "icon": "wezterm.svg"},
-    {"id": "ptyxis",    "name": "Ptyxis",    "icon": "ptyxis.svg"},
-    {"id": "konsole",   "name": "Konsole",   "icon": "konsole.svg"},
+    {"id": "ghostty",   "name": "Ghostty",   "subtitle": "GPU-accelerated, Roudix default", "icon": "ghostty.svg"},
+    {"id": "kitty",     "name": "Kitty",     "subtitle": "GPU-accelerated, feature-rich",     "icon": "kitty.svg"},
+    {"id": "alacritty", "name": "Alacritty", "subtitle": "Minimal, GPU-accelerated",          "icon": "alacritty.svg"},
+    {"id": "foot",      "name": "Foot",      "subtitle": "Lightweight, Wayland-native",       "icon": "foot.svg"},
+    {"id": "wezterm",   "name": "WezTerm",   "subtitle": "Cross-platform, Lua-configurable",  "icon": "wezterm.svg"},
+    {"id": "ptyxis",    "name": "Ptyxis",    "subtitle": "GNOME's container-aware terminal",  "icon": "ptyxis.svg"},
+    {"id": "konsole",   "name": "Konsole",   "subtitle": "KDE's terminal emulator",           "icon": "konsole.svg"},
 ]
 
 # roudix.browsers est une LISTE (pas un enum) : plusieurs navigateurs peuvent
