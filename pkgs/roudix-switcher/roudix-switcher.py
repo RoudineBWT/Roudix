@@ -220,13 +220,9 @@ ZEN_MODS = [
     {"id": "unloaded-tabs", "name": "Unloaded Tabs"},
     {"id": "new-icons", "name": "New Icons"},
     {"id": "Nebula", "name": "Nebula"},
-    # Ces deux dossiers existent bien mais je n'ai pas pu confirmer lequel
-    # correspond à "Better Music Bar" et lequel à "zen-container-halo" (les
-    # deux apparaissent dans ton gestionnaire de mods mais aucun des deux
-    # dossiers ne porte ce nom) — ouvre mods.json à côté pour le mapping
-    # exact id → nom si tu veux corriger ça précisément.
-    {"id": "3c8ebf69-1042-49b1-8f08-9178f9490659", "name": "Better Music Bar ou zen-container-halo (à vérifier)"},
-    {"id": "jvynuz3kn-hjd9pvfmg-vonasfop9", "name": "Better Music Bar ou zen-container-halo (à vérifier)"},
+    # Confirmés (tu as identifié lequel est lequel depuis chrome/sine-mods/)
+    {"id": "3c8ebf69-1042-49b1-8f08-9178f9490659", "name": "Better Music Bar"},
+    {"id": "jvynuz3kn-hjd9pvfmg-vonasfop9", "name": "zen-container-halo"},
 ]
 
 # Tweaks gaming annexes (à côté des launchers) — mêmes clés booléennes que
@@ -768,12 +764,19 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.content_stack = Gtk.Stack()
         self.content_stack.set_hexpand(True)
+        # Sans ça, une page courte (ex: Login Shell, 2 choix) s'étire pour
+        # remplir toute la hauteur du panneau au lieu de rester compacte en
+        # haut — d'où l'impression de grand vide/transparence en dessous.
+        self.content_stack.set_valign(Gtk.Align.START)
         self.content_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
 
         content_scroll = Gtk.ScrolledWindow()
         content_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         content_scroll.set_hexpand(True)
         content_scroll.set_vexpand(True)
+        # Fond opaque du thème, pour que la zone sous une page courte ne
+        # laisse pas transparaître le fond flouté de la fenêtre.
+        content_scroll.add_css_class("view")
         content_scroll.set_child(self.content_stack)
         split_row.append(content_scroll)
 
@@ -914,7 +917,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         # browserDefs) : switch d'activation + choix du loader de mods
         # (natif vs Sine, mutuellement exclusifs côté Nix) + checklist des
         # mods, qui lit/écrit roudix.zen.mods ou roudix.zen.sine.mods selon
-        # l'état du switch Sine.
+        # l'état du switch Sine. Le switch Sine n'a de sens que si Zen est
+        # actif, et la checklist de mods que si Sine l'est aussi — donc les
+        # trois sont chaînés en cascade plutôt que toujours visibles.
         zen_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         zen_row.set_margin_top(8)
         zen_label = Gtk.Label(label="Zen Browser", halign=Gtk.Align.START)
@@ -926,25 +931,25 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         zen_row.append(self.zen_switch)
         browser_page.append(zen_row)
 
-        sine_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self.sine_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         sine_label = Gtk.Label(label="Sine mod loader", halign=Gtk.Align.START)
         sine_label.set_hexpand(True)
         self.sine_switch = Gtk.Switch()
         self.sine_switch.set_valign(Gtk.Align.CENTER)
         current_sine = get_bool_option("roudix.zen.sine.enable", False)
         self.sine_switch.set_active(current_sine)
-        sine_row.append(sine_label)
-        sine_row.append(self.sine_switch)
-        browser_page.append(sine_row)
+        self.sine_row.append(sine_label)
+        self.sine_row.append(self.sine_switch)
+        browser_page.append(self.sine_row)
 
-        sine_note = Gtk.Label(
+        self.sine_note = Gtk.Label(
             label="Native Zen mods and Sine mods can't be active at the same "
                   "time — the list below always targets whichever is on.",
         )
-        sine_note.add_css_class("dim-label")
-        sine_note.set_wrap(True)
-        sine_note.set_halign(Gtk.Align.START)
-        browser_page.append(sine_note)
+        self.sine_note.add_css_class("dim-label")
+        self.sine_note.set_wrap(True)
+        self.sine_note.set_halign(Gtk.Align.START)
+        browser_page.append(self.sine_note)
 
         zen_mods_current_ids = set(
             get_list_option("roudix.zen.sine.mods" if current_sine else "roudix.zen.mods", [])
@@ -953,20 +958,34 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.zen_mods_group = ToggleListGroup("Mods", ZEN_MODS, zen_mods_current)
         browser_page.append(self.zen_mods_group)
 
+        self.zen_mods_placeholder = None
+        if not ZEN_MODS:
+            self.zen_mods_placeholder = Gtk.Label(
+                label="No mods listed yet — add your mod IDs to ZEN_MODS in the script.",
+            )
+            self.zen_mods_placeholder.add_css_class("dim-label")
+            self.zen_mods_placeholder.set_halign(Gtk.Align.START)
+            browser_page.append(self.zen_mods_placeholder)
+
+        def _update_zen_cascade(*_):
+            zen_on = self.zen_switch.get_active()
+            sine_on = self.sine_switch.get_active()
+            self.sine_row.set_visible(zen_on)
+            show_mods = zen_on and sine_on
+            self.sine_note.set_visible(show_mods)
+            self.zen_mods_group.set_visible(show_mods)
+            if self.zen_mods_placeholder is not None:
+                self.zen_mods_placeholder.set_visible(show_mods)
+
         def _on_sine_toggled(sw, _param):
             is_sine = sw.get_active()
             ids = set(get_list_option("roudix.zen.sine.mods" if is_sine else "roudix.zen.mods", []))
             self.zen_mods_group.set_states({m["id"]: (m["id"] in ids) for m in ZEN_MODS})
+            _update_zen_cascade()
 
+        self.zen_switch.connect("notify::active", _update_zen_cascade)
         self.sine_switch.connect("notify::active", _on_sine_toggled)
-
-        if not ZEN_MODS:
-            zen_mods_placeholder = Gtk.Label(
-                label="No mods listed yet — add your mod IDs to ZEN_MODS in the script.",
-            )
-            zen_mods_placeholder.add_css_class("dim-label")
-            zen_mods_placeholder.set_halign(Gtk.Align.START)
-            browser_page.append(zen_mods_placeholder)
+        _update_zen_cascade()
 
         self.content_stack.add_named(browser_page, "browser")
 
