@@ -12,10 +12,7 @@
     ++ lib.optional (builtins.pathExists ./umbriel-custom.nix) ./umbriel-custom.nix
     ++ lib.optional (builtins.pathExists ./mango-custom.nix) ./mango-custom.nix;
 
-
-    # roudix.fastfetch.useNix = false;  # false = your fastfetch config in ~/.config/fastfetch
-
- # ── Personal Home Manager overrides ─────────────────────────────────────
+  # ── Personal Home Manager overrides ─────────────────────────────────────
   # This file is gitignored and never touched by git pull.
   # Copy this file to home/local.nix and add your personal overrides here.
 
@@ -56,6 +53,8 @@
   # };
 
   # ── Fastfetch ────────────────────────────────────────────────────────────
+
+  # roudix.fastfetch.useNix = false;  # false = your fastfetch config in ~/.config/fastfetch
 
   # Override logo with a custom image (kitty terminal required)
   # programs.fastfetch.settings.logo = {
