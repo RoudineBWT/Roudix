@@ -370,7 +370,7 @@ class ProgressPage(Adw.NavigationPage):
             "if [ -d /mnt/etc/nixos/.git ]; then "
             "git -C /mnt/etc/nixos add -A; "
             "for f in hosts/roudix/hardware-configuration.nix hosts/roudix/local.nix "
-            "hosts/roudix/username.nix home/local.nix modules/system/boot.local.nix; do "
+            "hosts/roudix/username.nix modules/home/local.nix modules/system/boot.local.nix; do "
             "[ -f \"/mnt/etc/nixos/$f\" ] && git -C /mnt/etc/nixos add -f \"$f\"; "
             "done; "
             "fi",
