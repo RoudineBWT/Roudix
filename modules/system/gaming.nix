@@ -70,6 +70,39 @@ in
     default = true;
   };
 
+  options.roudix.gaming.apps = {
+    lutris.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Installer Lutris.";
+    };
+    heroic.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Installer Heroic Games Launcher (Epic/GOG/Amazon).";
+    };
+    faugus.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Installer Faugus Launcher.";
+    };
+    prismlauncher.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Installer Prism Launcher (Minecraft).";
+    };
+    vintagestory.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Installer Vintage Story.";
+    };
+    mangohud.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Installer MangoHud (overlay de perfs en jeu).";
+    };
+  };
+
   options.roudix.gaming.ananicy.enable = lib.mkOption {
     description = ''
       Active ananicy-cpp au boot (opt-in, désactivé par défaut). Si false,

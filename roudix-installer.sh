@@ -178,7 +178,16 @@ HW_CONFIG_STDERR=$(mktemp)
 HW_CONFIG_FILE="hosts/roudix/hardware-configuration.nix"
 
 # Generate into /etc/nixos (default) then copy — avoids stdout truncation on btrfs
-nixos-generate-config 2>"$HW_CONFIG_STDERR" || true
+if ! nixos-generate-config 2>"$HW_CONFIG_STDERR"; then
+  warn "nixos-generate-config reported an error:"
+  cat "$HW_CONFIG_STDERR" >&2
+fi
+
+if [[ ! -f /etc/nixos/hardware-configuration.nix ]]; then
+  cat "$HW_CONFIG_STDERR" >&2
+  rm -f "$HW_CONFIG_STDERR"
+  error "hardware-configuration.nix was not generated — see the error above."
+fi
 cp /etc/nixos/hardware-configuration.nix "$HW_CONFIG_FILE"
 
 # ── btrfs subvolume auto-patch ────────────────────────────────────────────────
@@ -944,7 +953,58 @@ if [[ "$RGB" == "openlinkhub" ]]; then
   sed -i "s/roudix\.memory\.sku[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.sku    = \"${MEMORY_SKU}\"/"         hosts/roudix/local.nix
 fi
 
-success "local.nix configured."
+# ── Verify local.nix was actually written as expected ─────────────────────────
+# Every 'sed -i' above is a no-op (exit 0, file untouched) if its pattern
+# doesn't match — e.g. if local.nix.example's format ever drifts from what
+# these regexes expect. Re-check each option now so a silent mismatch is
+# reported immediately instead of being discovered at boot with the wrong
+# config applied.
+LOCAL_NIX="hosts/roudix/local.nix"
+VERIFY_FAILED=0
+
+check_opt() {
+  # check_opt <description> <grep -E pattern>
+  local desc="$1" pattern="$2"
+  if ! grep -qE "$pattern" "$LOCAL_NIX"; then
+    warn "Could not confirm '${desc}' was written to $(basename "$LOCAL_NIX") — check it manually."
+    VERIFY_FAILED=1
+  fi
+}
+
+check_opt "roudix.desktop.type"        "roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"${DE}\""
+check_opt "roudix.desktop.shell"       "roudix\.desktop\.shell[[:space:]]*=[[:space:]]*\"${DESKTOP_SHELL}\""
+check_opt "roudix.browsers"            "roudix\.browsers[[:space:]]*=[[:space:]]*\[\"${BROWSER}\"\]"
+check_opt "roudix.zen.enable"          "roudix\.zen\.enable[[:space:]]*=[[:space:]]*${ZEN}"
+check_opt "roudix.terminal"            "roudix\.terminal[[:space:]]*=[[:space:]]*\"${TERMINAL}\""
+check_opt "roudix.fileManager"         "roudix\.fileManager[[:space:]]*=[[:space:]]*\"${FILE_MANAGER}\""
+check_opt "roudix.shell"               "roudix\.shell[[:space:]]*=[[:space:]]*\"${SHELL_DEFAULT}\""
+check_opt "hardware.myGpu"             "hardware\.myGpu[[:space:]]*=[[:space:]]*\"${GPU}\""
+check_opt "hardware.myCpu"             "hardware\.myCpu[[:space:]]*=[[:space:]]*\"${CPU}\""
+check_opt "hardware.nvidiaLaptop"      "hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*${NVIDIA_LAPTOP}"
+check_opt "roudix.vmGuest.enable"      "roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*${VM_GUEST}"
+check_opt "roudix.gaming.enable"       "roudix\.gaming\.enable[[:space:]]*=[[:space:]]*${GAMING}"
+check_opt "roudix.mesa.useGit"         "roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*${MESA_GIT}"
+check_opt "time.timeZone"              "time\.timeZone[[:space:]]*=[[:space:]]*\"${TIMEZONE}\""
+check_opt "i18n.defaultLocale"         "i18n\.defaultLocale[[:space:]]*=[[:space:]]*\"${LOCALE}\""
+check_opt "console.keyMap"             "console\.keyMap[[:space:]]*=[[:space:]]*\"${KEYMAP}\""
+check_opt "roudix.hosts.gtaFix.enable" "roudix\.hosts\.gtaFix\.enable[[:space:]]*=[[:space:]]*${GTA_FIX}"
+check_opt "roudix.flatpak.enable"      "roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*${FLATPAK}"
+check_opt "roudix.virtualization.enable" "roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*${VIRTUALIZATION}"
+check_opt "roudix.autoupdate.enable"   "roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*${AUTOUPDATE}"
+check_opt "roudix.boot.bootloader"     "roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"${BOOTLOADER}\""
+check_opt "roudix.matrixClient"        "roudix\.matrixClient[[:space:]]*=[[:space:]]*\"${MATRIX_CLIENT}\""
+check_opt "roudix.waydroid.enable"     "roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*${WAYDROID}"
+if [[ "$RGB" == "openlinkhub" ]]; then
+  check_opt "roudix.memory.enable" "roudix\.memory\.enable[[:space:]]*=[[:space:]]*${MEMORY_ENABLE}"
+  check_opt "roudix.memory.type"   "roudix\.memory\.type[[:space:]]*=[[:space:]]*\"${MEMORY_TYPE}\""
+  check_opt "roudix.memory.smBus"  "roudix\.memory\.smBus[[:space:]]*=[[:space:]]*\"${MEMORY_SMBUS}\""
+fi
+
+if [[ "$VERIFY_FAILED" -eq 1 ]]; then
+  warn "One or more options above were NOT confirmed in local.nix — review the file before rebooting."
+else
+  success "local.nix configured and verified."
+fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo -e "\n${BOLD}══════════════════════════════════════${NC}"

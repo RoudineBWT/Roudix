@@ -1,7 +1,7 @@
 { lib, pkgs }:
 pkgs.stdenv.mkDerivation {
   pname = "roudix-switcher";
-  version = "1.1.0";
+  version = "2.0.0";
   src = ./.;
   nativeBuildInputs = with pkgs; [
     wrapGAppsHook4
@@ -34,18 +34,18 @@ pkgs.stdenv.mkDerivation {
     # Install .desktop file
     cat > $out/share/applications/io.roudix.switcher.desktop << EOF
     [Desktop Entry]
-    Name=Roudix Desktop Switcher
-    Comment=Switch between desktop environments
+    Name=Roudix Customizer
+    Comment=Customize your desktop, apps and system tweaks on Roudix
     Exec=roudix-switcher
     Icon=io.roudix.switcher
     Terminal=false
     Type=Application
     Categories=System;Settings;
-    Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;
+    Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;customize;browser;editor;terminal;gaming;
     EOF
   '';
   meta = {
-    description = "Switch desktop environments on Roudix";
+    description = "Customize your desktop, apps and system tweaks on Roudix";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
   };

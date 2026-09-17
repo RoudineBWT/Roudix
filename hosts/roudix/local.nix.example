@@ -44,8 +44,19 @@
   roudix.terminal = "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
   roudix.fileManager = "nautilus"; # dolphin, thunar, nautilus, nemo
   roudix.gaming.enable        = true;         # disable to skip Steam, Wine, etc.
+  # Débraye individuellement les apps du groupe gaming (toutes à true par défaut) :
+  # roudix.gaming.apps.lutris.enable       = false;
+  # roudix.gaming.apps.heroic.enable       = false;
+  # roudix.gaming.apps.faugus.enable       = false;
+  # roudix.gaming.apps.prismlauncher.enable = false;
+  # roudix.gaming.apps.vintagestory.enable = false;
+  # roudix.gaming.apps.mangohud.enable     = false;
   roudix.undervolt.only-amd.enable        = true;         # enable undervolting just for amd gpu.
   roudix.gaming.ananicy.enable = false;
+  roudix.editor = "zed"; # "vscode", "zed", "neovim" ou "none"
+  # Sur niri/hyprland/mangowc/umbriel (compositeurs sans DE complet) : quel
+  # keyring + xdg-desktop-portal utiliser. Sans effet sur gnome/kde.
+  roudix.desktopIntegration = "gnome"; # "gnome" ou "kde"
   roudix.flatpak.enable       = true;        # enable Flatpak support
   roudix.virtualization.enable = true;       # enable libvirt / virt-manager
   roudix.vmGuest.enable       = true;        # enable only inside a VM
