@@ -135,12 +135,12 @@ DESKTOP_INTEGRATION_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
 
 # name -> option Nix (roudix.gaming.apps.<id>.enable), toutes true par défaut
 GAMING_APPS = [
-    {"id": "lutris",        "name": "Lutris",         "key": "roudix.gaming.apps.lutris.enable"},
-    {"id": "heroic",        "name": "Heroic",         "key": "roudix.gaming.apps.heroic.enable"},
-    {"id": "faugus",        "name": "Faugus Launcher","key": "roudix.gaming.apps.faugus.enable"},
-    {"id": "prismlauncher", "name": "Prism Launcher", "key": "roudix.gaming.apps.prismlauncher.enable"},
-    {"id": "vintagestory",  "name": "Vintage Story",  "key": "roudix.gaming.apps.vintagestory.enable"},
-    {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable"},
+    {"id": "lutris",        "name": "Lutris",         "key": "roudix.gaming.apps.lutris.enable",        "default": True},
+    {"id": "heroic",        "name": "Heroic",         "key": "roudix.gaming.apps.heroic.enable",        "default": True},
+    {"id": "faugus",        "name": "Faugus Launcher","key": "roudix.gaming.apps.faugus.enable",        "default": True},
+    {"id": "prismlauncher", "name": "Prism Launcher", "key": "roudix.gaming.apps.prismlauncher.enable", "default": True},
+    {"id": "vintagestory",  "name": "Vintage Story",  "key": "roudix.gaming.apps.vintagestory.enable",  "default": True},
+    {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable",      "default": True},
 ]
 
 TERMINALS = [
@@ -204,23 +204,49 @@ RGB_BACKENDS = [
     {"id": "none",        "name": "None",         "subtitle": "Aucun backend RGB",                           "icon": "none.svg"},
 ]
 
+# TODO: remplir avec les IDs des mods Zen que tu utilises réellement (store
+# natif https://zen-browser.app/mods ou Sine — même liste d'IDs dans les
+# deux cas, seule la cible Nix change selon roudix.zen.sine.enable). Une
+# fois remplie, chaque mod devient toggleable comme les navigateurs.
+# Exemple : {"id": "zen-internet", "name": "Zen Internet"},
+ZEN_MODS = [
+    # Confirmés via zen-browser/theme-store (themes.json)
+    {"id": "f7c71d9a-bce2-420f-ae44-a64bd92975ab", "name": "Better Unloaded Tabs"},
+    {"id": "906c6915-5677-48ff-9bfc-096a02a72379", "name": "Floating Statusbar"},
+    {"id": "ad97bb70-0066-4e42-9b5f-173a5e42c6fc", "name": "SuperPins"},
+    # Confirmés comme existants (repos GitHub retrouvés) mais sans ID
+    # canonique trouvé côté theme-store/Sine — remplace la partie avant la
+    # virgule par le vrai ID une fois récupéré (voir la commande fournie
+    # pour les lire directement depuis ton profil Zen).
+    {"id": "Arc-2.0", "name": "Arc 2.0"},
+    {"id": "context-menu-icons", "name": "Context Menu Icons"},
+    {"id": "better-music-bar", "name": "Better Music Bar"},
+    {"id": "new-icons", "name": "New Icons"},
+    {"id": "unloaded-tabs", "name": "Unloaded Tabs"},
+    {"id": "zen-container-halo", "name": "zen-container-halo"},
+    {"id": "Nebula", "name": "Nebula"},
+]
+
 # Tweaks gaming annexes (à côté des launchers) — mêmes clés booléennes que
 # GAMING_APPS mais affichés dans un groupe séparé sur la page Gaming.
 GAMING_EXTRAS = [
-    {"id": "ananicy", "name": "Ananicy (ordonnanceur process)", "key": "roudix.gaming.ananicy.enable"},
-    {"id": "gtaFix",  "name": "Correctif hosts GTA Online",     "key": "roudix.hosts.gtaFix.enable"},
+    {"id": "ananicy", "name": "Ananicy (ordonnanceur process)", "key": "roudix.gaming.ananicy.enable", "default": False},
+    {"id": "gtaFix",  "name": "Correctif hosts GTA Online",     "key": "roudix.hosts.gtaFix.enable",   "default": False},
 ]
 
 # Interrupteurs système indépendants, sans rapport les uns avec les autres —
 # regroupés dans une page "System" plutôt que de créer une catégorie par
 # option.
 SYSTEM_TOGGLES = [
-    {"id": "flatpak",        "name": "Flatpak",                          "key": "roudix.flatpak.enable"},
-    {"id": "virtualization", "name": "Virtualisation (QEMU/KVM)",        "key": "roudix.virtualization.enable"},
-    {"id": "waydroid",       "name": "Waydroid (apps Android)",          "key": "roudix.waydroid.enable"},
-    {"id": "mesaGit",        "name": "Mesa-git (pilotes GPU bleeding-edge)", "key": "roudix.mesa.useGit"},
-    {"id": "autoupdate",     "name": "Auto-update (git pull + rebuild programmé)", "key": "roudix.autoupdate.enable"},
-    {"id": "undervoltAmd",   "name": "Undervolt GPU AMD (LACT)",         "key": "roudix.undervolt.only-amd.enable"},
+    {"id": "flatpak",        "name": "Flatpak",                          "key": "roudix.flatpak.enable",        "default": False},
+    {"id": "virtualization", "name": "Virtualisation (QEMU/KVM)",        "key": "roudix.virtualization.enable",  "default": False},
+    {"id": "waydroid",       "name": "Waydroid (apps Android)",          "key": "roudix.waydroid.enable",        "default": False},
+    {"id": "mesaGit",        "name": "Mesa-git (pilotes GPU bleeding-edge)", "key": "roudix.mesa.useGit",        "default": False},
+    {"id": "autoupdate",     "name": "Auto-update (git pull + rebuild programmé)", "key": "roudix.autoupdate.enable", "default": False},
+    {"id": "undervoltAmd",   "name": "Undervolt GPU AMD (LACT)",         "key": "roudix.undervolt.only-amd.enable", "default": False},
+    {"id": "fastfetchNix",   "name": "Config fastfetch Roudix",          "key": "roudix.fastfetch.useNix",       "default": True},
+    {"id": "fstrim",         "name": "Fstrim (TRIM auto pour SSD/NVMe)", "key": "roudix.fstrim.enable",          "default": True},
+    {"id": "vmGuest",        "name": "Invité VM (QEMU/Spice agent)",     "key": "roudix.vmGuest.enable",         "default": False},
 ]
 
 
@@ -387,13 +413,14 @@ def set_list_option(key: str, values: list):
         return str(e)
 
 
-def _diff_bool_items(items: list, states: dict, default: bool) -> dict:
+def _diff_bool_items(items: list, states: dict) -> dict:
     """Compare each item's current Nix value to its widget state; return
     {id: (key, new_val, name)} for the ones that changed. Shared by every
-    checklist group (gaming apps, gaming extras, system toggles)."""
+    checklist group (gaming apps, gaming extras, system toggles). Each
+    item carries its own Nix default under "default"."""
     changes = {}
     for item in items:
-        cur_val = get_bool_option(item["key"], default)
+        cur_val = get_bool_option(item["key"], item.get("default", False))
         new_val = states[item["id"]]
         if new_val != cur_val:
             changes[item["id"]] = (item["key"], new_val, item["name"])
@@ -621,6 +648,13 @@ class ToggleListGroup(Gtk.Box):
     def get_states(self) -> dict:
         return {item_id: sw.get_active() for item_id, sw in self.switches.items()}
 
+    def set_states(self, states: dict):
+        """Refresh every switch from a fresh {id: bool} dict — used when the
+        underlying Nix list changes source (e.g. Zen mods vs zen.sine.mods
+        depending on the Sine toggle)."""
+        for item_id, sw in self.switches.items():
+            sw.set_active(states.get(item_id, False))
+
 
 # ── Main window ───────────────────────────────────────────────────────────────
 
@@ -646,7 +680,6 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.set_content(toolbar)
 
         header = Adw.HeaderBar()
-        header.set_show_end_title_buttons(False)
         toolbar.add_top_bar(header)
 
         scroll = Gtk.ScrolledWindow()
@@ -805,7 +838,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         gaming_page.append(gaming_header)
         gaming_page.append(Gtk.Separator())
 
-        gaming_current = {app["id"]: get_bool_option(app["key"], True) for app in GAMING_APPS}
+        gaming_current = {app["id"]: get_bool_option(app["key"], app["default"]) for app in GAMING_APPS}
         self.gaming_apps_group = ToggleListGroup("", GAMING_APPS, gaming_current)
         self.gaming_apps_group.set_sensitive(cur_gaming_master)
         gaming_page.append(self.gaming_apps_group)
@@ -814,7 +847,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         extras_label.set_markup("<b>Tweaks</b>")
         extras_label.set_margin_top(8)
         gaming_page.append(extras_label)
-        gaming_extras_current = {e["id"]: get_bool_option(e["key"], False) for e in GAMING_EXTRAS}
+        gaming_extras_current = {e["id"]: get_bool_option(e["key"], e["default"]) for e in GAMING_EXTRAS}
         self.gaming_extras_group = ToggleListGroup("", GAMING_EXTRAS, gaming_extras_current)
         gaming_page.append(self.gaming_extras_group)
 
@@ -876,7 +909,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         browser_page.append(self.browser_group)
 
         # Zen Browser vit à part côté Nix (flake input séparé, pas dans
-        # browserDefs) — switch indépendant plutôt que dans la checklist.
+        # browserDefs) : switch d'activation + choix du loader de mods
+        # (natif vs Sine, mutuellement exclusifs côté Nix) + checklist des
+        # mods, qui lit/écrit roudix.zen.mods ou roudix.zen.sine.mods selon
+        # l'état du switch Sine.
         zen_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         zen_row.set_margin_top(8)
         zen_label = Gtk.Label(label="Zen Browser", halign=Gtk.Align.START)
@@ -888,13 +924,47 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         zen_row.append(self.zen_switch)
         browser_page.append(zen_row)
 
-        zen_note = Gtk.Label(
-            label="Zen mods (roudix.zen.mods / zen.sine) stay manual — edit local.nix directly for those.",
+        sine_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        sine_label = Gtk.Label(label="Sine mod loader", halign=Gtk.Align.START)
+        sine_label.set_hexpand(True)
+        self.sine_switch = Gtk.Switch()
+        self.sine_switch.set_valign(Gtk.Align.CENTER)
+        current_sine = get_bool_option("roudix.zen.sine.enable", False)
+        self.sine_switch.set_active(current_sine)
+        sine_row.append(sine_label)
+        sine_row.append(self.sine_switch)
+        browser_page.append(sine_row)
+
+        sine_note = Gtk.Label(
+            label="Native Zen mods and Sine mods can't be active at the same "
+                  "time — the list below always targets whichever is on.",
         )
-        zen_note.add_css_class("dim-label")
-        zen_note.set_wrap(True)
-        zen_note.set_halign(Gtk.Align.START)
-        browser_page.append(zen_note)
+        sine_note.add_css_class("dim-label")
+        sine_note.set_wrap(True)
+        sine_note.set_halign(Gtk.Align.START)
+        browser_page.append(sine_note)
+
+        zen_mods_current_ids = set(
+            get_list_option("roudix.zen.sine.mods" if current_sine else "roudix.zen.mods", [])
+        )
+        zen_mods_current = {m["id"]: (m["id"] in zen_mods_current_ids) for m in ZEN_MODS}
+        self.zen_mods_group = ToggleListGroup("Mods", ZEN_MODS, zen_mods_current)
+        browser_page.append(self.zen_mods_group)
+
+        def _on_sine_toggled(sw, _param):
+            is_sine = sw.get_active()
+            ids = set(get_list_option("roudix.zen.sine.mods" if is_sine else "roudix.zen.mods", []))
+            self.zen_mods_group.set_states({m["id"]: (m["id"] in ids) for m in ZEN_MODS})
+
+        self.sine_switch.connect("notify::active", _on_sine_toggled)
+
+        if not ZEN_MODS:
+            zen_mods_placeholder = Gtk.Label(
+                label="No mods listed yet — add your mod IDs to ZEN_MODS in the script.",
+            )
+            zen_mods_placeholder.add_css_class("dim-label")
+            zen_mods_placeholder.set_halign(Gtk.Align.START)
+            browser_page.append(zen_mods_placeholder)
 
         self.content_stack.add_named(browser_page, "browser")
 
@@ -953,7 +1023,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         system_page.set_margin_end(16)
         system_page.set_margin_bottom(16)
 
-        system_current = {t["id"]: get_bool_option(t["key"], False) for t in SYSTEM_TOGGLES}
+        system_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in SYSTEM_TOGGLES}
         self.system_group = ToggleListGroup("Toggles", SYSTEM_TOGGLES, system_current)
         system_page.append(self.system_group)
 
@@ -1240,11 +1310,23 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_zen = self.zen_switch.get_active()
         zen_changed = new_zen != cur_zen
 
+        cur_sine = get_bool_option("roudix.zen.sine.enable", False)
+        new_sine = self.sine_switch.get_active()
+        sine_changed = new_sine != cur_sine
+
+        # La liste de mods cible roudix.zen.mods ou roudix.zen.sine.mods selon
+        # l'état choisi pour Sine (pas l'ancien état) — c'est bien celui-là
+        # qui sera actif une fois le rebuild fait.
+        zen_mods_key = "roudix.zen.sine.mods" if new_sine else "roudix.zen.mods"
+        cur_zen_mods = get_list_option(zen_mods_key, [])
+        new_zen_mods = [m["id"] for m in ZEN_MODS if self.zen_mods_group.get_states()[m["id"]]]
+        zen_mods_changed = new_zen_mods != cur_zen_mods
+
         # Apps gaming : booléens indépendants, on ne touche que celles qui ont changé
-        gaming_changes = _diff_bool_items(GAMING_APPS, self.gaming_apps_group.get_states(), True)
+        gaming_changes = _diff_bool_items(GAMING_APPS, self.gaming_apps_group.get_states())
 
         # Tweaks gaming annexes (ananicy, correctif GTA)
-        gaming_extras_changes = _diff_bool_items(GAMING_EXTRAS, self.gaming_extras_group.get_states(), False)
+        gaming_extras_changes = _diff_bool_items(GAMING_EXTRAS, self.gaming_extras_group.get_states())
 
         # Interrupteur maître du groupe gaming
         cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
@@ -1268,7 +1350,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         matrix_changed = new_matrix != cur_matrix
 
         # Interrupteurs système indépendants
-        system_changes = _diff_bool_items(SYSTEM_TOGGLES, self.system_group.get_states(), False)
+        system_changes = _diff_bool_items(SYSTEM_TOGGLES, self.system_group.get_states())
 
         # Backend RGB
         cur_rgb = get_string_option("roudix.rgb", "none")
@@ -1276,10 +1358,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         rgb_changed = new_rgb != cur_rgb
 
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
-                    terminal_changed, browsers_changed, zen_changed,
-                    gaming_changes, gaming_extras_changes, gaming_master_changed,
+                    terminal_changed, browsers_changed, zen_changed, sine_changed,
+                    zen_mods_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
-                    system_changes, rgb_changed]):
+                    system_changes, rgb_changed,
+                    gaming_changes, gaming_extras_changes, gaming_master_changed]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
                 "<span color='gray'>No changes detected — nothing to do.</span>"
@@ -1302,6 +1385,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"Browsers: <b>{', '.join(new_browsers) or 'none'}</b>")
         if zen_changed:
             changes.append(f"Zen Browser: <b>{'enabled' if new_zen else 'disabled'}</b>")
+        if sine_changed:
+            changes.append(f"Sine mod loader: <b>{'enabled' if new_sine else 'disabled'}</b>")
+        if zen_mods_changed:
+            changes.append(f"Zen mods: <b>{', '.join(new_zen_mods) or 'none'}</b>")
         if login_shell_changed:
             changes.append(f"Login shell: <b>{cur_login_shell}</b> → <b>{new_login_shell}</b>")
         if filemanager_changed:
@@ -1328,6 +1415,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "terminal_changed": terminal_changed, "new_terminal": new_terminal,
             "browsers_changed": browsers_changed, "new_browsers": new_browsers,
             "zen_changed": zen_changed, "new_zen": new_zen,
+            "sine_changed": sine_changed, "new_sine": new_sine,
+            "zen_mods_changed": zen_mods_changed, "new_zen_mods": new_zen_mods, "zen_mods_key": zen_mods_key,
             "login_shell_changed": login_shell_changed, "new_login_shell": new_login_shell,
             "filemanager_changed": filemanager_changed, "new_filemanager": new_filemanager,
             "matrix_changed": matrix_changed, "new_matrix": new_matrix,
@@ -1342,19 +1431,25 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         dialog.set_heading("Apply changes?")
         dialog.set_body(
             f"{body_changes}\n\n"
-            "Your NixOS configuration will be rebuilt. This may take a few minutes."
+            "Apply now switches your running session immediately (a few things, "
+            "like the desktop/shell, only fully take effect after you log out). "
+            "Apply at next boot just prepares the new generation — nothing "
+            "changes until you restart."
         )
         dialog.add_response("cancel", "Cancel")
-        dialog.add_response("confirm", "Apply & Rebuild")
-        dialog.set_response_appearance("confirm", Adw.ResponseAppearance.SUGGESTED)
-        dialog.set_default_response("confirm")
+        dialog.add_response("boot", "Apply at Next Boot")
+        dialog.add_response("switch", "Apply Now")
+        dialog.set_response_appearance("switch", Adw.ResponseAppearance.SUGGESTED)
+        dialog.set_default_response("switch")
+        dialog.set_close_response("cancel")
         dialog.connect("response", self.on_confirm_response, pending)
         dialog.present(self)
 
     def on_confirm_response(self, dialog, response, pending):
-        if response != "confirm":
+        if response not in ("boot", "switch"):
             log.info("User cancelled the rebuild dialog.")
             return
+        mode = response  # "boot" (next reboot) or "switch" (right now)
 
         if pending["de_changed"]:
             result = set_de(pending["new_de"])
@@ -1409,6 +1504,22 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing Zen Browser config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["sine_changed"]:
+            result = set_bool_option("roudix.zen.sine.enable", pending["new_sine"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing Sine config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["zen_mods_changed"]:
+            result = set_list_option(pending["zen_mods_key"], pending["new_zen_mods"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing Zen mods config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 
@@ -1489,24 +1600,28 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.exit_btn.set_sensitive(False)
 
         log.info(
-            "Starting NixOS rebuild — DE: %s, shell: %s",
+            "Starting NixOS rebuild (nh os %s) — DE: %s, shell: %s",
+            mode,
             pending["new_de"] if pending["de_changed"] else "(unchanged)",
             pending["new_shell"] if pending["shell_changed"] else "(unchanged)",
         )
 
         import threading
-        threading.Thread(target=self.run_rebuild, daemon=True).start()
+        threading.Thread(target=self.run_rebuild, args=(mode,), daemon=True).start()
 
-    def run_rebuild(self):
+    def run_rebuild(self, mode: str = "boot"):
         try:
-            cmd_str = f"Running: nh os boot --elevation-strategy pkexec --accept-flake-config {NH_FLAKE}"
+            cmd_str = (
+                f"Running: nh os {mode} --elevation-strategy pkexec "
+                f"--accept-flake-config {NH_FLAKE}"
+            )
             log.info(cmd_str)
             GLib.idle_add(self._term_append, cmd_str, "dim")
             GLib.idle_add(self._term_append, "Checking repositories...", "dim")
 
             proc = subprocess.Popen(
                 [
-                    "nh", "os", "boot",
+                    "nh", "os", mode,
                     "--elevation-strategy", "pkexec",
                     "--accept-flake-config", f"path:{NH_FLAKE}",
                 ],
@@ -1542,12 +1657,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
             log.info("Rebuild completed successfully.")
             GLib.idle_add(self._term_append, "", "dim")
-            GLib.idle_add(self._term_append, "✓ Rebuild completed successfully. Reboot to apply changes.", "ok")
+            if mode == "switch":
+                GLib.idle_add(self._term_append, "✓ Rebuild completed and applied to your running session.", "ok")
+                GLib.idle_add(
+                    self.status.set_markup,
+                    "<span color='green'>✓ Done! Applied now — some things (desktop/shell) "
+                    "may still need a logout to fully take effect.</span>",
+                )
+            else:
+                GLib.idle_add(self._term_append, "✓ Rebuild completed successfully. Reboot to apply changes.", "ok")
+                GLib.idle_add(
+                    self.status.set_markup,
+                    "<span color='green'>✓ Done! Reboot to apply changes.</span>",
+                )
             GLib.idle_add(self._stop_progress)
-            GLib.idle_add(
-                self.status.set_markup,
-                "<span color='green'>✓ Done! Reboot to apply changes.</span>",
-            )
 
         except subprocess.CalledProcessError as e:
             log.error("Rebuild failed (exit code %d).", e.returncode)
