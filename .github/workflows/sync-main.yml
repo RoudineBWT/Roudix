@@ -58,10 +58,15 @@ jobs:
       # hardware-configuration.nix is machine-specific and gitignored — it
       # only exists on the real roudix box. The CI runner has no such file,
       # so the flake evaluation fails before it ever reaches the build.
-      # This stub is CI-only: it's never committed (only flake.lock is
-      # staged below) and never pushed, so it can never leak into
-      # roudix.autoupdate on the real machine or overwrite the real file.
+      # This stub is CI-only. Nix flakes only see files tracked by Git (even
+      # untracked files present on disk are invisible to the evaluator), so
+      # after writing the stub we register it with `git add -N` (intent-to-add:
+      # makes the path visible to Nix without staging its content). It gets
+      # fully removed from both the index and the working tree right after
+      # the build gate below, before the commit step, so it can never end up
+      # in a pushed commit or leak into roudix.autoupdate on the real machine.
       - name: Create stub hardware-configuration.nix for CI build
+        id: hw_stub
         run: |
           if [ ! -f hosts/roudix/hardware-configuration.nix ]; then
             cat > hosts/roudix/hardware-configuration.nix << 'EOF'
@@ -86,7 +91,11 @@ jobs:
             hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
           }
           EOF
-            echo "Stub hardware-configuration.nix created for CI build only (not tracked by git)."
+            git add -N hosts/roudix/hardware-configuration.nix
+            echo "created=true" >> "$GITHUB_OUTPUT"
+            echo "Stub hardware-configuration.nix created and registered (intent-to-add) for CI build only."
+          else
+            echo "created=false" >> "$GITHUB_OUTPUT"
           fi
 
       # Hard gate: build the actual system closure before anything is
@@ -100,6 +109,15 @@ jobs:
             --accept-flake-config \
             --no-link \
             -L
+
+      # Clean up the CI-only stub immediately after it's done its job, and
+      # before anything is committed — belt-and-suspenders against it ever
+      # ending up in a pushed commit.
+      - name: Remove CI stub hardware-configuration.nix
+        if: steps.hw_stub.outputs.created == 'true'
+        run: |
+          git reset -- hosts/roudix/hardware-configuration.nix
+          rm -f hosts/roudix/hardware-configuration.nix
 
       - name: Commit updated lock, if any
         run: |
