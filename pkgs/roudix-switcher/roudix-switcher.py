@@ -11,6 +11,10 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib, Pango, Gdk
 
 CONFIG_FILE = os.path.expanduser("~/.config/roudix/hosts/roudix/local.nix")
+# roudix.fastfetch.useNix (et toute future option Home Manager) ne vit pas
+# dans le config système — elle doit être écrite ici, sous peine de
+# "The option `roudix.fastfetch' does not exist" au rebuild.
+HOME_CONFIG_FILE = os.path.expanduser("~/.config/roudix/modules/home/local.nix")
 NH_FLAKE    = os.path.expanduser("~/.config/roudix")
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
@@ -242,7 +246,10 @@ SYSTEM_TOGGLES = [
     {"id": "mesaGit",        "name": "Mesa-git (pilotes GPU bleeding-edge)", "key": "roudix.mesa.useGit",        "default": False},
     {"id": "autoupdate",     "name": "Auto-update (git pull + rebuild programmé)", "key": "roudix.autoupdate.enable", "default": False},
     {"id": "undervoltAmd",   "name": "Undervolt GPU AMD (LACT)",         "key": "roudix.undervolt.only-amd.enable", "default": False},
-    {"id": "fastfetchNix",   "name": "Config fastfetch Roudix",          "key": "roudix.fastfetch.useNix",       "default": True},
+    # "file": roudix.fastfetch.useNix est une option Home Manager (définie
+    # dans modules/home/fastfetch.nix), pas une option système — elle doit
+    # donc être écrite dans HOME_CONFIG_FILE, pas dans CONFIG_FILE.
+    {"id": "fastfetchNix",   "name": "Config fastfetch Roudix",          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
     {"id": "fstrim",         "name": "Fstrim (TRIM auto pour SSD/NVMe)", "key": "roudix.fstrim.enable",          "default": True},
     {"id": "vmGuest",        "name": "Invité VM (QEMU/Spice agent)",     "key": "roudix.vmGuest.enable",         "default": False},
 ]
@@ -346,10 +353,13 @@ def set_string_option(key: str, value: str):
         return str(e)
 
 
-def get_bool_option(key: str, default: bool) -> bool:
-    """Read a `key = true;`/`key = false;` line (roudix.gaming.apps.*.enable...)."""
+def get_bool_option(key: str, default: bool, path: str = None) -> bool:
+    """Read a `key = true;`/`key = false;` line (roudix.gaming.apps.*.enable...).
+    `path` lets callers target a config file other than the system
+    CONFIG_FILE — e.g. HOME_CONFIG_FILE for Home Manager options."""
+    path = path or CONFIG_FILE
     try:
-        with open(CONFIG_FILE) as f:
+        with open(path) as f:
             for line in f:
                 if key in line:
                     m = re.search(re.escape(key) + r"\s*=\s*(true|false)", line)
@@ -360,9 +370,12 @@ def get_bool_option(key: str, default: bool) -> bool:
     return default
 
 
-def set_bool_option(key: str, value: bool):
+def set_bool_option(key: str, value: bool, path: str = None):
+    """Write a `key = true;`/`key = false;` line. `path` lets callers target
+    a config file other than the system CONFIG_FILE (see get_bool_option)."""
+    path = path or CONFIG_FILE
     try:
-        with open(CONFIG_FILE) as f:
+        with open(path) as f:
             content = f.read()
         val = "true" if value else "false"
         pattern = re.escape(key) + r"\s*=\s*(true|false)"
@@ -370,7 +383,7 @@ def set_bool_option(key: str, value: bool):
             new = re.sub(pattern, f"{key} = {val}", content)
         else:
             new = _insert_before_closing_brace(content, f"{key} = {val};")
-        with open(CONFIG_FILE, "w") as f:
+        with open(path, "w") as f:
             f.write(new)
         log.info("Configuration updated: %s set to %s.", key, val)
         return True
@@ -413,15 +426,18 @@ def set_list_option(key: str, values: list):
 
 def _diff_bool_items(items: list, states: dict) -> dict:
     """Compare each item's current Nix value to its widget state; return
-    {id: (key, new_val, name)} for the ones that changed. Shared by every
-    checklist group (gaming apps, gaming extras, system toggles). Each
-    item carries its own Nix default under "default"."""
+    {id: (key, new_val, name, file)} for the ones that changed. Shared by
+    every checklist group (gaming apps, gaming extras, system toggles).
+    Each item carries its own Nix default under "default", and may carry
+    an explicit target config file under "file" (defaults to CONFIG_FILE —
+    see HOME_CONFIG_FILE for Home Manager-only options like fastfetch)."""
     changes = {}
     for item in items:
-        cur_val = get_bool_option(item["key"], item.get("default", False))
+        file = item.get("file", CONFIG_FILE)
+        cur_val = get_bool_option(item["key"], item.get("default", False), path=file)
         new_val = states[item["id"]]
         if new_val != cur_val:
-            changes[item["id"]] = (item["key"], new_val, item["name"])
+            changes[item["id"]] = (item["key"], new_val, item["name"], file)
     return changes
 
 
@@ -1071,7 +1087,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         system_page.set_margin_end(16)
         system_page.set_margin_bottom(16)
 
-        system_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in SYSTEM_TOGGLES}
+        system_current = {
+            t["id"]: get_bool_option(t["key"], t["default"], path=t.get("file", CONFIG_FILE))
+            for t in SYSTEM_TOGGLES
+        }
         self.system_group = ToggleListGroup("Toggles", SYSTEM_TOGGLES, system_current)
         system_page.append(self.system_group)
 
@@ -1447,11 +1466,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"RGB backend: <b>{cur_rgb}</b> → <b>{new_rgb}</b>")
         if gaming_master_changed:
             changes.append(f"Gaming: <b>{'enabled' if new_gaming_master else 'disabled'}</b>")
-        for _key, new_val, name in gaming_changes.values():
+        for _key, new_val, name, _file in gaming_changes.values():
             changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
-        for _key, new_val, name in gaming_extras_changes.values():
+        for _key, new_val, name, _file in gaming_extras_changes.values():
             changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
-        for _key, new_val, name in system_changes.values():
+        for _key, new_val, name, _file in system_changes.values():
             changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
         body_changes = "\n".join(changes)
 
@@ -1611,24 +1630,24 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 )
                 return
 
-        for key, new_val, name in pending["gaming_changes"].values():
-            result = set_bool_option(key, new_val)
+        for key, new_val, name, file in pending["gaming_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 
-        for key, new_val, name in pending["gaming_extras_changes"].values():
-            result = set_bool_option(key, new_val)
+        for key, new_val, name, file in pending["gaming_extras_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 
-        for key, new_val, name in pending["system_changes"].values():
-            result = set_bool_option(key, new_val)
+        for key, new_val, name, file in pending["system_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
