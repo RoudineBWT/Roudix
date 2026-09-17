@@ -28,8 +28,8 @@ jobs:
       - name: Save main's flake.lock (pre-merge)
         run: cp flake.lock /tmp/flake.lock.main
 
-      # Merge locally first — nothing is pushed yet. If this conflicts or
-      # fails, the job stops here and main is untouched.
+      # Merge testing into main locally first — nothing is pushed yet. If this
+      # conflicts or fails, the job stops here and main is untouched.
       - name: Merge testing into main (local, not pushed yet)
         run: |
           git fetch origin testing
@@ -54,6 +54,40 @@ jobs:
       - name: Update flake inputs (only if testing didn't already do it)
         if: steps.lock_status.outputs.changed_by_testing == 'false'
         run: nix flake update --accept-flake-config
+
+      # hardware-configuration.nix is machine-specific and gitignored — it
+      # only exists on the real roudix box. The CI runner has no such file,
+      # so the flake evaluation fails before it ever reaches the build.
+      # This stub is CI-only: it's never committed (only flake.lock is
+      # staged below) and never pushed, so it can never leak into
+      # roudix.autoupdate on the real machine or overwrite the real file.
+      - name: Create stub hardware-configuration.nix for CI build
+        run: |
+          if [ ! -f hosts/roudix/hardware-configuration.nix ]; then
+            cat > hosts/roudix/hardware-configuration.nix << 'EOF'
+          { config, lib, pkgs, modulesPath, ... }:
+
+          {
+            imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+
+            boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" ];
+            boot.initrd.kernelModules = [ ];
+            boot.kernelModules = [ "kvm-intel" ];
+            boot.extraModulePackages = [ ];
+
+            fileSystems."/" = {
+              device = "/dev/disk/by-label/nixos";
+              fsType = "ext4";
+            };
+
+            swapDevices = [ ];
+
+            nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+            hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
+          }
+          EOF
+            echo "Stub hardware-configuration.nix created for CI build only (not tracked by git)."
+          fi
 
       # Hard gate: build the actual system closure before anything is
       # pushed. A failure here (bad merge, stale/broken input, whether from
