@@ -2,81 +2,46 @@
 let
   game-performance = pkgs.writeShellScriptBin "roudix-game-performance" ''
     #!${pkgs.runtimeShell}
-    # Wrapper "à la CachyOS" (game-performance de cachyos-settings), réécrit
-    # pour tuned-adm au lieu de powerprofilesctl, et sans dépendre de
-    # GameMode (incompatible avec ananicy-cpp chez nous).
-    #
-    # powerprofilesctl launch fonctionne en interne via un scope systemd
-    # (cgroup), qui n'est "terminé" que lorsque TOUS les process du cgroup
-    # ont quitté — pas juste le process de premier niveau. C'est ce qui
-    # manquait à la version précédente (trap bash sur la sortie de "$@") :
-    # Steam peut forker/détacher avant que le vrai jeu démarre, faisant
-    # revenir le profil en "balanced" après 2 secondes. On réplique donc le
-    # même mécanisme avec systemd-run --scope, qui bloque naturellement
-    # jusqu'à ce que le cgroup entier soit vide.
+    # Wrapper "à la Bazzite/CachyOS" pour tuned-adm, structure simple éprouvée
+    # (pas de systemd-run --scope : un trap classique suffit).
 
     TUNED_ADM=${pkgs.tuned}/bin/tuned-adm
     GAME_PROFILE=roudix-gaming
     FALLBACK_PROFILE=balanced
 
-    # Log toujours actif (pas besoin de variable d'env dans les Launch Options,
-    # ça évite tout risque d'erreur d'ordre côté Steam).
-    DEBUG_LOG="/tmp/roudix-game-performance.log"
-    log() {
-        echo "[$(date +%T)] $*" >> "$DEBUG_LOG"
-    }
-
-    log "=== nouveau lancement, argv: $* ==="
-    log "TUNED_ADM=$TUNED_ADM"
-
     if ! command -v "$TUNED_ADM" &>/dev/null; then
-        log "ÉCHEC: tuned-adm introuvable à ce chemin -> exec direct sans profil"
         echo "Error: tuned-adm not found" >&2
         exec "$@"
     fi
 
     # Don't fail if the profile doesn't exist, just run the command
-    TUNED_LIST_OUTPUT=$("$TUNED_ADM" list 2>&1)
-    TUNED_LIST_RC=$?
-    log "tuned-adm list rc=$TUNED_LIST_RC output: $TUNED_LIST_OUTPUT"
-    if [ "$TUNED_LIST_RC" -ne 0 ] || ! echo "$TUNED_LIST_OUTPUT" | grep -q "$GAME_PROFILE"; then
-        log "ÉCHEC: profil $GAME_PROFILE absent de la liste (ou tuned-adm list a échoué) -> exec direct sans profil"
+    if ! "$TUNED_ADM" list | grep -q "$GAME_PROFILE"; then
         exec "$@"
     fi
 
     # Save the current profile before changing it
     CURRENT_PROFILE=$("$TUNED_ADM" active | awk '{print $NF}')
-    log "profil actuel avant switch: $CURRENT_PROFILE"
 
     # Function to restore profile on exit
     restore_profile() {
-        RESTORE_OUTPUT=$("$TUNED_ADM" profile "''${CURRENT_PROFILE:-$FALLBACK_PROFILE}" 2>&1)
-        log "restauration profil -> ''${CURRENT_PROFILE:-$FALLBACK_PROFILE} : $RESTORE_OUTPUT"
+        "$TUNED_ADM" profile "''${CURRENT_PROFILE:-$FALLBACK_PROFILE}" &>/dev/null
     }
 
     # Set trap to restore profile when script exits
     trap restore_profile EXIT INT TERM
 
     # Set performance profile and launch the game
-    SET_PROFILE_OUTPUT=$("$TUNED_ADM" profile "$GAME_PROFILE" 2>&1)
-    SET_PROFILE_RC=$?
-    log "tuned-adm profile $GAME_PROFILE rc=$SET_PROFILE_RC output: $SET_PROFILE_OUTPUT"
-    if [ "$SET_PROFILE_RC" -ne 0 ]; then
-        log "ATTENTION: le changement de profil a échoué (voir output ci-dessus, souvent polkit) mais on lance le jeu quand même"
-    fi
+    "$TUNED_ADM" profile "$GAME_PROFILE"
 
-    # Scope systemd dédié : bloque jusqu'à ce que tout le cgroup se vide,
-    # pas juste le process de premier niveau (le "%command%" de Steam)
+    # Launch the game with or without systemd-inhibit
     if [ -n "''${GAME_PERFORMANCE_SCREENSAVER_ON:-}" ]; then
-        ${pkgs.systemd}/bin/systemd-run --user --scope --quiet -- "$@"
+        "$@"
     else
-        ${pkgs.systemd}/bin/systemd-inhibit --why "game-performance is running" -- \
-            ${pkgs.systemd}/bin/systemd-run --user --scope --quiet -- "$@"
+        ${pkgs.systemd}/bin/systemd-inhibit --why "game-performance is running" -- "$@"
     fi
 
     # Store exit code to return it properly
     EXIT_CODE=$?
-    log "jeu terminé, exit code=$EXIT_CODE"
 
     # The trap will automatically restore the profile here
     exit $EXIT_CODE
@@ -198,7 +163,6 @@ in
     game-performance  # Wrapper tuned CPU performance — binaire : roudix-game-performance
                       # Steam Launch Options : /run/current-system/sw/bin/roudix-game-performance %command%
                       # (chemin complet requis : Steam n'hérite pas toujours du PATH à jour du profil courant)
-                      # Log toujours écrit dans /tmp/roudix-game-performance.log (fallback silencieux)
     gamescope-wsi
     #millennium-steam
   ];
