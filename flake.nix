@@ -187,7 +187,7 @@
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "bak";
           home-manager.extraSpecialArgs = specialArgs;
-          home-manager.users.${username} = { ... }: {
+          home-manager.users.${username} = { lib, ... }: {
             imports = [
               ./modules/home/common.nix
               ./modules/home/desktop/niri/default.nix
@@ -196,9 +196,8 @@
               ./modules/home/desktop/umbriel/default.nix
               ./modules/home/kde.nix
               ./modules/home/gnome.nix
-              ./modules/home/local.nix
               ./modules/home/shell-modules.nix
-            ];
+            ] ++ lib.optional (builtins.pathExists ./modules/home/local.nix) ./modules/home/local.nix;
           };
         }
       ];
