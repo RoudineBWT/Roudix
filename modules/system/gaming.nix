@@ -1,6 +1,6 @@
 { config, pkgs, lib, inputs, ... }:
 let
-  game-performance = pkgs.writeShellScriptBin "game-performance" ''
+  game-performance = pkgs.writeShellScriptBin "roudix-game-performance" ''
     #!${pkgs.runtimeShell}
     # Wrapper "à la CachyOS" (game-performance de cachyos-settings), réécrit
     # pour tuned-adm au lieu de powerprofilesctl, et sans dépendre de
@@ -19,29 +19,53 @@ let
     GAME_PROFILE=roudix-gaming
     FALLBACK_PROFILE=balanced
 
+    # Debug : lancer avec ROUDIX_GAME_PERF_DEBUG=1 pour tracer chaque étape
+    # dans un fichier (Steam n'affiche jamais stdout/stderr des launch options).
+    DEBUG_LOG="/tmp/roudix-game-performance.log"
+    log() {
+        if [ -n "''${ROUDIX_GAME_PERF_DEBUG:-}" ]; then
+            echo "[$(date +%T)] $*" >> "$DEBUG_LOG"
+        fi
+    }
+
+    log "=== nouveau lancement, argv: $* ==="
+    log "TUNED_ADM=$TUNED_ADM"
+
     if ! command -v "$TUNED_ADM" &>/dev/null; then
+        log "ÉCHEC: tuned-adm introuvable à ce chemin -> exec direct sans profil"
         echo "Error: tuned-adm not found" >&2
         exec "$@"
     fi
 
     # Don't fail if the profile doesn't exist, just run the command
-    if ! "$TUNED_ADM" list | grep -q "$GAME_PROFILE"; then
+    TUNED_LIST_OUTPUT=$("$TUNED_ADM" list 2>&1)
+    TUNED_LIST_RC=$?
+    log "tuned-adm list rc=$TUNED_LIST_RC output: $TUNED_LIST_OUTPUT"
+    if [ "$TUNED_LIST_RC" -ne 0 ] || ! echo "$TUNED_LIST_OUTPUT" | grep -q "$GAME_PROFILE"; then
+        log "ÉCHEC: profil $GAME_PROFILE absent de la liste (ou tuned-adm list a échoué) -> exec direct sans profil"
         exec "$@"
     fi
 
     # Save the current profile before changing it
     CURRENT_PROFILE=$("$TUNED_ADM" active | awk '{print $NF}')
+    log "profil actuel avant switch: $CURRENT_PROFILE"
 
     # Function to restore profile on exit
     restore_profile() {
-        "$TUNED_ADM" profile "''${CURRENT_PROFILE:-$FALLBACK_PROFILE}" &>/dev/null
+        RESTORE_OUTPUT=$("$TUNED_ADM" profile "''${CURRENT_PROFILE:-$FALLBACK_PROFILE}" 2>&1)
+        log "restauration profil -> ''${CURRENT_PROFILE:-$FALLBACK_PROFILE} : $RESTORE_OUTPUT"
     }
 
     # Set trap to restore profile when script exits
     trap restore_profile EXIT INT TERM
 
     # Set performance profile and launch the game
-    "$TUNED_ADM" profile "$GAME_PROFILE"
+    SET_PROFILE_OUTPUT=$("$TUNED_ADM" profile "$GAME_PROFILE" 2>&1)
+    SET_PROFILE_RC=$?
+    log "tuned-adm profile $GAME_PROFILE rc=$SET_PROFILE_RC output: $SET_PROFILE_OUTPUT"
+    if [ "$SET_PROFILE_RC" -ne 0 ]; then
+        log "ATTENTION: le changement de profil a échoué (voir output ci-dessus, souvent polkit) mais on lance le jeu quand même"
+    fi
 
     # Scope systemd dédié : bloque jusqu'à ce que tout le cgroup se vide,
     # pas juste le process de premier niveau (le "%command%" de Steam)
@@ -54,6 +78,7 @@ let
 
     # Store exit code to return it properly
     EXIT_CODE=$?
+    log "jeu terminé, exit code=$EXIT_CODE"
 
     # The trap will automatically restore the profile here
     exit $EXIT_CODE
@@ -175,6 +200,8 @@ in
     game-performance  # Wrapper tuned CPU performance — binaire : roudix-game-performance
                       # Steam Launch Options : /run/current-system/sw/bin/roudix-game-performance %command%
                       # (chemin complet requis : Steam n'hérite pas toujours du PATH à jour du profil courant)
+                      # Debug (fallback silencieux) : ROUDIX_GAME_PERF_DEBUG=1 /run/current-system/sw/bin/roudix-game-performance %command%
+                      #   -> log dans /tmp/roudix-game-performance.log
     gamescope-wsi
     #millennium-steam
   ];
