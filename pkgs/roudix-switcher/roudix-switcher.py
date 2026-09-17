@@ -203,7 +203,7 @@ MATRIX_CLIENTS = [
 ]
 
 DISCORD_OPTIONS = [
-    {"id": "vencord", "name": "Vencord", "subtitle": "Discord avec Vencord déjà patché (défaut)", "icon": "discord.svg"},
+    {"id": "vencord", "name": "Vencord", "subtitle": "Discord avec Vencord déjà patché (défaut)", "icon": "vencord.svg"},
     {"id": "vanilla", "name": "Vanilla", "subtitle": "Discord sans aucun patch client",            "icon": "discord.svg"},
     {"id": "none",    "name": "None",    "subtitle": "N'installer aucun client Discord",           "icon": "none.svg"},
 ]
