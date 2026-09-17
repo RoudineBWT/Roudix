@@ -32,8 +32,8 @@ config = lib.mkIf isHyprland {
     greeter-args = "--session hyprland-uwsm";
     settings = {
       keyboard = {
-        layout  = "us";
-        variant = "intl";
+        layout  = config.roudix.keyboardLayout;
+        variant = config.roudix.keyboardVariant;
       };
     };
   };

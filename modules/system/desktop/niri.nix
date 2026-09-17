@@ -32,8 +32,8 @@ in
       greeter-args = "--session niri";
       settings = {
         keyboard = {
-          layout  = "us";
-          variant = "intl";
+          layout  = config.roudix.keyboardLayout;
+          variant = config.roudix.keyboardVariant;
         };
       };
     };

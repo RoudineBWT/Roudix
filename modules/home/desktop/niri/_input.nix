@@ -1,11 +1,11 @@
 ## _input.nix — niri: [input] (identique entre noctalia et dms).
-{ ... }:
+{ osConfig, ... }:
 {
   programs.niri.settings.input = {
     keyboard = {
       xkb = {
-        layout = "us";
-        variant = "intl";
+        layout = osConfig.roudix.keyboardLayout;
+        variant = osConfig.roudix.keyboardVariant;
       };
       numlock = true;
     };

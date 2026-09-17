@@ -2,15 +2,15 @@
 ## [input.mouse], [input.cursor], [input.focus].
 ##
 ## Doc : https://docs.noctalia.dev/umbriel/input/
-{ ... }:
+{ osConfig, ... }:
 {
   programs.umbriel.settings = {
   input = {
     # middle_click_paste laissé au défaut (true), pas configuré côté niri.
 
     keyboard = {
-      layout = "us";
-      variant = "intl";
+      layout = osConfig.roudix.keyboardLayout;
+      variant = osConfig.roudix.keyboardVariant;
       numlock_toggle = true; # niri: keyboard { numlock } au démarrage
     };
 
