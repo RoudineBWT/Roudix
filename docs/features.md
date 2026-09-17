@@ -6,6 +6,7 @@
 - Two kernel providers, selected automatically by `hardware.myGpu`:
   - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 32 variants (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 variants (`hardware.myKernelChaotic`) — ships `nvidia_cachyos`, a precompiled driver matched to their kernel, so no local Nvidia module rebuild on kernel bumps
+- Plain nixpkgs kernels also selectable on both providers, outside the CachyOS overlay entirely — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline). On Nvidia these fall back to a locally-rebuilt Nvidia module (no `nvidia_cachyos` cache)
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)
@@ -27,10 +28,11 @@
 - Custom horizontal MangoHud overlay (`Powered By Roudix` label)
 - Controller support (Steam Hardware + game-devices-udev-rules)
 - 32-bit support for Wine/Steam
-- `game-performance` wrapper — switches CPU governor to performance for the duration of a game (usage: `game-performance %command%` in Steam launch options)
+- `game-performance` wrapper — switches to a dedicated `tuned-adm` performance profile for the duration of a game, tracked via a `systemd-run --user --scope` cgroup (so it survives Steam re-forking/detaching) and restored on exit (usage: `game-performance %command%` in Steam launch options) — GameMode is disabled on purpose (incompatible with ananicy-cpp here)
 - `ffmpegthumbnailer` available system-wide (video thumbnails in file managers)
 - `protonup-qt` on KDE, `protonplus` on other DEs
-- Heroic, Lutris + Faugus Launcher (via roudix-caches)
+- Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft) and Vintage Story (via roudix-caches)
+- Each gaming app individually toggleable via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (all `true` by default)
 
 ## Desktop (Niri)
 
@@ -41,7 +43,6 @@
 - xdg-desktop-portal-gnome + gtk (screencast + remote desktop portals configured)
 - Bibata Modern Ice cursor (24 px)
 - adw-gtk3 + Papirus icons + Papirus Folders
-- Discord with Vencord
 - Element Desktop with gnome-libsecret / kwallet6 (auto-detected per DE)
 - GNOME Polkit agent
 - DMS Greeter (greetd)
@@ -127,6 +128,10 @@
 
 ## Other
 
+- Discord selectable via `roudix.discord` — `"vencord"` (patched client, default), `"vanilla"` (unpatched) or `"none"` (not installed)
+- Code editor selectable via `roudix.editor` — `"zed"` (default), `"vscode"`, `"neovim"` or `"none"` (manage your own, e.g. AppImage/Flatpak)
+- Graphical (Wayland) keyboard layout via `roudix.keyboardLayout` / `roudix.keyboardVariant` (XKB, e.g. `"be"` / `"intl"`) — independent from `console.keyMap`, which only covers the TTY before the graphical session starts; has no effect on GNOME/KDE, which manage their own layout
+- Keyring + xdg-desktop-portal stack for "bare" compositors (Niri, Hyprland, MangoWC, Umbriel) selectable via `roudix.desktopIntegration` — `"gnome"` (gnome-keyring + xdg-desktop-portal-gtk/-gnome, default) or `"kde"` (KWallet + xdg-desktop-portal-kde); no effect on GNOME/KDE sessions, which keep their native stack
 - `nix-ld` enabled system-wide — run unpatched dynamic binaries without a FHS environment (pre-configured with common libraries: glibc, openssl, zlib, libGL, X11, libxkbcommon, dbus, glib and more)
 - OBS Studio with pipewire + vkcapture plugins
 - GPU Screen Recorder

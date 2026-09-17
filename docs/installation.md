@@ -17,7 +17,7 @@ The installer handles everything interactively:
 - **Detects other OSes automatically** via EFI NVRAM (`efibootmgr`) — no manual PARTUUID lookup needed
 - **Detects GPU and CPU automatically** (`lspci` / `/proc/cpuinfo`) — pre-selects and asks for confirmation
 - **Detects if running in a VM** (`systemd-detect-virt`) — pre-enables VM guest mode and warns that GPU/CPU detection may be inaccurate
-- Asks about kernel, desktop, browser, locale, timezone, keymap, RGB controller, and optional modules
+- Asks about kernel, desktop, browser, editor, Discord, gaming apps, locale, timezone, keymap, RGB controller, and optional modules
 - Builds and applies the configuration
 
 ---
@@ -84,12 +84,30 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   roudix.rgb          = "openlinkhub";        # "openlinkhub", "openrgb" or "none" — see below
   roudix.mesa.useGit  = false;                # true = mesa-git (experimental, build may fail), false = nixpkgs stable
   roudix.matrixClient = "none";               # "element", "cinny" or "none"
+  roudix.discord      = "vencord";            # "vencord", "vanilla" or "none"
+  roudix.editor       = "zed";                # "zed", "vscode", "neovim" or "none"
+
+  # ── Gaming apps (all true by default — disable what you don't want) ────────
+  # roudix.gaming.apps.lutris.enable        = false;
+  # roudix.gaming.apps.heroic.enable        = false;
+  # roudix.gaming.apps.faugus.enable        = false;
+  # roudix.gaming.apps.prismlauncher.enable = false;
+  # roudix.gaming.apps.vintagestory.enable  = false;
+  # roudix.gaming.apps.mangohud.enable      = false;
+
+  # ── Bare-compositor integration (niri/hyprland/mangowc/umbriel only) ───────
+  roudix.desktopIntegration = "gnome";        # "gnome" or "kde" — keyring + xdg-desktop-portal stack; no effect on gnome/kde sessions
 
   # ── Locale / Timezone ───────────────────────────────────────────────────────
   time.timeZone                   = "Europe/Brussels"; # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   environment.sessionVariables.TZ = "Europe/Brussels"; # must match time.timeZone
   i18n.defaultLocale              = "en_US.UTF-8";     # system locale
-  console.keyMap                  = "us";              # console keyboard layout
+  console.keyMap                  = "us";              # console keyboard layout — TTY only, before the graphical session starts
+
+  # ── Graphical (Wayland) keyboard layout — independent from console.keyMap ─
+  # No effect on GNOME/KDE, which manage their own layout via their settings daemon.
+  roudix.keyboardLayout  = "us";              # "us", "be", "fr", "de", "ch", "nl", "es", "it", "pt", "pl", "ru", "gb", "jp"...
+  roudix.keyboardVariant = "intl";            # "intl", "nodeadkeys", "bepo", "dvorak", "colemak", "" (none)
 }
 ```
 
@@ -196,10 +214,16 @@ Roudix uses **two different kernel providers** depending on your GPU:
 - **`hardware.myGpu != "nvidia"`** (AMD or Intel) → kernel from [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), selected via `hardware.myKernel`. No Nvidia module to worry about, so the full 32-variant set is available.
 - **`hardware.myGpu == "nvidia"`** → kernel from **Chaotic-Nyx**, selected via `hardware.myKernelChaotic`. This is required to get **`nvidia_cachyos`**, a precompiled Nvidia driver matched to their kernel — otherwise the Nvidia kernel module rebuilds locally on every kernel bump. The variant set is smaller here on purpose (Chaotic-Nyx doesn't publish as many flavors, and `-lto` variants are more prone to breaking out-of-tree modules like Nvidia's).
 
+Both options also accept a handful of **plain nixpkgs kernels**, entirely outside their respective CachyOS overlay — useful if you just want a stock kernel without any CachyOS patching: `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`. On the Nvidia path these skip the `nvidia_cachyos` cache and rebuild the Nvidia module locally instead (see `nvidia.nix`).
+
 **`hardware.myKernel` variants (xddxdd — AMD/Intel only):**
 
 | Variant | Description |
 |---------|-------------|
+| `zen` | Plain `linuxPackages_zen` (nixpkgs) — outside the xddxdd overlay |
+| `nixpkgs-lts` | Plain nixpkgs default LTS kernel — outside the xddxdd overlay |
+| `nixpkgs-latest` | Plain nixpkgs latest mainline kernel — outside the xddxdd overlay |
+| `nixpkgs-testing` | Plain nixpkgs `linux_testing` (RC/mainline candidate) — outside the xddxdd overlay |
 | `cachyos-latest` | Standard latest CachyOS kernel |
 | `cachyos-latest-v2` | x86_64-v2 optimized |
 | `cachyos-latest-v3` | x86_64-v3 optimized (recommended for modern CPUs) |
@@ -245,6 +269,10 @@ Roudix uses **two different kernel providers** depending on your GPU:
 | `cachyos-lts` | Long-term support |
 | `cachyos-server` | Server optimized (no desktop tuning) |
 | `cachyos-hardened` | Security hardened |
+| `zen` | Plain `linuxPackages_zen` (nixpkgs) — Nvidia module rebuilt locally |
+| `nixpkgs-lts` | Plain nixpkgs LTS — Nvidia module rebuilt locally |
+| `nixpkgs-latest` | Plain nixpkgs latest mainline — Nvidia module rebuilt locally |
+| `nixpkgs-testing` | Plain nixpkgs `linux_testing` (RC) — Nvidia module rebuilt locally |
 
 > **NVIDIA note:** Only GTX 20xx / RTX series and newer are supported. Open drivers enabled by default for RTX 20xx+ (Turing+). GTX 10xx/16xx are not supported.
 

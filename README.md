@@ -44,7 +44,8 @@
 | Shell | Fish · Bash |
 | Browser | Configurable (Brave, Helium, Vivaldi, Firefox, LibreWolf, Chromium, Zen Twilight) |
 | File Manager | Configurable (Nautilus, Thunar, Dolphin, Nemo) |
-| Editor | Zed |
+| Editor | Configurable (Zed, VS Code, Neovim, none) |
+| Chat | Discord (Vencord · vanilla · none) + Matrix (Element · Cinny · none) |
 | Music | Spotify + Spicetify (Comfy theme) |
 
 ---
@@ -111,8 +112,8 @@ roudix/
 │
 ├── pkgs/
 │   ├── roudix-branding              # Roudix Branding package
-│   ├── roudix-kernel-switcher       # Roudix Kernel 
-│   ├── roudix-switcher/             # Roudix Desktop Switcher GUI package
+│   ├── roudix-kernel-switcher       # Roudix Kernel Switcher GUI package
+│   ├── roudix-switcher/             # Roudix Settings GUI (desktop, gaming, editor, terminal, browser, shell, file manager, chat, system, integration)
 │   └──   roudix-scheduler-switcher    # Scheduler Switcher GUI package
 │
 └── modules/
@@ -134,13 +135,17 @@ roudix/
     ├── browser.nix              # Browser selection (roudix.browsers + roudix.zen.enable)
     ├── common.nix               # Shared system config (all hosts)
     ├── cpu.nix                  # CPU configuration (Intel/AMD microcode + i2c modules)
+    ├── desktop-integration.nix  # Keyring + xdg-desktop-portal stack for bare compositors (roudix.desktopIntegration)
+    ├── discord.nix              # Discord selection — none / vanilla / vencord (roudix.discord)
+    ├── editor.nix               # Code editor selection — zed / vscode / neovim / none (roudix.editor)
     ├── environment.nix          # Environment variables
     ├── flatpak.nix              # Flatpak service + auto update
     ├── fstrim.nix               # fstrim for SSD/NVMe
-    ├── gaming.nix               # Steam, Gamescope, ananicy-cpp, game-performance
+    ├── gaming.nix               # Steam, Gamescope, ananicy-cpp, game-performance (tuned-adm), per-app toggles (roudix.gaming.apps.*)
     ├── gpu/                     # GPU configuration (AMD/NVIDIA/Intel/VM — split per vendor)
     ├── hosts-gta.nix            # BattlEye hosts block (GTA fix, optional)
-    ├── kernel.nix               # CachyOS kernel variant selection
+    ├── kernel.nix               # Kernel variant selection — CachyOS variants + plain nixpkgs (zen/lts/latest/testing)
+    ├── keyboard.nix             # Graphical (Wayland) keyboard layout/variant (roudix.keyboardLayout / roudix.keyboardVariant)
     ├── matrix.nix               # Matrix client selection (roudix.matrixClient)
     ├── appimage.nix             # AppImage support
     ├── openlinkhub.nix          # OpenLinkHub — Corsair iCUE Link driver + RAM RGB (roudix.memory.*)

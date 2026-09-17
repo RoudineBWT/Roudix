@@ -1,6 +1,6 @@
 # Desktop environments
 
-Switch desktop at any time with `roudix-switch <de>` or the **Roudix Desktop Switcher** GUI — no separate host needed.
+Switch desktop at any time with `roudix-switch <de>` or the **Roudix Settings** GUI (`roudix-switcher` package) — no separate host needed. The GUI has grown beyond just desktop switching: it now covers Desktop, Gaming (per-app toggles), Editor, Terminal, Browser, Login Shell, File Manager, Chat Client (Discord/Matrix) and Integration (keyring/portal stack) in one app.
 
 | Value | Desktop | Notes |
 |-------|---------|-------|
