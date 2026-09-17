@@ -56,7 +56,6 @@ in
     ./fastfetch.nix
     ./fish.nix
     ./bash.nix
-    ./git.nix
     ./ssh.nix
     ./spicetify.nix
     ./gaming-home.nix
@@ -64,7 +63,8 @@ in
     # Zen Browser HM module — imported unconditionally (lazy), only builds
     # anything when `programs.zen-browser.enable` is actually true below.
     inputs.zen-browser.homeModules.twilight
-  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
+  ] ++ lib.optional (builtins.pathExists ./git.nix) ./git.nix
+    ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
   # ── Easyeffects preset ───────────────────────────────────────────────────
   xdg.configFile."easyeffects" = {
