@@ -91,7 +91,7 @@ jobs:
             hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
           }
           EOF
-            git add -N hosts/roudix/hardware-configuration.nix
+            git add -N -f hosts/roudix/hardware-configuration.nix
             echo "created=true" >> "$GITHUB_OUTPUT"
             echo "Stub hardware-configuration.nix created and registered (intent-to-add) for CI build only."
           else
