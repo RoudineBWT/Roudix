@@ -210,21 +210,23 @@ RGB_BACKENDS = [
 # fois remplie, chaque mod devient toggleable comme les navigateurs.
 # Exemple : {"id": "zen-internet", "name": "Zen Internet"},
 ZEN_MODS = [
-    # Confirmés via zen-browser/theme-store (themes.json)
-    {"id": "f7c71d9a-bce2-420f-ae44-a64bd92975ab", "name": "Better Unloaded Tabs"},
-    {"id": "906c6915-5677-48ff-9bfc-096a02a72379", "name": "Floating Statusbar"},
+    # Confirmé (chrome/sine-mods/) : dossier UUID = celui du theme-store officiel
     {"id": "ad97bb70-0066-4e42-9b5f-173a5e42c6fc", "name": "SuperPins"},
-    # Confirmés comme existants (repos GitHub retrouvés) mais sans ID
-    # canonique trouvé côté theme-store/Sine — remplace la partie avant la
-    # virgule par le vrai ID une fois récupéré (voir la commande fournie
-    # pour les lire directement depuis ton profil Zen).
+    # Confirmés directement via le listing de chrome/sine-mods/ — ce sont
+    # littéralement les noms de dossiers, pas des UUID.
     {"id": "Arc-2.0", "name": "Arc 2.0"},
     {"id": "context-menu-icons", "name": "Context Menu Icons"},
-    {"id": "better-music-bar", "name": "Better Music Bar"},
-    {"id": "new-icons", "name": "New Icons"},
+    {"id": "floating-statusbar", "name": "Floating Statusbar"},
     {"id": "unloaded-tabs", "name": "Unloaded Tabs"},
-    {"id": "zen-container-halo", "name": "zen-container-halo"},
+    {"id": "new-icons", "name": "New Icons"},
     {"id": "Nebula", "name": "Nebula"},
+    # Ces deux dossiers existent bien mais je n'ai pas pu confirmer lequel
+    # correspond à "Better Music Bar" et lequel à "zen-container-halo" (les
+    # deux apparaissent dans ton gestionnaire de mods mais aucun des deux
+    # dossiers ne porte ce nom) — ouvre mods.json à côté pour le mapping
+    # exact id → nom si tu veux corriger ça précisément.
+    {"id": "3c8ebf69-1042-49b1-8f08-9178f9490659", "name": "Better Music Bar ou zen-container-halo (à vérifier)"},
+    {"id": "jvynuz3kn-hjd9pvfmg-vonasfop9", "name": "Better Music Bar ou zen-container-halo (à vérifier)"},
 ]
 
 # Tweaks gaming annexes (à côté des launchers) — mêmes clés booléennes que
