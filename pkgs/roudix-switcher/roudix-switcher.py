@@ -8,7 +8,7 @@ import logging
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw, GLib, Pango
+from gi.repository import Gtk, Adw, GLib, Pango, Gdk
 
 CONFIG_FILE = os.path.expanduser("~/.config/roudix/hosts/roudix/local.nix")
 NH_FLAKE    = os.path.expanduser("~/.config/roudix")
@@ -663,6 +663,24 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.set_default_size(760, 640)
         self.set_resizable(True)
 
+        # Forcer un fond opaque sur la zone de contenu : sur certains
+        # compositeurs (blur-behind Hyprland/niri, etc.), une classe CSS
+        # sémantique comme "view" ne suffit pas toujours à empêcher le flou
+        # du bureau de transparaître derrière une page courte (peu
+        # d'options = grande zone "vide" sous le contenu). On force donc un
+        # background-color explicite via un provider dédié, avec la couleur
+        # de fond réelle de la fenêtre (@window_bg_color) pour rester
+        # cohérent en clair comme en sombre.
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_data(
+            b".roudix-content-bg { background-color: @window_bg_color; }"
+        )
+        Gtk.StyleContext.add_provider_for_display(
+            Gdk.Display.get_default(),
+            css_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
+        )
+
         current_de    = get_current_de()
         current_shell = get_current_shell()
         log.info("Current desktop environment: %s", current_de)
@@ -764,19 +782,28 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.content_stack = Gtk.Stack()
         self.content_stack.set_hexpand(True)
-        # Sans ça, une page courte (ex: Login Shell, 2 choix) s'étire pour
-        # remplir toute la hauteur du panneau au lieu de rester compacte en
-        # haut — d'où l'impression de grand vide/transparence en dessous.
         self.content_stack.set_valign(Gtk.Align.START)
+        # Sans ça (vhomogeneous par défaut = True), le Stack demande
+        # toujours la hauteur de sa page la PLUS haute (System, la plus
+        # longue), même en affichant Login Shell — ce qui annulerait le
+        # rétrécissement voulu ci-dessous.
+        self.content_stack.set_vhomogeneous(False)
         self.content_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
 
         content_scroll = Gtk.ScrolledWindow()
         content_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         content_scroll.set_hexpand(True)
-        content_scroll.set_vexpand(True)
+        # Se dimensionner sur la hauteur naturelle de la page affichée (donc
+        # pas de scrollbar ni de grand vide pour 2 options), et ne se
+        # transformer en zone défilante qu'au-delà de ce plafond (pages
+        # longues comme Browser ou System).
+        content_scroll.set_propagate_natural_height(True)
+        content_scroll.set_max_content_height(480)
+        content_scroll.set_vexpand(False)
+        content_scroll.set_valign(Gtk.Align.START)
         # Fond opaque du thème, pour que la zone sous une page courte ne
         # laisse pas transparaître le fond flouté de la fenêtre.
-        content_scroll.add_css_class("view")
+        content_scroll.add_css_class("roudix-content-bg")
         content_scroll.set_child(self.content_stack)
         split_row.append(content_scroll)
 
