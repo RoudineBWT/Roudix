@@ -172,7 +172,9 @@ in
   # ── Paquets système gaming ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
-    game-performance  # Wrapper tuned CPU performance (usage: game-performance %command%)
+    game-performance  # Wrapper tuned CPU performance — binaire : roudix-game-performance
+                      # Steam Launch Options : /run/current-system/sw/bin/roudix-game-performance %command%
+                      # (chemin complet requis : Steam n'hérite pas toujours du PATH à jour du profil courant)
     gamescope-wsi
     #millennium-steam
   ];
