@@ -55,19 +55,30 @@ jobs:
         if: steps.lock_status.outputs.changed_by_testing == 'false'
         run: nix flake update --accept-flake-config
 
-      # hardware-configuration.nix is machine-specific and gitignored — it
-      # only exists on the real roudix box. The CI runner has no such file,
-      # so the flake evaluation fails before it ever reaches the build.
-      # This stub is CI-only. Nix flakes only see files tracked by Git (even
-      # untracked files present on disk are invisible to the evaluator), so
-      # after writing the stub we register it with `git add -N` (intent-to-add:
-      # makes the path visible to Nix without staging its content). It gets
-      # fully removed from both the index and the working tree right after
-      # the build gate below, before the commit step, so it can never end up
-      # in a pushed commit or leak into roudix.autoupdate on the real machine.
-      - name: Create stub hardware-configuration.nix for CI build
-        id: hw_stub
+      # Several files under hosts/roudix/ and modules/home/ are
+      # machine-specific and gitignored (.gitignore lists
+      # hardware-configuration.nix, username.nix, local.nix, etc.) — they
+      # only exist on the real roudix box. Most are guarded with
+      # `builtins.pathExists` in the flake (hosts/roudix/local.nix,
+      # modules/system/boot.local.nix, modules/home/local.nix) so Nix skips
+      # them gracefully when absent — no stub needed for those. The ones
+      # below are NOT guarded (imported unconditionally), so a bare CI
+      # checkout fails evaluation before it ever reaches the build.
+      #
+      # These stubs are CI-only. Nix flakes only see files tracked by Git
+      # (even untracked files present on disk are invisible to the
+      # evaluator), so after writing each stub we register it with
+      # `git add -N -f` (intent-to-add, forced past .gitignore: makes the
+      # path visible to Nix without staging real content). Every stub
+      # created here is fully removed from both the index and the working
+      # tree right after the build gate below, before the commit step, so
+      # none of them can ever end up in a pushed commit or leak into
+      # roudix.autoupdate on the real machine.
+      - name: Create CI-only stubs for required machine-local files
+        id: local_stubs
         run: |
+          CREATED=""
+
           if [ ! -f hosts/roudix/hardware-configuration.nix ]; then
             cat > hosts/roudix/hardware-configuration.nix << 'EOF'
           { config, lib, pkgs, modulesPath, ... }:
@@ -92,11 +103,21 @@ jobs:
           }
           EOF
             git add -N -f hosts/roudix/hardware-configuration.nix
-            echo "created=true" >> "$GITHUB_OUTPUT"
-            echo "Stub hardware-configuration.nix created and registered (intent-to-add) for CI build only."
-          else
-            echo "created=false" >> "$GITHUB_OUTPUT"
+            CREATED="$CREATED hosts/roudix/hardware-configuration.nix"
+            echo "Created CI-only stub: hosts/roudix/hardware-configuration.nix"
           fi
+
+          # flake.nix imports this directly as a plain string: `username = import ./hosts/roudix/username.nix;`
+          if [ ! -f hosts/roudix/username.nix ]; then
+            cat > hosts/roudix/username.nix << 'EOF'
+          "ci-runner"
+          EOF
+            git add -N -f hosts/roudix/username.nix
+            CREATED="$CREATED hosts/roudix/username.nix"
+            echo "Created CI-only stub: hosts/roudix/username.nix"
+          fi
+
+          echo "created_files=$CREATED" >> "$GITHUB_OUTPUT"
 
       # Hard gate: build the actual system closure before anything is
       # pushed. A failure here (bad merge, stale/broken input, whether from
@@ -110,14 +131,16 @@ jobs:
             --no-link \
             -L
 
-      # Clean up the CI-only stub immediately after it's done its job, and
-      # before anything is committed — belt-and-suspenders against it ever
-      # ending up in a pushed commit.
-      - name: Remove CI stub hardware-configuration.nix
-        if: steps.hw_stub.outputs.created == 'true'
+      # Clean up every CI-only stub immediately after it's done its job,
+      # and before anything is committed — belt-and-suspenders against any
+      # of them ever ending up in a pushed commit.
+      - name: Remove CI-only stubs for machine-local files
+        if: steps.local_stubs.outputs.created_files != ''
         run: |
-          git reset -- hosts/roudix/hardware-configuration.nix
-          rm -f hosts/roudix/hardware-configuration.nix
+          for f in ${{ steps.local_stubs.outputs.created_files }}; do
+            git reset -- "$f"
+            rm -f "$f"
+          done
 
       - name: Commit updated lock, if any
         run: |
