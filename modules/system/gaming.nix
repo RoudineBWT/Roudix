@@ -19,13 +19,11 @@ let
     GAME_PROFILE=roudix-gaming
     FALLBACK_PROFILE=balanced
 
-    # Debug : lancer avec ROUDIX_GAME_PERF_DEBUG=1 pour tracer chaque étape
-    # dans un fichier (Steam n'affiche jamais stdout/stderr des launch options).
+    # Log toujours actif (pas besoin de variable d'env dans les Launch Options,
+    # ça évite tout risque d'erreur d'ordre côté Steam).
     DEBUG_LOG="/tmp/roudix-game-performance.log"
     log() {
-        if [ -n "''${ROUDIX_GAME_PERF_DEBUG:-}" ]; then
-            echo "[$(date +%T)] $*" >> "$DEBUG_LOG"
-        fi
+        echo "[$(date +%T)] $*" >> "$DEBUG_LOG"
     }
 
     log "=== nouveau lancement, argv: $* ==="
@@ -200,8 +198,7 @@ in
     game-performance  # Wrapper tuned CPU performance — binaire : roudix-game-performance
                       # Steam Launch Options : /run/current-system/sw/bin/roudix-game-performance %command%
                       # (chemin complet requis : Steam n'hérite pas toujours du PATH à jour du profil courant)
-                      # Debug (fallback silencieux) : ROUDIX_GAME_PERF_DEBUG=1 /run/current-system/sw/bin/roudix-game-performance %command%
-                      #   -> log dans /tmp/roudix-game-performance.log
+                      # Log toujours écrit dans /tmp/roudix-game-performance.log (fallback silencieux)
     gamescope-wsi
     #millennium-steam
   ];
