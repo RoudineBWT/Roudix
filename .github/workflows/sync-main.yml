@@ -8,6 +8,9 @@ on:
 jobs:
   merge:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,10 +22,57 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Merge testing into main
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Save main's flake.lock (pre-merge)
+        run: cp flake.lock /tmp/flake.lock.main
+
+      # Merge locally first — nothing is pushed yet. If this conflicts or
+      # fails, the job stops here and main is untouched.
+      - name: Merge testing into main (local, not pushed yet)
         run: |
           git fetch origin testing
           git merge origin/testing --no-edit
+
+      # If testing already carried its own flake.lock changes (someone ran
+      # `nix flake update` themselves and tested it before merging), the
+      # merge above already brought that lock in — respect it instead of
+      # blindly re-updating on top of a lock the author deliberately pinned
+      # and validated. Only auto-update when the merge left the lock as it
+      # was on main.
+      - name: Check whether the merge already changed flake.lock
+        id: lock_status
+        run: |
+          if diff -q /tmp/flake.lock.main flake.lock > /dev/null; then
+            echo "changed_by_testing=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed_by_testing=true" >> "$GITHUB_OUTPUT"
+            echo "flake.lock was already updated on testing — skipping auto-update, using testing's lock as-is."
+          fi
+
+      - name: Update flake inputs (only if testing didn't already do it)
+        if: steps.lock_status.outputs.changed_by_testing == 'false'
+        run: nix flake update --accept-flake-config
+
+      # Hard gate: build the actual system closure before anything is
+      # pushed. A failure here (bad merge, stale/broken input, whether from
+      # testing's own lock or from our auto-update) stops the workflow —
+      # main is never left in a broken state for roudix.autoupdate machines
+      # to pick up unattended.
+      - name: Build NixOS configuration (validation gate)
+        run: |
+          nix build .#nixosConfigurations.roudix.config.system.build.toplevel \
+            --accept-flake-config \
+            --no-link \
+            -L
+
+      - name: Commit updated lock, if any
+        run: |
+          if ! git diff --quiet -- flake.lock; then
+            git add flake.lock
+            git commit -m "chore: nix flake update (auto, post-merge)"
+          fi
 
       - name: Push
         run: git push origin main
