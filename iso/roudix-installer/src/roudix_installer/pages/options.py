@@ -145,6 +145,40 @@ def _file_managers():
     ]
 
 
+def _editors():
+    return [
+        ("zed", L("Zed — rapide, moderne (recommandé)", "Zed — fast, modern (recommended)")),
+        ("vscode", "Visual Studio Code"),
+        ("neovim", "Neovim"),
+        (
+            "none",
+            L(
+                "Aucun — je gère mon propre éditeur (AppImage, Flatpak...)",
+                "None — I'll manage my own editor (AppImage, Flatpak...)",
+            ),
+        ),
+    ]
+
+
+def _desktop_integrations():
+    return [
+        (
+            "gnome",
+            L(
+                "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommandé)",
+                "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommended)",
+            ),
+        ),
+        (
+            "kde",
+            L(
+                "KWallet + xdg-desktop-portal-kde (utile si vous utilisez surtout des apps Qt/KDE)",
+                "KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)",
+            ),
+        ),
+    ]
+
+
 def _rgb_options():
     return [
         ("openlinkhub", "OpenLinkHub — Corsair (iCUE Link, Commander...)"),
@@ -177,86 +211,201 @@ def _matrix():
 def _timezones():
     return [
         ("Europe/Brussels", L("Belgique", "Belgium")),
-        ("Europe/Paris", L("France", "France")),
+        ("Europe/Paris", "France"),
         ("Europe/London", L("Royaume-Uni", "United Kingdom")),
         ("Europe/Amsterdam", L("Pays-Bas", "Netherlands")),
         ("Europe/Berlin", L("Allemagne", "Germany")),
+        ("Europe/Vienna", L("Autriche", "Austria")),
         ("Europe/Zurich", L("Suisse", "Switzerland")),
+        ("Europe/Luxembourg", "Luxembourg"),
         ("Europe/Madrid", L("Espagne", "Spain")),
+        ("Europe/Lisbon", "Portugal"),
         ("Europe/Rome", L("Italie", "Italy")),
         ("Europe/Warsaw", L("Pologne", "Poland")),
-        ("Europe/Lisbon", L("Portugal", "Portugal")),
+        ("Europe/Prague", L("République Tchèque", "Czech Republic")),
+        ("Europe/Bratislava", L("Slovaquie", "Slovakia")),
+        ("Europe/Budapest", L("Hongrie", "Hungary")),
+        ("Europe/Bucharest", L("Roumanie", "Romania")),
+        ("Europe/Sofia", L("Bulgarie", "Bulgaria")),
+        ("Europe/Athens", L("Grèce", "Greece")),
+        ("Europe/Helsinki", L("Finlande", "Finland")),
         ("Europe/Stockholm", L("Suède", "Sweden")),
         ("Europe/Oslo", L("Norvège", "Norway")),
         ("Europe/Copenhagen", L("Danemark", "Denmark")),
-        ("Europe/Helsinki", L("Finlande", "Finland")),
-        ("Europe/Athens", L("Grèce", "Greece")),
+        ("Europe/Tallinn", L("Estonie", "Estonia")),
+        ("Europe/Riga", L("Lettonie", "Latvia")),
+        ("Europe/Vilnius", L("Lituanie", "Lithuania")),
+        ("Europe/Kiev", "Ukraine"),
+        ("Europe/Moscow", L("Russie (Moscou)", "Russia (Moscow)")),
         ("Europe/Istanbul", L("Turquie", "Turkey")),
+        ("Atlantic/Reykjavik", L("Islande", "Iceland")),
         ("Africa/Casablanca", L("Maroc", "Morocco")),
+        ("Africa/Algiers", L("Algérie", "Algeria")),
+        ("Africa/Tunis", L("Tunisie", "Tunisia")),
         ("Africa/Cairo", L("Égypte", "Egypt")),
+        ("Africa/Johannesburg", L("Afrique du Sud", "South Africa")),
+        ("Africa/Lagos", L("Nigéria", "Nigeria")),
+        ("Africa/Nairobi", "Kenya"),
         ("America/New_York", L("États-Unis (Est)", "United States (East)")),
         ("America/Chicago", L("États-Unis (Centre)", "United States (Central)")),
+        ("America/Denver", L("États-Unis (Montagne)", "United States (Mountain)")),
         ("America/Los_Angeles", L("États-Unis (Ouest)", "United States (West)")),
+        ("America/Anchorage", L("États-Unis (Alaska)", "United States (Alaska)")),
+        ("Pacific/Honolulu", L("États-Unis (Hawaï)", "United States (Hawaii)")),
         ("America/Toronto", L("Canada (Est)", "Canada (East)")),
-        ("America/Sao_Paulo", L("Brésil", "Brazil")),
+        ("America/Vancouver", L("Canada (Ouest)", "Canada (West)")),
+        ("America/Mexico_City", L("Mexique", "Mexico")),
+        ("America/Bogota", L("Colombie", "Colombia")),
+        ("America/Lima", L("Pérou", "Peru")),
+        ("America/Santiago", L("Chili", "Chile")),
+        ("America/Buenos_Aires", L("Argentine", "Argentina")),
+        ("America/Sao_Paulo", L("Brésil (São Paulo)", "Brazil (São Paulo)")),
+        ("America/Caracas", "Venezuela"),
         ("Asia/Dubai", L("Émirats Arabes Unis", "United Arab Emirates")),
+        ("Asia/Riyadh", L("Arabie Saoudite", "Saudi Arabia")),
+        ("Asia/Jerusalem", L("Israël", "Israel")),
+        ("Asia/Beirut", L("Liban", "Lebanon")),
+        ("Asia/Baghdad", L("Irak", "Iraq")),
+        ("Asia/Tehran", "Iran"),
+        ("Asia/Karachi", "Pakistan"),
         ("Asia/Kolkata", L("Inde", "India")),
+        ("Asia/Dhaka", "Bangladesh"),
+        ("Asia/Colombo", "Sri Lanka"),
+        ("Asia/Kathmandu", L("Népal", "Nepal")),
+        ("Asia/Almaty", "Kazakhstan"),
+        ("Asia/Tashkent", L("Ouzbékistan", "Uzbekistan")),
+        ("Asia/Bangkok", L("Thaïlande", "Thailand")),
+        ("Asia/Ho_Chi_Minh", "Vietnam"),
+        ("Asia/Jakarta", L("Indonésie (Ouest)", "Indonesia (West)")),
+        ("Asia/Singapore", L("Singapour", "Singapore")),
+        ("Asia/Kuala_Lumpur", L("Malaisie", "Malaysia")),
+        ("Asia/Manila", "Philippines"),
         ("Asia/Shanghai", L("Chine", "China")),
-        ("Asia/Tokyo", L("Japon", "Japan")),
+        ("Asia/Hong_Kong", "Hong Kong"),
+        ("Asia/Taipei", L("Taïwan", "Taiwan")),
         ("Asia/Seoul", L("Corée du Sud", "South Korea")),
+        ("Asia/Tokyo", L("Japon", "Japan")),
+        ("Australia/Perth", L("Australie (Ouest)", "Australia (West)")),
+        ("Australia/Adelaide", L("Australie (Centre)", "Australia (Central)")),
         ("Australia/Sydney", L("Australie (Est)", "Australia (East)")),
         ("Pacific/Auckland", L("Nouvelle-Zélande", "New Zealand")),
+        ("Pacific/Fiji", L("Fidji", "Fiji")),
         ("UTC", "UTC"),
     ]
 
 
 def _locales():
     return [
+        ("en_US.UTF-8", "English (US)"),
+        ("en_GB.UTF-8", "English (UK)"),
         ("fr_BE.UTF-8", "Français (Belgique)"),
         ("fr_FR.UTF-8", "Français (France)"),
         ("fr_CH.UTF-8", "Français (Suisse)"),
-        ("en_US.UTF-8", "English (US)"),
-        ("en_GB.UTF-8", "English (UK)"),
         ("de_DE.UTF-8", "Deutsch (Deutschland)"),
+        ("de_AT.UTF-8", "Deutsch (Österreich)"),
+        ("de_CH.UTF-8", "Deutsch (Schweiz)"),
         ("nl_BE.UTF-8", "Nederlands (België)"),
         ("nl_NL.UTF-8", "Nederlands (Nederland)"),
         ("es_ES.UTF-8", "Español (España)"),
+        ("es_MX.UTF-8", "Español (México)"),
         ("pt_PT.UTF-8", "Português (Portugal)"),
+        ("pt_BR.UTF-8", "Português (Brasil)"),
         ("it_IT.UTF-8", "Italiano (Italia)"),
         ("pl_PL.UTF-8", "Polski (Polska)"),
         ("ru_RU.UTF-8", "Русский (Россия)"),
-        ("ja_JP.UTF-8", "日本語"),
-        ("zh_CN.UTF-8", "中文 (大陆)"),
-        ("ko_KR.UTF-8", "한국어"),
+        ("uk_UA.UTF-8", "Українська (Україна)"),
+        ("cs_CZ.UTF-8", "Čeština (Česká republika)"),
+        ("sk_SK.UTF-8", "Slovenčina (Slovensko)"),
+        ("hu_HU.UTF-8", "Magyar (Magyarország)"),
+        ("ro_RO.UTF-8", "Română (România)"),
+        ("tr_TR.UTF-8", "Türkçe (Türkiye)"),
+        ("ja_JP.UTF-8", "日本語 (日本)"),
+        ("zh_CN.UTF-8", "中文 (中国大陆)"),
+        ("zh_TW.UTF-8", "中文 (台灣)"),
+        ("ko_KR.UTF-8", "한국어 (대한민국)"),
+        ("ar_SA.UTF-8", "العربية (المملكة العربية السعودية)"),
+        ("he_IL.UTF-8", "עברית (ישראל)"),
+        ("hi_IN.UTF-8", "हिन्दी (भारत)"),
+        ("sv_SE.UTF-8", "Svenska (Sverige)"),
+        ("nb_NO.UTF-8", "Norsk bokmål (Norge)"),
+        ("da_DK.UTF-8", "Dansk (Danmark)"),
+        ("fi_FI.UTF-8", "Suomi (Suomi)"),
+        ("el_GR.UTF-8", "Ελληνικά (Ελλάδα)"),
         ("C.UTF-8", L("C (POSIX minimal)", "C (minimal POSIX)")),
     ]
 
 
 def _keymaps():
     return [
+        ("us", "English (US) QWERTY"),
+        ("us-acentos", L("English (US) International (touches mortes)", "English (US) International (dead keys)")),
+        ("uk", "English (UK) QWERTY"),
         ("be-latin1", L("Belge AZERTY", "Belgian AZERTY")),
         ("fr", L("Français AZERTY", "French AZERTY")),
         ("fr-latin9", L("Français AZERTY (latin9)", "French AZERTY (latin9)")),
-        ("us", "English (US) QWERTY"),
-        (
-            "us-acentos",
-            L(
-                "English (US) International (touches mortes)",
-                "English (US) International (dead keys)",
-            ),
-        ),
-        ("uk", "English (UK) QWERTY"),
+        ("fr_CH", L("Français Suisse QWERTZ", "Swiss French QWERTZ")),
         ("de", L("Allemand QWERTZ", "German QWERTZ")),
+        ("de-latin1", L("Allemand QWERTZ (latin1)", "German QWERTZ (latin1)")),
+        ("at", L("Autrichien QWERTZ", "Austrian QWERTZ")),
         ("ch", L("Suisse QWERTZ", "Swiss QWERTZ")),
         ("nl", L("Néerlandais QWERTY", "Dutch QWERTY")),
         ("es", L("Espagnol QWERTY", "Spanish QWERTY")),
+        ("es-cp850", L("Espagnol QWERTY (cp850)", "Spanish QWERTY (cp850)")),
+        ("pt-latin1", L("Portugais QWERTY (latin1)", "Portuguese QWERTY (latin1)")),
+        ("br-abnt2", L("Portugais Brésilien ABNT2", "Brazilian Portuguese ABNT2")),
         ("it", L("Italien QWERTY", "Italian QWERTY")),
-        ("pt-latin1", L("Portugais QWERTY", "Portuguese QWERTY")),
+        ("it-latin1", L("Italien QWERTY (latin1)", "Italian QWERTY (latin1)")),
         ("pl2", L("Polonais QWERTY", "Polish QWERTY")),
         ("ru", L("Russe", "Russian")),
+        ("ua", L("Ukrainien", "Ukrainian")),
+        ("cz-lat2", L("Tchèque QWERTY (latin2)", "Czech QWERTY (latin2)")),
+        ("sk-qwerty", L("Slovaque QWERTY", "Slovak QWERTY")),
+        ("hu", L("Hongrois QWERTY", "Hungarian QWERTY")),
+        ("ro", L("Roumain QWERTY", "Romanian QWERTY")),
+        ("trq", L("Turc Q", "Turkish Q")),
+        ("trf", L("Turc F", "Turkish F")),
         ("jp106", L("Japonais 106 touches", "Japanese 106-key")),
+        ("sv-latin1", L("Suédois QWERTY (latin1)", "Swedish QWERTY (latin1)")),
+        ("no-latin1", L("Norvégien QWERTY (latin1)", "Norwegian QWERTY (latin1)")),
+        ("dk-latin1", L("Danois QWERTY (latin1)", "Danish QWERTY (latin1)")),
+        ("fi-latin1", L("Finnois QWERTY (latin1)", "Finnish QWERTY (latin1)")),
+        ("gr", L("Grec", "Greek")),
+        ("il", L("Hébreu", "Hebrew")),
+        ("arabic", L("Arabe", "Arabic")),
         ("dvorak", "Dvorak (US)"),
+        ("dvorak-l", L("Dvorak gauche", "Dvorak left")),
+        ("dvorak-r", L("Dvorak droite", "Dvorak right")),
         ("colemak", "Colemak"),
+    ]
+
+
+def _gfx_keyboard_layouts():
+    """XKB layout:variant pairs for the graphical (Wayland) session —
+    niri/hyprland/mangowc/umbriel. Distinct from _keymaps() above, which
+    is the console/TTY-only keymap (different naming scheme entirely).
+    Value is "layout:variant" (variant may be empty), split back apart
+    in _validate() before writing roudix.keyboardLayout/Variant.
+    """
+    return [
+        ("us:intl", L("US International (touches mortes, recommandé)", "US International (dead keys, recommended)")),
+        ("us:", L("US Basique QWERTY (sans variante)", "US Basic QWERTY (no variant)")),
+        ("gb:", L("Britannique QWERTY", "British QWERTY")),
+        ("be:", L("Belge AZERTY", "Belgian AZERTY")),
+        ("fr:", L("Français AZERTY", "French AZERTY")),
+        ("fr:bepo", L("Français BÉPO", "French BÉPO")),
+        ("de:", L("Allemand QWERTZ", "German QWERTZ")),
+        ("ch:fr", L("Suisse (romand) QWERTZ", "Swiss French QWERTZ")),
+        ("ch:de", L("Suisse (allemand) QWERTZ", "Swiss German QWERTZ")),
+        ("nl:", L("Néerlandais QWERTY", "Dutch QWERTY")),
+        ("es:", L("Espagnol QWERTY", "Spanish QWERTY")),
+        ("it:", L("Italien QWERTY", "Italian QWERTY")),
+        ("pt:", L("Portugais QWERTY", "Portuguese QWERTY")),
+        ("pl:", L("Polonais QWERTY", "Polish QWERTY")),
+        ("ru:", L("Russe", "Russian")),
+        ("ua:", L("Ukrainien", "Ukrainian")),
+        ("jp:", L("Japonais", "Japanese")),
+        ("us:dvorak", L("Dvorak (US)", "Dvorak (US)")),
+        ("us:colemak", L("Colemak (US)", "Colemak (US)")),
     ]
 
 
@@ -454,11 +603,32 @@ class OptionsPage(Adw.NavigationPage):
             state.file_manager,
         )
         desktop_group.add(self.file_manager_row)
+
+        self.editor_row = self._combo(
+            L("Éditeur de code", "Code editor"),
+            _editors(),
+            state.editor,
+        )
+        desktop_group.add(self.editor_row)
+
+        self.desktop_integration_row = self._combo(
+            L(
+                "Trousseau / xdg-desktop-portal",
+                "Keyring / xdg-desktop-portal",
+            ),
+            _desktop_integrations(),
+            state.desktop_integration,
+        )
+        desktop_group.add(self.desktop_integration_row)
         box.append(desktop_group)
         self._sync_shell_row()
         self._sync_file_manager_row()
+        self._sync_desktop_integration_row()
         self.desktop_row.connect(
             "notify::selected", lambda *_: self._sync_file_manager_row()
+        )
+        self.desktop_row.connect(
+            "notify::selected", lambda *_: self._sync_desktop_integration_row()
         )
 
         # ── Système ──
@@ -487,6 +657,20 @@ class OptionsPage(Adw.NavigationPage):
         self.ananicy_row.set_active(state.ananicy_enable)
         sys_group.add(self.ananicy_row)
 
+        self.gaming_apps_rows = {}
+        for attr, title_fr, title_en, default in (
+            ("lutris", "Lutris", "Lutris", state.gaming_apps_lutris),
+            ("heroic", "Heroic Games Launcher (Epic/GOG/Amazon)", "Heroic Games Launcher (Epic/GOG/Amazon)", state.gaming_apps_heroic),
+            ("faugus", "Faugus Launcher", "Faugus Launcher", state.gaming_apps_faugus),
+            ("prismlauncher", "Prism Launcher (Minecraft)", "Prism Launcher (Minecraft)", state.gaming_apps_prismlauncher),
+            ("vintagestory", "Vintage Story", "Vintage Story", state.gaming_apps_vintagestory),
+            ("mangohud", "MangoHud (overlay de perfs en jeu)", "MangoHud (in-game perf overlay)", state.gaming_apps_mangohud),
+        ):
+            row = Adw.SwitchRow(title=L(title_fr, title_en))
+            row.set_active(default)
+            sys_group.add(row)
+            self.gaming_apps_rows[attr] = row
+
         self.mesa_git_row = Adw.SwitchRow(
             title=L(
                 "Mesa git (pilotes graphiques bleeding edge)",
@@ -512,6 +696,21 @@ class OptionsPage(Adw.NavigationPage):
             state.keymap,
         )
         sys_group.add(self.keymap_row)
+
+        _initial_gfx_value = (
+            f"{state.keyboard_layout}:{state.keyboard_variant}"
+            if state.keyboard_variant
+            else f"{state.keyboard_layout}:"
+        )
+        self.gfx_keyboard_row = self._combo(
+            L(
+                "Disposition clavier graphique (Wayland)",
+                "Graphical keyboard layout (Wayland)",
+            ),
+            _gfx_keyboard_layouts(),
+            _initial_gfx_value,
+        )
+        sys_group.add(self.gfx_keyboard_row)
         box.append(sys_group)
         self._sync_ananicy_row()
 
@@ -700,6 +899,14 @@ class OptionsPage(Adw.NavigationPage):
         desktop = self._selected_value(self.desktop_row)
         self.shell_row.set_visible(desktop in ("niri", "hyprland", "mangowc"))
 
+    def _sync_desktop_integration_row(self):
+        # GNOME/KDE manage their own keyring/portal stack — this option
+        # only matters for the "bare" compositors.
+        desktop = self._selected_value(self.desktop_row)
+        self.desktop_integration_row.set_visible(
+            desktop in ("niri", "hyprland", "mangowc")
+        )
+
     def _sync_file_manager_row(self):
         # GNOME/KDE have one obvious native file manager, so default to
         # it — but only ever nudge the selection, never lock the row:
@@ -728,6 +935,8 @@ class OptionsPage(Adw.NavigationPage):
 
     def _sync_ananicy_row(self):
         self.ananicy_row.set_visible(self.gaming_row.get_active())
+        for row in self.gaming_apps_rows.values():
+            row.set_visible(self.gaming_row.get_active())
 
     def _sync_autoupdate_row(self):
         self.autoupdate_interval_row.set_visible(self.autoupdate_row.get_active())
@@ -778,14 +987,24 @@ class OptionsPage(Adw.NavigationPage):
         s.default_shell = self._selected_value(self.default_shell_row)
         s.terminal = self._selected_value(self.terminal_row)
         s.file_manager = self._selected_value(self.file_manager_row)
+        s.editor = self._selected_value(self.editor_row)
+        s.desktop_integration = self._selected_value(self.desktop_integration_row)
 
         s.vm_guest = self.vm_guest_row.get_active()
         s.gaming = self.gaming_row.get_active()
         s.ananicy_enable = self.ananicy_row.get_active()
+        s.gaming_apps_lutris = self.gaming_apps_rows["lutris"].get_active()
+        s.gaming_apps_heroic = self.gaming_apps_rows["heroic"].get_active()
+        s.gaming_apps_faugus = self.gaming_apps_rows["faugus"].get_active()
+        s.gaming_apps_prismlauncher = self.gaming_apps_rows["prismlauncher"].get_active()
+        s.gaming_apps_vintagestory = self.gaming_apps_rows["vintagestory"].get_active()
+        s.gaming_apps_mangohud = self.gaming_apps_rows["mangohud"].get_active()
         s.mesa_use_git = self.mesa_git_row.get_active()
         s.timezone = self._selected_value(self.timezone_row)
         s.locale = self._selected_value(self.locale_row)
         s.keymap = self._selected_value(self.keymap_row)
+        gfx_value = self._selected_value(self.gfx_keyboard_row)
+        s.keyboard_layout, s.keyboard_variant = gfx_value.split(":", 1)
 
         s.rgb = self._selected_value(self.rgb_row)
         s.memory_rgb_enable = self.memory_rgb_row.get_active()

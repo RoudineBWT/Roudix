@@ -65,13 +65,29 @@ class InstallState:
     desktop: str = "niri"            # niri | gnome | kde | hyprland | mangowc
     desktop_shell: str = "noctalia"  # noctalia | dms | caelestia (only for niri/hyprland)
     default_shell: str = "fish"      # fish | bash
+    editor: str = "zed"              # roudix.editor — vscode | zed | neovim | none
+    desktop_integration: str = "gnome"  # roudix.desktopIntegration — gnome | kde
+                                         # only meaningful for niri/hyprland/mangowc
+                                         # (gnome/kde manage their own keyring/portal)
 
     # ── System behaviour ─────────────────────────────────────────────────
     vm_guest: bool = False
     gaming: bool = True
+    gaming_apps_lutris: bool = True         # roudix.gaming.apps.lutris.enable
+    gaming_apps_heroic: bool = True         # roudix.gaming.apps.heroic.enable
+    gaming_apps_faugus: bool = True         # roudix.gaming.apps.faugus.enable
+    gaming_apps_prismlauncher: bool = True  # roudix.gaming.apps.prismlauncher.enable
+    gaming_apps_vintagestory: bool = True   # roudix.gaming.apps.vintagestory.enable
+    gaming_apps_mangohud: bool = True       # roudix.gaming.apps.mangohud.enable
     timezone: str = "Europe/Brussels"
     locale: str = "fr_BE.UTF-8"
-    keymap: str = "be-latin1"
+    keymap: str = "be-latin1"         # console.keyMap — TTY only, before the graphical session
+    keyboard_layout: str = "us"       # roudix.keyboardLayout — XKB layout for the graphical
+                                       # (Wayland) session: niri/hyprland/mangowc/umbriel.
+                                       # Distinct from `keymap` above (console/TTY-only).
+                                       # No effect on gnome/kde.
+    keyboard_variant: str = "intl"    # roudix.keyboardVariant — XKB variant ("", "intl",
+                                       # "nodeadkeys", "bepo", "dvorak", "colemak"...)
 
     # ── RGB ───────────────────────────────────────────────────────────────
     rgb: str = "none"                # openlinkhub | openrgb | none

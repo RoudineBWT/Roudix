@@ -56,6 +56,21 @@ def _set_kernel_option(text: str, key: str, active: bool, value: str) -> str:
     return pattern.sub(repl, text)
 
 
+def _set_bool_option(text: str, key: str, value: bool) -> str:
+    """
+    Same idea as _set_kernel_option but for a bare true/false option that
+    ships commented-out in local.nix.example (e.g. roudix.gaming.apps.*) —
+    always uncomments the line and writes `value`.
+    """
+    pattern = re.compile(rf'^(\s*)(#\s*)?({re.escape(key)}\s*=\s*)(true|false)(.*)$', re.MULTILINE)
+
+    def repl(m):
+        indent, _hash, assign, _old, tail = m.group(1), m.group(2), m.group(3), m.group(4), m.group(5)
+        return f'{indent}{assign}{"true" if value else "false"}{tail}'
+
+    return pattern.sub(repl, text)
+
+
 def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = local_nix_text
     t = _sub_string(t, "roudix.rgb", state.rgb)
@@ -73,17 +88,28 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_list(t, "roudix.zen.sine.mods", state.zen_sine_mods)
     t = _sub_string(t, "roudix.desktop.type", state.desktop)
     t = _sub_string(t, "roudix.desktop.shell", state.desktop_shell)
+    t = _sub_string(t, "roudix.editor", state.editor)
+    t = _sub_string(t, "roudix.desktopIntegration", state.desktop_integration)
     t = _sub_string(t, "roudix.terminal", state.terminal)
     t = _sub_string(t, "roudix.fileManager", state.file_manager)
     t = _sub_string(t, "roudix.shell", state.default_shell)
     t = _sub_bool(t, "roudix.vmGuest.enable", state.vm_guest)
     t = _sub_bool(t, "roudix.gaming.enable", state.gaming)
     t = _sub_bool(t, "roudix.gaming.ananicy.enable", state.ananicy_enable)
+    if state.gaming:
+        t = _set_bool_option(t, "roudix.gaming.apps.lutris.enable", state.gaming_apps_lutris)
+        t = _set_bool_option(t, "roudix.gaming.apps.heroic.enable", state.gaming_apps_heroic)
+        t = _set_bool_option(t, "roudix.gaming.apps.faugus.enable", state.gaming_apps_faugus)
+        t = _set_bool_option(t, "roudix.gaming.apps.prismlauncher.enable", state.gaming_apps_prismlauncher)
+        t = _set_bool_option(t, "roudix.gaming.apps.vintagestory.enable", state.gaming_apps_vintagestory)
+        t = _set_bool_option(t, "roudix.gaming.apps.mangohud.enable", state.gaming_apps_mangohud)
     t = _sub_bool(t, "roudix.mesa.useGit", state.mesa_use_git)
     t = _sub_string(t, "time.timeZone", state.timezone)
     t = _sub_string(t, "environment.sessionVariables.TZ", state.timezone)
     t = _sub_string(t, "i18n.defaultLocale", state.locale)
     t = _sub_string(t, "console.keyMap", state.keymap)
+    t = _sub_string(t, "roudix.keyboardLayout", state.keyboard_layout)
+    t = _sub_string(t, "roudix.keyboardVariant", state.keyboard_variant)
     t = _sub_bool(t, "roudix.hosts.gtaFix.enable", state.gta_fix)
     t = _sub_bool(t, "roudix.flatpak.enable", state.flatpak)
     t = _sub_bool(t, "roudix.virtualization.enable", state.virtualization)

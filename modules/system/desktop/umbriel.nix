@@ -47,8 +47,8 @@ in
       greeter-args = "start-umbriel";
       settings = {
         keyboard = {
-          layout  = "us";
-          variant = "intl";
+          layout  = config.roudix.keyboardLayout;
+          variant = config.roudix.keyboardVariant;
         };
       };
     };
