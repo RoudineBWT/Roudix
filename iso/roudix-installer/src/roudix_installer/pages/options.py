@@ -216,6 +216,14 @@ def _matrix():
     ]
 
 
+def _discord():
+    return [
+        ("vencord", L("Vencord (préinstallé)", "Vencord (pre-installed)")),
+        ("vanilla", L("Vanilla (sans patch)", "Vanilla (no patch)")),
+        ("none", L("Aucun", "None")),
+    ]
+
+
 def _timezones():
     return [
         ("Europe/Brussels", L("Belgique", "Belgium")),
@@ -815,18 +823,10 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.matrix_row)
 
-        self.discord_vencord_row = Adw.SwitchRow(
-            title=L(
-                "Discord avec Vencord (préinstallé)",
-                "Discord with Vencord (pre-installed)",
-            ),
-            subtitle=L(
-                "Désactivez pour un Discord vanilla, sans patch client",
-                "Disable for vanilla Discord, no client patch",
-            ),
+        self.discord_row = self._combo(
+            L("Discord", "Discord"), _discord(), state.discord
         )
-        self.discord_vencord_row.set_active(state.discord_vencord)
-        extra_group.add(self.discord_vencord_row)
+        extra_group.add(self.discord_row)
 
         self.waydroid_row = Adw.SwitchRow(title="Waydroid (Android)")
         self.waydroid_row.set_active(state.waydroid_enable)
@@ -1045,7 +1045,7 @@ class OptionsPage(Adw.NavigationPage):
         s.autoupdate_interval = self.autoupdate_interval_row.get_text()
         s.bootloader = self._selected_value(self.bootloader_row)
         s.matrix_client = self._selected_value(self.matrix_row)
-        s.discord_vencord = self.discord_vencord_row.get_active()
+        s.discord = self._selected_value(self.discord_row)
         s.waydroid_enable = self.waydroid_row.get_active()
 
         self.on_next()

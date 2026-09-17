@@ -104,7 +104,7 @@ class InstallState:
     autoupdate_interval: str = "1h"
     bootloader: str = "limine"       # limine | systemd-boot
     matrix_client: str = "none"      # none | element | cinny
-    discord_vencord: bool = True     # roudix.discord.vencord.enable — false = Discord vanilla
+    discord: str = "vencord"         # roudix.discord — vencord | vanilla | none
     waydroid_enable: bool = False
     terminal: str = "ghostty"        # ghostty | kitty | alacritty | foot | wezterm
     file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo

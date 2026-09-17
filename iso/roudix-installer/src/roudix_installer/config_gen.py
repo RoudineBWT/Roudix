@@ -117,7 +117,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.autoupdate.interval", state.autoupdate_interval)
     t = _sub_string(t, "roudix.boot.bootloader", state.bootloader)
     t = _sub_string(t, "roudix.matrixClient", state.matrix_client)
-    t = _sub_bool(t, "roudix.discord.vencord.enable", state.discord_vencord)
+    t = _sub_string(t, "roudix.discord", state.discord)
     t = _sub_bool(t, "roudix.waydroid.enable", state.waydroid_enable)
 
     if state.rgb == "openlinkhub":

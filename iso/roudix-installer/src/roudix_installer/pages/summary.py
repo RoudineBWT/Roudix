@@ -82,7 +82,7 @@ class SummaryPage(Adw.NavigationPage):
             ])) or L("aucun", "none")),
             ("Bootloader", s.bootloader),
             ("Matrix", s.matrix_client),
-            ("Discord", "Vencord" if s.discord_vencord else L("vanilla", "vanilla")),
+            ("Discord", s.discord),
             ("Waydroid", L("activé", "enabled") if s.waydroid_enable else L("désactivé", "disabled")),
         ]
         for title, value in rows:

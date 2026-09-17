@@ -18,10 +18,13 @@ let
     none   = null;
   }.${matrixClient};
 
-  discordPackage =
-    if (osConfig.roudix.discord.vencord.enable or true)
-    then pkgs.discord.override { withVencord = true; }
-    else pkgs.discord;
+  discordType = osConfig.roudix.discord or "vencord";
+
+  discordPackage = {
+    vencord = pkgs.discord.override { withVencord = true; };
+    vanilla = pkgs.discord;
+    none    = null;
+  }.${discordType};
 
   terminalType = osConfig.roudix.terminal or "ghostty";
 
@@ -108,7 +111,6 @@ in
     nvd
     capitaine-cursors
     bibata-cursors
-    discordPackage
     inkscape
     gimp
     starship
@@ -126,6 +128,8 @@ in
   ])
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage
+  # Discord (optionnel)
+  ++ lib.optional (discordPackage != null) discordPackage
   # Note: Zen Browser is no longer added here as a raw package — see
   # `programs.zen-browser` below, driven by `osConfig.roudix.zen.*`.
   # Terminal choisi par l'utilisateur (roudix.terminal)

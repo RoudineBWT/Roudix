@@ -198,6 +198,12 @@ MATRIX_CLIENTS = [
     {"id": "none",    "name": "None",    "subtitle": "N'installer aucun client Matrix",     "icon": "none.svg"},
 ]
 
+DISCORD_OPTIONS = [
+    {"id": "vencord", "name": "Vencord", "subtitle": "Discord avec Vencord déjà patché (défaut)", "icon": "discord.svg"},
+    {"id": "vanilla", "name": "Vanilla", "subtitle": "Discord sans aucun patch client",            "icon": "discord.svg"},
+    {"id": "none",    "name": "None",    "subtitle": "N'installer aucun client Discord",           "icon": "none.svg"},
+]
+
 RGB_BACKENDS = [
     {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": "Pour périphériques compatibles Corsair iCUE", "icon": "openlinkhub.svg"},
     {"id": "openrgb",     "name": "OpenRGB",      "subtitle": "Support RGB multi-marques",                   "icon": "openrgb.svg"},
@@ -245,7 +251,6 @@ SYSTEM_TOGGLES = [
     {"id": "fastfetchNix",   "name": "Config fastfetch Roudix",          "key": "roudix.fastfetch.useNix",       "default": True},
     {"id": "fstrim",         "name": "Fstrim (TRIM auto pour SSD/NVMe)", "key": "roudix.fstrim.enable",          "default": True},
     {"id": "vmGuest",        "name": "Invité VM (QEMU/Spice agent)",     "key": "roudix.vmGuest.enable",         "default": False},
-    {"id": "discordVencord", "name": "Discord avec Vencord (sinon vanilla)", "key": "roudix.discord.vencord.enable", "default": True},
 ]
 
 
@@ -1063,6 +1068,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.matrix_selector = SelectorGroup("Matrix client", MATRIX_CLIENTS, current_matrix, dark)
         chat_page.append(self.matrix_selector)
 
+        current_discord = get_string_option("roudix.discord", "vencord")
+        self.discord_selector = SelectorGroup("Discord", DISCORD_OPTIONS, current_discord, dark)
+        chat_page.append(self.discord_selector)
+
         self.content_stack.add_named(chat_page, "chat")
 
         # ── "System" page: independent toggles + RGB backend ───────────────
@@ -1398,6 +1407,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_matrix = self.matrix_selector.selected_id
         matrix_changed = new_matrix != cur_matrix
 
+        # Discord
+        cur_discord = get_string_option("roudix.discord", "vencord")
+        new_discord = self.discord_selector.selected_id
+        discord_changed = new_discord != cur_discord
+
         # Interrupteurs système indépendants
         system_changes = _diff_bool_items(SYSTEM_TOGGLES, self.system_group.get_states())
 
@@ -1410,6 +1424,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     terminal_changed, browsers_changed, zen_changed, sine_changed,
                     zen_mods_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
+                    discord_changed,
                     system_changes, rgb_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed]):
             log.info("No changes detected — nothing to do.")
@@ -1444,6 +1459,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"File manager: <b>{cur_filemanager}</b> → <b>{new_filemanager}</b>")
         if matrix_changed:
             changes.append(f"Matrix client: <b>{cur_matrix}</b> → <b>{new_matrix}</b>")
+        if discord_changed:
+            changes.append(f"Discord: <b>{cur_discord}</b> → <b>{new_discord}</b>")
         if rgb_changed:
             changes.append(f"RGB backend: <b>{cur_rgb}</b> → <b>{new_rgb}</b>")
         if gaming_master_changed:
@@ -1469,6 +1486,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "login_shell_changed": login_shell_changed, "new_login_shell": new_login_shell,
             "filemanager_changed": filemanager_changed, "new_filemanager": new_filemanager,
             "matrix_changed": matrix_changed, "new_matrix": new_matrix,
+            "discord_changed": discord_changed, "new_discord": new_discord,
             "rgb_changed": rgb_changed, "new_rgb": new_rgb,
             "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
             "gaming_changes": gaming_changes,
@@ -1593,6 +1611,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing Matrix client config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["discord_changed"]:
+            result = set_string_option("roudix.discord", pending["new_discord"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing Discord config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 

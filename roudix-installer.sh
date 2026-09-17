@@ -982,8 +982,10 @@ pick "Matrix client:" MATRIX_CLIENT \
   "element|Element Desktop — full-featured Matrix client" \
   "cinny|Cinny — lightweight web-based Matrix client"
 
-pick_bool "Install Discord with Vencord already patched in?" DISCORD_VENCORD \
-  "Yes — Vencord (recommended)" "No — vanilla Discord"
+pick "Discord:" DISCORD \
+  "vencord|Discord with Vencord patched in (recommended)" \
+  "vanilla|Discord vanilla, no client patch" \
+  "none|Don't install Discord"
 
 pick_bool "Enable Waydroid? (Android container)" WAYDROID \
   "Yes" "No"
@@ -1040,7 +1042,7 @@ sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/rou
 sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.discord\.vencord\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.discord.vencord.enable = ${DISCORD_VENCORD}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.waydroid.enable = ${WAYDROID}/" hosts/roudix/local.nix
 
 if [[ "$RGB" == "openlinkhub" ]]; then
@@ -1102,7 +1104,7 @@ check_opt "roudix.virtualization.enable" "roudix\.virtualization\.enable[[:space
 check_opt "roudix.autoupdate.enable"   "roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*${AUTOUPDATE}"
 check_opt "roudix.boot.bootloader"     "roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"${BOOTLOADER}\""
 check_opt "roudix.matrixClient"        "roudix\.matrixClient[[:space:]]*=[[:space:]]*\"${MATRIX_CLIENT}\""
-check_opt "roudix.discord.vencord.enable" "roudix\.discord\.vencord\.enable[[:space:]]*=[[:space:]]*${DISCORD_VENCORD}"
+check_opt "roudix.discord" "roudix\.discord[[:space:]]*=[[:space:]]*\"${DISCORD}\""
 check_opt "roudix.waydroid.enable"     "roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*${WAYDROID}"
 if [[ "$RGB" == "openlinkhub" ]]; then
   check_opt "roudix.memory.enable" "roudix\.memory\.enable[[:space:]]*=[[:space:]]*${MEMORY_ENABLE}"
@@ -1153,7 +1155,7 @@ echo -e "
   ${BOLD}Auto-update   :${NC} $AUTOUPDATE $([ "$AUTOUPDATE" == "true" ] && echo "(every $AUTOUPDATE_INTERVAL)")
   ${BOLD}Bootloader    :${NC} $BOOTLOADER
   ${BOLD}Matrix client :${NC} $MATRIX_CLIENT
-  ${BOLD}Discord       :${NC} $([ "$DISCORD_VENCORD" == "true" ] && echo "Vencord" || echo "vanilla")
+  ${BOLD}Discord       :${NC} ${DISCORD}
   ${BOLD}Waydroid      :${NC} $WAYDROID
   ${BOLD}Config dir    :${NC} $INSTALL_DIR
 "

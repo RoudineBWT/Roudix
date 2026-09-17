@@ -65,7 +65,7 @@
   roudix.mesa.useGit = false;  # false = mesa stable
   roudix.waydroid.enable = false;
   roudix.matrixClient = "element"; # "element", "cinny" ou "none"
-  roudix.discord.vencord.enable = true; # false = Discord vanilla (sans Vencord)
+  roudix.discord = "vencord"; # "vencord", "vanilla" ou "none"
   # ── Misc ──────────────────────────────────────────────────────────────────
   roudix.hosts.gtaFix.enable  = true;      # fix GTA Online to play with your friends but they need to block battleye telemetry in /etc/hosts and if they are on windows in C:\Windows\System32\drivers\etc\hosts
   # roudix.autoupdate.branch   = "main";

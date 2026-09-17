@@ -1,16 +1,17 @@
 { lib, ... }:
 {
-  # ── Discord : vanilla ou patché Vencord ──────────────────────────────────
+  # ── Discord : aucun, vanilla, ou patché Vencord ──────────────────────────
   # Lu côté home-manager (modules/home/common.nix) via osConfig — c'est là
   # que le paquet discord est réellement installé (home.packages), cette
-  # option ne fait que piloter QUEL paquet est choisi.
-  options.roudix.discord.vencord.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = true;
+  # option ne fait que piloter QUEL paquet est choisi (ou aucun).
+  options.roudix.discord = lib.mkOption {
+    type    = lib.types.enum [ "none" "vanilla" "vencord" ];
+    default = "vencord";
     description = ''
-      Si true (défaut), installe Discord avec Vencord déjà patché
-      (`discord.override { withVencord = true; }`). Si false, installe
-      Discord vanilla, sans aucun patch client.
+      "none"    : Discord n'est pas installé.
+      "vanilla" : Discord sans aucun patch client.
+      "vencord" : Discord avec Vencord déjà patché
+                  (`discord.override { withVencord = true; }`).
     '';
   };
 }
