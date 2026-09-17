@@ -5,6 +5,9 @@ let
                then dotfiles + "/mangowc-dms"
                else dotfiles + "/mangowc";
 
+  keyboardLayout = osConfig.roudix.keyboardLayout or "us";
+  keyboardVariant = osConfig.roudix.keyboardVariant or "intl";
+
   terminalCmd = osConfig.roudix.terminal or "ghostty";
   fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
   browserCmd = osConfig.roudix.browser.default or null;
@@ -39,6 +42,40 @@ in
       recursive = true;
     };
 
+    # input.conf est généré par Nix (au lieu d'être sourcé tel quel depuis
+    # le store) uniquement pour pouvoir y injecter roudix.keyboardLayout /
+    # roudix.keyboardVariant — le reste (souris, touchpad, répétition) est
+    # copié à l'identique du fichier statique du thème.
+    xdg.configFile."mango/generated-input.conf" = {
+      force = true;
+      text = ''
+        # ──────────────────────────────────────
+        # INPUT — KEYBOARD
+        # ──────────────────────────────────────
+        # Généré par Nix depuis roudix.keyboardLayout / roudix.keyboardVariant
+        xkb_rules_layout=${keyboardLayout}
+        xkb_rules_variant=${keyboardVariant}
+        numlockon=1
+        repeat_rate=25
+        repeat_delay=600
+
+        # ──────────────────────────────────────
+        # INPUT — SOURIS
+        # ──────────────────────────────────────
+        accel_profile=1
+        accel_speed=0.0
+
+        # ──────────────────────────────────────
+        # INPUT — TOUCHPAD
+        # ──────────────────────────────────────
+        tap_to_click=1
+        tap_and_drag=1
+        drag_lock=1
+        trackpad_natural_scrolling=1
+        disable_while_typing=1
+      '';
+    };
+
     # mango.conf est généré par Nix : chemins absolus vers le nix store
     # + source absolu vers user.conf pour éviter tout conflit avec le récursif.
     xdg.configFile."mango/config.conf" = {
@@ -47,7 +84,7 @@ in
         source = ${mangowcDir}/cfg/environment.conf
         source = ${mangowcDir}/cfg/appearance.conf
         source = ${mangowcDir}/cfg/animations.conf
-        source = ${mangowcDir}/cfg/input.conf
+        source = ${config.home.homeDirectory}/.config/mango/generated-input.conf
         source = ${mangowcDir}/cfg/layout.conf
         source = ${mangowcDir}/cfg/monitors.conf
         source = ${mangowcDir}/cfg/workspaces.conf

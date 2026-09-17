@@ -18,6 +18,14 @@ let
     none   = null;
   }.${matrixClient};
 
+  discordType = osConfig.roudix.discord or "vencord";
+
+  discordPackage = {
+    vencord = pkgs.discord.override { withVencord = true; };
+    vanilla = pkgs.discord;
+    none    = null;
+  }.${discordType};
+
   terminalType = osConfig.roudix.terminal or "ghostty";
 
   terminalPackage = {
@@ -29,6 +37,15 @@ let
     ptyxis    = pkgs.ptyxis;
     konsole   = pkgs.kdePackages.konsole;
   }.${terminalType};
+
+  editorType = osConfig.roudix.editor or "zed";
+
+  editorPackage = {
+    vscode  = pkgs.vscode;
+    zed     = pkgs.zed-editor;
+    neovim  = pkgs.neovim;
+    none    = null;
+  }.${editorType};
 in
 {
   home.username = username;
@@ -88,14 +105,12 @@ in
     # Common apps
     roudixSwitcher
     roudix-kernel-switcher
-    zed-editor
     btop
     ffmpeg
     nh
     nvd
     capitaine-cursors
     bibata-cursors
-    (discord.override { withVencord = true; })
     inkscape
     gimp
     starship
@@ -113,10 +128,14 @@ in
   ])
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage
+  # Discord (optionnel)
+  ++ lib.optional (discordPackage != null) discordPackage
   # Note: Zen Browser is no longer added here as a raw package — see
   # `programs.zen-browser` below, driven by `osConfig.roudix.zen.*`.
   # Terminal choisi par l'utilisateur (roudix.terminal)
   ++ [ terminalPackage ]
+  # Éditeur choisi par l'utilisateur (roudix.editor, "none" pour aucun)
+  ++ lib.optional (editorPackage != null) editorPackage
 ++ lib.optional (desktopType != "kde") pkgs.xdg-user-dirs-gtk;
 
        xdg.userDirs = {

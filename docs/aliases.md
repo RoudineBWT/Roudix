@@ -38,6 +38,12 @@ roudix-kernel-switch cachyos-bore
 # Nvidia (Chaotic-Nyx — smaller set, needed for the nvidia_cachyos binary cache):
 roudix-kernel-switch cachyos
 roudix-kernel-switch cachyos-lts
+# Plain nixpkgs kernels — available on both GPU paths, outside the CachyOS overlay
+# (on Nvidia these fall back to a locally-rebuilt Nvidia module, no nvidia_cachyos cache):
+roudix-kernel-switch zen
+roudix-kernel-switch nixpkgs-lts
+roudix-kernel-switch nixpkgs-latest
+roudix-kernel-switch nixpkgs-testing
 
 # Switch graphical shell (Niri, Hyprland & MangoWC only)
 roudix-shell-switch noctalia

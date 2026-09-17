@@ -3,6 +3,7 @@ let
   pkgs-stable = import inputs.nixpkgs-stable { system = pkgs.stdenv.hostPlatform; config.allowUnfree = true; };
   isKde = osConfig.roudix.desktop.type == "kde";
   isGaming = osConfig.roudix.gaming.enable;
+  apps = osConfig.roudix.gaming.apps;
   roudixPkgs = inputs.roudix-caches + "/pkgs";
   steamCompatTools = with pkgs; [
      proton-ge-bin
@@ -19,17 +20,22 @@ in
       ));
 
   # ── Gaming packages (user) ───────────────────────────────────────────────
-  home.packages = with pkgs; (if isGaming then [
-      (callPackage "${roudixPkgs}/heroic" {})
-      (callPackage "${roudixPkgs}/faugus" {})
-      (callPackage "${roudixPkgs}/prismlauncher/wrapped.nix" {
-        prismlauncher-unwrapped = callPackage "${roudixPkgs}/prismlauncher" {};
-      })
-      lutris
-      vintagestory
+  # Le socle (wine/protontricks-like/proton frontend) reste toujours là si
+  # roudix.gaming.enable ; chaque launcher/outil est individuellement
+  # débrayable via roudix.gaming.apps.<nom>.enable.
+  home.packages = with pkgs; (if isGaming then
+    [
       winetricks
       wineWow64Packages.staging
-      mangohud
       (if isKde then protonup-qt else protonplus)
-    ] else []);
+    ]
+    ++ lib.optional apps.heroic.enable (callPackage "${roudixPkgs}/heroic" {})
+    ++ lib.optional apps.faugus.enable (callPackage "${roudixPkgs}/faugus" {})
+    ++ lib.optional apps.prismlauncher.enable (callPackage "${roudixPkgs}/prismlauncher/wrapped.nix" {
+        prismlauncher-unwrapped = callPackage "${roudixPkgs}/prismlauncher" {};
+      })
+    ++ lib.optional apps.lutris.enable lutris
+    ++ lib.optional apps.vintagestory.enable vintagestory
+    ++ lib.optional apps.mangohud.enable mangohud
+  else []);
 }

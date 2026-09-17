@@ -139,8 +139,17 @@
     # plus dans ta traduction — utile pour un vrai plein cadre sans
     # dépendre du gap du workspace.
     "Mod+Shift+F" = "window-toggle-maximize-to-edges";
-    "Mod+Minus" = "window-modify-width:-0.1";
-    "Mod+Equal" = "window-modify-width:0.1";
+    # Fix (validate: "unknown action 'window-modify-width:...'") : l'action
+    # générique window-modify-width a été retirée (doc Actions à jour, vue le
+    # 17/09) au profit d'un vocabulaire "extent" partagé par les 3 layouts
+    # (scrolling/dwindle/master) + de variantes ancrées à un bord précis
+    # (window-modify-width-left/-right, window-modify-height-up/-down).
+    # window-modify-primary-extent est l'équivalent direct de l'ancien
+    # window-modify-width : ça redimensionne la colonne/lane selon l'axe
+    # principal du layout actif ("primary extent"), sans ancrage particulier
+    # — même comportement que ce que tu avais avant.
+    "Mod+Minus" = "window-modify-primary-extent:-0.1";
+    "Mod+Equal" = "window-modify-primary-extent:0.1";
     # Fix : center-column/center-visible-columns de niri ont enfin un
     # équivalent trouvé (column-center), + window-center pour les flottantes.
     "Mod+C" = "column-center";

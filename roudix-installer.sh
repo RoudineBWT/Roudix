@@ -104,6 +104,19 @@ set_kernel_option() {
   fi
 }
 
+set_bool_option() {
+  # set_bool_option <file> <key> <value:true|false>
+  # Same idea as set_kernel_option but for a bare true/false right-hand
+  # side (e.g. roudix.gaming.apps.lutris.enable), and always uncomments
+  # the line — used for options that ship commented-out in
+  # local.nix.example (so the module's own default applies until the
+  # installer explicitly picks a value).
+  local file="$1" key="$2" value="$3"
+  local escaped_key
+  escaped_key=$(printf '%s' "$key" | sed 's/[.[\*^$]/\\&/g')
+  sed -i -E "s|^([[:space:]]*)#?[[:space:]]*(${escaped_key}[[:space:]]*=[[:space:]]*)(true|false)|\1\2${value}|" "$file"
+}
+
 # ── Bootstrap: git + nix flakes ──────────────────────────────────────────────
 info "Bootstrapping environment (git + nix flakes)..."
 
@@ -178,7 +191,16 @@ HW_CONFIG_STDERR=$(mktemp)
 HW_CONFIG_FILE="hosts/roudix/hardware-configuration.nix"
 
 # Generate into /etc/nixos (default) then copy — avoids stdout truncation on btrfs
-nixos-generate-config 2>"$HW_CONFIG_STDERR" || true
+if ! nixos-generate-config 2>"$HW_CONFIG_STDERR"; then
+  warn "nixos-generate-config reported an error:"
+  cat "$HW_CONFIG_STDERR" >&2
+fi
+
+if [[ ! -f /etc/nixos/hardware-configuration.nix ]]; then
+  cat "$HW_CONFIG_STDERR" >&2
+  rm -f "$HW_CONFIG_STDERR"
+  error "hardware-configuration.nix was not generated — see the error above."
+fi
 cp /etc/nixos/hardware-configuration.nix "$HW_CONFIG_FILE"
 
 # ── btrfs subvolume auto-patch ────────────────────────────────────────────────
@@ -508,7 +530,11 @@ if [[ "$GPU" == "nvidia" ]]; then
     "cachyos|CachyOS par défaut (LTO + BORE scheduler)" \
     "cachyos-lts|CachyOS LTS — long-term support" \
     "cachyos-server|CachyOS Server — sans tuning desktop" \
-    "cachyos-hardened|CachyOS Hardened — sécurité renforcée"
+    "cachyos-hardened|CachyOS Hardened — sécurité renforcée" \
+    "zen|linux-zen (nixpkgs) — module nvidia rebuild local" \
+    "nixpkgs-lts|nixpkgs LTS par défaut — module nvidia rebuild local" \
+    "nixpkgs-latest|nixpkgs dernier stable mainline — module nvidia rebuild local" \
+    "nixpkgs-testing|nixpkgs testing (RC/mainline candidate) — module nvidia rebuild local"
 else
   pick "Kernel (xddxdd):" KERNEL \
     "cachyos-latest|Standard latest CachyOS kernel" \
@@ -518,7 +544,11 @@ else
     "cachyos-lts|Long-term support CachyOS kernel" \
     "cachyos-lts-v3|LTS + x86_64-v3 optimized" \
     "cachyos-lts-lto-v3|LTS + LTO + x86_64-v3 (stable + performance)" \
-    "cachyos-rc|Release candidate — bleeding edge, potentially unstable"
+    "cachyos-rc|Release candidate — bleeding edge, potentially unstable" \
+    "zen|linux-zen (nixpkgs) — outside the xddxdd overlay" \
+    "nixpkgs-lts|nixpkgs default LTS kernel — outside the xddxdd overlay" \
+    "nixpkgs-latest|nixpkgs latest mainline kernel — outside the xddxdd overlay" \
+    "nixpkgs-testing|nixpkgs testing (RC/mainline candidate) — outside the xddxdd overlay"
 fi
 
 pick "Browser:" BROWSER \
@@ -607,6 +637,19 @@ else
     "nemo|Nemo — Cinnamon, GNOME Files fork"
 fi
 
+pick "Default code editor:" EDITOR \
+  "zed|Zed — fast, modern (recommended)" \
+  "vscode|Visual Studio Code" \
+  "neovim|Neovim" \
+  "none|None — I'll manage my own editor (AppImage, Flatpak...)"
+
+DESKTOP_INTEGRATION="gnome"
+if [[ "$DE" == "niri" || "$DE" == "hyprland" || "$DE" == "mangowc" ]]; then
+  pick "Keyring / xdg-desktop-portal stack:" DESKTOP_INTEGRATION \
+    "gnome|GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommended)" \
+    "kde|KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)"
+fi
+
 # Auto-detect VM via systemd-detect-virt or DMI vendor
 DETECTED_VIRT=$(systemd-detect-virt 2>/dev/null || echo "none")
 if [[ "$DETECTED_VIRT" != "none" && "$DETECTED_VIRT" != "" ]]; then
@@ -621,9 +664,25 @@ pick_bool "Enable gaming packages? (Steam, Wine, Lutris...)" GAMING \
   "Yes" "No"
 
 ANANICY="false"
+GAMING_LUTRIS="true"
+GAMING_HEROIC="true"
+GAMING_FAUGUS="true"
+GAMING_PRISMLAUNCHER="true"
+GAMING_VINTAGESTORY="true"
+GAMING_MANGOHUD="true"
 if [[ "$GAMING" == "true" ]]; then
   pick_bool "Enable ananicy-cpp? (auto-nice scheduler tweaks for gaming/apps)" ANANICY \
     "Yes" "No — off by default"
+
+  read -rp "Customize which gaming apps get installed? (Lutris, Heroic, Faugus, Prism Launcher, Vintage Story, MangoHud — all enabled by default) [y/N]: " customize_gaming_apps
+  if [[ "$customize_gaming_apps" =~ ^[Yy]$ ]]; then
+    pick_bool "Install Lutris?" GAMING_LUTRIS "Yes" "No"
+    pick_bool "Install Heroic Games Launcher? (Epic/GOG/Amazon)" GAMING_HEROIC "Yes" "No"
+    pick_bool "Install Faugus Launcher?" GAMING_FAUGUS "Yes" "No"
+    pick_bool "Install Prism Launcher? (Minecraft)" GAMING_PRISMLAUNCHER "Yes" "No"
+    pick_bool "Install Vintage Story?" GAMING_VINTAGESTORY "Yes" "No"
+    pick_bool "Install MangoHud? (in-game perf overlay)" GAMING_MANGOHUD "Yes" "No"
+  fi
 fi
 
 pick_bool "Use mesa-git? (bleeding-edge Mesa drivers, AMD/Intel)" MESA_GIT \
@@ -752,6 +811,37 @@ pick "Keyboard layout (console):" KEYMAP \
   "dvorak-l|Dvorak gauche" \
   "dvorak-r|Dvorak droite" \
   "colemak|Colemak"
+
+# ── Graphical keyboard layout (XKB) ──────────────────────────────────────
+# Distinct from the console keymap above: this is the TTY-only layout,
+# used before the graphical session starts. Niri/Hyprland/MangoWC/Umbriel
+# use XKB layout codes (setxkbmap), not the console keymap names above —
+# that's why this is a separate question with a separate value format.
+# Ignored by GNOME/KDE (they manage their own layout via their settings
+# daemon).
+pick "Graphical keyboard layout (Wayland session — niri/hyprland/mangowc/umbriel):" GFX_KEYBOARD \
+  "us:intl|US International (dead keys, recommended)" \
+  "us:|US Basic QWERTY (no variant)" \
+  "gb:|British QWERTY" \
+  "be:|Belgian AZERTY" \
+  "fr:|French AZERTY" \
+  "fr:bepo|French BÉPO" \
+  "de:|German QWERTZ" \
+  "ch:fr|Swiss French QWERTZ" \
+  "ch:de|Swiss German QWERTZ" \
+  "nl:|Dutch QWERTY" \
+  "es:|Spanish QWERTY" \
+  "it:|Italian QWERTY" \
+  "pt:|Portuguese QWERTY" \
+  "pl:|Polish QWERTY" \
+  "ru:|Russian" \
+  "ua:|Ukrainian" \
+  "jp:|Japanese" \
+  "us:dvorak|Dvorak (US)" \
+  "us:colemak|Colemak (US)"
+
+GFX_KEYBOARD_LAYOUT="${GFX_KEYBOARD%%:*}"
+GFX_KEYBOARD_VARIANT="${GFX_KEYBOARD#*:}"
 
 pick "System locale:" LOCALE \
   "en_US.UTF-8|English (US)" \
@@ -892,6 +982,11 @@ pick "Matrix client:" MATRIX_CLIENT \
   "element|Element Desktop — full-featured Matrix client" \
   "cinny|Cinny — lightweight web-based Matrix client"
 
+pick "Discord:" DISCORD \
+  "vencord|Discord with Vencord patched in (recommended)" \
+  "vanilla|Discord vanilla, no client patch" \
+  "none|Don't install Discord"
+
 pick_bool "Enable Waydroid? (Android container)" WAYDROID \
   "Yes" "No"
 
@@ -916,6 +1011,10 @@ sed -i "s/roudix\.zen\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.mods = 
 sed -i "s/roudix\.zen\.sine\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.sine.mods = [$(nix_list_from_csv "$ZEN_SINE_MODS")]/" hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.desktop\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.shell = \"${DESKTOP_SHELL}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.editor[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.editor = \"${EDITOR}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.desktopIntegration[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktopIntegration = \"${DESKTOP_INTEGRATION}\"/" hosts/roudix/local.nix
+sed -i "s|roudix\.keyboardLayout[[:space:]]*=[[:space:]]*\"[^\"]*\"|roudix.keyboardLayout                = \"${GFX_KEYBOARD_LAYOUT}\"|" hosts/roudix/local.nix
+sed -i "s|roudix\.keyboardVariant[[:space:]]*=[[:space:]]*\"[^\"]*\"|roudix.keyboardVariant                = \"${GFX_KEYBOARD_VARIANT}\"|" hosts/roudix/local.nix
 sed -i "s/roudix\.terminal[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.terminal = \"${TERMINAL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.fileManager[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.fileManager = \"${FILE_MANAGER}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.shell = \"${SHELL_DEFAULT}\"/" hosts/roudix/local.nix
@@ -923,6 +1022,14 @@ sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix
 sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.undervolt\.only-amd\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.undervolt.only-amd.enable        = ${UNDERVOLT}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.gaming\.ananicy\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.ananicy.enable = ${ANANICY}/" hosts/roudix/local.nix
+if [[ "$GAMING" == "true" ]]; then
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.lutris.enable" "${GAMING_LUTRIS}"
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.heroic.enable" "${GAMING_HEROIC}"
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.faugus.enable" "${GAMING_FAUGUS}"
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.prismlauncher.enable" "${GAMING_PRISMLAUNCHER}"
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.vintagestory.enable" "${GAMING_VINTAGESTORY}"
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.mangohud.enable" "${GAMING_MANGOHUD}"
+fi
 sed -i -E "s/roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*(true|false)/roudix.mesa.useGit = ${MESA_GIT}/" hosts/roudix/local.nix
 sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
 sed -i "s|environment\.sessionVariables\.TZ[[:space:]]*=[[:space:]]*\"[^\"]*\"|environment.sessionVariables.TZ      = \"${TIMEZONE}\"|" hosts/roudix/local.nix
@@ -935,6 +1042,7 @@ sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/rou
 sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.waydroid.enable = ${WAYDROID}/" hosts/roudix/local.nix
 
 if [[ "$RGB" == "openlinkhub" ]]; then
@@ -944,7 +1052,71 @@ if [[ "$RGB" == "openlinkhub" ]]; then
   sed -i "s/roudix\.memory\.sku[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.sku    = \"${MEMORY_SKU}\"/"         hosts/roudix/local.nix
 fi
 
-success "local.nix configured."
+# ── Verify local.nix was actually written as expected ─────────────────────────
+# Every 'sed -i' above is a no-op (exit 0, file untouched) if its pattern
+# doesn't match — e.g. if local.nix.example's format ever drifts from what
+# these regexes expect. Re-check each option now so a silent mismatch is
+# reported immediately instead of being discovered at boot with the wrong
+# config applied.
+LOCAL_NIX="hosts/roudix/local.nix"
+VERIFY_FAILED=0
+
+check_opt() {
+  # check_opt <description> <grep -E pattern>
+  local desc="$1" pattern="$2"
+  if ! grep -qE "$pattern" "$LOCAL_NIX"; then
+    warn "Could not confirm '${desc}' was written to $(basename "$LOCAL_NIX") — check it manually."
+    VERIFY_FAILED=1
+  fi
+}
+
+check_opt "roudix.desktop.type"        "roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"${DE}\""
+check_opt "roudix.desktop.shell"       "roudix\.desktop\.shell[[:space:]]*=[[:space:]]*\"${DESKTOP_SHELL}\""
+check_opt "roudix.editor"              "roudix\.editor[[:space:]]*=[[:space:]]*\"${EDITOR}\""
+check_opt "roudix.desktopIntegration"  "roudix\.desktopIntegration[[:space:]]*=[[:space:]]*\"${DESKTOP_INTEGRATION}\""
+check_opt "roudix.keyboardLayout"      "roudix\.keyboardLayout[[:space:]]*=[[:space:]]*\"${GFX_KEYBOARD_LAYOUT}\""
+check_opt "roudix.keyboardVariant"     "roudix\.keyboardVariant[[:space:]]*=[[:space:]]*\"${GFX_KEYBOARD_VARIANT}\""
+check_opt "roudix.browsers"            "roudix\.browsers[[:space:]]*=[[:space:]]*\[\"${BROWSER}\"\]"
+check_opt "roudix.zen.enable"          "roudix\.zen\.enable[[:space:]]*=[[:space:]]*${ZEN}"
+check_opt "roudix.terminal"            "roudix\.terminal[[:space:]]*=[[:space:]]*\"${TERMINAL}\""
+check_opt "roudix.fileManager"         "roudix\.fileManager[[:space:]]*=[[:space:]]*\"${FILE_MANAGER}\""
+check_opt "roudix.shell"               "roudix\.shell[[:space:]]*=[[:space:]]*\"${SHELL_DEFAULT}\""
+check_opt "hardware.myGpu"             "hardware\.myGpu[[:space:]]*=[[:space:]]*\"${GPU}\""
+check_opt "hardware.myCpu"             "hardware\.myCpu[[:space:]]*=[[:space:]]*\"${CPU}\""
+check_opt "hardware.nvidiaLaptop"      "hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*${NVIDIA_LAPTOP}"
+check_opt "roudix.vmGuest.enable"      "roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*${VM_GUEST}"
+check_opt "roudix.gaming.enable"       "roudix\.gaming\.enable[[:space:]]*=[[:space:]]*${GAMING}"
+if [[ "$GAMING" == "true" ]]; then
+  check_opt "roudix.gaming.apps.lutris.enable"       "roudix\.gaming\.apps\.lutris\.enable[[:space:]]*=[[:space:]]*${GAMING_LUTRIS}"
+  check_opt "roudix.gaming.apps.heroic.enable"       "roudix\.gaming\.apps\.heroic\.enable[[:space:]]*=[[:space:]]*${GAMING_HEROIC}"
+  check_opt "roudix.gaming.apps.faugus.enable"       "roudix\.gaming\.apps\.faugus\.enable[[:space:]]*=[[:space:]]*${GAMING_FAUGUS}"
+  check_opt "roudix.gaming.apps.prismlauncher.enable" "roudix\.gaming\.apps\.prismlauncher\.enable[[:space:]]*=[[:space:]]*${GAMING_PRISMLAUNCHER}"
+  check_opt "roudix.gaming.apps.vintagestory.enable" "roudix\.gaming\.apps\.vintagestory\.enable[[:space:]]*=[[:space:]]*${GAMING_VINTAGESTORY}"
+  check_opt "roudix.gaming.apps.mangohud.enable"     "roudix\.gaming\.apps\.mangohud\.enable[[:space:]]*=[[:space:]]*${GAMING_MANGOHUD}"
+fi
+check_opt "roudix.mesa.useGit"         "roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*${MESA_GIT}"
+check_opt "time.timeZone"              "time\.timeZone[[:space:]]*=[[:space:]]*\"${TIMEZONE}\""
+check_opt "i18n.defaultLocale"         "i18n\.defaultLocale[[:space:]]*=[[:space:]]*\"${LOCALE}\""
+check_opt "console.keyMap"             "console\.keyMap[[:space:]]*=[[:space:]]*\"${KEYMAP}\""
+check_opt "roudix.hosts.gtaFix.enable" "roudix\.hosts\.gtaFix\.enable[[:space:]]*=[[:space:]]*${GTA_FIX}"
+check_opt "roudix.flatpak.enable"      "roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*${FLATPAK}"
+check_opt "roudix.virtualization.enable" "roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*${VIRTUALIZATION}"
+check_opt "roudix.autoupdate.enable"   "roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*${AUTOUPDATE}"
+check_opt "roudix.boot.bootloader"     "roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"${BOOTLOADER}\""
+check_opt "roudix.matrixClient"        "roudix\.matrixClient[[:space:]]*=[[:space:]]*\"${MATRIX_CLIENT}\""
+check_opt "roudix.discord" "roudix\.discord[[:space:]]*=[[:space:]]*\"${DISCORD}\""
+check_opt "roudix.waydroid.enable"     "roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*${WAYDROID}"
+if [[ "$RGB" == "openlinkhub" ]]; then
+  check_opt "roudix.memory.enable" "roudix\.memory\.enable[[:space:]]*=[[:space:]]*${MEMORY_ENABLE}"
+  check_opt "roudix.memory.type"   "roudix\.memory\.type[[:space:]]*=[[:space:]]*\"${MEMORY_TYPE}\""
+  check_opt "roudix.memory.smBus"  "roudix\.memory\.smBus[[:space:]]*=[[:space:]]*\"${MEMORY_SMBUS}\""
+fi
+
+if [[ "$VERIFY_FAILED" -eq 1 ]]; then
+  warn "One or more options above were NOT confirmed in local.nix — review the file before rebooting."
+else
+  success "local.nix configured and verified."
+fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo -e "\n${BOLD}══════════════════════════════════════${NC}"
@@ -962,23 +1134,28 @@ echo -e "
   ${BOLD}Sine (Zen)    :${NC} $([ "$ZEN" == "true" ] && echo "$ZEN_SINE" || echo "n/a")
   ${BOLD}Desktop       :${NC} $DE
   ${BOLD}Desktop shell :${NC} $DESKTOP_SHELL
+  ${BOLD}Editor        :${NC} $EDITOR
+  ${BOLD}Desktop integ.:${NC} $([[ "$DE" == "niri" || "$DE" == "hyprland" || "$DE" == "mangowc" ]] && echo "$DESKTOP_INTEGRATION" || echo "n/a ($DE)")
   ${BOLD}Shell         :${NC} $SHELL_DEFAULT
   ${BOLD}Terminal      :${NC} $TERMINAL
   ${BOLD}File manager  :${NC} $FILE_MANAGER
   ${BOLD}VM Guest      :${NC} $VM_GUEST
   ${BOLD}Gaming        :${NC} $GAMING
+  ${BOLD}Gaming apps   :${NC} $([ "$GAMING" == "true" ] && echo "Lutris:$GAMING_LUTRIS Heroic:$GAMING_HEROIC Faugus:$GAMING_FAUGUS Prism:$GAMING_PRISMLAUNCHER VintageStory:$GAMING_VINTAGESTORY MangoHud:$GAMING_MANGOHUD" || echo "n/a")
   ${BOLD}Ananicy       :${NC} $([ "$GAMING" == "true" ] && echo "$ANANICY" || echo "n/a")
   ${BOLD}Undervolt AMD :${NC} $([[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]] && echo "$UNDERVOLT" || echo "n/a")
   ${BOLD}Mesa-git      :${NC} $MESA_GIT
   ${BOLD}Timezone      :${NC} $TIMEZONE
   ${BOLD}Locale        :${NC} $LOCALE
   ${BOLD}Keymap        :${NC} $KEYMAP
+  ${BOLD}GFX Keyboard  :${NC} $GFX_KEYBOARD_LAYOUT${GFX_KEYBOARD_VARIANT:+ ($GFX_KEYBOARD_VARIANT)}
   ${BOLD}GTA Fix       :${NC} $GTA_FIX
   ${BOLD}Flatpak       :${NC} $FLATPAK
   ${BOLD}Virtualization:${NC} $VIRTUALIZATION
   ${BOLD}Auto-update   :${NC} $AUTOUPDATE $([ "$AUTOUPDATE" == "true" ] && echo "(every $AUTOUPDATE_INTERVAL)")
   ${BOLD}Bootloader    :${NC} $BOOTLOADER
   ${BOLD}Matrix client :${NC} $MATRIX_CLIENT
+  ${BOLD}Discord       :${NC} ${DISCORD}
   ${BOLD}Waydroid      :${NC} $WAYDROID
   ${BOLD}Config dir    :${NC} $INSTALL_DIR
 "
