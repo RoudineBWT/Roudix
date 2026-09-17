@@ -2,18 +2,8 @@
 let
   game-performance = pkgs.writeShellScriptBin "game-performance" ''
     #!${pkgs.runtimeShell}
-    # Wrapper "à la CachyOS" (game-performance de cachyos-settings), réécrit
-    # pour tuned-adm au lieu de powerprofilesctl, et sans dépendre de
-    # GameMode (incompatible avec ananicy-cpp chez nous).
-    #
-    # powerprofilesctl launch fonctionne en interne via un scope systemd
-    # (cgroup), qui n'est "terminé" que lorsque TOUS les process du cgroup
-    # ont quitté — pas juste le process de premier niveau. C'est ce qui
-    # manquait à la version précédente (trap bash sur la sortie de "$@") :
-    # Steam peut forker/détacher avant que le vrai jeu démarre, faisant
-    # revenir le profil en "balanced" après 2 secondes. On réplique donc le
-    # même mécanisme avec systemd-run --scope, qui bloque naturellement
-    # jusqu'à ce que le cgroup entier soit vide.
+    # Wrapper "à la Bazzite/CachyOS" pour tuned-adm, structure simple éprouvée
+    # (pas de systemd-run --scope : un trap classique suffit).
 
     TUNED_ADM=${pkgs.tuned}/bin/tuned-adm
     GAME_PROFILE=roudix-gaming
@@ -43,13 +33,11 @@ let
     # Set performance profile and launch the game
     "$TUNED_ADM" profile "$GAME_PROFILE"
 
-    # Scope systemd dédié : bloque jusqu'à ce que tout le cgroup se vide,
-    # pas juste le process de premier niveau (le "%command%" de Steam)
+    # Launch the game with or without systemd-inhibit
     if [ -n "''${GAME_PERFORMANCE_SCREENSAVER_ON:-}" ]; then
-        ${pkgs.systemd}/bin/systemd-run --user --scope --quiet -- "$@"
+        "$@"
     else
-        ${pkgs.systemd}/bin/systemd-inhibit --why "game-performance is running" -- \
-            ${pkgs.systemd}/bin/systemd-run --user --scope --quiet -- "$@"
+        ${pkgs.systemd}/bin/systemd-inhibit --why "game-performance is running" -- "$@"
     fi
 
     # Store exit code to return it properly
@@ -130,6 +118,15 @@ in
       args = [ "--prefer-output" "DP-1" ];
     };
     extraCompatPackages = steamCompatTools;
+    # Sans ça, roudix-game-performance échoue silencieusement dès qu'il est
+    # invoqué depuis les Launch Options : le sandbox FHS de Steam ne
+    # bind-mount qu'une liste blanche de fichiers /etc (pas /etc/tuned),
+    # donc tuned-adm plante avec un FileNotFoundError sur tuned-main.conf.
+    package = pkgs.steam.override {
+      extraBwrapArgs = [
+        "--ro-bind-try /etc/tuned /etc/tuned"
+      ];
+    };
   };
 
   # ── Gamescope ────────────────────────────────────────────────────────────
@@ -172,7 +169,9 @@ in
   # ── Paquets système gaming ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
-    game-performance  # Wrapper tuned CPU performance (usage: game-performance %command%)
+    game-performance  # Wrapper tuned CPU performance — binaire : roudix-game-performance
+                      # Steam Launch Options : /run/current-system/sw/bin/roudix-game-performance %command%
+                      # (chemin complet requis : Steam n'hérite pas toujours du PATH à jour du profil courant)
     gamescope-wsi
     #millennium-steam
   ];
