@@ -1,6 +1,6 @@
 { config, pkgs, lib, inputs, ... }:
 let
-  game-performance = pkgs.writeShellScriptBin "roudix-game-performance" ''
+  game-performance = pkgs.writeShellScriptBin "game-performance" ''
     #!${pkgs.runtimeShell}
     # Wrapper "à la Bazzite/CachyOS" pour tuned-adm, structure simple éprouvée
     # (pas de systemd-run --scope : un trap classique suffit).
@@ -118,6 +118,15 @@ in
       args = [ "--prefer-output" "DP-1" ];
     };
     extraCompatPackages = steamCompatTools;
+    # Sans ça, roudix-game-performance échoue silencieusement dès qu'il est
+    # invoqué depuis les Launch Options : le sandbox FHS de Steam ne
+    # bind-mount qu'une liste blanche de fichiers /etc (pas /etc/tuned),
+    # donc tuned-adm plante avec un FileNotFoundError sur tuned-main.conf.
+    package = pkgs.steam.override {
+      extraBwrapArgs = [
+        "--ro-bind-try /etc/tuned /etc/tuned"
+      ];
+    };
   };
 
   # ── Gamescope ────────────────────────────────────────────────────────────
