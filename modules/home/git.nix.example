@@ -1,0 +1,16 @@
+{ ... }:
+{
+  programs.git = {
+    enable = true;
+    settings = {
+      user.name = "yourname";
+      user.email = "your@email.com";
+      init.defaultBranch = "main";
+      # pull.rebase = false → `git pull` fait un merge classique (crée un
+      # commit de merge en cas de divergence) au lieu de rejouer tes commits
+      # locaux par-dessus (rebase). Plus simple et sans surprise pour du repo
+      # perso ; passe à `true` si tu préfères un historique linéaire.
+      pull.rebase = false;
+    };
+  };
+}

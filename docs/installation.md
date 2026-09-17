@@ -1,8 +1,31 @@
 # Installation
 
-> **Note:** Before to do this please install nixos with their [stable](https://nixos.org/download/) or [unstable](https://releases.nixos.org/nixos/unstable/nixos-26.05pre980183.4bd9165a9165) iso and then run the script or do the manual installation
+There are three ways to get Roudix running, depending on your starting point:
 
-## Automated Installation
+| Situation | Use |
+|-----------|-----|
+| Fresh machine, nothing installed yet | **Roudix ISO** — boots straight into a graphical installer (partitioning included) |
+| NixOS already installed (stock ISO, another distro's NixOS install, a VM…) | **`roudix-installer.sh`** — bootstraps the Roudix flake onto your existing install |
+| You want full control over every step, or the script doesn't cover your case | **Manual installation** (below) |
+
+## Option A — Roudix ISO (recommended for a fresh install)
+
+The ISO ships our own GTK4/libadwaita graphical installer (`roudix-installer`) on top of a live GNOME session, and handles disk partitioning for you via [disko](https://github.com/nix-community/disko) — you don't need a NixOS install beforehand.
+
+1. Grab the latest ISO: go to the repo's **Actions** tab → **💿 Build Roudix ISO** workflow → run it (`workflow_dispatch`) if no recent build is listed, then open the run and grab the download link posted in the job summary (the ISO is hosted on Cloudflare R2, not as a GitHub artifact).
+2. Flash it to a USB drive (e.g. `dd`, Ventoy, Rufus…) and boot from it.
+3. The installer window opens automatically on login (it re-execs itself with `sudo` — the live session needs root for disko/`nixos-install`). Walk through the pages: disk selection, kernel, desktop, browser, editor, Discord, gaming apps, locale, timezone, keyboard layout, RGB controller, and optional modules.
+4. On confirmation it partitions the disk (disko), copies the Roudix flake embedded in the ISO to `/mnt/etc/nixos`, and runs `nixos-install --flake /mnt/etc/nixos#roudix`.
+
+> **Note:** the boot menu also offers keyboard-layout specializations (US/BE/FR/DE/CH/UK) if your live session keyboard doesn't match your physical one — pick one before starting the installer.
+
+This path replaces the two steps below entirely (no need for `roudix-installer.sh` or the manual steps) — skip to whatever comes after installation once it reboots.
+
+## Option B — Already have NixOS installed
+
+If NixOS is already installed (via the official stable/unstable ISO, or any other means) and you just want to bootstrap Roudix on top of it, use the bash installer script instead:
+
+> **Note:** install NixOS first with the [stable](https://nixos.org/download/) or [unstable](https://releases.nixos.org/nixos/unstable/nixos-26.05pre980183.4bd9165a9165) ISO, then run the script below or follow the manual installation.
 
 **Download the roudix-installer script**
 
@@ -22,7 +45,7 @@ The installer handles everything interactively:
 
 ---
 
-## Manual Installation
+## Option C — Manual Installation
 
 > ⚠️ **Follow every step carefully before rebuilding.**
 
@@ -358,14 +381,31 @@ If you have no other OS to add, just leave `extraEntries` empty:
 
 ### 8. Update git config
 
-In `modules/home/git.nix`:
+`modules/home/git.nix` is gitignored (like `local.nix`) — copy the tracked template and fill in your identity:
+
+```bash
+cp modules/home/git.nix.example modules/home/git.nix
+```
 
 ```nix
-settings = {
-  user.name = "yourname";
-  user.email = "your@email.com";
-};
+{ ... }:
+{
+  programs.git = {
+    enable = true;
+    settings = {
+      user.name = "yourname";
+      user.email = "your@email.com";
+      init.defaultBranch = "main";
+      pull.rebase = false;
+    };
+  };
+}
 ```
+
+- `init.defaultBranch = "main"` — name used for the first branch when you `git init` a new repo (doesn't affect this repo's own branch, only ones you create yourself).
+- `pull.rebase = false` — what `git pull` does when your local branch and the remote have diverged: `false` merges (creates a merge commit, the default/simplest behavior), `true` rebases your local commits on top of the remote instead (linear history, but rewrites your commits — avoid it if you're not comfortable with rebase conflicts). `false` is the safer choice for a personal config repo.
+
+> If the file is missing, `common.nix` simply skips it — Home Manager won't configure git at all until you copy it, but nothing breaks.
 
 ### 9. Enable/disable optional modules
 
