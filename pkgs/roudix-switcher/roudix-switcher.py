@@ -245,6 +245,7 @@ SYSTEM_TOGGLES = [
     {"id": "fastfetchNix",   "name": "Config fastfetch Roudix",          "key": "roudix.fastfetch.useNix",       "default": True},
     {"id": "fstrim",         "name": "Fstrim (TRIM auto pour SSD/NVMe)", "key": "roudix.fstrim.enable",          "default": True},
     {"id": "vmGuest",        "name": "Invité VM (QEMU/Spice agent)",     "key": "roudix.vmGuest.enable",         "default": False},
+    {"id": "discordVencord", "name": "Discord avec Vencord (sinon vanilla)", "key": "roudix.discord.vencord.enable", "default": True},
 ]
 
 

@@ -31,6 +31,7 @@
     ../../modules/system/editor.nix
     ../../modules/system/desktop-integration.nix
     ../../modules/system/keyboard.nix
+    ../../modules/system/discord.nix
      inputs.brave-previews.nixosModules.default
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
   ++ lib.optional (builtins.pathExists ../../modules/system/gpu/undervolt.nix) ../../modules/system/gpu/undervolt.nix;

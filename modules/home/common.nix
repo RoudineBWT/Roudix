@@ -18,6 +18,11 @@ let
     none   = null;
   }.${matrixClient};
 
+  discordPackage =
+    if (osConfig.roudix.discord.vencord.enable or true)
+    then pkgs.discord.override { withVencord = true; }
+    else pkgs.discord;
+
   terminalType = osConfig.roudix.terminal or "ghostty";
 
   terminalPackage = {
@@ -103,7 +108,7 @@ in
     nvd
     capitaine-cursors
     bibata-cursors
-    (discord.override { withVencord = true; })
+    discordPackage
     inkscape
     gimp
     starship

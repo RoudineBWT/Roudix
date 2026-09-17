@@ -46,6 +46,10 @@ def _kernels():
             "cachyos-rc",
             L("Release candidate — bleeding edge", "Release candidate — bleeding edge"),
         ),
+        ("zen", L("linux-zen (nixpkgs) — hors overlay xddxdd", "linux-zen (nixpkgs) — outside the xddxdd overlay")),
+        ("nixpkgs-lts", L("nixpkgs LTS par défaut — hors overlay xddxdd", "nixpkgs default LTS — outside the xddxdd overlay")),
+        ("nixpkgs-latest", L("nixpkgs dernier stable mainline — hors overlay xddxdd", "nixpkgs latest mainline — outside the xddxdd overlay")),
+        ("nixpkgs-testing", L("nixpkgs testing (RC/mainline) — hors overlay xddxdd", "nixpkgs testing (RC/mainline) — outside the xddxdd overlay")),
     ]
 
 
@@ -58,6 +62,10 @@ def _kernels_chaotic():
         ("cachyos-lts", L("Support long terme", "Long-term support")),
         ("cachyos-server", L("Optimisé serveur (pas de tuning desktop)", "Server optimized (no desktop tuning)")),
         ("cachyos-hardened", L("Sécurité renforcée", "Security hardened")),
+        ("zen", L("linux-zen (nixpkgs) — module nvidia rebuild local", "linux-zen (nixpkgs) — locally-rebuilt nvidia module")),
+        ("nixpkgs-lts", L("nixpkgs LTS par défaut — module nvidia rebuild local", "nixpkgs default LTS — locally-rebuilt nvidia module")),
+        ("nixpkgs-latest", L("nixpkgs dernier stable mainline — module nvidia rebuild local", "nixpkgs latest mainline — locally-rebuilt nvidia module")),
+        ("nixpkgs-testing", L("nixpkgs testing (RC/mainline) — module nvidia rebuild local", "nixpkgs testing (RC/mainline) — locally-rebuilt nvidia module")),
     ]
 
 
@@ -807,6 +815,19 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.matrix_row)
 
+        self.discord_vencord_row = Adw.SwitchRow(
+            title=L(
+                "Discord avec Vencord (préinstallé)",
+                "Discord with Vencord (pre-installed)",
+            ),
+            subtitle=L(
+                "Désactivez pour un Discord vanilla, sans patch client",
+                "Disable for vanilla Discord, no client patch",
+            ),
+        )
+        self.discord_vencord_row.set_active(state.discord_vencord)
+        extra_group.add(self.discord_vencord_row)
+
         self.waydroid_row = Adw.SwitchRow(title="Waydroid (Android)")
         self.waydroid_row.set_active(state.waydroid_enable)
         extra_group.add(self.waydroid_row)
@@ -908,16 +929,21 @@ class OptionsPage(Adw.NavigationPage):
         )
 
     def _sync_file_manager_row(self):
-        # GNOME/KDE have one obvious native file manager, so default to
-        # it — but only ever nudge the selection, never lock the row:
-        # the combo stays fully editable either way. niri/hyprland/mangowc
-        # don't ship an opinionated file manager, so leave whatever the
-        # user already picked untouched when landing on one of those.
+        # GNOME/KDE have one obvious native file manager, so hide the
+        # question entirely and lock the value to it — matches
+        # roudix-installer.sh, which doesn't even ask on those desktops.
+        # niri/hyprland/mangowc don't ship an opinionated file manager, so
+        # show the row and leave whatever the user already picked
+        # untouched when landing on one of those.
         desktop = self._selected_value(self.desktop_row)
         if desktop == "gnome":
             self._set_combo_value(self.file_manager_row, "nautilus")
+            self.file_manager_row.set_visible(False)
         elif desktop == "kde":
             self._set_combo_value(self.file_manager_row, "dolphin")
+            self.file_manager_row.set_visible(False)
+        else:
+            self.file_manager_row.set_visible(True)
 
     def _sync_memory_rows(self):
         is_openlinkhub = self._selected_value(self.rgb_row) == "openlinkhub"
@@ -1019,6 +1045,7 @@ class OptionsPage(Adw.NavigationPage):
         s.autoupdate_interval = self.autoupdate_interval_row.get_text()
         s.bootloader = self._selected_value(self.bootloader_row)
         s.matrix_client = self._selected_value(self.matrix_row)
+        s.discord_vencord = self.discord_vencord_row.get_active()
         s.waydroid_enable = self.waydroid_row.get_active()
 
         self.on_next()

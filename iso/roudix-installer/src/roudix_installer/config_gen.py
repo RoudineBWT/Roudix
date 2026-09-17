@@ -117,6 +117,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.autoupdate.interval", state.autoupdate_interval)
     t = _sub_string(t, "roudix.boot.bootloader", state.bootloader)
     t = _sub_string(t, "roudix.matrixClient", state.matrix_client)
+    t = _sub_bool(t, "roudix.discord.vencord.enable", state.discord_vencord)
     t = _sub_bool(t, "roudix.waydroid.enable", state.waydroid_enable)
 
     if state.rgb == "openlinkhub":
@@ -139,7 +140,7 @@ def write_config(state: InstallState, config_root: Path):
     copied verbatim, boot.local.nix copied verbatim (EFI detection TODO).
     """
     hosts_dir = config_root / "hosts" / "roudix"
-    home_dir = config_root / "home"
+    home_dir = config_root / "modules" / "home"
     boot_local = config_root / "modules" / "system" / "boot.local.nix"
 
     (hosts_dir / "username.nix").write_text(f'"{state.username}"\n')
