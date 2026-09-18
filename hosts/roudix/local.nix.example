@@ -17,6 +17,13 @@
   #   "caelestia" — Caelestia shell  (github:caelestia-dots/shell)
   roudix.desktop.shell = "noctalia";
 
+  # ── Umbriel : scratchpads ────────────────────────────────────────────────
+  # Only used when roudix.desktop.type = "umbriel"
+  # true  — Discord/Telegram/Spotify live in named scratchpads (show/hide/
+  #         send-back with a shortcut: Mod+Alt+D/M, Mod+Alt+Shift+D/M)
+  # false — pinned to a fixed output/workspace/position (default)
+  roudix.umbriel.scratchpadApps = false;
+
   # ── Browser ───────────────────────────────────────────────────────────────
   roudix.browsers = ["helium" "brave-origin-beta" ];               # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable           = true;        # install Zen Browser (from zen-browser flake input)

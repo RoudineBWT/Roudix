@@ -9,6 +9,22 @@ in
 {
   imports = [ inputs.umbriel.nixosModules.default ];
 
+  # ── User-facing options ────────────────────────────────────────────────
+  options.roudix.umbriel = {
+    scratchpadApps = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Umbriel only. When true, chat apps (Discord/Telegram) and Spotify
+        live in named scratchpads (hidden by default, shown/hidden with a
+        shortcut, can be sent back in) instead of being pinned to a fixed
+        output/workspace/position. When false (default), they stay tiled
+        exactly as before — set this in local.nix if you want the
+        scratchpad workflow instead.
+      '';
+    };
+  };
+
   config = lib.mkIf isUmbriel {
     # ── Compositeur ────────────────────────────────────────────────────
     # inputs.umbriel = { url = "github:noctalia-dev/umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };

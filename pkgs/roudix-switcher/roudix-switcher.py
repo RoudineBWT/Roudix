@@ -810,24 +810,35 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         # longue), même en affichant Login Shell — ce qui annulerait le
         # rétrécissement voulu ci-dessous.
         self.content_stack.set_vhomogeneous(False)
-        self.content_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+        # CROSSFADE force le Stack à garder, le temps de la transition, une
+        # taille égale au MAX des deux pages (ancienne + nouvelle) — et sur
+        # certaines versions de GTK4 cette taille "gonflée" reste collée
+        # après la transition au lieu de redescendre à la hauteur réelle de
+        # la page affichée. C'est ce qui crée la grande zone vide sous une
+        # page courte (Browser, Gaming...) une fois qu'on est passé par une
+        # page plus longue (System). NONE évite complètement le problème :
+        # chaque page est mesurée pour elle-même, sans jamais retenir la
+        # taille d'une page précédente.
+        self.content_stack.set_transition_type(Gtk.StackTransitionType.NONE)
 
         content_scroll = Gtk.ScrolledWindow()
         content_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         content_scroll.set_hexpand(True)
-        # Se dimensionner sur la hauteur naturelle de la page affichée (donc
-        # pas de scrollbar ni de grand vide pour 2 options), et ne se
-        # transformer en zone défilante qu'au-delà de ce plafond (pages
-        # longues comme Browser ou System).
-        content_scroll.set_propagate_natural_height(True)
-        content_scroll.set_max_content_height(480)
-        content_scroll.set_vexpand(False)
-        content_scroll.set_valign(Gtk.Align.START)
+        # Occuper tout l'espace vertical réellement disponible dans la
+        # fenêtre (comme la sidebar juste à côté) plutôt qu'un plafond fixe
+        # arbitraire (480px) : sur une fenêtre agrandie/maximisée, ce
+        # plafond laissait un grand vide non rempli en dessous de tout le
+        # panneau. Avec vexpand + FILL, le panneau (sidebar + options)
+        # utilise toute la hauteur disponible ; AUTOMATIC ne fait apparaître
+        # une scrollbar que si le contenu d'une page dépasse cette hauteur.
+        content_scroll.set_vexpand(True)
+        content_scroll.set_valign(Gtk.Align.FILL)
         # Fond opaque du thème, pour que la zone sous une page courte ne
         # laisse pas transparaître le fond flouté de la fenêtre.
         content_scroll.add_css_class("roudix-content-bg")
         content_scroll.set_child(self.content_stack)
         split_row.append(content_scroll)
+        self.content_scroll = content_scroll
 
         main_box.append(split_row)
 
@@ -860,6 +871,32 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         )
         self.shell_selector.set_visible(current_de in SHELL_SUPPORTED_DE)
         desktop_page.append(self.shell_selector)
+
+        # roudix.umbriel.scratchpadApps (modules/system/desktop/umbriel.nix) —
+        # Umbriel uniquement : bascule les apps de chat/Spotify entre tuilage
+        # fixe (false, défaut) et scratchpads nommés (true).
+        self.scratchpad_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self.scratchpad_row.set_margin_top(8)
+        scratchpad_label = Gtk.Label(label="Umbriel scratchpad apps", halign=Gtk.Align.START)
+        scratchpad_label.set_hexpand(True)
+        self.scratchpad_switch = Gtk.Switch()
+        self.scratchpad_switch.set_valign(Gtk.Align.CENTER)
+        self.scratchpad_switch.set_active(get_bool_option("roudix.umbriel.scratchpadApps", False))
+        self.scratchpad_row.append(scratchpad_label)
+        self.scratchpad_row.append(self.scratchpad_switch)
+        self.scratchpad_row.set_visible(current_de in UMBRIEL_SUPPORTED_DE)
+        desktop_page.append(self.scratchpad_row)
+
+        self.scratchpad_note = Gtk.Label(
+            label="Umbriel only — Discord/Telegram and Spotify live in named "
+                  "scratchpads (shown/hidden with a shortcut) instead of "
+                  "staying tiled on a fixed output/workspace.",
+        )
+        self.scratchpad_note.add_css_class("dim-label")
+        self.scratchpad_note.set_wrap(True)
+        self.scratchpad_note.set_halign(Gtk.Align.START)
+        self.scratchpad_note.set_visible(current_de in UMBRIEL_SUPPORTED_DE)
+        desktop_page.append(self.scratchpad_note)
 
         self.content_stack.add_named(desktop_page, "desktop")
 
@@ -1097,11 +1134,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         system_page.set_margin_end(16)
         system_page.set_margin_bottom(16)
 
+        # roudix.undervolt.only-amd.enable (undervolt.nix) force
+        # amdgpu.ppfeaturemask, sans rapport avec Nvidia/Intel — inutile de
+        # proposer ce switch sur une machine dont hardware.myGpu n'est pas
+        # "amd"/"amd-legacy" (voir hosts/roudix/local.nix).
+        current_gpu = get_string_option("hardware.myGpu", "amd")
+        self.system_toggles = [
+            t for t in SYSTEM_TOGGLES
+            if t["id"] != "undervoltAmd" or current_gpu in ("amd", "amd-legacy")
+        ]
         system_current = {
             t["id"]: get_bool_option(t["key"], t["default"], path=t.get("file", CONFIG_FILE))
-            for t in SYSTEM_TOGGLES
+            for t in self.system_toggles
         }
-        self.system_group = ToggleListGroup("Toggles", SYSTEM_TOGGLES, system_current)
+        self.system_group = ToggleListGroup("Toggles", self.system_toggles, system_current)
         system_page.append(self.system_group)
 
         current_rgb = get_string_option("roudix.rgb", "none")
@@ -1146,8 +1192,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._update_filemanager_visibility(current_de)
 
         # ── Integrated terminal ───────────────────────────────────────────
-        term_frame = Gtk.Frame()
-        term_frame.add_css_class("card")
+        # Caché par défaut : tant qu'aucun rebuild n'est en cours, ce cadre
+        # ne sert à rien et ne fait que réserver de la place inutilement
+        # sous les options (le bloc vide que tu vois). Il n'est révélé que
+        # lorsqu'un rebuild démarre réellement (voir on_apply).
+        self.term_frame = Gtk.Frame()
+        self.term_frame.add_css_class("card")
+        self.term_frame.set_visible(False)
+        term_frame = self.term_frame
 
         term_scroll = Gtk.ScrolledWindow()
         term_scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
@@ -1281,6 +1333,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if row is None:
             return
         self.content_stack.set_visible_child_name(row.category_id)
+        # Filet de sécurité : force le ScrolledWindow à se re-mesurer sur la
+        # page nouvellement affichée plutôt que de garder l'allocation
+        # (potentiellement plus grande) de la page précédente.
+        self.content_scroll.queue_resize()
 
     def _on_gaming_master_toggled(self, sw, _param):
         active = sw.get_active()
@@ -1320,6 +1376,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.shell_selector.set_visible(visible)
         self._update_integration_visibility(new_de)
         self._update_filemanager_visibility(new_de)
+
+        umbriel_visible = new_de in UMBRIEL_SUPPORTED_DE
+        self.scratchpad_row.set_visible(umbriel_visible)
+        self.scratchpad_note.set_visible(umbriel_visible)
 
         if not visible:
             return
@@ -1387,6 +1447,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_zen = self.zen_switch.get_active()
         zen_changed = new_zen != cur_zen
 
+        # roudix.umbriel.scratchpadApps — n'a de sens que sous Umbriel, mais
+        # rien n'empêche de lire/écrire le switch même caché (il reste à son
+        # état précédent tant qu'on ne le montre pas).
+        cur_scratchpad = get_bool_option("roudix.umbriel.scratchpadApps", False)
+        new_scratchpad = self.scratchpad_switch.get_active()
+        scratchpad_changed = new_scratchpad != cur_scratchpad
+
         cur_sine = get_bool_option("roudix.zen.sine.enable", False)
         new_sine = self.sine_switch.get_active()
         sine_changed = new_sine != cur_sine
@@ -1432,7 +1499,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         discord_changed = new_discord != cur_discord
 
         # Interrupteurs système indépendants
-        system_changes = _diff_bool_items(SYSTEM_TOGGLES, self.system_group.get_states())
+        system_changes = _diff_bool_items(self.system_toggles, self.system_group.get_states())
 
         # Backend RGB
         cur_rgb = get_string_option("roudix.rgb", "none")
@@ -1441,7 +1508,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
                     terminal_changed, browsers_changed, zen_changed, sine_changed,
-                    zen_mods_changed,
+                    zen_mods_changed, scratchpad_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
                     discord_changed,
                     system_changes, rgb_changed,
@@ -1472,6 +1539,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"Sine mod loader: <b>{'enabled' if new_sine else 'disabled'}</b>")
         if zen_mods_changed:
             changes.append(f"Zen mods: <b>{', '.join(new_zen_mods) or 'none'}</b>")
+        if scratchpad_changed:
+            changes.append(f"Umbriel scratchpad apps: <b>{'enabled' if new_scratchpad else 'disabled'}</b>")
         if login_shell_changed:
             changes.append(f"Login shell: <b>{cur_login_shell}</b> → <b>{new_login_shell}</b>")
         if filemanager_changed:
@@ -1502,6 +1571,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "zen_changed": zen_changed, "new_zen": new_zen,
             "sine_changed": sine_changed, "new_sine": new_sine,
             "zen_mods_changed": zen_mods_changed, "new_zen_mods": new_zen_mods, "zen_mods_key": zen_mods_key,
+            "scratchpad_changed": scratchpad_changed, "new_scratchpad": new_scratchpad,
             "login_shell_changed": login_shell_changed, "new_login_shell": new_login_shell,
             "filemanager_changed": filemanager_changed, "new_filemanager": new_filemanager,
             "matrix_changed": matrix_changed, "new_matrix": new_matrix,
@@ -1522,6 +1592,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "Apply at next boot just prepares the new generation — nothing "
             "changes until you restart."
         )
+        # body_changes contient du markup Pango (<b>...</b>) pour mettre en
+        # valeur les valeurs qui changent — sans ça, AlertDialog affiche les
+        # balises telles quelles au lieu de les interpréter.
+        dialog.set_body_use_markup(True)
         dialog.add_response("cancel", "Cancel")
         dialog.add_response("boot", "Apply at Next Boot")
         dialog.add_response("switch", "Apply Now")
@@ -1609,6 +1683,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 )
                 return
 
+        if pending["scratchpad_changed"]:
+            result = set_bool_option("roudix.umbriel.scratchpadApps", pending["new_scratchpad"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing Umbriel scratchpad config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
         if pending["login_shell_changed"]:
             result = set_string_option("roudix.shell", pending["new_login_shell"])
             if result is not True:
@@ -1682,6 +1764,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 return
 
         self.status.set_markup("")
+        GLib.idle_add(self.term_frame.set_visible, True)
         GLib.idle_add(self._term_clear)
         GLib.idle_add(self._term_append, "=" * 50, "section")
         GLib.idle_add(self._term_append, "Important Notices:", "section")

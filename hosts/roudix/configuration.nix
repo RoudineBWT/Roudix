@@ -64,6 +64,10 @@
   roudix.mesa.useGit = lib.mkDefault false;  # false = mesa stable du nixpkgs
   roudix.waydroid.enable = lib.mkDefault false;
   roudix.matrixClient = lib.mkDefault "none"; # "element", "cinny" ou "none"
+  # Umbriel only : Discord/Telegram/Spotify en scratchpads nommés (montrer/
+  # cacher/renvoyer au raccourci) au lieu de tuilés à poste fixe. Voir
+  # modules/system/desktop/umbriel.nix pour la description complète.
+  roudix.umbriel.scratchpadApps = lib.mkDefault false;
   # ── Network ─────────────────────────────────────────────────────────────
   networking.hostName = "roudix";
 }
