@@ -810,7 +810,16 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         # longue), même en affichant Login Shell — ce qui annulerait le
         # rétrécissement voulu ci-dessous.
         self.content_stack.set_vhomogeneous(False)
-        self.content_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+        # CROSSFADE force le Stack à garder, le temps de la transition, une
+        # taille égale au MAX des deux pages (ancienne + nouvelle) — et sur
+        # certaines versions de GTK4 cette taille "gonflée" reste collée
+        # après la transition au lieu de redescendre à la hauteur réelle de
+        # la page affichée. C'est ce qui crée la grande zone vide sous une
+        # page courte (Browser, Gaming...) une fois qu'on est passé par une
+        # page plus longue (System). NONE évite complètement le problème :
+        # chaque page est mesurée pour elle-même, sans jamais retenir la
+        # taille d'une page précédente.
+        self.content_stack.set_transition_type(Gtk.StackTransitionType.NONE)
 
         content_scroll = Gtk.ScrolledWindow()
         content_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -828,6 +837,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         content_scroll.add_css_class("roudix-content-bg")
         content_scroll.set_child(self.content_stack)
         split_row.append(content_scroll)
+        self.content_scroll = content_scroll
 
         main_box.append(split_row)
 
@@ -1097,11 +1107,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         system_page.set_margin_end(16)
         system_page.set_margin_bottom(16)
 
+        # roudix.undervolt.only-amd.enable (undervolt.nix) force
+        # amdgpu.ppfeaturemask, sans rapport avec Nvidia/Intel — inutile de
+        # proposer ce switch sur une machine dont hardware.myGpu n'est pas
+        # "amd"/"amd-legacy" (voir hosts/roudix/local.nix).
+        current_gpu = get_string_option("hardware.myGpu", "amd")
+        self.system_toggles = [
+            t for t in SYSTEM_TOGGLES
+            if t["id"] != "undervoltAmd" or current_gpu in ("amd", "amd-legacy")
+        ]
         system_current = {
             t["id"]: get_bool_option(t["key"], t["default"], path=t.get("file", CONFIG_FILE))
-            for t in SYSTEM_TOGGLES
+            for t in self.system_toggles
         }
-        self.system_group = ToggleListGroup("Toggles", SYSTEM_TOGGLES, system_current)
+        self.system_group = ToggleListGroup("Toggles", self.system_toggles, system_current)
         system_page.append(self.system_group)
 
         current_rgb = get_string_option("roudix.rgb", "none")
@@ -1281,6 +1300,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if row is None:
             return
         self.content_stack.set_visible_child_name(row.category_id)
+        # Filet de sécurité : force le ScrolledWindow à se re-mesurer sur la
+        # page nouvellement affichée plutôt que de garder l'allocation
+        # (potentiellement plus grande) de la page précédente.
+        self.content_scroll.queue_resize()
 
     def _on_gaming_master_toggled(self, sw, _param):
         active = sw.get_active()
@@ -1432,7 +1455,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         discord_changed = new_discord != cur_discord
 
         # Interrupteurs système indépendants
-        system_changes = _diff_bool_items(SYSTEM_TOGGLES, self.system_group.get_states())
+        system_changes = _diff_bool_items(self.system_toggles, self.system_group.get_states())
 
         # Backend RGB
         cur_rgb = get_string_option("roudix.rgb", "none")
