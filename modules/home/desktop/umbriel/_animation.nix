@@ -18,15 +18,20 @@
       enabled = true;
       duration_ms = 150;
       curve = "easeout";
-      style = "popin";
-      scale = 0.85;
+      style = "none"; # shader remplace popin/scale ci-dessous
+      # "${...}" force la coercition path → string : Nix copie le .glsl dans
+      # le store et umbriel reçoit un chemin absolu tout fait (pas de
+      # xdg.configFile à maintenir en plus, pas de résolution relative à
+      # ~/.config/umbriel/ à garder en tête).
+      shader = "${./_shaders/windows-in.glsl}";
     };
 
     windows_out = {
       enabled = true;
       duration_ms = 150;
       curve = "easeout";
-      style = "fade";
+      style = "fade"; # ignoré tant que shader est renseigné, gardé en fallback
+      shader = "${./_shaders/windows-out.glsl}";
     };
 
     windows_move = {
@@ -47,12 +52,14 @@
       curve = "easeout";
     };
 
-    # Pour le jour où tu utilises les scratchpads (voir _binds.nix) :
-    # petit fondu + assombrissement du fond, sans forcer de taille/état.
+    # S'applique aux 3 scratchpads nommés (misc/communication/music, voir
+    # _binds.nix et _rules.nix) : petit fondu + assombrissement du fond,
+    # sans forcer de taille/état.
     scratchpad = {
       enabled = true;
       duration_ms = 200;
       curve = "easeout";
+      shader = "${./_shaders/scratchpad.glsl}"; # slide+fade, cf. _shaders/scratchpad.glsl
       dim = 0.5;
       blur = true;
       scale = 0.0;        # 0 = garde la géométrie mémorisée de la fenêtre

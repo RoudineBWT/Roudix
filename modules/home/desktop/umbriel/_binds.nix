@@ -182,13 +182,27 @@
     "Mod+O" = { action = "overview-toggle"; repeat = false; };
 
     # ─── Scratchpad ───
-    # Fonctionnalité Umbriel sans équivalent niri, absente de ta config
-    # d'origine. Bindings inspirés de la config packagée par défaut, avec
-    # Mod+Tab laissé libre pour workspace-previous ci-dessus.
-    "Mod+Shift+Space" = "window-move-to-scratchpad";
-    "Mod+Space" = "scratchpad-toggle";
-    "Mod+Ctrl+Space" = "window-restore-from-scratchpad";
-    "Mod+Alt+Space" = "scratchpad-focus-next";
+    # 3 scratchpads NOMMÉS (voir _rules.nix pour la déclaration + le
+    # default_scratchpad de Discord/Telegram/Spotify) : test de l'approche
+    # rebizzz/nixos. Déclarer un scratchpad nommé désactive l'implicite
+    # "default" pour de bon → toute action ci-dessous prend un suffixe.
+    #
+    # "misc" : ton ad hoc d'origine, inchangé dans l'usage — même 4 raccourcis
+    # qu'avant, juste avec ":misc" en plus.
+    "Mod+Shift+Space" = "window-move-to-scratchpad:misc";
+    "Mod+Space" = "scratchpad-toggle:misc";
+    "Mod+Ctrl+Space" = "window-restore-from-scratchpad:misc";
+    "Mod+Alt+Space" = "scratchpad-focus-next:misc";
+
+    # "communication" (Discord+Telegram) et "music" (Spotify) : un seul
+    # raccourci montre/cache tout ce que la règle y a rangé à l'ouverture.
+    # Restore les fait sortir DÉFINITIVEMENT (retour tuilé sur DP-3 comme
+    # avant), au cas où tu veux revenir au comportement d'origine pour l'un
+    # des deux sans tout défaire.
+    "Mod+Alt+D" = "scratchpad-toggle:communication";
+    "Mod+Alt+Shift+D" = "window-restore-from-scratchpad:communication";
+    "Mod+Alt+M" = "scratchpad-toggle:music";
+    "Mod+Alt+Shift+M" = "window-restore-from-scratchpad:music";
   };
   };
 }

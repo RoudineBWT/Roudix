@@ -25,23 +25,39 @@
 { ... }:
 {
   programs.umbriel.settings = {
+  # Test de l'approche rebizzz/nixos : Discord+Telegram → scratchpad
+  # "communication", Spotify → "music". "misc" reprend ton scratchpad ad
+  # hoc d'origine (voir _binds.nix). Déclarer NE SERAIT-CE QU'UN seul
+  # scratchpad nommé désactive l'implicite "default" pour tout le monde —
+  # d'où "misc" pour ne rien perdre du "j'envoie n'importe quoi, quand je
+  # veux".
+  scratchpad = [
+    { name = "misc"; }
+    { name = "communication"; }
+    { name = "music"; }
+  ];
+
   window_rule = [
     # Discord / Element : pas d'équivalent "largeur fixe en pixels tuilée"
     # côté Umbriel (default_width n'accepte qu'une fraction) → flottant
     # pour respecter la taille/position d'origine niri à l'identique.
     {
+      # Anciennement default_floating = false (tuilé) : un scratchpad flotte
+      # toujours, donc la clé n'a plus d'effet — retirée. La taille/position
+      # sont conservées pour que Discord+Telegram réapparaissent toujours
+      # côte à côte (top_left/top_right) une fois le scratchpad affiché.
       match.app_id = "^(discord|Element)$";
+      default_scratchpad = "communication";
       default_output = "DP-3";
       default_workspace = 1;
-      default_floating = false;
       default_floating_size_px = { width = 1316; height = 1011; };
       default_position = { x = 0; y = 0; anchor = "top_left"; };
     }
     {
       match.app_id = "^org\\.telegram\\.desktop$";
+      default_scratchpad = "communication";
       default_output = "DP-3";
       default_workspace = 1;
-      default_floating = false;
       default_floating_size_px = { width = 555; height = 1011; };
       default_position = { x = 0; y = 0; anchor = "top_right"; };
     }
@@ -211,10 +227,15 @@
       default_workspace = 5;
     }
     {
+      # Anciennement default_maximize = true (tuilé plein cadre) : retiré,
+      # un scratchpad flotte toujours. default_floating_size en fraction
+      # (plutôt que _px comme communication ci-dessus) pour rester correct
+      # si tu changes de résolution/moniteur un jour.
       match.app_id = "^Spotify$";
+      default_scratchpad = "music";
       default_output = "DP-3";
       default_workspace = 2;
-      default_maximize = true;
+      default_floating_size = { width = 0.8; height = 0.85; };
     }
     {
       match.app_id = "^(com\\.kde\\.easyeffects|com\\.github\\.wwmm\\.easyeffects)$";
