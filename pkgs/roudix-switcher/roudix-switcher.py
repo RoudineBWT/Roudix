@@ -1165,8 +1165,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._update_filemanager_visibility(current_de)
 
         # ── Integrated terminal ───────────────────────────────────────────
-        term_frame = Gtk.Frame()
-        term_frame.add_css_class("card")
+        # Caché par défaut : tant qu'aucun rebuild n'est en cours, ce cadre
+        # ne sert à rien et ne fait que réserver de la place inutilement
+        # sous les options (le bloc vide que tu vois). Il n'est révélé que
+        # lorsqu'un rebuild démarre réellement (voir on_apply).
+        self.term_frame = Gtk.Frame()
+        self.term_frame.add_css_class("card")
+        self.term_frame.set_visible(False)
+        term_frame = self.term_frame
 
         term_scroll = Gtk.ScrolledWindow()
         term_scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
@@ -1705,6 +1711,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 return
 
         self.status.set_markup("")
+        GLib.idle_add(self.term_frame.set_visible, True)
         GLib.idle_add(self._term_clear)
         GLib.idle_add(self._term_append, "=" * 50, "section")
         GLib.idle_add(self._term_append, "Important Notices:", "section")
