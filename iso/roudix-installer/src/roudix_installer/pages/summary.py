@@ -84,6 +84,15 @@ class SummaryPage(Adw.NavigationPage):
             ("Matrix", s.matrix_client),
             ("Discord", s.discord),
             ("Waydroid", L("activé", "enabled") if s.waydroid_enable else L("désactivé", "disabled")),
+            (
+                L("Création de contenu", "Content Creation"),
+                (
+                    f"OBS ({', '.join(s.obs_plugins) or L('sans plugin', 'no plugins')}) — {s.video_editor}"
+                    + (" — Chatterino" if s.chatterino_enable else "")
+                )
+                if s.content_creation_enable
+                else L("désactivé", "disabled"),
+            ),
         ]
         for title, value in rows:
             row = Adw.ActionRow(title=title, subtitle=value)

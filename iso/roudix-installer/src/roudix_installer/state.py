@@ -57,6 +57,7 @@ class InstallState:
                                       # | firefox | librewolf | google-chrome | microsoft-edge
                                       # | ungoogled-chromium | chromium
     zen_browser: bool = False
+    zen_variant: str = "twilight"    # roudix.zen.variant — twilight | beta | twilight-official
     zen_sine_enable: bool = False    # roudix.zen.sine.enable
     zen_mods: list = field(default_factory=list)       # roudix.zen.mods
     zen_sine_mods: list = field(default_factory=list)  # roudix.zen.sine.mods
@@ -110,3 +111,14 @@ class InstallState:
     file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo
     ananicy_enable: bool = False     # roudix.gaming.ananicy.enable — opt-in, only meaningful if gaming.enable
     mesa_use_git: bool = False       # roudix.mesa.useGit — false = mesa stable
+
+    # ── Content creation ─────────────────────────────────────────────────
+    content_creation_enable: bool = True   # roudix.contentCreation.enable
+    obs_enable: bool = True                # roudix.contentCreation.obs.enable
+    obs_plugins: list = field(             # roudix.contentCreation.obs.plugins
+        default_factory=lambda: ["vkcapture", "pipewire-audio-capture"]
+    )
+    video_editor: str = "kdenlive"         # roudix.contentCreation.videoEditor —
+                                            # kdenlive | davinci-resolve | davinci-resolve-studio | shotcut | none
+    virtual_camera_enable: bool = True     # roudix.contentCreation.virtualCamera.enable
+    chatterino_enable: bool = False        # roudix.contentCreation.streaming.chatterino.enable

@@ -242,6 +242,45 @@ GAMING_EXTRAS = [
     {"id": "gtaFix",  "name": "Correctif hosts GTA Online",     "key": "roudix.hosts.gtaFix.enable",   "default": False},
 ]
 
+# roudix.zen.variant — enum, exposé comme un SelectorGroup (comme EDITORS).
+ZEN_VARIANTS = [
+    {"id": "twilight",          "name": "Twilight",             "subtitle": "Nightly builds, mirroir maintenu par le dev du flake (défaut Roudix)", "icon": "zen.svg"},
+    {"id": "beta",               "name": "Beta",                 "subtitle": "Basé sur Firefox-ESR, évolue moins vite, le plus stable",               "icon": "zen.svg"},
+    {"id": "twilight-official", "name": "Twilight (officiel)",  "subtitle": "Même contenu nightly, mais servi directement par l'infra de Zen",       "icon": "zen.svg"},
+]
+
+# roudix.contentCreation.videoEditor — enum, exposé comme un SelectorGroup.
+VIDEO_EDITORS = [
+    {"id": "kdenlive",              "name": "Kdenlive",              "subtitle": "Éditeur libre basé sur KDE (défaut Roudix)",                    "icon": "kdenlive.svg"},
+    {"id": "davinci-resolve",        "name": "DaVinci Resolve",       "subtitle": "Édition gratuite — étalonnage, VFX, niveau pro",                 "icon": "davinci-resolve.svg"},
+    {"id": "davinci-resolve-studio", "name": "DaVinci Resolve Studio","subtitle": "Édition payante de ci-dessus — nécessite une licence Blackmagic","icon": "davinci-resolve.svg"},
+    {"id": "shotcut",                 "name": "Shotcut",               "subtitle": "Léger, multiplateforme, basé sur FFmpeg",                        "icon": "shotcut.svg"},
+    {"id": "none",                    "name": "None",                  "subtitle": "N'installer aucun éditeur vidéo",                                "icon": "none.svg"},
+]
+
+# roudix.contentCreation.obs.plugins — LISTE (comme roudix.browsers ou les
+# mods Zen), donc checklist plutôt que sélecteur exclusif.
+OBS_PLUGINS = [
+    {"id": "vkcapture",               "name": "VKCapture (capture jeux Vulkan/OpenGL)"},
+    {"id": "pipewire-audio-capture",  "name": "Pipewire Audio Capture (audio par application)"},
+    {"id": "background-removal",      "name": "Background Removal (fond virtuel IA)"},
+    {"id": "move-transition",         "name": "Move Transition (animations de sources)"},
+    {"id": "multi-rtmp",              "name": "Multi-RTMP (stream multi-plateformes)"},
+    {"id": "gstreamer",               "name": "GStreamer (sources/sorties supplémentaires)"},
+    {"id": "composite-blur",          "name": "Composite Blur (flou/verre dépoli)"},
+    {"id": "advanced-scene-switcher", "name": "Advanced Scene Switcher (changement de scène auto)"},
+    {"id": "input-overlay",           "name": "Input Overlay (clavier/souris/manette à l'écran)"},
+    {"id": "waveform",                 "name": "Waveform (spectre/waveform audio)"},
+]
+
+# Interrupteurs indépendants de la page Content Creation (comme SYSTEM_TOGGLES).
+CONTENT_CREATION_TOGGLES = [
+    {"id": "obs",           "name": "OBS Studio",                       "key": "roudix.contentCreation.obs.enable",                    "default": True},
+    {"id": "virtualCamera", "name": "Webcam virtuelle (v4l2loopback)",   "key": "roudix.contentCreation.virtualCamera.enable",          "default": True},
+    {"id": "chatterino",    "name": "Chatterino2 (chat Twitch tiers)",   "key": "roudix.contentCreation.streaming.chatterino.enable",   "default": False},
+]
+
+
 # Interrupteurs système indépendants, sans rapport les uns avec les autres —
 # regroupés dans une page "System" plutôt que de créer une catégorie par
 # option.
@@ -766,6 +805,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         CATEGORIES = [
             ("desktop",     "Desktop"),
             ("gaming",      "Gaming"),
+            ("content_creation", "Content Creation"),
             ("editor",      "Editor"),
             ("terminal",    "Terminal"),
             ("browser",     "Browser"),
@@ -948,6 +988,49 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.content_stack.add_named(gaming_page, "gaming")
 
+        # ── "Content Creation" page: OBS + plugins + video editor + extras ──
+        cc_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        cc_page.set_margin_top(4)
+        cc_page.set_margin_start(16)
+        cc_page.set_margin_end(16)
+        cc_page.set_margin_bottom(16)
+
+        cc_master_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        cc_master_label = Gtk.Label(label="Content Creation", halign=Gtk.Align.START)
+        cc_master_label.set_hexpand(True)
+        self.cc_master_switch = Gtk.Switch()
+        self.cc_master_switch.set_valign(Gtk.Align.CENTER)
+        self.cc_master_switch.set_active(get_bool_option("roudix.contentCreation.enable", True))
+        cc_master_row.append(cc_master_label)
+        cc_master_row.append(self.cc_master_switch)
+        cc_page.append(cc_master_row)
+
+        cc_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in CONTENT_CREATION_TOGGLES}
+        self.cc_group = ToggleListGroup("", CONTENT_CREATION_TOGGLES, cc_current)
+        cc_page.append(self.cc_group)
+
+        current_obs_plugins = set(
+            get_list_option("roudix.contentCreation.obs.plugins", ["vkcapture", "pipewire-audio-capture"])
+        )
+        obs_plugins_current = {p["id"]: (p["id"] in current_obs_plugins) for p in OBS_PLUGINS}
+        self.obs_plugins_group = ToggleListGroup("Plugins OBS", OBS_PLUGINS, obs_plugins_current)
+        cc_page.append(self.obs_plugins_group)
+
+        current_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
+        self.video_editor_selector = SelectorGroup("Éditeur vidéo", VIDEO_EDITORS, current_video_editor, dark)
+        cc_page.append(self.video_editor_selector)
+
+        def _update_cc_cascade(*_):
+            active = self.cc_master_switch.get_active()
+            self.cc_group.set_sensitive(active)
+            self.obs_plugins_group.set_sensitive(active)
+            self.video_editor_selector.set_sensitive(active)
+
+        self.cc_master_switch.connect("notify::active", _update_cc_cascade)
+        _update_cc_cascade()
+
+        self.content_stack.add_named(cc_page, "content_creation")
+
         # ── "Editor" page ──────────────────────────────────────────────────
         editor_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
         editor_page.set_margin_top(4)
@@ -1017,6 +1100,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         zen_row.append(self.zen_switch)
         browser_page.append(zen_row)
 
+        current_zen_variant = get_string_option("roudix.zen.variant", "twilight")
+        self.zen_variant_selector = SelectorGroup("Zen channel", ZEN_VARIANTS, current_zen_variant, dark)
+        browser_page.append(self.zen_variant_selector)
+
         self.sine_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         sine_label = Gtk.Label(label="Sine mod loader", halign=Gtk.Align.START)
         sine_label.set_hexpand(True)
@@ -1056,6 +1143,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         def _update_zen_cascade(*_):
             zen_on = self.zen_switch.get_active()
             sine_on = self.sine_switch.get_active()
+            self.zen_variant_selector.set_visible(zen_on)
             self.sine_row.set_visible(zen_on)
             show_mods = zen_on and sine_on
             self.sine_note.set_visible(show_mods)
@@ -1447,6 +1535,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_zen = self.zen_switch.get_active()
         zen_changed = new_zen != cur_zen
 
+        cur_zen_variant = get_string_option("roudix.zen.variant", "twilight")
+        new_zen_variant = self.zen_variant_selector.selected_id
+        zen_variant_changed = new_zen_variant != cur_zen_variant
+
         # roudix.umbriel.scratchpadApps — n'a de sens que sous Umbriel, mais
         # rien n'empêche de lire/écrire le switch même caché (il reste à son
         # état précédent tant qu'on ne le montre pas).
@@ -1476,6 +1568,22 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
         new_gaming_master = self.gaming_master_switch.get_active()
         gaming_master_changed = new_gaming_master != cur_gaming_master
+
+        # Content creation : interrupteur maître + toggles indépendants +
+        # plugins OBS (liste) + éditeur vidéo (enum)
+        cur_cc_master = get_bool_option("roudix.contentCreation.enable", True)
+        new_cc_master = self.cc_master_switch.get_active()
+        cc_master_changed = new_cc_master != cur_cc_master
+
+        cc_changes = _diff_bool_items(CONTENT_CREATION_TOGGLES, self.cc_group.get_states())
+
+        cur_obs_plugins = get_list_option("roudix.contentCreation.obs.plugins", ["vkcapture", "pipewire-audio-capture"])
+        new_obs_plugins = [p["id"] for p in OBS_PLUGINS if self.obs_plugins_group.get_states()[p["id"]]]
+        obs_plugins_changed = new_obs_plugins != cur_obs_plugins
+
+        cur_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
+        new_video_editor = self.video_editor_selector.selected_id
+        video_editor_changed = new_video_editor != cur_video_editor
 
         # Shell de login (fish/bash)
         cur_login_shell = get_string_option("roudix.shell", "fish")
@@ -1507,12 +1615,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         rgb_changed = new_rgb != cur_rgb
 
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
-                    terminal_changed, browsers_changed, zen_changed, sine_changed,
+                    terminal_changed, browsers_changed, zen_changed, zen_variant_changed, sine_changed,
                     zen_mods_changed, scratchpad_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
                     discord_changed,
                     system_changes, rgb_changed,
-                    gaming_changes, gaming_extras_changes, gaming_master_changed]):
+                    gaming_changes, gaming_extras_changes, gaming_master_changed,
+                    cc_master_changed, cc_changes, obs_plugins_changed, video_editor_changed]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
                 "<span color='gray'>No changes detected — nothing to do.</span>"
@@ -1535,6 +1644,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"Browsers: <b>{', '.join(new_browsers) or 'none'}</b>")
         if zen_changed:
             changes.append(f"Zen Browser: <b>{'enabled' if new_zen else 'disabled'}</b>")
+        if zen_variant_changed:
+            changes.append(f"Zen channel: <b>{cur_zen_variant}</b> → <b>{new_zen_variant}</b>")
         if sine_changed:
             changes.append(f"Sine mod loader: <b>{'enabled' if new_sine else 'disabled'}</b>")
         if zen_mods_changed:
@@ -1557,6 +1668,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
         for _key, new_val, name, _file in gaming_extras_changes.values():
             changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
+        if cc_master_changed:
+            changes.append(f"Content Creation: <b>{'enabled' if new_cc_master else 'disabled'}</b>")
+        for _key, new_val, name, _file in cc_changes.values():
+            changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
+        if obs_plugins_changed:
+            changes.append(f"OBS plugins: <b>{', '.join(new_obs_plugins) or 'none'}</b>")
+        if video_editor_changed:
+            changes.append(f"Video editor: <b>{cur_video_editor}</b> → <b>{new_video_editor}</b>")
         for _key, new_val, name, _file in system_changes.values():
             changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
         body_changes = "\n".join(changes)
@@ -1569,6 +1688,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "terminal_changed": terminal_changed, "new_terminal": new_terminal,
             "browsers_changed": browsers_changed, "new_browsers": new_browsers,
             "zen_changed": zen_changed, "new_zen": new_zen,
+            "zen_variant_changed": zen_variant_changed, "new_zen_variant": new_zen_variant,
             "sine_changed": sine_changed, "new_sine": new_sine,
             "zen_mods_changed": zen_mods_changed, "new_zen_mods": new_zen_mods, "zen_mods_key": zen_mods_key,
             "scratchpad_changed": scratchpad_changed, "new_scratchpad": new_scratchpad,
@@ -1581,6 +1701,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "gaming_changes": gaming_changes,
             "gaming_extras_changes": gaming_extras_changes,
             "system_changes": system_changes,
+            "cc_master_changed": cc_master_changed, "new_cc_master": new_cc_master,
+            "cc_changes": cc_changes,
+            "obs_plugins_changed": obs_plugins_changed, "new_obs_plugins": new_obs_plugins,
+            "video_editor_changed": video_editor_changed, "new_video_editor": new_video_editor,
         }
 
         dialog = Adw.AlertDialog()
@@ -1664,6 +1788,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing Zen Browser config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["zen_variant_changed"]:
+            result = set_string_option("roudix.zen.variant", pending["new_zen_variant"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing Zen channel config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 
@@ -1752,6 +1884,38 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["cc_master_changed"]:
+            result = set_bool_option("roudix.contentCreation.enable", pending["new_cc_master"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing Content Creation config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        for key, new_val, name, file in pending["cc_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["obs_plugins_changed"]:
+            result = set_list_option("roudix.contentCreation.obs.plugins", pending["new_obs_plugins"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing OBS plugins config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["video_editor_changed"]:
+            result = set_string_option("roudix.contentCreation.videoEditor", pending["new_video_editor"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing video editor config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 

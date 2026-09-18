@@ -564,6 +564,17 @@ class OptionsPage(Adw.NavigationPage):
         self.zen_row.set_active(state.zen_browser)
         browser_group.add(self.zen_row)
 
+        self.zen_variant_row = self._combo(
+            L("Canal Zen", "Zen channel"),
+            [
+                ("twilight", L("Twilight (défaut)", "Twilight (default)")),
+                ("beta", "Beta"),
+                ("twilight-official", L("Twilight (officiel)", "Twilight (official)")),
+            ],
+            state.zen_variant,
+        )
+        browser_group.add(self.zen_variant_row)
+
         self.zen_mods_row = Adw.EntryRow(
             title=L("Mods Zen (séparés par des virgules)", "Zen mods (comma-separated)")
         )
@@ -834,6 +845,60 @@ class OptionsPage(Adw.NavigationPage):
         box.append(extra_group)
         self._sync_autoupdate_row()
 
+        # ── Création de contenu ──
+        cc_group = Adw.PreferencesGroup(title=L("Création de contenu", "Content Creation"))
+        self.content_creation_row = Adw.SwitchRow(
+            title=L(
+                "Activer les outils de création de contenu",
+                "Enable content-creation tooling",
+            )
+        )
+        self.content_creation_row.set_active(state.content_creation_enable)
+        cc_group.add(self.content_creation_row)
+
+        self.obs_row = Adw.SwitchRow(title="OBS Studio")
+        self.obs_row.set_active(state.obs_enable)
+        cc_group.add(self.obs_row)
+
+        self.obs_plugins_row = Adw.EntryRow(
+            title=L("Plugins OBS (séparés par des virgules)", "OBS plugins (comma-separated)")
+        )
+        self.obs_plugins_row.set_text(", ".join(state.obs_plugins))
+        cc_group.add(self.obs_plugins_row)
+
+        self.video_editor_row = self._combo(
+            L("Éditeur vidéo", "Video editor"),
+            [
+                ("kdenlive", "Kdenlive"),
+                ("davinci-resolve", L("DaVinci Resolve (gratuit)", "DaVinci Resolve (free)")),
+                (
+                    "davinci-resolve-studio",
+                    L("DaVinci Resolve Studio (payant)", "DaVinci Resolve Studio (paid)"),
+                ),
+                ("shotcut", "Shotcut"),
+                ("none", L("Aucun", "None")),
+            ],
+            state.video_editor,
+        )
+        cc_group.add(self.video_editor_row)
+
+        self.virtual_camera_row = Adw.SwitchRow(
+            title=L("Webcam virtuelle (v4l2loopback)", "Virtual camera (v4l2loopback)")
+        )
+        self.virtual_camera_row.set_active(state.virtual_camera_enable)
+        cc_group.add(self.virtual_camera_row)
+
+        self.chatterino_row = Adw.SwitchRow(
+            title=L(
+                "Chatterino2 (chat Twitch tiers)",
+                "Chatterino2 (third-party Twitch chat)",
+            )
+        )
+        self.chatterino_row.set_active(state.chatterino_enable)
+        cc_group.add(self.chatterino_row)
+        box.append(cc_group)
+        self._sync_content_creation_rows()
+
         # Connected here (not right after each row's creation above) because
         # ComboRow/SwitchRow can fire their notify signal synchronously while
         # still being constructed — connecting early meant these handlers could
@@ -848,6 +913,9 @@ class OptionsPage(Adw.NavigationPage):
         self.memory_rgb_row.connect("notify::active", lambda *_: self._sync_memory_rows())
         self.zen_row.connect("notify::active", lambda *_: self._sync_zen_rows())
         self.zen_sine_row.connect("notify::active", lambda *_: self._sync_zen_rows())
+        self.content_creation_row.connect(
+            "notify::active", lambda *_: self._sync_content_creation_rows()
+        )
         self.gaming_row.connect("notify::active", lambda *_: self._sync_ananicy_row())
         self.autoupdate_row.connect(
             "notify::active", lambda *_: self._sync_autoupdate_row()
@@ -955,6 +1023,7 @@ class OptionsPage(Adw.NavigationPage):
 
     def _sync_zen_rows(self):
         zen_active = self.zen_row.get_active()
+        self.zen_variant_row.set_visible(zen_active)
         self.zen_mods_row.set_visible(zen_active)
         self.zen_sine_row.set_visible(zen_active)
         self.zen_sine_mods_row.set_visible(zen_active and self.zen_sine_row.get_active())
@@ -963,6 +1032,17 @@ class OptionsPage(Adw.NavigationPage):
         self.ananicy_row.set_visible(self.gaming_row.get_active())
         for row in self.gaming_apps_rows.values():
             row.set_visible(self.gaming_row.get_active())
+
+    def _sync_content_creation_rows(self):
+        active = self.content_creation_row.get_active()
+        for row in (
+            self.obs_row,
+            self.obs_plugins_row,
+            self.video_editor_row,
+            self.virtual_camera_row,
+            self.chatterino_row,
+        ):
+            row.set_visible(active)
 
     def _sync_autoupdate_row(self):
         self.autoupdate_interval_row.set_visible(self.autoupdate_row.get_active())
@@ -1004,6 +1084,7 @@ class OptionsPage(Adw.NavigationPage):
             else browser
         )
         s.zen_browser = self.zen_row.get_active()
+        s.zen_variant = self._selected_value(self.zen_variant_row)
         s.zen_sine_enable = self.zen_sine_row.get_active()
         s.zen_mods = self._split_list(self.zen_mods_row.get_text())
         s.zen_sine_mods = self._split_list(self.zen_sine_mods_row.get_text())
@@ -1047,5 +1128,12 @@ class OptionsPage(Adw.NavigationPage):
         s.matrix_client = self._selected_value(self.matrix_row)
         s.discord = self._selected_value(self.discord_row)
         s.waydroid_enable = self.waydroid_row.get_active()
+
+        s.content_creation_enable = self.content_creation_row.get_active()
+        s.obs_enable = self.obs_row.get_active()
+        s.obs_plugins = self._split_list(self.obs_plugins_row.get_text())
+        s.video_editor = self._selected_value(self.video_editor_row)
+        s.virtual_camera_enable = self.virtual_camera_row.get_active()
+        s.chatterino_enable = self.chatterino_row.get_active()
 
         self.on_next()

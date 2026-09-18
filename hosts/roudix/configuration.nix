@@ -11,6 +11,7 @@
     ../../modules/system/boot.nix
     ../../modules/system/kernel.nix
     ../../modules/system/gaming.nix
+    ../../modules/system/content-creation.nix
     ../../modules/system/scx.nix
     ../../modules/system/flatpak.nix
     ../../modules/system/gpu
