@@ -1592,6 +1592,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "Apply at next boot just prepares the new generation — nothing "
             "changes until you restart."
         )
+        # body_changes contient du markup Pango (<b>...</b>) pour mettre en
+        # valeur les valeurs qui changent — sans ça, AlertDialog affiche les
+        # balises telles quelles au lieu de les interpréter.
+        dialog.set_body_use_markup(True)
         dialog.add_response("cancel", "Cancel")
         dialog.add_response("boot", "Apply at Next Boot")
         dialog.add_response("switch", "Apply Now")
