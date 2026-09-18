@@ -872,6 +872,32 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.shell_selector.set_visible(current_de in SHELL_SUPPORTED_DE)
         desktop_page.append(self.shell_selector)
 
+        # roudix.umbriel.scratchpadApps (modules/system/desktop/umbriel.nix) —
+        # Umbriel uniquement : bascule les apps de chat/Spotify entre tuilage
+        # fixe (false, défaut) et scratchpads nommés (true).
+        self.scratchpad_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self.scratchpad_row.set_margin_top(8)
+        scratchpad_label = Gtk.Label(label="Umbriel scratchpad apps", halign=Gtk.Align.START)
+        scratchpad_label.set_hexpand(True)
+        self.scratchpad_switch = Gtk.Switch()
+        self.scratchpad_switch.set_valign(Gtk.Align.CENTER)
+        self.scratchpad_switch.set_active(get_bool_option("roudix.umbriel.scratchpadApps", False))
+        self.scratchpad_row.append(scratchpad_label)
+        self.scratchpad_row.append(self.scratchpad_switch)
+        self.scratchpad_row.set_visible(current_de in UMBRIEL_SUPPORTED_DE)
+        desktop_page.append(self.scratchpad_row)
+
+        self.scratchpad_note = Gtk.Label(
+            label="Umbriel only — Discord/Telegram and Spotify live in named "
+                  "scratchpads (shown/hidden with a shortcut) instead of "
+                  "staying tiled on a fixed output/workspace.",
+        )
+        self.scratchpad_note.add_css_class("dim-label")
+        self.scratchpad_note.set_wrap(True)
+        self.scratchpad_note.set_halign(Gtk.Align.START)
+        self.scratchpad_note.set_visible(current_de in UMBRIEL_SUPPORTED_DE)
+        desktop_page.append(self.scratchpad_note)
+
         self.content_stack.add_named(desktop_page, "desktop")
 
         # ── "Gaming" page: master switch + apps checklist ─────────────────
@@ -1351,6 +1377,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._update_integration_visibility(new_de)
         self._update_filemanager_visibility(new_de)
 
+        umbriel_visible = new_de in UMBRIEL_SUPPORTED_DE
+        self.scratchpad_row.set_visible(umbriel_visible)
+        self.scratchpad_note.set_visible(umbriel_visible)
+
         if not visible:
             return
 
@@ -1417,6 +1447,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_zen = self.zen_switch.get_active()
         zen_changed = new_zen != cur_zen
 
+        # roudix.umbriel.scratchpadApps — n'a de sens que sous Umbriel, mais
+        # rien n'empêche de lire/écrire le switch même caché (il reste à son
+        # état précédent tant qu'on ne le montre pas).
+        cur_scratchpad = get_bool_option("roudix.umbriel.scratchpadApps", False)
+        new_scratchpad = self.scratchpad_switch.get_active()
+        scratchpad_changed = new_scratchpad != cur_scratchpad
+
         cur_sine = get_bool_option("roudix.zen.sine.enable", False)
         new_sine = self.sine_switch.get_active()
         sine_changed = new_sine != cur_sine
@@ -1471,7 +1508,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
                     terminal_changed, browsers_changed, zen_changed, sine_changed,
-                    zen_mods_changed,
+                    zen_mods_changed, scratchpad_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
                     discord_changed,
                     system_changes, rgb_changed,
@@ -1502,6 +1539,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"Sine mod loader: <b>{'enabled' if new_sine else 'disabled'}</b>")
         if zen_mods_changed:
             changes.append(f"Zen mods: <b>{', '.join(new_zen_mods) or 'none'}</b>")
+        if scratchpad_changed:
+            changes.append(f"Umbriel scratchpad apps: <b>{'enabled' if new_scratchpad else 'disabled'}</b>")
         if login_shell_changed:
             changes.append(f"Login shell: <b>{cur_login_shell}</b> → <b>{new_login_shell}</b>")
         if filemanager_changed:
@@ -1532,6 +1571,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "zen_changed": zen_changed, "new_zen": new_zen,
             "sine_changed": sine_changed, "new_sine": new_sine,
             "zen_mods_changed": zen_mods_changed, "new_zen_mods": new_zen_mods, "zen_mods_key": zen_mods_key,
+            "scratchpad_changed": scratchpad_changed, "new_scratchpad": new_scratchpad,
             "login_shell_changed": login_shell_changed, "new_login_shell": new_login_shell,
             "filemanager_changed": filemanager_changed, "new_filemanager": new_filemanager,
             "matrix_changed": matrix_changed, "new_matrix": new_matrix,
@@ -1636,6 +1676,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     f"<span color='red'>Error writing Zen mods config: {GLib.markup_escape_text(result)}</span>"
+                )
+                return
+
+        if pending["scratchpad_changed"]:
+            result = set_bool_option("roudix.umbriel.scratchpadApps", pending["new_scratchpad"])
+            if result is not True:
+                self.status.set_markup(
+                    f"<span color='red'>Error writing Umbriel scratchpad config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 
