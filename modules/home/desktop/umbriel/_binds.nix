@@ -211,8 +211,10 @@ in
     # scratchpad ensuite, pas seulement de l'en sortir une fois.
     "Mod+Alt+D" = "scratchpad-toggle:communication";
     "Mod+Alt+Shift+D" = "window-toggle-scratchpad:communication";
+    "Mod+Ctrl+D" = "window-restore-from-scratchpad:communication";
     "Mod+Alt+M" = "scratchpad-toggle:music";
     "Mod+Alt+Shift+M" = "window-toggle-scratchpad:music";
+    "Mod+Ctrl+M" = "window-restore-from-scratchpad:music";
   });
   };
 }
