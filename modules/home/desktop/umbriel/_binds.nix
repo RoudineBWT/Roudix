@@ -3,7 +3,10 @@
 ## Doc : https://docs.noctalia.dev/umbriel/keybinds/
 ##       https://docs.noctalia.dev/umbriel/actions/
 ##       https://docs.noctalia.dev/umbriel/scratchpads/
-{ ... }:
+{ lib, osConfig, ... }:
+let
+  scratchpadApps = osConfig.roudix.umbriel.scratchpadApps or false;
+in
 {
   programs.umbriel.settings = {
   keybinds = {
@@ -180,29 +183,36 @@
     "Mod+Shift+P" = "dpms-off";
     "Mod+Shift+Alt+P" = "dpms-on";
     "Mod+O" = { action = "overview-toggle"; repeat = false; };
+  }
+  # ─── Scratchpad ───
+  # scratchpadApps=false : implicite "default" (aucune entrée [[scratchpad]]
+  # côté _rules.nix), donc les 4 actions historiques SANS suffixe.
+  // (if !scratchpadApps then {
+    "Mod+Shift+Space" = "window-move-to-scratchpad";
+    "Mod+Space" = "scratchpad-toggle";
+    "Mod+Ctrl+Space" = "window-restore-from-scratchpad";
+    "Mod+Alt+Space" = "scratchpad-focus-next";
+  } else {
+    # scratchpadApps=true : 3 scratchpads nommés (voir _rules.nix). Déclarer
+    # un seul scratchpad nommé désactive l'implicite "default" pour de bon
+    # → toute action prend un suffixe ":nom".
 
-    # ─── Scratchpad ───
-    # 3 scratchpads NOMMÉS (voir _rules.nix pour la déclaration + le
-    # default_scratchpad de Discord/Telegram/Spotify) : test de l'approche
-    # rebizzz/nixos. Déclarer un scratchpad nommé désactive l'implicite
-    # "default" pour de bon → toute action ci-dessous prend un suffixe.
-    #
-    # "misc" : ton ad hoc d'origine, inchangé dans l'usage — même 4 raccourcis
-    # qu'avant, juste avec ":misc" en plus.
+    # "misc" : le même ad hoc qu'avant, juste avec ":misc" en plus.
     "Mod+Shift+Space" = "window-move-to-scratchpad:misc";
     "Mod+Space" = "scratchpad-toggle:misc";
     "Mod+Ctrl+Space" = "window-restore-from-scratchpad:misc";
     "Mod+Alt+Space" = "scratchpad-focus-next:misc";
 
-    # "communication" (Discord+Telegram) et "music" (Spotify) : un seul
-    # raccourci montre/cache tout ce que la règle y a rangé à l'ouverture.
-    # Restore les fait sortir DÉFINITIVEMENT (retour tuilé sur DP-3 comme
-    # avant), au cas où tu veux revenir au comportement d'origine pour l'un
-    # des deux sans tout défaire.
+    # "communication" (Discord+Telegram) et "music" (Spotify) : *-toggle
+    # montre/cache tout ce que la règle y a rangé à l'ouverture.
+    # *-Shift-* utilise window-toggle-scratchpad (bidirectionnel sur la
+    # fenêtre FOCUS) plutôt que window-restore-from-scratchpad (à sens
+    # unique) : ça permet justement de renvoyer la fenêtre dans le
+    # scratchpad ensuite, pas seulement de l'en sortir une fois.
     "Mod+Alt+D" = "scratchpad-toggle:communication";
-    "Mod+Alt+Shift+D" = "window-restore-from-scratchpad:communication";
+    "Mod+Alt+Shift+D" = "window-toggle-scratchpad:communication";
     "Mod+Alt+M" = "scratchpad-toggle:music";
-    "Mod+Alt+Shift+M" = "window-restore-from-scratchpad:music";
-  };
+    "Mod+Alt+Shift+M" = "window-toggle-scratchpad:music";
+  });
   };
 }

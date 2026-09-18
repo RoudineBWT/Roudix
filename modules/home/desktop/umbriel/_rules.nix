@@ -22,16 +22,24 @@
 ## doc.
 ##
 ## Doc : https://docs.noctalia.dev/umbriel/window-rules/
-{ ... }:
+{ lib, osConfig, ... }:
+let
+  # roudix.umbriel.scratchpadApps (déclarée dans
+  # modules/system/desktop/umbriel.nix) : bascule Discord/Telegram/Spotify
+  # entre tuilage fixe (false, comportement d'origine) et scratchpads
+  # nommés (true, approche testée depuis rebizzz/nixos). Voir _binds.nix
+  # pour le pendant côté raccourcis, et _animation.nix pour le shader
+  # scratchpad (s'applique dans les deux cas, il ne fait rien s'il n'y a
+  # pas de scratchpad affiché).
+  scratchpadApps = osConfig.roudix.umbriel.scratchpadApps or false;
+in
 {
   programs.umbriel.settings = {
-  # Test de l'approche rebizzz/nixos : Discord+Telegram → scratchpad
-  # "communication", Spotify → "music". "misc" reprend ton scratchpad ad
-  # hoc d'origine (voir _binds.nix). Déclarer NE SERAIT-CE QU'UN seul
-  # scratchpad nommé désactive l'implicite "default" pour tout le monde —
-  # d'où "misc" pour ne rien perdre du "j'envoie n'importe quoi, quand je
-  # veux".
-  scratchpad = [
+  # scratchpad = [] (liste vide) tant que scratchpadApps est faux : aucune
+  # entrée [[scratchpad]] en TOML → Umbriel garde le scratchpad implicite
+  # "default", donc Mod+Shift+Space/Mod+Space/etc. plus bas marchent sans
+  # suffixe, comme avant ce test.
+  scratchpad = lib.optionals scratchpadApps [
     { name = "misc"; }
     { name = "communication"; }
     { name = "music"; }
@@ -42,25 +50,34 @@
     # côté Umbriel (default_width n'accepte qu'une fraction) → flottant
     # pour respecter la taille/position d'origine niri à l'identique.
     {
-      # Anciennement default_floating = false (tuilé) : un scratchpad flotte
-      # toujours, donc la clé n'a plus d'effet — retirée. La taille/position
-      # sont conservées pour que Discord+Telegram réapparaissent toujours
-      # côte à côte (top_left/top_right) une fois le scratchpad affiché.
+      # Un scratchpad flotte toujours : default_floating=false n'a de sens
+      # qu'en mode tuilé, default_scratchpad que en mode scratchpad — d'où
+      # le // conditionnel plutôt que les deux clés en dur. Taille/position
+      # gardées dans les deux cas pour que Discord+Telegram restent côte à
+      # côte (top_left/top_right).
       match.app_id = "^(discord|Element)$";
-      default_scratchpad = "communication";
       default_output = "DP-3";
       default_workspace = 1;
       default_floating_size_px = { width = 1316; height = 1011; };
       default_position = { x = 0; y = 0; anchor = "top_left"; };
-    }
+    } // (if scratchpadApps
+          then { default_scratchpad = "communication"; }
+          else { default_floating = false; })
     {
-      match.app_id = "^org\\.telegram\\.desktop$";
-      default_scratchpad = "communication";
+      # Fix : sous Xwayland (capture de session foireuse en natif Wayland
+      # sur cette machine, cf. captures d'écran), Telegram Desktop expose
+      # la classe X11 historique "TelegramDesktop", pas l'app_id Wayland
+      # natif "org.telegram.desktop" — la regex précédente ne matchait
+      # donc jamais cette fenêtre. Les deux formes sont gardées au cas où
+      # Telegram tourne un jour nativement en Wayland ici.
+      match.app_id = "^(org\\.telegram\\.desktop|TelegramDesktop)$";
       default_output = "DP-3";
       default_workspace = 1;
       default_floating_size_px = { width = 555; height = 1011; };
       default_position = { x = 0; y = 0; anchor = "top_right"; };
-    }
+    } // (if scratchpadApps
+          then { default_scratchpad = "communication"; }
+          else { default_floating = false; })
     {
       match.app_id = "^com\\.mitchellh\\.ghostty$";
       default_floating = true;
@@ -227,16 +244,15 @@
       default_workspace = 5;
     }
     {
-      # Anciennement default_maximize = true (tuilé plein cadre) : retiré,
-      # un scratchpad flotte toujours. default_floating_size en fraction
-      # (plutôt que _px comme communication ci-dessus) pour rester correct
-      # si tu changes de résolution/moniteur un jour.
+      # default_maximize (tuilé) et default_scratchpad+default_floating_size
+      # (scratchpad, taille en fraction pour rester correct si tu changes de
+      # résolution) sont mutuellement exclusifs, d'où le // conditionnel.
       match.app_id = "^Spotify$";
-      default_scratchpad = "music";
       default_output = "DP-3";
       default_workspace = 2;
-      default_floating_size = { width = 0.8; height = 0.85; };
-    }
+    } // (if scratchpadApps
+          then { default_scratchpad = "music"; default_floating_size = { width = 0.8; height = 0.85; }; }
+          else { default_maximize = true; })
     {
       match.app_id = "^(com\\.kde\\.easyeffects|com\\.github\\.wwmm\\.easyeffects)$";
       default_output = "DP-3";
