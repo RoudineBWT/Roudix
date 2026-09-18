@@ -49,6 +49,7 @@ in
     # Discord / Element : pas d'équivalent "largeur fixe en pixels tuilée"
     # côté Umbriel (default_width n'accepte qu'une fraction) → flottant
     # pour respecter la taille/position d'origine niri à l'identique.
+    (
     {
       # Un scratchpad flotte toujours : default_floating=false n'a de sens
       # qu'en mode tuilé, default_scratchpad que en mode scratchpad — d'où
@@ -63,6 +64,8 @@ in
     } // (if scratchpadApps
           then { default_scratchpad = "communication"; }
           else { default_floating = false; })
+    )
+    (
     {
       # Fix : sous Xwayland (capture de session foireuse en natif Wayland
       # sur cette machine, cf. captures d'écran), Telegram Desktop expose
@@ -78,6 +81,7 @@ in
     } // (if scratchpadApps
           then { default_scratchpad = "communication"; }
           else { default_floating = false; })
+    )
     {
       match.app_id = "^com\\.mitchellh\\.ghostty$";
       default_floating = true;
@@ -243,6 +247,7 @@ in
       default_output = "DP-1";
       default_workspace = 5;
     }
+    (
     {
       # default_maximize (tuilé) et default_scratchpad+default_floating_size
       # (scratchpad, taille en fraction pour rester correct si tu changes de
@@ -253,6 +258,7 @@ in
     } // (if scratchpadApps
           then { default_scratchpad = "music"; default_floating_size = { width = 0.8; height = 0.85; }; }
           else { default_maximize = true; })
+    )
     {
       match.app_id = "^(com\\.kde\\.easyeffects|com\\.github\\.wwmm\\.easyeffects)$";
       default_output = "DP-3";
