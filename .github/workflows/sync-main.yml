@@ -33,7 +33,19 @@ jobs:
       - name: Merge testing into main (local, not pushed yet)
         run: |
           git fetch origin testing
-          git merge origin/testing --no-edit
+          if ! git merge origin/testing --no-edit; then
+            CONFLICTS=$(git diff --name-only --diff-filter=U)
+            if [ "$CONFLICTS" = "flake.lock" ]; then
+              echo "Only flake.lock conflicted — resolving in favor of testing's lock."
+              git checkout --theirs flake.lock
+              git add flake.lock
+              git commit --no-edit
+            else
+              echo "Merge conflict outside flake.lock — aborting, needs manual resolution:"
+              echo "$CONFLICTS"
+              exit 1
+            fi
+          fi
 
       # If testing already carried its own flake.lock changes (someone ran
       # `nix flake update` themselves and tested it before merging), the
