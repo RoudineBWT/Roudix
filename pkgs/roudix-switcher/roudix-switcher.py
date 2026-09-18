@@ -824,14 +824,15 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         content_scroll = Gtk.ScrolledWindow()
         content_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         content_scroll.set_hexpand(True)
-        # Se dimensionner sur la hauteur naturelle de la page affichée (donc
-        # pas de scrollbar ni de grand vide pour 2 options), et ne se
-        # transformer en zone défilante qu'au-delà de ce plafond (pages
-        # longues comme Browser ou System).
-        content_scroll.set_propagate_natural_height(True)
-        content_scroll.set_max_content_height(480)
-        content_scroll.set_vexpand(False)
-        content_scroll.set_valign(Gtk.Align.START)
+        # Occuper tout l'espace vertical réellement disponible dans la
+        # fenêtre (comme la sidebar juste à côté) plutôt qu'un plafond fixe
+        # arbitraire (480px) : sur une fenêtre agrandie/maximisée, ce
+        # plafond laissait un grand vide non rempli en dessous de tout le
+        # panneau. Avec vexpand + FILL, le panneau (sidebar + options)
+        # utilise toute la hauteur disponible ; AUTOMATIC ne fait apparaître
+        # une scrollbar que si le contenu d'une page dépasse cette hauteur.
+        content_scroll.set_vexpand(True)
+        content_scroll.set_valign(Gtk.Align.FILL)
         # Fond opaque du thème, pour que la zone sous une page courte ne
         # laisse pas transparaître le fond flouté de la fenêtre.
         content_scroll.add_css_class("roudix-content-bg")
