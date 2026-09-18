@@ -860,11 +860,27 @@ class OptionsPage(Adw.NavigationPage):
         self.obs_row.set_active(state.obs_enable)
         cc_group.add(self.obs_row)
 
-        self.obs_plugins_row = Adw.EntryRow(
-            title=L("Plugins OBS (séparés par des virgules)", "OBS plugins (comma-separated)")
-        )
-        self.obs_plugins_row.set_text(", ".join(state.obs_plugins))
-        cc_group.add(self.obs_plugins_row)
+        # Un switch par plugin OBS (comme les apps gaming) — Aitum
+        # Multistream remplace obs-multi-rtmp comme option de
+        # multistreaming (successeur activement maintenu par l'équipe
+        # Aitum, encodeurs/bitrate indépendants par plateforme).
+        self.obs_plugin_rows = {}
+        for attr, title_fr, title_en, default in (
+            ("vkcapture", "VKCapture (capture jeux Vulkan/OpenGL)", "VKCapture (Vulkan/OpenGL game capture)", state.obs_plugin_vkcapture),
+            ("pipewire_audio", "Pipewire Audio Capture (audio par application)", "Pipewire Audio Capture (per-app audio)", state.obs_plugin_pipewire_audio_capture),
+            ("background_removal", "Background Removal (fond virtuel IA)", "Background Removal (AI virtual background)", state.obs_plugin_background_removal),
+            ("move_transition", "Move Transition (animations de sources)", "Move Transition (source animations)", state.obs_plugin_move_transition),
+            ("aitum_multistream", "Aitum Multistream (stream multi-plateformes)", "Aitum Multistream (multi-platform streaming)", state.obs_plugin_aitum_multistream),
+            ("gstreamer", "GStreamer (sources/sorties supplémentaires)", "GStreamer (extra sources/outputs)", state.obs_plugin_gstreamer),
+            ("composite_blur", "Composite Blur (flou/verre dépoli)", "Composite Blur (blur/glass filters)", state.obs_plugin_composite_blur),
+            ("advanced_scene_switcher", "Advanced Scene Switcher (changement de scène auto)", "Advanced Scene Switcher (automated scene switching)", state.obs_plugin_advanced_scene_switcher),
+            ("input_overlay", "Input Overlay (clavier/souris/manette à l'écran)", "Input Overlay (on-screen keyboard/mouse/gamepad)", state.obs_plugin_input_overlay),
+            ("waveform", "Waveform (spectre/waveform audio)", "Waveform (audio waveform/spectrum)", state.obs_plugin_waveform),
+        ):
+            row = Adw.SwitchRow(title=L(title_fr, title_en))
+            row.set_active(default)
+            cc_group.add(row)
+            self.obs_plugin_rows[attr] = row
 
         self.video_editor_row = self._combo(
             L("Éditeur vidéo", "Video editor"),
@@ -1037,11 +1053,12 @@ class OptionsPage(Adw.NavigationPage):
         active = self.content_creation_row.get_active()
         for row in (
             self.obs_row,
-            self.obs_plugins_row,
             self.video_editor_row,
             self.virtual_camera_row,
             self.chatterino_row,
         ):
+            row.set_visible(active)
+        for row in self.obs_plugin_rows.values():
             row.set_visible(active)
 
     def _sync_autoupdate_row(self):
@@ -1131,7 +1148,16 @@ class OptionsPage(Adw.NavigationPage):
 
         s.content_creation_enable = self.content_creation_row.get_active()
         s.obs_enable = self.obs_row.get_active()
-        s.obs_plugins = self._split_list(self.obs_plugins_row.get_text())
+        s.obs_plugin_vkcapture = self.obs_plugin_rows["vkcapture"].get_active()
+        s.obs_plugin_pipewire_audio_capture = self.obs_plugin_rows["pipewire_audio"].get_active()
+        s.obs_plugin_background_removal = self.obs_plugin_rows["background_removal"].get_active()
+        s.obs_plugin_move_transition = self.obs_plugin_rows["move_transition"].get_active()
+        s.obs_plugin_aitum_multistream = self.obs_plugin_rows["aitum_multistream"].get_active()
+        s.obs_plugin_gstreamer = self.obs_plugin_rows["gstreamer"].get_active()
+        s.obs_plugin_composite_blur = self.obs_plugin_rows["composite_blur"].get_active()
+        s.obs_plugin_advanced_scene_switcher = self.obs_plugin_rows["advanced_scene_switcher"].get_active()
+        s.obs_plugin_input_overlay = self.obs_plugin_rows["input_overlay"].get_active()
+        s.obs_plugin_waveform = self.obs_plugin_rows["waveform"].get_active()
         s.video_editor = self._selected_value(self.video_editor_row)
         s.virtual_camera_enable = self.virtual_camera_row.get_active()
         s.chatterino_enable = self.chatterino_row.get_active()

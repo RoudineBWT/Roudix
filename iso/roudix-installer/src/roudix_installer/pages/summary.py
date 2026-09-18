@@ -87,7 +87,18 @@ class SummaryPage(Adw.NavigationPage):
             (
                 L("Création de contenu", "Content Creation"),
                 (
-                    f"OBS ({', '.join(s.obs_plugins) or L('sans plugin', 'no plugins')}) — {s.video_editor}"
+                    f"OBS ({', '.join(filter(None, [
+                        'vkcapture' if s.obs_plugin_vkcapture else '',
+                        'pipewire-audio' if s.obs_plugin_pipewire_audio_capture else '',
+                        'background-removal' if s.obs_plugin_background_removal else '',
+                        'move-transition' if s.obs_plugin_move_transition else '',
+                        'aitum-multistream' if s.obs_plugin_aitum_multistream else '',
+                        'gstreamer' if s.obs_plugin_gstreamer else '',
+                        'composite-blur' if s.obs_plugin_composite_blur else '',
+                        'advanced-scene-switcher' if s.obs_plugin_advanced_scene_switcher else '',
+                        'input-overlay' if s.obs_plugin_input_overlay else '',
+                        'waveform' if s.obs_plugin_waveform else '',
+                    ])) or L('sans plugin', 'no plugins')}) — {s.video_editor}"
                     + (" — Chatterino" if s.chatterino_enable else "")
                 )
                 if s.content_creation_enable

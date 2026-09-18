@@ -59,24 +59,44 @@ let
   };
 
   # ── Content creation ─────────────────────────────────────────────────────
-  ccCfg = osConfig.roudix.contentCreation or { enable = true; obs = { enable = true; plugins = [ "vkcapture" "pipewire-audio-capture" ]; }; videoEditor = "kdenlive"; streaming.chatterino.enable = false; };
+  ccPluginDefaults = {
+    vkcapture.enable               = true;
+    pipewireAudioCapture.enable    = true;
+    backgroundRemoval.enable       = false;
+    moveTransition.enable          = false;
+    aitumMultistream.enable        = false;
+    gstreamer.enable               = false;
+    compositeBlur.enable           = false;
+    advancedSceneSwitcher.enable   = false;
+    inputOverlay.enable            = false;
+    waveform.enable                = false;
+  };
+  ccCfg = osConfig.roudix.contentCreation or {
+    enable = true;
+    obs = { enable = true; plugins = ccPluginDefaults; };
+    videoEditor = "kdenlive";
+    streaming.chatterino.enable = false;
+  };
   ccEnabled = ccCfg.enable or true;
 
+  obsPluginCfg = (ccCfg.obs.plugins or {});
   obsPluginMap = with pkgs.obs-studio-plugins; {
     vkcapture               = obs-vkcapture;
-    pipewire-audio-capture  = obs-pipewire-audio-capture;
-    background-removal      = obs-backgroundremoval;
-    move-transition         = obs-move-transition;
-    multi-rtmp               = obs-multi-rtmp;
-    gstreamer                 = obs-gstreamer;
-    composite-blur           = obs-composite-blur;
-    advanced-scene-switcher = advanced-scene-switcher;
-    input-overlay             = input-overlay;
-    waveform                   = waveform;
+    pipewireAudioCapture    = obs-pipewire-audio-capture;
+    backgroundRemoval       = obs-backgroundremoval;
+    moveTransition          = obs-move-transition;
+    aitumMultistream        = obs-aitum-multistream;
+    gstreamer               = obs-gstreamer;
+    compositeBlur           = obs-composite-blur;
+    advancedSceneSwitcher   = advanced-scene-switcher;
+    inputOverlay            = input-overlay;
+    waveform                = waveform;
   };
 
   obsPackage = pkgs.wrapOBS {
-    plugins = map (p: obsPluginMap.${p}) (ccCfg.obs.plugins or []);
+    plugins = lib.filter (p: p != null) (lib.mapAttrsToList
+      (name: pkg: if ((obsPluginCfg.${name} or { enable = false; }).enable or false) then pkg else null)
+      obsPluginMap);
   };
 
   videoEditorType = ccCfg.videoEditor or "kdenlive";

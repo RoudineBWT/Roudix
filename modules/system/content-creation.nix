@@ -17,36 +17,66 @@ in
         description = "Installer OBS Studio.";
       };
 
-      plugins = lib.mkOption {
-        type = lib.types.listOf (lib.types.enum [
-          "vkcapture"
-          "pipewire-audio-capture"
-          "background-removal"
-          "move-transition"
-          "multi-rtmp"
-          "gstreamer"
-          "composite-blur"
-          "advanced-scene-switcher"
-          "input-overlay"
-          "waveform"
-        ]);
-        default = [ "vkcapture" "pipewire-audio-capture" ];
-        description = ''
-          Plugins OBS à installer (voir `modules/home/common.nix` pour le
-          wrapOBS correspondant). Chaque entrée correspond à un attribut
-          `pkgs.obs-studio-plugins.*` :
-            vkcapture               → capture Vulkan/OpenGL rapide (jeux)
-            pipewire-audio-capture  → capture audio par application (Pipewire)
-            background-removal      → fond virtuel par IA, sans fond vert
-            move-transition          → transitions/animations de sources
-            multi-rtmp                → streamer vers plusieurs plateformes à la fois
-            gstreamer                  → sources/sorties supplémentaires via GStreamer
-            composite-blur            → filtres de flou/verre dépoli
-            advanced-scene-switcher  → changement de scène automatisé
-            input-overlay              → overlay clavier/souris/manette
-            waveform                    → source waveform/spectre audio
-          [] pour installer OBS sans aucun plugin.
-        '';
+      # Un booléen par plugin (comme roudix.gaming.apps.<id>.enable) plutôt
+      # qu'une liste : chacun se coche/décoche indépendamment dans
+      # local.nix, et c'est ce que consomme le wrapOBS de
+      # `modules/home/common.nix`. Correspond à `pkgs.obs-studio-plugins.*`.
+      plugins = {
+        vkcapture.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Capture Vulkan/OpenGL rapide (jeux) — obs-vkcapture.";
+        };
+        pipewireAudioCapture.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Capture audio par application via Pipewire — obs-pipewire-audio-capture.";
+        };
+        backgroundRemoval.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Fond virtuel par IA, sans fond vert — obs-backgroundremoval.";
+        };
+        moveTransition.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Transitions/animations de sources — obs-move-transition.";
+        };
+        aitumMultistream.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = ''
+            Streamer vers plusieurs plateformes à la fois — obs-aitum-multistream.
+            Successeur activement maintenu d'obs-multi-rtmp par l'équipe
+            Aitum (déjà connue pour obs-vertical-canvas) : encodeurs/bitrate
+            indépendants par plateforme, interface plus soignée.
+          '';
+        };
+        gstreamer.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Sources/sorties supplémentaires via GStreamer — obs-gstreamer.";
+        };
+        compositeBlur.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Filtres de flou/verre dépoli — obs-composite-blur.";
+        };
+        advancedSceneSwitcher.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Changement de scène automatisé — advanced-scene-switcher.";
+        };
+        inputOverlay.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Overlay clavier/souris/manette à l'écran — input-overlay.";
+        };
+        waveform.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Source waveform/spectre audio — waveform.";
+        };
       };
     };
 

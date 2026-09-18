@@ -115,9 +115,19 @@ class InstallState:
     # ── Content creation ─────────────────────────────────────────────────
     content_creation_enable: bool = True   # roudix.contentCreation.enable
     obs_enable: bool = True                # roudix.contentCreation.obs.enable
-    obs_plugins: list = field(             # roudix.contentCreation.obs.plugins
-        default_factory=lambda: ["vkcapture", "pipewire-audio-capture"]
-    )
+    # roudix.contentCreation.obs.plugins.<id>.enable — un booléen par plugin.
+    # Aitum Multistream remplace obs-multi-rtmp (plugin de multistreaming
+    # maintenu par l'équipe Aitum, encodeurs/bitrate indépendants par plateforme).
+    obs_plugin_vkcapture: bool = True
+    obs_plugin_pipewire_audio_capture: bool = True
+    obs_plugin_background_removal: bool = False
+    obs_plugin_move_transition: bool = False
+    obs_plugin_aitum_multistream: bool = False
+    obs_plugin_gstreamer: bool = False
+    obs_plugin_composite_blur: bool = False
+    obs_plugin_advanced_scene_switcher: bool = False
+    obs_plugin_input_overlay: bool = False
+    obs_plugin_waveform: bool = False
     video_editor: str = "kdenlive"         # roudix.contentCreation.videoEditor —
                                             # kdenlive | davinci-resolve | davinci-resolve-studio | shotcut | none
     virtual_camera_enable: bool = True     # roudix.contentCreation.virtualCamera.enable

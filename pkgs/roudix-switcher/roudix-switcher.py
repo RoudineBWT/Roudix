@@ -258,19 +258,23 @@ VIDEO_EDITORS = [
     {"id": "none",                    "name": "None",                  "subtitle": "N'installer aucun éditeur vidéo",                                "icon": "none.svg"},
 ]
 
-# roudix.contentCreation.obs.plugins — LISTE (comme roudix.browsers ou les
-# mods Zen), donc checklist plutôt que sélecteur exclusif.
+# roudix.contentCreation.obs.plugins.<id>.enable — un booléen par plugin
+# (comme GAMING_APPS), donc ToggleListGroup + _diff_bool_items comme le
+# reste plutôt qu'une liste. Aitum Multistream remplace obs-multi-rtmp :
+# c'est le plugin de multistreaming activement maintenu par l'équipe
+# Aitum (déjà connue pour obs-vertical-canvas), avec encodeurs/bitrate
+# indépendants par plateforme.
 OBS_PLUGINS = [
-    {"id": "vkcapture",               "name": "VKCapture (capture jeux Vulkan/OpenGL)"},
-    {"id": "pipewire-audio-capture",  "name": "Pipewire Audio Capture (audio par application)"},
-    {"id": "background-removal",      "name": "Background Removal (fond virtuel IA)"},
-    {"id": "move-transition",         "name": "Move Transition (animations de sources)"},
-    {"id": "multi-rtmp",              "name": "Multi-RTMP (stream multi-plateformes)"},
-    {"id": "gstreamer",               "name": "GStreamer (sources/sorties supplémentaires)"},
-    {"id": "composite-blur",          "name": "Composite Blur (flou/verre dépoli)"},
-    {"id": "advanced-scene-switcher", "name": "Advanced Scene Switcher (changement de scène auto)"},
-    {"id": "input-overlay",           "name": "Input Overlay (clavier/souris/manette à l'écran)"},
-    {"id": "waveform",                 "name": "Waveform (spectre/waveform audio)"},
+    {"id": "vkcapture",              "name": "VKCapture (capture jeux Vulkan/OpenGL)",              "key": "roudix.contentCreation.obs.plugins.vkcapture.enable",              "default": True},
+    {"id": "pipewireAudioCapture",   "name": "Pipewire Audio Capture (audio par application)",      "key": "roudix.contentCreation.obs.plugins.pipewireAudioCapture.enable",   "default": True},
+    {"id": "backgroundRemoval",      "name": "Background Removal (fond virtuel IA)",                "key": "roudix.contentCreation.obs.plugins.backgroundRemoval.enable",      "default": False},
+    {"id": "moveTransition",         "name": "Move Transition (animations de sources)",             "key": "roudix.contentCreation.obs.plugins.moveTransition.enable",         "default": False},
+    {"id": "aitumMultistream",       "name": "Aitum Multistream (stream multi-plateformes)",        "key": "roudix.contentCreation.obs.plugins.aitumMultistream.enable",       "default": False},
+    {"id": "gstreamer",              "name": "GStreamer (sources/sorties supplémentaires)",         "key": "roudix.contentCreation.obs.plugins.gstreamer.enable",              "default": False},
+    {"id": "compositeBlur",          "name": "Composite Blur (flou/verre dépoli)",                  "key": "roudix.contentCreation.obs.plugins.compositeBlur.enable",          "default": False},
+    {"id": "advancedSceneSwitcher",  "name": "Advanced Scene Switcher (changement de scène auto)",  "key": "roudix.contentCreation.obs.plugins.advancedSceneSwitcher.enable",  "default": False},
+    {"id": "inputOverlay",           "name": "Input Overlay (clavier/souris/manette à l'écran)",    "key": "roudix.contentCreation.obs.plugins.inputOverlay.enable",           "default": False},
+    {"id": "waveform",                "name": "Waveform (spectre/waveform audio)",                   "key": "roudix.contentCreation.obs.plugins.waveform.enable",                "default": False},
 ]
 
 # Interrupteurs indépendants de la page Content Creation (comme SYSTEM_TOGGLES).
@@ -1009,11 +1013,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.cc_group = ToggleListGroup("", CONTENT_CREATION_TOGGLES, cc_current)
         cc_page.append(self.cc_group)
 
-        current_obs_plugins = set(
-            get_list_option("roudix.contentCreation.obs.plugins", ["vkcapture", "pipewire-audio-capture"])
-        )
-        obs_plugins_current = {p["id"]: (p["id"] in current_obs_plugins) for p in OBS_PLUGINS}
-        self.obs_plugins_group = ToggleListGroup("Plugins OBS", OBS_PLUGINS, obs_plugins_current)
+        current_obs_plugins = {p["id"]: get_bool_option(p["key"], p["default"]) for p in OBS_PLUGINS}
+        self.obs_plugins_group = ToggleListGroup("Plugins OBS", OBS_PLUGINS, current_obs_plugins)
         cc_page.append(self.obs_plugins_group)
 
         current_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
@@ -1577,9 +1578,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         cc_changes = _diff_bool_items(CONTENT_CREATION_TOGGLES, self.cc_group.get_states())
 
-        cur_obs_plugins = get_list_option("roudix.contentCreation.obs.plugins", ["vkcapture", "pipewire-audio-capture"])
-        new_obs_plugins = [p["id"] for p in OBS_PLUGINS if self.obs_plugins_group.get_states()[p["id"]]]
-        obs_plugins_changed = new_obs_plugins != cur_obs_plugins
+        obs_plugins_changes = _diff_bool_items(OBS_PLUGINS, self.obs_plugins_group.get_states())
 
         cur_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
         new_video_editor = self.video_editor_selector.selected_id
@@ -1621,7 +1620,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     discord_changed,
                     system_changes, rgb_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed,
-                    cc_master_changed, cc_changes, obs_plugins_changed, video_editor_changed]):
+                    cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
                 "<span color='gray'>No changes detected — nothing to do.</span>"
@@ -1672,8 +1671,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"Content Creation: <b>{'enabled' if new_cc_master else 'disabled'}</b>")
         for _key, new_val, name, _file in cc_changes.values():
             changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
-        if obs_plugins_changed:
-            changes.append(f"OBS plugins: <b>{', '.join(new_obs_plugins) or 'none'}</b>")
+        for _key, new_val, name, _file in obs_plugins_changes.values():
+            changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
         if video_editor_changed:
             changes.append(f"Video editor: <b>{cur_video_editor}</b> → <b>{new_video_editor}</b>")
         for _key, new_val, name, _file in system_changes.values():
@@ -1703,7 +1702,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "system_changes": system_changes,
             "cc_master_changed": cc_master_changed, "new_cc_master": new_cc_master,
             "cc_changes": cc_changes,
-            "obs_plugins_changed": obs_plugins_changed, "new_obs_plugins": new_obs_plugins,
+            "obs_plugins_changes": obs_plugins_changes,
             "video_editor_changed": video_editor_changed, "new_video_editor": new_video_editor,
         }
 
@@ -1903,11 +1902,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 )
                 return
 
-        if pending["obs_plugins_changed"]:
-            result = set_list_option("roudix.contentCreation.obs.plugins", pending["new_obs_plugins"])
+        for key, new_val, name, file in pending["obs_plugins_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing OBS plugins config: {GLib.markup_escape_text(result)}</span>"
+                    f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
                 )
                 return
 
