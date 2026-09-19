@@ -1,3 +1,5 @@
+*[Version française](installation.fr.md)*
+
 # Installation
 
 There are three ways to get Roudix running, depending on your starting point:

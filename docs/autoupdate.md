@@ -1,3 +1,5 @@
+*[Version française](autoupdate.fr.md)*
+
 # Auto-update
 
 When `roudix.autoupdate.enable = true`, the system checks GitHub every hour (and 5 min after boot).

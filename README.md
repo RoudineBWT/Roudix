@@ -1,3 +1,5 @@
+*[Version française](README.fr.md)*
+
 <div align="center">
 <img src="assets/logo/roudix-logo.png" width="250"/>
 
