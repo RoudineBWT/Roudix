@@ -2,7 +2,7 @@
 
 # Environnements de bureau
 
-Changez de bureau à tout moment avec `roudix-switch <de>` ou via l'interface **Roudix Settings** (paquet `roudix-switcher`) — pas besoin d'un hôte séparé. L'interface a évolué au-delà du simple changement de bureau : elle couvre désormais Bureau, Gaming (bascules par application), Éditeur, Terminal, Navigateur, Shell de connexion, Gestionnaire de fichiers, Client de chat (Discord/Matrix) et Intégration (stack keyring/portal) dans une seule application.
+Changez de bureau à tout moment avec `roudix-switch <de>` ou via l'interface **Roudix Customizer** (paquet `roudix-switcher`) — pas besoin d'un hôte séparé. L'interface a évolué au-delà du simple changement de bureau : elle couvre désormais Bureau, Gaming (bascules par application), Éditeur, Terminal, Navigateur, Shell de connexion, Gestionnaire de fichiers, Client de chat (Discord/Matrix) et Intégration (stack keyring/portal) dans une seule application.
 
 | Valeur | Bureau | Notes |
 |-------|---------|-------|
