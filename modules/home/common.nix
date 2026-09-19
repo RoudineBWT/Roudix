@@ -101,7 +101,7 @@ let
 
   videoEditorType = ccCfg.videoEditor or "kdenlive";
   videoEditorPackage = {
-    kdenlive                = pkgs.kdenlive;
+    kdenlive                = pkgs.kdePackages.kdenlive;
     davinci-resolve          = pkgs.davinci-resolve;
     davinci-resolve-studio   = pkgs.davinci-resolve-studio;
     shotcut                    = pkgs.shotcut;
