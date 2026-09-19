@@ -31,13 +31,13 @@
     programs.virt-manager.enable = true;
 
     # ── Virtual Network ───────────────────────────────────────────────────────
-    # Autorise virbr0 dans le firewall
+    # Allows virbr0 in the firewall
     networking.firewall.trustedInterfaces = [ "virbr0" "br0" ];
 
-    # Active le forwarding IP nécessaire pour le NAT des VMs
+    # Enables the IP forwarding needed for VM NAT
     boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
-    # Crée le réseau "default" s'il n'existe pas (NixOS ne le crée pas automatiquement)
+    # Creates the "default" network if it doesn't exist (NixOS doesn't create it automatically)
     systemd.services.libvirtd.postStart = lib.mkForce ''
       sleep 2
       if ! ${pkgs.libvirt}/bin/virsh net-info default &>/dev/null; then

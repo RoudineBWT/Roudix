@@ -60,7 +60,7 @@
     # ── Rename boot profile label ─────────────────────────────────────────────
     system.nixos.label = lib.mkForce "${config.system.nixos.version}";
 
-    # ── Rename UEFI entry to "Roudix" (à chaque boot, pas juste à l'activation) ──
+    # ── Rename UEFI entry to "Roudix" (on every boot, not just at activation) ──
     systemd.services.rename-uefi-entry = {
       description = "Rename UEFI boot entry to Roudix";
       wantedBy = [ "multi-user.target" ];

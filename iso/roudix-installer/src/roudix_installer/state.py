@@ -21,10 +21,10 @@ class DiskChoice:
     device: str = ""                # e.g. /dev/vda — used in "simple" mode
     mode: str = "simple"             # "simple" | "advanced" | "manual"
     filesystem: str = "ext4"         # "ext4" | "btrfs" — only used in "simple" mode
-    boot_size_gb: int = 4            # CachyOS + plusieurs générations Limine remplissent
-                                      # vite un /boot de 512M — 4G recommandé, 2G minimum
-    enable_swap: bool = False        # off par défaut : zram couvre déjà ce rôle
-    swap_size_gb: int = 8            # utilisé seulement si enable_swap
+    boot_size_gb: int = 4            # CachyOS + several Limine generations
+                                      # quickly fill a 512M /boot — 4G recommended, 2G minimum
+    enable_swap: bool = False        # off by default: zram already covers this role
+    swap_size_gb: int = 8            # only used if enable_swap
     advanced_disko_path: str = ""    # path to a custom disko.nix if mode == advanced
     # mode == "manual": partitions the user made themselves in GParted,
     # mapped to mountpoints. e.g. {"/dev/vda1": "/boot", "/dev/vda2": "swap", "/dev/vda3": "/"}
@@ -115,9 +115,9 @@ class InstallState:
     # ── Content creation ─────────────────────────────────────────────────
     content_creation_enable: bool = True   # roudix.contentCreation.enable
     obs_enable: bool = True                # roudix.contentCreation.obs.enable
-    # roudix.contentCreation.obs.plugins.<id>.enable — un booléen par plugin.
-    # Aitum Multistream remplace obs-multi-rtmp (plugin de multistreaming
-    # maintenu par l'équipe Aitum, encodeurs/bitrate indépendants par plateforme).
+    # roudix.contentCreation.obs.plugins.<id>.enable — one boolean per plugin.
+    # Aitum Multistream replaces obs-multi-rtmp (multistreaming plugin
+    # maintained by the Aitum team, independent encoders/bitrate per platform).
     obs_plugin_vkcapture: bool = True
     obs_plugin_pipewire_audio_capture: bool = True
     obs_plugin_background_removal: bool = False

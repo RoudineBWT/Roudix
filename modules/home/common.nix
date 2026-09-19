@@ -188,11 +188,11 @@ in
   # `programs.zen-browser` below, driven by `osConfig.roudix.zen.*`.
   # Terminal choisi par l'utilisateur (roudix.terminal)
   ++ [ terminalPackage ]
-  # Éditeur choisi par l'utilisateur (roudix.editor, "none" pour aucun)
+  # Editor chosen by the user (roudix.editor, "none" for none)
   ++ lib.optional (editorPackage != null) editorPackage
-  # OBS Studio, avec plugins à la carte (roudix.contentCreation.obs.plugins)
+  # OBS Studio, with plugins picked individually (roudix.contentCreation.obs.plugins)
   ++ lib.optional (ccEnabled && (ccCfg.obs.enable or true)) obsPackage
-  # Éditeur vidéo choisi (roudix.contentCreation.videoEditor)
+  # Chosen video editor (roudix.contentCreation.videoEditor)
   ++ lib.optional (ccEnabled && videoEditorPackage != null) videoEditorPackage
   # Client de chat Twitch (roudix.contentCreation.streaming.chatterino.enable)
   ++ lib.optional (ccEnabled && (ccCfg.streaming.chatterino.enable or false)) pkgs.chatterino2

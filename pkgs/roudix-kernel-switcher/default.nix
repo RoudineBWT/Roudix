@@ -27,13 +27,13 @@ pkgs.stdenv.mkDerivation {
     chmod +x $out/bin/roudix-kernel-switcher
     patchShebangs $out/bin/roudix-kernel-switcher
 
-    # Icône
+    # Icon
     if [ -f roudix-kernel-switcher.svg ]; then
       cp roudix-kernel-switcher.svg \
         $out/share/icons/hicolor/scalable/apps/io.roudix.kernel-switcher.svg
     fi
 
-    # Entrée .desktop
+    # .desktop entry
     cat > $out/share/applications/io.roudix.kernel-switcher.desktop << EOF
     [Desktop Entry]
     Name=Roudix Kernel Switcher

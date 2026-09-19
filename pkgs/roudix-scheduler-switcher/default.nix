@@ -6,7 +6,7 @@
 , gobject-introspection
 , wrapGAppsHook4
 , makeWrapper
-, scxctl        # passé depuis flake.nix / callPackage (inputs.roudix-caches.packages.${system}.scxctl)
+, scxctl        # passed from flake.nix / callPackage (inputs.roudix-caches.packages.${system}.scxctl)
 , systemd
 }:
 
@@ -20,11 +20,11 @@ stdenv.mkDerivation {
   src = ./roudix-scheduler.py;
   dontUnpack = true;
 
-  # wrapGAppsHook4 wrappe automatiquement tout exécutable sous $out/bin
-  # durant fixupPhase, en injectant GI_TYPELIB_PATH / XDG_DATA_DIRS /
-  # GSETTINGS_SCHEMA_DIR calculés sur toute la fermeture transitive de
-  # buildInputs (gtk4 propage déjà Pango, GdkPixbuf, Graphene, HarfBuzz,
-  # GLib...). Évite d'avoir à lister les typelibs à la main un par un.
+  # wrapGAppsHook4 automatically wraps every executable under $out/bin
+  # during fixupPhase, injecting GI_TYPELIB_PATH / XDG_DATA_DIRS /
+  # GSETTINGS_SCHEMA_DIR computed over buildInputs' full transitive
+  # closure (gtk4 already propagates Pango, GdkPixbuf, Graphene, HarfBuzz,
+  # GLib...). Saves having to list typelibs by hand one by one.
   nativeBuildInputs = [ makeWrapper wrapGAppsHook4 gobject-introspection ];
   buildInputs = [ gtk4 libadwaita ];
 
@@ -55,8 +55,8 @@ stdenv.mkDerivation {
     runHook postInstall
   '';
 
-  # Ajoute scxctl/systemd au PATH, en plus de tout ce que wrapGAppsHook4
-  # configure déjà automatiquement pour GTK4/Adwaita.
+  # Adds scxctl/systemd to PATH, on top of everything wrapGAppsHook4
+  # already configures automatically for GTK4/Adwaita.
   preFixup = ''
     gappsWrapperArgs+=(--prefix PATH : ${lib.makeBinPath [ scxctl systemd ]})
   '';

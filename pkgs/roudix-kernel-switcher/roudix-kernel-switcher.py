@@ -2,8 +2,8 @@
 # roudix-kernel-switcher — GTK4/Adwaita GUI for kernel switching.
 # Writes hardware.myKernel directly into local.nix and runs nh os boot.
 #
-# Le choix du scheduler SCX a été déplacé dans sa propre app, roudix-scheduler
-# (voir roudix-scheduler.py), pour ne pas mélanger les deux responsabilités.
+# SCX scheduler selection has been moved to its own app, roudix-scheduler
+# (see roudix-scheduler.py), to avoid mixing the two responsibilities.
 
 import gi
 gi.require_version("Gtk", "4.0")
@@ -96,9 +96,9 @@ KERNELS = {
     ],
 }
 
-# Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == "nvidia" (ships
-# nvidia_cachyos, le driver Nvidia précompilé matché à ce kernel — pas de LTO
-# ici volontairement, plus fragile sur les modules hors-arbre comme nvidia)
+# Chaotic-Nyx — used only when hardware.myGpu == "nvidia" (ships
+# nvidia_cachyos, the precompiled Nvidia driver matched to this kernel —
+# deliberately no LTO here, more fragile on out-of-tree modules like nvidia)
 KERNELS_CHAOTIC = {
     "Nixpkgs": [
         ("zen",             "linux-zen — nvidia module cached only with the open driver; "
@@ -443,8 +443,8 @@ class KernelSwitcher(Adw.ApplicationWindow):
         super().__init__(application=app, title="Kernel Switcher")
         self.set_default_size(640, 780)
 
-        # Le choix du scheduler SCX vit maintenant dans son app dédiée,
-        # roudix-scheduler (cf. scx.nix / roudix-scheduler.py).
+        # SCX scheduler selection now lives in its own dedicated app,
+        # roudix-scheduler (see scx.nix / roudix-scheduler.py).
         kernel_page = KernelPage(self)
 
         header = Adw.HeaderBar()

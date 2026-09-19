@@ -35,7 +35,7 @@ in
     # systemd service automatically. Just add the package in home.packages.
 
     # ── Config files ─────────────────────────────────────────────────────────
-    # On copie le dossier tel quel — format et structure gérés par l'utilisateur.
+    # Copies the folder as-is — format and structure managed by the user.
     # xdg.configFile."hypr" = {
     #   source    = hyprDir;
     #   recursive = true;

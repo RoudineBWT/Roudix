@@ -20,9 +20,9 @@ in
       ));
 
   # ── Gaming packages (user) ───────────────────────────────────────────────
-  # Le socle (wine/protontricks-like/proton frontend) reste toujours là si
-  # roudix.gaming.enable ; chaque launcher/outil est individuellement
-  # débrayable via roudix.gaming.apps.<nom>.enable.
+  # The base (wine/protontricks-like/proton frontend) always stays as
+  # long as roudix.gaming.enable is set; each launcher/tool can be
+  # individually disabled via roudix.gaming.apps.<name>.enable.
   home.packages = with pkgs; (if isGaming then
     [
       winetricks

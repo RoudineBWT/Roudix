@@ -2,9 +2,9 @@
 {
   # Imported only once here to avoid double declaration conflicts
   # when both niri.nix and hyprland.nix are loaded by home manager.
-  # noctalia.homeModules.default retiré : home-manager fournit désormais
+  # noctalia.homeModules.default removed: home-manager now provides
   # programs.noctalia nativement (modules/programs/noctalia.nix) — importer
-  # les deux provoquait un conflit "option already declared".
+  # having both caused an "option already declared" conflict.
   imports = [
     inputs.caelestia-shell.homeManagerModules.default
     inputs.dms.homeModules.dank-material-shell

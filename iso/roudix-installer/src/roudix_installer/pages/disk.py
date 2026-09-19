@@ -128,11 +128,11 @@ class DiskPage(Adw.NavigationPage):
 
         box.append(self.simple_options_group)
 
-        # ── mode simple ──
+        # ── simple mode ──
         self.disk_group = Adw.PreferencesGroup(title=L("Choisis un disque", "Choose a disk"))
         box.append(self.disk_group)
 
-        # ── mode avancé ──
+        # ── advanced mode ──
         self.advanced_group = Adw.PreferencesGroup(title=L("Fichier disko.nix", "disko.nix file"))
         self.advanced_row = Adw.ActionRow(title=L("Aucun fichier sélectionné", "No file selected"))
         pick_btn = Gtk.Button(label=L("Parcourir…", "Browse…"), valign=Gtk.Align.CENTER)

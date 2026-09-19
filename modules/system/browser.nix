@@ -3,9 +3,9 @@
 let
   cfg = config.roudix;
 
-  # `command` = binaire réellement lancé (utilisé par les keybinds niri).
-  # Ajuste-le ici si un de tes paquets custom (brave-origin-*) expose un
-  # binaire différent du nom de l'attribut.
+  # `command` = the binary actually launched (used by the niri keybinds).
+  # Adjust it here if a custom package (brave-origin-*) exposes a binary
+  # under a different name than the attribute.
   browserDefs = {
     "brave"    = { package = pkgs.brave;                                     command = "brave";                 extras = []; };
     "brave-beta"    = { package = pkgs.brave-beta;                           command = "brave-beta";            extras = []; };

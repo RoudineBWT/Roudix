@@ -20,31 +20,31 @@ in
         };
 
       workspace = {
-        # ── Thème sombre ──────────────────────────────────────────────────
+        # ── Dark theme ──────────────────────────────────────────────────
         lookAndFeel = "org.kde.breezedark.desktop";
         colorScheme = "BreezeDark";
-        # iconTheme retiré d'ici volontairement : plasma-manager transforme
-        # sinon kdeglobals en symlink read-only vers le store Nix, ce qui
-        # empêche ensuite papirusSync/telaSync (hooks noctalia) de patcher
-        # la clé [Icons] Theme= avec sed. La valeur par défaut est posée
-        # plus bas via home.activation + kwriteconfig6, sur un fichier
-        # kdeglobals resté normal/mutable.
+        # iconTheme deliberately left out here: otherwise plasma-manager
+        # turns kdeglobals into a read-only symlink to the Nix store,
+        # which then stops papirusSync/telaSync (noctalia hooks) from
+        # patching the [Icons] Theme= key with sed. The default value is
+        # set further below via home.activation + kwriteconfig6, on a
+        # kdeglobals file that stays normal/mutable.
         cursorTheme = "capitaine-cursors-white";
 
 
-        # Wallpaper par défaut Roudix Dark
-        # Override dans home/local.nix :
-        #   programs.plasma.workspace.wallpaper = lib.mkForce "/chemin/wallpaper.jpg";
+        # Default Roudix Dark wallpaper
+        # Override in home/local.nix:
+        #   programs.plasma.workspace.wallpaper = lib.mkForce "/path/wallpaper.jpg";
         wallpaper = wallpaperDark;
       };
 
-      # ── Écran de verrouillage ────────────────────────────────────────────
-      # Override dans home/local.nix :
-      #   programs.plasma.kscreenlocker.appearance.wallpaper = lib.mkForce "/chemin/wallpaper.jpg";
+      # ── Lock screen ────────────────────────────────────────────
+      # Override in home/local.nix:
+      #   programs.plasma.kscreenlocker.appearance.wallpaper = lib.mkForce "/path/wallpaper.jpg";
       kscreenlocker.appearance.wallpaper = wallpaperDark;
 
-      # ── Barre des tâches ────────────────────────────────────────────────
-      # Override dans home/local.nix :
+      # ── Taskbar ────────────────────────────────────────────────
+      # Override in home/local.nix:
       #   programs.plasma.panels = lib.mkForce [ ... ];
       panels = [
         {
@@ -64,11 +64,11 @@ in
       ];
     };
 
-    # ── Thème d'icônes KDE, hors plasma-manager ────────────────────────────
-    # Écrit avec kwriteconfig6 (mutateur natif KDE) au lieu de laisser
-    # plasma-manager gérer kdeglobals : le fichier reste un fichier texte
-    # normal, éditable ensuite par papirusSync/telaSync sans conflit avec
-    # le symlink immuable que produirait la voie déclarative.
+    # ── KDE icon theme, outside plasma-manager ────────────────────────────
+    # Written with kwriteconfig6 (native KDE mutator) instead of letting
+    # plasma-manager manage kdeglobals: the file stays a normal text file,
+    # later editable by papirusSync/telaSync without conflicting with the
+    # immutable symlink the declarative path would produce.
     home.activation.setKdeIconTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
         --file kdeglobals --group Icons --key Theme "Papirus-Dark"

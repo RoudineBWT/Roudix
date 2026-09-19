@@ -54,9 +54,9 @@ def _kernels():
 
 
 def _kernels_chaotic():
-    # Chaotic-Nyx — set volontairement plus réduit que xddxdd (pas de LTO ici :
-    # les modules hors-arbre comme nvidia y sont plus fragiles). Requis pour
-    # nvidia_cachyos, le driver Nvidia précompilé matché à ce kernel.
+    # Chaotic-Nyx — deliberately smaller set than xddxdd (no LTO here:
+    # out-of-tree modules like nvidia are more fragile with it). Required
+    # for nvidia_cachyos, the precompiled Nvidia driver matched to this kernel.
     return [
         ("cachyos", L("Par défaut — LTO + BORE", "Default — LTO + BORE")),
         ("cachyos-lts", L("Support long terme", "Long-term support")),
@@ -466,7 +466,7 @@ class OptionsPage(Adw.NavigationPage):
         box.append(user_group)
         box.append(self.password_warning)
 
-        # ── Matériel ──
+        # ── Hardware ──
         gpu_detected, nvidia_laptop_detected = detect_gpu()
         cpu_detected = detect_cpu()
         # Detection only picks a sensible default — never overrides a
@@ -658,7 +658,7 @@ class OptionsPage(Adw.NavigationPage):
             "notify::selected", lambda *_: self._sync_desktop_integration_row()
         )
 
-        # ── Système ──
+        # ── System ──
         sys_group = Adw.PreferencesGroup(title=L("Système", "System"))
         self.vm_guest_row = Adw.SwitchRow(
             title=L("Installation dans une VM", "Installing inside a VM")
@@ -845,7 +845,7 @@ class OptionsPage(Adw.NavigationPage):
         box.append(extra_group)
         self._sync_autoupdate_row()
 
-        # ── Création de contenu ──
+        # ── Content Creation ──
         cc_group = Adw.PreferencesGroup(title=L("Création de contenu", "Content Creation"))
         self.content_creation_row = Adw.SwitchRow(
             title=L(
@@ -860,10 +860,10 @@ class OptionsPage(Adw.NavigationPage):
         self.obs_row.set_active(state.obs_enable)
         cc_group.add(self.obs_row)
 
-        # Un switch par plugin OBS (comme les apps gaming) — Aitum
-        # Multistream remplace obs-multi-rtmp comme option de
-        # multistreaming (successeur activement maintenu par l'équipe
-        # Aitum, encodeurs/bitrate indépendants par plateforme).
+        # One switch per OBS plugin (like the gaming apps) — Aitum
+        # Multistream replaces obs-multi-rtmp as the multistreaming
+        # option (actively maintained successor from the Aitum team,
+        # independent encoders/bitrate per platform).
         self.obs_plugin_rows = {}
         for attr, title_fr, title_en, default in (
             ("vkcapture", "VKCapture (capture jeux Vulkan/OpenGL)", "VKCapture (Vulkan/OpenGL game capture)", state.obs_plugin_vkcapture),

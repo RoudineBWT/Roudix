@@ -138,28 +138,28 @@
   ];
   # ── Services ────────────────────────────────────────────────────────────
   services.udisks2.enable = true;
-  # power-profiles-daemon a été remplacé par tuned (comportement par défaut de
-  # Fedora depuis F41). tuned-ppd (ppdSupport) fournit la même API D-Bus, donc
-  # `powerprofilesctl` (utilisé par game-performance) continue de fonctionner
-  # sans changement côté script.
+  # power-profiles-daemon has been replaced by tuned (Fedora's default
+  # since F41). tuned-ppd (ppdSupport) provides the same D-Bus API, so
+  # `powerprofilesctl` (used by game-performance) keeps working with no
+  # change on the script's side.
   services.power-profiles-daemon.enable = false;
   services.tuned = {
     enable = true;
     ppdSupport = true;
-    # Profil custom Roudix pour le gaming : base = throughput-performance
-    # (governor performance + tuning I/O/réseau) SANS le verrouillage des
-    # C-states de latency-performance, qui pourrait aggraver l'instabilité
-    # CPU déjà suspectée (cf. crashs liés au SMT). Point d'extension pour
-    # ajouter des tweaks Roudix-spécifiques plus tard sans dépendre d'un
-    # profil stock.
+    # Custom Roudix profile for gaming: based on throughput-performance
+    # (performance governor + I/O/network tuning) WITHOUT
+    # latency-performance's C-state locking, which could worsen the
+    # already-suspected CPU instability (see SMT-related crashes).
+    # Extension point for adding Roudix-specific tweaks later without
+    # depending on a stock profile.
     profiles."roudix-gaming" = {
       main = {
         include = "throughput-performance";
       };
     };
-    # Le profil "performance" exposé via powerprofilesctl (donc via
-    # game-performance) pointe vers notre profil custom au lieu du défaut
-    # tuned-ppd (throughput-performance directement).
+    # The "performance" profile exposed via powerprofilesctl (and thus via
+    # game-performance) points to our custom profile instead of
+    # tuned-ppd's default (throughput-performance directly).
     ppdSettings.profiles = {
       "power-saver" = "powersave";
       balanced = "balanced";
