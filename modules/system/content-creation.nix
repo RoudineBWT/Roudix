@@ -14,68 +14,68 @@ in
       enable = lib.mkOption {
         type = lib.types.bool;
         default = true;
-        description = "Installer OBS Studio.";
+        description = "Install OBS Studio.";
       };
 
-      # Un booléen par plugin (comme roudix.gaming.apps.<id>.enable) plutôt
-      # qu'une liste : chacun se coche/décoche indépendamment dans
-      # local.nix, et c'est ce que consomme le wrapOBS de
-      # `modules/home/common.nix`. Correspond à `pkgs.obs-studio-plugins.*`.
+      # One boolean per plugin (like roudix.gaming.apps.<id>.enable) rather
+      # than a list: each one gets toggled independently in local.nix, and
+      # that's what the wrapOBS in `modules/home/common.nix` consumes.
+      # Maps to `pkgs.obs-studio-plugins.*`.
       plugins = {
         vkcapture.enable = lib.mkOption {
           type = lib.types.bool;
           default = true;
-          description = "Capture Vulkan/OpenGL rapide (jeux) — obs-vkcapture.";
+          description = "Fast Vulkan/OpenGL game capture — obs-vkcapture.";
         };
         pipewireAudioCapture.enable = lib.mkOption {
           type = lib.types.bool;
           default = true;
-          description = "Capture audio par application via Pipewire — obs-pipewire-audio-capture.";
+          description = "Per-app audio capture via Pipewire — obs-pipewire-audio-capture.";
         };
         backgroundRemoval.enable = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          description = "Fond virtuel par IA, sans fond vert — obs-backgroundremoval.";
+          description = "AI virtual background, no green screen needed — obs-backgroundremoval.";
         };
         moveTransition.enable = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          description = "Transitions/animations de sources — obs-move-transition.";
+          description = "Animated source moves/transitions — obs-move-transition.";
         };
         aitumMultistream.enable = lib.mkOption {
           type = lib.types.bool;
           default = false;
           description = ''
-            Streamer vers plusieurs plateformes à la fois — obs-aitum-multistream.
-            Successeur activement maintenu d'obs-multi-rtmp par l'équipe
-            Aitum (déjà connue pour obs-vertical-canvas) : encodeurs/bitrate
-            indépendants par plateforme, interface plus soignée.
+            Stream to several platforms at once — obs-aitum-multistream.
+            Actively maintained successor to obs-multi-rtmp from the Aitum
+            team (also known for obs-vertical-canvas): independent
+            encoders/bitrate per platform, more polished UI.
           '';
         };
         gstreamer.enable = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          description = "Sources/sorties supplémentaires via GStreamer — obs-gstreamer.";
+          description = "Extra sources/outputs via GStreamer — obs-gstreamer.";
         };
         compositeBlur.enable = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          description = "Filtres de flou/verre dépoli — obs-composite-blur.";
+          description = "Blur/frosted-glass filters — obs-composite-blur.";
         };
         advancedSceneSwitcher.enable = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          description = "Changement de scène automatisé — advanced-scene-switcher.";
+          description = "Automated scene switching — advanced-scene-switcher.";
         };
         inputOverlay.enable = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          description = "Overlay clavier/souris/manette à l'écran — input-overlay.";
+          description = "On-screen keyboard/mouse/gamepad overlay — input-overlay.";
         };
         waveform.enable = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          description = "Source waveform/spectre audio — waveform.";
+          description = "Audio waveform/spectrum source — waveform.";
         };
       };
     };
@@ -84,12 +84,12 @@ in
       type = lib.types.enum [ "kdenlive" "davinci-resolve" "davinci-resolve-studio" "shotcut" "none" ];
       default = "kdenlive";
       description = ''
-        Éditeur vidéo installé (voir `modules/home/common.nix`).
-        "davinci-resolve" = édition gratuite ; "davinci-resolve-studio" =
-        édition payante (même paquet, nécessite une licence Blackmagic) —
-        les deux sont "unfree" et déjà couverts par
-        `nixpkgs.config.allowUnfree` (modules/system/common.nix).
-        "shotcut" en alternative légère, "none" pour n'en installer aucun.
+        Video editor installed (see `modules/home/common.nix`).
+        "davinci-resolve" is the free edition; "davinci-resolve-studio" is
+        the paid one (same package, requires a Blackmagic license) — both
+        are "unfree" and already covered by `nixpkgs.config.allowUnfree`
+        (modules/system/common.nix). "shotcut" as a lighter alternative,
+        "none" to install none.
       '';
     };
 
@@ -97,16 +97,16 @@ in
       type = lib.types.bool;
       default = true;
       description = ''
-        Charge le module noyau `v4l2loopback`, requis pour que "Start
-        Virtual Camera" d'OBS (ou n'importe quel outil de webcam virtuelle)
-        ait un /dev/videoN à écrire. Sans ça le bouton échoue silencieusement.
+        Loads the `v4l2loopback` kernel module, required for OBS's "Start
+        Virtual Camera" (or any virtual-webcam tool) to actually have a
+        /dev/videoN to write to. Without it the button fails silently.
       '';
     };
 
     streaming.chatterino.enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Installer Chatterino2 (client de chat Twitch tiers, léger et rapide).";
+      description = "Install Chatterino2 (fast, lightweight third-party Twitch chat client).";
     };
   };
 
@@ -115,14 +115,14 @@ in
       config.boot.kernelPackages.v4l2loopback
     ];
     boot.kernelModules = lib.mkIf cfg.virtualCamera.enable [ "v4l2loopback" ];
-    # video_nr=9 pour éviter d'écraser une vraie webcam sur /dev/video0.
+    # video_nr=9 to avoid clobbering a real webcam on /dev/video0.
     boot.extraModprobeConfig = lib.mkIf cfg.virtualCamera.enable ''
       options v4l2loopback video_nr=9 card_label="OBS Virtual Camera" exclusive_caps=1
     '';
 
-    # DaVinci Resolve a besoin d'un ICD OpenCL pour utiliser le GPU AMD
-    # (ROCm est déjà installé par modules/system/gpu/amd.nix) au lieu de
-    # retomber sur un rendu CPU très lent.
+    # DaVinci Resolve needs an OpenCL ICD to use the AMD GPU (ROCm is
+    # already installed by modules/system/gpu/amd.nix) instead of falling
+    # back to a very slow CPU-only render.
     hardware.graphics.extraPackages = lib.mkIf
       (lib.hasPrefix "davinci-resolve" cfg.videoEditor && (config.hardware.myGpu or "") == "amd")
       [ pkgs.rocmPackages.clr.icd ];
