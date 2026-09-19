@@ -59,7 +59,7 @@
 | 🖥️ [Desktop & shells](docs/desktop.md) | Switch compositors and graphical shells, personal overrides (Niri, Hyprland, GNOME, KDE) |
 | ⚡ [Aliases & functions](docs/aliases.md) | All shell aliases and functions — `roudix-switch`, `roudix-shell-switch`, `rebuild`… |
 | 🚀 [Installation](docs/installation.md) | Automated and manual installation guide |
-| ✨ [Features](docs/features.md) ([FR](docs/features.fr.md)) | Full feature list by desktop environment |
+| ✨ [Features](docs/features.md) | Full feature list by desktop environment |
 | 🔄 [Auto-update](docs/autoupdate.md) | Automatic git pull + rebuild configuration |
 
 ---

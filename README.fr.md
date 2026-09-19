@@ -59,7 +59,7 @@
 | 🖥️ [Bureau & shells](docs/desktop.fr.md) | Changer de compositeur et de shell graphique, surcharges personnelles (Niri, Hyprland, GNOME, KDE) |
 | ⚡ [Alias & fonctions](docs/aliases.fr.md) | Tous les alias et fonctions shell — `roudix-switch`, `roudix-shell-switch`, `rebuild`… |
 | 🚀 [Installation](docs/installation.fr.md) | Guide d'installation automatisée et manuelle |
-| ✨ [Fonctionnalités](docs/features.fr.md) ([EN](docs/features.md)) | Liste complète des fonctionnalités par environnement de bureau |
+| ✨ [Fonctionnalités](docs/features.fr.md)  | Liste complète des fonctionnalités par environnement de bureau |
 | 🔄 [Mise à jour automatique](docs/autoupdate.fr.md) | Configuration du git pull + rebuild automatique |
 
 ---
