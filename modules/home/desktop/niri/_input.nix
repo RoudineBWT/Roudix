@@ -1,4 +1,4 @@
-## _input.nix — niri: [input] (identique entre noctalia et dms).
+## _input.nix — niri: [input] (identical between noctalia and dms).
 { osConfig, ... }:
 {
   programs.niri.settings.input = {

@@ -1,6 +1,6 @@
-## _include-dms.nix — même mécanisme que _include-noctalia.nix, mais
-## pour les 5 fichiers que DMS regénère lui-même en live sous
-## ~/.config/niri/dms/ (alttab, wpblur, colors, cursor, layout).
+## _include-dms.nix — same mechanism as _include-noctalia.nix, but for the
+## 5 files DMS regenerates live under ~/.config/niri/dms/ (alttab, wpblur,
+## colors, cursor, layout).
 { config, pkgs, lib, ... }:
 let
   niriPkg = config.programs.niri.package;

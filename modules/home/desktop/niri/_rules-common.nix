@@ -1,8 +1,8 @@
-## _rules-common.nix — niri: [[window-rule]] communes à noctalia et dms.
-## Les règles spécifiques à chaque shell sont dans _rules-noctalia.nix /
-## _rules-dms.nix — importées à côté dans default.nix, elles se
-## CONCATÈNENT automatiquement (les listes fusionnent par concaténation
-## dans le système de modules Home Manager, pas besoin de merge manuel).
+## _rules-common.nix — niri: [[window-rule]] shared between noctalia and
+## dms. Shell-specific rules live in _rules-noctalia.nix / _rules-dms.nix
+## — imported alongside this file in default.nix, they CONCATENATE
+## automatically (lists merge by concatenation in the Home Manager module
+## system, no manual merge needed).
 { ... }:
 let
   ws = import ./_ws.nix { };
@@ -132,9 +132,9 @@ in
       open-on-workspace = ws.music;
     }
     {
-      # Radius 20 + clip appliqué à toutes les fenêtres (matches = [{}]
-      # = un groupe de critères vide = s'applique à tout ; matches = []
-      # — liste vide — ne matche RIEN, contrairement à l'intuition).
+      # Corner radius + clip applied to all windows (matches = [{}] — one
+      # empty criteria group — applies to everything; matches = [] — an
+      # empty list — matches NOTHING, counter-intuitively).
       matches = [ { } ];
       geometry-corner-radius = { top-left = 0.0; top-right = 0.0; bottom-left = 0.0; bottom-right = 0.0; };
       clip-to-geometry = true;

@@ -1,7 +1,7 @@
-## _include-noctalia.nix — charge ~/.config/umbriel/noctalia.toml,
-## regénéré en live par le matugen de Noctalia à chaque changement de
-## wallpaper. C'est le mécanisme natif d'Umbriel pour ça (contrairement à
-## niri, pas besoin d'astuce de concaténation de texte).
+## _include-noctalia.nix — loads ~/.config/umbriel/noctalia.toml,
+## regenerated live by Noctalia's matugen on every wallpaper change.
+## This is Umbriel's native mechanism for this (unlike niri, no
+## text-concatenation trick needed).
 { ... }:
 {
   programs.umbriel.settings.include.files = [ "noctalia.toml" ];

@@ -1,11 +1,9 @@
-## _animation.nix — Umbriel: [animation] et ses sous-tables par événement.
+## _animation.nix — Umbriel: [animation] and its per-event sub-tables.
 ##
-## ⚠ Cette section n'existait PAS du tout dans ta config.toml traduite
-## depuis niri (niri n'a pas de système d'animation aussi granulaire).
-## C'est exactement le genre de "ce qui manque" — ajoutée ici from scratch
-## avec des réglages sobres et cohérents entre eux.
+## niri has no equivalent granular animation system, so these settings
+## are Umbriel-specific, chosen to be subtle and consistent with each other.
 ##
-## Doc : https://docs.noctalia.dev/umbriel/animation/
+## Docs: https://docs.noctalia.dev/umbriel/animation/
 { ... }:
 {
   programs.umbriel.settings = {
@@ -18,11 +16,9 @@
       enabled = true;
       duration_ms = 150;
       curve = "easeout";
-      style = "none"; # shader remplace popin/scale ci-dessous
-      # "${...}" force la coercition path → string : Nix copie le .glsl dans
-      # le store et umbriel reçoit un chemin absolu tout fait (pas de
-      # xdg.configFile à maintenir en plus, pas de résolution relative à
-      # ~/.config/umbriel/ à garder en tête).
+      style = "none"; # the shader below replaces popin/scale
+      # "${...}" forces path → string coercion: Nix copies the .glsl into
+      # the store and umbriel gets a ready-made absolute path.
       shader = "${./_shaders/windows-in.glsl}";
     };
 
@@ -30,7 +26,7 @@
       enabled = true;
       duration_ms = 150;
       curve = "easeout";
-      style = "fade"; # ignoré tant que shader est renseigné, gardé en fallback
+      style = "fade"; # ignored while shader is set, kept as a fallback
       shader = "${./_shaders/windows-out.glsl}";
     };
 
@@ -52,17 +48,17 @@
       curve = "easeout";
     };
 
-    # S'applique aux 3 scratchpads nommés (misc/communication/music, voir
-    # _binds.nix et _rules.nix) : petit fondu + assombrissement du fond,
-    # sans forcer de taille/état.
+    # Applies to the 3 named scratchpads (misc/communication/music, see
+    # _binds.nix and _rules.nix): a small fade + background dim, without
+    # forcing size/state.
     scratchpad = {
       enabled = true;
       duration_ms = 200;
       curve = "easeout";
-      shader = "${./_shaders/scratchpad.glsl}"; # slide+fade, cf. _shaders/scratchpad.glsl
+      shader = "${./_shaders/scratchpad.glsl}"; # slide+fade, see _shaders/scratchpad.glsl
       dim = 0.5;
       blur = true;
-      scale = 0.0;        # 0 = garde la géométrie mémorisée de la fenêtre
+      scale = 0.0;        # 0 = keep the window's remembered geometry
       maximize = false;
       fullscreen = false;
     };
@@ -73,8 +69,8 @@
       curve = "easeout";
     };
 
-    # Nouveau (sans équivalent niri) : assombrit légèrement les fenêtres
-    # non-focus pour renforcer visuellement le focus courant.
+    # No niri equivalent: slightly dims unfocused windows to reinforce
+    # the current focus visually.
     dim_unfocused = {
       enabled = true;
       duration_ms = 200;

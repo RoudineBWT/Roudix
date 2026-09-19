@@ -8,12 +8,12 @@ let
 in
 {
   config = lib.mkIf isNiri {
-    # Pour niri-unstable (dernier commit de main), décommenter ces 2 lignes :
+    # niri-unstable (latest main commit):
     nixpkgs.overlays = [ inputs.niri.overlays.niri ];
     programs.niri.package = pkgs.niri-unstable;
     programs.niri.enable = true;
 
-    # ── Greeter DMS (si shell != noctalia) ───────────────────────────────
+    # ── DMS greeter (when shell != noctalia) ───────────────────────────────
     programs.dms-greeter = lib.mkIf (!isNoctalia) {
       enable = true;
       compositor.name = "niri";
@@ -26,7 +26,7 @@ in
       systemd.enable = true;
     };
 
-    # ── Greeter Noctalia (si shell == noctalia) ──────────────────────────
+    # ── Noctalia greeter (when shell == noctalia) ──────────────────────────
     programs.noctalia-greeter = lib.mkIf isNoctalia {
       enable = true;
       greeter-args = "--session niri";
@@ -39,8 +39,8 @@ in
     };
 
     # ── Portals ───────────────────────────────────────────────────────────
-    # Pilotés par roudix.desktopIntegration (gnome par défaut, kde en option
-    # pour les setups surtout Qt/KDE sur un compositeur non-KDE).
+    # Driven by roudix.desktopIntegration (gnome by default, kde as an
+    # option for mostly-Qt/KDE setups on a non-KDE compositor).
     xdg.portal = {
       enable = true;
       extraPortals = with pkgs;
@@ -82,13 +82,13 @@ in
     };
 
     # ── Keyring ───────────────────────────────────────────────────────────
-    # ⚠ Branche kde pas testée en session réelle. Point de vigilance connu :
-    # le service PAM "greetd" ne substack pas "login" (nixpkgs#357201), ce
-    # qui a déjà cassé l'auto-unlock kwallet pour d'autres utilisateurs de
-    # greetd — cf. discourse.nixos.org "Auto-Unlock kwallet with greetd
-    # login-manager". Si le wallet reste verrouillé après un login, il
-    # faudra probablement substack "login" à la main dans le texte PAM de
-    # greetd (comme le font déjà gdm.nix/lightdm.nix pour ce cas).
+    # ⚠ kde branch not tested in a real session. Known caveat: the
+    # "greetd" PAM service doesn't substack "login" (nixpkgs#357201),
+    # which has already broken kwallet auto-unlock for other greetd users
+    # — see discourse.nixos.org "Auto-Unlock kwallet with greetd
+    # login-manager". If the wallet stays locked after login, greetd's PAM
+    # text will likely need "login" substacked by hand (as gdm.nix/
+    # lightdm.nix already do for this case).
     services.gnome.gnome-keyring.enable = !isKdeIntegration;
     security.pam.services.greetd.enableGnomeKeyring = !isKdeIntegration;
     security.pam.services.greetd.kwallet.enable = isKdeIntegration;

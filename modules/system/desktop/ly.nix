@@ -10,7 +10,7 @@ in
 
 lib.mkIf useLy {
 
-  # Sessions exposées à Ly — une par compositeur activé
+  # Sessions exposed to Ly — one per enabled compositor
   environment.etc = lib.mkMerge [
     (lib.mkIf isHyprland {
       "ly/wayland-sessions/hyprland-uwsm-fixed.desktop".source =
@@ -42,8 +42,8 @@ lib.mkIf useLy {
     };
   };
 
-  # UWSM gère lui-même graphical-session.target — le fake target de NixOS
-  # le marque comme déjà actif avant le login, ce qui fait échouer UWSM.
+  # UWSM manages graphical-session.target itself — NixOS's fake target
+  # marks it as already active before login, which makes UWSM fail.
   systemd.user.targets.nixos-fake-graphical-session = lib.mkIf isHyprland {
     enable = false;
     unitConfig.DefaultDependencies = "no";

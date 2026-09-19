@@ -24,10 +24,10 @@ in
           # Explicitly set screencast to wlr to avoid gtk taking over
           config.common."org.freedesktop.impl.portal.ScreenCast" = "wlr";
 
-          # xdg-desktop-portal-wlr.service tourne avec un PATH minimal
-          # (coreutils only, via son propre overrides.conf) : il ne trouve
-          # jamais slurp/rofi/etc installés dans le profil home-manager.
-          # Chemin absolu obligatoire pour que le chooser fonctionne.
+          # xdg-desktop-portal-wlr.service runs with a minimal PATH
+          # (coreutils only, via its own overrides.conf), so it never
+          # finds slurp/rofi/etc installed in the home-manager profile.
+          # An absolute path is required for the chooser to work.
           wlr.settings.screencast = {
             chooser_type = "simple";
             chooser_cmd  = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
@@ -39,7 +39,7 @@ in
       systemd.enable = true;
     };
 
-    # ── Greeter Noctalia (remplace ly quand shell == noctalia) ────────────
+    # ── Noctalia greeter (replaces ly when shell == noctalia) ────────────
     programs.noctalia-greeter = lib.mkIf isNoctalia {
       enable = true;
       greeter-args = "--session mangowc";
@@ -70,13 +70,13 @@ in
       };
     };
 
-    # ⚠ Branche kde pas testée en session réelle. Le sous-cas "ly" (shell !=
-    # noctalia) devrait être fiable — ly est un display manager classique.
-    # Le sous-cas "greetd" (shell == noctalia) a un point de vigilance connu :
-    # le service PAM "greetd" ne substack pas "login" (nixpkgs#357201), ce
-    # qui a déjà cassé l'auto-unlock kwallet pour d'autres utilisateurs de
-    # greetd — cf. discourse.nixos.org "Auto-Unlock kwallet with greetd
-    # login-manager". À vérifier après un rebuild.
+    # ⚠ kde branch not tested in a real session. The "ly" sub-case (shell
+    # != noctalia) should be reliable — ly is a classic display manager.
+    # The "greetd" sub-case (shell == noctalia) has a known caveat: the
+    # "greetd" PAM service doesn't substack "login" (nixpkgs#357201),
+    # which has already broken kwallet auto-unlock for other greetd users
+    # — see discourse.nixos.org "Auto-Unlock kwallet with greetd
+    # login-manager". Verify after a rebuild.
     services.gnome.gnome-keyring.enable = !isKdeIntegration;
     services.dbus.enable = true;
     security.pam.services.ly.enableGnomeKeyring     = lib.mkIf (!isNoctalia && !isKdeIntegration) true;

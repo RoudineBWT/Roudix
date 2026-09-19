@@ -18,12 +18,12 @@ in
     ../../papirus-icon.nix
     ../../tela-icon.nix
   ]
-  # Les fichiers _foo.nix posent programs.umbriel.settings.* directement
-  # (sans lib.mkIf) : on ne les importe que si umbriel est le compositeur
-  # actif, pour ne rien toucher côté umbriel sur un host qui utilise un
-  # autre desktop. Les LISTES (window_rule/layer_rule) et l'include se
-  # fusionnent automatiquement entre ces fichiers via le système de
-  # modules — pas de merge manuel nécessaire ici.
+  # The _foo.nix files set programs.umbriel.settings.* directly (no
+  # lib.mkIf), so they're only imported when umbriel is the active
+  # compositor, to avoid touching umbriel settings on a host using a
+  # different desktop. LISTS (window_rule/layer_rule) and the include
+  # merge automatically across these files via the module system — no
+  # manual merging needed here.
   ++ lib.optionals (osConfig.roudix.desktop.type == "umbriel") [
     ./_general.nix
     ./_appearance.nix
@@ -50,10 +50,10 @@ in
       enable = true;
     };
 
-    # ── Terminal / navigateur / fichiers résolus depuis roudix.* ──────────
-    # Même clé ("Mod+Return" etc.) que dans _binds.nix : attrsOf → un
-    # point de fusion par bind, donc lib.mkForce pour que cette valeur
-    # gagne (même principe qu'un override côté local.nix).
+    # ── Terminal / browser / files resolved from roudix.* ──────────
+    # Same key ("Mod+Return" etc.) as in _binds.nix: attrsOf merges per
+    # bind, so lib.mkForce makes this value win (same principle as a
+    # local.nix override).
     programs.umbriel.settings.keybinds = {
       "Mod+Return" = lib.mkForce "spawn:${terminalCmd}";
       "Mod+E" = lib.mkForce "spawn:${fileManagerCmd}";

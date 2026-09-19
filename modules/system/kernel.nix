@@ -2,7 +2,7 @@
 {
   options.hardware.myKernel = lib.mkOption {
     type = lib.types.enum [
-      # Zen + LTS/latest/testing (nixpkgs, pas CachyOS)
+      # Zen + LTS/latest/testing (nixpkgs, not CachyOS)
       "zen"
       "nixpkgs-lts"
       "nixpkgs-latest"
@@ -48,80 +48,80 @@
       "cachyos-server-lto"
     ];
     default = "cachyos-latest-v3";
-    description = "Variant de kernel CachyOS (xddxdd) — utilisé quand hardware.myGpu != \"nvidia\". \"zen\" bascule sur pkgs.linuxPackages_zen, \"nixpkgs-lts\" sur pkgs.linuxPackages (LTS par défaut de nixpkgs), \"nixpkgs-latest\" sur pkgs.linuxPackages_latest, \"nixpkgs-testing\" sur pkgs.linuxPackages_testing (linux_testing — noyau RC/mainline candidat) — tous hors overlay xddxdd.";
+    description = "CachyOS kernel variant (xddxdd) — used when hardware.myGpu != \"nvidia\". \"zen\" maps to pkgs.linuxPackages_zen, \"nixpkgs-lts\" to pkgs.linuxPackages (nixpkgs default LTS), \"nixpkgs-latest\" to pkgs.linuxPackages_latest, \"nixpkgs-testing\" to pkgs.linuxPackages_testing (linux_testing — RC/mainline candidate kernel) — all outside the xddxdd overlay.";
   };
 
-  # Set de variants nettement plus réduit chez Chaotic-Nyx (pas de x86_64-v2/v3/v4/zen4
-  # ni de LTO séparé pour chaque famille comme chez xddxdd).
+  # Chaotic-Nyx's variant set is much smaller (no x86_64-v2/v3/v4/zen4,
+  # no separate LTO per family like xddxdd).
   options.hardware.myKernelChaotic = lib.mkOption {
     type = lib.types.enum [
-      # Zen + LTS/latest/testing (nixpkgs) : kernel nixpkgs + module nvidia buildé
-      # localement via nvidiaPackages.stable (pas de cache Chaotic pour ces cas)
+      # Zen + LTS/latest/testing (nixpkgs): nixpkgs kernel + nvidia module
+      # built locally via nvidiaPackages.stable (no Chaotic cache for these)
       "zen"
       "nixpkgs-lts"
       "nixpkgs-latest"
       "nixpkgs-testing"
-      "cachyos"        # défaut Chaotic-Nyx, LTO+BORE
+      "cachyos"        # Chaotic-Nyx default, LTO+BORE
       "cachyos-lts"
       "cachyos-server"
       "cachyos-hardened"
     ];
     default = "cachyos";
-    description = "Variant de kernel Chaotic-Nyx — utilisé uniquement quand hardware.myGpu == \"nvidia\", pour bénéficier du cache nvidia_cachyos précompilé. \"zen\", \"nixpkgs-lts\", \"nixpkgs-latest\" et \"nixpkgs-testing\" sortent de ce cache : kernel nixpkgs (linuxPackages_zen / linuxPackages / linuxPackages_latest / linuxPackages_testing) + module nvidia recompilé localement (voir nvidia.nix)";
+    description = "Chaotic-Nyx kernel variant — used only when hardware.myGpu == \"nvidia\", to benefit from the precompiled nvidia_cachyos cache. \"zen\", \"nixpkgs-lts\", \"nixpkgs-latest\" and \"nixpkgs-testing\" fall outside this cache: nixpkgs kernel (linuxPackages_zen / linuxPackages / linuxPackages_latest / linuxPackages_testing) + nvidia module recompiled locally (see nvidia.nix)";
   };
 
   config = lib.mkMerge [
-    # Sysctl commun, indépendant du GPU/kernel choisi
+    # Common sysctl, independent of the chosen GPU/kernel
     {
-      # Sysctl repris de 70-cachyos-settings.conf (paquet cachyos-settings)
+      # Sysctl values from 70-cachyos-settings.conf (cachyos-settings package)
       # https://github.com/CachyOS/CachyOS-Settings/blob/master/usr/lib/sysctl.d/70-cachyos-settings.conf
       boot.kernel.sysctl = {
-        # Réduit la tendance du noyau à libérer le cache VFS (dentries/inodes) par rapport au défaut (100)
+        # Reduces the kernel's tendency to reclaim the VFS cache (dentries/inodes) vs the default (100)
         "vm.vfs_cache_pressure" = 50;
 
-        # Seuil (en octets) à partir duquel un process qui écrit sur disque commence lui-même à flusher ses données sales
+        # Threshold (bytes) above which a process writing to disk starts flushing its own dirty data
         "vm.dirty_bytes" = 268435456; # 256 MiB
 
-        # Nombre de pages consécutives lues d'un coup depuis le swap (défaut 3) ; 0 recommandé si swap sur SSD/ZRAM
+        # Consecutive pages read at once from swap (default 3); 0 recommended for SSD/ZRAM swap
         "vm.page-cluster" = 0;
 
-        # Seuil (en octets) à partir duquel les kernel flusher threads commencent à écrire en arrière-plan
+        # Threshold (bytes) above which kernel flusher threads start writing in the background
         "vm.dirty_background_bytes" = 67108864; # 64 MiB
 
-        # Intervalle (en centièmes de seconde) entre deux réveils des flusher threads (défaut 500)
+        # Interval (centiseconds) between flusher thread wakeups (default 500)
         "vm.dirty_writeback_centisecs" = 1500;
 
-        # Désactive le NMI watchdog : boot/shutdown plus rapide, un peu moins de conso
+        # Disables the NMI watchdog: faster boot/shutdown, slightly lower power draw
         "kernel.nmi_watchdog" = 0;
 
-        # Autorise les utilisateurs non-root à créer des user namespaces (conteneurs non privilégiés)
+        # Allows non-root users to create user namespaces (unprivileged containers)
         "kernel.unprivileged_userns_clone" = 1;
 
-        # Masque les messages du noyau sur la console
+        # Hides kernel messages on the console
         "kernel.printk" = "3 3 3 3";
 
-        # Restreint l'accès aux pointeurs noyau exposés dans /proc
+        # Restricts access to kernel pointers exposed in /proc
         "kernel.kptr_restrict" = 2;
 
-        # Augmente la taille de la file de réception réseau, évite des pertes de paquets sous charge
+        # Increases the network receive queue size, avoids packet loss under load
         "net.core.netdev_max_backlog" = 4096;
 
-        # Augmente le nombre max de file handles / inode cache
+        # Increases the max number of file handles / inode cache
         "fs.file-max" = 2097152;
 
-        # Nombre max de memory maps par process (utile pour certains jeux Proton/DayZ, etc.)
+        # Max memory maps per process (needed by some Proton/DayZ games, etc.)
         "vm.max_map_count" = 16777216;
 
-        # Limites inotify (surveillance de fichiers), utile pour IDE, Steam, sync tools, etc.
+        # inotify limits (file watching), needed by IDEs, Steam, sync tools, etc.
         "fs.inotify.max_user_watches" = 524288;
         "fs.inotify.max_user_instances" = 1024;
 
-        # Intervalle de keepalive TCP par défaut (en secondes)
+        # Default TCP keepalive interval (seconds)
         "net.ipv4.tcp_keepalive_time" = 120;
       };
     }
 
-    # Branche AMD / Intel / VM : kernel xddxdd, aucun souci de cache (pas de module nvidia à builder)
+    # AMD / Intel / VM branch: xddxdd kernel, no cache concern (no nvidia module to build)
     (lib.mkIf (config.hardware.myGpu != "nvidia") {
       nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
 
@@ -130,16 +130,16 @@
 
       boot.kernelPackages =
         if config.hardware.myKernel == "zen" then
-          # linux-zen de nixpkgs, indépendant de l'overlay xddxdd
+          # nixpkgs linux-zen, independent of the xddxdd overlay
           pkgs.linuxPackages_zen
         else if config.hardware.myKernel == "nixpkgs-lts" then
-          # LTS par défaut de nixpkgs, indépendant de l'overlay xddxdd
+          # nixpkgs default LTS, independent of the xddxdd overlay
           pkgs.linuxPackages
         else if config.hardware.myKernel == "nixpkgs-latest" then
-          # Dernier stable mainline de nixpkgs, indépendant de l'overlay xddxdd
+          # Latest stable mainline from nixpkgs, independent of the xddxdd overlay
           pkgs.linuxPackages_latest
         else if config.hardware.myKernel == "nixpkgs-testing" then
-          # linux_testing — noyau RC/mainline candidat de nixpkgs, indépendant de l'overlay xddxdd
+          # linux_testing — nixpkgs RC/mainline candidate kernel, independent of the xddxdd overlay
           pkgs.linuxPackages_testing
         else
         let
@@ -188,24 +188,24 @@
           pkgs.linuxKernel.packagesFor kernels.${config.hardware.myKernel};
     })
 
-    # Branche Nvidia : kernel Chaotic-Nyx, pour bénéficier de nvidia_cachyos précompilé
-    # (chaotic.nixosModules.default est déjà importé globalement dans flake.nix,
-    # inutile de le réimporter ici — son binary cache est donc actif que le GPU
-    # soit nvidia ou non)
+    # Nvidia branch: Chaotic-Nyx kernel, to get the precompiled
+    # nvidia_cachyos (chaotic.nixosModules.default is already imported
+    # globally in flake.nix, no need to re-import here — its binary cache
+    # is therefore active whether or not the GPU is nvidia)
     (lib.mkIf (config.hardware.myGpu == "nvidia") {
       boot.kernelPackages =
         if config.hardware.myKernelChaotic == "zen" then
-          # linux-zen de nixpkgs ; le module nvidia associé (nvidiaPackages.stable,
-          # buildé localement) est sélectionné dans nvidia.nix
+          # nixpkgs linux-zen; the associated nvidia module
+          # (nvidiaPackages.stable, built locally) is selected in nvidia.nix
           pkgs.linuxPackages_zen
         else if config.hardware.myKernelChaotic == "nixpkgs-lts" then
-          # LTS par défaut de nixpkgs ; module nvidia buildé localement (nvidia.nix)
+          # nixpkgs default LTS; nvidia module built locally (nvidia.nix)
           pkgs.linuxPackages
         else if config.hardware.myKernelChaotic == "nixpkgs-latest" then
-          # Dernier stable mainline de nixpkgs ; module nvidia buildé localement (nvidia.nix)
+          # Latest stable mainline from nixpkgs; nvidia module built locally (nvidia.nix)
           pkgs.linuxPackages_latest
         else if config.hardware.myKernelChaotic == "nixpkgs-testing" then
-          # linux_testing — noyau RC/mainline candidat ; module nvidia buildé localement (nvidia.nix)
+          # linux_testing — RC/mainline candidate kernel; nvidia module built locally (nvidia.nix)
           pkgs.linuxPackages_testing
         else
         let

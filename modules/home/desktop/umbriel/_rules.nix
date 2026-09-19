@@ -1,44 +1,29 @@
-## _rules.nix — Umbriel: [[window_rule]] et [[layer_rule]].
+## _rules.nix — Umbriel: [[window_rule]] and [[layer_rule]].
 ##
-## Chaque règle qui matche contribue ses réglages ; en cas de conflit sur
-## une même clé, la règle la PLUS BAS dans la liste gagne.
+## Every matching rule contributes its settings; on a conflict over the
+## same key, the LOWEST rule in the list wins.
 ##
-## Fix (validate : "unknown key window_rule.default_size") : `default_size`
-## (taille flottante en pixels) a été retiré au profit de deux clés
-## distinctes plus explicites — `default_floating_size_px` pour du
-## pixel-perfect (ce qu'on utilise ci-dessous, comportement identique à
-## l'ancien default_size), ou `default_floating_size` pour une taille en
-## fraction de la zone utilisable (mieux si tu changes souvent de
-## résolution). Contrairement à l'ancien `default_size = [w, h]` (tableau),
-## la nouvelle clé attend une TABLE : `{ width = <int>; height = <int>; }`
-## (confirmé par un 2e passage de `umbriel validate`, qui a d'abord accepté
-## le nom de la clé puis rejeté le tableau — "expected { width = integer,
-## height = integer }"). Source du renommage : PR "Default Size Refactor"
-## (noctalia-dev/umbriel#229) — le README de la page Window Rules de la doc
-## (docs.noctalia.dev/umbriel/window-rules/) n'a pas encore été régénéré
-## avec ce changement au moment où j'écris ceci (17/09), d'où le fait qu'il
-## montre encore l'ancien `default_size = [w, h]` : ton binaire umbriel
-## (suivant `main` du flake) est plus à jour que cette page précise de la
-## doc.
+## `default_floating_size_px` sets a pixel-perfect floating size (used
+## below); `default_floating_size` sets it as a fraction of the usable
+## area instead (better if you change resolution often). It expects a
+## TABLE — `{ width = <int>; height = <int>; }` — not an array.
 ##
-## Doc : https://docs.noctalia.dev/umbriel/window-rules/
+## Docs: https://docs.noctalia.dev/umbriel/window-rules/
 { lib, osConfig, ... }:
 let
-  # roudix.umbriel.scratchpadApps (déclarée dans
-  # modules/system/desktop/umbriel.nix) : bascule Discord/Telegram/Spotify
-  # entre tuilage fixe (false, comportement d'origine) et scratchpads
-  # nommés (true, approche testée depuis rebizzz/nixos). Voir _binds.nix
-  # pour le pendant côté raccourcis, et _animation.nix pour le shader
-  # scratchpad (s'applique dans les deux cas, il ne fait rien s'il n'y a
-  # pas de scratchpad affiché).
+  # roudix.umbriel.scratchpadApps (declared in
+  # modules/system/desktop/umbriel.nix): toggles Discord/Telegram/Spotify
+  # between fixed tiling (false, default) and named scratchpads (true).
+  # See _binds.nix for the keybind side, and _animation.nix for the
+  # scratchpad shader (applies in both cases; it's a no-op when no
+  # scratchpad is shown).
   scratchpadApps = osConfig.roudix.umbriel.scratchpadApps or false;
 in
 {
   programs.umbriel.settings = {
-  # scratchpad = [] (liste vide) tant que scratchpadApps est faux : aucune
-  # entrée [[scratchpad]] en TOML → Umbriel garde le scratchpad implicite
-  # "default", donc Mod+Shift+Space/Mod+Space/etc. plus bas marchent sans
-  # suffixe, comme avant ce test.
+  # scratchpad = [] while scratchpadApps is false: no [[scratchpad]] entry
+  # in TOML → Umbriel keeps the implicit "default" scratchpad, so
+  # Mod+Shift+Space/Mod+Space/etc. below work without a suffix.
   scratchpad = lib.optionals scratchpadApps [
     { name = "misc"; }
     { name = "communication"; }
@@ -46,16 +31,16 @@ in
   ];
 
   window_rule = [
-    # Discord / Element : pas d'équivalent "largeur fixe en pixels tuilée"
-    # côté Umbriel (default_width n'accepte qu'une fraction) → flottant
-    # pour respecter la taille/position d'origine niri à l'identique.
+    # Discord / Element: Umbriel has no "fixed-width tiled" equivalent
+    # (default_width only accepts a fraction), so these are floating to
+    # match the original niri size/position exactly.
     (
     {
-      # Un scratchpad flotte toujours : default_floating=false n'a de sens
-      # qu'en mode tuilé, default_scratchpad que en mode scratchpad — d'où
-      # le // conditionnel plutôt que les deux clés en dur. Taille/position
-      # gardées dans les deux cas pour que Discord+Telegram restent côte à
-      # côte (top_left/top_right).
+      # A scratchpad always floats: default_floating=false only makes
+      # sense in tiled mode, default_scratchpad only in scratchpad mode —
+      # hence the conditional // instead of hardcoding both keys. Size and
+      # position stay the same in both cases so Discord+Telegram sit
+      # side by side (top_left/top_right).
       match.app_id = "^(discord|Element)$";
       default_output = "DP-3";
       default_workspace = 1;
@@ -67,12 +52,11 @@ in
     )
     (
     {
-      # Fix : sous Xwayland (capture de session foireuse en natif Wayland
-      # sur cette machine, cf. captures d'écran), Telegram Desktop expose
-      # la classe X11 historique "TelegramDesktop", pas l'app_id Wayland
-      # natif "org.telegram.desktop" — la regex précédente ne matchait
-      # donc jamais cette fenêtre. Les deux formes sont gardées au cas où
-      # Telegram tourne un jour nativement en Wayland ici.
+      # Under Xwayland (native Wayland session capture is broken on this
+      # machine), Telegram Desktop exposes the legacy X11 class
+      # "TelegramDesktop" rather than the native Wayland app_id
+      # "org.telegram.desktop". Both forms are kept in case Telegram
+      # later runs natively under Wayland here.
       match.app_id = "^(org\\.telegram\\.desktop|TelegramDesktop)$";
       default_output = "DP-3";
       default_workspace = 1;
@@ -161,9 +145,9 @@ in
       default_output = "DP-1";
       default_workspace = 4;
       default_fullscreen = true;
-      # Bonus jeux : tearing autorisé côté fenêtre (nécessite tearing=true
-      # sur l'output DP-1, voir _output.nix). Umbriel ne l'active que si
-      # la fenêtre est effectivement plein écran.
+      # Allows tearing on this window (requires tearing=true on output
+      # DP-1, see _output.nix). Umbriel only enables it when the window
+      # is actually fullscreen.
       tearing = true;
     }
     {
@@ -200,10 +184,8 @@ in
       match.title = "^Picture-in-Picture$";
       default_floating = true;
     }
-    # Toasts de notification Steam : repris tel quel de l'exemple officiel
-    # de la doc (default_focused=false + default_pinned=true), qui règle
-    # justement le problème "le toast doit rester visible même par-dessus
-    # un jeu plein écran" — absent de ta première traduction.
+    # Steam notification toasts: default_focused=false + default_pinned=true
+    # keeps the toast visible even over a fullscreen game.
     {
       match.title = "^notificationtoasts_\\d+_desktop$";
       default_floating = true;
@@ -217,12 +199,9 @@ in
       default_workspace = 4;
       default_floating = true;
     }
-    # Dialogues/utilitaires génériques — repris tel quel de l'exemple
-    # officiel de la doc (docs.noctalia.dev/umbriel/rules/). S'applique à
-    # N'IMPORTE QUEL parent (pas seulement Nautilus) : sélecteurs de
-    # fichiers via xdg-desktop-portal, zenity, pavucontrol, calculatrice...
-    # Absent de ta config d'origine puisque niri n'a pas de règle globale
-    # équivalente aussi générique.
+    # Generic dialogs/utilities, matching ANY parent app (not just
+    # Nautilus): file pickers via xdg-desktop-portal, zenity,
+    # pavucontrol, calculator, etc.
     {
       match.app_id = "^(Emulator|zenity|xdg-desktop-portal|qalculate-gtk|org\\.pulseaudio\\.pavucontrol)$";
       default_floating = true;
@@ -232,10 +211,9 @@ in
       default_floating = true;
     }
     {
-      # ⚠ Le (?i) insensible à la casse de niri n'est pas confirmé pris en
-      # charge par Umbriel (regex ECMAScript, pas de mention de flags dans
-      # la doc) : à vérifier si les dialogues en casse mixte sont bien
-      # exclus.
+      # ⚠ niri's case-insensitive (?i) prefix isn't confirmed supported by
+      # Umbriel (ECMAScript regex, no flags mentioned in the doc) — verify
+      # that mixed-case dialog titles are still excluded correctly.
       match.app_id = "^org\\.gnome\\.Nautilus$";
       match.title = "^(?!(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$).*$";
       default_output = "DP-1";
@@ -249,9 +227,9 @@ in
     }
     (
     {
-      # default_maximize (tuilé) et default_scratchpad+default_floating_size
-      # (scratchpad, taille en fraction pour rester correct si tu changes de
-      # résolution) sont mutuellement exclusifs, d'où le // conditionnel.
+      # default_maximize (tiled) and default_scratchpad+default_floating_size
+      # (scratchpad, sized as a fraction to stay correct across resolution
+      # changes) are mutually exclusive, hence the conditional //.
       match.app_id = "^Spotify$";
       default_output = "DP-3";
       default_workspace = 2;
@@ -264,9 +242,6 @@ in
       default_output = "DP-3";
       default_workspace = 2;
     }
-    # Fenêtres Noctalia — reprises de l'exemple officiel de la doc, absentes
-    # de ta traduction d'origine (tu n'avais pas encore ces fenêtres sous
-    # niri).
     {
       match.app_id = "^dev\\.noctalia\\.Noctalia$";
       default_floating = true;
@@ -279,10 +254,9 @@ in
       default_floating_size_px = { width = 800; height = 600; };
       default_position = { x = 32; y = 32; anchor = "bottom_right"; };
     }
-    # Blur global (niri: window-rule global { background-effect { blur true;
-    # xray false } }) — blur_ignore_alpha=0.0 reste une approximation de
-    # "xray false" (aucune zone transparente non floutée), à valider
-    # visuellement.
+    # Global blur (niri equivalent: window-rule global { background-effect
+    # { blur true; xray false } }) — blur_ignore_alpha=0.0 approximates
+    # "xray false" (no unblurred transparent area); verify visually.
     {
       blur = true;
       blur_ignore_alpha = 0.0;
@@ -290,7 +264,7 @@ in
   ];
 
   layer_rule = [
-    # Reprend l'exemple officiel Umbriel/Noctalia :
+    # From the official Umbriel/Noctalia example:
     # https://docs.noctalia.dev/umbriel/rules/#layer-rules
     {
       match.namespace = "^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd|desktop-widget-[^\"]*)$";
