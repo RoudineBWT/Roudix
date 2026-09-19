@@ -1,8 +1,8 @@
 { lib, pkgs, config, ... }:
 with lib;
 let
-  # `command` = binaire réellement lancé (utilisé par le bind niri MOD+E).
-  # Les noms d'attributs ci-dessous matchent déjà les vrais binaires.
+  # `command` = the binary actually launched (used by the niri MOD+E bind).
+  # The attribute names below already match the real binaries.
   fileManagerDefs = {
     "nautilus"   = { package = pkgs.nautilus;             command = "nautilus";   extras = [ pkgs.gvfs ]; };
     "dolphin"    = { package = pkgs.kdePackages.dolphin;   command = "dolphin";    extras = []; };
@@ -16,9 +16,9 @@ in
     type = types.enum (attrNames fileManagerDefs);
     default = "nautilus";
     description = ''
-      Gestionnaire de fichiers par défaut : installé, et lié au bind niri
-      MOD+E ainsi qu'à l'intégration "ouvrir un terminal ici" (nautilus
-      uniquement, via nautilus-open-any-terminal).
+      Default file manager: installed, and wired to the niri MOD+E bind
+      as well as the "open a terminal here" integration (nautilus only,
+      via nautilus-open-any-terminal).
     '';
   };
 
@@ -27,9 +27,9 @@ in
       [ fileManagerDefs.${config.roudix.fileManager}.package ]
       ++ fileManagerDefs.${config.roudix.fileManager}.extras;
 
-    # Nautilus a besoin de son extension pour respecter roudix.terminal.
-    # Les autres file managers ont leur propre mécanisme natif (ou aucun
-    # équivalent packagé actuellement).
+    # Nautilus needs its extension to respect roudix.terminal. Other
+    # file managers have their own native mechanism (or no packaged
+    # equivalent currently).
     programs.nautilus-open-any-terminal =
       mkIf (config.roudix.fileManager == "nautilus") {
         enable   = true;

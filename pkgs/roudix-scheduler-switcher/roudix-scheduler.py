@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # roudix-scheduler — GTK4/Adwaita standalone SCX scheduler picker.
 #
-# Séparé de roudix-kernel-switcher : cette app ne fait qu'une chose, choisir
-# et appliquer un scheduler SCX (façon "CachyOS Configure sched-ext"), avec
-# en plus un champ de flags extra et la persistance du dernier choix (même
-# non appliqué) entre deux lancements.
+# Separate from roudix-kernel-switcher: this app does one thing — choose
+# and apply an SCX scheduler (in the style of "CachyOS Configure
+# sched-ext"), plus an extra-flags field and persistence of the last
+# choice (even unapplied) across launches.
 #
-# Toute la logique root passe par un seul appel `pkexec scx-switch`
-# (installé par scx.nix) → un seul prompt de mot de passe par action.
+# All root logic goes through a single `pkexec scx-switch` call
+# (installed by scx.nix) → one password prompt per action.
 
-import gi  # noqa: I001 — ordre requis : require_version() AVANT l'import du repository, ne pas trier
+import gi  # noqa: I001 — order required: require_version() BEFORE importing the repository, don't sort
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib, Gio, Pango  # noqa: I001  # pyright: ignore[reportAttributeAccessIssue]
@@ -55,7 +55,7 @@ def strip_ansi(text: str) -> str:
 
 
 # ── Scheduler catalogue ────────────────────────────────────────────────────────
-# (identique à roudix-kernel-switcher — source : nixpkgs scx.rustscheds
+# (identical to roudix-kernel-switcher — source: nixpkgs scx.rustscheds
 #  passthru.schedulers + scx-loader configuration.md)
 
 SCX_PROFILES = ["Auto", "Gaming", "LowLatency", "PowerSave", "Server"]
@@ -131,16 +131,16 @@ SCHED_IDS = list(SCX_SCHEDULERS.keys())
 
 
 # ── Default per-scheduler/per-mode flags ────────────────────────────────────────
-# Source de vérité : sched-ext/scx-loader, crates/scx_loader/src/config.rs,
-# fonction get_default_scx_flags_for_mode() (commit main, cf. licence GPL-2.0,
-# © 2024-2025 Vladislav Nepogodin/CachyOS). Reproduit ici pour l'auto-fill du
-# champ "extra flags", façon "CachyOS Configure sched-ext" (cf. screenshot
-# scx_bpfland + Powersave → "-m powersave").
+# Source of truth: sched-ext/scx-loader, crates/scx_loader/src/config.rs,
+# function get_default_scx_flags_for_mode() (main branch, GPL-2.0 license,
+# © 2024-2025 Vladislav Nepogodin/CachyOS). Reproduced here to auto-fill
+# the "extra flags" field, in the style of "CachyOS Configure sched-ext"
+# (cf. screenshot scx_bpfland + Powersave → "-m powersave").
 #
-# Clés : identique à PROFILE_MODE ("auto", "gaming", "lowlatency", "powersave",
-# "server"). Schedulers absents de cette table (rusty, rustland, beerland,
-# pandemonium, flash, chaos, mitosis, wd40, rlfifo, layered) n'ont pas de
-# tuning par mode côté scx_loader — le champ reste vide/laissé tel quel.
+# Keys: same as PROFILE_MODE ("auto", "gaming", "lowlatency", "powersave",
+# "server"). Schedulers absent from this table (rusty, rustland, beerland,
+# pandemonium, flash, chaos, mitosis, wd40, rlfifo, layered) have no
+# per-mode tuning on scx_loader's side — the field stays empty/as-is.
 
 SCX_DEFAULT_FLAGS = {
     "bpfland": {
@@ -263,10 +263,10 @@ def save_state(scheduler: str, profile: str, extra: str):
 
 
 # ── Current running state (live, read-only) ───────────────────────────────────
-# `scxctl get` renvoie du texte simple : "running <sched> in <mode> mode"
-# (ex: "running bpfland in auto mode"), et "running unknown in auto mode"
-# quand rien ne tourne (CurrentScheduler D-Bus vaut "unknown"). Pas de
-# sous-commande `status` ni de flag `--json` chez scxctl — à ne pas inventer.
+# `scxctl get` returns plain text: "running <sched> in <mode> mode"
+# (e.g. "running bpfland in auto mode"), and "running unknown in auto mode"
+# when nothing is running (CurrentScheduler D-Bus is "unknown"). scxctl has
+# no `status` subcommand or `--json` flag — don't invent one.
 
 _SCXCTL_GET_RE = re.compile(r"running\s+(\S+)\s+in\s+(\S+)\s+mode", re.IGNORECASE)
 
@@ -358,12 +358,12 @@ class SchedulerWindow(Adw.ApplicationWindow):
         self._profile   = state["profile"]
         self._extra     = state["extra"]
 
-        # Ne propose que les schedulers dont le binaire est vraiment présent
-        # (cf. available_sched_ids) — évite un Apply qui échoue silencieusement
-        # sur un scheduler pas encore packagé (ex: scx_forge).
+        # Only offer schedulers whose binary is actually present (see
+        # available_sched_ids) — avoids an Apply that silently fails on a
+        # scheduler not yet packaged (e.g. scx_forge).
         self._sched_ids = available_sched_ids()
         if self._scheduler not in self._sched_ids:
-            # binaire disparu depuis le dernier lancement (rebuild, etc.)
+            # binary gone since the last launch (rebuild, etc.)
             self._scheduler = "none"
 
         toolbar_view = Adw.ToolbarView()
@@ -572,12 +572,13 @@ class SchedulerWindow(Adw.ApplicationWindow):
         self._status_lbl.set_label(msg)
         self._apply_btn.set_sensitive(True)
         if ok and scheduler is not None:
-            # On sait avec certitude ce qui vient d'être appliqué (scx-switch
-            # a renvoyé un code 0) : on l'affiche direct plutôt que de
-            # dépendre de `scxctl get`, qui peut être en retard — ou renvoyer
-            # "unknown" — juste après un démarrage via --args (le chemin
-            # StartSchedulerWithArgs côté scx_loader semble moins fiable pour
-            # mettre à jour CurrentScheduler que le --mode classique).
+            # We know for certain what was just applied (scx-switch
+            # returned exit code 0), so display it directly rather than
+            # depending on `scxctl get`, which can lag — or return
+            # "unknown" — right after starting via --args (the
+            # StartSchedulerWithArgs path on scx_loader's side seems less
+            # reliable at updating CurrentScheduler than the classic
+            # --mode).
             if scheduler == "none":
                 self._running_row.set_subtitle("None — CFS/EEVDF")
             else:
@@ -592,9 +593,10 @@ class App(Adw.Application):
     def __init__(self):
         super().__init__(application_id="io.roudix.scheduler",
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
-        # L'icône (io.roudix.scheduler.svg) est résolue automatiquement par le
-        # compositeur/DE via l'application_id ↔ le .desktop installé par le
-        # package Nix, à condition qu'il matche bien "io.roudix.scheduler".
+        # The icon (io.roudix.scheduler.svg) is resolved automatically by
+        # the compositor/DE via the application_id ↔ the .desktop
+        # installed by the Nix package, as long as it matches
+        # "io.roudix.scheduler".
         self.connect("activate", lambda app: SchedulerWindow(app).present())
 
 

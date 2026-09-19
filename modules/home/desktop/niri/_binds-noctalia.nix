@@ -1,15 +1,12 @@
-## _binds-noctalia.nix — niri: [binds] variante Noctalia.
+## _binds-noctalia.nix — niri: [binds], Noctalia variant.
 ##
-## Syntaxe vérifiée contre le vrai type `kdl-leaf` du module niri-flake
-## (kdl.nix : check = v: isAttrs v && length (attrNames v) == 1) : une
-## action est TOUJOURS un attrset à une seule clé, jamais une string nue.
-## Donc même une action sans paramètre s'écrit `action.close-window = { };`
-## et pas `action = "close-window";` — la forme bare-string n'existe pas
-## dans ce module, quel que soit le fork (sodiboo/niri-flake et
-## epireyn/niri-flake partagent le même kdl.nix/parse-binds.nix).
-## Les actions à un seul argument positionnel prennent une LISTE
-## (`action.set-column-width = [ "-10%" ];`), et le titre affiché dans
-## l'overlay est `hotkey-overlay.title`, pas `hotkey-overlay-title`.
+## Per the niri-flake module's `kdl-leaf` type (kdl.nix: check = v: isAttrs
+## v && length (attrNames v) == 1), an action is ALWAYS a single-key
+## attrset, never a bare string — even a parameterless action needs
+## `action.close-window = { };`, not `action = "close-window";`. Actions
+## with one positional argument take a LIST
+## (`action.set-column-width = [ "-10%" ];`), and the overlay title key is
+## `hotkey-overlay.title`, not `hotkey-overlay-title`.
 { ... }:
 {
   programs.niri.settings = {
@@ -34,7 +31,7 @@
     "XF86AudioPrev" = { allow-when-locked = true; action.spawn = [ "playerctl" "previous" ]; };
     "XF86AudioNext" = { allow-when-locked = true; action.spawn = [ "playerctl" "next" ]; };
 
-    # ─── Fenêtres : focus / déplacement ───
+    # ─── Windows: focus / movement ───
     "Mod+Q".action.close-window = { };
 
     "Mod+Left".action.focus-column-left = { };
@@ -70,7 +67,7 @@
     "Mod+Shift+Ctrl+Up".action.move-column-to-monitor-up = { };
     "Mod+Shift+Ctrl+Down".action.move-column-to-monitor-down = { };
 
-    # ─── Molette ───
+    # ─── Wheel ───
     "Mod+WheelScrollDown" = { cooldown-ms = 150; action.focus-workspace-down = { }; };
     "Mod+WheelScrollUp" = { cooldown-ms = 150; action.focus-workspace-up = { }; };
     "Mod+Ctrl+WheelScrollDown" = { cooldown-ms = 150; action.move-column-to-workspace-down = { }; };
@@ -86,7 +83,7 @@
     "Mod+Ctrl+Shift+WheelScrollDown".action.move-column-right = { };
     "Mod+Ctrl+Shift+WheelScrollUp".action.move-column-left = { };
 
-    # ─── Workspaces (index numériques 1..9) ───
+    # ─── Workspaces (numeric index 1..9) ───
     "Mod+1".action.focus-workspace = [ 1 ];
     "Mod+2".action.focus-workspace = [ 2 ];
     "Mod+3".action.focus-workspace = [ 3 ];
@@ -123,23 +120,21 @@
     "Mod+T".action.toggle-window-floating = { };
     "Mod+F".action.fullscreen-window = { };
     "Mod+W".action.toggle-column-tabbed-display = { };
-    # Nouveau (niri 25.11) : vrai maximize Wayland ("bouton maximiser" /
-    # double-clic sur la barre de titre côté client) — distinct de
-    # Mod+Ctrl+F qui maximise la COLONNE (garde gaps/bordures/struts).
-    # Celui-ci occupe tout l'espace utile sans gap ni bordure. Bind par
-    # défaut de niri lui-même (Mod+M), absent de ta config d'origine
-    # puisque la fonctionnalité n'existait pas encore.
+    # True Wayland-level maximize ("maximize button" / titlebar
+    # double-click) — distinct from Mod+Ctrl+F which maximizes the COLUMN
+    # (keeps gaps/borders/struts). This fills all available space with no
+    # gap or border. Default niri keybind (Mod+M).
     "Mod+M".action.maximize-window-to-edges = { };
 
-    # ─── Captures d'écran ───
+    # ─── Screenshots ───
     "Ctrl+Shift+1".action.screenshot = { };
     "Ctrl+Shift+2".action.screenshot-screen = { };
     "Ctrl+Shift+3".action.screenshot-window = { };
 
-    # ─── Échappement d'urgence ───
+    # ─── Emergency escape ───
     "Mod+Escape" = { allow-inhibiting = false; action.toggle-keyboard-shortcuts-inhibit = { }; };
 
-    # ─── Sortie / Alimentation ───
+    # ─── Exit / Power ───
     "Ctrl+Alt+Delete".action.quit = { };
     "Mod+Shift+R".action.spawn-sh = [ "noctalia msg config-reload" ];
     "Mod+Shift+P".action.power-off-monitors = { };

@@ -338,9 +338,10 @@ while IFS= read -r line; do
 
   # Extract PARTUUID from the HD(...) GPT block
   # Format: HD(<part>,GPT,<PARTUUID>,...)
-  # `|| true` : sous set -e + pipefail, un grep qui ne matche rien renvoie 1,
-  # ce qui ferait planter tout le script ici (simple affectation, pas de if/&&)
-  # même si le `[[ -z ]] && continue` juste après est censé gérer ce cas.
+  # `|| true`: under set -e + pipefail, a grep with no match returns 1,
+  # which would crash the whole script here (plain assignment, no if/&&)
+  # even though the `[[ -z ]] && continue` right after is meant to handle
+  # this case.
   partuuid=$(echo "$line" | grep -oiP '(?<=GPT,)[0-9a-f-]{36}' | head -1 || true)
   [[ -z "$partuuid" ]] && continue
 

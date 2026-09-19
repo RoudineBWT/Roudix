@@ -108,16 +108,16 @@ in
       appicon-margin = 4;
       dot-position = "BOTTOM";
       hotkeys-overlay-combo = "TEMPORARILY";
-      # "RHT-0x00000000" = l'ID d'écran physique où ces réglages ont été
-      # faits à la main. dash-to-panel indexe TOUT par écran, sans clé
-      # générique "tous les écrans" — panel-element-positions-monitors-sync
-      # existe côté "ordre des éléments" mais a un bug connu (upstream
-      # #1173) et ne couvre de toute façon ni la position, ni la taille, ni
-      # les ancrages. Palliatif : dupliquer sous la clé "0" aussi — un
-      # écran sans EDID exploitable (VM, la plupart des pilotes d'affichage
-      # virtuels) retombe généralement sur un identifiant indexé plutôt que
-      # sur l'ID matériel réel. Pas garanti à 100% sur toutes les config,
-      # mais couvre le cas VM sans rien casser sur le matériel réel.
+      # "RHT-0x00000000" = the physical screen ID these settings were
+      # tuned on by hand. dash-to-panel indexes EVERYTHING per screen,
+      # with no generic "all screens" key — panel-element-positions-
+      # monitors-sync exists on the "element order" side but has a known
+      # bug (upstream #1173) and covers neither position, size, nor
+      # anchors anyway. Workaround: also duplicate under key "0" — a
+      # screen with no usable EDID (VM, most virtual display drivers)
+      # generally falls back to an indexed ID rather than the real
+      # hardware ID. Not 100% guaranteed on every config, but covers the
+      # VM case without breaking anything on real hardware.
       panel-element-positions-monitors-sync = true;
       panel-anchors = ''{"RHT-0x00000000":"MIDDLE","0":"MIDDLE"}'';
       panel-element-positions = ''{"RHT-0x00000000":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":false,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"centerMonitor"},{"element":"dateMenu","visible":true,"position":"centerMonitor"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}],"0":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":false,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"centerMonitor"},{"element":"dateMenu","visible":true,"position":"centerMonitor"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}]}'';

@@ -11,6 +11,7 @@
     ../../modules/system/boot.nix
     ../../modules/system/kernel.nix
     ../../modules/system/gaming.nix
+    ../../modules/system/content-creation.nix
     ../../modules/system/scx.nix
     ../../modules/system/flatpak.nix
     ../../modules/system/gpu
@@ -46,10 +47,10 @@
   hardware.myKernel = lib.mkDefault "cachyos-lts-lto-v3"; # xddxdd — used when hardware.myGpu != "nvidia", see README
   hardware.myKernelChaotic = lib.mkDefault "cachyos";     # Chaotic-Nyx — used only when hardware.myGpu == "nvidia"
   roudix.rgb        = lib.mkDefault "none";           # "openlinkhub" (full Corsair), "openrgb" (mixed/other brands) or "none"
-  roudix.memory.enable  = lib.mkDefault false;          # true pour activer le RGB RAM
-  roudix.memory.type    = lib.mkDefault "ddr5";         # "ddr4" ou "ddr5"
-  roudix.memory.smBus   = lib.mkDefault "i2c-0";        # trouvé via: i2cdetect -l
-  roudix.memory.sku    = lib.mkDefault "CMH64GX5M2B5200C40"; # trouvé via: sudo dmidecode -t memory | grep 'Part Number'
+  roudix.memory.enable  = lib.mkDefault false;          # true to enable RAM RGB
+  roudix.memory.type    = lib.mkDefault "ddr5";         # "ddr4" or "ddr5"
+  roudix.memory.smBus   = lib.mkDefault "i2c-0";        # found via: i2cdetect -l
+  roudix.memory.sku    = lib.mkDefault "CMH64GX5M2B5200C40"; # found via: sudo dmidecode -t memory | grep 'Part Number'
   # ── Features ────────────────────────────────────────────────────────────
   roudix.boot.bootloader = lib.mkDefault "limine"; # "limine" or "systemd-boot"
   roudix.terminal        = lib.mkDefault "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
@@ -61,12 +62,12 @@
   roudix.vmGuest.enable        = lib.mkDefault false; # enable only inside a VM
   roudix.hosts.gtaFix.enable   = lib.mkDefault false;
   roudix.autoupdate.enable     = lib.mkDefault true;
-  roudix.mesa.useGit = lib.mkDefault false;  # false = mesa stable du nixpkgs
+  roudix.mesa.useGit = lib.mkDefault false;  # false = nixpkgs stable mesa
   roudix.waydroid.enable = lib.mkDefault false;
-  roudix.matrixClient = lib.mkDefault "none"; # "element", "cinny" ou "none"
-  # Umbriel only : Discord/Telegram/Spotify en scratchpads nommés (montrer/
-  # cacher/renvoyer au raccourci) au lieu de tuilés à poste fixe. Voir
-  # modules/system/desktop/umbriel.nix pour la description complète.
+  roudix.matrixClient = lib.mkDefault "none"; # "element", "cinny" or "none"
+  # Umbriel only: Discord/Telegram/Spotify as named scratchpads (show/
+  # hide/toggle via keybind) instead of tiled in a fixed spot. See
+  # modules/system/desktop/umbriel.nix for the full description.
   roudix.umbriel.scratchpadApps = lib.mkDefault false;
   # ── Network ─────────────────────────────────────────────────────────────
   networking.hostName = "roudix";

@@ -1,8 +1,8 @@
 { ... }:
 {
   # ── MangoHud ─────────────────────────────────────────────────────────────
-  # On utilise xdg.configFile pour préserver l'ordre des options
-  # (programs.mangohud.settings trie les clés alphabétiquement)
+  # xdg.configFile is used to preserve option order
+  # (programs.mangohud.settings sorts keys alphabetically)
   programs.mangohud.enable = true;
 
   xdg.configFile."MangoHud/MangoHud.conf".text = ''

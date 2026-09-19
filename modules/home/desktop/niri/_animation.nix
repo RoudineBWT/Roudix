@@ -1,13 +1,9 @@
-## _animation.nix — niri: [animations] (identique entre noctalia et dms).
+## _animation.nix — niri: [animations] (identical between noctalia and dms).
 ##
-## Fix : niri-flake a introduit un type "union taguée" pour chaque
-## animation — plus de propriétés à plat (duration-ms/curve/spring
-## directement sous le nom de l'animation), il faut passer par
-## `.kind.easing {...}` (duration-ms + curve) ou `.kind.spring {...}`
-## (damping-ratio + stiffness + epsilon), un seul des deux par animation.
-## Confirmé par la doc officielle (sodiboo/niri-flake/docs.md) — l'ancienne
-## forme plate est soit dépréciée (warning) soit carrément en erreur selon
-## l'animation, comme dans ton log de build.
+## niri-flake uses a tagged-union type for each animation — no more flat
+## properties (duration-ms/curve/spring directly under the animation name);
+## use `.kind.easing {...}` (duration-ms + curve) or `.kind.spring {...}`
+## (damping-ratio + stiffness + epsilon), only one of the two per animation.
 { ... }:
 {
   programs.niri.settings.animations = {

@@ -1,21 +1,20 @@
 { lib, ... }:
 {
-  # ── Disposition clavier de la session graphique (XKB) ───────────────────
-  # `console.keyMap` (voir common.nix) ne couvre que le TTY, AVANT le
-  # lancement de la session graphique (niri/hyprland/mangowc/umbriel — GNOME
-  # et KDE gèrent leur propre disposition via leur daemon de settings, pas
-  # via ces options). Ces deux options pilotent la disposition XKB réelle
-  # utilisée dans la session Wayland : greeter (noctalia-greeter) + input
-  # du compositeur lui-même.
+  # ── Graphical session keyboard layout (XKB) ───────────────────
+  # `console.keyMap` (see common.nix) only covers the TTY, BEFORE the
+  # graphical session starts (niri/hyprland/mangowc/umbriel — GNOME and
+  # KDE manage their own layout via their settings daemon, not via these
+  # options). These two options drive the actual XKB layout used in the
+  # Wayland session: the greeter (noctalia-greeter) + the compositor's
+  # own input.
   options.roudix.keyboardLayout = lib.mkOption {
     type = lib.types.str;
     default = "us";
     example = "be";
     description = ''
-      Code de disposition clavier XKB (setxkbmap) pour la session
-      graphique : "us", "be", "fr", "de", "ch", "nl", "es", "it", "pt",
-      "pl", "ru", "gb", "jp", etc. Indépendant de `console.keyMap`
-      (celui-ci reste utilisé pour le TTY uniquement).
+      XKB layout code (setxkbmap) for the graphical session: "us", "be",
+      "fr", "de", "ch", "nl", "es", "it", "pt", "pl", "ru", "gb", "jp",
+      etc. Independent of `console.keyMap` (which stays TTY-only).
     '';
   };
 
@@ -24,9 +23,9 @@
     default = "intl";
     example = "";
     description = ''
-      Variante XKB associée à `roudix.keyboardLayout` (ex: "intl",
-      "nodeadkeys", "bepo", "dvorak", "colemak"...). Chaîne vide pour
-      aucune variante (disposition de base).
+      XKB variant associated with `roudix.keyboardLayout` (e.g. "intl",
+      "nodeadkeys", "bepo", "dvorak", "colemak"...). Empty string for no
+      variant (base layout).
     '';
   };
 }

@@ -9,7 +9,7 @@
     package = pkgs.openrgb-with-all-plugins;
   };
 
-  # Éteint les LEDs une fois au boot puis s'arrête
+  # Turns off the LEDs once at boot then stops
   systemd.services.openrgb-apply = {
     description = "Turn off RGB LEDs at boot";
     after = [ "multi-user.target" ];

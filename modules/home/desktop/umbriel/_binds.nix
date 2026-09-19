@@ -1,6 +1,6 @@
 ## _binds.nix — Umbriel: [keybinds].
 ##
-## Doc : https://docs.noctalia.dev/umbriel/keybinds/
+## Docs: https://docs.noctalia.dev/umbriel/keybinds/
 ##       https://docs.noctalia.dev/umbriel/actions/
 ##       https://docs.noctalia.dev/umbriel/scratchpads/
 { lib, osConfig, ... }:
@@ -21,19 +21,17 @@ in
     "Mod+Shift+Q" = "spawn:noctalia msg panel-toggle session";
     "Mod+Shift+Escape" = "cheatsheet-toggle";
 
-    # ─── Panneaux Noctalia additionnels ───
-    # Repris tel quel de l'exemple officiel "Noctalia shell integration"
-    # de la doc keybinds — absents de ta config d'origine (tu n'avais que
-    # le launcher, pas les autres panneaux Noctalia).
-    "Mod+V" = "spawn:noctalia msg panel-toggle clipboard";  # gestionnaire de presse-papier
-    "Mod+W" = "spawn:noctalia msg panel-toggle wallpaper";  # sélecteur de wallpaper
-    "Mod+Z" = "spawn:noctalia msg panel-toggle launcher /emo"; # sélecteur d'emoji
-    "Mod+N" = "spawn:noctalia msg panel-toggle noctalia/notes:panel"; # panneau notes
+    # ─── Additional Noctalia panels ───
+    # From the official "Noctalia shell integration" example in the
+    # keybinds doc.
+    "Mod+V" = "spawn:noctalia msg panel-toggle clipboard";  # clipboard manager
+    "Mod+W" = "spawn:noctalia msg panel-toggle wallpaper";  # wallpaper picker
+    "Mod+Z" = "spawn:noctalia msg panel-toggle launcher /emo"; # emoji picker
+    "Mod+N" = "spawn:noctalia msg panel-toggle noctalia/notes:panel"; # notes panel
 
     # ─── Audio ───
-    # Fix : `allow_when_locked` (n'existait pas dans ta première traduction
-    # niri→umbriel) permet à ces raccourcis de fonctionner même écran
-    # verrouillé, comme sous niri avec allow-when-locked=true.
+    # allow_when_locked lets these shortcuts work even with the screen
+    # locked, equivalent to niri's allow-when-locked=true.
     "XF86AudioRaiseVolume" = { action = "spawn:noctalia msg volume-up"; allow_when_locked = true; };
     "XF86AudioLowerVolume" = { action = "spawn:noctalia msg volume-down"; allow_when_locked = true; };
     "XF86AudioMute" = { action = "spawn:noctalia msg volume-mute"; allow_when_locked = true; };
@@ -42,7 +40,7 @@ in
     "XF86AudioPrev" = { action = "spawn:playerctl previous"; allow_when_locked = true; };
     "XF86AudioNext" = { action = "spawn:playerctl next"; allow_when_locked = true; };
 
-    # ─── Fenêtres : focus / déplacement ───
+    # ─── Windows: focus / movement ───
     "Mod+Left" = "window-focus-left";
     "Mod+H" = "window-focus-left";
     "Mod+Right" = "window-focus-right";
@@ -61,9 +59,7 @@ in
     "Mod+Ctrl+Down" = "window-move-down";
     "Mod+Ctrl+J" = "window-move-down";
 
-    # Fix : ces actions n'existaient pas (ou n'avaient pas été trouvées) au
-    # moment de ta traduction — elles couvrent maintenant l'équivalent niri
-    # de focus-column-first/last et move-column-to-first/last.
+    # niri equivalent of focus-column-first/last and move-column-to-first/last.
     "Mod+Home" = "column-focus-first";
     "Mod+End" = "column-focus-last";
     "Mod+Ctrl+Home" = "column-move-to-first";
@@ -79,7 +75,7 @@ in
     "Mod+Shift+Ctrl+Up" = "column-move-to-output-up";
     "Mod+Shift+Ctrl+Down" = "column-move-to-output-down";
 
-    # ─── Molette : navigation ───
+    # ─── Wheel: navigation ───
     "Mod+WheelDown" = { action = "workspace-next"; repeat = false; };
     "Mod+WheelUp" = { action = "workspace-previous"; repeat = false; };
 
@@ -94,32 +90,25 @@ in
     "Mod+Ctrl+Shift+WheelUp" = "column-move-left";
 
     # ─── Workspaces (Mod+1..9) ───
-    # Comportement RELATIF au moniteur qui a le focus (comme sous niri), et
-    # non plus un saut absolu vers un nom précis : voir doc Actions —
-    # "Workspace selectors first resolve exact names globally, including
-    # numeric names. A unique name selects its workspace on any output.
-    # [...] When no exact numeric name exists, the number selects that
-    # 1-based position on the preferred output." (le moniteur focus, qui
-    # suit ta souris vu focus.follows_mouse=true).
-    # ⚠ Piège corrigé dans _output.nix : les positions 6-9 s'appelaient
-    # littéralement "6".."7".."8".."9" sur les DEUX outputs (noms
-    # dupliqués → OK, résolvent sur le focus), mais "4" et "5" n'étaient
-    # numériques-littéraux QUE sur DP-3 → noms uniques globalement → Mod+4
-    # et Mod+5 sautaient TOUJOURS sur le HKC, focus ou pas. Renommés en
-    # "L6".."L9" (Legion) / "H4".."H9" (HKC) : plus aucun nom n'est un
-    # numérique exact, donc Mod+1..9 résout maintenant TOUJOURS par
-    # position sur le moniteur focus, sur les deux écrans :
-    # Legion (DP-1) → 1 web, 2 zed, 3 term, 4 jeux, 5 fichiers, 6-9 vides.
-    # HKC (DP-3)    → 1 chat, 2 musique, 3 web (brave), 4-9 vides.
+    # Relative to the focused monitor (like niri), not an absolute jump to
+    # an exact name: per the Actions doc, a unique numeric name resolves
+    # globally, but when no exact name matches, the number selects that
+    # 1-based position on the focused output.
+    # ⚠ Workspace names in _output.nix are chosen so no name is an exact
+    # number ("L6".."L9" / "H4".."H9" etc.) — a literal numeric name that's
+    # unique to one output would otherwise always jump to that output,
+    # ignoring which monitor has focus. Current layout:
+    # Legion (DP-1) → 1 web, 2 zed, 3 term, 4 games, 5 files, 6-9 empty.
+    # HKC (DP-3)    → 1 chat, 2 music, 3 web (brave), 4-9 empty.
     "Mod+1" = "workspace-switch:1"; # Legion: web · HKC: chat
-    "Mod+2" = "workspace-switch:2"; # Legion: zed · HKC: musique
+    "Mod+2" = "workspace-switch:2"; # Legion: zed · HKC: music
     "Mod+3" = "workspace-switch:3"; # Legion: term · HKC: web (brave)
-    "Mod+4" = "workspace-switch:4"; # Legion: jeux · HKC: vide (H4)
-    "Mod+5" = "workspace-switch:5"; # Legion: fichiers · HKC: vide (H5)
-    "Mod+6" = "workspace-switch:6"; # vide des deux côtés (L6 / H6)
-    "Mod+7" = "workspace-switch:7"; # vide des deux côtés (L7 / H7)
-    "Mod+8" = "workspace-switch:8"; # vide des deux côtés (L8 / H8)
-    "Mod+9" = "workspace-switch:9"; # vide des deux côtés (L9 / H9)
+    "Mod+4" = "workspace-switch:4"; # Legion: games · HKC: empty (H4)
+    "Mod+5" = "workspace-switch:5"; # Legion: files · HKC: empty (H5)
+    "Mod+6" = "workspace-switch:6"; # empty on both sides (L6 / H6)
+    "Mod+7" = "workspace-switch:7"; # empty on both sides (L7 / H7)
+    "Mod+8" = "workspace-switch:8"; # empty on both sides (L8 / H8)
+    "Mod+9" = "workspace-switch:9"; # empty on both sides (L9 / H9)
 
     "Mod+Ctrl+1" = "window-move-to-workspace:1";
     "Mod+Ctrl+2" = "window-move-to-workspace:2";
@@ -131,52 +120,45 @@ in
     "Mod+Ctrl+8" = "window-move-to-workspace:8";
     "Mod+Ctrl+9" = "window-move-to-workspace:9";
 
-    # ⚠ workspace-previous reste positionnel (pas de wrap, pas de "dernier
-    # actif" comme le MRU de niri) — toujours une approximation.
+    # ⚠ workspace-previous is positional (no wrap, no "last active" like
+    # niri's MRU) — always an approximation.
     "Mod+Tab" = "workspace-previous";
     "Alt+Tab" = "spawn:noctalia msg window-switcher";
 
     # ─── Layout ───
     "Mod+Ctrl+F" = "window-toggle-maximize";
-    # Nouveau : maximize-to-edges (sans gap ni bordure) n'existait pas non
-    # plus dans ta traduction — utile pour un vrai plein cadre sans
-    # dépendre du gap du workspace.
+    # maximize-to-edges: true edge-to-edge fullscreen, ignoring the
+    # workspace gap.
     "Mod+Shift+F" = "window-toggle-maximize-to-edges";
-    # Fix (validate: "unknown action 'window-modify-width:...'") : l'action
-    # générique window-modify-width a été retirée (doc Actions à jour, vue le
-    # 17/09) au profit d'un vocabulaire "extent" partagé par les 3 layouts
-    # (scrolling/dwindle/master) + de variantes ancrées à un bord précis
-    # (window-modify-width-left/-right, window-modify-height-up/-down).
-    # window-modify-primary-extent est l'équivalent direct de l'ancien
-    # window-modify-width : ça redimensionne la colonne/lane selon l'axe
-    # principal du layout actif ("primary extent"), sans ancrage particulier
-    # — même comportement que ce que tu avais avant.
+    # window-modify-primary-extent replaces the old generic
+    # window-modify-width action (removed from Umbriel in favor of an
+    # "extent" vocabulary shared across the 3 layouts — scrolling/dwindle/
+    # master — plus edge-anchored variants like
+    # window-modify-width-left/-right). It resizes the column/lane along
+    # the active layout's main axis, with no particular anchor.
     "Mod+Minus" = "window-modify-primary-extent:-0.1";
     "Mod+Equal" = "window-modify-primary-extent:0.1";
-    # Fix : center-column/center-visible-columns de niri ont enfin un
-    # équivalent trouvé (column-center), + window-center pour les flottantes.
+    # niri's center-column/center-visible-columns equivalents.
     "Mod+C" = "column-center";
     "Mod+Shift+C" = "window-center";
-    # ⚠ Toujours aucune action de hauteur de fenêtre (set-window-height) ni
-    # de tabbed-column-display trouvée dans la doc Umbriel. Non mappés.
+    # ⚠ No window-height action (set-window-height) or
+    # tabbed-column-display in Umbriel yet. Not mapped.
 
     # ─── Modes ───
     "Mod+T" = "window-toggle-floating";
     "Mod+F" = "window-toggle-fullscreen";
-    "Mod+Shift+T" = "window-toggle-pinned"; # nouveau : épingle au-dessus du plein écran
+    "Mod+Shift+T" = "window-toggle-pinned"; # pins above fullscreen
 
-    # ─── Captures d'écran ───
+    # ─── Screenshots ───
     "Ctrl+Shift+1" = "spawn:noctalia msg screenshot-region";
     "Ctrl+Shift+2" = "spawn:noctalia msg screenshot-fullscreen";
-    # Fix : capture de la "fenêtre active" — grim+slurp en ciblage manuel
-    # (clic sur la fenêtre), la doc ne liste toujours pas d'action native
-    # "fenêtre focus" ; c'est l'équivalent le plus proche disponible.
+    # Active-window capture via grim+slurp with manual targeting (click on
+    # the window) — Umbriel has no native "focused window" action.
     "Ctrl+Shift+3" = ''spawn:sh -c "grim -g \"$(slurp -w)\" - | wl-copy"'';
 
-    # ⚠ Toujours pas d'équivalent à toggle-keyboard-shortcuts-inhibit de
-    # niri (débloquer les raccourcis capturés par une appli plein écran).
-    # `submap:reset` existe mais résout un problème différent (sortir d'un
-    # submap).
+    # ⚠ No equivalent to niri's toggle-keyboard-shortcuts-inhibit (release
+    # shortcuts captured by a fullscreen app). `submap:reset` solves a
+    # different problem (leaving a submap).
 
     "Ctrl+Alt+Delete" = "session-quit";
     "Mod+Shift+R" = "config-reload";
@@ -185,30 +167,28 @@ in
     "Mod+O" = { action = "overview-toggle"; repeat = false; };
   }
   # ─── Scratchpad ───
-  # scratchpadApps=false : implicite "default" (aucune entrée [[scratchpad]]
-  # côté _rules.nix), donc les 4 actions historiques SANS suffixe.
+  # scratchpadApps=false: implicit "default" scratchpad (no [[scratchpad]]
+  # entry in _rules.nix), so the 4 actions below have no suffix.
   // (if !scratchpadApps then {
     "Mod+Shift+Space" = "window-move-to-scratchpad";
     "Mod+Space" = "scratchpad-toggle";
     "Mod+Ctrl+Space" = "window-restore-from-scratchpad";
     "Mod+Alt+Space" = "scratchpad-focus-next";
   } else {
-    # scratchpadApps=true : 3 scratchpads nommés (voir _rules.nix). Déclarer
-    # un seul scratchpad nommé désactive l'implicite "default" pour de bon
-    # → toute action prend un suffixe ":nom".
+    # scratchpadApps=true: 3 named scratchpads (see _rules.nix). Declaring
+    # a named scratchpad disables the implicit "default", so every action
+    # takes a ":name" suffix.
 
-    # "misc" : le même ad hoc qu'avant, juste avec ":misc" en plus.
     "Mod+Shift+Space" = "window-move-to-scratchpad:misc";
     "Mod+Space" = "scratchpad-toggle:misc";
     "Mod+Ctrl+Space" = "window-restore-from-scratchpad:misc";
     "Mod+Alt+Space" = "scratchpad-focus-next:misc";
 
-    # "communication" (Discord+Telegram) et "music" (Spotify) : *-toggle
-    # montre/cache tout ce que la règle y a rangé à l'ouverture.
-    # *-Shift-* utilise window-toggle-scratchpad (bidirectionnel sur la
-    # fenêtre FOCUS) plutôt que window-restore-from-scratchpad (à sens
-    # unique) : ça permet justement de renvoyer la fenêtre dans le
-    # scratchpad ensuite, pas seulement de l'en sortir une fois.
+    # "communication" (Discord+Telegram) and "music" (Spotify): *-toggle
+    # shows/hides everything the rule assigned there. *-Shift-* uses
+    # window-toggle-scratchpad (bidirectional on the focused window)
+    # rather than the one-way window-restore-from-scratchpad, so a window
+    # can also be sent back into the scratchpad.
     "Mod+Alt+D" = "scratchpad-toggle:communication";
     "Mod+Alt+Shift+D" = "window-toggle-scratchpad:communication";
     "Mod+Ctrl+D" = "window-restore-from-scratchpad:communication";

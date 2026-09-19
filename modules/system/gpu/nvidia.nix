@@ -3,19 +3,21 @@ with lib;
 let
   cfg = config.roudix.nvidia_config;
 
-  # nvidia_cachyos est fourni par Chaotic-Nyx, précompilé et matché au kernel
-  # Chaotic sélectionné via hardware.myKernelChaotic (voir modules/system/kernel.nix)
-  # => pas de rebuild local du module à chaque bump de kernel.
-  # Variantes hors cache Chaotic-Nyx : pas de module nvidia_cachyos précompilé
-  # pour ces kernels nixpkgs (linux-zen, LTS par défaut, dernier mainline).
+  # nvidia_cachyos is provided by Chaotic-Nyx, precompiled and matched to
+  # the Chaotic kernel selected via hardware.myKernelChaotic (see
+  # modules/system/kernel.nix) => no local module rebuild on every kernel
+  # bump. Variants outside the Chaotic-Nyx cache: no precompiled
+  # nvidia_cachyos module for these nixpkgs kernels (linux-zen, default
+  # LTS, latest mainline).
   nixpkgsKernelVariants = [ "zen" "nixpkgs-lts" "nixpkgs-latest" ];
 
   nvidiaDriverPackage =
-    # "zen" / "nixpkgs-lts" / "nixpkgs-latest" : pas de module précompilé côté
-    # Chaotic-Nyx pour ces kernels nixpkgs, donc on laisse nixpkgs builder
-    # localement le module nvidia contre le kernel choisi (config.boot.kernelPackages
-    # == pkgs.linuxPackages_zen / linuxPackages / linuxPackages_latest, cf. kernel.nix).
-    # Pour toutes les autres variantes on garde le module nvidia_cachyos précompilé.
+    # "zen" / "nixpkgs-lts" / "nixpkgs-latest": no precompiled module on
+    # Chaotic-Nyx's side for these nixpkgs kernels, so nixpkgs builds the
+    # nvidia module locally against the chosen kernel
+    # (config.boot.kernelPackages == pkgs.linuxPackages_zen /
+    # linuxPackages / linuxPackages_latest, see kernel.nix). All other
+    # variants keep the precompiled nvidia_cachyos module.
     if builtins.elem config.hardware.myKernelChaotic nixpkgsKernelVariants then
       config.boot.kernelPackages.nvidiaPackages.stable
     else
@@ -72,13 +74,13 @@ in
       hardware.nvidia.open = mkForce config.hardware.nvidiaOpen;
     })
 
-    # Configuration effective quand nvidia_config.enable = true
+    # Effective configuration when nvidia_config.enable = true
     (mkIf cfg.enable {
-      # Remplace roudix.graphics.enable = true (absent hors roudix-OS)
+      # Replaces roudix.graphics.enable = true (absent outside roudix-OS)
       hardware.graphics = {
         enable = true;
         enable32Bit = true;
-        # diagnostics sur le même pkgs que le reste du système
+        # diagnostics on the same pkgs as the rest of the system
         extraPackages = with pkgs; [
           libva-utils
           vulkan-tools
@@ -112,18 +114,20 @@ in
       # Fix Nvidia 3000 Dec 2025
       boot.blacklistedKernelModules = [ "nouveau" "nova_core" ];
 
-      # NVreg_PreserveVideoMemoryAllocations=1 requis pour la hibernation :
-      # le driver propriétaire dump la VRAM dans NVreg_TemporaryFilePath
-      # avant suspend/hibernate pour restaurer l'état GPU au réveil.
-      # Sans ça → blackscreen / état GPU corrompu sur RTX 4000/5000.
+      # NVreg_PreserveVideoMemoryAllocations=1 is required for
+      # hibernation: the proprietary driver dumps VRAM to
+      # NVreg_TemporaryFilePath before suspend/hibernate to restore GPU
+      # state on wake. Without it → blackscreen / corrupted GPU state on
+      # RTX 4000/5000.
       boot.extraModprobeConfig = ''
         options nvidia NVreg_PreserveVideoMemoryAllocations=1
         options nvidia NVreg_TemporaryFilePath=/var/tmp
       '';
 
-      # nixpkgs unstable ne génère plus ces units automatiquement quand
-      # hardware.nvidia.powerManagement.enable = true — on les déclare
-      # explicitement pour éviter un blackscreen à la sortie de veille/hibernation.
+      # nixpkgs unstable no longer generates these units automatically
+      # when hardware.nvidia.powerManagement.enable = true — declared
+      # explicitly to avoid a blackscreen on resume from
+      # sleep/hibernation.
       systemd.services.nvidia-suspend = {
         description = "NVIDIA system suspend actions";
         wantedBy = [ "systemd-suspend.service" ];

@@ -1,3 +1,5 @@
+*[Version française](aliases.fr.md)*
+
 # Aliases & functions
 
 ## Available everywhere

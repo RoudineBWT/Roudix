@@ -25,13 +25,13 @@ in
     security.pam.services.gdm.enableGnomeKeyring = true;
     services.desktopManager.gnome.enable = true;
 
-    # GNOME cache "Log Out" du menu système dès qu'il n'y a qu'un seul
-    # utilisateur ET une seule session — comportement volontaire de GNOME
-    # (cf. discourse.gnome.org "Please add Log Out even when there is only
-    # one user account"), mais franchement pénible sur une install
-    # familiale à un seul compte. Ubuntu force ce même réglage depuis 2017.
-    # C'est un default (pas un lock) : l'utilisateur peut toujours le
-    # changer lui-même via dconf/gsettings.
+    # GNOME hides "Log Out" from the system menu as soon as there's only
+    # one user AND one session — a deliberate GNOME choice (see
+    # discourse.gnome.org "Please add Log Out even when there is only one
+    # user account"), but genuinely annoying on a single-account family
+    # install. Ubuntu has forced this same setting since 2017. It's a
+    # default (not a lock): the user can still change it via
+    # dconf/gsettings.
     programs.dconf.enable = true;
     programs.dconf.profiles.user.databases = [
       {

@@ -1,6 +1,6 @@
-## _binds-dms.nix — niri: [binds] variante DankMaterialShell (DMS).
+## _binds-dms.nix — niri: [binds], DankMaterialShell (DMS) variant.
 ##
-## Même remarque que la variante noctalia sur la syntaxe des actions.
+## Same note as the noctalia variant on action syntax.
 { ... }:
 {
   programs.niri.settings = {
@@ -25,7 +25,7 @@
     "XF86AudioPrev" = { allow-when-locked = true; action.spawn = [ "playerctl" "previous" ]; };
     "XF86AudioNext" = { allow-when-locked = true; action.spawn = [ "playerctl" "next" ]; };
 
-    # ─── Fenêtres : focus / déplacement ───
+    # ─── Windows: focus / movement ───
     "Mod+Q".action.close-window = { };
 
     "Mod+Left".action.focus-column-left = { };
@@ -61,7 +61,7 @@
     "Mod+Shift+Ctrl+Up".action.move-column-to-monitor-up = { };
     "Mod+Shift+Ctrl+Down".action.move-column-to-monitor-down = { };
 
-    # ─── Molette ───
+    # ─── Wheel ───
     "Mod+WheelScrollDown" = { cooldown-ms = 150; action.focus-workspace-down = { }; };
     "Mod+WheelScrollUp" = { cooldown-ms = 150; action.focus-workspace-up = { }; };
     "Mod+Ctrl+WheelScrollDown" = { cooldown-ms = 150; action.move-column-to-workspace-down = { }; };
@@ -77,7 +77,7 @@
     "Mod+Ctrl+Shift+WheelScrollDown".action.move-column-right = { };
     "Mod+Ctrl+Shift+WheelScrollUp".action.move-column-left = { };
 
-    # ─── Workspaces (index numériques 1..9) ───
+    # ─── Workspaces (numeric index 1..9) ───
     "Mod+1".action.focus-workspace = [ 1 ];
     "Mod+2".action.focus-workspace = [ 2 ];
     "Mod+3".action.focus-workspace = [ 3 ];
@@ -113,19 +113,18 @@
     "Mod+T".action.toggle-window-floating = { };
     "Mod+F".action.fullscreen-window = { };
     "Mod+W".action.toggle-column-tabbed-display = { };
-    # Nouveau (niri 25.11) : vrai maximize Wayland, cf. commentaire dans
-    # _binds-noctalia.nix.
+    # True Wayland-level maximize, see comment in _binds-noctalia.nix.
     "Mod+M".action.maximize-window-to-edges = { };
 
-    # ─── Captures d'écran ───
+    # ─── Screenshots ───
     "Ctrl+Shift+1".action.screenshot = { };
     "Ctrl+Shift+2".action.screenshot-screen = { };
     "Ctrl+Shift+3".action.screenshot-window = { };
 
-    # ─── Échappement d'urgence ───
+    # ─── Emergency escape ───
     "Mod+Escape" = { allow-inhibiting = false; action.toggle-keyboard-shortcuts-inhibit = { }; };
 
-    # ─── Sortie / Alimentation ───
+    # ─── Exit / Power ───
     "Ctrl+Alt+Delete".action.quit = { };
     "Mod+Shift+P".action.power-off-monitors = { };
     "Mod+O" = { repeat = false; action.toggle-overview = { }; };

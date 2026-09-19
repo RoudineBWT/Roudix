@@ -10,10 +10,10 @@
 
   config = {
     # ── Fastfetch ────────────────────────────────────────────────────────────
-    # Le package est toujours installé, que useNix soit true ou false.
-    # useNix = false : garde uniquement le package, ta propre config
-    #                  dans ~/.config/fastfetch reste utilisée.
-    # useNix = true  : applique en plus la config Roudix ci-dessous.
+    # The package is always installed, whether useNix is true or false.
+    # useNix = false: keeps only the package, your own config in
+    #                 ~/.config/fastfetch stays in use.
+    # useNix = true : also applies the Roudix config below.
     programs.fastfetch = {
       enable = true;
 
@@ -77,12 +77,12 @@
       };
     };
 
-    # Fichier de branding Roudix : uniquement pertinent si on utilise la config Nix.
+    # Roudix branding file: only relevant when using the Nix config.
     xdg.configFile."fastfetch/roudix.txt" = lib.mkIf config.roudix.fastfetch.useNix {
       source = "${dotfiles}/fastfetch/roudix.txt";
     };
 
-    # Lance fastfetch sur chaque shell fish interactif, peu importe useNix.
+    # Runs fastfetch on every interactive fish shell, regardless of useNix.
     xdg.configFile."fish/conf.d/fastfetch.fish" = {
       text = ''
         fastfetch

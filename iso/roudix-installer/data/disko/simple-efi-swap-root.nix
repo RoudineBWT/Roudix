@@ -10,7 +10,7 @@
           type = "gpt";
           partitions = {
             ESP = {
-              size = "4G"; # CachyOS kernels + plusieurs générations Limine remplissent vite un /boot de 512M
+              size = "4G"; # CachyOS kernels + several Limine generations quickly fill a 512M /boot
               type = "EF00";
               content = {
                 type = "filesystem";

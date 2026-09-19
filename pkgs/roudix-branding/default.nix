@@ -15,7 +15,7 @@ stdenvNoCC.mkDerivation {
   buildInputs = [ bash coreutils imagemagick ];
 
   installPhase = ''
-    # ── Icônes PNG (toutes tailles) ───────────────────────────────────────────
+    # ── PNG icons (all sizes) ───────────────────────────────────────────────
     for SIZE in 16 32 48 64 128 256; do
       mkdir -p $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps
 
@@ -32,7 +32,7 @@ stdenvNoCC.mkDerivation {
         $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/start-here.png
     done
 
-    # ── Icônes SVG scalable ───────────────────────────────────────────────────
+    # ── Scalable SVG icons ───────────────────────────────────────────────────
     mkdir -p $out/share/icons/hicolor/scalable/apps
 
     cp $src/logo/roudix-logo.svg \
@@ -47,7 +47,7 @@ stdenvNoCC.mkDerivation {
     cp $src/logo/roudix-logo.svg \
       $out/share/icons/hicolor/scalable/apps/start-here-kde-symbolic.svg
 
-    # ── Icône symbolique Kickoff (priorité maximale) ──────────────────────────
+    # ── Kickoff symbolic icon (highest priority) ──────────────────────────────
     mkdir -p $out/share/icons/hicolor/symbolic/apps
 
     cp $src/logo/roudix-logo.svg \
@@ -63,9 +63,9 @@ stdenvNoCC.mkDerivation {
     cp $src/wallpapers/Roudix_Moonrise.jpg $out/share/backgrounds/roudix/Roudix_Moonrise.jpg
 
     # ── Wallpapers PNG GNOME (libpng/librsvg crash workaround) ────────────────
-    # -strip                   : supprime les métadonnées et profils ICC
-    # -define png:color-type=2 : force RGB sans canal alpha
-    # -depth 8                 : force 8 bits par canal
+    # -strip                   : strips metadata and ICC profiles
+    # -define png:color-type=2 : forces RGB with no alpha channel
+    # -depth 8                 : forces 8 bits per channel
     convert $src/wallpapers/roudix-dark.svg \
       -resize 3840x2160 \
       -strip \
@@ -250,7 +250,7 @@ JSONEOF
 }
 JSONEOF
 
-    # ── Entrées GNOME background properties ───────────────────────────────────
+    # ── GNOME background properties entries ───────────────────────────────────
     mkdir -p $out/share/gnome-background-properties
     cat <<XMLEOF > $out/share/gnome-background-properties/roudix.xml
 <?xml version="1.0" encoding="UTF-8"?>

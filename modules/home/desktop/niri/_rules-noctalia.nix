@@ -1,7 +1,7 @@
-## _rules-noctalia.nix — niri: règles additionnelles spécifiques à Noctalia
-## (blur/xray, opacité Zen, brave-origin-beta, easyeffects KDE, layers
-## noctalia-*). Concaténé automatiquement avec _rules-common.nix par le
-## système de modules (voir default.nix).
+## _rules-noctalia.nix — niri: extra rules specific to Noctalia
+## (blur/xray, Zen opacity, brave-origin-beta, KDE easyeffects, noctalia-*
+## layers). Concatenated automatically with _rules-common.nix by the
+## module system (see default.nix).
 { ... }:
 let
   ws = import ./_ws.nix { };
@@ -49,7 +49,7 @@ in
       matches = [ { app-id = "com.kde.easyeffects"; } ];
       open-on-workspace = ws.music;
     }
-    # Blur global (toutes les fenêtres) sans xray, pour un rendu réaliste.
+    # Global blur (all windows) without xray, for a realistic look.
     {
       matches = [ { } ];
       background-effect = { blur = true; xray = false; };
@@ -64,22 +64,21 @@ in
     {
       matches = [ { namespace = "^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"; } ];
       background-effect.xray = false;
-      # Nouveau (niri 26.04) : étend l'effet de fond aux popups générés
-      # par ces surfaces (ex. menus déroulants des quick-settings) —
-      # sans ça, seule la barre elle-même était floutée, pas ses popups.
+      # Extends the background effect to popups spawned by these
+      # surfaces (e.g. quick-settings dropdown menus) — otherwise only
+      # the bar itself gets blurred, not its popups.
       popups.background-effect.xray = false;
     }
     {
       matches = [ { namespace = "noctalia-window-switcher"; } ];
       background-effect = { blur = true; xray = false; };
     }
-    # Masque uniquement les TOASTS de notification des captures d'écran/
-    # stream (OBS, Discord Go Live...) — pas la barre ni le dock, qui
-    # restent visibles. Le classique "un DM privé s'affiche 3 secondes en
-    # plein stream" sans jamais avoir à réfléchir à quoi cacher app par
-    # app. Si une appli en particulier doit aussi être masquée (un
-    # gestionnaire de mots de passe par ex.), ajoute une window-rule avec
-    # `block-out-from = "screencast";` dans niri-custom.nix.
+    # Hides only notification TOASTS from screen capture/streaming (OBS,
+    # Discord Go Live...) — the bar and dock stay visible. Prevents a
+    # private DM from flashing on stream without hiding notifications
+    # app-by-app. To also block a specific app (e.g. a password manager),
+    # add a window-rule with `block-out-from = "screencast";` in
+    # niri-custom.nix.
     {
       matches = [ { namespace = "^noctalia-notification$"; } ];
       block-out-from = "screencast";

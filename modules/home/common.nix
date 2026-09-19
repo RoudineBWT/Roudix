@@ -46,6 +46,67 @@ let
     neovim  = pkgs.neovim;
     none    = null;
   }.${editorType};
+
+  # ── Zen Browser variant ────────────────────────────────────────────────
+  # `homeModules.<name>` bakes the channel in at import time (it can't be
+  # switched via a config option inside `programs.zen-browser`), so we pick
+  # which HM module to import based on `roudix.zen.variant`.
+  zenVariant = osConfig.roudix.zen.variant or "twilight";
+  zenHomeModules = {
+    beta              = inputs.zen-browser.homeModules.beta;
+    twilight          = inputs.zen-browser.homeModules.twilight;
+    twilight-official = inputs.zen-browser.homeModules.twilight-official;
+  };
+
+  # ── Content creation ─────────────────────────────────────────────────────
+  ccPluginDefaults = {
+    vkcapture.enable               = true;
+    pipewireAudioCapture.enable    = true;
+    backgroundRemoval.enable       = false;
+    moveTransition.enable          = false;
+    aitumMultistream.enable        = false;
+    gstreamer.enable               = false;
+    compositeBlur.enable           = false;
+    advancedSceneSwitcher.enable   = false;
+    inputOverlay.enable            = false;
+    waveform.enable                = false;
+  };
+  ccCfg = osConfig.roudix.contentCreation or {
+    enable = true;
+    obs = { enable = true; plugins = ccPluginDefaults; };
+    videoEditor = "kdenlive";
+    streaming.chatterino.enable = false;
+  };
+  ccEnabled = ccCfg.enable or true;
+
+  obsPluginCfg = (ccCfg.obs.plugins or {});
+  obsPluginMap = with pkgs.obs-studio-plugins; {
+    vkcapture               = obs-vkcapture;
+    pipewireAudioCapture    = obs-pipewire-audio-capture;
+    backgroundRemoval       = obs-backgroundremoval;
+    moveTransition          = obs-move-transition;
+    aitumMultistream        = obs-aitum-multistream;
+    gstreamer               = obs-gstreamer;
+    compositeBlur           = obs-composite-blur;
+    advancedSceneSwitcher   = advanced-scene-switcher;
+    inputOverlay            = input-overlay;
+    waveform                = waveform;
+  };
+
+  obsPackage = pkgs.wrapOBS {
+    plugins = lib.filter (p: p != null) (lib.mapAttrsToList
+      (name: pkg: if ((obsPluginCfg.${name} or { enable = false; }).enable or false) then pkg else null)
+      obsPluginMap);
+  };
+
+  videoEditorType = ccCfg.videoEditor or "kdenlive";
+  videoEditorPackage = {
+    kdenlive                = pkgs.kdePackages.kdenlive;
+    davinci-resolve          = pkgs.davinci-resolve;
+    davinci-resolve-studio   = pkgs.davinci-resolve-studio;
+    shotcut                    = pkgs.shotcut;
+    none                       = null;
+  }.${videoEditorType};
 in
 {
   home.username = username;
@@ -62,7 +123,8 @@ in
     ./gitwatch.nix
     # Zen Browser HM module — imported unconditionally (lazy), only builds
     # anything when `programs.zen-browser.enable` is actually true below.
-    inputs.zen-browser.homeModules.twilight
+    # Which channel gets imported is driven by `roudix.zen.variant`.
+    zenHomeModules.${zenVariant}
   ] ++ lib.optional (builtins.pathExists ./git.nix) ./git.nix
     ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
@@ -117,14 +179,6 @@ in
     easyeffects
     rnnoise-plugin
     songrec
-
-    # OBS Studio
-    (pkgs.wrapOBS {
-      plugins = with pkgs.obs-studio-plugins; [
-        obs-pipewire-audio-capture
-        obs-vkcapture
-      ];
-    })
   ])
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage
@@ -134,8 +188,14 @@ in
   # `programs.zen-browser` below, driven by `osConfig.roudix.zen.*`.
   # Terminal choisi par l'utilisateur (roudix.terminal)
   ++ [ terminalPackage ]
-  # Éditeur choisi par l'utilisateur (roudix.editor, "none" pour aucun)
+  # Editor chosen by the user (roudix.editor, "none" for none)
   ++ lib.optional (editorPackage != null) editorPackage
+  # OBS Studio, with plugins picked individually (roudix.contentCreation.obs.plugins)
+  ++ lib.optional (ccEnabled && (ccCfg.obs.enable or true)) obsPackage
+  # Chosen video editor (roudix.contentCreation.videoEditor)
+  ++ lib.optional (ccEnabled && videoEditorPackage != null) videoEditorPackage
+  # Client de chat Twitch (roudix.contentCreation.streaming.chatterino.enable)
+  ++ lib.optional (ccEnabled && (ccCfg.streaming.chatterino.enable or false)) pkgs.chatterino2
 ++ lib.optional (desktopType != "kde") pkgs.xdg-user-dirs-gtk;
 
        xdg.userDirs = {

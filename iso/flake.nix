@@ -16,13 +16,12 @@
       nixosConfigurations.roudix-iso = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {
-          # ./roudix-cfg est la copie du repo principal embarquée par le
-          # rsync du workflow — pkgs/roudix-branding vit à la racine du
-          # repo, pas sous iso/, d'où le chemin qui pointe dans roudix-cfg.
+          # ./roudix-cfg is the main repo, embedded here by the workflow's
+          # rsync — pkgs/roudix-branding lives at the repo root, not under
+          # iso/, hence the path through roudix-cfg.
           roudixBranding = nixpkgs.legacyPackages.${system}.callPackage ./roudix-cfg/pkgs/roudix-branding {};
-          # gnome.nix (importé ci-dessous) attend un arg "inputs" dans sa
-          # signature même s'il ne s'en sert pas dans son corps — dummy
-          # vide, on n'a pas besoin des inputs du flake principal ici.
+          # gnome.nix (imported below) expects an "inputs" arg; empty dummy
+          # since we don't need the main flake's inputs here.
           inputs = {};
           inherit roudix-installer disko;
         };

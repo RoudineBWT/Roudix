@@ -1,6 +1,6 @@
-## _ws.nix — noms mnémoniques pour les icônes (Nerd Font) des
-## workspaces nommés, partagés entre _output.nix, _binds-*.nix et
-## _rules-*.nix pour éviter toute erreur de recopie de glyphe.
+## _ws.nix — mnemonic names for the (Nerd Font) icons of named
+## workspaces, shared between _output.nix, _binds-*.nix and _rules-*.nix
+## to avoid glyph-copying mistakes.
 { }: {
   web = "󰈹";  # U+F0239
   code = "";  # U+0E8DA

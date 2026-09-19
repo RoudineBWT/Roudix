@@ -13,16 +13,16 @@ lib.mkIf (config.hardware.myGpu == "amd-legacy") {
 
   boot.blacklistedKernelModules = [ "radeon" ];
 
-  # amdgpu doit être chargé avant radeon dans l'initrd
+  # amdgpu must load before radeon in the initrd
   boot.initrd.kernelModules = [ "amdgpu" ];
 
   boot.kernelParams = [
-    # Même fix veille que pour AMD moderne — aussi pertinent sur GCN legacy
+    # Same sleep fix as modern AMD — also relevant on legacy GCN
     "mem_sleep_default=deep"
     "amdgpu.gpu_recovery=1"
     "amdgpu.lockup_timeout=1000"
-    # Note : amdgpu.runpm=0 n'est pas nécessaire sur GCN 1.x/2.x car le runtime PM
-    # n'est pas activé par défaut sur ces générations.
+    # Note: amdgpu.runpm=0 isn't needed on GCN 1.x/2.x since runtime PM
+    # isn't enabled by default on these generations.
   ];
 
   environment.systemPackages = with pkgs; [ amdgpu_top ];

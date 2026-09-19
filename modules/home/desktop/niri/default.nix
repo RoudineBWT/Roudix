@@ -13,16 +13,16 @@ let
   extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
 in
 {
-  # ⚠ PAS d'import de `inputs.niri.homeModules.niri` ici : il est déjà
-  # importé automatiquement au niveau système (le module NixOS niri
-  # l'enregistre pour home-manager-as-module). L'importer une 2e fois ici
-  # provoque `error: The option 'programs.niri.finalConfig' ... is
-  # already declared` — c'est l'erreur qu'on a eue.
+  # ⚠ Do NOT import `inputs.niri.homeModules.niri` here: it's already
+  # imported automatically at the system level (the niri NixOS module
+  # registers it for home-manager-as-module). Importing it a 2nd time here
+  # triggers `error: The option 'programs.niri.finalConfig' ... is
+  # already declared`.
   #
-  # Les fichiers _general/_animation/etc. posent programs.niri.settings.*
-  # directement (pas de lib.mkIf à l'intérieur) : on ne les importe donc
-  # QUE si niri est le compositeur actif, pour ne rien toucher côté niri
-  # sur un host qui utilise un autre desktop.
+  # The _general/_animation/etc. files set programs.niri.settings.*
+  # directly (no lib.mkIf inside), so they're only imported when niri is
+  # the active compositor, to avoid touching niri settings on a host
+  # using a different desktop.
   imports = [
     ../../mangohud.nix
     ../../papirus-icon.nix
@@ -55,11 +55,11 @@ in
       package = null;
     };
 
-    # ── Terminal / navigateur / fichiers résolus depuis roudix.* ──────────
-    # Ces binds sont DÉJÀ définis par _binds-noctalia.nix / _binds-dms.nix ;
-    # comme c'est la même clé (attrsOf, un point de fusion par bind), il
-    # faut lib.mkForce pour que la valeur ci-dessous gagne — exactement le
-    # même principe que pour un override dans local.nix.
+    # ── Terminal / browser / files resolved from roudix.* ──────────
+    # These binds are ALREADY defined by _binds-noctalia.nix / _binds-dms.nix;
+    # since it's the same key (attrsOf, merges per bind), lib.mkForce is
+    # needed for the value below to win — same principle as a local.nix
+    # override.
     programs.niri.settings.binds = {
       "Mod+Return" = lib.mkForce {
         hotkey-overlay.title = "Open Terminal: ${terminalCmd}";

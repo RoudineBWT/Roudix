@@ -18,29 +18,30 @@ lib.mkIf (config.hardware.myGpu == "amd") {
   boot.initrd.kernelModules = [ "amdgpu" ];
 
   boot.kernelParams = [
-    # Force S3 deep sleep au lieu de S0ix (Modern Standby).
-    # S0ix est souvent buggé avec amdgpu sur les kernels Linux → freeze au réveil.
-    # Safe sur toutes les cartes AMD (ignoré si le BIOS ne supporte que S0ix).
+    # Forces S3 deep sleep instead of S0ix (Modern Standby).
+    # S0ix is often buggy with amdgpu on Linux kernels → freezes on wake.
+    # Safe on all AMD cards (ignored if the BIOS only supports S0ix).
     "mem_sleep_default=deep"
 
-    # Active la récupération automatique du GPU après un hang/timeout.
-    # Evite le freeze complet en laissant le driver se reset tout seul.
-    # Valable pour toutes les cartes RDNA/GCN modernes.
+    # Enables automatic GPU recovery after a hang/timeout.
+    # Avoids a full freeze by letting the driver reset itself.
+    # Applies to all modern RDNA/GCN cards.
     "amdgpu.gpu_recovery=1"
 
-    # Réduit le délai avant que le kernel détecte et tente de récupérer un GPU hang (en ms).
-    # Par défaut 10000ms (10s) → l'écran reste noir longtemps avant récupération.
-    # 1000ms = réaction rapide sans être trop aggressif.
+    # Reduces the delay before the kernel detects and tries to recover a
+    # GPU hang (in ms). Default is 10000ms (10s) → the screen stays black
+    # a long time before recovery. 1000ms = fast reaction without being
+    # too aggressive.
     "amdgpu.lockup_timeout=1000"
 
-    # Désactive le runtime PM (power management) du GPU entre les frames.
-    # Certaines cartes AMD freezent au réveil à cause d'un mauvais état de power gate.
-    # Légèrement plus de conso idle, mais fix fiable sur RDNA2/RDNA3.
+    # Disables the GPU's runtime PM (power management) between frames.
+    # Some AMD cards freeze on wake due to a bad power-gate state.
+    # Slightly higher idle power draw, but a reliable fix on RDNA2/RDNA3.
     "amdgpu.runpm=0"
 
-    # Désactive le scatter-gather display engine.
-    # Bug connu RDNA2/RDNA3 sous Wayland : freezes aléatoires de l'affichage,
-    # parfois accompagnés d'un hang GPU complet. Très fréquent sur RX 6xxx/7xxx.
+    # Disables the scatter-gather display engine.
+    # Known RDNA2/RDNA3 bug under Wayland: random display freezes,
+    # sometimes with a full GPU hang. Very common on RX 6xxx/7xxx.
     "amdgpu.sg_display=0"
   ];
 }

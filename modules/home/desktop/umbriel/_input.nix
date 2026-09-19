@@ -1,17 +1,17 @@
 ## _input.nix — Umbriel: [input], [input.keyboard], [input.touchpad],
 ## [input.mouse], [input.cursor], [input.focus].
 ##
-## Doc : https://docs.noctalia.dev/umbriel/input/
+## Docs: https://docs.noctalia.dev/umbriel/input/
 { osConfig, ... }:
 {
   programs.umbriel.settings = {
   input = {
-    # middle_click_paste laissé au défaut (true), pas configuré côté niri.
+    # middle_click_paste left at its default (true).
 
     keyboard = {
       layout = osConfig.roudix.keyboardLayout;
       variant = osConfig.roudix.keyboardVariant;
-      numlock_toggle = true; # niri: keyboard { numlock } au démarrage
+      numlock_toggle = true; # niri: keyboard { numlock } on startup
     };
 
     touchpad = {
@@ -28,17 +28,16 @@
       size = 24;
       hide_when_typing = true;
       hide_timeout_ms = 1000; # niri: hide-after-inactive-ms 1000
-      # Fix pour le curseur qui reste figé à son ancienne position en jeu
-      # (visible seulement quand la souris bouge) puis clignote au lieu de
-      # simplement disparaître/réapparaître : c'est un artefact classique du
-      # curseur matériel (hardware cursor plane), qui se resynchronise mal
-      # avec le direct scanout plein écran des jeux (DP-1 a tearing=true +
-      # direct_scanout par défaut, voir _output.nix). La doc Umbriel identifie
-      # justement hardware_cursor=false comme le contournement pour "cursor
-      # flicker or disappearance caused by hardware cursor planes" : le
-      # curseur est alors composité dans le rendu au lieu de passer par le
-      # plan matériel du GPU. Léger coût GPU en plus (négligeable hors jeux
-      # très exigeants), mais plus de curseur fantôme/figé.
+      # hardware_cursor = false fixes the cursor freezing at its last
+      # position in-game (only redrawing when the mouse moves) and then
+      # flickering instead of smoothly appearing/disappearing — a classic
+      # hardware cursor plane desync with fullscreen direct scanout (DP-1
+      # has tearing=true + direct_scanout by default, see _output.nix).
+      # This is the documented workaround for "cursor flicker or
+      # disappearance caused by hardware cursor planes": the cursor gets
+      # composited into the render instead of using the GPU's hardware
+      # plane. Slight extra GPU cost (negligible outside demanding games),
+      # no more stuck/ghost cursor.
       hardware_cursor = false;
     };
   };

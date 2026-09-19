@@ -3,9 +3,9 @@
 let
   cfg = config.roudix;
 
-  # `command` = binaire réellement lancé (utilisé par les keybinds niri).
-  # Ajuste-le ici si un de tes paquets custom (brave-origin-*) expose un
-  # binaire différent du nom de l'attribut.
+  # `command` = the binary actually launched (used by the niri keybinds).
+  # Adjust it here if a custom package (brave-origin-*) exposes a binary
+  # under a different name than the attribute.
   browserDefs = {
     "brave"    = { package = pkgs.brave;                                     command = "brave";                 extras = []; };
     "brave-beta"    = { package = pkgs.brave-beta;                           command = "brave-beta";            extras = []; };
@@ -49,6 +49,20 @@ in {
         type    = lib.types.bool;
         default = false;
         description = "Install Zen Browser (from zen-browser flake input).";
+      };
+
+      variant = lib.mkOption {
+        type = lib.types.enum [ "beta" "twilight" "twilight-official" ];
+        default = "twilight";
+        description = ''
+          Zen release channel to install (drives which
+          `inputs.zen-browser.homeModules.<variant>` gets imported in
+          `modules/home/common.nix`):
+            "beta"              — Firefox-ESR based, slower-moving, most stable
+            "twilight"          — nightly builds, mirrored by the flake maintainer
+            "twilight-official" — same nightly content, fetched directly from
+                                   Zen's own build infra instead of the mirror
+        '';
       };
 
       mods = lib.mkOption {

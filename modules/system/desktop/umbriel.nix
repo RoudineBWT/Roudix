@@ -26,7 +26,7 @@ in
   };
 
   config = lib.mkIf isUmbriel {
-    # ── Compositeur ────────────────────────────────────────────────────
+    # ── Compositor ────────────────────────────────────────────────────
     # inputs.umbriel = { url = "github:noctalia-dev/umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
     # inputs.umbriel-portal = { url = "github:noctalia-dev/xdg-desktop-portal-umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
     nixpkgs.overlays = [
@@ -34,17 +34,16 @@ in
     ];
 
     programs.umbriel.enable = true;
-    # programs.umbriel.package est déjà réglé par défaut par le module sur
-    # inputs.umbriel.packages.${system}.default
+    # programs.umbriel.package already defaults to
+    # inputs.umbriel.packages.${system}.default via the module.
     #
-    # Le README d'Umbriel documente une option dédiée pour le portail :
-    # elle configure xdg.portal ET installe la conf nécessaire au
-    # ScreenCast/Screenshot toute seule (au lieu de le faire à la main
-    # via xdg.portal.config.umbriel plus bas).
+    # Umbriel's README documents a dedicated portal option: it configures
+    # xdg.portal AND installs the ScreenCast/Screenshot config on its own
+    # (instead of doing it by hand via xdg.portal.config.umbriel below).
     programs.umbriel.portalPackage =
       inputs.xdg-desktop-portal-umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-    # ── Greeter DMS (si shell != noctalia) ───────────────────────────────
+    # ── DMS greeter (when shell != noctalia) ───────────────────────────────
     programs.dms-greeter = lib.mkIf (!isNoctalia) {
       enable = true;
       compositor.name = "umbriel";
@@ -57,7 +56,7 @@ in
       systemd.enable = true;
     };
 
-    # ── Greeter Noctalia (si shell == noctalia) ──────────────────────────
+    # ── Noctalia greeter (when shell == noctalia) ──────────────────────────
     programs.noctalia-greeter = lib.mkIf isNoctalia {
       enable = true;
       greeter-args = "start-umbriel";
@@ -69,13 +68,13 @@ in
       };
     };
 
-    # ── Portails ──────────────────────────────────────────────────────────
-    # Le backend umbriel + sa conf (ScreenCast/Screenshot) sont maintenant
-    # câblés par programs.umbriel.portalPackage ci-dessus. Ici on ne garde
-    # que les portails de secours pour les file pickers GTK/GNOME.
-    # ⚠ Pas testé en profondeur — à vérifier une fois en session que
-    # portalPackage suffit bien et qu'il n'entre pas en conflit avec gtk/
-    # gnome pour le default portal. Doc: https://github.com/noctalia-dev/xdg-desktop-portal-umbriel
+    # ── Portals ──────────────────────────────────────────────────────────
+    # The umbriel backend + its config (ScreenCast/Screenshot) are now
+    # wired by programs.umbriel.portalPackage above. This only keeps the
+    # fallback portals for GTK/GNOME file pickers.
+    # ⚠ Not thoroughly tested — verify in a real session that portalPackage
+    # is sufficient and doesn't conflict with gtk/gnome for the default
+    # portal. Docs: https://github.com/noctalia-dev/xdg-desktop-portal-umbriel
     xdg.portal = {
       enable = true;
       extraPortals = with pkgs;
@@ -105,13 +104,13 @@ in
     };
 
     # ── Keyring ───────────────────────────────────────────────────────────
-    # ⚠ Branche kde pas testée en session réelle. Point de vigilance connu :
-    # le service PAM "greetd" ne substack pas "login" (nixpkgs#357201), ce
-    # qui a déjà cassé l'auto-unlock kwallet pour d'autres utilisateurs de
-    # greetd — cf. discourse.nixos.org "Auto-Unlock kwallet with greetd
-    # login-manager". Si le wallet reste verrouillé après un login, il
-    # faudra probablement substack "login" à la main dans le texte PAM de
-    # greetd (comme le font déjà gdm.nix/lightdm.nix pour ce cas).
+    # ⚠ kde branch not tested in a real session. Known caveat: the
+    # "greetd" PAM service doesn't substack "login" (nixpkgs#357201),
+    # which has already broken kwallet auto-unlock for other greetd users
+    # — see discourse.nixos.org "Auto-Unlock kwallet with greetd
+    # login-manager". If the wallet stays locked after login, greetd's PAM
+    # text will likely need "login" substacked by hand (as gdm.nix/
+    # lightdm.nix already do for this case).
     services.gnome.gnome-keyring.enable = !isKdeIntegration;
     security.pam.services.greetd.enableGnomeKeyring = !isKdeIntegration;
     security.pam.services.greetd.kwallet.enable = isKdeIntegration;

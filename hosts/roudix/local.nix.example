@@ -27,6 +27,7 @@
   # ── Browser ───────────────────────────────────────────────────────────────
   roudix.browsers = ["helium" "brave-origin-beta" ];               # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable           = true;        # install Zen Browser (from zen-browser flake input)
+  roudix.zen.variant     = "twilight"; # "twilight" (default), "beta" or "twilight-official"
   roudix.zen.sine.enable = true;       # true sur la machine où tu veux Sine
   roudix.zen.mods        = [];
   roudix.zen.sine.mods   = [ "Arc-2.0" "unloaded-tabs" "context-menu-icons" "floating-statusbar" ];   # ← utilise celle-là à la place
@@ -59,6 +60,22 @@
   # roudix.gaming.apps.vintagestory.enable = false;
   # roudix.gaming.apps.mangohud.enable     = false;
   roudix.undervolt.only-amd.enable        = true;         # enable undervolting just for amd gpu.
+  roudix.contentCreation.enable = true; # disable to skip OBS, video editor, virtual cam, etc.
+  # roudix.contentCreation.obs.enable = false;
+  # Plugins OBS activés/désactivés individuellement (vkcapture + pipewireAudioCapture par défaut) :
+  # roudix.contentCreation.obs.plugins.vkcapture.enable             = false;
+  # roudix.contentCreation.obs.plugins.pipewireAudioCapture.enable  = false;
+  # roudix.contentCreation.obs.plugins.backgroundRemoval.enable     = true;
+  # roudix.contentCreation.obs.plugins.moveTransition.enable        = true;
+  # roudix.contentCreation.obs.plugins.aitumMultistream.enable      = true;  # multistreaming — successeur d'obs-multi-rtmp
+  # roudix.contentCreation.obs.plugins.gstreamer.enable              = true;
+  # roudix.contentCreation.obs.plugins.compositeBlur.enable          = true;
+  # roudix.contentCreation.obs.plugins.advancedSceneSwitcher.enable = true;
+  # roudix.contentCreation.obs.plugins.inputOverlay.enable           = true;
+  # roudix.contentCreation.obs.plugins.waveform.enable               = true;
+  roudix.contentCreation.videoEditor = "kdenlive"; # "kdenlive", "davinci-resolve", "davinci-resolve-studio", "shotcut" or "none"
+  # roudix.contentCreation.virtualCamera.enable = false; # v4l2loopback, utilisé par la webcam virtuelle OBS/DaVinci
+  # roudix.contentCreation.streaming.chatterino.enable = true; # client de chat Twitch tiers
   roudix.gaming.ananicy.enable = false;
   roudix.editor = "zed"; # "vscode", "zed", "neovim" ou "none"
   # Sur niri/hyprland/mangowc/umbriel (compositeurs sans DE complet) : quel

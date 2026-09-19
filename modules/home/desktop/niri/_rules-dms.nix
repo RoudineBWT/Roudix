@@ -1,11 +1,10 @@
-## _rules-dms.nix — niri: règles additionnelles spécifiques à DMS.
-## Concaténé automatiquement avec _rules-common.nix par le système de
-## modules (voir default.nix).
+## _rules-dms.nix — niri: extra rules specific to DMS. Concatenated
+## automatically with _rules-common.nix by the module system (see
+## default.nix).
 ##
-## ⚠ Ces layer-rules ciblent les namespaces `dms:*` gérés par DMS
-## lui-même. Vérifie qu'il n'y a pas de double emploi avec ce que DMS
-## applique déjà via ses propres fichiers live (wpblur.kdl, colors.kdl,
-## inclus par _include-dms.nix).
+## ⚠ These layer-rules target `dms:*` namespaces managed by DMS itself.
+## Check for overlap with what DMS already applies via its own live files
+## (wpblur.kdl, colors.kdl, included by _include-dms.nix).
 { ... }:
 {
   programs.niri.settings = {
@@ -22,12 +21,11 @@
         matches = [ { namespace = "^dms:clipboard$"; } ];
         block-out-from = "screencast";
       }
-      # Même logique que côté noctalia (_rules-noctalia.nix) : masque les
-      # toasts de notification des captures/stream, pas la barre/dock.
-      # ⚠ Namespace à vérifier avec `niri msg layers` en session DMS — je
-      # n'ai pas de confirmation directe que c'est exactement "dms:osd"
-      # pour les notifications (par analogie avec dms:bar/dms:dock/
-      # dms:clipboard déjà confirmés).
+      # Same logic as the noctalia side (_rules-noctalia.nix): hides
+      # notification toasts from capture/streaming, not the bar/dock.
+      # ⚠ Namespace not directly confirmed — verify with `niri msg layers`
+      # in a DMS session that notifications are really "dms:osd" (inferred
+      # by analogy with the confirmed dms:bar/dms:dock/dms:clipboard).
       {
         matches = [ { namespace = "^dms:osd$"; } ];
         block-out-from = "screencast";

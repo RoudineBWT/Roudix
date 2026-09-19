@@ -21,10 +21,10 @@ class DiskChoice:
     device: str = ""                # e.g. /dev/vda — used in "simple" mode
     mode: str = "simple"             # "simple" | "advanced" | "manual"
     filesystem: str = "ext4"         # "ext4" | "btrfs" — only used in "simple" mode
-    boot_size_gb: int = 4            # CachyOS + plusieurs générations Limine remplissent
-                                      # vite un /boot de 512M — 4G recommandé, 2G minimum
-    enable_swap: bool = False        # off par défaut : zram couvre déjà ce rôle
-    swap_size_gb: int = 8            # utilisé seulement si enable_swap
+    boot_size_gb: int = 4            # CachyOS + several Limine generations
+                                      # quickly fill a 512M /boot — 4G recommended, 2G minimum
+    enable_swap: bool = False        # off by default: zram already covers this role
+    swap_size_gb: int = 8            # only used if enable_swap
     advanced_disko_path: str = ""    # path to a custom disko.nix if mode == advanced
     # mode == "manual": partitions the user made themselves in GParted,
     # mapped to mountpoints. e.g. {"/dev/vda1": "/boot", "/dev/vda2": "swap", "/dev/vda3": "/"}
@@ -57,6 +57,7 @@ class InstallState:
                                       # | firefox | librewolf | google-chrome | microsoft-edge
                                       # | ungoogled-chromium | chromium
     zen_browser: bool = False
+    zen_variant: str = "twilight"    # roudix.zen.variant — twilight | beta | twilight-official
     zen_sine_enable: bool = False    # roudix.zen.sine.enable
     zen_mods: list = field(default_factory=list)       # roudix.zen.mods
     zen_sine_mods: list = field(default_factory=list)  # roudix.zen.sine.mods
@@ -110,3 +111,24 @@ class InstallState:
     file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo
     ananicy_enable: bool = False     # roudix.gaming.ananicy.enable — opt-in, only meaningful if gaming.enable
     mesa_use_git: bool = False       # roudix.mesa.useGit — false = mesa stable
+
+    # ── Content creation ─────────────────────────────────────────────────
+    content_creation_enable: bool = True   # roudix.contentCreation.enable
+    obs_enable: bool = True                # roudix.contentCreation.obs.enable
+    # roudix.contentCreation.obs.plugins.<id>.enable — one boolean per plugin.
+    # Aitum Multistream replaces obs-multi-rtmp (multistreaming plugin
+    # maintained by the Aitum team, independent encoders/bitrate per platform).
+    obs_plugin_vkcapture: bool = True
+    obs_plugin_pipewire_audio_capture: bool = True
+    obs_plugin_background_removal: bool = False
+    obs_plugin_move_transition: bool = False
+    obs_plugin_aitum_multistream: bool = False
+    obs_plugin_gstreamer: bool = False
+    obs_plugin_composite_blur: bool = False
+    obs_plugin_advanced_scene_switcher: bool = False
+    obs_plugin_input_overlay: bool = False
+    obs_plugin_waveform: bool = False
+    video_editor: str = "kdenlive"         # roudix.contentCreation.videoEditor —
+                                            # kdenlive | davinci-resolve | davinci-resolve-studio | shotcut | none
+    virtual_camera_enable: bool = True     # roudix.contentCreation.virtualCamera.enable
+    chatterino_enable: bool = False        # roudix.contentCreation.streaming.chatterino.enable

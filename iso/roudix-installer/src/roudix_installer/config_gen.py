@@ -71,6 +71,23 @@ def _set_bool_option(text: str, key: str, value: bool) -> str:
     return pattern.sub(repl, text)
 
 
+def _set_list_option(text: str, key: str, values: list) -> str:
+    """
+    Same idea as _set_bool_option but for a `key = [ ... ];` option that
+    ships commented-out in local.nix.example (e.g.
+    roudix.contentCreation.obs.plugins) — always uncomments the line and
+    writes `values` (Nix list, space-separated, no commas).
+    """
+    pattern = re.compile(rf'^(\s*)(#\s*)?({re.escape(key)}\s*=\s*)\[[^\]]*\](.*)$', re.MULTILINE)
+    joined = " ".join(f'"{v}"' for v in values)
+
+    def repl(m):
+        indent, _hash, assign, tail = m.group(1), m.group(2), m.group(3), m.group(4)
+        return f'{indent}{assign}[{joined}]{tail}'
+
+    return pattern.sub(repl, text)
+
+
 def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = local_nix_text
     t = _sub_string(t, "roudix.rgb", state.rgb)
@@ -83,6 +100,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _set_kernel_option(t, "hardware.myKernelChaotic", is_nvidia, state.kernel_chaotic)
     t = _sub_list_single(t, "roudix.browsers", state.browser)
     t = _sub_bool(t, "roudix.zen.enable", state.zen_browser)
+    t = _sub_string(t, "roudix.zen.variant", state.zen_variant)
     t = _sub_bool(t, "roudix.zen.sine.enable", state.zen_sine_enable)
     t = _sub_list(t, "roudix.zen.mods", state.zen_mods)
     t = _sub_list(t, "roudix.zen.sine.mods", state.zen_sine_mods)
@@ -119,6 +137,23 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.matrixClient", state.matrix_client)
     t = _sub_string(t, "roudix.discord", state.discord)
     t = _sub_bool(t, "roudix.waydroid.enable", state.waydroid_enable)
+
+    t = _sub_bool(t, "roudix.contentCreation.enable", state.content_creation_enable)
+    if state.content_creation_enable:
+        t = _set_bool_option(t, "roudix.contentCreation.obs.enable", state.obs_enable)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.vkcapture.enable", state.obs_plugin_vkcapture)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.pipewireAudioCapture.enable", state.obs_plugin_pipewire_audio_capture)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.backgroundRemoval.enable", state.obs_plugin_background_removal)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.moveTransition.enable", state.obs_plugin_move_transition)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.aitumMultistream.enable", state.obs_plugin_aitum_multistream)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.gstreamer.enable", state.obs_plugin_gstreamer)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.compositeBlur.enable", state.obs_plugin_composite_blur)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.advancedSceneSwitcher.enable", state.obs_plugin_advanced_scene_switcher)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.inputOverlay.enable", state.obs_plugin_input_overlay)
+        t = _set_bool_option(t, "roudix.contentCreation.obs.plugins.waveform.enable", state.obs_plugin_waveform)
+        t = _sub_string(t, "roudix.contentCreation.videoEditor", state.video_editor)
+        t = _set_bool_option(t, "roudix.contentCreation.virtualCamera.enable", state.virtual_camera_enable)
+        t = _set_bool_option(t, "roudix.contentCreation.streaming.chatterino.enable", state.chatterino_enable)
 
     if state.rgb == "openlinkhub":
         t = _sub_bool(t, "roudix.memory.enable", state.memory_rgb_enable)

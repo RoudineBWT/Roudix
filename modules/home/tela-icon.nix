@@ -18,16 +18,16 @@ let
       rm -rf "$dest"
       mkdir -p "$dest"
 
-      # On n'hérite du thème d'origine QUE pour ce qu'on ne fournit pas
-      # nous-mêmes -> aucune copie des icônes d'apps, zéro risque de casse.
+      # Inherits from the original theme ONLY for what isn't provided
+      # here -> no app icons copied, zero risk of breakage.
       cp "${telaIconsOut}/$variant/index.theme" "$dest/index.theme"
       ${pkgs.gnused}/bin/sed -i \
         -e "s/^Inherits=.*/Inherits=$variant/" \
         -e "s/^Name=.*/Name=''${variant} Noctalia/" \
         "$dest/index.theme"
 
-      # On ne copie QUE le dossier "places" de chaque taille disponible,
-      # en déréférençant (-L) les symlinks internes/entre variantes.
+      # Only copies the "places" folder for each available size,
+      # dereferencing (-L) internal/cross-variant symlinks.
       for size in 16 22 24 32 scalable symbolic; do
         src="${telaIconsOut}/$variant/$size/places"
         [ -d "$src" ] || continue
@@ -42,8 +42,8 @@ let
         gtk-update-icon-cache -f -t "$dest" || true
       fi
     done
-    # Thèmes générés dans ~/.icons/{Tela,Tela-light,Tela-dark}-noctalia, mais
-    # pas appliqués automatiquement : choisis-les toi-même (nwg-look, etc.).
+    # Themes generated in ~/.icons/{Tela,Tela-light,Tela-dark}-noctalia, but
+    # not applied automatically — pick them manually (nwg-look, etc.).
   '';
 in
 {

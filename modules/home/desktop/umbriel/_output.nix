@@ -1,12 +1,11 @@
-## _output.nix — Umbriel: [output.NAME] + [[workspace]] (règles par
-## workspace).
+## _output.nix — Umbriel: [output.NAME] + [[workspace]] (per-workspace
+## rules).
 ##
-## TODO: lance `umbriel outputs` une fois en session et remplace DP-1/DP-3
-## ci-dessous par les vrais noms de connecteur si besoin (ex: DP-1, HDMI-A-1
-## — Umbriel veut le nom du connecteur physique, pas "Marque Modèle Série"
-## comme niri).
+## TODO: run `umbriel outputs` in session and replace DP-1/DP-3 below with
+## the actual connector names if needed (e.g. DP-1, HDMI-A-1 — Umbriel
+## wants the physical connector name, not "Vendor Model Serial" like niri).
 ##
-## Doc : https://docs.noctalia.dev/umbriel/outputs/
+## Docs: https://docs.noctalia.dev/umbriel/outputs/
 ##       https://docs.noctalia.dev/umbriel/workspaces/#workspace-rules
 { ... }:
 {
@@ -17,22 +16,20 @@
       position = [ 1920 0 ];
       scale = 1;
       vrr = "fullscreen"; # niri: variable-refresh-rate on-demand=true
-      # Nouveau (bonus jeux compétitifs) : autorise le tearing asynchrone
-      # sur cet output. C'est un "safety gate" : Umbriel ne l'utilise que
-      # pour une fenêtre plein écran qui le demande (ou via window_rule
-      # tearing=true dans _rules.nix). Retire cette ligne si tu vois du
-      # tearing visible en dehors des jeux.
+      # Allows async tearing on this output. This is a safety gate: Umbriel
+      # only uses it for a fullscreen window that requests it (or via
+      # window_rule tearing=true in _rules.nix). Remove if tearing shows up
+      # outside games.
       tearing = true;
-      # ⚠ Bug Mod+1..9 : un nom de workspace purement numérique ("4", "5"...)
-      # qui n'existe QUE sur cet output devient un nom global unique. La
-      # doc (docs.noctalia.dev/umbriel/actions/) précise que les sélecteurs
-      # de workspace résolvent d'abord les noms exacts globalement, et
-      # qu'un nom unique saute sur SON output -- même si un autre moniteur a
-      # le focus. C'était le cas de "4"/"5" côté DP-3 (uniques) : Mod+4 et
-      # Mod+5 sautaient toujours sur le HKC. Les "6".."9" préfixés L/H
-      # ci-dessous ne sont plus des noms numériques exacts, donc
-      # Mod+1..9 retombe systématiquement sur la résolution "position N du
-      # moniteur focus" que tu veux, indépendamment par écran.
+      # ⚠ A workspace name that's a plain number ("4", "5"...) and exists
+      # ONLY on this output becomes a globally unique name. Per the docs
+      # (docs.noctalia.dev/umbriel/actions/), workspace selectors resolve
+      # exact names globally first, and a unique name jumps to its own
+      # output regardless of which monitor has focus. "4"/"5" used to be
+      # unique to DP-3, so Mod+4/Mod+5 always jumped to the HKC. The
+      # L/H-prefixed "6".."9" below are no longer exact numeric names, so
+      # Mod+1..9 now always resolves by "position N on the focused
+      # monitor" per-screen, as intended.
       workspaces = [ "󰈹" "" "" "󰊗" "󰉋" "L6" "L7" "L8" "L9"  ];
     };
 
@@ -44,17 +41,17 @@
     };
   };
 
-  # ── Règles de workspace ──────────────────────────────────────────────────
-  # Mode global (_layout.nix) : "scrolling". Chaque workspace reçoit ici sa
-  # propre règle layout.mode ("scrolling", "dwindle" ou "master").
+  # ── Workspace rules ──────────────────────────────────────────────────
+  # Global mode (_layout.nix): "scrolling". Each workspace gets its own
+  # layout.mode override here ("scrolling", "dwindle" or "master").
   #
-  # Web (DP-1/1, DP-3/3)      → scrolling
-  # Zed (DP-1/2)              → dwindle
-  # Term (DP-1/3)             → dwindle
-  # Jeux (DP-1/4)             → master
-  # Fichiers (DP-1/5)         → dwindle
-  # Chat (DP-3/1)             → master
-  # Musique (DP-3/2)          → dwindle
+  # Web (DP-1/1, DP-3/3)  → scrolling
+  # Zed (DP-1/2)          → dwindle
+  # Term (DP-1/3)         → dwindle
+  # Games (DP-1/4)        → master
+  # Files (DP-1/5)        → dwindle
+  # Chat (DP-3/1)         → master
+  # Music (DP-3/2)        → dwindle
   workspace = [
     {
       output = "DP-1";
@@ -73,27 +70,27 @@
     }
     {
       output = "DP-1";
-      index = 4; # jeux — pas de gap vu que Steam/Heroic/PrismLauncher/
-                 # Minecraft s'ouvrent déjà maximisés ou en plein écran
-                 # (voir _rules.nix) — évite un liseré de gap visible en jeu.
+      index = 4; # games — no gap since Steam/Heroic/PrismLauncher/
+                 # Minecraft already open maximized or fullscreen
+                 # (see _rules.nix); avoids a visible gap strip in-game.
       layout.mode = "scrolling";
       layout.gap = 0;
     }
     {
       output = "DP-1";
-      index = 5; # fichiers (nautilus / gnome-text-editor)
+      index = 5; # files (nautilus / gnome-text-editor)
       layout.mode = "dwindle";
     }
     {
       output = "DP-3";
-      index = 1; # chat (discord / element / telegram — déjà en floating
-                 # dans _rules.nix, donc le mode n'affecte que ce que tu
-                 # ouvrirais en plus en tuilé sur ce workspace)
+      index = 1; # chat (discord / element / telegram — already floating
+                 # via _rules.nix, so the mode only affects anything else
+                 # tiled on this workspace)
       layout.mode = "master";
     }
     {
       output = "DP-3";
-      index = 2; # musique (spotify / easyeffects)
+      index = 2; # music (spotify / easyeffects)
       layout.mode = "dwindle";
     }
     {

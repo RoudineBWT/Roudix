@@ -2,8 +2,8 @@
 let
   game-performance = pkgs.writeShellScriptBin "game-performance" ''
     #!${pkgs.runtimeShell}
-    # Wrapper "à la Bazzite/CachyOS" pour tuned-adm, structure simple éprouvée
-    # (pas de systemd-run --scope : un trap classique suffit).
+    # Bazzite/CachyOS-style wrapper for tuned-adm, a simple proven structure
+    # (no systemd-run --scope: a classic trap is enough).
 
     TUNED_ADM=${pkgs.tuned}/bin/tuned-adm
     GAME_PROFILE=roudix-gaming
@@ -118,10 +118,10 @@ in
       args = [ "--prefer-output" "DP-1" ];
     };
     extraCompatPackages = steamCompatTools;
-    # Sans ça, roudix-game-performance échoue silencieusement dès qu'il est
-    # invoqué depuis les Launch Options : le sandbox FHS de Steam ne
-    # bind-mount qu'une liste blanche de fichiers /etc (pas /etc/tuned),
-    # donc tuned-adm plante avec un FileNotFoundError sur tuned-main.conf.
+    # Without this, roudix-game-performance fails silently as soon as
+    # it's invoked from the Launch Options: Steam's FHS sandbox only
+    # bind-mounts a whitelist of /etc files (not /etc/tuned), so tuned-adm
+    # crashes with a FileNotFoundError on tuned-main.conf.
     package = pkgs.steam.override {
       extraBwrapArgs = [
         "--ro-bind-try /etc/tuned /etc/tuned"
@@ -136,9 +136,9 @@ in
   };
 
   # ── GameMode ─────────────────────────────────────────────────────────────
-  # Désactivé : incompatible avec ananicy-cpp chez nous. game-performance
-  # (via systemd-run --scope) gère maintenant le tracking du process de
-  # façon fiable sans passer par GameMode.
+  # Disabled: incompatible with ananicy-cpp in this setup. game-performance
+  # (via systemd-run --scope) now handles process tracking reliably
+  # without going through GameMode.
   #programs.gamemode = {
   #  enable = true;
   #  settings = {
@@ -148,13 +148,13 @@ in
   #  };
   #};
 
-  # ── Ananicy-CPP (remplace GameMode, opt-in) ──────────────────────────────
-  # Si roudix.gaming.ananicy.enable = true : démarre au boot, stoppé par
-  # scx-switch quand un scheduler SCX est activé, redémarré automatiquement
-  # au reboot suivant (comportement d'origine).
-  # Si false (défaut) : ananicy-cpp n'est même pas installé. Le scheduler SCX
-  # choisi via roudix-kernel-switcher persiste après reboot à la place
-  # (voir scx-restore-default dans scx.nix).
+  # ── Ananicy-CPP (replaces GameMode, opt-in) ──────────────────────────────
+  # If roudix.gaming.ananicy.enable = true: starts at boot, stopped by
+  # scx-switch when an SCX scheduler is enabled, restarted automatically
+  # on the next reboot (original behavior).
+  # If false (default): ananicy-cpp isn't even installed. The SCX
+  # scheduler chosen via roudix-kernel-switcher persists across reboots
+  # instead (see scx-restore-default in scx.nix).
   services.ananicy = lib.mkIf config.roudix.gaming.ananicy.enable {
     enable = true;
     package = pkgs.ananicy-cpp;
@@ -166,17 +166,17 @@ in
     };
   };
 
-  # ── Paquets système gaming ────────────────────────────────────────────────
+  # ── System gaming packages ────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     vkbasalt          # Post-processing Vulkan (sharpening, etc.)
-    game-performance  # Wrapper tuned CPU performance — binaire : roudix-game-performance
-                      # Steam Launch Options : /run/current-system/sw/bin/roudix-game-performance %command%
-                      # (chemin complet requis : Steam n'hérite pas toujours du PATH à jour du profil courant)
+    game-performance  # tuned CPU performance wrapper — binary: roudix-game-performance
+                      # Steam Launch Options: /run/current-system/sw/bin/roudix-game-performance %command%
+                      # (full path required: Steam doesn't always inherit the current profile's up-to-date PATH)
     gamescope-wsi
     #millennium-steam
   ];
 
-  # ── Support manettes ─────────────────────────────────────────────────────
+  # ── Controller support ─────────────────────────────────────────────────────
   hardware.steam-hardware.enable = true;
   services.udev.packages = [ pkgs.game-devices-udev-rules ];
 

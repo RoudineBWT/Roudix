@@ -1,5 +1,5 @@
 ## _general.nix — niri: prefer-no-csd, screenshot-path, environment,
-## debug, hotkey-overlay, spawn-at-startup, cursor (varient selon le shell).
+## debug, hotkey-overlay, spawn-at-startup, cursor (vary by shell).
 { osConfig, lib, ... }:
 let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
@@ -11,14 +11,13 @@ in
     screenshot-path = "~/Pictures/niri-screenshots/ from %Y-%m-%d %H-%M-%S.png";
     hotkey-overlay.skip-at-startup = true;
 
-    # Hot corner (coin en haut à gauche bascule l'overview) — équivalent
-    # niri du hot corner Umbriel. ⚠ niri lui-même sait choisir un coin
-    # précis depuis la 25.11 (gestures.hot-corners { top-right; }), mais
-    # le schéma typé de niri-flake n'a pas encore rattrapé cette
-    # fonctionnalité : seul un interrupteur global `enable` existe pour
-    # l'instant (toujours le coin haut-gauche). Si tu veux vraiment un
-    # autre coin, il faudra passer par programs.niri.settings-config brut
-    # (KDL) le jour où niri-flake expose top-left/top-right/etc.
+    # Hot corner (top-left toggles the overview) — niri's equivalent of
+    # Umbriel's hot corner. ⚠ niri itself supports choosing a specific
+    # corner since 25.11 (gestures.hot-corners { top-right; }), but
+    # niri-flake's typed schema hasn't caught up yet: only a global
+    # `enable` switch exists for now (always top-left). To use a
+    # different corner, fall back to raw programs.niri.settings-config
+    # (KDL) until niri-flake exposes top-left/top-right/etc.
     gestures.hot-corners.enable = true;
 
     environment = {
@@ -37,17 +36,16 @@ in
       TERMINAL = "ghostty";
       _JAVA_AWT_WM_NONREPARENTING = "1";
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
-      # Recommandé par epireyn/niri-flake pour les apps Electron (VS Code,
-      # Discord...) — beaucoup de wrappers nixpkgs cherchent spécifiquement
-      # cette variable pour ajouter --ozone-platform=wayland automatiquement.
-      # Ne fonctionne que si niri est lancé via `niri-session` (pas juste
-      # `niri`) — vérifie que c'est bien le cas côté display manager/greetd.
+      # Recommended by epireyn/niri-flake for Electron apps (VS Code,
+      # Discord...) — many nixpkgs wrappers look for this variable
+      # specifically to add --ozone-platform=wayland automatically. Only
+      # works if niri is launched via `niri-session` (not bare `niri`) —
+      # check the display manager/greetd session config.
       NIXOS_OZONE_WL = "1";
       QT_QPA_PLATFORMTHEME = "qt6ct";
       QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
     }
-    # GTK_IM_MODULE=simple (fix touches mortes) n'était fixé que côté
-    # noctalia dans ta config d'origine.
+    # GTK_IM_MODULE=simple (dead-key fix) is only set for noctalia.
     // (lib.optionalAttrs isNoctalia { GTK_IM_MODULE = "simple"; });
 
     cursor = if isNoctalia then {

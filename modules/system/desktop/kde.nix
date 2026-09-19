@@ -14,8 +14,8 @@ lib.mkIf isKde {
   };
 
   # ── Plasma Login Manager wallpaper ────────────────────────────────────────
-  # Le KCM lit le wallpaper depuis /var/lib/plasmalogin/wallpapers/
-  # et le référence via /etc/plasmalogin.conf avec le préfixe file://
+  # The KCM reads the wallpaper from /var/lib/plasmalogin/wallpapers/
+  # and references it via /etc/plasmalogin.conf with a file:// prefix
   environment.etc."plasmalogin.conf".text = ''
     [Greeter][Wallpaper][org.kde.image][General]
     Image=file:///var/lib/plasmalogin/wallpapers/RoudixDark
@@ -47,9 +47,9 @@ lib.mkIf isKde {
   documentation.nixos.enable = false;
 
   # ── Polkit agent ──────────────────────────────────────────────────────────
-  # PLM (Plasma Login Manager) ne déclenche pas toujours l'autostart qui lance
-  # normalement polkit-kde-authentication-agent-1 (contrairement à SDDM).
-  # On le force via un service systemd user lié à la session graphique.
+  # PLM (Plasma Login Manager) doesn't always trigger the autostart that
+  # normally launches polkit-kde-authentication-agent-1 (unlike SDDM).
+  # Forced via a systemd user service tied to the graphical session.
   systemd.user.services.polkit-kde-agent = {
     description = "PolicyKit KDE Authentication Agent";
     wantedBy = [ "graphical-session.target" ];
@@ -66,7 +66,7 @@ lib.mkIf isKde {
   ];
 
   # ── System packages ───────────────────────────────────────────────────────
-  # lib.hiPrio sur roudix-branding pour que start-here-kde écrase Papirus
+  # lib.hiPrio on roudix-branding so start-here-kde overrides Papirus
   environment.systemPackages = with pkgs; [
     (lib.hiPrio roudixBranding)
     kdePackages.partitionmanager

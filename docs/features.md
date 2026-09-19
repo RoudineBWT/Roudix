@@ -1,5 +1,7 @@
 # Features
 
+*[Version française](features.fr.md)*
+
 ## Kernel & Performance
 
 - CachyOS kernel with NTSync enabled (`ntsync` module)
@@ -124,7 +126,7 @@
 
 - Configurable browser list via `roudix.browsers` option
 - Supports `brave`, `helium` (via helium-nix flake), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, or `[]` for none
-- Zen Browser (Twilight) available separately via `roudix.zen.enable = true` (disabled by default)
+- Zen Browser available separately via `roudix.zen.enable = true` (disabled by default); channel selectable via `roudix.zen.variant` — `"twilight"` (default), `"beta"` or `"twilight-official"`
 
 ## Other
 
@@ -133,7 +135,11 @@
 - Graphical (Wayland) keyboard layout via `roudix.keyboardLayout` / `roudix.keyboardVariant` (XKB, e.g. `"be"` / `"intl"`) — independent from `console.keyMap`, which only covers the TTY before the graphical session starts; has no effect on GNOME/KDE, which manage their own layout
 - Keyring + xdg-desktop-portal stack for "bare" compositors (Niri, Hyprland, MangoWC, Umbriel) selectable via `roudix.desktopIntegration` — `"gnome"` (gnome-keyring + xdg-desktop-portal-gtk/-gnome, default) or `"kde"` (KWallet + xdg-desktop-portal-kde); no effect on GNOME/KDE sessions, which keep their native stack
 - `nix-ld` enabled system-wide — run unpatched dynamic binaries without a FHS environment (pre-configured with common libraries: glibc, openssl, zlib, libGL, X11, libxkbcommon, dbus, glib and more)
-- OBS Studio with pipewire + vkcapture plugins
+- OBS Studio, individually toggleable via `roudix.contentCreation.obs.enable` (default `true`), plugins toggled one by one via `roudix.contentCreation.obs.plugins.<name>.enable` (`vkcapture` + `pipewireAudioCapture` on by default; also available: `backgroundRemoval`, `moveTransition`, `aitumMultistream`, `gstreamer`, `compositeBlur`, `advancedSceneSwitcher`, `inputOverlay`, `waveform`)
+- Video editor selectable via `roudix.contentCreation.videoEditor` — `"kdenlive"` (default), `"davinci-resolve"` (free), `"davinci-resolve-studio"` (paid, needs a license), `"shotcut"` or `"none"`; DaVinci Resolve gets an AMD OpenCL ICD automatically when `hardware.myGpu = "amd"`
+- `v4l2loopback` virtual camera set up automatically for OBS/DaVinci (`roudix.contentCreation.virtualCamera.enable`, default `true`)
+- Chatterino2 Twitch chat client, opt-in via `roudix.contentCreation.streaming.chatterino.enable`
+- Whole content-creation group toggleable via `roudix.contentCreation.enable`
 - GPU Screen Recorder
 - Mesa Git option for AMD — enable experimental/bleeding-edge Mesa via `roudix.mesa.useGit = true` in `local.nix` (default: stable nixpkgs Mesa) — ⚠️ **experimental**, the build may fail depending on nixpkgs state
 - AMD GPU stability kernel params applied automatically (`mem_sleep_default=deep`, `amdgpu.gpu_recovery=1`, `amdgpu.lockup_timeout=1000`, `amdgpu.runpm=0`, `amdgpu.sg_display=0`) — fixes random freezes and wake-from-sleep issues on RDNA2/RDNA3

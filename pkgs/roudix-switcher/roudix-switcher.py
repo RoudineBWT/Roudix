@@ -11,9 +11,9 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib, Pango, Gdk
 
 CONFIG_FILE = os.path.expanduser("~/.config/roudix/hosts/roudix/local.nix")
-# roudix.fastfetch.useNix (et toute future option Home Manager) ne vit pas
-# dans le config système — elle doit être écrite ici, sous peine de
-# "The option `roudix.fastfetch' does not exist" au rebuild.
+# roudix.fastfetch.useNix (and any future Home Manager option) doesn't
+# live in the system config — it must be written here, or the rebuild
+# fails with "The option `roudix.fastfetch' does not exist".
 HOME_CONFIG_FILE = os.path.expanduser("~/.config/roudix/modules/home/local.nix")
 NH_FLAKE    = os.path.expanduser("~/.config/roudix")
 
@@ -26,58 +26,83 @@ TMP_LOG     = "/tmp/roudix-switcher.log"
 
 ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
+
+def _detect_lang() -> str:
+    """
+    Tiny bilingual helper, same fr/en idiom as the installer
+    (roudix_installer.i18n.L), but auto-detected from the system locale
+    instead of an explicit picker — the switcher has no first-run wizard
+    to ask in, it's launched straight into the task at hand.
+    """
+    for var in ("LC_ALL", "LC_MESSAGES", "LANG", "LANGUAGE"):
+        val = os.environ.get(var, "")
+        if val:
+            return "fr" if val.lower().startswith("fr") else "en"
+    return "en"
+
+
+LANG = _detect_lang()
+
+
+def L(fr: str, en: str) -> str:
+    return fr if LANG == "fr" else en
+
+
 ENVIRONMENTS = [
     {
         "id":       "niri",
         "name":     "Niri",
-        "subtitle": "Scrollable tiling Wayland compositor",
+        "subtitle": L("Compositeur Wayland en tuilage défilant", "Scrollable tiling Wayland compositor"),
         "icon":     "niri.svg",
     },
     {
         "id":       "hyprland",
         "name":     "Hyprland",
-        "subtitle": "Dynamic tiling Wayland compositor",
+        "subtitle": L("Compositeur Wayland en tuilage dynamique", "Dynamic tiling Wayland compositor"),
         "icon":     "hyprland.svg",
     },
     {
         "id":       "gnome",
         "name":     "GNOME",
-        "subtitle": "GNOME — modern and user-friendly desktop",
+        "subtitle": L("GNOME — bureau moderne et convivial", "GNOME — modern and user-friendly desktop"),
         "icon":     "gnome.svg",
     },
     {
         "id":       "kde",
         "name":     "KDE Plasma",
-        "subtitle": "KDE Plasma — Highly customizable and feature-rich desktop environment",
+        "subtitle": L("KDE Plasma — environnement hautement personnalisable et complet", "KDE Plasma — Highly customizable and feature-rich desktop environment"),
         "icon":     "kde.svg",
     },
     {
         "id":       "mangowc",
         "name":     "MangoWC",
-        "subtitle": "Lightweight dynamic tiling Wayland compositor",
+        "subtitle": L("Compositeur Wayland en tuilage dynamique, léger", "Lightweight dynamic tiling Wayland compositor"),
         "icon":     "mangowc.svg",
     },
 
      {
          "id":       "umbriel",
          "name":     "Umbriel",
-         "subtitle": "a Wayland compositor designed for daily use, with scrolling, dwindle, and master layouts, per-output workspaces, window rules, blur, shadows, and fluid animations.",
+         "subtitle": L(
+             "Compositeur Wayland pensé pour l'usage quotidien, avec layouts scrolling/dwindle/master, espaces de travail par sortie, règles de fenêtres, flou, ombres et animations fluides.",
+             "a Wayland compositor designed for daily use, with scrolling, dwindle, and master layouts, per-output workspaces, window rules, blur, shadows, and fluid animations.",
+         ),
          "icon":     "umbriel.svg",
      },
 ]
 
-# Shells graphiques — disponibles uniquement pour niri et hyprland
+# Graphical shells — available only for niri and hyprland
 SHELLS = [
     {
         "id":       "noctalia",
         "name":     "Noctalia",
-        "subtitle": "Roudix default shell — sleek and feature-complete",
+        "subtitle": L("Shell par défaut de Roudix — soigné et complet", "Roudix default shell — sleek and feature-complete"),
         "icon":     "noctalia.svg",
     },
     {
         "id":       "dms",
         "name":     "DMS",
-        "subtitle": "Minimal and lightweight Roudix shell",
+        "subtitle": L("Shell Roudix minimal et léger", "Minimal and lightweight Roudix shell"),
         "icon":     "dms.svg",
     },
 ]
@@ -86,7 +111,7 @@ CAELESTIA = [
     {
         "id":       "caelestia",
         "name":     "Caelestia",
-        "subtitle": "Elegant Roudix shell with a focus on aesthetics",
+        "subtitle": L("Shell Roudix élégant, axé sur l'esthétique", "Elegant Roudix shell with a focus on aesthetics"),
         "icon":     "caelestia.svg",
     },
 ]
@@ -95,35 +120,35 @@ UMBRIEL = [
     {
         "id":       "noctalia",
         "name":     "Noctalia",
-        "subtitle": "Roudix default shell — sleek and feature-complete",
+        "subtitle": L("Shell par défaut de Roudix — soigné et complet", "Roudix default shell — sleek and feature-complete"),
         "icon":     "noctalia.svg",
     },
 
 ]
 
-# Compositeurs qui supportent le choix de shell graphique
+# Compositors that support choosing a graphical shell
 SHELL_SUPPORTED_DE    = {"niri", "hyprland", "mangowc", "umbriel"}
 CAELESTIA_SUPPORTED_DE = {"hyprland"}
 UMBRIEL_SUPPORTED_DE = {"umbriel"}
 
-# ── Tweaks: éditeur, keyring/portal, apps gaming ───────────────────────────
-# Ces trois catégories suivent le même principe que DE/shell : une valeur
-# choisie parmi plusieurs (enum, écrit comme string dans local.nix) ou un
-# ensemble de booléens indépendants. Voir roudix.editor,
-# roudix.desktopIntegration et roudix.gaming.apps.* côté Nix.
+# ── Tweaks: editor, keyring/portal, gaming apps ───────────────────────────
+# These three categories follow the same principle as DE/shell: a value
+# chosen among several (enum, written as a string in local.nix), or a set
+# of independent booleans. See roudix.editor, roudix.desktopIntegration
+# and roudix.gaming.apps.* on the Nix side.
 
 EDITORS = [
-    {"id": "zed",    "name": "Zed",     "subtitle": "Fast GPU-accelerated editor (Roudix default)", "icon": "zed.svg"},
-    {"id": "vscode", "name": "VS Code", "subtitle": "Microsoft's editor, huge extension ecosystem",  "icon": "vscode.svg"},
-    {"id": "neovim", "name": "Neovim",  "subtitle": "Terminal-based, keyboard-driven",                "icon": "neovim.svg"},
-    {"id": "none",   "name": "None",    "subtitle": "Don't install a default editor",                 "icon": "none.svg"},
+    {"id": "zed",    "name": "Zed",     "subtitle": L("Éditeur rapide, accéléré par le GPU (défaut Roudix)", "Fast GPU-accelerated editor (Roudix default)"), "icon": "zed.svg"},
+    {"id": "vscode", "name": "VS Code", "subtitle": L("Éditeur de Microsoft, immense écosystème d'extensions", "Microsoft's editor, huge extension ecosystem"),  "icon": "vscode.svg"},
+    {"id": "neovim", "name": "Neovim",  "subtitle": L("Basé terminal, piloté au clavier", "Terminal-based, keyboard-driven"),                "icon": "neovim.svg"},
+    {"id": "none",   "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun éditeur par défaut", "Don't install a default editor"),                 "icon": "none.svg"},
 ]
 
 DESKTOP_INTEGRATIONS = [
     {
         "id": "gnome",
         "name": "GNOME",
-        "subtitle": "gnome-keyring + xdg-desktop-portal-gtk/-gnome (default)",
+        "subtitle": L("gnome-keyring + xdg-desktop-portal-gtk/-gnome (défaut)", "gnome-keyring + xdg-desktop-portal-gtk/-gnome (default)"),
         "icon": "gnome.svg",
     },
     {
@@ -133,11 +158,11 @@ DESKTOP_INTEGRATIONS = [
         "icon": "kde.svg",
     },
 ]
-# Seuls les compositeurs "bruts" respectent ce choix — gnome/kde gardent
-# toujours leur propre stack native.
+# Only "bare" compositors respect this choice — gnome/kde always keep
+# their own native stack.
 DESKTOP_INTEGRATION_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
 
-# name -> option Nix (roudix.gaming.apps.<id>.enable), toutes true par défaut
+# name -> Nix option (roudix.gaming.apps.<id>.enable), all true by default
 GAMING_APPS = [
     {"id": "lutris",        "name": "Lutris",         "key": "roudix.gaming.apps.lutris.enable",        "default": True},
     {"id": "heroic",        "name": "Heroic",         "key": "roudix.gaming.apps.heroic.enable",        "default": True},
@@ -148,20 +173,20 @@ GAMING_APPS = [
 ]
 
 TERMINALS = [
-    {"id": "ghostty",   "name": "Ghostty",   "subtitle": "GPU-accelerated, Roudix default", "icon": "ghostty.svg"},
-    {"id": "kitty",     "name": "Kitty",     "subtitle": "GPU-accelerated, feature-rich",     "icon": "kitty.svg"},
-    {"id": "alacritty", "name": "Alacritty", "subtitle": "Minimal, GPU-accelerated",          "icon": "alacritty.svg"},
-    {"id": "foot",      "name": "Foot",      "subtitle": "Lightweight, Wayland-native",       "icon": "foot.svg"},
-    {"id": "wezterm",   "name": "WezTerm",   "subtitle": "Cross-platform, Lua-configurable",  "icon": "wezterm.svg"},
-    {"id": "ptyxis",    "name": "Ptyxis",    "subtitle": "GNOME's container-aware terminal",  "icon": "ptyxis.svg"},
-    {"id": "konsole",   "name": "Konsole",   "subtitle": "KDE's terminal emulator",           "icon": "konsole.svg"},
+    {"id": "ghostty",   "name": "Ghostty",   "subtitle": L("Accéléré GPU, défaut Roudix", "GPU-accelerated, Roudix default"), "icon": "ghostty.svg"},
+    {"id": "kitty",     "name": "Kitty",     "subtitle": L("Accéléré GPU, riche en fonctionnalités", "GPU-accelerated, feature-rich"),     "icon": "kitty.svg"},
+    {"id": "alacritty", "name": "Alacritty", "subtitle": L("Minimaliste, accéléré GPU", "Minimal, GPU-accelerated"),          "icon": "alacritty.svg"},
+    {"id": "foot",      "name": "Foot",      "subtitle": L("Léger, natif Wayland", "Lightweight, Wayland-native"),       "icon": "foot.svg"},
+    {"id": "wezterm",   "name": "WezTerm",   "subtitle": L("Multiplateforme, configurable en Lua", "Cross-platform, Lua-configurable"),  "icon": "wezterm.svg"},
+    {"id": "ptyxis",    "name": "Ptyxis",    "subtitle": L("Terminal de GNOME, conscient des conteneurs", "GNOME's container-aware terminal"),  "icon": "ptyxis.svg"},
+    {"id": "konsole",   "name": "Konsole",   "subtitle": L("L'émulateur de terminal de KDE", "KDE's terminal emulator"),           "icon": "konsole.svg"},
 ]
 
-# roudix.browsers est une LISTE (pas un enum) : plusieurs navigateurs peuvent
-# être installés en même temps. On l'expose donc en checklist, pas en
-# sélecteur exclusif. Le premier coché de cette liste devient le défaut
-# (raccourci niri MOD+B) — c'est exactement la logique déjà utilisée côté
-# Nix (roudix.browser.default = lib.head cfg.browsers).
+# roudix.browsers is a LIST (not an enum): several browsers can be
+# installed at once. Exposed as a checklist rather than an exclusive
+# selector. The first checked entry becomes the default (niri MOD+B
+# shortcut) — the same logic already used on the Nix side
+# (roudix.browser.default = lib.head cfg.browsers).
 BROWSERS = [
     {"id": "brave",                 "name": "Brave"},
     {"id": "brave-beta",            "name": "Brave Beta"},
@@ -179,85 +204,127 @@ BROWSERS = [
     {"id": "ungoogled-chromium",    "name": "Ungoogled Chromium"},
 ]
 
-# roudix.shell : le shell de LOGIN (fish/bash) — à ne pas confondre avec le
-# "shell" graphique (noctalia/dms/caelestia) de la page Desktop.
+# roudix.shell: the LOGIN shell (fish/bash) — not to be confused with the
+# graphical "shell" (noctalia/dms/caelestia) on the Desktop page.
 LOGIN_SHELLS = [
-    {"id": "fish", "name": "fish", "subtitle": "Shell interactif convivial (défaut Roudix)", "icon": "fish.svg"},
-    {"id": "bash", "name": "bash", "subtitle": "Le shell POSIX classique",                    "icon": "bash.svg"},
+    {"id": "fish", "name": "fish", "subtitle": L("Shell interactif convivial (défaut Roudix)", "Friendly interactive shell (Roudix default)"), "icon": "fish.svg"},
+    {"id": "bash", "name": "bash", "subtitle": L("Le shell POSIX classique", "The classic POSIX shell"),                    "icon": "bash.svg"},
 ]
 
 FILE_MANAGERS = [
-    {"id": "nautilus",   "name": "Nautilus (Files)", "subtitle": "Gestionnaire de fichiers de GNOME",   "icon": "nautilus.svg"},
-    {"id": "dolphin",    "name": "Dolphin",           "subtitle": "Gestionnaire de fichiers de KDE",     "icon": "dolphin.svg"},
-    {"id": "nemo",       "name": "Nemo",              "subtitle": "Gestionnaire de fichiers de Cinnamon","icon": "nemo.svg"},
-    {"id": "thunar",     "name": "Thunar",            "subtitle": "Léger, celui de XFCE",                "icon": "thunar.svg"},
-    {"id": "pcmanfm-qt", "name": "PCManFM-Qt",        "subtitle": "Léger, en Qt",                        "icon": "pcmanfm-qt.svg"},
+    {"id": "nautilus",   "name": "Nautilus (Files)", "subtitle": L("Gestionnaire de fichiers de GNOME", "GNOME's file manager"),   "icon": "nautilus.svg"},
+    {"id": "dolphin",    "name": "Dolphin",           "subtitle": L("Gestionnaire de fichiers de KDE", "KDE's file manager"),     "icon": "dolphin.svg"},
+    {"id": "nemo",       "name": "Nemo",              "subtitle": L("Gestionnaire de fichiers de Cinnamon", "Cinnamon's file manager"),"icon": "nemo.svg"},
+    {"id": "thunar",     "name": "Thunar",            "subtitle": L("Léger, celui de XFCE", "Lightweight, XFCE's file manager"),                "icon": "thunar.svg"},
+    {"id": "pcmanfm-qt", "name": "PCManFM-Qt",        "subtitle": L("Léger, en Qt", "Lightweight, Qt-based"),                        "icon": "pcmanfm-qt.svg"},
 ]
-# Comme Integration : sans effet sur gnome/kde, qui gardent leur gestionnaire natif.
+# Like Integration: no effect on gnome/kde, which keep their native manager.
 FILE_MANAGER_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
 
 MATRIX_CLIENTS = [
-    {"id": "element", "name": "Element", "subtitle": "Client Matrix complet (défaut)",      "icon": "element.svg"},
-    {"id": "cinny",   "name": "Cinny",   "subtitle": "Client Matrix léger",                 "icon": "cinny.svg"},
-    {"id": "none",    "name": "None",    "subtitle": "N'installer aucun client Matrix",     "icon": "none.svg"},
+    {"id": "element", "name": "Element", "subtitle": L("Client Matrix complet (défaut)", "Full-featured Matrix client (default)"),      "icon": "element.svg"},
+    {"id": "cinny",   "name": "Cinny",   "subtitle": L("Client Matrix léger", "Lightweight Matrix client"),                 "icon": "cinny.svg"},
+    {"id": "none",    "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun client Matrix", "Don't install a Matrix client"),     "icon": "none.svg"},
 ]
 
 DISCORD_OPTIONS = [
-    {"id": "vencord", "name": "Vencord", "subtitle": "Discord avec Vencord déjà patché (défaut)", "icon": "vencord.svg"},
-    {"id": "vanilla", "name": "Vanilla", "subtitle": "Discord sans aucun patch client",            "icon": "discord.svg"},
-    {"id": "none",    "name": "None",    "subtitle": "N'installer aucun client Discord",           "icon": "none.svg"},
+    {"id": "vencord", "name": "Vencord", "subtitle": L("Discord avec Vencord déjà patché (défaut)", "Discord with Vencord already patched in (default)"), "icon": "vencord.svg"},
+    {"id": "vanilla", "name": "Vanilla", "subtitle": L("Discord sans aucun patch client", "Discord with no client patches"),            "icon": "discord.svg"},
+    {"id": "none",    "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun client Discord", "Don't install a Discord client"),           "icon": "none.svg"},
 ]
 
 RGB_BACKENDS = [
-    {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": "Pour périphériques compatibles Corsair iCUE", "icon": "openlinkhub.svg"},
-    {"id": "openrgb",     "name": "OpenRGB",      "subtitle": "Support RGB multi-marques",                   "icon": "openrgb.svg"},
-    {"id": "none",        "name": "None",         "subtitle": "Aucun backend RGB",                           "icon": "none.svg"},
+    {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": L("Pour périphériques compatibles Corsair iCUE", "For Corsair iCUE-compatible devices"), "icon": "openlinkhub.svg"},
+    {"id": "openrgb",     "name": "OpenRGB",      "subtitle": L("Support RGB multi-marques", "Multi-brand RGB support"),                   "icon": "openrgb.svg"},
+    {"id": "none",        "name": L("Aucun", "None"),         "subtitle": L("Aucun backend RGB", "No RGB backend"),                           "icon": "none.svg"},
 ]
 
-# TODO: remplir avec les IDs des mods Zen que tu utilises réellement (store
-# natif https://zen-browser.app/mods ou Sine — même liste d'IDs dans les
-# deux cas, seule la cible Nix change selon roudix.zen.sine.enable). Une
-# fois remplie, chaque mod devient toggleable comme les navigateurs.
-# Exemple : {"id": "zen-internet", "name": "Zen Internet"},
+# TODO: fill in with the IDs of the Zen mods actually in use (native
+# store https://zen-browser.app/mods or Sine — same ID list either way,
+# only the Nix target changes based on roudix.zen.sine.enable). Once
+# filled in, each mod becomes toggleable like the browsers.
+# Example: {"id": "zen-internet", "name": "Zen Internet"},
 ZEN_MODS = [
-    # Confirmé (chrome/sine-mods/) : dossier UUID = celui du theme-store officiel
+    # Confirmed (chrome/sine-mods/): UUID folder = the official theme-store one
     {"id": "ad97bb70-0066-4e42-9b5f-173a5e42c6fc", "name": "SuperPins"},
-    # Confirmés directement via le listing de chrome/sine-mods/ — ce sont
-    # littéralement les noms de dossiers, pas des UUID.
+    # Confirmed directly from the chrome/sine-mods/ listing — these are
+    # literally folder names, not UUIDs.
     {"id": "Arc-2.0", "name": "Arc 2.0"},
     {"id": "context-menu-icons", "name": "Context Menu Icons"},
     {"id": "floating-statusbar", "name": "Floating Statusbar"},
     {"id": "unloaded-tabs", "name": "Unloaded Tabs"},
     {"id": "new-icons", "name": "New Icons"},
     {"id": "Nebula", "name": "Nebula"},
-    # Confirmés (tu as identifié lequel est lequel depuis chrome/sine-mods/)
+    # Confirmed (identified from chrome/sine-mods/)
     {"id": "3c8ebf69-1042-49b1-8f08-9178f9490659", "name": "Better Music Bar"},
     {"id": "jvynuz3kn-hjd9pvfmg-vonasfop9", "name": "zen-container-halo"},
 ]
 
-# Tweaks gaming annexes (à côté des launchers) — mêmes clés booléennes que
-# GAMING_APPS mais affichés dans un groupe séparé sur la page Gaming.
+# Extra gaming tweaks (alongside the launchers) — same boolean keys as
+# GAMING_APPS but shown in a separate group on the Gaming page.
 GAMING_EXTRAS = [
-    {"id": "ananicy", "name": "Ananicy (ordonnanceur process)", "key": "roudix.gaming.ananicy.enable", "default": False},
-    {"id": "gtaFix",  "name": "Correctif hosts GTA Online",     "key": "roudix.hosts.gtaFix.enable",   "default": False},
+    {"id": "ananicy", "name": L("Ananicy (ordonnanceur process)", "Ananicy (process scheduler)"), "key": "roudix.gaming.ananicy.enable", "default": False},
+    {"id": "gtaFix",  "name": L("Correctif hosts GTA Online", "GTA Online hosts fix"),     "key": "roudix.hosts.gtaFix.enable",   "default": False},
 ]
 
-# Interrupteurs système indépendants, sans rapport les uns avec les autres —
-# regroupés dans une page "System" plutôt que de créer une catégorie par
-# option.
+# roudix.zen.variant — enum, exposed as a SelectorGroup (like EDITORS).
+ZEN_VARIANTS = [
+    {"id": "twilight",          "name": "Twilight",             "subtitle": L("Nightly, miroir maintenu par le dev du flake (défaut Roudix)", "Nightly builds, mirrored by the flake maintainer (Roudix default)"), "icon": "zen.svg"},
+    {"id": "beta",               "name": "Beta",                 "subtitle": L("Basé sur Firefox-ESR, évolue moins vite, le plus stable", "Firefox-ESR based, slower-moving, most stable"),               "icon": "zen.svg"},
+    {"id": "twilight-official", "name": L("Twilight (officiel)", "Twilight (official)"),  "subtitle": L("Même contenu nightly, servi directement par l'infra de Zen", "Same nightly content, served directly by Zen's own infra"),       "icon": "zen.svg"},
+]
+
+# roudix.contentCreation.videoEditor — enum, exposed as a SelectorGroup.
+VIDEO_EDITORS = [
+    {"id": "kdenlive",              "name": "Kdenlive",              "subtitle": L("Éditeur libre basé sur KDE (défaut Roudix)", "Free KDE-based editor (Roudix default)"),                    "icon": "kdenlive.svg"},
+    {"id": "davinci-resolve",        "name": "DaVinci Resolve",       "subtitle": L("Édition gratuite — étalonnage, VFX, niveau pro", "Free edition — color grading, VFX, pro-grade"),                 "icon": "davinci-resolve.svg"},
+    {"id": "davinci-resolve-studio", "name": "DaVinci Resolve Studio","subtitle": L("Édition payante de ci-dessus — licence Blackmagic requise", "Paid edition of the above — requires a Blackmagic license"),"icon": "davinci-resolve.svg"},
+    {"id": "shotcut",                 "name": "Shotcut",               "subtitle": L("Léger, multiplateforme, basé sur FFmpeg", "Lightweight, cross-platform, FFmpeg-based"),                        "icon": "shotcut.svg"},
+    {"id": "none",                    "name": L("Aucun", "None"),                  "subtitle": L("N'installer aucun éditeur vidéo", "Don't install a default video editor"),                                "icon": "none.svg"},
+]
+
+# roudix.contentCreation.obs.plugins.<id>.enable — one boolean per plugin
+# (like GAMING_APPS), so ToggleListGroup + _diff_bool_items like the rest
+# rather than a list. Aitum Multistream replaces obs-multi-rtmp: it's the
+# multistreaming plugin actively maintained by the Aitum team (already
+# known for obs-vertical-canvas), with independent encoders/bitrate per
+# platform.
+OBS_PLUGINS = [
+    {"id": "vkcapture",              "name": L("VKCapture (capture jeux Vulkan/OpenGL)", "VKCapture (Vulkan/OpenGL game capture)"),              "key": "roudix.contentCreation.obs.plugins.vkcapture.enable",              "default": True},
+    {"id": "pipewireAudioCapture",   "name": L("Pipewire Audio Capture (audio par application)", "Pipewire Audio Capture (per-app audio)"),      "key": "roudix.contentCreation.obs.plugins.pipewireAudioCapture.enable",   "default": True},
+    {"id": "backgroundRemoval",      "name": L("Background Removal (fond virtuel IA)", "Background Removal (AI virtual background)"),                "key": "roudix.contentCreation.obs.plugins.backgroundRemoval.enable",      "default": False},
+    {"id": "moveTransition",         "name": L("Move Transition (animations de sources)", "Move Transition (source animations)"),             "key": "roudix.contentCreation.obs.plugins.moveTransition.enable",         "default": False},
+    {"id": "aitumMultistream",       "name": L("Aitum Multistream (stream multi-plateformes)", "Aitum Multistream (multi-platform streaming)"),        "key": "roudix.contentCreation.obs.plugins.aitumMultistream.enable",       "default": False},
+    {"id": "gstreamer",              "name": L("GStreamer (sources/sorties supplémentaires)", "GStreamer (extra sources/outputs)"),         "key": "roudix.contentCreation.obs.plugins.gstreamer.enable",              "default": False},
+    {"id": "compositeBlur",          "name": L("Composite Blur (flou/verre dépoli)", "Composite Blur (blur/glass filters)"),                  "key": "roudix.contentCreation.obs.plugins.compositeBlur.enable",          "default": False},
+    {"id": "advancedSceneSwitcher",  "name": L("Advanced Scene Switcher (changement de scène auto)", "Advanced Scene Switcher (automated scene switching)"),  "key": "roudix.contentCreation.obs.plugins.advancedSceneSwitcher.enable",  "default": False},
+    {"id": "inputOverlay",           "name": L("Input Overlay (clavier/souris/manette à l'écran)", "Input Overlay (on-screen keyboard/mouse/gamepad)"),    "key": "roudix.contentCreation.obs.plugins.inputOverlay.enable",           "default": False},
+    {"id": "waveform",                "name": L("Waveform (spectre/waveform audio)", "Waveform (audio waveform/spectrum)"),                   "key": "roudix.contentCreation.obs.plugins.waveform.enable",                "default": False},
+]
+
+# Independent toggles on the Content Creation page (like SYSTEM_TOGGLES).
+CONTENT_CREATION_TOGGLES = [
+    {"id": "obs",           "name": "OBS Studio",                       "key": "roudix.contentCreation.obs.enable",                    "default": True},
+    {"id": "virtualCamera", "name": L("Webcam virtuelle (v4l2loopback)", "Virtual camera (v4l2loopback)"),   "key": "roudix.contentCreation.virtualCamera.enable",          "default": True},
+    {"id": "chatterino",    "name": L("Chatterino2 (chat Twitch tiers)", "Chatterino2 (third-party Twitch chat)"),   "key": "roudix.contentCreation.streaming.chatterino.enable",   "default": False},
+]
+
+
+# Independent system toggles, unrelated to each other — grouped into a
+# "System" page rather than creating one category per option.
 SYSTEM_TOGGLES = [
     {"id": "flatpak",        "name": "Flatpak",                          "key": "roudix.flatpak.enable",        "default": False},
-    {"id": "virtualization", "name": "Virtualisation (QEMU/KVM)",        "key": "roudix.virtualization.enable",  "default": False},
-    {"id": "waydroid",       "name": "Waydroid (apps Android)",          "key": "roudix.waydroid.enable",        "default": False},
-    {"id": "mesaGit",        "name": "Mesa-git (pilotes GPU bleeding-edge)", "key": "roudix.mesa.useGit",        "default": False},
-    {"id": "autoupdate",     "name": "Auto-update (git pull + rebuild programmé)", "key": "roudix.autoupdate.enable", "default": False},
-    {"id": "undervoltAmd",   "name": "Undervolt GPU AMD (LACT)",         "key": "roudix.undervolt.only-amd.enable", "default": False},
-    # "file": roudix.fastfetch.useNix est une option Home Manager (définie
-    # dans modules/home/fastfetch.nix), pas une option système — elle doit
-    # donc être écrite dans HOME_CONFIG_FILE, pas dans CONFIG_FILE.
-    {"id": "fastfetchNix",   "name": "Config fastfetch Roudix",          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
-    {"id": "fstrim",         "name": "Fstrim (TRIM auto pour SSD/NVMe)", "key": "roudix.fstrim.enable",          "default": True},
-    {"id": "vmGuest",        "name": "Invité VM (QEMU/Spice agent)",     "key": "roudix.vmGuest.enable",         "default": False},
+    {"id": "virtualization", "name": L("Virtualisation (QEMU/KVM)", "Virtualization (QEMU/KVM)"),        "key": "roudix.virtualization.enable",  "default": False},
+    {"id": "waydroid",       "name": L("Waydroid (apps Android)", "Waydroid (Android apps)"),          "key": "roudix.waydroid.enable",        "default": False},
+    {"id": "mesaGit",        "name": L("Mesa-git (pilotes GPU bleeding-edge)", "Mesa-git (bleeding-edge GPU drivers)"), "key": "roudix.mesa.useGit",        "default": False},
+    {"id": "autoupdate",     "name": L("Auto-update (git pull + rebuild programmé)", "Auto-update (scheduled git pull + rebuild)"), "key": "roudix.autoupdate.enable", "default": False},
+    {"id": "undervoltAmd",   "name": L("Undervolt GPU AMD (LACT)", "AMD GPU undervolt (LACT)"),         "key": "roudix.undervolt.only-amd.enable", "default": False},
+    # "file": roudix.fastfetch.useNix is a Home Manager option (defined in
+    # modules/home/fastfetch.nix), not a system option — so it must be
+    # written to HOME_CONFIG_FILE, not CONFIG_FILE.
+    {"id": "fastfetchNix",   "name": L("Config fastfetch Roudix", "Roudix fastfetch config"),          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
+    {"id": "fstrim",         "name": L("Fstrim (TRIM auto pour SSD/NVMe)", "Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
+    {"id": "vmGuest",        "name": L("Invité VM (QEMU/Spice agent)", "VM guest (QEMU/Spice agent)"),     "key": "roudix.vmGuest.enable",         "default": False},
 ]
 
 
@@ -594,17 +661,17 @@ class SelectorGroup(Gtk.Box):
         """Reconcile displayed rows with the given item list (add missing, remove extras)."""
         wanted_ids = [item["id"] for item in items]
 
-        # Retirer les lignes qui ne doivent plus apparaître
+        # Remove rows that should no longer appear
         for existing_id in list(self._row_widgets.keys()):
             if existing_id not in wanted_ids:
                 self.remove_item(existing_id)
 
-        # Ajouter les lignes manquantes
+        # Add missing rows
         for item in items:
             if item["id"] not in self._row_widgets:
                 self.add_item(item)
 
-        # Sécurité : si la sélection actuelle n'est plus valide
+        # Safety net: if the current selection is no longer valid
         if self.selected_id not in wanted_ids and wanted_ids:
             first = wanted_ids[0]
             if first in self.rows:
@@ -681,18 +748,18 @@ class ToggleListGroup(Gtk.Box):
 class RoudixSwitcherWindow(Adw.ApplicationWindow):
     def __init__(self, app):
         super().__init__(application=app)
-        self.set_title("Roudix — Customizer")
+        self.set_title(L("Roudix — Personnalisation", "Roudix — Customizer"))
         self.set_default_size(760, 640)
         self.set_resizable(True)
 
-        # Forcer un fond opaque sur la zone de contenu : sur certains
-        # compositeurs (blur-behind Hyprland/niri, etc.), une classe CSS
-        # sémantique comme "view" ne suffit pas toujours à empêcher le flou
-        # du bureau de transparaître derrière une page courte (peu
-        # d'options = grande zone "vide" sous le contenu). On force donc un
-        # background-color explicite via un provider dédié, avec la couleur
-        # de fond réelle de la fenêtre (@window_bg_color) pour rester
-        # cohérent en clair comme en sombre.
+        # Force an opaque background on the content area: on some
+        # compositors (Hyprland/niri blur-behind, etc.), a semantic CSS
+        # class like "view" isn't always enough to stop the desktop's blur
+        # from showing through behind a short page (few options = a large
+        # "empty" area under the content). So we force an explicit
+        # background-color via a dedicated provider, using the window's
+        # real background color (@window_bg_color) to stay consistent in
+        # both light and dark mode.
         css_provider = Gtk.CssProvider()
         css_provider.load_from_data(
             b".roudix-content-bg { background-color: @window_bg_color; }"
@@ -737,21 +804,26 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         # ── Description ───────────────────────────────────────────────────
         desc = Gtk.Label()
         desc.set_markup(
-            "<b>Customize your Roudix</b>\n"
-            "<span size='small'>Pick your desktop, shell and tweaks below.\n"
-            "The system will rebuild after your selection — this may take a few minutes.</span>"
+            L(
+                "<b>Personnalise ton Roudix</b>\n"
+                "<span size='small'>Choisis ton bureau, ton shell et tes réglages ci-dessous.\n"
+                "Le système reconstruira après ta sélection — ça peut prendre quelques minutes.</span>",
+                "<b>Customize your Roudix</b>\n"
+                "<span size='small'>Pick your desktop, shell and tweaks below.\n"
+                "The system will rebuild after your selection — this may take a few minutes.</span>",
+            )
         )
         desc.set_justify(Gtk.Justification.CENTER)
         desc.set_wrap(True)
         main_box.append(desc)
 
         # ── Sidebar (categories) + content pages ────────────────────────────
-        # Layout inspiré d'un panneau de préférences façon "GLF Customizer" :
-        # une liste de catégories à gauche, le détail de la catégorie choisie
-        # à droite. Chaque page reste fidèle à la forme réelle de l'option
-        # Nix sous-jacente (liste à choix unique pour un enum, switches
-        # indépendants pour un ensemble de booléens) plutôt que de forcer
-        # tout en cases à cocher.
+        # Layout inspired by a "GLF Customizer"-style preferences panel:
+        # a category list on the left, the selected category's detail on
+        # the right. Each page stays faithful to the underlying Nix
+        # option's real shape (single-choice list for an enum, independent
+        # switches for a set of booleans) rather than forcing everything
+        # into checkboxes.
         split_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         split_row.set_vexpand(True)
 
@@ -764,16 +836,17 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.category_list.set_vexpand(True)
 
         CATEGORIES = [
-            ("desktop",     "Desktop"),
+            ("desktop",     L("Bureau", "Desktop")),
             ("gaming",      "Gaming"),
-            ("editor",      "Editor"),
+            ("content_creation", L("Création de contenu", "Content Creation")),
+            ("editor",      L("Éditeur", "Editor")),
             ("terminal",    "Terminal"),
-            ("browser",     "Browser"),
-            ("login_shell", "Login Shell"),
-            ("filemanager", "File Manager"),
-            ("chat",        "Chat Client"),
-            ("system",      "System"),
-            ("integration", "Integration"),
+            ("browser",     L("Navigateur", "Browser")),
+            ("login_shell", L("Shell de connexion", "Login Shell")),
+            ("filemanager", L("Gestionnaire de fichiers", "File Manager")),
+            ("chat",        L("Client de chat", "Chat Client")),
+            ("system",      L("Système", "System")),
+            ("integration", L("Intégration", "Integration")),
         ]
         self._category_rows = {}
         for cat_id, cat_name in CATEGORIES:
@@ -789,9 +862,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         sidebar_box.append(self.category_list)
 
-        # Seule "Gaming" a une vraie notion de "N/M activés" (des paquets
-        # qu'on installe ou pas) — les autres catégories sont des choix
-        # exclusifs sans équivalent honnête à ce compteur.
+        # Only "Gaming" has a real notion of "N/M enabled" (packages that
+        # get installed or not) — the other categories are exclusive
+        # choices with no honest equivalent to that counter.
         self.gaming_counter_label = Gtk.Label(xalign=0)
         self.gaming_counter_label.add_css_class("dim-label")
         self.gaming_counter_label.set_margin_start(10)
@@ -805,36 +878,35 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.content_stack = Gtk.Stack()
         self.content_stack.set_hexpand(True)
         self.content_stack.set_valign(Gtk.Align.START)
-        # Sans ça (vhomogeneous par défaut = True), le Stack demande
-        # toujours la hauteur de sa page la PLUS haute (System, la plus
-        # longue), même en affichant Login Shell — ce qui annulerait le
-        # rétrécissement voulu ci-dessous.
+        # Without this (vhomogeneous default = True), the Stack always
+        # requests the height of its TALLEST page (System, the longest),
+        # even while showing Login Shell — which would cancel out the
+        # shrinking wanted below.
         self.content_stack.set_vhomogeneous(False)
-        # CROSSFADE force le Stack à garder, le temps de la transition, une
-        # taille égale au MAX des deux pages (ancienne + nouvelle) — et sur
-        # certaines versions de GTK4 cette taille "gonflée" reste collée
-        # après la transition au lieu de redescendre à la hauteur réelle de
-        # la page affichée. C'est ce qui crée la grande zone vide sous une
-        # page courte (Browser, Gaming...) une fois qu'on est passé par une
-        # page plus longue (System). NONE évite complètement le problème :
-        # chaque page est mesurée pour elle-même, sans jamais retenir la
-        # taille d'une page précédente.
+        # CROSSFADE forces the Stack to keep, for the duration of the
+        # transition, a size equal to the MAX of both pages (old + new) —
+        # and on some GTK4 versions this "inflated" size stays stuck after
+        # the transition instead of shrinking back to the displayed page's
+        # real height. That's what creates the large empty area under a
+        # short page (Browser, Gaming...) after coming from a longer page
+        # (System). NONE avoids the problem entirely: each page is
+        # measured on its own, never retaining a previous page's size.
         self.content_stack.set_transition_type(Gtk.StackTransitionType.NONE)
 
         content_scroll = Gtk.ScrolledWindow()
         content_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         content_scroll.set_hexpand(True)
-        # Occuper tout l'espace vertical réellement disponible dans la
-        # fenêtre (comme la sidebar juste à côté) plutôt qu'un plafond fixe
-        # arbitraire (480px) : sur une fenêtre agrandie/maximisée, ce
-        # plafond laissait un grand vide non rempli en dessous de tout le
-        # panneau. Avec vexpand + FILL, le panneau (sidebar + options)
-        # utilise toute la hauteur disponible ; AUTOMATIC ne fait apparaître
-        # une scrollbar que si le contenu d'une page dépasse cette hauteur.
+        # Fill all the vertical space actually available in the window
+        # (like the sidebar right next to it) instead of an arbitrary
+        # fixed cap (480px): on a resized/maximized window, that cap left
+        # a large unfilled gap below the whole panel. With vexpand + FILL,
+        # the panel (sidebar + options) uses all available height;
+        # AUTOMATIC only shows a scrollbar if a page's content exceeds
+        # that height.
         content_scroll.set_vexpand(True)
         content_scroll.set_valign(Gtk.Align.FILL)
-        # Fond opaque du thème, pour que la zone sous une page courte ne
-        # laisse pas transparaître le fond flouté de la fenêtre.
+        # Opaque theme background, so the area under a short page doesn't
+        # let the window's blurred background show through.
         content_scroll.add_css_class("roudix-content-bg")
         content_scroll.set_child(self.content_stack)
         split_row.append(content_scroll)
@@ -850,7 +922,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         desktop_page.set_margin_bottom(16)
 
         self.de_selector = SelectorGroup(
-            "Desktop environment",
+            L("Environnement de bureau", "Desktop environment"),
             ENVIRONMENTS,
             current_de,
             dark,
@@ -864,7 +936,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             current_shell = "noctalia"
 
         self.shell_selector = SelectorGroup(
-            "Graphical shell",
+            L("Shell graphique", "Graphical shell"),
             initial_shells,
             current_shell,
             dark,
@@ -873,11 +945,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         desktop_page.append(self.shell_selector)
 
         # roudix.umbriel.scratchpadApps (modules/system/desktop/umbriel.nix) —
-        # Umbriel uniquement : bascule les apps de chat/Spotify entre tuilage
-        # fixe (false, défaut) et scratchpads nommés (true).
+        # Umbriel only: toggles chat/Spotify apps between fixed tiling
+        # (false, default) and named scratchpads (true).
         self.scratchpad_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self.scratchpad_row.set_margin_top(8)
-        scratchpad_label = Gtk.Label(label="Umbriel scratchpad apps", halign=Gtk.Align.START)
+        scratchpad_label = Gtk.Label(label=L("Apps en scratchpad (Umbriel)", "Umbriel scratchpad apps"), halign=Gtk.Align.START)
         scratchpad_label.set_hexpand(True)
         self.scratchpad_switch = Gtk.Switch()
         self.scratchpad_switch.set_valign(Gtk.Align.CENTER)
@@ -888,9 +960,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         desktop_page.append(self.scratchpad_row)
 
         self.scratchpad_note = Gtk.Label(
-            label="Umbriel only — Discord/Telegram and Spotify live in named "
-                  "scratchpads (shown/hidden with a shortcut) instead of "
-                  "staying tiled on a fixed output/workspace.",
+            label=L(
+                "Umbriel uniquement — Discord/Telegram et Spotify vivent dans des "
+                "scratchpads nommés (affichés/masqués via un raccourci) au lieu de "
+                "rester tuilés sur une sortie/espace de travail fixe.",
+                "Umbriel only — Discord/Telegram and Spotify live in named "
+                "scratchpads (shown/hidden with a shortcut) instead of "
+                "staying tiled on a fixed output/workspace.",
+            ),
         )
         self.scratchpad_note.add_css_class("dim-label")
         self.scratchpad_note.set_wrap(True)
@@ -912,7 +989,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         gtitle = Gtk.Label(label="Gaming", halign=Gtk.Align.START)
         gtitle.add_css_class("title-2")
         gsubtitle = Gtk.Label(
-            label="Launchers and tools installed for gaming.",
+            label=L("Lanceurs et outils installés pour le gaming.", "Launchers and tools installed for gaming."),
             halign=Gtk.Align.START,
         )
         gsubtitle.add_css_class("dim-label")
@@ -948,6 +1025,46 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.content_stack.add_named(gaming_page, "gaming")
 
+        # ── "Content Creation" page: OBS + plugins + video editor + extras ──
+        cc_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        cc_page.set_margin_top(4)
+        cc_page.set_margin_start(16)
+        cc_page.set_margin_end(16)
+        cc_page.set_margin_bottom(16)
+
+        cc_master_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        cc_master_label = Gtk.Label(label=L("Création de contenu", "Content Creation"), halign=Gtk.Align.START)
+        cc_master_label.set_hexpand(True)
+        self.cc_master_switch = Gtk.Switch()
+        self.cc_master_switch.set_valign(Gtk.Align.CENTER)
+        self.cc_master_switch.set_active(get_bool_option("roudix.contentCreation.enable", True))
+        cc_master_row.append(cc_master_label)
+        cc_master_row.append(self.cc_master_switch)
+        cc_page.append(cc_master_row)
+
+        cc_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in CONTENT_CREATION_TOGGLES}
+        self.cc_group = ToggleListGroup("", CONTENT_CREATION_TOGGLES, cc_current)
+        cc_page.append(self.cc_group)
+
+        current_obs_plugins = {p["id"]: get_bool_option(p["key"], p["default"]) for p in OBS_PLUGINS}
+        self.obs_plugins_group = ToggleListGroup(L("Plugins OBS", "OBS plugins"), OBS_PLUGINS, current_obs_plugins)
+        cc_page.append(self.obs_plugins_group)
+
+        current_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
+        self.video_editor_selector = SelectorGroup(L("Éditeur vidéo", "Video editor"), VIDEO_EDITORS, current_video_editor, dark)
+        cc_page.append(self.video_editor_selector)
+
+        def _update_cc_cascade(*_):
+            active = self.cc_master_switch.get_active()
+            self.cc_group.set_sensitive(active)
+            self.obs_plugins_group.set_sensitive(active)
+            self.video_editor_selector.set_sensitive(active)
+
+        self.cc_master_switch.connect("notify::active", _update_cc_cascade)
+        _update_cc_cascade()
+
+        self.content_stack.add_named(cc_page, "content_creation")
+
         # ── "Editor" page ──────────────────────────────────────────────────
         editor_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
         editor_page.set_margin_top(4)
@@ -956,7 +1073,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         editor_page.set_margin_bottom(16)
 
         current_editor = get_string_option("roudix.editor", "zed")
-        self.editor_selector = SelectorGroup("Default editor", EDITORS, current_editor, dark)
+        self.editor_selector = SelectorGroup(L("Éditeur par défaut", "Default editor"), EDITORS, current_editor, dark)
         editor_page.append(self.editor_selector)
 
         self.content_stack.add_named(editor_page, "editor")
@@ -969,7 +1086,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         terminal_page.set_margin_bottom(16)
 
         current_terminal = get_string_option("roudix.terminal", "ghostty")
-        self.terminal_selector = SelectorGroup("Default terminal", TERMINALS, current_terminal, dark)
+        self.terminal_selector = SelectorGroup(L("Terminal par défaut", "Default terminal"), TERMINALS, current_terminal, dark)
         terminal_page.append(self.terminal_selector)
 
         self.content_stack.add_named(terminal_page, "terminal")
@@ -981,11 +1098,15 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         browser_page.set_margin_end(16)
         browser_page.set_margin_bottom(16)
 
-        btitle = Gtk.Label(label="Browser", halign=Gtk.Align.START)
+        btitle = Gtk.Label(label=L("Navigateur", "Browser"), halign=Gtk.Align.START)
         btitle.add_css_class("title-2")
         bsubtitle = Gtk.Label(
-            label="Pick any number — the first one checked below becomes the "
-                  "default (niri's MOD+B shortcut).",
+            label=L(
+                "Coche-en autant que tu veux — le premier coché ci-dessous devient "
+                "le défaut (raccourci MOD+B de niri).",
+                "Pick any number — the first one checked below becomes the "
+                "default (niri's MOD+B shortcut).",
+            ),
             halign=Gtk.Align.START,
         )
         bsubtitle.add_css_class("dim-label")
@@ -999,13 +1120,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.browser_group = ToggleListGroup("", BROWSERS, browser_current)
         browser_page.append(self.browser_group)
 
-        # Zen Browser vit à part côté Nix (flake input séparé, pas dans
-        # browserDefs) : switch d'activation + choix du loader de mods
-        # (natif vs Sine, mutuellement exclusifs côté Nix) + checklist des
-        # mods, qui lit/écrit roudix.zen.mods ou roudix.zen.sine.mods selon
-        # l'état du switch Sine. Le switch Sine n'a de sens que si Zen est
-        # actif, et la checklist de mods que si Sine l'est aussi — donc les
-        # trois sont chaînés en cascade plutôt que toujours visibles.
+        # Zen Browser lives separately on the Nix side (its own flake
+        # input, not in browserDefs): an enable switch + a mod-loader
+        # choice (native vs Sine, mutually exclusive on the Nix side) + a
+        # mods checklist that reads/writes roudix.zen.mods or
+        # roudix.zen.sine.mods depending on the Sine switch state. The
+        # Sine switch only makes sense if Zen is enabled, and the mods
+        # checklist only if Sine is too — so the three are chained in
+        # cascade rather than always visible.
         zen_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         zen_row.set_margin_top(8)
         zen_label = Gtk.Label(label="Zen Browser", halign=Gtk.Align.START)
@@ -1017,8 +1139,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         zen_row.append(self.zen_switch)
         browser_page.append(zen_row)
 
+        current_zen_variant = get_string_option("roudix.zen.variant", "twilight")
+        self.zen_variant_selector = SelectorGroup(L("Canal Zen", "Zen channel"), ZEN_VARIANTS, current_zen_variant, dark)
+        browser_page.append(self.zen_variant_selector)
+
         self.sine_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        sine_label = Gtk.Label(label="Sine mod loader", halign=Gtk.Align.START)
+        sine_label = Gtk.Label(label=L("Chargeur de mods Sine", "Sine mod loader"), halign=Gtk.Align.START)
         sine_label.set_hexpand(True)
         self.sine_switch = Gtk.Switch()
         self.sine_switch.set_valign(Gtk.Align.CENTER)
@@ -1029,8 +1155,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         browser_page.append(self.sine_row)
 
         self.sine_note = Gtk.Label(
-            label="Native Zen mods and Sine mods can't be active at the same "
-                  "time — the list below always targets whichever is on.",
+            label=L(
+                "Les mods natifs Zen et les mods Sine ne peuvent pas être actifs en "
+                "même temps — la liste ci-dessous cible toujours celui qui est activé.",
+                "Native Zen mods and Sine mods can't be active at the same "
+                "time — the list below always targets whichever is on.",
+            ),
         )
         self.sine_note.add_css_class("dim-label")
         self.sine_note.set_wrap(True)
@@ -1041,13 +1171,16 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             get_list_option("roudix.zen.sine.mods" if current_sine else "roudix.zen.mods", [])
         )
         zen_mods_current = {m["id"]: (m["id"] in zen_mods_current_ids) for m in ZEN_MODS}
-        self.zen_mods_group = ToggleListGroup("Mods", ZEN_MODS, zen_mods_current)
+        self.zen_mods_group = ToggleListGroup(L("Mods", "Mods"), ZEN_MODS, zen_mods_current)
         browser_page.append(self.zen_mods_group)
 
         self.zen_mods_placeholder = None
         if not ZEN_MODS:
             self.zen_mods_placeholder = Gtk.Label(
-                label="No mods listed yet — add your mod IDs to ZEN_MODS in the script.",
+                label=L(
+                    "Aucun mod listé pour l'instant — ajoute tes IDs de mods à ZEN_MODS dans le script.",
+                    "No mods listed yet — add your mod IDs to ZEN_MODS in the script.",
+                ),
             )
             self.zen_mods_placeholder.add_css_class("dim-label")
             self.zen_mods_placeholder.set_halign(Gtk.Align.START)
@@ -1056,6 +1189,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         def _update_zen_cascade(*_):
             zen_on = self.zen_switch.get_active()
             sine_on = self.sine_switch.get_active()
+            self.zen_variant_selector.set_visible(zen_on)
             self.sine_row.set_visible(zen_on)
             show_mods = zen_on and sine_on
             self.sine_note.set_visible(show_mods)
@@ -1083,12 +1217,16 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         login_shell_page.set_margin_bottom(16)
 
         current_login_shell = get_string_option("roudix.shell", "fish")
-        self.login_shell_selector = SelectorGroup("Login shell", LOGIN_SHELLS, current_login_shell, dark)
+        self.login_shell_selector = SelectorGroup(L("Shell de connexion", "Login shell"), LOGIN_SHELLS, current_login_shell, dark)
         login_shell_page.append(self.login_shell_selector)
 
         login_shell_note = Gtk.Label(
-            label="This is your terminal login shell — not the graphical shell "
-                  "under Desktop (noctalia/dms/caelestia).",
+            label=L(
+                "C'est le shell de connexion de ton terminal — pas le shell graphique "
+                "de la page Bureau (noctalia/dms/caelestia).",
+                "This is your terminal login shell — not the graphical shell "
+                "under Desktop (noctalia/dms/caelestia).",
+            ),
         )
         login_shell_note.add_css_class("dim-label")
         login_shell_note.set_wrap(True)
@@ -1105,7 +1243,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         filemanager_page.set_margin_bottom(16)
 
         current_filemanager = get_string_option("roudix.fileManager", "nautilus")
-        self.filemanager_selector = SelectorGroup("File manager", FILE_MANAGERS, current_filemanager, dark)
+        self.filemanager_selector = SelectorGroup(L("Gestionnaire de fichiers", "File manager"), FILE_MANAGERS, current_filemanager, dark)
         filemanager_page.append(self.filemanager_selector)
 
         self.content_stack.add_named(filemanager_page, "filemanager")
@@ -1118,7 +1256,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         chat_page.set_margin_bottom(16)
 
         current_matrix = get_string_option("roudix.matrixClient", "element")
-        self.matrix_selector = SelectorGroup("Matrix client", MATRIX_CLIENTS, current_matrix, dark)
+        self.matrix_selector = SelectorGroup(L("Client Matrix", "Matrix client"), MATRIX_CLIENTS, current_matrix, dark)
         chat_page.append(self.matrix_selector)
 
         current_discord = get_string_option("roudix.discord", "vencord")
@@ -1134,10 +1272,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         system_page.set_margin_end(16)
         system_page.set_margin_bottom(16)
 
-        # roudix.undervolt.only-amd.enable (undervolt.nix) force
-        # amdgpu.ppfeaturemask, sans rapport avec Nvidia/Intel — inutile de
-        # proposer ce switch sur une machine dont hardware.myGpu n'est pas
-        # "amd"/"amd-legacy" (voir hosts/roudix/local.nix).
+        # roudix.undervolt.only-amd.enable (undervolt.nix) sets
+        # amdgpu.ppfeaturemask, irrelevant on Nvidia/Intel — no point
+        # showing this switch on a machine where hardware.myGpu isn't
+        # "amd"/"amd-legacy" (see hosts/roudix/local.nix).
         current_gpu = get_string_option("hardware.myGpu", "amd")
         self.system_toggles = [
             t for t in SYSTEM_TOGGLES
@@ -1147,11 +1285,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             t["id"]: get_bool_option(t["key"], t["default"], path=t.get("file", CONFIG_FILE))
             for t in self.system_toggles
         }
-        self.system_group = ToggleListGroup("Toggles", self.system_toggles, system_current)
+        self.system_group = ToggleListGroup(L("Interrupteurs", "Toggles"), self.system_toggles, system_current)
         system_page.append(self.system_group)
 
         current_rgb = get_string_option("roudix.rgb", "none")
-        self.rgb_selector = SelectorGroup("RGB backend", RGB_BACKENDS, current_rgb, dark)
+        self.rgb_selector = SelectorGroup(L("Backend RGB", "RGB backend"), RGB_BACKENDS, current_rgb, dark)
         system_page.append(self.rgb_selector)
 
         self.content_stack.add_named(system_page, "system")
@@ -1165,7 +1303,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         current_integration = get_string_option("roudix.desktopIntegration", "gnome")
         self.integration_selector = SelectorGroup(
-            "Keyring & portal backend",
+            L("Backend keyring et portail", "Keyring & portal backend"),
             DESKTOP_INTEGRATIONS,
             current_integration,
             dark,
@@ -1173,8 +1311,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         integration_page.append(self.integration_selector)
 
         integration_note = Gtk.Label(
-            label="Only applies to niri, Hyprland, MangoWC and Umbriel — "
-                  "GNOME and KDE always keep their own native stack.",
+            label=L(
+                "S'applique uniquement à niri, Hyprland, MangoWC et Umbriel — "
+                "GNOME et KDE gardent toujours leur propre stack native.",
+                "Only applies to niri, Hyprland, MangoWC and Umbriel — "
+                "GNOME and KDE always keep their own native stack.",
+            ),
         )
         integration_note.add_css_class("dim-label")
         integration_note.set_wrap(True)
@@ -1192,10 +1334,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._update_filemanager_visibility(current_de)
 
         # ── Integrated terminal ───────────────────────────────────────────
-        # Caché par défaut : tant qu'aucun rebuild n'est en cours, ce cadre
-        # ne sert à rien et ne fait que réserver de la place inutilement
-        # sous les options (le bloc vide que tu vois). Il n'est révélé que
-        # lorsqu'un rebuild démarre réellement (voir on_apply).
+        # Hidden by default: while no rebuild is running, this frame is
+        # useless and just reserves space unnecessarily below the options
+        # (the empty block you'd otherwise see). It's only revealed once a
+        # rebuild actually starts (see on_apply).
         self.term_frame = Gtk.Frame()
         self.term_frame.add_css_class("card")
         self.term_frame.set_visible(False)
@@ -1270,11 +1412,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         btn_box.set_margin_end(16)
         btn_box.set_homogeneous(True)
 
-        self.exit_btn = Gtk.Button(label="Exit")
+        self.exit_btn = Gtk.Button(label=L("Quitter", "Exit"))
         self.exit_btn.connect("clicked", lambda _: self.close())
         btn_box.append(self.exit_btn)
 
-        self.apply_btn = Gtk.Button(label="Apply & Rebuild")
+        self.apply_btn = Gtk.Button(label=L("Appliquer et reconstruire", "Apply & Rebuild"))
         self.apply_btn.add_css_class("suggested-action")
         self.apply_btn.connect("clicked", self.on_apply)
         btn_box.append(self.apply_btn)
@@ -1333,9 +1475,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if row is None:
             return
         self.content_stack.set_visible_child_name(row.category_id)
-        # Filet de sécurité : force le ScrolledWindow à se re-mesurer sur la
-        # page nouvellement affichée plutôt que de garder l'allocation
-        # (potentiellement plus grande) de la page précédente.
+        # Safety net: forces the ScrolledWindow to re-measure against the
+        # newly shown page rather than keeping the (potentially larger)
+        # previous page's allocation.
         self.content_scroll.queue_resize()
 
     def _on_gaming_master_toggled(self, sw, _param):
@@ -1345,11 +1487,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
     def _update_gaming_counter(self):
         if not self.gaming_master_switch.get_active():
-            self.gaming_counter_label.set_label("Gaming disabled")
+            self.gaming_counter_label.set_label(L("Gaming désactivé", "Gaming disabled"))
             return
         states = self.gaming_apps_group.get_states()
         enabled = sum(1 for v in states.values() if v)
-        self.gaming_counter_label.set_label(f"{enabled}/{len(states)} gaming apps enabled")
+        self.gaming_counter_label.set_label(
+            L(f"{enabled}/{len(states)} apps gaming activées", f"{enabled}/{len(states)} gaming apps enabled")
+        )
 
     def _update_integration_visibility(self, de_id: str):
         """Cache la page Integration pour gnome/kde (sans effet dessus) et
@@ -1384,13 +1528,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if not visible:
             return
 
-        # Réconcilie la liste des shells affichés avec celle attendue pour ce DE
-        # (ex: bascule vers Umbriel → uniquement Noctalia; retour vers Hyprland
-        # → Noctalia/DMS + Caelestia, etc.)
+        # Reconciles the displayed shell list with the ones expected for
+        # this DE (e.g.: switching to Umbriel → Noctalia only; back to
+        # Hyprland → Noctalia/DMS + Caelestia, etc.)
         self.shell_selector.sync_items(shells_for_de(new_de))
 
         log.debug(
-            "DE changed to '%s' — shell selector mis à jour (shells: %s)",
+            "DE changed to '%s' — shell selector updated (shells: %s)",
             new_de,
             [item["id"] for item in shells_for_de(new_de)],
         )
@@ -1417,28 +1561,28 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         de_changed = new_de != cur_de
 
-        # Le shell n'est pertinent que pour niri/hyprland/mangowc/umbriel
+        # The shell only matters for niri/hyprland/mangowc/umbriel
         shell_relevant = new_de in SHELL_SUPPORTED_DE
         new_shell      = self.shell_selector.selected_id if shell_relevant else cur_shell
         shell_changed  = shell_relevant and (new_shell != cur_shell)
 
-        # Keyring/portal — pertinent uniquement pour les compositeurs bruts
+        # Keyring/portal — only relevant for bare compositors
         integration_relevant = new_de in DESKTOP_INTEGRATION_SUPPORTED_DE
         cur_integration = get_string_option("roudix.desktopIntegration", "gnome")
         new_integration = self.integration_selector.selected_id if integration_relevant else cur_integration
         integration_changed = integration_relevant and (new_integration != cur_integration)
 
-        # Éditeur par défaut
+        # Default editor
         cur_editor = get_string_option("roudix.editor", "zed")
         new_editor = self.editor_selector.selected_id
         editor_changed = new_editor != cur_editor
 
-        # Terminal par défaut
+        # Default terminal
         cur_terminal = get_string_option("roudix.terminal", "ghostty")
         new_terminal = self.terminal_selector.selected_id
         terminal_changed = new_terminal != cur_terminal
 
-        # Navigateurs (liste) + Zen (switch séparé)
+        # Browsers (list) + Zen (separate switch)
         cur_browsers = get_list_option("roudix.browsers", ["brave"])
         new_browsers = [b["id"] for b in BROWSERS if self.browser_group.get_states()[b["id"]]]
         browsers_changed = new_browsers != cur_browsers
@@ -1447,9 +1591,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_zen = self.zen_switch.get_active()
         zen_changed = new_zen != cur_zen
 
-        # roudix.umbriel.scratchpadApps — n'a de sens que sous Umbriel, mais
-        # rien n'empêche de lire/écrire le switch même caché (il reste à son
-        # état précédent tant qu'on ne le montre pas).
+        cur_zen_variant = get_string_option("roudix.zen.variant", "twilight")
+        new_zen_variant = self.zen_variant_selector.selected_id
+        zen_variant_changed = new_zen_variant != cur_zen_variant
+
+        # roudix.umbriel.scratchpadApps — only makes sense under Umbriel,
+        # but nothing prevents reading/writing the switch even hidden (it
+        # keeps its previous state while not shown).
         cur_scratchpad = get_bool_option("roudix.umbriel.scratchpadApps", False)
         new_scratchpad = self.scratchpad_switch.get_active()
         scratchpad_changed = new_scratchpad != cur_scratchpad
@@ -1458,37 +1606,51 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_sine = self.sine_switch.get_active()
         sine_changed = new_sine != cur_sine
 
-        # La liste de mods cible roudix.zen.mods ou roudix.zen.sine.mods selon
-        # l'état choisi pour Sine (pas l'ancien état) — c'est bien celui-là
-        # qui sera actif une fois le rebuild fait.
+        # The mods list targets roudix.zen.mods or roudix.zen.sine.mods
+        # based on the chosen Sine state (not the previous one) — that's
+        # the one that will be active once the rebuild is done.
         zen_mods_key = "roudix.zen.sine.mods" if new_sine else "roudix.zen.mods"
         cur_zen_mods = get_list_option(zen_mods_key, [])
         new_zen_mods = [m["id"] for m in ZEN_MODS if self.zen_mods_group.get_states()[m["id"]]]
         zen_mods_changed = new_zen_mods != cur_zen_mods
 
-        # Apps gaming : booléens indépendants, on ne touche que celles qui ont changé
+        # Gaming apps: independent booleans, only touch the ones that changed
         gaming_changes = _diff_bool_items(GAMING_APPS, self.gaming_apps_group.get_states())
 
-        # Tweaks gaming annexes (ananicy, correctif GTA)
+        # Extra gaming tweaks (ananicy, GTA fix)
         gaming_extras_changes = _diff_bool_items(GAMING_EXTRAS, self.gaming_extras_group.get_states())
 
-        # Interrupteur maître du groupe gaming
+        # Master switch for the gaming group
         cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
         new_gaming_master = self.gaming_master_switch.get_active()
         gaming_master_changed = new_gaming_master != cur_gaming_master
 
-        # Shell de login (fish/bash)
+        # Content creation: master switch + independent toggles + OBS
+        # plugins (list) + video editor (enum)
+        cur_cc_master = get_bool_option("roudix.contentCreation.enable", True)
+        new_cc_master = self.cc_master_switch.get_active()
+        cc_master_changed = new_cc_master != cur_cc_master
+
+        cc_changes = _diff_bool_items(CONTENT_CREATION_TOGGLES, self.cc_group.get_states())
+
+        obs_plugins_changes = _diff_bool_items(OBS_PLUGINS, self.obs_plugins_group.get_states())
+
+        cur_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
+        new_video_editor = self.video_editor_selector.selected_id
+        video_editor_changed = new_video_editor != cur_video_editor
+
+        # Login shell (fish/bash)
         cur_login_shell = get_string_option("roudix.shell", "fish")
         new_login_shell = self.login_shell_selector.selected_id
         login_shell_changed = new_login_shell != cur_login_shell
 
-        # Gestionnaire de fichiers — pertinent uniquement sur les compositeurs bruts
+        # File manager — only relevant on bare compositors
         filemanager_relevant = new_de in FILE_MANAGER_SUPPORTED_DE
         cur_filemanager = get_string_option("roudix.fileManager", "nautilus")
         new_filemanager = self.filemanager_selector.selected_id if filemanager_relevant else cur_filemanager
         filemanager_changed = filemanager_relevant and (new_filemanager != cur_filemanager)
 
-        # Client Matrix
+        # Matrix client
         cur_matrix = get_string_option("roudix.matrixClient", "element")
         new_matrix = self.matrix_selector.selected_id
         matrix_changed = new_matrix != cur_matrix
@@ -1498,67 +1660,84 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_discord = self.discord_selector.selected_id
         discord_changed = new_discord != cur_discord
 
-        # Interrupteurs système indépendants
+        # Independent system toggles
         system_changes = _diff_bool_items(self.system_toggles, self.system_group.get_states())
 
-        # Backend RGB
+        # RGB backend
         cur_rgb = get_string_option("roudix.rgb", "none")
         new_rgb = self.rgb_selector.selected_id
         rgb_changed = new_rgb != cur_rgb
 
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
-                    terminal_changed, browsers_changed, zen_changed, sine_changed,
+                    terminal_changed, browsers_changed, zen_changed, zen_variant_changed, sine_changed,
                     zen_mods_changed, scratchpad_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
                     discord_changed,
                     system_changes, rgb_changed,
-                    gaming_changes, gaming_extras_changes, gaming_master_changed]):
+                    gaming_changes, gaming_extras_changes, gaming_master_changed,
+                    cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
-                "<span color='gray'>No changes detected — nothing to do.</span>"
+                L(
+                    "<span color='gray'>Aucun changement détecté — rien à faire.</span>",
+                    "<span color='gray'>No changes detected — nothing to do.</span>",
+                )
             )
             return
 
         # Build a human-readable summary of what will change
+        _en = L("activé", "enabled")
+        _dis = L("désactivé", "disabled")
+        _none = L("aucun", "none")
         changes = []
         if de_changed:
-            changes.append(f"Desktop: <b>{cur_de}</b> → <b>{new_de}</b>")
+            changes.append(f"{L('Bureau', 'Desktop')}: <b>{cur_de}</b> → <b>{new_de}</b>")
         if shell_changed:
-            changes.append(f"Shell: <b>{cur_shell}</b> → <b>{new_shell}</b>")
+            changes.append(f"{L('Shell', 'Shell')}: <b>{cur_shell}</b> → <b>{new_shell}</b>")
         if integration_changed:
-            changes.append(f"Keyring/portal: <b>{cur_integration}</b> → <b>{new_integration}</b>")
+            changes.append(f"{L('Keyring/portail', 'Keyring/portal')}: <b>{cur_integration}</b> → <b>{new_integration}</b>")
         if editor_changed:
-            changes.append(f"Editor: <b>{cur_editor}</b> → <b>{new_editor}</b>")
+            changes.append(f"{L('Éditeur', 'Editor')}: <b>{cur_editor}</b> → <b>{new_editor}</b>")
         if terminal_changed:
-            changes.append(f"Terminal: <b>{cur_terminal}</b> → <b>{new_terminal}</b>")
+            changes.append(f"{L('Terminal', 'Terminal')}: <b>{cur_terminal}</b> → <b>{new_terminal}</b>")
         if browsers_changed:
-            changes.append(f"Browsers: <b>{', '.join(new_browsers) or 'none'}</b>")
+            changes.append(f"{L('Navigateurs', 'Browsers')}: <b>{', '.join(new_browsers) or _none}</b>")
         if zen_changed:
-            changes.append(f"Zen Browser: <b>{'enabled' if new_zen else 'disabled'}</b>")
+            changes.append(f"Zen Browser: <b>{_en if new_zen else _dis}</b>")
+        if zen_variant_changed:
+            changes.append(f"{L('Canal Zen', 'Zen channel')}: <b>{cur_zen_variant}</b> → <b>{new_zen_variant}</b>")
         if sine_changed:
-            changes.append(f"Sine mod loader: <b>{'enabled' if new_sine else 'disabled'}</b>")
+            changes.append(f"{L('Chargeur de mods Sine', 'Sine mod loader')}: <b>{_en if new_sine else _dis}</b>")
         if zen_mods_changed:
-            changes.append(f"Zen mods: <b>{', '.join(new_zen_mods) or 'none'}</b>")
+            changes.append(f"{L('Mods Zen', 'Zen mods')}: <b>{', '.join(new_zen_mods) or _none}</b>")
         if scratchpad_changed:
-            changes.append(f"Umbriel scratchpad apps: <b>{'enabled' if new_scratchpad else 'disabled'}</b>")
+            changes.append(f"{L('Apps en scratchpad (Umbriel)', 'Umbriel scratchpad apps')}: <b>{_en if new_scratchpad else _dis}</b>")
         if login_shell_changed:
-            changes.append(f"Login shell: <b>{cur_login_shell}</b> → <b>{new_login_shell}</b>")
+            changes.append(f"{L('Shell de connexion', 'Login shell')}: <b>{cur_login_shell}</b> → <b>{new_login_shell}</b>")
         if filemanager_changed:
-            changes.append(f"File manager: <b>{cur_filemanager}</b> → <b>{new_filemanager}</b>")
+            changes.append(f"{L('Gestionnaire de fichiers', 'File manager')}: <b>{cur_filemanager}</b> → <b>{new_filemanager}</b>")
         if matrix_changed:
-            changes.append(f"Matrix client: <b>{cur_matrix}</b> → <b>{new_matrix}</b>")
+            changes.append(f"{L('Client Matrix', 'Matrix client')}: <b>{cur_matrix}</b> → <b>{new_matrix}</b>")
         if discord_changed:
             changes.append(f"Discord: <b>{cur_discord}</b> → <b>{new_discord}</b>")
         if rgb_changed:
-            changes.append(f"RGB backend: <b>{cur_rgb}</b> → <b>{new_rgb}</b>")
+            changes.append(f"{L('Backend RGB', 'RGB backend')}: <b>{cur_rgb}</b> → <b>{new_rgb}</b>")
         if gaming_master_changed:
-            changes.append(f"Gaming: <b>{'enabled' if new_gaming_master else 'disabled'}</b>")
+            changes.append(f"Gaming: <b>{_en if new_gaming_master else _dis}</b>")
         for _key, new_val, name, _file in gaming_changes.values():
-            changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
+            changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
         for _key, new_val, name, _file in gaming_extras_changes.values():
-            changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
+            changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
+        if cc_master_changed:
+            changes.append(f"{L('Création de contenu', 'Content Creation')}: <b>{_en if new_cc_master else _dis}</b>")
+        for _key, new_val, name, _file in cc_changes.values():
+            changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
+        for _key, new_val, name, _file in obs_plugins_changes.values():
+            changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
+        if video_editor_changed:
+            changes.append(f"{L('Éditeur vidéo', 'Video editor')}: <b>{cur_video_editor}</b> → <b>{new_video_editor}</b>")
         for _key, new_val, name, _file in system_changes.values():
-            changes.append(f"{name}: <b>{'enabled' if new_val else 'disabled'}</b>")
+            changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
         body_changes = "\n".join(changes)
 
         pending = {
@@ -1569,6 +1748,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "terminal_changed": terminal_changed, "new_terminal": new_terminal,
             "browsers_changed": browsers_changed, "new_browsers": new_browsers,
             "zen_changed": zen_changed, "new_zen": new_zen,
+            "zen_variant_changed": zen_variant_changed, "new_zen_variant": new_zen_variant,
             "sine_changed": sine_changed, "new_sine": new_sine,
             "zen_mods_changed": zen_mods_changed, "new_zen_mods": new_zen_mods, "zen_mods_key": zen_mods_key,
             "scratchpad_changed": scratchpad_changed, "new_scratchpad": new_scratchpad,
@@ -1581,24 +1761,34 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "gaming_changes": gaming_changes,
             "gaming_extras_changes": gaming_extras_changes,
             "system_changes": system_changes,
+            "cc_master_changed": cc_master_changed, "new_cc_master": new_cc_master,
+            "cc_changes": cc_changes,
+            "obs_plugins_changes": obs_plugins_changes,
+            "video_editor_changed": video_editor_changed, "new_video_editor": new_video_editor,
         }
 
         dialog = Adw.AlertDialog()
-        dialog.set_heading("Apply changes?")
+        dialog.set_heading(L("Appliquer les changements ?", "Apply changes?"))
         dialog.set_body(
             f"{body_changes}\n\n"
-            "Apply now switches your running session immediately (a few things, "
-            "like the desktop/shell, only fully take effect after you log out). "
-            "Apply at next boot just prepares the new generation — nothing "
-            "changes until you restart."
+            + L(
+                "« Appliquer maintenant » bascule ta session en cours immédiatement "
+                "(certaines choses, comme le bureau/shell, ne prennent pleinement effet "
+                "qu'après une déconnexion). « Appliquer au prochain démarrage » prépare "
+                "juste la nouvelle génération — rien ne change avant le redémarrage.",
+                "Apply now switches your running session immediately (a few things, "
+                "like the desktop/shell, only fully take effect after you log out). "
+                "Apply at next boot just prepares the new generation — nothing "
+                "changes until you restart.",
+            )
         )
-        # body_changes contient du markup Pango (<b>...</b>) pour mettre en
-        # valeur les valeurs qui changent — sans ça, AlertDialog affiche les
-        # balises telles quelles au lieu de les interpréter.
+        # body_changes contains Pango markup (<b>...</b>) to highlight the
+        # values that change — without this, AlertDialog would display the
+        # tags literally instead of interpreting them.
         dialog.set_body_use_markup(True)
-        dialog.add_response("cancel", "Cancel")
-        dialog.add_response("boot", "Apply at Next Boot")
-        dialog.add_response("switch", "Apply Now")
+        dialog.add_response("cancel", L("Annuler", "Cancel"))
+        dialog.add_response("boot", L("Appliquer au prochain démarrage", "Apply at Next Boot"))
+        dialog.add_response("switch", L("Appliquer maintenant", "Apply Now"))
         dialog.set_response_appearance("switch", Adw.ResponseAppearance.SUGGESTED)
         dialog.set_default_response("switch")
         dialog.set_close_response("cancel")
@@ -1615,7 +1805,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_de(pending["new_de"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing DE config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config DE : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing DE config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1623,7 +1813,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_shell(pending["new_shell"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing shell config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config shell : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing shell config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1631,7 +1821,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_string_option("roudix.desktopIntegration", pending["new_integration"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing keyring/portal config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config keyring/portal : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing keyring/portal config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1639,7 +1829,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_string_option("roudix.editor", pending["new_editor"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing editor config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config editor : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing editor config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1647,7 +1837,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_string_option("roudix.terminal", pending["new_terminal"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing terminal config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config terminal : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing terminal config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1655,7 +1845,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_list_option("roudix.browsers", pending["new_browsers"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing browsers config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config browsers : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing browsers config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1663,7 +1853,15 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_bool_option("roudix.zen.enable", pending["new_zen"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing Zen Browser config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config Zen Browser : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Zen Browser config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        if pending["zen_variant_changed"]:
+            result = set_string_option("roudix.zen.variant", pending["new_zen_variant"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config Zen channel : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Zen channel config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1671,7 +1869,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_bool_option("roudix.zen.sine.enable", pending["new_sine"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing Sine config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config Sine : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Sine config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1679,7 +1877,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_list_option(pending["zen_mods_key"], pending["new_zen_mods"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing Zen mods config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config Zen mods : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Zen mods config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1687,7 +1885,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_bool_option("roudix.umbriel.scratchpadApps", pending["new_scratchpad"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing Umbriel scratchpad config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config Umbriel scratchpad : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Umbriel scratchpad config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1695,7 +1893,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_string_option("roudix.shell", pending["new_login_shell"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing login shell config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config login shell : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing login shell config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1703,7 +1901,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_string_option("roudix.fileManager", pending["new_filemanager"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing file manager config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config file manager : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing file manager config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1711,7 +1909,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_string_option("roudix.matrixClient", pending["new_matrix"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing Matrix client config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config Matrix client : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Matrix client config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1719,7 +1917,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_string_option("roudix.discord", pending["new_discord"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing Discord config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config Discord : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Discord config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1727,7 +1925,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_string_option("roudix.rgb", pending["new_rgb"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing RGB backend config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config RGB backend : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing RGB backend config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1735,7 +1933,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_bool_option("roudix.gaming.enable", pending["new_gaming_master"])
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing gaming config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config gaming : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing gaming config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1743,7 +1941,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_bool_option(key, new_val, path=file)
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config {name} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1751,7 +1949,39 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_bool_option(key, new_val, path=file)
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config {name} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        if pending["cc_master_changed"]:
+            result = set_bool_option("roudix.contentCreation.enable", pending["new_cc_master"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config Content Creation : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Content Creation config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        for key, new_val, name, file in pending["cc_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config {name} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        for key, new_val, name, file in pending["obs_plugins_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config {name} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        if pending["video_editor_changed"]:
+            result = set_string_option("roudix.contentCreation.videoEditor", pending["new_video_editor"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config video editor : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing video editor config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1759,7 +1989,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             result = set_bool_option(key, new_val, path=file)
             if result is not True:
                 self.status.set_markup(
-                    f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>"
+                    L(f"<span color='red'>Erreur d'écriture — config {name} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
@@ -1767,9 +1997,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         GLib.idle_add(self.term_frame.set_visible, True)
         GLib.idle_add(self._term_clear)
         GLib.idle_add(self._term_append, "=" * 50, "section")
-        GLib.idle_add(self._term_append, "Important Notices:", "section")
+        GLib.idle_add(self._term_append, L("Notes importantes :", "Important Notices:"), "section")
         GLib.idle_add(self._term_append, "=" * 50, "section")
-        GLib.idle_add(self._term_append, "No issues currently reported.", "info")
+        GLib.idle_add(self._term_append, L("Aucun problème signalé pour le moment.", "No issues currently reported."), "info")
         GLib.idle_add(self._term_append, "", "dim")
         GLib.idle_add(self._term_append, "=" * 50, "section")
         GLib.idle_add(self._start_progress)
@@ -1789,12 +2019,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
     def run_rebuild(self, mode: str = "boot"):
         try:
             cmd_str = (
-                f"Running: nh os {mode} --elevation-strategy pkexec "
+                f"{L('Lancement', 'Running')}: nh os {mode} --elevation-strategy pkexec "
                 f"--accept-flake-config {NH_FLAKE}"
             )
             log.info(cmd_str)
             GLib.idle_add(self._term_append, cmd_str, "dim")
-            GLib.idle_add(self._term_append, "Checking repositories...", "dim")
+            GLib.idle_add(self._term_append, L("Vérification des dépôts...", "Checking repositories..."), "dim")
 
             proc = subprocess.Popen(
                 [
@@ -1835,37 +2065,51 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             log.info("Rebuild completed successfully.")
             GLib.idle_add(self._term_append, "", "dim")
             if mode == "switch":
-                GLib.idle_add(self._term_append, "✓ Rebuild completed and applied to your running session.", "ok")
+                GLib.idle_add(self._term_append, L("✓ Reconstruction terminée et appliquée à ta session en cours.", "✓ Rebuild completed and applied to your running session."), "ok")
                 GLib.idle_add(
                     self.status.set_markup,
-                    "<span color='green'>✓ Done! Applied now — some things (desktop/shell) "
-                    "may still need a logout to fully take effect.</span>",
+                    L(
+                        "<span color='green'>✓ Terminé ! Appliqué maintenant — certaines choses "
+                        "(bureau/shell) peuvent encore nécessiter une déconnexion pour prendre "
+                        "pleinement effet.</span>",
+                        "<span color='green'>✓ Done! Applied now — some things (desktop/shell) "
+                        "may still need a logout to fully take effect.</span>",
+                    ),
                 )
             else:
-                GLib.idle_add(self._term_append, "✓ Rebuild completed successfully. Reboot to apply changes.", "ok")
+                GLib.idle_add(self._term_append, L("✓ Reconstruction terminée avec succès. Redémarre pour appliquer les changements.", "✓ Rebuild completed successfully. Reboot to apply changes."), "ok")
                 GLib.idle_add(
                     self.status.set_markup,
-                    "<span color='green'>✓ Done! Reboot to apply changes.</span>",
+                    L(
+                        "<span color='green'>✓ Terminé ! Redémarre pour appliquer les changements.</span>",
+                        "<span color='green'>✓ Done! Reboot to apply changes.</span>",
+                    ),
                 )
             GLib.idle_add(self._stop_progress)
 
         except subprocess.CalledProcessError as e:
             log.error("Rebuild failed (exit code %d).", e.returncode)
             GLib.idle_add(self._term_append, "", "dim")
-            GLib.idle_add(self._term_append, f"✗ Rebuild failed (exit code {e.returncode}).", "error")
+            GLib.idle_add(self._term_append, L(f"✗ Échec de la reconstruction (code de sortie {e.returncode}).", f"✗ Rebuild failed (exit code {e.returncode})."), "error")
             GLib.idle_add(self._stop_progress)
             GLib.idle_add(
                 self.status.set_markup,
-                "<span color='red'>✗ Rebuild failed. Check <tt>~/.local/share/roudix-switcher/switcher.log</tt> for details.</span>",
+                L(
+                    "<span color='red'>✗ Échec de la reconstruction. Consulte <tt>~/.local/share/roudix-switcher/switcher.log</tt> pour les détails.</span>",
+                    "<span color='red'>✗ Rebuild failed. Check <tt>~/.local/share/roudix-switcher/switcher.log</tt> for details.</span>",
+                ),
             )
         except Exception as e:
             log.exception("Unexpected error during rebuild.")
             GLib.idle_add(self._term_append, "", "dim")
-            GLib.idle_add(self._term_append, f"✗ Unexpected error: {e}", "error")
+            GLib.idle_add(self._term_append, L(f"✗ Erreur inattendue : {e}", f"✗ Unexpected error: {e}"), "error")
             GLib.idle_add(self._stop_progress)
             GLib.idle_add(
                 self.status.set_markup,
-                f"<span color='red'>✗ Unexpected error: {GLib.markup_escape_text(str(e))}</span>",
+                L(
+                    f"<span color='red'>✗ Erreur inattendue : {GLib.markup_escape_text(str(e))}</span>",
+                    f"<span color='red'>✗ Unexpected error: {GLib.markup_escape_text(str(e))}</span>",
+                ),
             )
         finally:
             GLib.idle_add(self.apply_btn.set_sensitive, True)
