@@ -1,5 +1,7 @@
 # Features
 
+*[Version française](features.fr.md)*
+
 ## Kernel & Performance
 
 - CachyOS kernel with NTSync enabled (`ntsync` module)
