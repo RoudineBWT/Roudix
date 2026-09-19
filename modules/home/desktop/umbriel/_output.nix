@@ -30,14 +30,14 @@
       # L/H-prefixed "6".."9" below are no longer exact numeric names, so
       # Mod+1..9 now always resolves by "position N on the focused
       # monitor" per-screen, as intended.
-      workspaces = [ "󰈹" "" "" "󰊗" "󰉋" "L6" "L7" "L8" "L9"  ];
+      workspaces = [ "󰈹" "" "" "󰊗" "󰉋" "L6" "L7" "L8" "L9"  ];
     };
 
     "DP-3" = { # HKC 24E4, 1920x1080@165
       mode = "1920x1080@165.001";
       position = [ 0 0 ];
       scale = 1;
-      workspaces = [ "" "󰝚" "" "H4" "H5" "H6" "H7" "H8" "H9" ];
+      workspaces = [ "" "󰝚" "" "H4" "H5" "H6" "H7" "H8" "H9" ];
     };
   };
 
