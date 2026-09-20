@@ -34,6 +34,9 @@ in
     ++ lib.optional apps.prismlauncher.enable (callPackage "${roudixPkgs}/prismlauncher/wrapped.nix" {
         prismlauncher-unwrapped = callPackage "${roudixPkgs}/prismlauncher" {};
       })
+    ++ lib.optional apps.modrinth.enable (callPackage "${roudixPkgs}/modrinth/wrapped.nix" {
+        modrinth-app-unwrapped = callPackage "${roudixPkgs}/modrinth" {};
+      })
     ++ lib.optional apps.lutris.enable lutris
     ++ lib.optional apps.vintagestory.enable vintagestory
     ++ lib.optional apps.mangohud.enable mangohud

@@ -79,6 +79,11 @@ in
       default = true;
       description = "Installer Prism Launcher (Minecraft).";
     };
+    modrinth.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Installer Modrinth App (alternative à Prism Launcher pour Minecraft).";
+    };
     vintagestory.enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

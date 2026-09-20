@@ -269,9 +269,8 @@ GAMING_EXTRAS = [
 
 # roudix.zen.variant — enum, exposed as a SelectorGroup (like EDITORS).
 ZEN_VARIANTS = [
-    {"id": "twilight",          "name": "Twilight",             "subtitle": L("Nightly, miroir maintenu par le dev du flake (défaut Roudix)", "Nightly builds, mirrored by the flake maintainer (Roudix default)"), "icon": "zen.svg"},
-    {"id": "beta",               "name": "Beta",                 "subtitle": L("Basé sur Firefox-ESR, évolue moins vite, le plus stable", "Firefox-ESR based, slower-moving, most stable"),               "icon": "zen.svg"},
-    {"id": "twilight-official", "name": L("Twilight (officiel)", "Twilight (official)"),  "subtitle": L("Même contenu nightly, servi directement par l'infra de Zen", "Same nightly content, served directly by Zen's own infra"),       "icon": "zen.svg"},
+    {"id": "twilight",          "name": "Twilight",             "subtitle": L("Nightly de Zen Beta, miroir maintenu par le dev du flake (défaut Roudix)", "Nightly build of Zen Beta, mirrored by the flake maintainer (Roudix default)"), "icon": "zen.svg"},
+    {"id": "beta",               "name": "Beta",                 "subtitle": L("Basé sur Firefox (build normale), évolue moins vite, le plus stable", "Firefox-based (regular release), slower-moving, most stable"),               "icon": "zen.svg"},
 ]
 
 # roudix.contentCreation.videoEditor — enum, exposed as a SelectorGroup.

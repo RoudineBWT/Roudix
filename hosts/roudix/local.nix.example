@@ -27,7 +27,7 @@
   # ── Browser ───────────────────────────────────────────────────────────────
   roudix.browsers = ["helium" "brave-origin-beta" ];               # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable           = true;        # install Zen Browser (from zen-browser flake input)
-  roudix.zen.variant     = "twilight"; # "twilight" (default), "beta" or "twilight-official"
+  roudix.zen.variant     = "twilight"; # "twilight" (default) or "beta"
   roudix.zen.sine.enable = true;       # true sur la machine où tu veux Sine
   roudix.zen.mods        = [];
   roudix.zen.sine.mods   = [ "Arc-2.0" "unloaded-tabs" "context-menu-icons" "floating-statusbar" ];   # ← utilise celle-là à la place
@@ -57,6 +57,7 @@
   # roudix.gaming.apps.heroic.enable       = false;
   # roudix.gaming.apps.faugus.enable       = false;
   # roudix.gaming.apps.prismlauncher.enable = false;
+  # roudix.gaming.apps.modrinth.enable      = true;  # alternative à Prism Launcher, off par défaut
   # roudix.gaming.apps.vintagestory.enable = false;
   # roudix.gaming.apps.mangohud.enable     = false;
   roudix.undervolt.only-amd.enable        = true;         # enable undervolting just for amd gpu.
@@ -90,6 +91,21 @@
   roudix.waydroid.enable = false;
   roudix.matrixClient = "element"; # "element", "cinny" ou "none"
   roudix.discord = "vencord"; # "vencord", "vanilla" ou "none"
+  # Débraye individuellement ces apps "communes" (toutes à true par défaut) :
+  # roudix.apps.gimp.enable        = false;
+  # roudix.apps.inkscape.enable    = false;
+  # roudix.apps.spotify.enable     = false; # Spotify + Spicetify (thème Comfy)
+  # roudix.apps.songrec.enable     = false;
+  # roudix.apps.easyeffects.enable = false; # + rnnoise-plugin
+  # roudix.apps.mpv.enable         = true;  # + yt-dlp, off by default
+  # roudix.apps.qbittorrent.enable = true;  # off by default
+  # roudix.apps.telegram.enable    = true;  # off by default
+  # Spicetify (actif seulement si roudix.apps.spotify.enable = true) :
+  # roudix.spicetify.theme = "comfy"; # "colorful" (défaut) ou "comfy"
+  # roudix.spicetify.colorScheme = "dracula"; # null (défaut du thème) ou un nom de scheme dans son color.ini
+  # roudix.spicetify.extensions.adblock.enable = false;
+  # roudix.spicetify.extensions.hidePodcasts.enable = false;
+  # roudix.spicetify.marketplace.enable = false;
   # ── Misc ──────────────────────────────────────────────────────────────────
   roudix.hosts.gtaFix.enable  = true;      # fix GTA Online to play with your friends but they need to block battleye telemetry in /etc/hosts and if they are on windows in C:\Windows\System32\drivers\etc\hosts
   # roudix.autoupdate.branch   = "main";

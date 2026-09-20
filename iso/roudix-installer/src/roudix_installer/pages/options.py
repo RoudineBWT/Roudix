@@ -224,6 +224,13 @@ def _discord():
     ]
 
 
+def _spicetify_themes():
+    return [
+        ("colorful", L("Colorful (défaut)", "Colorful (default)")),
+        ("comfy", "Comfy"),
+    ]
+
+
 def _timezones():
     return [
         ("Europe/Brussels", L("Belgique", "Belgium")),
@@ -569,7 +576,6 @@ class OptionsPage(Adw.NavigationPage):
             [
                 ("twilight", L("Twilight (défaut)", "Twilight (default)")),
                 ("beta", "Beta"),
-                ("twilight-official", L("Twilight (officiel)", "Twilight (official)")),
             ],
             state.zen_variant,
         )
@@ -690,6 +696,7 @@ class OptionsPage(Adw.NavigationPage):
             ("heroic", "Heroic Games Launcher (Epic/GOG/Amazon)", "Heroic Games Launcher (Epic/GOG/Amazon)", state.gaming_apps_heroic),
             ("faugus", "Faugus Launcher", "Faugus Launcher", state.gaming_apps_faugus),
             ("prismlauncher", "Prism Launcher (Minecraft)", "Prism Launcher (Minecraft)", state.gaming_apps_prismlauncher),
+            ("modrinth", "Modrinth App (alternative à Prism)", "Modrinth App (alternative to Prism)", state.gaming_apps_modrinth),
             ("vintagestory", "Vintage Story", "Vintage Story", state.gaming_apps_vintagestory),
             ("mangohud", "MangoHud (overlay de perfs en jeu)", "MangoHud (in-game perf overlay)", state.gaming_apps_mangohud),
         ):
@@ -845,6 +852,78 @@ class OptionsPage(Adw.NavigationPage):
         box.append(extra_group)
         self._sync_autoupdate_row()
 
+        # ── Apps ──
+        apps_group = Adw.PreferencesGroup(
+            title="Apps",
+            description=L(
+                "Désactive celles que tu ne veux pas préinstallées.",
+                "Turn off any you don't want preinstalled.",
+            ),
+        )
+        self.app_gimp_row = Adw.SwitchRow(title="GIMP")
+        self.app_gimp_row.set_active(state.app_gimp)
+        apps_group.add(self.app_gimp_row)
+
+        self.app_inkscape_row = Adw.SwitchRow(title="Inkscape")
+        self.app_inkscape_row.set_active(state.app_inkscape)
+        apps_group.add(self.app_inkscape_row)
+
+        self.app_spotify_row = Adw.SwitchRow(title="Spotify (+ Spicetify)")
+        self.app_spotify_row.set_active(state.app_spotify)
+        apps_group.add(self.app_spotify_row)
+
+        self.spicetify_theme_row = self._combo(
+            L("Thème Spicetify", "Spicetify theme"), _spicetify_themes(), state.spicetify_theme
+        )
+        apps_group.add(self.spicetify_theme_row)
+
+        self.spicetify_color_scheme_row = Adw.EntryRow(
+            title=L(
+                "Color scheme Spicetify (vide = défaut du thème)",
+                "Spicetify color scheme (empty = theme default)",
+            )
+        )
+        self.spicetify_color_scheme_row.set_text(state.spicetify_color_scheme)
+        apps_group.add(self.spicetify_color_scheme_row)
+
+        self.spicetify_adblock_row = Adw.SwitchRow(
+            title=L("Extension Adblock (Spicetify)", "Adblock extension (Spicetify)")
+        )
+        self.spicetify_adblock_row.set_active(state.spicetify_adblock)
+        apps_group.add(self.spicetify_adblock_row)
+
+        self.spicetify_hide_podcasts_row = Adw.SwitchRow(
+            title=L("Masquer les podcasts (Spicetify)", "Hide podcasts (Spicetify)")
+        )
+        self.spicetify_hide_podcasts_row.set_active(state.spicetify_hide_podcasts)
+        apps_group.add(self.spicetify_hide_podcasts_row)
+
+        self.spicetify_marketplace_row = Adw.SwitchRow(title="Spicetify Marketplace")
+        self.spicetify_marketplace_row.set_active(state.spicetify_marketplace)
+        apps_group.add(self.spicetify_marketplace_row)
+
+        self.app_songrec_row = Adw.SwitchRow(title="SongRec")
+        self.app_songrec_row.set_active(state.app_songrec)
+        apps_group.add(self.app_songrec_row)
+
+        self.app_easyeffects_row = Adw.SwitchRow(title="EasyEffects (+ rnnoise)")
+        self.app_easyeffects_row.set_active(state.app_easyeffects)
+        apps_group.add(self.app_easyeffects_row)
+
+        self.app_mpv_row = Adw.SwitchRow(title="mpv (+ yt-dlp)")
+        self.app_mpv_row.set_active(state.app_mpv)
+        apps_group.add(self.app_mpv_row)
+
+        self.app_qbittorrent_row = Adw.SwitchRow(title="qBittorrent")
+        self.app_qbittorrent_row.set_active(state.app_qbittorrent)
+        apps_group.add(self.app_qbittorrent_row)
+
+        self.app_telegram_row = Adw.SwitchRow(title="Telegram Desktop")
+        self.app_telegram_row.set_active(state.app_telegram)
+        apps_group.add(self.app_telegram_row)
+        box.append(apps_group)
+        self._sync_spicetify_rows()
+
         # ── Content Creation ──
         cc_group = Adw.PreferencesGroup(title=L("Création de contenu", "Content Creation"))
         self.content_creation_row = Adw.SwitchRow(
@@ -929,6 +1008,7 @@ class OptionsPage(Adw.NavigationPage):
         self.memory_rgb_row.connect("notify::active", lambda *_: self._sync_memory_rows())
         self.zen_row.connect("notify::active", lambda *_: self._sync_zen_rows())
         self.zen_sine_row.connect("notify::active", lambda *_: self._sync_zen_rows())
+        self.app_spotify_row.connect("notify::active", lambda *_: self._sync_spicetify_rows())
         self.content_creation_row.connect(
             "notify::active", lambda *_: self._sync_content_creation_rows()
         )
@@ -1044,6 +1124,17 @@ class OptionsPage(Adw.NavigationPage):
         self.zen_sine_row.set_visible(zen_active)
         self.zen_sine_mods_row.set_visible(zen_active and self.zen_sine_row.get_active())
 
+    def _sync_spicetify_rows(self):
+        spotify_active = self.app_spotify_row.get_active()
+        for row in (
+            self.spicetify_theme_row,
+            self.spicetify_color_scheme_row,
+            self.spicetify_adblock_row,
+            self.spicetify_hide_podcasts_row,
+            self.spicetify_marketplace_row,
+        ):
+            row.set_visible(spotify_active)
+
     def _sync_ananicy_row(self):
         self.ananicy_row.set_visible(self.gaming_row.get_active())
         for row in self.gaming_apps_rows.values():
@@ -1121,6 +1212,7 @@ class OptionsPage(Adw.NavigationPage):
         s.gaming_apps_heroic = self.gaming_apps_rows["heroic"].get_active()
         s.gaming_apps_faugus = self.gaming_apps_rows["faugus"].get_active()
         s.gaming_apps_prismlauncher = self.gaming_apps_rows["prismlauncher"].get_active()
+        s.gaming_apps_modrinth = self.gaming_apps_rows["modrinth"].get_active()
         s.gaming_apps_vintagestory = self.gaming_apps_rows["vintagestory"].get_active()
         s.gaming_apps_mangohud = self.gaming_apps_rows["mangohud"].get_active()
         s.mesa_use_git = self.mesa_git_row.get_active()
@@ -1145,6 +1237,19 @@ class OptionsPage(Adw.NavigationPage):
         s.matrix_client = self._selected_value(self.matrix_row)
         s.discord = self._selected_value(self.discord_row)
         s.waydroid_enable = self.waydroid_row.get_active()
+        s.app_gimp = self.app_gimp_row.get_active()
+        s.app_inkscape = self.app_inkscape_row.get_active()
+        s.app_spotify = self.app_spotify_row.get_active()
+        s.spicetify_theme = self._selected_value(self.spicetify_theme_row)
+        s.spicetify_color_scheme = self.spicetify_color_scheme_row.get_text().strip()
+        s.spicetify_adblock = self.spicetify_adblock_row.get_active()
+        s.spicetify_hide_podcasts = self.spicetify_hide_podcasts_row.get_active()
+        s.spicetify_marketplace = self.spicetify_marketplace_row.get_active()
+        s.app_songrec = self.app_songrec_row.get_active()
+        s.app_easyeffects = self.app_easyeffects_row.get_active()
+        s.app_mpv = self.app_mpv_row.get_active()
+        s.app_qbittorrent = self.app_qbittorrent_row.get_active()
+        s.app_telegram = self.app_telegram_row.get_active()
 
         s.content_creation_enable = self.content_creation_row.get_active()
         s.obs_enable = self.obs_row.get_active()

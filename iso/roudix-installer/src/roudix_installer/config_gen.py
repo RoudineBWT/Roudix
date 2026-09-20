@@ -71,6 +71,37 @@ def _set_bool_option(text: str, key: str, value: bool) -> str:
     return pattern.sub(repl, text)
 
 
+def _set_string_option(text: str, key: str, value: str) -> str:
+    """
+    Same idea as _set_bool_option but for a `key = "value";` option that
+    ships commented-out in local.nix.example (e.g. roudix.spicetify.theme).
+    """
+    pattern = re.compile(rf'^(\s*)(#\s*)?({re.escape(key)}\s*=\s*)"[^"]*"(.*)$', re.MULTILINE)
+
+    def repl(m):
+        indent, _hash, assign, tail = m.group(1), m.group(2), m.group(3), m.group(4)
+        return f'{indent}{assign}"{value}"{tail}'
+
+    return pattern.sub(repl, text)
+
+
+def _set_nullable_string_option(text: str, key: str, value: str) -> str:
+    """
+    Same as _set_string_option, but writes `null` (no quotes) when `value`
+    is empty — used for roudix.spicetify.colorScheme, which ships as
+    `= "..."` (a placeholder value, not the literal `null`) in
+    local.nix.example.
+    """
+    pattern = re.compile(rf'^(\s*)(#\s*)?({re.escape(key)}\s*=\s*)(?:null|"[^"]*")(.*)$', re.MULTILINE)
+
+    def repl(m):
+        indent, _hash, assign, tail = m.group(1), m.group(2), m.group(3), m.group(4)
+        written = f'"{value}"' if value else "null"
+        return f'{indent}{assign}{written}{tail}'
+
+    return pattern.sub(repl, text)
+
+
 def _set_list_option(text: str, key: str, values: list) -> str:
     """
     Same idea as _set_bool_option but for a `key = [ ... ];` option that
@@ -119,6 +150,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
         t = _set_bool_option(t, "roudix.gaming.apps.heroic.enable", state.gaming_apps_heroic)
         t = _set_bool_option(t, "roudix.gaming.apps.faugus.enable", state.gaming_apps_faugus)
         t = _set_bool_option(t, "roudix.gaming.apps.prismlauncher.enable", state.gaming_apps_prismlauncher)
+        t = _set_bool_option(t, "roudix.gaming.apps.modrinth.enable", state.gaming_apps_modrinth)
         t = _set_bool_option(t, "roudix.gaming.apps.vintagestory.enable", state.gaming_apps_vintagestory)
         t = _set_bool_option(t, "roudix.gaming.apps.mangohud.enable", state.gaming_apps_mangohud)
     t = _sub_bool(t, "roudix.mesa.useGit", state.mesa_use_git)
@@ -137,6 +169,22 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.matrixClient", state.matrix_client)
     t = _sub_string(t, "roudix.discord", state.discord)
     t = _sub_bool(t, "roudix.waydroid.enable", state.waydroid_enable)
+
+    t = _set_bool_option(t, "roudix.apps.gimp.enable", state.app_gimp)
+    t = _set_bool_option(t, "roudix.apps.inkscape.enable", state.app_inkscape)
+    t = _set_bool_option(t, "roudix.apps.spotify.enable", state.app_spotify)
+    t = _set_bool_option(t, "roudix.apps.songrec.enable", state.app_songrec)
+    t = _set_bool_option(t, "roudix.apps.easyeffects.enable", state.app_easyeffects)
+    t = _set_bool_option(t, "roudix.apps.mpv.enable", state.app_mpv)
+    t = _set_bool_option(t, "roudix.apps.qbittorrent.enable", state.app_qbittorrent)
+    t = _set_bool_option(t, "roudix.apps.telegram.enable", state.app_telegram)
+
+    if state.app_spotify:
+        t = _set_string_option(t, "roudix.spicetify.theme", state.spicetify_theme)
+        t = _set_nullable_string_option(t, "roudix.spicetify.colorScheme", state.spicetify_color_scheme)
+        t = _set_bool_option(t, "roudix.spicetify.extensions.adblock.enable", state.spicetify_adblock)
+        t = _set_bool_option(t, "roudix.spicetify.extensions.hidePodcasts.enable", state.spicetify_hide_podcasts)
+        t = _set_bool_option(t, "roudix.spicetify.marketplace.enable", state.spicetify_marketplace)
 
     t = _sub_bool(t, "roudix.contentCreation.enable", state.content_creation_enable)
     if state.content_creation_enable:

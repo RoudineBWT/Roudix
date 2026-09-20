@@ -53,9 +53,8 @@ let
   # which HM module to import based on `roudix.zen.variant`.
   zenVariant = osConfig.roudix.zen.variant or "twilight";
   zenHomeModules = {
-    beta              = inputs.zen-browser.homeModules.beta;
-    twilight          = inputs.zen-browser.homeModules.twilight;
-    twilight-official = inputs.zen-browser.homeModules.twilight-official;
+    beta     = inputs.zen-browser.homeModules.beta;
+    twilight = inputs.zen-browser.homeModules.twilight;
   };
 
   # ── Content creation ─────────────────────────────────────────────────────
@@ -118,7 +117,6 @@ in
     ./fish.nix
     ./bash.nix
     ./ssh.nix
-    ./spicetify.nix
     ./gaming-home.nix
     ./gitwatch.nix
     # Zen Browser HM module — imported unconditionally (lazy), only builds
@@ -126,10 +124,12 @@ in
     # Which channel gets imported is driven by `roudix.zen.variant`.
     zenHomeModules.${zenVariant}
   ] ++ lib.optional (builtins.pathExists ./git.nix) ./git.nix
-    ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
+    ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
+    # Spotify + Spicetify (roudix.apps.spotify.enable)
+    ++ lib.optional osConfig.roudix.apps.spotify.enable ./spicetify.nix;
 
   # ── Easyeffects preset ───────────────────────────────────────────────────
-  xdg.configFile."easyeffects" = {
+  xdg.configFile."easyeffects" = lib.mkIf osConfig.roudix.apps.easyeffects.enable {
     source = "${dotfiles}/easyeffects";
     recursive = true;
   };
@@ -173,13 +173,16 @@ in
     nvd
     capitaine-cursors
     bibata-cursors
-    inkscape
-    gimp
     starship
-    easyeffects
-    rnnoise-plugin
-    songrec
   ])
+  # Optional common apps (roudix.apps.*)
+  ++ lib.optional osConfig.roudix.apps.gimp.enable pkgs.gimp
+  ++ lib.optional osConfig.roudix.apps.inkscape.enable pkgs.inkscape
+  ++ lib.optional osConfig.roudix.apps.songrec.enable pkgs.songrec
+  ++ lib.optionals osConfig.roudix.apps.easyeffects.enable [ pkgs.easyeffects pkgs.rnnoise-plugin ]
+  ++ lib.optionals osConfig.roudix.apps.mpv.enable [ pkgs.mpv pkgs.yt-dlp ]
+  ++ lib.optional osConfig.roudix.apps.qbittorrent.enable pkgs.qbittorrent
+  ++ lib.optional osConfig.roudix.apps.telegram.enable pkgs.telegram-desktop
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage
   # Discord (optionnel)
