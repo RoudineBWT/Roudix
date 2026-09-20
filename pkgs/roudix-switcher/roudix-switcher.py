@@ -168,6 +168,7 @@ GAMING_APPS = [
     {"id": "heroic",        "name": "Heroic",         "key": "roudix.gaming.apps.heroic.enable",        "default": True},
     {"id": "faugus",        "name": "Faugus Launcher","key": "roudix.gaming.apps.faugus.enable",        "default": True},
     {"id": "prismlauncher", "name": "Prism Launcher", "key": "roudix.gaming.apps.prismlauncher.enable", "default": True},
+    {"id": "modrinth",      "name": "Modrinth",       "key": "roudix.gaming.apps.modrinth.enable",      "default": True},
     {"id": "vintagestory",  "name": "Vintage Story",  "key": "roudix.gaming.apps.vintagestory.enable",  "default": True},
     {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable",      "default": True},
 ]
@@ -324,6 +325,11 @@ SYSTEM_TOGGLES = [
     {"id": "fastfetchNix",   "name": L("Config fastfetch Roudix", "Roudix fastfetch config"),          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
     {"id": "fstrim",         "name": L("Fstrim (TRIM auto pour SSD/NVMe)", "Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
     {"id": "vmGuest",        "name": L("Invité VM (QEMU/Spice agent)", "VM guest (QEMU/Spice agent)"),     "key": "roudix.vmGuest.enable",         "default": False},
+    # Carried over from the old home/local.nix — now driven by a system
+    # toggle (see hosts/roudix/local.nix), but was never wired up here.
+    {"id": "mpv",            "name": L("MPV (+ yt-dlp)", "MPV (+ yt-dlp)"),                   "key": "roudix.apps.mpv.enable",         "default": True},
+    {"id": "qbittorrent",    "name": "qBittorrent",                                            "key": "roudix.apps.qbittorrent.enable", "default": True},
+    {"id": "telegram",       "name": "Telegram",                                               "key": "roudix.apps.telegram.enable",    "default": True},
 ]
 
 

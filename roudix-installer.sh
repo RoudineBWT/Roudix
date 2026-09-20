@@ -669,21 +669,35 @@ GAMING_LUTRIS="true"
 GAMING_HEROIC="true"
 GAMING_FAUGUS="true"
 GAMING_PRISMLAUNCHER="true"
+GAMING_MODRINTH="true"
 GAMING_VINTAGESTORY="true"
 GAMING_MANGOHUD="true"
 if [[ "$GAMING" == "true" ]]; then
   pick_bool "Enable ananicy-cpp? (auto-nice scheduler tweaks for gaming/apps)" ANANICY \
     "Yes" "No — off by default"
 
-  read -rp "Customize which gaming apps get installed? (Lutris, Heroic, Faugus, Prism Launcher, Vintage Story, MangoHud — all enabled by default) [y/N]: " customize_gaming_apps
+  read -rp "Customize which gaming apps get installed? (Lutris, Heroic, Faugus, Prism Launcher, Modrinth, Vintage Story, MangoHud — all enabled by default) [y/N]: " customize_gaming_apps
   if [[ "$customize_gaming_apps" =~ ^[Yy]$ ]]; then
     pick_bool "Install Lutris?" GAMING_LUTRIS "Yes" "No"
     pick_bool "Install Heroic Games Launcher? (Epic/GOG/Amazon)" GAMING_HEROIC "Yes" "No"
     pick_bool "Install Faugus Launcher?" GAMING_FAUGUS "Yes" "No"
     pick_bool "Install Prism Launcher? (Minecraft)" GAMING_PRISMLAUNCHER "Yes" "No"
+    pick_bool "Install Modrinth? (alternative Minecraft launcher)" GAMING_MODRINTH "Yes" "No"
     pick_bool "Install Vintage Story?" GAMING_VINTAGESTORY "Yes" "No"
     pick_bool "Install MangoHud? (in-game perf overlay)" GAMING_MANGOHUD "Yes" "No"
   fi
+fi
+
+# Carried over from the old home/local.nix — now driven by system toggles
+# (see hosts/roudix/local.nix), but weren't wired up in this installer.
+MPV="true"
+QBITTORRENT="true"
+TELEGRAM="true"
+read -rp "Customize standalone apps? (MPV, qBittorrent, Telegram — all enabled by default) [y/N]: " customize_misc_apps
+if [[ "$customize_misc_apps" =~ ^[Yy]$ ]]; then
+  pick_bool "Install MPV? (+ yt-dlp)" MPV "Yes" "No"
+  pick_bool "Install qBittorrent?" QBITTORRENT "Yes" "No"
+  pick_bool "Install Telegram?" TELEGRAM "Yes" "No"
 fi
 
 pick_bool "Use mesa-git? (bleeding-edge Mesa drivers, AMD/Intel)" MESA_GIT \
@@ -1028,8 +1042,12 @@ if [[ "$GAMING" == "true" ]]; then
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.heroic.enable" "${GAMING_HEROIC}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.faugus.enable" "${GAMING_FAUGUS}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.prismlauncher.enable" "${GAMING_PRISMLAUNCHER}"
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.modrinth.enable" "${GAMING_MODRINTH}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.vintagestory.enable" "${GAMING_VINTAGESTORY}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.mangohud.enable" "${GAMING_MANGOHUD}"
+  set_bool_option hosts/roudix/local.nix "roudix.apps.mpv.enable" "${MPV}"
+  set_bool_option hosts/roudix/local.nix "roudix.apps.qbittorrent.enable" "${QBITTORRENT}"
+  set_bool_option hosts/roudix/local.nix "roudix.apps.telegram.enable" "${TELEGRAM}"
 fi
 sed -i -E "s/roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*(true|false)/roudix.mesa.useGit = ${MESA_GIT}/" hosts/roudix/local.nix
 sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
@@ -1092,8 +1110,12 @@ if [[ "$GAMING" == "true" ]]; then
   check_opt "roudix.gaming.apps.heroic.enable"       "roudix\.gaming\.apps\.heroic\.enable[[:space:]]*=[[:space:]]*${GAMING_HEROIC}"
   check_opt "roudix.gaming.apps.faugus.enable"       "roudix\.gaming\.apps\.faugus\.enable[[:space:]]*=[[:space:]]*${GAMING_FAUGUS}"
   check_opt "roudix.gaming.apps.prismlauncher.enable" "roudix\.gaming\.apps\.prismlauncher\.enable[[:space:]]*=[[:space:]]*${GAMING_PRISMLAUNCHER}"
+  check_opt "roudix.gaming.apps.modrinth.enable"      "roudix\.gaming\.apps\.modrinth\.enable[[:space:]]*=[[:space:]]*${GAMING_MODRINTH}"
   check_opt "roudix.gaming.apps.vintagestory.enable" "roudix\.gaming\.apps\.vintagestory\.enable[[:space:]]*=[[:space:]]*${GAMING_VINTAGESTORY}"
   check_opt "roudix.gaming.apps.mangohud.enable"     "roudix\.gaming\.apps\.mangohud\.enable[[:space:]]*=[[:space:]]*${GAMING_MANGOHUD}"
+  check_opt "roudix.apps.mpv.enable"         "roudix\.apps\.mpv\.enable[[:space:]]*=[[:space:]]*${MPV}"
+  check_opt "roudix.apps.qbittorrent.enable" "roudix\.apps\.qbittorrent\.enable[[:space:]]*=[[:space:]]*${QBITTORRENT}"
+  check_opt "roudix.apps.telegram.enable"    "roudix\.apps\.telegram\.enable[[:space:]]*=[[:space:]]*${TELEGRAM}"
 fi
 check_opt "roudix.mesa.useGit"         "roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*${MESA_GIT}"
 check_opt "time.timeZone"              "time\.timeZone[[:space:]]*=[[:space:]]*\"${TIMEZONE}\""
