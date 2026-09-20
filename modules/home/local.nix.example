@@ -1,12 +1,12 @@
 { pkgs, lib, osConfig, roudixSwitch, dotfiles, ... }:
 {
-  # ── Fichiers d'overrides optionnels par compositeur ──────────────────────
-  # Si tu personnalises beaucoup un compositeur en particulier (surtout
-  # mango, dont l'override est un gros bloc de texte brut plutôt que
-  # quelques lignes Nix), crée le fichier correspondant à côté de local.nix
-  # et il sera importé automatiquement s'il existe — rien à activer à la
-  # main. Voir niri-custom.nix.example / umbriel-custom.nix.example /
-  # mango-custom.nix.example pour des exemples concrets à copier-coller.
+  # ── Optional per-compositor override files ──────────────────────────────
+  # If you customize one compositor a lot (especially mango, whose override
+  # is a large block of raw text rather than a few lines of Nix), create
+  # the matching file next to local.nix and it will be imported
+  # automatically if it exists — nothing to enable by hand. See
+  # niri-custom.nix.example / umbriel-custom.nix.example /
+  # mango-custom.nix.example for concrete copy-paste examples.
   imports =
     lib.optional (builtins.pathExists ./niri-custom.nix) ./niri-custom.nix
     ++ lib.optional (builtins.pathExists ./umbriel-custom.nix) ./umbriel-custom.nix
@@ -36,11 +36,11 @@
   # };
 
   # ── Niri / Umbriel / MangoWC overrides ──────────────────────────────────
-  # Pour des overrides courts (2-3 lignes), tu peux les coller directement
-  # ici. Pour un vrai fichier de perso par compositeur, voir
-  # niri-custom.nix.example / umbriel-custom.nix.example /
-  # mango-custom.nix.example — ils sont auto-importés (cf. `imports`
-  # ci-dessus) dès que tu les copies sans le suffixe `.example`.
+  # For short overrides (2-3 lines), you can paste them directly here. For
+  # a real per-compositor personal file, see niri-custom.nix.example /
+  # umbriel-custom.nix.example / mango-custom.nix.example — they're
+  # auto-imported (see `imports` above) as soon as you copy them without
+  # the `.example` suffix.
   # ── Add personal packages ────────────────────────────────────────────────
   # home.packages = with pkgs; [
   #   vlc

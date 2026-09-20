@@ -1,28 +1,28 @@
 { lib, ... }:
 {
-  # ── Overrides Umbriel personnels ──────────────────────────────────────────
-  # Copie ce fichier en umbriel-custom.nix (sans .example) à côté de
-  # local.nix — auto-importé (voir `imports` dans local.nix), gitignoré.
-  # Même règle que niri-custom.nix.example : nouvelle clé = assignation
-  # normale ; clé déjà définie par le dépôt = lib.mkForce.
+  # ── Personal Umbriel overrides ──────────────────────────────────────────
+  # Copy this file to umbriel-custom.nix (without .example) next to
+  # local.nix — auto-imported (see `imports` in local.nix), gitignored.
+  # Same rule as niri-custom.nix.example: new key = plain assignment;
+  # key already defined by the repo = lib.mkForce.
 
-  # -- Changer la résolution/position de tes écrans -------------------------
-  # (lance `umbriel outputs` en session pour les vrais noms de connecteur)
+  # -- Change your screens' resolution/position -------------------------
+  # (run `umbriel outputs` in session for the real connector names)
   # programs.umbriel.settings.output."DP-1".mode = lib.mkForce "3840x2160@144";
 
-  # -- Remapper un bind existant -----------------------------------------------
+  # -- Remap an existing bind -----------------------------------------------
   # programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn:some-command";
 
-  # -- Ajouter un bind qui n'existe pas encore --------------------------------
+  # -- Add a bind that doesn't exist yet --------------------------------
   # programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn:pavucontrol";
 
-  # -- Ajouter une règle de fenêtre en plus -----------------------------------
+  # -- Add an extra window rule -----------------------------------------------
   # programs.umbriel.settings.window_rule = [
   #   { match.app_id = "^mpv$"; default_floating = true; }
   # ];
 
-  # -- Remplacer toute la section animation -----------------------------------
+  # -- Replace the whole animation section -----------------------------------
   # programs.umbriel.settings.animation = lib.mkForce {
-  #   enabled = false; # tout désactiver, par ex. sur un vieux PC
+  #   enabled = false; # disable everything, e.g. on an old PC
   # };
 }
