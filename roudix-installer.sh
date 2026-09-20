@@ -669,18 +669,20 @@ GAMING_LUTRIS="true"
 GAMING_HEROIC="true"
 GAMING_FAUGUS="true"
 GAMING_PRISMLAUNCHER="true"
+GAMING_MODRINTH="true"
 GAMING_VINTAGESTORY="true"
 GAMING_MANGOHUD="true"
 if [[ "$GAMING" == "true" ]]; then
   pick_bool "Enable ananicy-cpp? (auto-nice scheduler tweaks for gaming/apps)" ANANICY \
     "Yes" "No — off by default"
 
-  read -rp "Customize which gaming apps get installed? (Lutris, Heroic, Faugus, Prism Launcher, Vintage Story, MangoHud — all enabled by default) [y/N]: " customize_gaming_apps
+  read -rp "Customize which gaming apps get installed? (Lutris, Heroic, Faugus, Prism Launcher, Modrinth, Vintage Story, MangoHud — all enabled by default) [y/N]: " customize_gaming_apps
   if [[ "$customize_gaming_apps" =~ ^[Yy]$ ]]; then
     pick_bool "Install Lutris?" GAMING_LUTRIS "Yes" "No"
     pick_bool "Install Heroic Games Launcher? (Epic/GOG/Amazon)" GAMING_HEROIC "Yes" "No"
     pick_bool "Install Faugus Launcher?" GAMING_FAUGUS "Yes" "No"
     pick_bool "Install Prism Launcher? (Minecraft)" GAMING_PRISMLAUNCHER "Yes" "No"
+    pick_bool "Install Modrinth? (alternative Minecraft launcher)" GAMING_MODRINTH "Yes" "No"
     pick_bool "Install Vintage Story?" GAMING_VINTAGESTORY "Yes" "No"
     pick_bool "Install MangoHud? (in-game perf overlay)" GAMING_MANGOHUD "Yes" "No"
   fi
@@ -988,6 +990,24 @@ pick "Discord:" DISCORD \
   "vanilla|Discord vanilla, no client patch" \
   "none|Don't install Discord"
 
+pick "Telegram:" TELEGRAM \
+  "none|None" \
+  "telegram|Telegram Desktop — official client" \
+  "ayugram|AyuGram — unofficial fork (ghost mode, anti-recall...)"
+
+pick "Video player:" VIDEO_PLAYER \
+  "vlc|VLC — widest format/codec support (recommended)" \
+  "clapper|Clapper — modern GTK4 player" \
+  "mpv|mpv — minimal, + yt-dlp for URL/streaming" \
+  "celluloid|Celluloid — GTK front-end for mpv" \
+  "none|Don't install a video player"
+
+pick "Torrent client:" TORRENT_CLIENT \
+  "none|None" \
+  "qbittorrent|qBittorrent — feature-rich, Qt-based" \
+  "fragments|Fragments — minimal GNOME/libadwaita client" \
+  "deluge|Deluge — plugin-based, lightweight"
+
 pick_bool "Enable Waydroid? (Android container)" WAYDROID \
   "Yes" "No"
 
@@ -1028,6 +1048,7 @@ if [[ "$GAMING" == "true" ]]; then
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.heroic.enable" "${GAMING_HEROIC}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.faugus.enable" "${GAMING_FAUGUS}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.prismlauncher.enable" "${GAMING_PRISMLAUNCHER}"
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.modrinth.enable" "${GAMING_MODRINTH}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.vintagestory.enable" "${GAMING_VINTAGESTORY}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.mangohud.enable" "${GAMING_MANGOHUD}"
 fi
@@ -1044,6 +1065,9 @@ sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix
 sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.telegram[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.telegram = \"${TELEGRAM}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.videoPlayer[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.videoPlayer = \"${VIDEO_PLAYER}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.torrentClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.torrentClient = \"${TORRENT_CLIENT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.waydroid.enable = ${WAYDROID}/" hosts/roudix/local.nix
 
 if [[ "$RGB" == "openlinkhub" ]]; then
@@ -1092,6 +1116,7 @@ if [[ "$GAMING" == "true" ]]; then
   check_opt "roudix.gaming.apps.heroic.enable"       "roudix\.gaming\.apps\.heroic\.enable[[:space:]]*=[[:space:]]*${GAMING_HEROIC}"
   check_opt "roudix.gaming.apps.faugus.enable"       "roudix\.gaming\.apps\.faugus\.enable[[:space:]]*=[[:space:]]*${GAMING_FAUGUS}"
   check_opt "roudix.gaming.apps.prismlauncher.enable" "roudix\.gaming\.apps\.prismlauncher\.enable[[:space:]]*=[[:space:]]*${GAMING_PRISMLAUNCHER}"
+  check_opt "roudix.gaming.apps.modrinth.enable"      "roudix\.gaming\.apps\.modrinth\.enable[[:space:]]*=[[:space:]]*${GAMING_MODRINTH}"
   check_opt "roudix.gaming.apps.vintagestory.enable" "roudix\.gaming\.apps\.vintagestory\.enable[[:space:]]*=[[:space:]]*${GAMING_VINTAGESTORY}"
   check_opt "roudix.gaming.apps.mangohud.enable"     "roudix\.gaming\.apps\.mangohud\.enable[[:space:]]*=[[:space:]]*${GAMING_MANGOHUD}"
 fi
@@ -1106,6 +1131,9 @@ check_opt "roudix.autoupdate.enable"   "roudix\.autoupdate\.enable[[:space:]]*=[
 check_opt "roudix.boot.bootloader"     "roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"${BOOTLOADER}\""
 check_opt "roudix.matrixClient"        "roudix\.matrixClient[[:space:]]*=[[:space:]]*\"${MATRIX_CLIENT}\""
 check_opt "roudix.discord" "roudix\.discord[[:space:]]*=[[:space:]]*\"${DISCORD}\""
+check_opt "roudix.telegram"            "roudix\.telegram[[:space:]]*=[[:space:]]*\"${TELEGRAM}\""
+check_opt "roudix.videoPlayer"         "roudix\.videoPlayer[[:space:]]*=[[:space:]]*\"${VIDEO_PLAYER}\""
+check_opt "roudix.torrentClient"       "roudix\.torrentClient[[:space:]]*=[[:space:]]*\"${TORRENT_CLIENT}\""
 check_opt "roudix.waydroid.enable"     "roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*${WAYDROID}"
 if [[ "$RGB" == "openlinkhub" ]]; then
   check_opt "roudix.memory.enable" "roudix\.memory\.enable[[:space:]]*=[[:space:]]*${MEMORY_ENABLE}"
@@ -1157,6 +1185,9 @@ echo -e "
   ${BOLD}Bootloader    :${NC} $BOOTLOADER
   ${BOLD}Matrix client :${NC} $MATRIX_CLIENT
   ${BOLD}Discord       :${NC} ${DISCORD}
+  ${BOLD}Telegram      :${NC} ${TELEGRAM}
+  ${BOLD}Video player  :${NC} ${VIDEO_PLAYER}
+  ${BOLD}Torrent client:${NC} ${TORRENT_CLIENT}
   ${BOLD}Waydroid      :${NC} $WAYDROID
   ${BOLD}Config dir    :${NC} $INSTALL_DIR
 "

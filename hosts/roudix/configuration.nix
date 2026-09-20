@@ -28,6 +28,9 @@
     ../../modules/system/mesa-git.nix
     ../../modules/system/waydroid.nix
     ../../modules/system/matrix.nix
+    ../../modules/system/telegram.nix
+    ../../modules/system/video-player.nix
+    ../../modules/system/torrent-client.nix
     ../../modules/system/appimage.nix
     ../../modules/system/filemanager.nix
     ../../modules/system/terminal.nix

@@ -107,6 +107,9 @@ class InstallState:
     bootloader: str = "limine"       # limine | systemd-boot
     matrix_client: str = "none"      # none | element | cinny
     discord: str = "vencord"         # roudix.discord — vencord | vanilla | none
+    telegram: str = "none"           # roudix.telegram — none | telegram | ayugram
+    video_player: str = "vlc"        # roudix.videoPlayer — vlc | clapper | mpv | celluloid | none
+    torrent_client: str = "none"     # roudix.torrentClient — none | qbittorrent | fragments | deluge
     waydroid_enable: bool = False
 
     # ── Optional common apps (roudix.apps.*, all true by default) ──────────
@@ -115,9 +118,6 @@ class InstallState:
     app_spotify: bool = True         # Spotify + Spicetify (Comfy theme)
     app_songrec: bool = True
     app_easyeffects: bool = True     # + rnnoise-plugin
-    app_mpv: bool = False            # + yt-dlp, off by default
-    app_qbittorrent: bool = False    # off by default
-    app_telegram: bool = False       # off by default
 
     # ── Spicetify (only meaningful if app_spotify) ──────────────────────────
     spicetify_theme: str = "colorful"        # roudix.spicetify.theme — colorful | comfy

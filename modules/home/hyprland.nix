@@ -87,7 +87,6 @@ in
       gnome-disk-utility
       mission-center
       loupe
-      clapper
       gpu-screen-recorder
 
       # GTK theming

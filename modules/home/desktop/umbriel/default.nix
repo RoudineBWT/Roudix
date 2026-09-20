@@ -83,8 +83,6 @@ in
       gnome-disk-utility
       mission-center
       loupe
-      clapper
-      clapper-enhancers
       gpu-screen-recorder
 
       nwg-look

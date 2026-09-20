@@ -26,6 +26,37 @@ let
     none    = null;
   }.${discordType};
 
+  telegramType = osConfig.roudix.telegram or "none";
+
+  telegramPackage = {
+    telegram = pkgs.telegram-desktop;
+    ayugram  = pkgs.ayugram-desktop;
+    none     = null;
+  }.${telegramType};
+
+  # Video player — was hardcoded (clapper, on niri/hyprland/mangowc/umbriel
+  # only) or a DE-agnostic opt-in boolean (roudix.apps.mpv.enable); now one
+  # DE-agnostic choice. Returns a *list* (clapper needs its enhancers
+  # alongside it), unlike the single-package matrix/discord/telegram maps.
+  videoPlayerType = osConfig.roudix.videoPlayer or "vlc";
+
+  videoPlayerPackages = {
+    clapper   = [ pkgs.clapper pkgs.clapper-enhancers ];
+    mpv       = [ pkgs.mpv pkgs.yt-dlp ];
+    celluloid = [ pkgs.celluloid ];
+    vlc       = [ pkgs.vlc ];
+    none      = [ ];
+  }.${videoPlayerType};
+
+  torrentClientType = osConfig.roudix.torrentClient or "none";
+
+  torrentClientPackage = {
+    qbittorrent = pkgs.qbittorrent;
+    fragments   = pkgs.fragments;
+    deluge      = pkgs.deluge;
+    none        = null;
+  }.${torrentClientType};
+
   terminalType = osConfig.roudix.terminal or "ghostty";
 
   terminalPackage = {
@@ -180,13 +211,16 @@ in
   ++ lib.optional osConfig.roudix.apps.inkscape.enable pkgs.inkscape
   ++ lib.optional osConfig.roudix.apps.songrec.enable pkgs.songrec
   ++ lib.optionals osConfig.roudix.apps.easyeffects.enable [ pkgs.easyeffects pkgs.rnnoise-plugin ]
-  ++ lib.optionals osConfig.roudix.apps.mpv.enable [ pkgs.mpv pkgs.yt-dlp ]
-  ++ lib.optional osConfig.roudix.apps.qbittorrent.enable pkgs.qbittorrent
-  ++ lib.optional osConfig.roudix.apps.telegram.enable pkgs.telegram-desktop
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage
   # Discord (optionnel)
   ++ lib.optional (discordPackage != null) discordPackage
+  # Telegram — official client or the AyuGram fork (optional)
+  ++ lib.optional (telegramPackage != null) telegramPackage
+  # Video player — VLC (default), clapper, mpv, celluloid, or none
+  ++ videoPlayerPackages
+  # Torrent client (optional)
+  ++ lib.optional (torrentClientPackage != null) torrentClientPackage
   # Note: Zen Browser is no longer added here as a raw package — see
   # `programs.zen-browser` below, driven by `osConfig.roudix.zen.*`.
   # Terminal choisi par l'utilisateur (roudix.terminal)

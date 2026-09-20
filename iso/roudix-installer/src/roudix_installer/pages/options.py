@@ -224,6 +224,33 @@ def _discord():
     ]
 
 
+def _telegram():
+    return [
+        ("none", L("Aucun", "None")),
+        ("telegram", L("Telegram (client officiel)", "Telegram (official client)")),
+        ("ayugram", L("AyuGram (fork : mode fantôme, anti-suppression...)", "AyuGram (fork: ghost mode, anti-recall...)")),
+    ]
+
+
+def _video_player():
+    return [
+        ("vlc", L("VLC (défaut, plus large support de formats)", "VLC (default, widest format support)")),
+        ("clapper", L("Clapper (GTK4 moderne)", "Clapper (modern GTK4)")),
+        ("mpv", L("mpv (+ yt-dlp)", "mpv (+ yt-dlp)")),
+        ("celluloid", L("Celluloid (interface GTK pour mpv)", "Celluloid (GTK front-end for mpv)")),
+        ("none", L("Aucun", "None")),
+    ]
+
+
+def _torrent_client():
+    return [
+        ("none", L("Aucun", "None")),
+        ("qbittorrent", "qBittorrent"),
+        ("fragments", L("Fragments (client GNOME minimaliste)", "Fragments (minimal GNOME client)")),
+        ("deluge", "Deluge"),
+    ]
+
+
 def _spicetify_themes():
     return [
         ("colorful", L("Colorful (défaut)", "Colorful (default)")),
@@ -846,6 +873,21 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.discord_row)
 
+        self.telegram_row = self._combo(
+            "Telegram", _telegram(), state.telegram
+        )
+        extra_group.add(self.telegram_row)
+
+        self.video_player_row = self._combo(
+            L("Lecteur vidéo", "Video player"), _video_player(), state.video_player
+        )
+        extra_group.add(self.video_player_row)
+
+        self.torrent_client_row = self._combo(
+            L("Client torrent", "Torrent client"), _torrent_client(), state.torrent_client
+        )
+        extra_group.add(self.torrent_client_row)
+
         self.waydroid_row = Adw.SwitchRow(title="Waydroid (Android)")
         self.waydroid_row.set_active(state.waydroid_enable)
         extra_group.add(self.waydroid_row)
@@ -910,17 +952,6 @@ class OptionsPage(Adw.NavigationPage):
         self.app_easyeffects_row.set_active(state.app_easyeffects)
         apps_group.add(self.app_easyeffects_row)
 
-        self.app_mpv_row = Adw.SwitchRow(title="mpv (+ yt-dlp)")
-        self.app_mpv_row.set_active(state.app_mpv)
-        apps_group.add(self.app_mpv_row)
-
-        self.app_qbittorrent_row = Adw.SwitchRow(title="qBittorrent")
-        self.app_qbittorrent_row.set_active(state.app_qbittorrent)
-        apps_group.add(self.app_qbittorrent_row)
-
-        self.app_telegram_row = Adw.SwitchRow(title="Telegram Desktop")
-        self.app_telegram_row.set_active(state.app_telegram)
-        apps_group.add(self.app_telegram_row)
         box.append(apps_group)
         self._sync_spicetify_rows()
 
@@ -1236,6 +1267,9 @@ class OptionsPage(Adw.NavigationPage):
         s.bootloader = self._selected_value(self.bootloader_row)
         s.matrix_client = self._selected_value(self.matrix_row)
         s.discord = self._selected_value(self.discord_row)
+        s.telegram = self._selected_value(self.telegram_row)
+        s.video_player = self._selected_value(self.video_player_row)
+        s.torrent_client = self._selected_value(self.torrent_client_row)
         s.waydroid_enable = self.waydroid_row.get_active()
         s.app_gimp = self.app_gimp_row.get_active()
         s.app_inkscape = self.app_inkscape_row.get_active()
@@ -1247,9 +1281,6 @@ class OptionsPage(Adw.NavigationPage):
         s.spicetify_marketplace = self.spicetify_marketplace_row.get_active()
         s.app_songrec = self.app_songrec_row.get_active()
         s.app_easyeffects = self.app_easyeffects_row.get_active()
-        s.app_mpv = self.app_mpv_row.get_active()
-        s.app_qbittorrent = self.app_qbittorrent_row.get_active()
-        s.app_telegram = self.app_telegram_row.get_active()
 
         s.content_creation_enable = self.content_creation_row.get_active()
         s.obs_enable = self.obs_row.get_active()

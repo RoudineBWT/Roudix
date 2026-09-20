@@ -129,9 +129,10 @@ can each be turned off individually via `roudix.apps.<name>.enable` (`gimp`,
 `inkscape`, `songrec`, `easyeffects`) — same as `roudix.apps.spotify.enable`
 above.
 
-Also available, opt-in (off by default): mpv + yt-dlp (`roudix.apps.mpv.enable`),
-qBittorrent (`roudix.apps.qbittorrent.enable`), Telegram Desktop
-(`roudix.apps.telegram.enable`).
+Also available, opt-in (off by default): a torrent client via
+`roudix.torrentClient` — `"qbittorrent"` (feature-rich, Qt-based),
+`"fragments"` (minimal GNOME/libadwaita client), `"deluge"` (plugin-based) or
+`"none"` (default).
 
 ## Spicetify
 
@@ -149,6 +150,7 @@ qBittorrent (`roudix.apps.qbittorrent.enable`), Telegram Desktop
 ## Other
 
 - Discord selectable via `roudix.discord` — `"vencord"` (patched client, default), `"vanilla"` (unpatched) or `"none"` (not installed)
+- Telegram selectable via `roudix.telegram` — `"telegram"` (official Telegram Desktop), `"ayugram"` (unofficial fork: ghost mode, anti-recall, local message history...) or `"none"` (default, not installed)
 - Code editor selectable via `roudix.editor` — `"zed"` (default), `"vscode"`, `"neovim"` or `"none"` (manage your own, e.g. AppImage/Flatpak)
 - Graphical (Wayland) keyboard layout via `roudix.keyboardLayout` / `roudix.keyboardVariant` (XKB, e.g. `"be"` / `"intl"`) — independent from `console.keyMap`, which only covers the TTY before the graphical session starts; has no effect on GNOME/KDE, which manage their own layout
 - Keyring + xdg-desktop-portal stack for "bare" compositors (Niri, Hyprland, MangoWC, Umbriel) selectable via `roudix.desktopIntegration` — `"gnome"` (gnome-keyring + xdg-desktop-portal-gtk/-gnome, default) or `"kde"` (KWallet + xdg-desktop-portal-kde); no effect on GNOME/KDE sessions, which keep their native stack
@@ -168,6 +170,7 @@ qBittorrent (`roudix.apps.qbittorrent.enable`), Telegram Desktop
 - Flatpak with Flathub remote + daily auto-update (via nix-flatpak)
 - Blueman Bluetooth manager
 - Matrix client — configurable via `roudix.matrixClient` (`element`, `cinny`, or `none`) — Element auto-selects kwallet6 on KDE, gnome-libsecret elsewhere
+- Video player selectable via `roudix.videoPlayer` — `"vlc"` (widest format support, default), `"clapper"` (modern GTK4 player), `"mpv"` (+ yt-dlp, minimal/streaming), `"celluloid"` (GTK front-end for mpv) or `"none"`; applies on every desktop (used to be Clapper hardcoded on bare compositors only, plus a separate DE-agnostic mpv toggle)
 - AppImage support enabled via `appimage.nix`
 - Waydroid (Android container) — optional, `roudix.waydroid.enable = true`
 - QEMU/KVM + Virt-Manager (optional)
