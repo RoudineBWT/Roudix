@@ -234,6 +234,27 @@ DISCORD_OPTIONS = [
     {"id": "none",    "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun client Discord", "Don't install a Discord client"),           "icon": "none.svg"},
 ]
 
+TELEGRAM_OPTIONS = [
+    {"id": "telegram", "name": "Telegram", "subtitle": L("Client officiel Telegram Desktop", "Official Telegram Desktop client"), "icon": "telegram.svg"},
+    {"id": "ayugram",  "name": "AyuGram",  "subtitle": L("Fork non-officiel : mode fantôme, anti-suppression...", "Unofficial fork: ghost mode, anti-recall..."), "icon": "ayugram.svg"},
+    {"id": "none",     "name": L("Aucun", "None"), "subtitle": L("N'installer aucun client Telegram", "Don't install a Telegram client"), "icon": "none.svg"},
+]
+
+VIDEO_PLAYERS = [
+    {"id": "vlc",       "name": "VLC",       "subtitle": L("Le plus large support de formats (défaut)", "Widest format/codec support (default)"), "icon": "vlc.svg"},
+    {"id": "clapper",   "name": "Clapper",   "subtitle": L("Lecteur GTK4 moderne", "Modern GTK4 player"), "icon": "clapper.svg"},
+    {"id": "mpv",       "name": "mpv",       "subtitle": L("+ yt-dlp — minimaliste, streaming/URL", "+ yt-dlp — minimal, URL/streaming support"), "icon": "mpv.svg"},
+    {"id": "celluloid", "name": "Celluloid", "subtitle": L("Interface GTK pour mpv", "GTK front-end for mpv"), "icon": "celluloid.svg"},
+    {"id": "none",      "name": L("Aucun", "None"), "subtitle": L("N'installer aucun lecteur vidéo", "Don't install a video player"), "icon": "none.svg"},
+]
+
+TORRENT_CLIENTS = [
+    {"id": "qbittorrent", "name": "qBittorrent", "subtitle": L("Complet, basé sur Qt", "Feature-rich, Qt-based"), "icon": "qbittorrent.svg"},
+    {"id": "fragments",   "name": "Fragments",   "subtitle": L("Client GNOME/libadwaita minimaliste", "Minimal GNOME/libadwaita client"), "icon": "fragments.svg"},
+    {"id": "deluge",      "name": "Deluge",      "subtitle": L("Basé sur des plugins, léger", "Plugin-based, lightweight"), "icon": "deluge.svg"},
+    {"id": "none",        "name": L("Aucun", "None"), "subtitle": L("N'installer aucun client torrent", "Don't install a torrent client"), "icon": "none.svg"},
+]
+
 RGB_BACKENDS = [
     {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": L("Pour périphériques compatibles Corsair iCUE", "For Corsair iCUE-compatible devices"), "icon": "openlinkhub.svg"},
     {"id": "openrgb",     "name": "OpenRGB",      "subtitle": L("Support RGB multi-marques", "Multi-brand RGB support"),                   "icon": "openrgb.svg"},
@@ -325,11 +346,6 @@ SYSTEM_TOGGLES = [
     {"id": "fastfetchNix",   "name": L("Config fastfetch Roudix", "Roudix fastfetch config"),          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
     {"id": "fstrim",         "name": L("Fstrim (TRIM auto pour SSD/NVMe)", "Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
     {"id": "vmGuest",        "name": L("Invité VM (QEMU/Spice agent)", "VM guest (QEMU/Spice agent)"),     "key": "roudix.vmGuest.enable",         "default": False},
-    # Carried over from the old home/local.nix — now driven by a system
-    # toggle (see hosts/roudix/local.nix), but was never wired up here.
-    {"id": "mpv",            "name": L("MPV (+ yt-dlp)", "MPV (+ yt-dlp)"),                   "key": "roudix.apps.mpv.enable",         "default": True},
-    {"id": "qbittorrent",    "name": "qBittorrent",                                            "key": "roudix.apps.qbittorrent.enable", "default": True},
-    {"id": "telegram",       "name": "Telegram",                                               "key": "roudix.apps.telegram.enable",    "default": True},
 ]
 
 
@@ -1268,6 +1284,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.discord_selector = SelectorGroup("Discord", DISCORD_OPTIONS, current_discord, dark)
         chat_page.append(self.discord_selector)
 
+        current_telegram = get_string_option("roudix.telegram", "none")
+        self.telegram_selector = SelectorGroup("Telegram", TELEGRAM_OPTIONS, current_telegram, dark)
+        chat_page.append(self.telegram_selector)
+
         self.content_stack.add_named(chat_page, "chat")
 
         # ── "System" page: independent toggles + RGB backend ───────────────
@@ -1296,6 +1316,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         current_rgb = get_string_option("roudix.rgb", "none")
         self.rgb_selector = SelectorGroup(L("Backend RGB", "RGB backend"), RGB_BACKENDS, current_rgb, dark)
         system_page.append(self.rgb_selector)
+
+        current_video_player = get_string_option("roudix.videoPlayer", "vlc")
+        self.video_player_selector = SelectorGroup(L("Lecteur vidéo", "Video player"), VIDEO_PLAYERS, current_video_player, dark)
+        system_page.append(self.video_player_selector)
+
+        current_torrent_client = get_string_option("roudix.torrentClient", "none")
+        self.torrent_client_selector = SelectorGroup(L("Client torrent", "Torrent client"), TORRENT_CLIENTS, current_torrent_client, dark)
+        system_page.append(self.torrent_client_selector)
 
         self.content_stack.add_named(system_page, "system")
 
@@ -1555,7 +1583,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.login_shell_selector.update_icons(dark)
         self.filemanager_selector.update_icons(dark)
         self.matrix_selector.update_icons(dark)
+        self.discord_selector.update_icons(dark)
+        self.telegram_selector.update_icons(dark)
         self.rgb_selector.update_icons(dark)
+        self.video_player_selector.update_icons(dark)
+        self.torrent_client_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 
@@ -1665,6 +1697,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_discord = self.discord_selector.selected_id
         discord_changed = new_discord != cur_discord
 
+        # Telegram
+        cur_telegram = get_string_option("roudix.telegram", "none")
+        new_telegram = self.telegram_selector.selected_id
+        telegram_changed = new_telegram != cur_telegram
+
         # Independent system toggles
         system_changes = _diff_bool_items(self.system_toggles, self.system_group.get_states())
 
@@ -1673,12 +1710,22 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_rgb = self.rgb_selector.selected_id
         rgb_changed = new_rgb != cur_rgb
 
+        # Video player
+        cur_video_player = get_string_option("roudix.videoPlayer", "vlc")
+        new_video_player = self.video_player_selector.selected_id
+        video_player_changed = new_video_player != cur_video_player
+
+        # Torrent client
+        cur_torrent_client = get_string_option("roudix.torrentClient", "none")
+        new_torrent_client = self.torrent_client_selector.selected_id
+        torrent_client_changed = new_torrent_client != cur_torrent_client
+
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
                     terminal_changed, browsers_changed, zen_changed, zen_variant_changed, sine_changed,
                     zen_mods_changed, scratchpad_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
-                    discord_changed,
-                    system_changes, rgb_changed,
+                    discord_changed, telegram_changed,
+                    system_changes, rgb_changed, video_player_changed, torrent_client_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed,
                     cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed]):
             log.info("No changes detected — nothing to do.")
@@ -1725,8 +1772,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{L('Client Matrix', 'Matrix client')}: <b>{cur_matrix}</b> → <b>{new_matrix}</b>")
         if discord_changed:
             changes.append(f"Discord: <b>{cur_discord}</b> → <b>{new_discord}</b>")
+        if telegram_changed:
+            changes.append(f"Telegram: <b>{cur_telegram}</b> → <b>{new_telegram}</b>")
         if rgb_changed:
             changes.append(f"{L('Backend RGB', 'RGB backend')}: <b>{cur_rgb}</b> → <b>{new_rgb}</b>")
+        if video_player_changed:
+            changes.append(f"{L('Lecteur vidéo', 'Video player')}: <b>{cur_video_player}</b> → <b>{new_video_player}</b>")
+        if torrent_client_changed:
+            changes.append(f"{L('Client torrent', 'Torrent client')}: <b>{cur_torrent_client}</b> → <b>{new_torrent_client}</b>")
         if gaming_master_changed:
             changes.append(f"Gaming: <b>{_en if new_gaming_master else _dis}</b>")
         for _key, new_val, name, _file in gaming_changes.values():
@@ -1761,7 +1814,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "filemanager_changed": filemanager_changed, "new_filemanager": new_filemanager,
             "matrix_changed": matrix_changed, "new_matrix": new_matrix,
             "discord_changed": discord_changed, "new_discord": new_discord,
+            "telegram_changed": telegram_changed, "new_telegram": new_telegram,
             "rgb_changed": rgb_changed, "new_rgb": new_rgb,
+            "video_player_changed": video_player_changed, "new_video_player": new_video_player,
+            "torrent_client_changed": torrent_client_changed, "new_torrent_client": new_torrent_client,
             "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
             "gaming_changes": gaming_changes,
             "gaming_extras_changes": gaming_extras_changes,
@@ -1926,11 +1982,35 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 )
                 return
 
+        if pending["telegram_changed"]:
+            result = set_string_option("roudix.telegram", pending["new_telegram"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config Telegram : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Telegram config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
         if pending["rgb_changed"]:
             result = set_string_option("roudix.rgb", pending["new_rgb"])
             if result is not True:
                 self.status.set_markup(
                     L(f"<span color='red'>Erreur d'écriture — config RGB backend : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing RGB backend config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        if pending["video_player_changed"]:
+            result = set_string_option("roudix.videoPlayer", pending["new_video_player"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config lecteur vidéo : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing video player config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        if pending["torrent_client_changed"]:
+            result = set_string_option("roudix.torrentClient", pending["new_torrent_client"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config client torrent : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing torrent client config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 

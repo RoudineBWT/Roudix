@@ -688,18 +688,6 @@ if [[ "$GAMING" == "true" ]]; then
   fi
 fi
 
-# Carried over from the old home/local.nix — now driven by system toggles
-# (see hosts/roudix/local.nix), but weren't wired up in this installer.
-MPV="true"
-QBITTORRENT="true"
-TELEGRAM="true"
-read -rp "Customize standalone apps? (MPV, qBittorrent, Telegram — all enabled by default) [y/N]: " customize_misc_apps
-if [[ "$customize_misc_apps" =~ ^[Yy]$ ]]; then
-  pick_bool "Install MPV? (+ yt-dlp)" MPV "Yes" "No"
-  pick_bool "Install qBittorrent?" QBITTORRENT "Yes" "No"
-  pick_bool "Install Telegram?" TELEGRAM "Yes" "No"
-fi
-
 pick_bool "Use mesa-git? (bleeding-edge Mesa drivers, AMD/Intel)" MESA_GIT \
   "Yes — mesa-git (latest features/perf, less stable)" "No — stable Mesa (recommended)"
 
@@ -1002,6 +990,24 @@ pick "Discord:" DISCORD \
   "vanilla|Discord vanilla, no client patch" \
   "none|Don't install Discord"
 
+pick "Telegram:" TELEGRAM \
+  "none|None" \
+  "telegram|Telegram Desktop — official client" \
+  "ayugram|AyuGram — unofficial fork (ghost mode, anti-recall...)"
+
+pick "Video player:" VIDEO_PLAYER \
+  "vlc|VLC — widest format/codec support (recommended)" \
+  "clapper|Clapper — modern GTK4 player" \
+  "mpv|mpv — minimal, + yt-dlp for URL/streaming" \
+  "celluloid|Celluloid — GTK front-end for mpv" \
+  "none|Don't install a video player"
+
+pick "Torrent client:" TORRENT_CLIENT \
+  "none|None" \
+  "qbittorrent|qBittorrent — feature-rich, Qt-based" \
+  "fragments|Fragments — minimal GNOME/libadwaita client" \
+  "deluge|Deluge — plugin-based, lightweight"
+
 pick_bool "Enable Waydroid? (Android container)" WAYDROID \
   "Yes" "No"
 
@@ -1045,9 +1051,6 @@ if [[ "$GAMING" == "true" ]]; then
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.modrinth.enable" "${GAMING_MODRINTH}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.vintagestory.enable" "${GAMING_VINTAGESTORY}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.mangohud.enable" "${GAMING_MANGOHUD}"
-  set_bool_option hosts/roudix/local.nix "roudix.apps.mpv.enable" "${MPV}"
-  set_bool_option hosts/roudix/local.nix "roudix.apps.qbittorrent.enable" "${QBITTORRENT}"
-  set_bool_option hosts/roudix/local.nix "roudix.apps.telegram.enable" "${TELEGRAM}"
 fi
 sed -i -E "s/roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*(true|false)/roudix.mesa.useGit = ${MESA_GIT}/" hosts/roudix/local.nix
 sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
@@ -1062,6 +1065,9 @@ sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix
 sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.telegram[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.telegram = \"${TELEGRAM}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.videoPlayer[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.videoPlayer = \"${VIDEO_PLAYER}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.torrentClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.torrentClient = \"${TORRENT_CLIENT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.waydroid.enable = ${WAYDROID}/" hosts/roudix/local.nix
 
 if [[ "$RGB" == "openlinkhub" ]]; then
@@ -1113,9 +1119,6 @@ if [[ "$GAMING" == "true" ]]; then
   check_opt "roudix.gaming.apps.modrinth.enable"      "roudix\.gaming\.apps\.modrinth\.enable[[:space:]]*=[[:space:]]*${GAMING_MODRINTH}"
   check_opt "roudix.gaming.apps.vintagestory.enable" "roudix\.gaming\.apps\.vintagestory\.enable[[:space:]]*=[[:space:]]*${GAMING_VINTAGESTORY}"
   check_opt "roudix.gaming.apps.mangohud.enable"     "roudix\.gaming\.apps\.mangohud\.enable[[:space:]]*=[[:space:]]*${GAMING_MANGOHUD}"
-  check_opt "roudix.apps.mpv.enable"         "roudix\.apps\.mpv\.enable[[:space:]]*=[[:space:]]*${MPV}"
-  check_opt "roudix.apps.qbittorrent.enable" "roudix\.apps\.qbittorrent\.enable[[:space:]]*=[[:space:]]*${QBITTORRENT}"
-  check_opt "roudix.apps.telegram.enable"    "roudix\.apps\.telegram\.enable[[:space:]]*=[[:space:]]*${TELEGRAM}"
 fi
 check_opt "roudix.mesa.useGit"         "roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*${MESA_GIT}"
 check_opt "time.timeZone"              "time\.timeZone[[:space:]]*=[[:space:]]*\"${TIMEZONE}\""
@@ -1128,6 +1131,9 @@ check_opt "roudix.autoupdate.enable"   "roudix\.autoupdate\.enable[[:space:]]*=[
 check_opt "roudix.boot.bootloader"     "roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"${BOOTLOADER}\""
 check_opt "roudix.matrixClient"        "roudix\.matrixClient[[:space:]]*=[[:space:]]*\"${MATRIX_CLIENT}\""
 check_opt "roudix.discord" "roudix\.discord[[:space:]]*=[[:space:]]*\"${DISCORD}\""
+check_opt "roudix.telegram"            "roudix\.telegram[[:space:]]*=[[:space:]]*\"${TELEGRAM}\""
+check_opt "roudix.videoPlayer"         "roudix\.videoPlayer[[:space:]]*=[[:space:]]*\"${VIDEO_PLAYER}\""
+check_opt "roudix.torrentClient"       "roudix\.torrentClient[[:space:]]*=[[:space:]]*\"${TORRENT_CLIENT}\""
 check_opt "roudix.waydroid.enable"     "roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*${WAYDROID}"
 if [[ "$RGB" == "openlinkhub" ]]; then
   check_opt "roudix.memory.enable" "roudix\.memory\.enable[[:space:]]*=[[:space:]]*${MEMORY_ENABLE}"
@@ -1179,6 +1185,9 @@ echo -e "
   ${BOLD}Bootloader    :${NC} $BOOTLOADER
   ${BOLD}Matrix client :${NC} $MATRIX_CLIENT
   ${BOLD}Discord       :${NC} ${DISCORD}
+  ${BOLD}Telegram      :${NC} ${TELEGRAM}
+  ${BOLD}Video player  :${NC} ${VIDEO_PLAYER}
+  ${BOLD}Torrent client:${NC} ${TORRENT_CLIENT}
   ${BOLD}Waydroid      :${NC} $WAYDROID
   ${BOLD}Config dir    :${NC} $INSTALL_DIR
 "

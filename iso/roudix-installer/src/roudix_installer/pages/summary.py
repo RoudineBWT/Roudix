@@ -83,6 +83,9 @@ class SummaryPage(Adw.NavigationPage):
             ("Bootloader", s.bootloader),
             ("Matrix", s.matrix_client),
             ("Discord", s.discord),
+            ("Telegram", s.telegram),
+            (L("Lecteur vidéo", "Video player"), s.video_player),
+            (L("Client torrent", "Torrent client"), s.torrent_client),
             ("Waydroid", L("activé", "enabled") if s.waydroid_enable else L("désactivé", "disabled")),
             ("Apps", ", ".join(filter(None, [
                 "" if s.app_gimp else L("sans GIMP", "no GIMP"),
@@ -90,9 +93,6 @@ class SummaryPage(Adw.NavigationPage):
                 "" if s.app_spotify else L("sans Spotify", "no Spotify"),
                 "" if s.app_songrec else L("sans SongRec", "no SongRec"),
                 "" if s.app_easyeffects else L("sans EasyEffects", "no EasyEffects"),
-                "mpv" if s.app_mpv else "",
-                "qBittorrent" if s.app_qbittorrent else "",
-                "Telegram" if s.app_telegram else "",
             ])) or L("config par défaut", "default set")),
         ] + ([
             ("Spicetify", f"{s.spicetify_theme}"

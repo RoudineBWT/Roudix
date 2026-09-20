@@ -129,9 +129,10 @@ défaut mais chacun est débrayable individuellement via
 `roudix.apps.<nom>.enable` (`gimp`, `inkscape`, `songrec`, `easyeffects`) —
 comme `roudix.apps.spotify.enable` ci-dessus.
 
-Également disponibles, désactivées par défaut : mpv + yt-dlp
-(`roudix.apps.mpv.enable`), qBittorrent (`roudix.apps.qbittorrent.enable`),
-Telegram Desktop (`roudix.apps.telegram.enable`).
+Également disponible, désactivé par défaut : un client torrent via
+`roudix.torrentClient` — `"qbittorrent"` (complet, basé sur Qt),
+`"fragments"` (client GNOME/libadwaita minimaliste), `"deluge"`
+(basé sur des plugins) ou `"none"` (défaut).
 
 ## Spicetify
 
@@ -149,6 +150,7 @@ Telegram Desktop (`roudix.apps.telegram.enable`).
 ## Autre
 
 - Discord sélectionnable via `roudix.discord` — `"vencord"` (client patché, défaut), `"vanilla"` (non patché) ou `"none"` (non installé)
+- Telegram sélectionnable via `roudix.telegram` — `"telegram"` (client officiel Telegram Desktop), `"ayugram"` (fork non-officiel : mode fantôme, anti-suppression, historique local des messages...) ou `"none"` (défaut, non installé)
 - Éditeur de code sélectionnable via `roudix.editor` — `"zed"` (défaut), `"vscode"`, `"neovim"` ou `"none"` (gère le tien, ex : AppImage/Flatpak)
 - Disposition clavier graphique (Wayland) via `roudix.keyboardLayout` / `roudix.keyboardVariant` (XKB, ex : `"be"` / `"intl"`) — indépendant de `console.keyMap`, qui ne couvre que la TTY avant le lancement de la session graphique ; sans effet sur GNOME/KDE, qui gèrent leur propre disposition
 - Pile trousseau + xdg-desktop-portal pour les compositeurs "bruts" (Niri, Hyprland, MangoWC, Umbriel) sélectionnable via `roudix.desktopIntegration` — `"gnome"` (gnome-keyring + xdg-desktop-portal-gtk/-gnome, défaut) ou `"kde"` (KWallet + xdg-desktop-portal-kde) ; sans effet sur les sessions GNOME/KDE, qui gardent leur propre pile native
@@ -168,6 +170,7 @@ Telegram Desktop (`roudix.apps.telegram.enable`).
 - Flatpak avec le remote Flathub + mise à jour automatique quotidienne (via nix-flatpak)
 - Gestionnaire Bluetooth Blueman
 - Client Matrix — configurable via `roudix.matrixClient` (`element`, `cinny`, ou `none`) — Element choisit automatiquement kwallet6 sur KDE, gnome-libsecret ailleurs
+- Lecteur vidéo sélectionnable via `roudix.videoPlayer` — `"vlc"` (support de formats le plus large, défaut), `"clapper"` (lecteur GTK4 moderne), `"mpv"` (+ yt-dlp, minimaliste/streaming), `"celluloid"` (interface GTK pour mpv) ou `"none"` ; s'applique sur tous les bureaux (auparavant Clapper était codé en dur sur les compositeurs bruts uniquement, avec un toggle mpv séparé indépendant du DE)
 - Support AppImage activé via `appimage.nix`
 - Waydroid (conteneur Android) — optionnel, `roudix.waydroid.enable = true`
 - QEMU/KVM + Virt-Manager (optionnel)

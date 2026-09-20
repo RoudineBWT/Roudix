@@ -168,6 +168,9 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.boot.bootloader", state.bootloader)
     t = _sub_string(t, "roudix.matrixClient", state.matrix_client)
     t = _sub_string(t, "roudix.discord", state.discord)
+    t = _sub_string(t, "roudix.telegram", state.telegram)
+    t = _sub_string(t, "roudix.videoPlayer", state.video_player)
+    t = _sub_string(t, "roudix.torrentClient", state.torrent_client)
     t = _sub_bool(t, "roudix.waydroid.enable", state.waydroid_enable)
 
     t = _set_bool_option(t, "roudix.apps.gimp.enable", state.app_gimp)
@@ -175,9 +178,6 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _set_bool_option(t, "roudix.apps.spotify.enable", state.app_spotify)
     t = _set_bool_option(t, "roudix.apps.songrec.enable", state.app_songrec)
     t = _set_bool_option(t, "roudix.apps.easyeffects.enable", state.app_easyeffects)
-    t = _set_bool_option(t, "roudix.apps.mpv.enable", state.app_mpv)
-    t = _set_bool_option(t, "roudix.apps.qbittorrent.enable", state.app_qbittorrent)
-    t = _set_bool_option(t, "roudix.apps.telegram.enable", state.app_telegram)
 
     if state.app_spotify:
         t = _set_string_option(t, "roudix.spicetify.theme", state.spicetify_theme)

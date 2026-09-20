@@ -1,10 +1,12 @@
 { lib, ... }:
 {
   # ── Optional "common apps" ────────────────────────────────────────────
-  # The first five used to be hardcoded in `modules/home/common.nix`'s
-  # package list, so they default to true (matching the previous
-  # always-installed behaviour). The rest are new, opt-in additions and
-  # default to false. Read on the home-manager side via osConfig.
+  # These used to be hardcoded in `modules/home/common.nix`'s package
+  # list, so they default to true (matching the previous always-installed
+  # behaviour). Read on the home-manager side via osConfig.
+  # (mpv and qbittorrent used to live here too — they're now
+  # roudix.videoPlayer / roudix.torrentClient, since both gained real
+  # alternatives instead of a plain on/off.)
   options.roudix.apps = {
     gimp.enable = lib.mkOption {
       type    = lib.types.bool;
@@ -34,25 +36,6 @@
       type    = lib.types.bool;
       default = true;
       description = "Install EasyEffects + the rnnoise plugin (audio EQ / noise reduction).";
-    };
-
-    # ── New, opt-in apps (default false — not part of the base install) ──
-    mpv.enable = lib.mkOption {
-      type    = lib.types.bool;
-      default = false;
-      description = "Install mpv + yt-dlp (lightweight media player, with URL/streaming support).";
-    };
-
-    qbittorrent.enable = lib.mkOption {
-      type    = lib.types.bool;
-      default = false;
-      description = "Install qBittorrent (torrent client).";
-    };
-
-    telegram.enable = lib.mkOption {
-      type    = lib.types.bool;
-      default = false;
-      description = "Install Telegram Desktop.";
     };
   };
 }

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" version="1.1">
+ <circle style="opacity:0.2" cx="24" cy="25" r="20"/>
+ <circle style="fill:#1c71d8" cx="24" cy="24" r="20"/>
+ <path style="opacity:0.1;fill:#ffffff" d="M 24,4 A 20,20 0 0 0 4,24 20,20 0 0 0 4.0215,24.582 20,20 0 0 1 24,5 20,20 0 0 1 43.979,24.418 20,20 0 0 0 44,24 20,20 0 0 0 24,4 Z"/>
+ <path style="fill:#ffffff" d="M 11,17 20,17 22,20 37,20 37,32 A 2,2 0 0 1 35,34 L 13,34 A 2,2 0 0 1 11,32 Z"/>
+ <path style="fill:none;stroke:#1c71d8;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round" d="M 24,22 V 30 M 20.5,26.5 24,30 27.5,26.5"/>
+</svg>
