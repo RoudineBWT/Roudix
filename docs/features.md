@@ -33,7 +33,7 @@
 - `game-performance` wrapper — switches to a dedicated `tuned-adm` performance profile for the duration of a game, tracked via a `systemd-run --user --scope` cgroup (so it survives Steam re-forking/detaching) and restored on exit (usage: `game-performance %command%` in Steam launch options) — GameMode is disabled on purpose (incompatible with ananicy-cpp here)
 - `ffmpegthumbnailer` available system-wide (video thumbnails in file managers)
 - `protonup-qt` on KDE, `protonplus` on other DEs
-- Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft) and Vintage Story (via roudix-caches)
+- Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft, or Modrinth App as an alternative — `roudix.gaming.apps.modrinth.enable`) and Vintage Story (via roudix-caches)
 - Each gaming app individually toggleable via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (all `true` by default)
 
 ## Desktop (Niri)
@@ -118,15 +118,33 @@
 
 ## Music
 
-- Spotify patched with Spicetify
-- Comfy theme (local, customized)
+- Spotify patched with Spicetify (toggle via `roudix.apps.spotify.enable`)
+- Local theme, "colorful" by default (or "comfy") — see toggles below
 - Adblock + hide podcasts extensions
+
+## Optional common apps
+
+GIMP, Inkscape, SongRec and EasyEffects (+ rnnoise-plugin) ship by default but
+can each be turned off individually via `roudix.apps.<name>.enable` (`gimp`,
+`inkscape`, `songrec`, `easyeffects`) — same as `roudix.apps.spotify.enable`
+above.
+
+Also available, opt-in (off by default): mpv + yt-dlp (`roudix.apps.mpv.enable`),
+qBittorrent (`roudix.apps.qbittorrent.enable`), Telegram Desktop
+(`roudix.apps.telegram.enable`).
+
+## Spicetify
+
+- Theme: `roudix.spicetify.theme` — `"colorful"` (default, sanoojes/spicetify-colorful) or `"comfy"` (bundled Comfy theme)
+- Color scheme: `roudix.spicetify.colorScheme` — `null` (default) uses the theme's own default ("noctalia" for colorful, "Comfy" for comfy)
+- Extensions toggleable individually: `roudix.spicetify.extensions.adblock.enable`, `roudix.spicetify.extensions.hidePodcasts.enable` (both default `true`)
+- Marketplace custom app: `roudix.spicetify.marketplace.enable` (default `true`)
 
 ## Browser
 
 - Configurable browser list via `roudix.browsers` option
 - Supports `brave`, `helium` (via helium-nix flake), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, or `[]` for none
-- Zen Browser available separately via `roudix.zen.enable = true` (disabled by default); channel selectable via `roudix.zen.variant` — `"twilight"` (default), `"beta"` or `"twilight-official"`
+- Zen Browser available separately via `roudix.zen.enable = true` (disabled by default); channel selectable via `roudix.zen.variant` — `"twilight"` (default) or `"beta"`
 
 ## Other
 

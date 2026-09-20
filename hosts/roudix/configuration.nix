@@ -12,6 +12,8 @@
     ../../modules/system/kernel.nix
     ../../modules/system/gaming.nix
     ../../modules/system/content-creation.nix
+    ../../modules/system/apps.nix
+    ../../modules/system/spicetify.nix
     ../../modules/system/scx.nix
     ../../modules/system/flatpak.nix
     ../../modules/system/gpu

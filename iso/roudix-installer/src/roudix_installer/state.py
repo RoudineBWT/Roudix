@@ -57,7 +57,7 @@ class InstallState:
                                       # | firefox | librewolf | google-chrome | microsoft-edge
                                       # | ungoogled-chromium | chromium
     zen_browser: bool = False
-    zen_variant: str = "twilight"    # roudix.zen.variant — twilight | beta | twilight-official
+    zen_variant: str = "twilight"    # roudix.zen.variant — twilight | beta
     zen_sine_enable: bool = False    # roudix.zen.sine.enable
     zen_mods: list = field(default_factory=list)       # roudix.zen.mods
     zen_sine_mods: list = field(default_factory=list)  # roudix.zen.sine.mods
@@ -78,6 +78,7 @@ class InstallState:
     gaming_apps_heroic: bool = True         # roudix.gaming.apps.heroic.enable
     gaming_apps_faugus: bool = True         # roudix.gaming.apps.faugus.enable
     gaming_apps_prismlauncher: bool = True  # roudix.gaming.apps.prismlauncher.enable
+    gaming_apps_modrinth: bool = False      # roudix.gaming.apps.modrinth.enable — alt. to Prism, off by default
     gaming_apps_vintagestory: bool = True   # roudix.gaming.apps.vintagestory.enable
     gaming_apps_mangohud: bool = True       # roudix.gaming.apps.mangohud.enable
     timezone: str = "Europe/Brussels"
@@ -107,6 +108,24 @@ class InstallState:
     matrix_client: str = "none"      # none | element | cinny
     discord: str = "vencord"         # roudix.discord — vencord | vanilla | none
     waydroid_enable: bool = False
+
+    # ── Optional common apps (roudix.apps.*, all true by default) ──────────
+    app_gimp: bool = True
+    app_inkscape: bool = True
+    app_spotify: bool = True         # Spotify + Spicetify (Comfy theme)
+    app_songrec: bool = True
+    app_easyeffects: bool = True     # + rnnoise-plugin
+    app_mpv: bool = False            # + yt-dlp, off by default
+    app_qbittorrent: bool = False    # off by default
+    app_telegram: bool = False       # off by default
+
+    # ── Spicetify (only meaningful if app_spotify) ──────────────────────────
+    spicetify_theme: str = "colorful"        # roudix.spicetify.theme — colorful | comfy
+    spicetify_color_scheme: str = ""         # roudix.spicetify.colorScheme — "" = theme default (null)
+    spicetify_adblock: bool = True
+    spicetify_hide_podcasts: bool = True
+    spicetify_marketplace: bool = True
+
     terminal: str = "ghostty"        # ghostty | kitty | alacritty | foot | wezterm
     file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo
     ananicy_enable: bool = False     # roudix.gaming.ananicy.enable — opt-in, only meaningful if gaming.enable

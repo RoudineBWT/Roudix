@@ -1,39 +1,39 @@
 { lib, ... }:
 {
-  # ── Overrides niri personnels ─────────────────────────────────────────────
-  # Copie ce fichier en niri-custom.nix (sans .example) à côté de local.nix —
-  # il est auto-importé (voir `imports` dans local.nix) et gitignoré comme lui.
+  # ── Personal niri overrides ─────────────────────────────────────────────
+  # Copy this file to niri-custom.nix (without .example) next to local.nix —
+  # it's auto-imported (see `imports` in local.nix) and gitignored like it.
   #
-  # Règle simple :
-  #  - Nouvelle clé (nouvel output, nouveau bind, une règle en plus)
-  #    → assignation normale, ça se fusionne tout seul avec le dépôt.
-  #  - Clé DÉJÀ définie par le dépôt (même output, même combinaison de
-  #    touches) → il faut lib.mkForce, sinon Nix râle ("conflicting
-  #    definitions").
-  #  - Remplacer une section entière → lib.mkForce sur toute la section.
+  # Simple rule:
+  #  - New key (new output, new bind, one more rule)
+  #    → plain assignment, it merges on its own with the repo.
+  #  - Key ALREADY defined by the repo (same output, same key
+  #    combination) → needs lib.mkForce, otherwise Nix complains
+  #    ("conflicting definitions").
+  #  - Replacing a whole section → lib.mkForce on the whole section.
 
-  # -- Changer la résolution/position de tes écrans -------------------------
-  # (lance `niri msg outputs` en session pour avoir les vrais noms)
+  # -- Change your screens' resolution/position -------------------------
+  # (run `niri msg outputs` in session to get the real names)
   # programs.niri.settings.outputs."Lenovo Group Limited Legion 27Q-10 UNA07260".mode =
   #   lib.mkForce { width = 3840; height = 2160; refresh = 144.0; };
 
-  # -- Remapper un bind existant ----------------------------------------------
+  # -- Remap an existing bind ----------------------------------------------
   # programs.niri.settings.binds."Mod+T" = lib.mkForce {
   #   action.spawn = [ "alacritty" ];
   # };
 
-  # -- Ajouter un bind qui n'existe pas encore (pas besoin de mkForce) -------
+  # -- Add a bind that doesn't exist yet (no mkForce needed) -------
   # programs.niri.settings.binds."Mod+Shift+V".action.spawn = [ "pavucontrol" ];
 
-  # -- Ajouter une règle de fenêtre en plus -----------------------------------
-  # (les listes se fusionnent par CONCATÉNATION dans le système de modules
-  # Home Manager : ta règle vient s'ajouter après celles du dépôt)
+  # -- Add an extra window rule -----------------------------------------------
+  # (lists merge by CONCATENATION in the Home Manager module system: your
+  # rule gets appended after the repo's)
   # programs.niri.settings.window-rules = [
   #   { matches = [ { app-id = "mpv"; } ]; open-floating = true; }
   # ];
 
-  # -- Remplacer toute la section animations ----------------------------------
+  # -- Replace the whole animations section ----------------------------------
   # programs.niri.settings.animations = lib.mkForce {
-  #   window-open.duration-ms = 0; # tout désactiver, par ex. sur un vieux PC
+  #   window-open.duration-ms = 0; # disable everything, e.g. on an old PC
   # };
 }

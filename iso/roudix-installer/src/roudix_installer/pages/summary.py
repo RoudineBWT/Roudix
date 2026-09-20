@@ -84,6 +84,25 @@ class SummaryPage(Adw.NavigationPage):
             ("Matrix", s.matrix_client),
             ("Discord", s.discord),
             ("Waydroid", L("activé", "enabled") if s.waydroid_enable else L("désactivé", "disabled")),
+            ("Apps", ", ".join(filter(None, [
+                "" if s.app_gimp else L("sans GIMP", "no GIMP"),
+                "" if s.app_inkscape else L("sans Inkscape", "no Inkscape"),
+                "" if s.app_spotify else L("sans Spotify", "no Spotify"),
+                "" if s.app_songrec else L("sans SongRec", "no SongRec"),
+                "" if s.app_easyeffects else L("sans EasyEffects", "no EasyEffects"),
+                "mpv" if s.app_mpv else "",
+                "qBittorrent" if s.app_qbittorrent else "",
+                "Telegram" if s.app_telegram else "",
+            ])) or L("config par défaut", "default set")),
+        ] + ([
+            ("Spicetify", f"{s.spicetify_theme}"
+                + (f" ({s.spicetify_color_scheme})" if s.spicetify_color_scheme else "")
+                + " — " + (", ".join(filter(None, [
+                    "adblock" if s.spicetify_adblock else "",
+                    L("masquer podcasts", "hide podcasts") if s.spicetify_hide_podcasts else "",
+                    "marketplace" if s.spicetify_marketplace else "",
+                ])) or L("sans extension", "no extensions"))),
+        ] if s.app_spotify else []) + [
             (
                 L("Création de contenu", "Content Creation"),
                 (
