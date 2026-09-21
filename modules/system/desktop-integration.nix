@@ -1,5 +1,16 @@
 { lib, ... }:
 {
+  # dconf is what GSettings-backed apps (GTK3/4, and Chromium-family
+  # browsers like Helium/Brave/Chromium) read their theme/icon/cursor
+  # choice from. Previously only enabled inside modules/system/desktop/
+  # gnome.nix, so niri/hyprland/mangowc/umbriel got no GTK theming at all
+  # for those apps (no dconf database → GSettings falls back to
+  # upstream/Adwaita defaults regardless of what modules/home/gtk-theme.nix
+  # writes to ~/.config/gtk-3.0/settings.ini). mkDefault so gnome.nix's own
+  # (identical) assignment, or a user override in home/local.nix or
+  # hosts/*/local.nix, still wins without a "defined twice" conflict.
+  config.programs.dconf.enable = lib.mkDefault true;
+
   options.roudix.desktopIntegration = lib.mkOption {
     type = lib.types.enum [ "gnome" "kde" ];
     default = "gnome";

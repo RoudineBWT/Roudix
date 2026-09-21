@@ -36,6 +36,7 @@
     ../../modules/system/terminal.nix
     ../../modules/system/editor.nix
     ../../modules/system/desktop-integration.nix
+    ../../modules/system/icon-theme.nix
     ../../modules/system/keyboard.nix
     ../../modules/system/discord.nix
      inputs.brave-previews.nixosModules.default

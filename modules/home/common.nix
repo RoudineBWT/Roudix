@@ -150,6 +150,10 @@ in
     ./ssh.nix
     ./gaming-home.nix
     ./gitwatch.nix
+    # GTK theme/icons/cursor + dconf for GSettings-reading apps (GTK3/4,
+    # Chromium-family browsers incl. Helium). Imported unconditionally;
+    # a no-op on gnome/kde, which theme themselves natively.
+    ./gtk-theme.nix
     # Zen Browser HM module — imported unconditionally (lazy), only builds
     # anything when `programs.zen-browser.enable` is actually true below.
     # Which channel gets imported is driven by `roudix.zen.variant`.
