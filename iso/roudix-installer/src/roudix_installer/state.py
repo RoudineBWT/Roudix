@@ -63,12 +63,12 @@ class InstallState:
     zen_sine_mods: list = field(default_factory=list)  # roudix.zen.sine.mods
 
     # ── Desktop ───────────────────────────────────────────────────────────
-    desktop: str = "niri"            # niri | gnome | kde | hyprland | mangowc
+    desktop: str = "niri"            # niri | gnome | kde | hyprland | mangowc | umbriel
     desktop_shell: str = "noctalia"  # noctalia | dms | caelestia (only for niri/hyprland)
     default_shell: str = "fish"      # fish | bash
     editor: str = "zed"              # roudix.editor — vscode | zed | neovim | none
     desktop_integration: str = "gnome"  # roudix.desktopIntegration — gnome | kde
-                                         # only meaningful for niri/hyprland/mangowc
+                                         # only meaningful for niri/hyprland/mangowc/umbriel
                                          # (gnome/kde manage their own keyring/portal)
 
     # ── System behaviour ─────────────────────────────────────────────────

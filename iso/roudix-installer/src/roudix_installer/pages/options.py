@@ -102,6 +102,7 @@ def _desktops():
         ("kde", "KDE Plasma"),
         ("hyprland", "Hyprland"),
         ("mangowc", "MangoWC"),
+        ("umbriel", "Umbriel"),
     ]
 
 
@@ -1113,21 +1114,21 @@ class OptionsPage(Adw.NavigationPage):
 
     def _sync_shell_row(self):
         desktop = self._selected_value(self.desktop_row)
-        self.shell_row.set_visible(desktop in ("niri", "hyprland", "mangowc"))
+        self.shell_row.set_visible(desktop in ("niri", "hyprland", "mangowc", "umbriel"))
 
     def _sync_desktop_integration_row(self):
         # GNOME/KDE manage their own keyring/portal stack — this option
         # only matters for the "bare" compositors.
         desktop = self._selected_value(self.desktop_row)
         self.desktop_integration_row.set_visible(
-            desktop in ("niri", "hyprland", "mangowc")
+            desktop in ("niri", "hyprland", "mangowc", "umbriel")
         )
 
     def _sync_file_manager_row(self):
         # GNOME/KDE have one obvious native file manager, so hide the
         # question entirely and lock the value to it — matches
         # roudix-installer.sh, which doesn't even ask on those desktops.
-        # niri/hyprland/mangowc don't ship an opinionated file manager, so
+        # niri/hyprland/mangowc/umbriel don't ship an opinionated file manager, so
         # show the row and leave whatever the user already picked
         # untouched when landing on one of those.
         desktop = self._selected_value(self.desktop_row)

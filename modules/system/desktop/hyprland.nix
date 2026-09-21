@@ -24,7 +24,7 @@ config = lib.mkIf isHyprland {
   };
 
   # ── Noctalia greeter (when shell == noctalia) ──────────────────────────────
-  programs.noctalia-greeter = lib.mkIf isNoctalia {
+  services.displayManager.noctalia-greeter = lib.mkIf isNoctalia {
     enable = true;
     # Plain "hyprland" bypasses UWSM (graphical-session.target never
     # reached → xdg-desktop-portal.service fails as a dependency). Must
