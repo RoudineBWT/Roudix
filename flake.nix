@@ -91,7 +91,7 @@
     };
 
     helium = {
-      url = "github:x13-me/helium-nix/rolling";
+      url = "github:amaanq/helium-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
