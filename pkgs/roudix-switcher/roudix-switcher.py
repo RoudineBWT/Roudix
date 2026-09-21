@@ -399,6 +399,8 @@ SYSTEM_TOGGLES = [
     {"id": "fastfetchNix",   "name": L("Config fastfetch Roudix", "Roudix fastfetch config"),          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
     {"id": "fstrim",         "name": L("Fstrim (TRIM auto pour SSD/NVMe)", "Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
     {"id": "vmGuest",        "name": L("Invité VM (QEMU/Spice agent)", "VM guest (QEMU/Spice agent)"),     "key": "roudix.vmGuest.enable",         "default": False},
+    {"id": "podman",         "name": "Podman",                          "key": "roudix.podman.enable",          "default": False},
+    {"id": "distrobox",      "name": "Distrobox",                       "key": "roudix.distrobox.enable",       "default": False},
 ]
 
 

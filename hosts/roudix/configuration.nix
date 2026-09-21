@@ -22,6 +22,7 @@
     ../../modules/system/pipewire.nix
     ../../modules/system/fstrim.nix
     ../../modules/system/virtualization.nix
+    ../../modules/system/containers.nix
     ../../modules/system/vm-guest.nix
     ../../modules/system/update.nix
     ../../modules/system/hosts-gta.nix
@@ -65,6 +66,8 @@
   roudix.flatpak.enable        = lib.mkDefault false;
   roudix.fstrim.enable         = lib.mkDefault true;
   roudix.virtualization.enable = lib.mkDefault false;
+  roudix.podman.enable         = lib.mkDefault false;
+  roudix.distrobox.enable      = lib.mkDefault false;
   roudix.vmGuest.enable        = lib.mkDefault false; # enable only inside a VM
   roudix.hosts.gtaFix.enable   = lib.mkDefault false;
   roudix.autoupdate.enable     = lib.mkDefault true;
