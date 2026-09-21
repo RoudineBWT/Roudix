@@ -5,6 +5,7 @@ import re
 import subprocess
 import sys
 import logging
+import configparser
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -161,6 +162,58 @@ DESKTOP_INTEGRATIONS = [
 # Only "bare" compositors respect this choice — gnome/kde always keep
 # their own native stack.
 DESKTOP_INTEGRATION_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
+
+# roudix.iconTheme (modules/system/icon-theme.nix) — same "bare compositors
+# only" scope as desktop integration above: GNOME/KDE always keep their own
+# native icon picker (GNOME Settings / System Settings), and Papirus/Tela
+# there is whatever the user already chose that way, independent of this.
+ICON_THEMES = [
+    {
+        "id": "papirus",
+        "name": "Papirus",
+        "subtitle": L("Thème fixe, accent bleu Papirus (défaut)", "Fixed theme, Papirus' own blue accent (default)"),
+        "icon": "icon-theme-papirus.svg",
+    },
+    {
+        "id": "tela",
+        "name": "Tela",
+        "subtitle": L(
+            "Recoloré automatiquement sur l'accent Noctalia actuel si roudix.desktop.shell = \"noctalia\" ; sinon Tela classique",
+            "Auto-recolored to the current Noctalia accent if roudix.desktop.shell = \"noctalia\"; plain Tela otherwise",
+        ),
+        "icon": "icon-theme-tela.svg",
+    },
+    {
+        "id": "qogir",
+        "name": "Qogir",
+        "subtitle": L("Flat coloré, style Material (pkgs.qogir-icon-theme)", "Flat, colorful Material-style set (pkgs.qogir-icon-theme)"),
+        "icon": "icon-theme-qogir.svg",
+    },
+    {
+        "id": "whitesur",
+        "name": "WhiteSur",
+        "subtitle": L("Inspiré macOS Big Sur (pkgs.whitesur-icon-theme)", "macOS Big Sur-inspired (pkgs.whitesur-icon-theme)"),
+        "icon": "icon-theme-whitesur.svg",
+    },
+    {
+        "id": "colloid",
+        "name": "Colloid",
+        "subtitle": L("Flat, teintes douces (pkgs.colloid-icon-theme)", "Flat, soft-toned set (pkgs.colloid-icon-theme)"),
+        "icon": "icon-theme-colloid.svg",
+    },
+]
+
+# On-disk folder names already covered by the curated tiles above — used to
+# de-duplicate roudix-switcher's icon-theme scan (see scan_icon_themes())
+# so e.g. a scanned "Papirus-Dark" doesn't show up twice next to "Papirus".
+KNOWN_ICON_THEME_IDS = {
+    "Papirus", "Papirus-Dark", "Papirus-Light",
+    "Tela", "Tela-dark", "Tela-light",
+    "Tela-dark-noctalia", "Tela-light-noctalia", "Tela-noctalia",
+    "Qogir", "Qogir-dark", "Qogir-light", "Qogir-manjaro", "Qogir-manjaro-dark",
+    "WhiteSur", "WhiteSur-dark", "WhiteSur-light",
+    "Colloid", "Colloid-dark", "Colloid-light",
+}
 
 # name -> Nix option (roudix.gaming.apps.<id>.enable), all true by default
 GAMING_APPS = [
@@ -586,8 +639,88 @@ def set_shell(shell_id):
         return str(e)
 
 
-def load_icon(icon_filename, dark):
-    """Load icon from dark/ or light/ subfolder, fallback to theme icon."""
+# id (as used in EDITORS/TERMINALS/FILE_MANAGERS/etc.) -> standard
+# freedesktop icon name to try in the icon theme *actually active* on this
+# session (Papirus, Tela, whatever roudix.iconTheme is set to — this reads
+# live via Gtk.IconTheme, it doesn't care which one) before falling back to
+# roudix-switcher's own bundled SVG.
+#
+# Deliberately NOT exhaustive: only apps I'm confident ship a real icon in
+# mainstream themes belong here. Niche/branded apps most themes don't cover
+# (Zen Twilight/Beta, Helium, AyuGram, Ghostty, Clapper, Fragments, Ptyxis,
+# Faugus, Vintage Story, ...) are left out on purpose, so they always use
+# the bundled custom SVG instead of a missed or wrong-guess lookup. Safe to
+# extend: has_icon() below just no-ops (silent fallback) for any entry that
+# turns out not to exist in a given theme, it never breaks anything.
+APP_ICON_THEME_NAMES = {
+    # Editors
+    "vscode":     "code",
+    "neovim":     "nvim",
+    "zed":        "zed",
+    # Terminals
+    "kitty":      "kitty",
+    "alacritty":  "Alacritty",
+    "wezterm":    "org.wezfurlong.wezterm",
+    "konsole":    "org.kde.konsole",
+    # File managers
+    # "nautilus" deliberately excluded: custom bundled icon on purpose,
+    # always shown regardless of the active theme's own Nautilus icon.
+    "dolphin":    "org.kde.dolphin",
+    "nemo":       "nemo",
+    "thunar":     "org.xfce.thunar",
+    "pcmanfm-qt": "pcmanfm-qt",
+    # Matrix / chat
+    "element":    "im.riot.Riot",
+    # "vencord" deliberately excluded: custom bundled icon on purpose (kept
+    # visually distinct from vanilla Discord), always shown regardless of
+    # the active theme's own Discord icon.
+    "vanilla":    "discord",
+    "telegram":   "telegram",
+    # Video players
+    "vlc":        "vlc",
+    "mpv":        "mpv",
+    "celluloid":  "io.github.celluloid_player.Celluloid",
+    # Torrent clients
+    "qbittorrent": "qbittorrent",
+    "deluge":     "deluge",
+}
+
+
+def load_icon(icon_filename, dark, icon_theme_name=None):
+    """Load icon from dark/ or light/ subfolder, fallback to theme icon.
+
+    icon_theme_name, when given, is tried FIRST against whatever GTK icon
+    theme is actually active on this session — if that theme (Papirus,
+    Tela, ...) really ships this app's icon, that's what gets shown, so the
+    switcher's own icons track the user's chosen theme instead of staying
+    fixed art forever. Falls through to icon_filename (bundled art) the
+    moment the active theme doesn't have it, silently and safely — this is
+    exactly the fallback that avoids ever needing to hand-copy a theme's
+    icon file into roudix-switcher for apps that DO exist in the theme
+    (Brave, VLC, Dolphin, ...); only apps genuinely missing from every
+    mainstream theme (Zen Twilight, AyuGram, Helium, ...) still need real,
+    hand-drawn art of their own.
+
+    If icon_filename isn't a bundled SVG (no .svg extension) and no theme
+    icon matched, it's treated as a literal GTK icon-theme name instead —
+    used for entries built at runtime with no dedicated artwork shipped in
+    icons/, e.g. icon themes found by scan_icon_themes()."""
+    if icon_theme_name:
+        display = Gdk.Display.get_default()
+        if display is not None:
+            gtk_icon_theme = Gtk.IconTheme.get_for_display(display)
+            if gtk_icon_theme.has_icon(icon_theme_name):
+                img = Gtk.Image.new_from_icon_name(icon_theme_name)
+                img.set_pixel_size(32)
+                return img
+    if os.path.isabs(icon_filename) and os.path.isfile(icon_filename):
+        img = Gtk.Image.new_from_file(icon_filename)
+        img.set_pixel_size(32)
+        return img
+    if not icon_filename.endswith(".svg"):
+        img = Gtk.Image.new_from_icon_name(icon_filename)
+        img.set_pixel_size(32)
+        return img
     theme = "dark" if dark else "light"
     path = os.path.join(ICONS_DIR, theme, icon_filename)
     if os.path.exists(path):
@@ -601,6 +734,196 @@ def load_icon(icon_filename, dark):
             img = Gtk.Image.new_from_icon_name("utilities-terminal-symbolic")
     img.set_pixel_size(32)
     return img
+
+
+# roudix.iconTheme id -> the on-disk variant folder name we look for
+# (case-insensitive prefix match, see _find_theme_variant_dir) under each
+# nixpkgs preview package's share/icons/. Kept loose on purpose — exact
+# capitalization/suffixing varies by package and isn't worth hardcoding
+# precisely when a prefix match finds it just as well.
+ICON_THEME_PREVIEW_FOLDERS = {
+    "papirus":  "papirus-dark",
+    "tela":     "tela-dark",
+    "qogir":    "qogir-dark",
+    "whitesur": "whitesur-dark",
+    "colloid":  "colloid-dark",
+}
+
+# Fixed fallback guesses, tried only if a theme's own index.theme couldn't
+# be read at all (rare/malformed theme) — most themes are now handled by
+# reading their real Directories= instead, see _theme_preview_icon below.
+_FOLDER_ICON_CANDIDATES = (
+    "scalable/places/folder.svg",
+    "scalable/places/folder-symbolic.svg",
+    "48/places/folder.svg",
+    "48x48/places/folder.svg",
+    "32/places/folder.svg",
+    "48/places/folder.png",
+    # KDE's Breeze (and some other Qt-oriented themes) reverse the usual
+    # <size>/<context> layout to <context>/<size>.
+    "places/48/folder.svg",
+    "places/48x48/folder.svg",
+    "places/32/folder.svg",
+    "places/scalable/folder.svg",
+)
+
+
+def _find_theme_variant_dir(icons_root, name_prefix):
+    """A theme's on-disk folder name isn't always the exact capitalization
+    we'd guess (Qogir-dark vs Qogir-Dark vs Qogir-dark-1.0, ...) — list
+    icons_root and prefix-match case-insensitively instead of assuming.
+    Prefers a name containing 'dark', then the shortest match (closest to
+    the base theme name, least likely to be an odd extra variant)."""
+    try:
+        entries = os.listdir(icons_root)
+    except OSError:
+        return None
+    matches = [e for e in entries if e.lower().startswith(name_prefix.lower())]
+    if not matches:
+        return None
+    matches.sort(key=lambda e: (0 if "dark" in e.lower() else 1, len(e)))
+    return matches[0]
+
+
+def _theme_preview_icon(theme_dir):
+    """The theme's own 'folder' icon — a live, always-accurate preview
+    instead of hand-drawn placeholder art.
+
+    Reads the theme's actual index.theme Directories= list rather than
+    guessing a layout: most themes are <size>/<context> (e.g. Qogir,
+    WhiteSur, Colloid, Papirus, Tela), but some — KDE's Breeze notably —
+    are <context>/<size> instead. Reading the real list handles both
+    without needing to know which convention a given theme follows.
+    Falls back to _FOLDER_ICON_CANDIDATES only if index.theme itself can't
+    be read. Returns None if no folder icon is found either way."""
+    directories = []
+    index_path = os.path.join(theme_dir, "index.theme")
+    if os.path.isfile(index_path):
+        parser = configparser.ConfigParser(interpolation=None, strict=False)
+        try:
+            parser.read(index_path, encoding="utf-8")
+            raw = parser.get("Icon Theme", "Directories", fallback="")
+            directories = [d.strip() for d in raw.split(",") if d.strip()]
+        except (OSError, configparser.Error, UnicodeDecodeError):
+            directories = []
+
+    def _rank(d):
+        lower = d.lower()
+        is_places = "places" in lower
+        is_scalable = "scalable" in lower
+        digits = "".join(ch for ch in d if ch.isdigit())
+        size = int(digits) if digits else (256 if is_scalable else 0)
+        # Places dirs first, scalable before fixed sizes, largest fixed
+        # size before smaller ones (crisper preview).
+        return (not is_places, not is_scalable, -size)
+
+    for d in sorted(directories, key=_rank):
+        for ext in ("svg", "png"):
+            path = os.path.join(theme_dir, d, f"folder.{ext}")
+            if os.path.isfile(path):
+                return path
+
+    for rel in _FOLDER_ICON_CANDIDATES:
+        path = os.path.join(theme_dir, rel)
+        if os.path.isfile(path):
+            return path
+    return None
+
+
+def curated_icon_theme_preview(theme_id):
+    """Real preview for one of Roudix's curated ids (ICON_THEME_PREVIEW_FOLDERS),
+    searched across ROUDIX_ICON_THEME_PREVIEW_PATH (set by default.nix from
+    the actual nixpkgs icon-theme packages). None outside the Nix build —
+    e.g. running this script directly for testing — where callers keep
+    ICON_THEMES' bundled placeholder SVG instead."""
+    prefix = ICON_THEME_PREVIEW_FOLDERS.get(theme_id)
+    if not prefix:
+        return None
+    for root in os.environ.get("ROUDIX_ICON_THEME_PREVIEW_PATH", "").split(":"):
+        if not root or not os.path.isdir(root):
+            continue
+        variant_dir = _find_theme_variant_dir(root, prefix)
+        if not variant_dir:
+            continue
+        preview = _theme_preview_icon(os.path.join(root, variant_dir))
+        if preview:
+            return preview
+    return None
+
+
+def _icon_theme_search_dirs():
+    """Where GTK/dconf-consuming apps actually look for icon themes:
+    every icons/ dir on XDG_DATA_DIRS (covers the system profile and the
+    home-manager per-user profile on NixOS) plus ~/.local/share/icons and
+    ~/.icons — the latter isn't always on XDG_DATA_DIRS but GTK always
+    checks it directly, and it's where tela-icon.nix drops its
+    Noctalia-recolored variants."""
+    dirs = []
+    xdg_data_dirs = os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share")
+    for base in xdg_data_dirs.split(":"):
+        if base:
+            dirs.append(os.path.join(base, "icons"))
+    xdg_data_home = os.environ.get("XDG_DATA_HOME", os.path.expanduser("~/.local/share"))
+    dirs.append(os.path.join(xdg_data_home, "icons"))
+    dirs.append(os.path.expanduser("~/.icons"))
+    return dirs
+
+
+def scan_icon_themes():
+    """Find icon themes installed beyond Roudix's curated set (ICON_THEMES)
+    — a nixpkgs package the user added themselves in modules/home/local.nix,
+    or a theme dropped by hand into ~/.icons.
+
+    Safety: this only ever returns a plain theme *name* (the folder's own
+    name) for display and, if picked, for roudix.iconTheme — never a Nix
+    package reference. gtk-theme.nix treats any name outside its curated
+    ids as a literal string with no package to install, so a scanned pick
+    can't inject anything into local.nix or break a rebuild — an
+    invalid/incomplete theme just falls back to hicolor icons at runtime,
+    exactly like a typo in a manual mkForce override would.
+    """
+    found = {}
+    for base in _icon_theme_search_dirs():
+        if not os.path.isdir(base):
+            continue
+        try:
+            entries = sorted(os.listdir(base))
+        except OSError:
+            continue
+        for entry in entries:
+            if entry in found or entry in KNOWN_ICON_THEME_IDS:
+                continue
+            if entry.lower() in ("hicolor", "default", "locolor"):
+                continue
+            # A raw " or newline in a folder name would break the Nix
+            # string literal roudix-switcher writes — reject rather than
+            # risk it, even though real icon themes never do this.
+            if '"' in entry or "\n" in entry:
+                continue
+            index_path = os.path.join(base, entry, "index.theme")
+            if not os.path.isfile(index_path):
+                continue
+            parser = configparser.ConfigParser(interpolation=None, strict=False)
+            try:
+                parser.read(index_path, encoding="utf-8")
+            except (OSError, configparser.Error, UnicodeDecodeError):
+                continue
+            if not parser.has_section("Icon Theme"):
+                continue
+            # No app-icon directories declared: it's a cursor theme or
+            # similarly unusable as a GTK icon theme, not a real pick.
+            if not parser.get("Icon Theme", "Directories", fallback="").strip():
+                continue
+            display_name = parser.get("Icon Theme", "Name", fallback=entry).strip() or entry
+            theme_dir = os.path.join(base, entry)
+            preview = _theme_preview_icon(theme_dir)
+            found[entry] = {
+                "id": entry,
+                "name": display_name,
+                "subtitle": base,
+                "icon": preview or "preferences-desktop-theme-symbolic",
+            }
+    return sorted(found.values(), key=lambda t: t["name"].lower())
 
 
 # ── Reusable selector widget ──────────────────────────────────────────────────
@@ -640,7 +963,7 @@ class SelectorGroup(Gtk.Box):
         row.set_title(item["name"])
         row.set_subtitle(item["subtitle"])
 
-        icon = load_icon(item["icon"], self._dark)
+        icon = load_icon(item["icon"], self._dark, APP_ICON_THEME_NAMES.get(item["id"]))
         self.icon_widgets[item["id"]] = (icon, item["icon"])
         row.add_prefix(icon)
 
@@ -868,6 +1191,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             ("chat",        L("Client de chat", "Chat Client")),
             ("system",      L("Système", "System")),
             ("integration", L("Intégration", "Integration")),
+            ("icon_theme", L("Thème d'icônes", "Icon Theme")),
         ]
         self._category_rows = {}
         for cat_id, cat_name in CATEGORIES:
@@ -1358,6 +1682,66 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.content_stack.add_named(integration_page, "integration")
 
+        # ── "Icon Theme" page: Papirus vs Tela (bare compositors only) ─────
+        icon_theme_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        icon_theme_page.set_margin_top(4)
+        icon_theme_page.set_margin_start(16)
+        icon_theme_page.set_margin_end(16)
+        icon_theme_page.set_margin_bottom(16)
+
+        current_icon_theme = get_string_option("roudix.iconTheme", "papirus")
+        # Scanned once per app launch, not on every redraw — icon themes
+        # don't appear/disappear mid-session, and re-walking the icon dirs
+        # on each toggle would just be wasted I/O.
+        detected_icon_themes = scan_icon_themes()
+        curated_icon_themes = []
+        for item in ICON_THEMES:
+            preview = curated_icon_theme_preview(item["id"])
+            entry = dict(item)
+            if preview:
+                entry["icon"] = preview  # real folder glyph, not placeholder art
+            curated_icon_themes.append(entry)
+        self.icon_theme_selector = SelectorGroup(
+            L("Thème d'icônes", "Icon theme"),
+            curated_icon_themes + detected_icon_themes,
+            current_icon_theme,
+            dark,
+        )
+        icon_theme_page.append(self.icon_theme_selector)
+
+        if detected_icon_themes:
+            detected_note = Gtk.Label(
+                label=L(
+                    f"{len(detected_icon_themes)} thème(s) supplémentaire(s) détecté(s) sur le système "
+                    "(paquet ajouté à la main, ou posé dans ~/.icons).",
+                    f"{len(detected_icon_themes)} additional theme(s) detected on the system "
+                    "(a package you added by hand, or dropped into ~/.icons).",
+                ),
+            )
+            detected_note.add_css_class("dim-label")
+            detected_note.set_wrap(True)
+            detected_note.set_halign(Gtk.Align.START)
+            icon_theme_page.append(detected_note)
+
+        icon_theme_note = Gtk.Label(
+            label=L(
+                "S'applique uniquement à niri, Hyprland, MangoWC et Umbriel — "
+                "GNOME et KDE gardent leur propre sélecteur d'icônes natif. "
+                "Avec Tela, la première recoloration se fait au prochain "
+                "changement de thème/accent Noctalia.",
+                "Only applies to niri, Hyprland, MangoWC and Umbriel — "
+                "GNOME and KDE keep their own native icon picker. With Tela, "
+                "the first recolor happens on the next Noctalia theme/accent "
+                "change.",
+            ),
+        )
+        icon_theme_note.add_css_class("dim-label")
+        icon_theme_note.set_wrap(True)
+        icon_theme_note.set_halign(Gtk.Align.START)
+        icon_theme_page.append(icon_theme_note)
+
+        self.content_stack.add_named(icon_theme_page, "icon_theme")
+
         self.content_stack.set_visible_child_name("desktop")
         self.category_list.select_row(self._category_rows["desktop"])
         self.category_list.connect("row-selected", self._on_category_selected)
@@ -1365,6 +1749,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._update_gaming_counter()
         self._update_integration_visibility(current_de)
         self._update_filemanager_visibility(current_de)
+        self._update_icon_theme_visibility(current_de)
 
         # ── Integrated terminal ───────────────────────────────────────────
         # Hidden by default: while no rebuild is running, this frame is
@@ -1546,6 +1931,16 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if not supported and self.category_list.get_selected_row() is row:
             self.category_list.select_row(self._category_rows["desktop"])
 
+    def _update_icon_theme_visibility(self, de_id: str):
+        """Cache la page Icon Theme pour gnome/kde (sans effet dessus, ils
+        gardent leur propre sélecteur natif) et retombe sur Desktop si elle
+        était sélectionnée."""
+        supported = de_id in DESKTOP_INTEGRATION_SUPPORTED_DE
+        row = self._category_rows["icon_theme"]
+        row.set_visible(supported)
+        if not supported and self.category_list.get_selected_row() is row:
+            self.category_list.select_row(self._category_rows["desktop"])
+
     def _on_de_toggled(self, check, *_):
         """Affiche/cache le shell selector et met à jour la liste selon le DE choisi."""
         new_de  = self.de_selector.selected_id
@@ -1553,6 +1948,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.shell_selector.set_visible(visible)
         self._update_integration_visibility(new_de)
         self._update_filemanager_visibility(new_de)
+        self._update_icon_theme_visibility(new_de)
 
         umbriel_visible = new_de in UMBRIEL_SUPPORTED_DE
         self.scratchpad_row.set_visible(umbriel_visible)
@@ -1720,12 +2116,18 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_torrent_client = self.torrent_client_selector.selected_id
         torrent_client_changed = new_torrent_client != cur_torrent_client
 
+        # Icon theme
+        cur_icon_theme = get_string_option("roudix.iconTheme", "papirus")
+        new_icon_theme = self.icon_theme_selector.selected_id
+        icon_theme_changed = new_icon_theme != cur_icon_theme
+
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
                     terminal_changed, browsers_changed, zen_changed, zen_variant_changed, sine_changed,
                     zen_mods_changed, scratchpad_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
                     discord_changed, telegram_changed,
                     system_changes, rgb_changed, video_player_changed, torrent_client_changed,
+                    icon_theme_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed,
                     cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed]):
             log.info("No changes detected — nothing to do.")
@@ -1780,6 +2182,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{L('Lecteur vidéo', 'Video player')}: <b>{cur_video_player}</b> → <b>{new_video_player}</b>")
         if torrent_client_changed:
             changes.append(f"{L('Client torrent', 'Torrent client')}: <b>{cur_torrent_client}</b> → <b>{new_torrent_client}</b>")
+        if icon_theme_changed:
+            changes.append(f"{L('Thème d\'icônes', 'Icon theme')}: <b>{cur_icon_theme}</b> → <b>{new_icon_theme}</b>")
         if gaming_master_changed:
             changes.append(f"Gaming: <b>{_en if new_gaming_master else _dis}</b>")
         for _key, new_val, name, _file in gaming_changes.values():
@@ -1818,6 +2222,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "rgb_changed": rgb_changed, "new_rgb": new_rgb,
             "video_player_changed": video_player_changed, "new_video_player": new_video_player,
             "torrent_client_changed": torrent_client_changed, "new_torrent_client": new_torrent_client,
+            "icon_theme_changed": icon_theme_changed, "new_icon_theme": new_icon_theme,
             "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
             "gaming_changes": gaming_changes,
             "gaming_extras_changes": gaming_extras_changes,
@@ -2011,6 +2416,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     L(f"<span color='red'>Erreur d'écriture — config client torrent : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing torrent client config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        if pending["icon_theme_changed"]:
+            result = set_string_option("roudix.iconTheme", pending["new_icon_theme"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config thème d'icônes : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing icon theme config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 

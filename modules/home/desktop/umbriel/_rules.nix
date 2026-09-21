@@ -47,7 +47,7 @@ in
       default_floating_size_px = { width = 1316; height = 1011; };
       default_position = { x = 0; y = 0; anchor = "top_left"; };
     } // (if scratchpadApps
-          then { default_scratchpad = "communication"; }
+          then { default_scratchpad = "communication"; default_pinned = true; }
           else { default_floating = false; })
     )
     (
@@ -63,7 +63,7 @@ in
       default_floating_size_px = { width = 555; height = 1011; };
       default_position = { x = 0; y = 0; anchor = "top_right"; };
     } // (if scratchpadApps
-          then { default_scratchpad = "communication"; }
+          then { default_scratchpad = "communication"; default_pinned = true; }
           else { default_floating = false; })
     )
     {
@@ -71,6 +71,7 @@ in
       default_floating = true;
       default_floating_size_px = { width = 1505; height = 755; };
       blur = true;
+      default_pinned = true;
     }
     {
       match.app_id = "^firefox$";
@@ -234,7 +235,7 @@ in
       default_output = "DP-3";
       default_workspace = 2;
     } // (if scratchpadApps
-          then { default_scratchpad = "music"; default_floating_size = { width = 0.8; height = 0.85; }; }
+          then { default_scratchpad = "music"; default_floating_size = { width = 0.8; height = 0.85; }; default_pinned = true; }
           else { default_maximize = true; })
     )
     {

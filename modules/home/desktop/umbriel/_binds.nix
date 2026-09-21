@@ -179,7 +179,7 @@ in
     # a named scratchpad disables the implicit "default", so every action
     # takes a ":name" suffix.
 
-    "Mod+Shift+Space" = "window-move-to-scratchpad:misc";
+    "Mod+Shift+Space" = ''spawn:sh -c "umbriel msg window-toggle-pinned; umbriel msg window-move-to-scratchpad:misc"'';
     "Mod+Space" = "scratchpad-toggle:misc";
     "Mod+Ctrl+Space" = "window-restore-from-scratchpad:misc";
     "Mod+Alt+Space" = "scratchpad-focus-next:misc";

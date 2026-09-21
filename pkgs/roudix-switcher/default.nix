@@ -1,4 +1,19 @@
 { lib, pkgs }:
+let
+  # Icon-theme packages kept around purely so the "Icon Theme" page can show
+  # each theme's own real "folder" glyph as a live preview (see
+  # _theme_preview_icon() in roudix-switcher.py) instead of hand-drawn
+  # placeholder art. Picking a theme in the UI does NOT depend on these
+  # being installed system-wide — modules/home/gtk-theme.nix pulls in
+  # whichever one is actually selected via roudix.iconTheme on its own.
+  iconThemesForPreview = with pkgs; [
+    papirus-icon-theme
+    tela-icon-theme
+    qogir-icon-theme
+    whitesur-icon-theme
+    colloid-icon-theme
+  ];
+in
 pkgs.stdenv.mkDerivation {
   pname = "roudix-switcher";
   version = "2.0.0";
@@ -14,6 +29,13 @@ pkgs.stdenv.mkDerivation {
       pygobject3
     ]))
   ];
+  # wrapGAppsHook4 picks this array up automatically in its own fixupPhase
+  # wrapping — no separate wrapProgram call needed.
+  preFixup = ''
+    gappsWrapperArgs+=(
+      --set ROUDIX_ICON_THEME_PREVIEW_PATH "${lib.concatMapStringsSep ":" (p: "${p}/share/icons") iconThemesForPreview}"
+    )
+  '';
   installPhase = ''
     mkdir -p $out/bin $out/share/applications \
       $out/share/icons/hicolor/scalable/apps \

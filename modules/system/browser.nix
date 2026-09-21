@@ -13,7 +13,7 @@ let
     "brave-origin" = { package = pkgs.brave-origin;                command = "brave-origin";                    extras = []; };
     "brave-origin-beta" = { package = pkgs.brave-origin-beta;                command = "brave-origin-beta";     extras = []; };
     "brave-origin-nightly" = { package = pkgs.brave-origin-nightly;          command = "brave-origin-nightly";  extras = []; };
-    "helium"   = { package = inputs.helium.packages.${pkgs.system}.helium-appimage;  command = "helium";        extras = []; };
+    "helium"   = { package = inputs.helium.packages.${pkgs.system}.default;  command = "helium";        extras = []; };
     "vivaldi"  = { package = pkgs.vivaldi;                                   command = "vivaldi";               extras = [ pkgs.vivaldi-ffmpeg-codecs ]; };
     "chromium" = { package = pkgs.chromium;                                  command = "chromium";              extras = []; };
     "firefox"  = { package = pkgs.firefox;                                   command = "firefox";               extras = []; };
