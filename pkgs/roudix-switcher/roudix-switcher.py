@@ -639,13 +639,81 @@ def set_shell(shell_id):
         return str(e)
 
 
-def load_icon(icon_filename, dark):
+# id (as used in EDITORS/TERMINALS/FILE_MANAGERS/etc.) -> standard
+# freedesktop icon name to try in the icon theme *actually active* on this
+# session (Papirus, Tela, whatever roudix.iconTheme is set to — this reads
+# live via Gtk.IconTheme, it doesn't care which one) before falling back to
+# roudix-switcher's own bundled SVG.
+#
+# Deliberately NOT exhaustive: only apps I'm confident ship a real icon in
+# mainstream themes belong here. Niche/branded apps most themes don't cover
+# (Zen Twilight/Beta, Helium, AyuGram, Ghostty, Clapper, Fragments, Ptyxis,
+# Faugus, Vintage Story, ...) are left out on purpose, so they always use
+# the bundled custom SVG instead of a missed or wrong-guess lookup. Safe to
+# extend: has_icon() below just no-ops (silent fallback) for any entry that
+# turns out not to exist in a given theme, it never breaks anything.
+APP_ICON_THEME_NAMES = {
+    # Editors
+    "vscode":     "code",
+    "neovim":     "nvim",
+    "zed":        "zed",
+    # Terminals
+    "kitty":      "kitty",
+    "alacritty":  "Alacritty",
+    "wezterm":    "org.wezfurlong.wezterm",
+    "konsole":    "org.kde.konsole",
+    # File managers
+    "nautilus":   "org.gnome.Nautilus",
+    "dolphin":    "org.kde.dolphin",
+    "nemo":       "nemo",
+    "thunar":     "org.xfce.thunar",
+    "pcmanfm-qt": "pcmanfm-qt",
+    # Matrix / chat
+    "element":    "im.riot.Riot",
+    "vencord":    "discord",
+    "vanilla":    "discord",
+    "telegram":   "telegram",
+    # Video players
+    "vlc":        "vlc",
+    "mpv":        "mpv",
+    "celluloid":  "io.github.celluloid_player.Celluloid",
+    # Torrent clients
+    "qbittorrent": "qbittorrent",
+    "deluge":     "deluge",
+}
+
+
+def load_icon(icon_filename, dark, icon_theme_name=None):
     """Load icon from dark/ or light/ subfolder, fallback to theme icon.
 
-    If icon_filename isn't a bundled SVG (no .svg extension), it's treated
-    as a literal GTK icon-theme name instead — used for entries built at
-    runtime with no dedicated artwork shipped in icons/, e.g. icon themes
-    found by scan_icon_themes()."""
+    icon_theme_name, when given, is tried FIRST against whatever GTK icon
+    theme is actually active on this session — if that theme (Papirus,
+    Tela, ...) really ships this app's icon, that's what gets shown, so the
+    switcher's own icons track the user's chosen theme instead of staying
+    fixed art forever. Falls through to icon_filename (bundled art) the
+    moment the active theme doesn't have it, silently and safely — this is
+    exactly the fallback that avoids ever needing to hand-copy a theme's
+    icon file into roudix-switcher for apps that DO exist in the theme
+    (Brave, VLC, Dolphin, ...); only apps genuinely missing from every
+    mainstream theme (Zen Twilight, AyuGram, Helium, ...) still need real,
+    hand-drawn art of their own.
+
+    If icon_filename isn't a bundled SVG (no .svg extension) and no theme
+    icon matched, it's treated as a literal GTK icon-theme name instead —
+    used for entries built at runtime with no dedicated artwork shipped in
+    icons/, e.g. icon themes found by scan_icon_themes()."""
+    if icon_theme_name:
+        display = Gdk.Display.get_default()
+        if display is not None:
+            gtk_icon_theme = Gtk.IconTheme.get_for_display(display)
+            if gtk_icon_theme.has_icon(icon_theme_name):
+                img = Gtk.Image.new_from_icon_name(icon_theme_name)
+                img.set_pixel_size(32)
+                return img
+    if os.path.isabs(icon_filename) and os.path.isfile(icon_filename):
+        img = Gtk.Image.new_from_file(icon_filename)
+        img.set_pixel_size(32)
+        return img
     if not icon_filename.endswith(".svg"):
         img = Gtk.Image.new_from_icon_name(icon_filename)
         img.set_pixel_size(32)
@@ -663,6 +731,59 @@ def load_icon(icon_filename, dark):
             img = Gtk.Image.new_from_icon_name("utilities-terminal-symbolic")
     img.set_pixel_size(32)
     return img
+
+
+# roudix.iconTheme id -> the on-disk variant folder default.nix's preview
+# packages actually install, used to find each theme's real "folder" icon.
+ICON_THEME_PREVIEW_FOLDERS = {
+    "papirus":  "Papirus-Dark",
+    "tela":     "Tela-dark",
+    "qogir":    "Qogir-dark",
+    "whitesur": "WhiteSur-dark",
+    "colloid":  "Colloid-dark",
+}
+
+# Where a theme's most recognizable, always-present glyph usually lives —
+# checked in order, first match wins.
+_FOLDER_ICON_CANDIDATES = (
+    "scalable/places/folder.svg",
+    "scalable/places/folder-symbolic.svg",
+    "48/places/folder.svg",
+    "48x48/places/folder.svg",
+    "32/places/folder.svg",
+    "48/places/folder.png",
+)
+
+
+def _theme_preview_icon(theme_dir):
+    """The theme's own 'folder' icon — a live, always-accurate preview
+    instead of hand-drawn placeholder art. Returns None if theme_dir
+    doesn't ship one under any of the usual layouts (uncommon, but not
+    every theme follows convention), in which case callers fall back to
+    a bundled placeholder or a generic symbolic icon."""
+    for rel in _FOLDER_ICON_CANDIDATES:
+        path = os.path.join(theme_dir, rel)
+        if os.path.isfile(path):
+            return path
+    return None
+
+
+def curated_icon_theme_preview(theme_id):
+    """Real preview for one of Roudix's curated ids (ICON_THEME_PREVIEW_FOLDERS),
+    searched across ROUDIX_ICON_THEME_PREVIEW_PATH (set by default.nix from
+    the actual nixpkgs icon-theme packages). None outside the Nix build —
+    e.g. running this script directly for testing — where callers keep
+    ICON_THEMES' bundled placeholder SVG instead."""
+    folder = ICON_THEME_PREVIEW_FOLDERS.get(theme_id)
+    if not folder:
+        return None
+    for root in os.environ.get("ROUDIX_ICON_THEME_PREVIEW_PATH", "").split(":"):
+        if not root:
+            continue
+        preview = _theme_preview_icon(os.path.join(root, folder))
+        if preview:
+            return preview
+    return None
 
 
 def _icon_theme_search_dirs():
@@ -729,11 +850,13 @@ def scan_icon_themes():
             if not parser.get("Icon Theme", "Directories", fallback="").strip():
                 continue
             display_name = parser.get("Icon Theme", "Name", fallback=entry).strip() or entry
+            theme_dir = os.path.join(base, entry)
+            preview = _theme_preview_icon(theme_dir)
             found[entry] = {
                 "id": entry,
                 "name": display_name,
                 "subtitle": base,
-                "icon": "preferences-desktop-theme-symbolic",
+                "icon": preview or "preferences-desktop-theme-symbolic",
             }
     return sorted(found.values(), key=lambda t: t["name"].lower())
 
@@ -775,7 +898,7 @@ class SelectorGroup(Gtk.Box):
         row.set_title(item["name"])
         row.set_subtitle(item["subtitle"])
 
-        icon = load_icon(item["icon"], self._dark)
+        icon = load_icon(item["icon"], self._dark, APP_ICON_THEME_NAMES.get(item["id"]))
         self.icon_widgets[item["id"]] = (icon, item["icon"])
         row.add_prefix(icon)
 
@@ -1506,9 +1629,16 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         # don't appear/disappear mid-session, and re-walking the icon dirs
         # on each toggle would just be wasted I/O.
         detected_icon_themes = scan_icon_themes()
+        curated_icon_themes = []
+        for item in ICON_THEMES:
+            preview = curated_icon_theme_preview(item["id"])
+            entry = dict(item)
+            if preview:
+                entry["icon"] = preview  # real folder glyph, not placeholder art
+            curated_icon_themes.append(entry)
         self.icon_theme_selector = SelectorGroup(
             L("Thème d'icônes", "Icon theme"),
-            ICON_THEMES + detected_icon_themes,
+            curated_icon_themes + detected_icon_themes,
             current_icon_theme,
             dark,
         )
