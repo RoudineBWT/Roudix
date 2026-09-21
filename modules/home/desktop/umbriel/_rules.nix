@@ -71,6 +71,7 @@ in
       default_floating = true;
       default_floating_size_px = { width = 1505; height = 755; };
       blur = true;
+      default_pinned = true;
     }
     {
       match.app_id = "^firefox$";
