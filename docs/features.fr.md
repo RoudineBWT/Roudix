@@ -144,7 +144,7 @@ comme `roudix.apps.spotify.enable` ci-dessus.
 ## Navigateur
 
 - Liste de navigateurs configurable via l'option `roudix.browsers`
-- Supporte `brave`, `helium` (via amaanq/helium-flake, avec le patch DRM), `vivaldi` (avec les codecs ffmpeg), `firefox`, `librewolf`, `chromium`, ou `[]` pour aucun
+- Supporte `brave`, `helium` (via amaanq/helium-flake, avec le patch DRM — la lecture Widevine est branchée automatiquement via `modules/home/helium-widevine.nix` quand `helium` est sélectionné), `vivaldi` (avec les codecs ffmpeg), `firefox`, `librewolf`, `chromium`, ou `[]` pour aucun
 - Zen Browser disponible séparément via `roudix.zen.enable = true` (désactivé par défaut) ; canal sélectionnable via `roudix.zen.variant` — `"twilight"` (défaut) ou `"beta"`
 
 ## Autre

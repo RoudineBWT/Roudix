@@ -157,7 +157,10 @@ in
   ] ++ lib.optional (builtins.pathExists ./git.nix) ./git.nix
     ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
     # Spotify + Spicetify (roudix.apps.spotify.enable)
-    ++ lib.optional osConfig.roudix.apps.spotify.enable ./spicetify.nix;
+    ++ lib.optional osConfig.roudix.apps.spotify.enable ./spicetify.nix
+    # Widevine CDM pointer for Helium (DRM playback), only when helium is
+    # actually one of the selected browsers.
+    ++ lib.optional (lib.elem "helium" osConfig.roudix.browsers) ./helium-widevine.nix;
 
   # ── Easyeffects preset ───────────────────────────────────────────────────
   xdg.configFile."easyeffects" = lib.mkIf osConfig.roudix.apps.easyeffects.enable {
