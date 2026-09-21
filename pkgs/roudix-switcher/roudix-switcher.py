@@ -733,18 +733,22 @@ def load_icon(icon_filename, dark, icon_theme_name=None):
     return img
 
 
-# roudix.iconTheme id -> the on-disk variant folder default.nix's preview
-# packages actually install, used to find each theme's real "folder" icon.
+# roudix.iconTheme id -> the on-disk variant folder name we look for
+# (case-insensitive prefix match, see _find_theme_variant_dir) under each
+# nixpkgs preview package's share/icons/. Kept loose on purpose — exact
+# capitalization/suffixing varies by package and isn't worth hardcoding
+# precisely when a prefix match finds it just as well.
 ICON_THEME_PREVIEW_FOLDERS = {
-    "papirus":  "Papirus-Dark",
-    "tela":     "Tela-dark",
-    "qogir":    "Qogir-dark",
-    "whitesur": "WhiteSur-dark",
-    "colloid":  "Colloid-dark",
+    "papirus":  "papirus-dark",
+    "tela":     "tela-dark",
+    "qogir":    "qogir-dark",
+    "whitesur": "whitesur-dark",
+    "colloid":  "colloid-dark",
 }
 
-# Where a theme's most recognizable, always-present glyph usually lives —
-# checked in order, first match wins.
+# Fixed fallback guesses, tried only if a theme's own index.theme couldn't
+# be read at all (rare/malformed theme) — most themes are now handled by
+# reading their real Directories= instead, see _theme_preview_icon below.
 _FOLDER_ICON_CANDIDATES = (
     "scalable/places/folder.svg",
     "scalable/places/folder-symbolic.svg",
@@ -752,15 +756,70 @@ _FOLDER_ICON_CANDIDATES = (
     "48x48/places/folder.svg",
     "32/places/folder.svg",
     "48/places/folder.png",
+    # KDE's Breeze (and some other Qt-oriented themes) reverse the usual
+    # <size>/<context> layout to <context>/<size>.
+    "places/48/folder.svg",
+    "places/48x48/folder.svg",
+    "places/32/folder.svg",
+    "places/scalable/folder.svg",
 )
+
+
+def _find_theme_variant_dir(icons_root, name_prefix):
+    """A theme's on-disk folder name isn't always the exact capitalization
+    we'd guess (Qogir-dark vs Qogir-Dark vs Qogir-dark-1.0, ...) — list
+    icons_root and prefix-match case-insensitively instead of assuming.
+    Prefers a name containing 'dark', then the shortest match (closest to
+    the base theme name, least likely to be an odd extra variant)."""
+    try:
+        entries = os.listdir(icons_root)
+    except OSError:
+        return None
+    matches = [e for e in entries if e.lower().startswith(name_prefix.lower())]
+    if not matches:
+        return None
+    matches.sort(key=lambda e: (0 if "dark" in e.lower() else 1, len(e)))
+    return matches[0]
 
 
 def _theme_preview_icon(theme_dir):
     """The theme's own 'folder' icon — a live, always-accurate preview
-    instead of hand-drawn placeholder art. Returns None if theme_dir
-    doesn't ship one under any of the usual layouts (uncommon, but not
-    every theme follows convention), in which case callers fall back to
-    a bundled placeholder or a generic symbolic icon."""
+    instead of hand-drawn placeholder art.
+
+    Reads the theme's actual index.theme Directories= list rather than
+    guessing a layout: most themes are <size>/<context> (e.g. Qogir,
+    WhiteSur, Colloid, Papirus, Tela), but some — KDE's Breeze notably —
+    are <context>/<size> instead. Reading the real list handles both
+    without needing to know which convention a given theme follows.
+    Falls back to _FOLDER_ICON_CANDIDATES only if index.theme itself can't
+    be read. Returns None if no folder icon is found either way."""
+    directories = []
+    index_path = os.path.join(theme_dir, "index.theme")
+    if os.path.isfile(index_path):
+        parser = configparser.ConfigParser(interpolation=None, strict=False)
+        try:
+            parser.read(index_path, encoding="utf-8")
+            raw = parser.get("Icon Theme", "Directories", fallback="")
+            directories = [d.strip() for d in raw.split(",") if d.strip()]
+        except (OSError, configparser.Error, UnicodeDecodeError):
+            directories = []
+
+    def _rank(d):
+        lower = d.lower()
+        is_places = "places" in lower
+        is_scalable = "scalable" in lower
+        digits = "".join(ch for ch in d if ch.isdigit())
+        size = int(digits) if digits else (256 if is_scalable else 0)
+        # Places dirs first, scalable before fixed sizes, largest fixed
+        # size before smaller ones (crisper preview).
+        return (not is_places, not is_scalable, -size)
+
+    for d in sorted(directories, key=_rank):
+        for ext in ("svg", "png"):
+            path = os.path.join(theme_dir, d, f"folder.{ext}")
+            if os.path.isfile(path):
+                return path
+
     for rel in _FOLDER_ICON_CANDIDATES:
         path = os.path.join(theme_dir, rel)
         if os.path.isfile(path):
@@ -774,13 +833,16 @@ def curated_icon_theme_preview(theme_id):
     the actual nixpkgs icon-theme packages). None outside the Nix build —
     e.g. running this script directly for testing — where callers keep
     ICON_THEMES' bundled placeholder SVG instead."""
-    folder = ICON_THEME_PREVIEW_FOLDERS.get(theme_id)
-    if not folder:
+    prefix = ICON_THEME_PREVIEW_FOLDERS.get(theme_id)
+    if not prefix:
         return None
     for root in os.environ.get("ROUDIX_ICON_THEME_PREVIEW_PATH", "").split(":"):
-        if not root:
+        if not root or not os.path.isdir(root):
             continue
-        preview = _theme_preview_icon(os.path.join(root, folder))
+        variant_dir = _find_theme_variant_dir(root, prefix)
+        if not variant_dir:
+            continue
+        preview = _theme_preview_icon(os.path.join(root, variant_dir))
         if preview:
             return preview
     return None
