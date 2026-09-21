@@ -72,7 +72,7 @@
     # No niri equivalent: slightly dims unfocused windows to reinforce
     # the current focus visually.
     dim_unfocused = {
-      enabled = true;
+      enabled = false;
       duration_ms = 200;
       curve = "easeout";
       dim = 0.15;
