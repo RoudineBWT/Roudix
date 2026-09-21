@@ -293,17 +293,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1789692067,
-        "narHash": "sha256-vEihg6CGZAxd2i1iVPa500B1gmvYZBUfvPWIMDng9ws=",
-        "owner": "x13-me",
-        "repo": "helium-nix",
-        "rev": "d8aa165b2cf76f32c4943fdfd3ee93cc380d1b0c",
+        "lastModified": 1789753911,
+        "narHash": "sha256-wEApV4jnenWrOP1yfE3PnXgN7qSt1+JfQdScoEwQYB8=",
+        "owner": "amaanq",
+        "repo": "helium-flake",
+        "rev": "bbfcf825f0db4d0be62128c073dddb30da47d932",
         "type": "github"
       },
       "original": {
-        "owner": "x13-me",
-        "ref": "rolling",
-        "repo": "helium-nix",
+        "owner": "amaanq",
+        "repo": "helium-flake",
         "type": "github"
       }
     },
