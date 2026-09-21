@@ -663,14 +663,17 @@ APP_ICON_THEME_NAMES = {
     "wezterm":    "org.wezfurlong.wezterm",
     "konsole":    "org.kde.konsole",
     # File managers
-    "nautilus":   "org.gnome.Nautilus",
+    # "nautilus" deliberately excluded: custom bundled icon on purpose,
+    # always shown regardless of the active theme's own Nautilus icon.
     "dolphin":    "org.kde.dolphin",
     "nemo":       "nemo",
     "thunar":     "org.xfce.thunar",
     "pcmanfm-qt": "pcmanfm-qt",
     # Matrix / chat
     "element":    "im.riot.Riot",
-    "vencord":    "discord",
+    # "vencord" deliberately excluded: custom bundled icon on purpose (kept
+    # visually distinct from vanilla Discord), always shown regardless of
+    # the active theme's own Discord icon.
     "vanilla":    "discord",
     "telegram":   "telegram",
     # Video players
