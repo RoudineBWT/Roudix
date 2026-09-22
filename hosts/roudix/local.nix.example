@@ -99,6 +99,7 @@
   # roudix.apps.inkscape.enable    = false;
   # roudix.apps.spotify.enable     = false; # Spotify + Spicetify (Comfy theme)
   # roudix.apps.songrec.enable     = false;
+  # roudix.apps.ytmdesktop.enable  = false;
   # roudix.apps.easyeffects.enable = false; # + rnnoise-plugin
   # Spicetify (active only if roudix.apps.spotify.enable = true):
   # roudix.spicetify.theme = "comfy"; # "colorful" (default) or "comfy"
