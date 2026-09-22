@@ -384,6 +384,18 @@ CONTENT_CREATION_TOGGLES = [
 ]
 
 
+# Optional common apps (roudix.apps.*, modules/system/apps.nix) — all
+# true by default, shown as a toggle group on the "System" page.
+APPS_TOGGLES = [
+    {"id": "gimp",        "name": "GIMP",                             "key": "roudix.apps.gimp.enable",       "default": True},
+    {"id": "inkscape",    "name": "Inkscape",                         "key": "roudix.apps.inkscape.enable",   "default": True},
+    {"id": "spotify",     "name": "Spotify",                          "key": "roudix.apps.spotify.enable",    "default": True},
+    {"id": "songrec",     "name": "SongRec",                          "key": "roudix.apps.songrec.enable",    "default": True},
+    {"id": "ytmdesktop",  "name": "YTMDesktop",                       "key": "roudix.apps.ytmdesktop.enable", "default": True},
+    {"id": "easyeffects", "name": "EasyEffects",                      "key": "roudix.apps.easyeffects.enable","default": True},
+]
+
+
 # Independent system toggles, unrelated to each other — grouped into a
 # "System" page rather than creating one category per option.
 SYSTEM_TOGGLES = [
@@ -1638,6 +1650,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         }
         self.system_group = ToggleListGroup(L("Interrupteurs", "Toggles"), self.system_toggles, system_current)
         system_page.append(self.system_group)
+
+        apps_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in APPS_TOGGLES}
+        self.apps_group = ToggleListGroup(L("Apps optionnelles", "Optional apps"), APPS_TOGGLES, apps_current)
+        system_page.append(self.apps_group)
 
         current_rgb = get_string_option("roudix.rgb", "none")
         self.rgb_selector = SelectorGroup(L("Backend RGB", "RGB backend"), RGB_BACKENDS, current_rgb, dark)

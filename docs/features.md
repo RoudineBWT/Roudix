@@ -124,10 +124,10 @@
 
 ## Optional common apps
 
-GIMP, Inkscape, SongRec and EasyEffects (+ rnnoise-plugin) ship by default but
-can each be turned off individually via `roudix.apps.<name>.enable` (`gimp`,
-`inkscape`, `songrec`, `easyeffects`) — same as `roudix.apps.spotify.enable`
-above.
+GIMP, Inkscape, SongRec, YTMDesktop and EasyEffects (+ rnnoise-plugin) ship by
+default but can each be turned off individually via `roudix.apps.<name>.enable`
+(`gimp`, `inkscape`, `songrec`, `ytmdesktop`, `easyeffects`) — same as
+`roudix.apps.spotify.enable` above.
 
 Also available, opt-in (off by default): a torrent client via
 `roudix.torrentClient` — `"qbittorrent"` (feature-rich, Qt-based),

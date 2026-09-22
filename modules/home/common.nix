@@ -217,6 +217,7 @@ in
   ++ lib.optional osConfig.roudix.apps.gimp.enable pkgs.gimp
   ++ lib.optional osConfig.roudix.apps.inkscape.enable pkgs.inkscape
   ++ lib.optional osConfig.roudix.apps.songrec.enable pkgs.songrec
+  ++ lib.optional osConfig.roudix.apps.ytmdesktop.enable pkgs.ytmdesktop
   ++ lib.optionals osConfig.roudix.apps.easyeffects.enable [ pkgs.easyeffects pkgs.rnnoise-plugin ]
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage

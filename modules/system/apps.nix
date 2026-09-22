@@ -26,17 +26,16 @@
       description = "Install Spotify, themed with Spicetify (see roudix.spicetify.* for the theme/extensions).";
     };
 
-
-    youtube-music.enable = lib.mkOption {
-      type    = lib.types.bool;
-      default = true;
-      description = "Install Youtube Music Desktop, a Spotify aternative.";
-    };
-
     songrec.enable = lib.mkOption {
       type    = lib.types.bool;
       default = true;
       description = "Install SongRec (Shazam-like song recognition).";
+    };
+
+    ytmdesktop.enable = lib.mkOption {
+      type    = lib.types.bool;
+      default = true;
+      description = "Install YTMDesktop (YouTube Music desktop app).";
     };
 
     easyeffects.enable = lib.mkOption {
