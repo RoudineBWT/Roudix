@@ -310,7 +310,7 @@ TORRENT_CLIENTS = [
 
 MUSIC_PLAYERS = [
     {"id": "spotify",    "name": "Spotify",              "subtitle": L("+ Spicetify (défaut)", "+ Spicetify (default)"), "icon": "spotify.svg"},
-    {"id": "ytmdesktop", "name": "YouTube Music Desktop", "subtitle": L("Client YouTube Music non officiel", "Unofficial YouTube Music client"), "icon": "ytmdesktop.svg"},
+    {"id": "ytmdesktop", "name": "YouTube Music Desktop", "subtitle": L("Client YouTube Music non officiel", "Unofficial YouTube Music client"), "icon": "youtube-music-desktop-app.svg"},
     {"id": "none",       "name": L("Aucun", "None"),      "subtitle": L("N'installer aucun lecteur de musique", "Don't install a music player"), "icon": "none.svg"},
 ]
 
