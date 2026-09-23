@@ -252,6 +252,14 @@ def _torrent_client():
     ]
 
 
+def _music_player():
+    return [
+        ("spotify", L("Spotify + Spicetify (défaut)", "Spotify + Spicetify (default)")),
+        ("ytmdesktop", "YouTube Music Desktop"),
+        ("none", L("Aucun", "None")),
+    ]
+
+
 def _spicetify_themes():
     return [
         ("colorful", L("Colorful (défaut)", "Colorful (default)")),
@@ -889,6 +897,11 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.torrent_client_row)
 
+        self.music_player_row = self._combo(
+            L("Lecteur de musique", "Music player"), _music_player(), state.music_player
+        )
+        extra_group.add(self.music_player_row)
+
         self.waydroid_row = Adw.SwitchRow(title="Waydroid (Android)")
         self.waydroid_row.set_active(state.waydroid_enable)
         extra_group.add(self.waydroid_row)
@@ -910,10 +923,6 @@ class OptionsPage(Adw.NavigationPage):
         self.app_inkscape_row = Adw.SwitchRow(title="Inkscape")
         self.app_inkscape_row.set_active(state.app_inkscape)
         apps_group.add(self.app_inkscape_row)
-
-        self.app_spotify_row = Adw.SwitchRow(title="Spotify (+ Spicetify)")
-        self.app_spotify_row.set_active(state.app_spotify)
-        apps_group.add(self.app_spotify_row)
 
         self.spicetify_theme_row = self._combo(
             L("Thème Spicetify", "Spicetify theme"), _spicetify_themes(), state.spicetify_theme
@@ -1040,7 +1049,7 @@ class OptionsPage(Adw.NavigationPage):
         self.memory_rgb_row.connect("notify::active", lambda *_: self._sync_memory_rows())
         self.zen_row.connect("notify::active", lambda *_: self._sync_zen_rows())
         self.zen_sine_row.connect("notify::active", lambda *_: self._sync_zen_rows())
-        self.app_spotify_row.connect("notify::active", lambda *_: self._sync_spicetify_rows())
+        self.music_player_row.connect("notify::selected", lambda *_: self._sync_spicetify_rows())
         self.content_creation_row.connect(
             "notify::active", lambda *_: self._sync_content_creation_rows()
         )
@@ -1157,7 +1166,7 @@ class OptionsPage(Adw.NavigationPage):
         self.zen_sine_mods_row.set_visible(zen_active and self.zen_sine_row.get_active())
 
     def _sync_spicetify_rows(self):
-        spotify_active = self.app_spotify_row.get_active()
+        spotify_active = self._selected_value(self.music_player_row) == "spotify"
         for row in (
             self.spicetify_theme_row,
             self.spicetify_color_scheme_row,
@@ -1271,10 +1280,10 @@ class OptionsPage(Adw.NavigationPage):
         s.telegram = self._selected_value(self.telegram_row)
         s.video_player = self._selected_value(self.video_player_row)
         s.torrent_client = self._selected_value(self.torrent_client_row)
+        s.music_player = self._selected_value(self.music_player_row)
         s.waydroid_enable = self.waydroid_row.get_active()
         s.app_gimp = self.app_gimp_row.get_active()
         s.app_inkscape = self.app_inkscape_row.get_active()
-        s.app_spotify = self.app_spotify_row.get_active()
         s.spicetify_theme = self._selected_value(self.spicetify_theme_row)
         s.spicetify_color_scheme = self.spicetify_color_scheme_row.get_text().strip()
         s.spicetify_adblock = self.spicetify_adblock_row.get_active()

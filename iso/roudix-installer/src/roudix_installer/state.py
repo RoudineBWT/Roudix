@@ -110,16 +110,16 @@ class InstallState:
     telegram: str = "none"           # roudix.telegram — none | telegram | ayugram
     video_player: str = "vlc"        # roudix.videoPlayer — vlc | clapper | mpv | celluloid | none
     torrent_client: str = "none"     # roudix.torrentClient — none | qbittorrent | fragments | deluge
+    music_player: str = "spotify"    # roudix.musicPlayer — spotify | ytmdesktop | none
     waydroid_enable: bool = False
 
     # ── Optional common apps (roudix.apps.*, all true by default) ──────────
     app_gimp: bool = True
     app_inkscape: bool = True
-    app_spotify: bool = True         # Spotify + Spicetify (Comfy theme)
     app_songrec: bool = True
     app_easyeffects: bool = True     # + rnnoise-plugin
 
-    # ── Spicetify (only meaningful if app_spotify) ──────────────────────────
+    # ── Spicetify (only meaningful if music_player == "spotify") ────────────
     spicetify_theme: str = "colorful"        # roudix.spicetify.theme — colorful | comfy
     spicetify_color_scheme: str = ""         # roudix.spicetify.colorScheme — "" = theme default (null)
     spicetify_adblock: bool = True

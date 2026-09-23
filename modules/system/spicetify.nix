@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   # ── Spicetify (Spotify theming) ──────────────────────────────────────────
-  # Only meaningful when `roudix.apps.spotify.enable` is true — that option
+  # Only meaningful when `roudix.musicPlayer` is "spotify" — that option
   # gates whether `modules/home/spicetify.nix` even gets imported (which is
   # what actually installs Spotify + Spicetify). These just control WHAT
   # gets enabled once it is imported. Read on the home-manager side via

@@ -118,16 +118,20 @@
 
 ## Musique
 
-- Spotify patché avec Spicetify (débrayable via `roudix.apps.spotify.enable`)
-- Thème local, "colorful" par défaut (ou "comfy") — voir options ci-dessous
-- Extensions adblock + masquage des podcasts
+À choisir via `roudix.musicPlayer` — `"spotify"` (défaut), `"ytmdesktop"` ou
+`"none"`.
+
+- `"spotify"` — Spotify patché avec Spicetify. Thème local, "colorful" par
+  défaut (ou "comfy"), plus extensions adblock + masquage des podcasts —
+  voir options ci-dessous.
+- `"ytmdesktop"` — YouTube Music Desktop App (client YouTube Music non
+  officiel, basé sur Electron).
 
 ## Apps communes optionnelles
 
-GIMP, Inkscape, SongRec, YTMDesktop et EasyEffects (+ rnnoise-plugin) sont
-installés par défaut mais chacun est débrayable individuellement via
-`roudix.apps.<nom>.enable` (`gimp`, `inkscape`, `songrec`, `ytmdesktop`,
-`easyeffects`) — comme `roudix.apps.spotify.enable` ci-dessus.
+GIMP, Inkscape, SongRec et EasyEffects (+ rnnoise-plugin) sont installés par
+défaut mais chacun est débrayable individuellement via
+`roudix.apps.<nom>.enable` (`gimp`, `inkscape`, `songrec`, `easyeffects`).
 
 Également disponible, désactivé par défaut : un client torrent via
 `roudix.torrentClient` — `"qbittorrent"` (complet, basé sur Qt),

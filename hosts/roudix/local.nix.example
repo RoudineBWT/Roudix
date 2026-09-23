@@ -94,14 +94,13 @@
   roudix.telegram = "none"; # "telegram" (official), "ayugram" (fork: ghost mode, anti-recall...) or "none"
   roudix.videoPlayer = "vlc"; # "vlc" (default), "clapper" (GTK4), "mpv" (+ yt-dlp) or "celluloid" — "none" for no video player
   roudix.torrentClient = "none"; # "qbittorrent", "fragments" (minimal GNOME client), "deluge" or "none" (off by default)
+  roudix.musicPlayer = "spotify"; # "spotify" (+ Spicetify, default), "ytmdesktop" or "none"
   # Individually disable these "common" apps (all true by default):
   # roudix.apps.gimp.enable        = false;
   # roudix.apps.inkscape.enable    = false;
-  # roudix.apps.spotify.enable     = false; # Spotify + Spicetify (Comfy theme)
   # roudix.apps.songrec.enable     = false;
-  # roudix.apps.ytmdesktop.enable  = false;
   # roudix.apps.easyeffects.enable = false; # + rnnoise-plugin
-  # Spicetify (active only if roudix.apps.spotify.enable = true):
+  # Spicetify (active only if roudix.musicPlayer = "spotify"):
   # roudix.spicetify.theme = "comfy"; # "colorful" (default) or "comfy"
   # roudix.spicetify.colorScheme = "dracula"; # null (theme default) or a scheme name from its color.ini
   # roudix.spicetify.extensions.adblock.enable = false;

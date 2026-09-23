@@ -48,7 +48,7 @@
 | Gestionnaire de fichiers | Configurable (Nautilus, Thunar, Dolphin, Nemo) |
 | Éditeur | Configurable (Zed, VS Code, Neovim, aucun) |
 | Chat | Discord (Vencord · vanilla · aucun) + Matrix (Element · Cinny · aucun) |
-| Musique | Spotify + Spicetify (thème Comfy) |
+| Musique | Configurable (Spotify + Spicetify, YouTube Music Desktop, aucun) |
 
 ---
 

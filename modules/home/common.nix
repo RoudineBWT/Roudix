@@ -57,6 +57,18 @@ let
     none        = null;
   }.${torrentClientType};
 
+  # Music player — was two independent roudix.apps.{spotify,ytmdesktop}.enable
+  # booleans (both true by default); now a choice. "spotify" installs
+  # nothing here itself — it's installed via ./spicetify.nix
+  # (programs.spicetify), imported below only for that choice.
+  musicPlayerType = osConfig.roudix.musicPlayer or "spotify";
+
+  musicPlayerPackage = {
+    ytmdesktop = pkgs.ytmdesktop;
+    spotify    = null; # installed via ./spicetify.nix instead
+    none       = null;
+  }.${musicPlayerType};
+
   terminalType = osConfig.roudix.terminal or "ghostty";
 
   terminalPackage = {
@@ -160,8 +172,8 @@ in
     zenHomeModules.${zenVariant}
   ] ++ lib.optional (builtins.pathExists ./git.nix) ./git.nix
     ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
-    # Spotify + Spicetify (roudix.apps.spotify.enable)
-    ++ lib.optional osConfig.roudix.apps.spotify.enable ./spicetify.nix
+    # Spotify + Spicetify (roudix.musicPlayer == "spotify")
+    ++ lib.optional (musicPlayerType == "spotify") ./spicetify.nix
     # Widevine CDM pointer for Helium (DRM playback), only when helium is
     # actually one of the selected browsers.
     ++ lib.optional (lib.elem "helium" osConfig.roudix.browsers) ./helium-widevine.nix;
@@ -217,7 +229,6 @@ in
   ++ lib.optional osConfig.roudix.apps.gimp.enable pkgs.gimp
   ++ lib.optional osConfig.roudix.apps.inkscape.enable pkgs.inkscape
   ++ lib.optional osConfig.roudix.apps.songrec.enable pkgs.songrec
-  ++ lib.optional osConfig.roudix.apps.ytmdesktop.enable pkgs.ytmdesktop
   ++ lib.optionals osConfig.roudix.apps.easyeffects.enable [ pkgs.easyeffects pkgs.rnnoise-plugin ]
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage
@@ -229,6 +240,8 @@ in
   ++ videoPlayerPackages
   # Torrent client (optional)
   ++ lib.optional (torrentClientPackage != null) torrentClientPackage
+  # Music player — Spotify (via spicetify.nix, above), ytmdesktop, or none
+  ++ lib.optional (musicPlayerPackage != null) musicPlayerPackage
   # Note: Zen Browser is no longer added here as a raw package — see
   # `programs.zen-browser` below, driven by `osConfig.roudix.zen.*`.
   # Terminal choisi par l'utilisateur (roudix.terminal)

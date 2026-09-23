@@ -308,6 +308,12 @@ TORRENT_CLIENTS = [
     {"id": "none",        "name": L("Aucun", "None"), "subtitle": L("N'installer aucun client torrent", "Don't install a torrent client"), "icon": "none.svg"},
 ]
 
+MUSIC_PLAYERS = [
+    {"id": "spotify",    "name": "Spotify",              "subtitle": L("+ Spicetify (défaut)", "+ Spicetify (default)"), "icon": "spotify.svg"},
+    {"id": "ytmdesktop", "name": "YouTube Music Desktop", "subtitle": L("Client YouTube Music non officiel", "Unofficial YouTube Music client"), "icon": "ytmdesktop.svg"},
+    {"id": "none",       "name": L("Aucun", "None"),      "subtitle": L("N'installer aucun lecteur de musique", "Don't install a music player"), "icon": "none.svg"},
+]
+
 RGB_BACKENDS = [
     {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": L("Pour périphériques compatibles Corsair iCUE", "For Corsair iCUE-compatible devices"), "icon": "openlinkhub.svg"},
     {"id": "openrgb",     "name": "OpenRGB",      "subtitle": L("Support RGB multi-marques", "Multi-brand RGB support"),                   "icon": "openrgb.svg"},
@@ -386,12 +392,13 @@ CONTENT_CREATION_TOGGLES = [
 
 # Optional common apps (roudix.apps.*, modules/system/apps.nix) — all
 # true by default, shown as a toggle group on the "System" page.
+# (spotify/ytmdesktop used to live here too — they're now
+# roudix.musicPlayer, a SelectorGroup like VIDEO_PLAYERS/TORRENT_CLIENTS,
+# since they became a real alternative instead of two independent on/offs.)
 APPS_TOGGLES = [
     {"id": "gimp",        "name": "GIMP",                             "key": "roudix.apps.gimp.enable",       "default": True},
     {"id": "inkscape",    "name": "Inkscape",                         "key": "roudix.apps.inkscape.enable",   "default": True},
-    {"id": "spotify",     "name": "Spotify",                          "key": "roudix.apps.spotify.enable",    "default": True},
     {"id": "songrec",     "name": "SongRec",                          "key": "roudix.apps.songrec.enable",    "default": True},
-    {"id": "ytmdesktop",  "name": "YTMDesktop",                       "key": "roudix.apps.ytmdesktop.enable", "default": True},
     {"id": "easyeffects", "name": "EasyEffects",                      "key": "roudix.apps.easyeffects.enable","default": True},
 ]
 
@@ -697,6 +704,11 @@ APP_ICON_THEME_NAMES = {
     # Torrent clients
     "qbittorrent": "qbittorrent",
     "deluge":     "deluge",
+    # Music players
+    "spotify":    "spotify",
+    # "ytmdesktop" deliberately excluded: niche app, not in mainstream
+    # icon themes — needs real, hand-drawn art of its own (see docstring
+    # above). Falls back to a generic icon until then.
 }
 
 
@@ -1667,6 +1679,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.torrent_client_selector = SelectorGroup(L("Client torrent", "Torrent client"), TORRENT_CLIENTS, current_torrent_client, dark)
         system_page.append(self.torrent_client_selector)
 
+        current_music_player = get_string_option("roudix.musicPlayer", "spotify")
+        self.music_player_selector = SelectorGroup(L("Lecteur de musique", "Music player"), MUSIC_PLAYERS, current_music_player, dark)
+        system_page.append(self.music_player_selector)
+
         self.content_stack.add_named(system_page, "system")
 
         # ── "Integration" page: keyring/portal backend ─────────────────────
@@ -2002,6 +2018,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.rgb_selector.update_icons(dark)
         self.video_player_selector.update_icons(dark)
         self.torrent_client_selector.update_icons(dark)
+        self.music_player_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 
@@ -2134,6 +2151,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_torrent_client = self.torrent_client_selector.selected_id
         torrent_client_changed = new_torrent_client != cur_torrent_client
 
+        # Music player
+        cur_music_player = get_string_option("roudix.musicPlayer", "spotify")
+        new_music_player = self.music_player_selector.selected_id
+        music_player_changed = new_music_player != cur_music_player
+
         # Icon theme
         cur_icon_theme = get_string_option("roudix.iconTheme", "papirus")
         new_icon_theme = self.icon_theme_selector.selected_id
@@ -2145,6 +2167,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     login_shell_changed, filemanager_changed, matrix_changed,
                     discord_changed, telegram_changed,
                     system_changes, rgb_changed, video_player_changed, torrent_client_changed,
+                    music_player_changed,
                     icon_theme_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed,
                     cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed]):
@@ -2200,6 +2223,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{L('Lecteur vidéo', 'Video player')}: <b>{cur_video_player}</b> → <b>{new_video_player}</b>")
         if torrent_client_changed:
             changes.append(f"{L('Client torrent', 'Torrent client')}: <b>{cur_torrent_client}</b> → <b>{new_torrent_client}</b>")
+        if music_player_changed:
+            changes.append(f"{L('Lecteur de musique', 'Music player')}: <b>{cur_music_player}</b> → <b>{new_music_player}</b>")
         if icon_theme_changed:
             changes.append(f"{L('Thème d\'icônes', 'Icon theme')}: <b>{cur_icon_theme}</b> → <b>{new_icon_theme}</b>")
         if gaming_master_changed:
@@ -2240,6 +2265,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "rgb_changed": rgb_changed, "new_rgb": new_rgb,
             "video_player_changed": video_player_changed, "new_video_player": new_video_player,
             "torrent_client_changed": torrent_client_changed, "new_torrent_client": new_torrent_client,
+            "music_player_changed": music_player_changed, "new_music_player": new_music_player,
             "icon_theme_changed": icon_theme_changed, "new_icon_theme": new_icon_theme,
             "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
             "gaming_changes": gaming_changes,
@@ -2434,6 +2460,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     L(f"<span color='red'>Erreur d'écriture — config client torrent : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing torrent client config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        if pending["music_player_changed"]:
+            result = set_string_option("roudix.musicPlayer", pending["new_music_player"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config lecteur de musique : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing music player config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 

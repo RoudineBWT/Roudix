@@ -32,6 +32,7 @@
     ../../modules/system/telegram.nix
     ../../modules/system/video-player.nix
     ../../modules/system/torrent-client.nix
+    ../../modules/system/music-player.nix
     ../../modules/system/appimage.nix
     ../../modules/system/filemanager.nix
     ../../modules/system/terminal.nix

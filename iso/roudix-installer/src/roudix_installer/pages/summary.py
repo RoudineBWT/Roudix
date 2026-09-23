@@ -86,11 +86,11 @@ class SummaryPage(Adw.NavigationPage):
             ("Telegram", s.telegram),
             (L("Lecteur vidéo", "Video player"), s.video_player),
             (L("Client torrent", "Torrent client"), s.torrent_client),
+            (L("Lecteur de musique", "Music player"), s.music_player),
             ("Waydroid", L("activé", "enabled") if s.waydroid_enable else L("désactivé", "disabled")),
             ("Apps", ", ".join(filter(None, [
                 "" if s.app_gimp else L("sans GIMP", "no GIMP"),
                 "" if s.app_inkscape else L("sans Inkscape", "no Inkscape"),
-                "" if s.app_spotify else L("sans Spotify", "no Spotify"),
                 "" if s.app_songrec else L("sans SongRec", "no SongRec"),
                 "" if s.app_easyeffects else L("sans EasyEffects", "no EasyEffects"),
             ])) or L("config par défaut", "default set")),
@@ -102,7 +102,7 @@ class SummaryPage(Adw.NavigationPage):
                     L("masquer podcasts", "hide podcasts") if s.spicetify_hide_podcasts else "",
                     "marketplace" if s.spicetify_marketplace else "",
                 ])) or L("sans extension", "no extensions"))),
-        ] if s.app_spotify else []) + [
+        ] if s.music_player == "spotify" else []) + [
             (
                 L("Création de contenu", "Content Creation"),
                 (
