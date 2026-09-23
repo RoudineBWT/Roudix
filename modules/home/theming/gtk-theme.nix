@@ -3,21 +3,21 @@
 let
   desktopType = osConfig.roudix.desktop.type;
 
-  # GNOME (modules/home/gnome.nix) and KDE (modules/home/kde.nix) already
+  # GNOME (modules/home/desktop/gnome) and KDE (modules/home/desktop/kde) already
   # apply their own native theming (dconf for GNOME, plasma-manager for
   # KDE). This module only needs to fill the gap for the "bare" compositors
   # (niri, hyprland, mangowc, umbriel), which otherwise ship no GTK theme
   # at all — see the "not applied automatically" note in
-  # papirus-icon.nix/tela-icon.nix.
+  # theming/papirus-icon.nix / theming/tela-icon.nix.
   needsGtkTheme = desktopType != "gnome" && desktopType != "kde";
 
-  # roudix.iconTheme (modules/system/icon-theme.nix), set via roudix-switcher
+  # roudix.iconTheme (modules/system/desktop/icon-theme.nix), set via roudix-switcher
   # ("Icon Theme" page, same non-gnome/kde scope) or hosts/roudix/local.nix.
   iconThemeChoice = osConfig.roudix.iconTheme or "papirus";
   shellType       = osConfig.roudix.desktop.shell or "noctalia";
 
   # "tela" on shell = "noctalia" points at the recolored variant that
-  # modules/home/tela-icon.nix generates in ~/.icons (package = null: it's
+  # modules/home/theming/tela-icon.nix generates in ~/.icons (package = null: it's
   # not a Nix-store package, just files on disk — first recolor happens on
   # the next Noctalia theme/accent change, not immediately on switch). Any
   # other shell has nothing to generate that variant, so it falls back to
@@ -76,7 +76,7 @@ in
     # Chromium-family browsers (Helium, Brave, Chromium itself) read the
     # theme via GSettings/dconf, not settings.ini — this is the piece that
     # was entirely missing outside GNOME. Requires
-    # modules/system/desktop-integration.nix's
+    # modules/system/desktop/desktop-integration.nix's
     # `programs.dconf.enable` to actually be on.
     dconf.settings."org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";

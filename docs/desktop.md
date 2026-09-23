@@ -227,4 +227,4 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> `lib.mkForce` is required to override the defaults set in `home/kde.nix`.
+> `lib.mkForce` is required to override the defaults set in `home/desktop/kde/default.nix`.

@@ -5,7 +5,7 @@
   # choice from. Previously only enabled inside modules/system/desktop/
   # gnome.nix, so niri/hyprland/mangowc/umbriel got no GTK theming at all
   # for those apps (no dconf database → GSettings falls back to
-  # upstream/Adwaita defaults regardless of what modules/home/gtk-theme.nix
+  # upstream/Adwaita defaults regardless of what modules/home/theming/gtk-theme.nix
   # writes to ~/.config/gtk-3.0/settings.ini). mkDefault so gnome.nix's own
   # (identical) assignment, or a user override in home/local.nix or
   # hosts/*/local.nix, still wins without a "defined twice" conflict.

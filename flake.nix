@@ -194,13 +194,7 @@
           home-manager.users.${username} = { lib, ... }: {
             imports = [
               ./modules/home/common.nix
-              ./modules/home/desktop/niri/default.nix
-              ./modules/home/hyprland.nix
-              ./modules/home/mangowc.nix
-              ./modules/home/desktop/umbriel/default.nix
-              ./modules/home/kde.nix
-              ./modules/home/gnome.nix
-              ./modules/home/shell-modules.nix
+              ./modules/home/desktop
             ] ++ lib.optional (builtins.pathExists ./modules/home/local.nix) ./modules/home/local.nix;
           };
         }

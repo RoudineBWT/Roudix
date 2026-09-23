@@ -90,7 +90,7 @@ Créez plutôt vos fichiers de surcharge locaux (tous ignorés par git) :
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
 cp home/local.nix.example home/local.nix
-cp modules/system/boot.local.nix.example modules/system/boot.local.nix
+cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 ```
 
 Modifiez `hosts/roudix/local.nix` pour correspondre à votre matériel :
@@ -329,14 +329,14 @@ fileSystems."/mnt/gaming" = lib.mkForce {
 
 Limine peut démarrer d'autres systèmes d'exploitation sur des disques séparés. `boot.local.nix` contrôle les entrées supplémentaires — il est ignoré par git et jamais écrasé par `git pull`.
 
-**Ne modifiez jamais `modules/system/boot.nix` directement** — il est écrasé à chaque `git pull`.
+**Ne modifiez jamais `modules/system/boot/boot.nix` directement** — il est écrasé à chaque `git pull`.
 
 #### Si vous avez utilisé l'installeur automatisé
 
 L'installeur a détecté vos autres OS automatiquement depuis la NVRAM EFI (`efibootmgr`) et a écrit `boot.local.nix` pour vous — aucune action manuelle nécessaire. Vous pouvez vérifier le résultat :
 
 ```bash
-cat modules/system/boot.local.nix
+cat modules/system/boot/boot.local.nix
 ```
 
 #### Si vous installez manuellement
@@ -349,7 +349,7 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 Cherchez les partitions avec le type de système de fichiers `vfat` et le label `EFI system partition` — ce sont vos ESP.
 
-**Modifiez `modules/system/boot.local.nix`** et ajoutez vos entrées :
+**Modifiez `modules/system/boot/boot.local.nix`** et ajoutez vos entrées :
 
 ```nix
 {

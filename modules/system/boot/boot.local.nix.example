@@ -1,6 +1,6 @@
 # ── boot.local.nix ──────────────────────────────────────────────────────────
 # Personal boot entries — gitignored, never overwritten by git pull.
-# Copy: cp modules/system/boot.local.nix.example modules/system/boot.local.nix
+# Copy: cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 # ────────────────────────────────────────────────────────────────────────────
 {
 #  extraEntries = ''

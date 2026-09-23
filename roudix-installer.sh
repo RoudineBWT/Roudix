@@ -299,12 +299,12 @@ success "hardware-configuration.nix generated."
 # ── Copy local.nix ────────────────────────────────────────────────────────────
 info "Creating local.nix from example..."
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
-cp home/local.nix.example home/local.nix
+cp modules/home/local.nix.example modules/home/local.nix
 success "local.nix created."
 
 # ── Copy boot.local.nix ───────────────────────────────────────────────────────
 info "Creating boot.local.nix from example..."
-cp modules/system/boot.local.nix.example modules/system/boot.local.nix
+cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 success "boot.local.nix created."
 
 # ── Multi-boot: detect other OS via EFI NVRAM ─────────────────────────────────
@@ -312,7 +312,7 @@ echo -e "\n${BOLD}════════════════════�
 info "Detecting other systems (EFI NVRAM)..."
 echo -e "${BOLD}══════════════════════════════════════${NC}"
 
-BOOT_LOCAL_NIX="modules/system/boot.local.nix"
+BOOT_LOCAL_NIX="modules/system/boot/boot.local.nix"
 
 # Entries we want to skip — NixOS/Roudix itself and firmware tools
 SKIP_PATTERN="nixos|roudix|uefi|firmware|setup|shell|pxe|ipv4|ipv6|network|floppy|optical|cd|dvd|usb boot"

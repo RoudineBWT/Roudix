@@ -24,9 +24,9 @@ in
   # the active compositor, to avoid touching niri settings on a host
   # using a different desktop.
   imports = [
-    ../../mangohud.nix
-    ../../papirus-icon.nix
-    ../../tela-icon.nix
+    ../../theming/mangohud.nix
+    ../../theming/papirus-icon.nix
+    ../../theming/tela-icon.nix
   ]
   ++ lib.optionals (osConfig.roudix.desktop.type == "niri") ([
     ./_general.nix

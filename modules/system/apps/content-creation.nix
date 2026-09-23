@@ -88,7 +88,7 @@ in
         "davinci-resolve" is the free edition; "davinci-resolve-studio" is
         the paid one (same package, requires a Blackmagic license) — both
         are "unfree" and already covered by `nixpkgs.config.allowUnfree`
-        (modules/system/common.nix). "shotcut" as a lighter alternative,
+        (modules/system/nix/common.nix). "shotcut" as a lighter alternative,
         "none" to install none.
       '';
     };

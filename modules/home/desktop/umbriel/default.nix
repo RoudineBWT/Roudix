@@ -14,9 +14,9 @@ in
 {
   imports = [
     inputs.umbriel.homeModules.default
-    ../../mangohud.nix
-    ../../papirus-icon.nix
-    ../../tela-icon.nix
+    ../../theming/mangohud.nix
+    ../../theming/papirus-icon.nix
+    ../../theming/tela-icon.nix
   ]
   # The _foo.nix files set programs.umbriel.settings.* directly (no
   # lib.mkIf), so they're only imported when umbriel is the active

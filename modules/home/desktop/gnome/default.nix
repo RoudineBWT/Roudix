@@ -1,9 +1,9 @@
 { osConfig, lib, pkgs, inputs, username, ... }:
 {
   imports = [
-    ./mangohud.nix
-    ./papirus-folders.nix
-    ./gnome-extensions.nix
+    ../../theming/mangohud.nix
+    ../../theming/papirus-folders.nix
+    ./_extensions.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "gnome") {

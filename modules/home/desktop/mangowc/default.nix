@@ -14,9 +14,9 @@ let
 in
 {
   imports = [
-    ./mangohud.nix
-    ./papirus-icon.nix
-    ./tela-icon.nix
+    ../../theming/mangohud.nix
+    ../../theming/papirus-icon.nix
+    ../../theming/tela-icon.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "mangowc") {

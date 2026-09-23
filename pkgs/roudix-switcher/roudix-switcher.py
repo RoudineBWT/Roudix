@@ -163,7 +163,7 @@ DESKTOP_INTEGRATIONS = [
 # their own native stack.
 DESKTOP_INTEGRATION_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
 
-# roudix.iconTheme (modules/system/icon-theme.nix) — same "bare compositors
+# roudix.iconTheme (modules/system/desktop/icon-theme.nix) — same "bare compositors
 # only" scope as desktop integration above: GNOME/KDE always keep their own
 # native icon picker (GNOME Settings / System Settings), and Papirus/Tela
 # there is whatever the user already chose that way, independent of this.
@@ -402,7 +402,7 @@ CONTENT_CREATION_TOGGLES = [
 ]
 
 
-# Optional common apps (roudix.apps.*, modules/system/apps.nix) — all
+# Optional common apps (roudix.apps.*, modules/system/apps/apps.nix) — all
 # true by default, shown as a toggle group on the "System" page.
 # (spotify/ytmdesktop used to live here too — they're now
 # roudix.musicPlayer, a SelectorGroup like VIDEO_PLAYERS/TORRENT_CLIENTS,
