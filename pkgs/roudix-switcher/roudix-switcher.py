@@ -314,6 +314,18 @@ MUSIC_PLAYERS = [
     {"id": "none",       "name": L("Aucun", "None"),      "subtitle": L("N'installer aucun lecteur de musique", "Don't install a music player"), "icon": "none.svg"},
 ]
 
+# roudix.mailClient — enum, exposed as a SelectorGroup (like
+# VIDEO_PLAYERS/TORRENT_CLIENTS/MUSIC_PLAYERS). "betterbird" has no
+# dedicated art yet and isn't in any mainstream icon theme either, so it
+# falls back to a generic icon until real art is made (same situation as
+# ytmdesktop above).
+MAIL_CLIENTS = [
+    {"id": "thunderbird", "name": "Thunderbird", "subtitle": L("Complet — mail, agenda, RSS, extensions", "Full-featured — mail, calendar, RSS, add-ons"), "icon": "thunderbird.svg"},
+    {"id": "betterbird",  "name": "Betterbird",   "subtitle": L("Fork de Thunderbird peaufiné", "Fine-tuned Thunderbird fork"), "icon": "betterbird.svg"},
+    {"id": "geary",       "name": "Geary",        "subtitle": L("Client GNOME/libadwaita léger", "Lightweight GNOME/libadwaita client"), "icon": "geary.svg"},
+    {"id": "none",        "name": L("Aucun", "None"), "subtitle": L("N'installer aucun client mail", "Don't install a mail client"), "icon": "none.svg"},
+]
+
 RGB_BACKENDS = [
     {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": L("Pour périphériques compatibles Corsair iCUE", "For Corsair iCUE-compatible devices"), "icon": "openlinkhub.svg"},
     {"id": "openrgb",     "name": "OpenRGB",      "subtitle": L("Support RGB multi-marques", "Multi-brand RGB support"),                   "icon": "openrgb.svg"},
@@ -709,6 +721,11 @@ APP_ICON_THEME_NAMES = {
     # "ytmdesktop" deliberately excluded: niche app, not in mainstream
     # icon themes — needs real, hand-drawn art of its own (see docstring
     # above). Falls back to a generic icon until then.
+    # Mail clients
+    "thunderbird": "thunderbird",
+    "geary":       "org.gnome.Geary",
+    # "betterbird" deliberately excluded: same situation as ytmdesktop —
+    # not in any mainstream icon theme, needs real art of its own.
 }
 
 
@@ -1668,6 +1685,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.music_player_selector = SelectorGroup(L("Lecteur de musique", "Music player"), MUSIC_PLAYERS, current_music_player, dark)
         apps_page.append(self.music_player_selector)
 
+        current_mail_client = get_string_option("roudix.mailClient", "none")
+        self.mail_client_selector = SelectorGroup(L("Client mail", "Mail client"), MAIL_CLIENTS, current_mail_client, dark)
+        apps_page.append(self.mail_client_selector)
+
         self.content_stack.add_named(apps_page, "apps")
 
         # ── "System" page: independent toggles + RGB backend ───────────────
@@ -2033,6 +2054,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.video_player_selector.update_icons(dark)
         self.torrent_client_selector.update_icons(dark)
         self.music_player_selector.update_icons(dark)
+        self.mail_client_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 
@@ -2173,6 +2195,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_music_player = self.music_player_selector.selected_id
         music_player_changed = new_music_player != cur_music_player
 
+        # Mail client
+        cur_mail_client = get_string_option("roudix.mailClient", "none")
+        new_mail_client = self.mail_client_selector.selected_id
+        mail_client_changed = new_mail_client != cur_mail_client
+
         # Icon theme
         cur_icon_theme = get_string_option("roudix.iconTheme", "papirus")
         new_icon_theme = self.icon_theme_selector.selected_id
@@ -2186,6 +2213,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     apps_changes,
                     system_changes, rgb_changed, video_player_changed, torrent_client_changed,
                     music_player_changed,
+                    mail_client_changed,
                     icon_theme_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed,
                     cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed]):
@@ -2243,6 +2271,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{L('Client torrent', 'Torrent client')}: <b>{cur_torrent_client}</b> → <b>{new_torrent_client}</b>")
         if music_player_changed:
             changes.append(f"{L('Lecteur de musique', 'Music player')}: <b>{cur_music_player}</b> → <b>{new_music_player}</b>")
+        if mail_client_changed:
+            changes.append(f"{L('Client mail', 'Mail client')}: <b>{cur_mail_client}</b> → <b>{new_mail_client}</b>")
         if icon_theme_changed:
             changes.append(f"{L('Thème d\'icônes', 'Icon theme')}: <b>{cur_icon_theme}</b> → <b>{new_icon_theme}</b>")
         if gaming_master_changed:
@@ -2286,6 +2316,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "video_player_changed": video_player_changed, "new_video_player": new_video_player,
             "torrent_client_changed": torrent_client_changed, "new_torrent_client": new_torrent_client,
             "music_player_changed": music_player_changed, "new_music_player": new_music_player,
+            "mail_client_changed": mail_client_changed, "new_mail_client": new_mail_client,
             "icon_theme_changed": icon_theme_changed, "new_icon_theme": new_icon_theme,
             "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
             "gaming_changes": gaming_changes,
@@ -2489,6 +2520,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     L(f"<span color='red'>Erreur d'écriture — config lecteur de musique : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing music player config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        if pending["mail_client_changed"]:
+            result = set_string_option("roudix.mailClient", pending["new_mail_client"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config client mail : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing mail client config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 

@@ -1008,6 +1008,12 @@ pick "Torrent client:" TORRENT_CLIENT \
   "fragments|Fragments — minimal GNOME/libadwaita client" \
   "deluge|Deluge — plugin-based, lightweight"
 
+pick "Mail client:" MAIL_CLIENT \
+  "none|None" \
+  "thunderbird|Thunderbird — full-featured (mail, calendar, RSS, add-ons)" \
+  "betterbird|Betterbird — fine-tuned Thunderbird fork" \
+  "geary|Geary — lightweight GNOME/libadwaita mail client"
+
 pick_bool "Enable Waydroid? (Android container)" WAYDROID \
   "Yes" "No"
 
@@ -1068,6 +1074,7 @@ sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord =
 sed -i "s/roudix\.telegram[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.telegram = \"${TELEGRAM}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.videoPlayer[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.videoPlayer = \"${VIDEO_PLAYER}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.torrentClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.torrentClient = \"${TORRENT_CLIENT}\"/" hosts/roudix/local.nix
+sed -i "s/roudix\.mailClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.mailClient = \"${MAIL_CLIENT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.waydroid.enable = ${WAYDROID}/" hosts/roudix/local.nix
 
 if [[ "$RGB" == "openlinkhub" ]]; then
@@ -1134,6 +1141,7 @@ check_opt "roudix.discord" "roudix\.discord[[:space:]]*=[[:space:]]*\"${DISCORD}
 check_opt "roudix.telegram"            "roudix\.telegram[[:space:]]*=[[:space:]]*\"${TELEGRAM}\""
 check_opt "roudix.videoPlayer"         "roudix\.videoPlayer[[:space:]]*=[[:space:]]*\"${VIDEO_PLAYER}\""
 check_opt "roudix.torrentClient"       "roudix\.torrentClient[[:space:]]*=[[:space:]]*\"${TORRENT_CLIENT}\""
+check_opt "roudix.mailClient"          "roudix\.mailClient[[:space:]]*=[[:space:]]*\"${MAIL_CLIENT}\""
 check_opt "roudix.waydroid.enable"     "roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*${WAYDROID}"
 if [[ "$RGB" == "openlinkhub" ]]; then
   check_opt "roudix.memory.enable" "roudix\.memory\.enable[[:space:]]*=[[:space:]]*${MEMORY_ENABLE}"
@@ -1188,6 +1196,7 @@ echo -e "
   ${BOLD}Telegram      :${NC} ${TELEGRAM}
   ${BOLD}Video player  :${NC} ${VIDEO_PLAYER}
   ${BOLD}Torrent client:${NC} ${TORRENT_CLIENT}
+  ${BOLD}Mail client   :${NC} ${MAIL_CLIENT}
   ${BOLD}Waydroid      :${NC} $WAYDROID
   ${BOLD}Config dir    :${NC} $INSTALL_DIR
 "
