@@ -95,7 +95,7 @@
   roudix.videoPlayer = "vlc"; # "vlc" (default), "clapper" (GTK4), "mpv" (+ yt-dlp) or "celluloid" — "none" for no video player
   roudix.torrentClient = "none"; # "qbittorrent", "fragments" (minimal GNOME client), "deluge" or "none" (off by default)
   roudix.musicPlayer = "spotify"; # "spotify" (+ Spicetify, default), "ytmdesktop" or "none"
-  roudix.mailClient = "none"; # "thunderbird" (full-featured), "geary" (lightweight GNOME) or "none"
+  roudix.mailClient = "none"; # "thunderbird" (full-featured), "betterbird" (Thunderbird fork), "geary" (lightweight GNOME) or "none"
   roudix.passwordManager = "none"; # "bitwarden" (cloud), "keepassxc" (local vault), "protonpass" (cloud) or "none"
   # Individually disable these "common" apps (all true by default):
   # roudix.apps.gimp.enable        = false;

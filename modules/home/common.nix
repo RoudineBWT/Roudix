@@ -71,8 +71,13 @@ let
 
   mailClientType = osConfig.roudix.mailClient or "none";
 
+  # Betterbird isn't in nixpkgs — same pattern as fluxerPackage below,
+  # pulled straight from its own flake input's prebuilt package.
+  betterbirdPackage = inputs.betterbird-nix.packages.${pkgs.stdenv.hostPlatform.system}.betterbird;
+
   mailClientPackage = {
     thunderbird = pkgs.thunderbird;
+    betterbird  = betterbirdPackage;
     geary       = pkgs.geary;
     none        = null;
   }.${mailClientType};

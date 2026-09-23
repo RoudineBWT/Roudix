@@ -145,8 +145,11 @@ and `roudix.gaming.enable` — nothing stops you from wanting both Discord
 and Fluxer, or Fluxer without any gaming setup.
 
 A mail client and a password manager are also available, opt-in (off by
-default): `roudix.mailClient` — `"thunderbird"` (full-featured) or
-`"geary"` (lightweight GNOME client); `roudix.passwordManager` —
+default): `roudix.mailClient` — `"thunderbird"` (full-featured),
+`"betterbird"` (a fine-tuned Thunderbird fork, pulled from the
+[betterbird-nix](https://github.com/TheAnachronism/betterbird-nix) flake
+input — not in nixpkgs yet) or `"geary"` (lightweight GNOME client);
+`roudix.passwordManager` —
 `"bitwarden"` (cloud-synced), `"keepassxc"` (local, offline vault) or
 `"protonpass"` (cloud-synced, Proton account).
 

@@ -147,7 +147,10 @@ Discord et Fluxer en même temps, ou Fluxer sans setup gaming du tout.
 
 Un client mail et un gestionnaire de mots de passe sont aussi disponibles,
 opt-in (désactivés par défaut) : `roudix.mailClient` — `"thunderbird"`
-(complet) ou `"geary"` (client léger GNOME) ; `roudix.passwordManager` —
+(complet), `"betterbird"` (fork de Thunderbird peaufiné, tiré de l'input
+flake [betterbird-nix](https://github.com/TheAnachronism/betterbird-nix) —
+pas encore dans nixpkgs) ou `"geary"` (client léger GNOME) ;
+`roudix.passwordManager` —
 `"bitwarden"` (synchronisé), `"keepassxc"` (coffre local, hors-ligne) ou
 `"protonpass"` (synchronisé, compte Proton).
 

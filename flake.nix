@@ -118,6 +118,10 @@
        url = "github:powerofthe69/nix-gaming-edge";
        inputs.nixpkgs.follows = "nixpkgs";
     };
+    betterbird-nix = {
+      url = "github:TheAnachronism/betterbird-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     mango = {
         url = "github:DreamMaoMao/mango";
         inputs.nixpkgs.follows = "nixpkgs";
