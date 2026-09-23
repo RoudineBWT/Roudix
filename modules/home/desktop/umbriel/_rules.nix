@@ -67,6 +67,11 @@ in
           else { default_floating = false; })
     )
     {
+      match.app_id = "^youtube-music-desktop-app";
+      default_output = "DP-3";
+      default_workspace = "2";
+    }
+    {
       match.app_id = "^com\\.mitchellh\\.ghostty$";
       default_floating = true;
       default_floating_size_px = { width = 1505; height = 755; };
