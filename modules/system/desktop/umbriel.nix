@@ -57,7 +57,7 @@ in
     };
 
     # ── Noctalia greeter (when shell == noctalia) ──────────────────────────
-    programs.noctalia-greeter = lib.mkIf isNoctalia {
+    services.displayManager.noctalia-greeter = lib.mkIf isNoctalia {
       enable = true;
       greeter-args = "start-umbriel";
       settings = {

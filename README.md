@@ -48,7 +48,7 @@
 | File Manager | Configurable (Nautilus, Thunar, Dolphin, Nemo) |
 | Editor | Configurable (Zed, VS Code, Neovim, none) |
 | Chat | Discord (Vencord · vanilla · none) + Matrix (Element · Cinny · none) |
-| Music | Spotify + Spicetify (Comfy theme) |
+| Music | Configurable (Spotify + Spicetify, YouTube Music Desktop, none) |
 
 ---
 
@@ -219,6 +219,7 @@ roudix/
 | brave-previews | [roudinebwt/brave-preview](https://github.com/roudinebwt/brave-preview) |
 | roudix-caches | [RoudineBWT/Roudix-caches](https://github.com/RoudineBWT/Roudix-caches) |
 | nix-gaming-edge | [powerofthe69/nix-gaming-edge](https://github.com/powerofthe69/nix-gaming-edge) |
+| betterbird-nix | [TheAnachronism/betterbird-nix](https://github.com/TheAnachronism/betterbird-nix) |
 ---
 
 ## See also

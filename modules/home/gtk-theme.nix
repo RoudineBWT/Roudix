@@ -66,6 +66,7 @@ in
     };
 
     home.pointerCursor = {
+      enable  = true;
       name    = cursorName;
       package = pkgs.capitaine-cursors;
       size    = cursorSize;

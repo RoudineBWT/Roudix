@@ -78,6 +78,7 @@
   # ── System packages ─────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     git wget curl
+    lshw
     yazi
     capitaine-cursors
     bibata-cursors

@@ -308,6 +308,12 @@ TORRENT_CLIENTS = [
     {"id": "none",        "name": L("Aucun", "None"), "subtitle": L("N'installer aucun client torrent", "Don't install a torrent client"), "icon": "none.svg"},
 ]
 
+MUSIC_PLAYERS = [
+    {"id": "spotify",    "name": "Spotify",              "subtitle": L("+ Spicetify (défaut)", "+ Spicetify (default)"), "icon": "spotify.svg"},
+    {"id": "ytmdesktop", "name": "YouTube Music Desktop", "subtitle": L("Client YouTube Music non officiel", "Unofficial YouTube Music client"), "icon": "youtube-music-desktop-app.svg"},
+    {"id": "none",       "name": L("Aucun", "None"),      "subtitle": L("N'installer aucun lecteur de musique", "Don't install a music player"), "icon": "none.svg"},
+]
+
 RGB_BACKENDS = [
     {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": L("Pour périphériques compatibles Corsair iCUE", "For Corsair iCUE-compatible devices"), "icon": "openlinkhub.svg"},
     {"id": "openrgb",     "name": "OpenRGB",      "subtitle": L("Support RGB multi-marques", "Multi-brand RGB support"),                   "icon": "openrgb.svg"},
@@ -384,6 +390,19 @@ CONTENT_CREATION_TOGGLES = [
 ]
 
 
+# Optional common apps (roudix.apps.*, modules/system/apps.nix) — all
+# true by default, shown as a toggle group on the "System" page.
+# (spotify/ytmdesktop used to live here too — they're now
+# roudix.musicPlayer, a SelectorGroup like VIDEO_PLAYERS/TORRENT_CLIENTS,
+# since they became a real alternative instead of two independent on/offs.)
+APPS_TOGGLES = [
+    {"id": "gimp",        "name": "GIMP",                             "key": "roudix.apps.gimp.enable",       "default": True},
+    {"id": "inkscape",    "name": "Inkscape",                         "key": "roudix.apps.inkscape.enable",   "default": True},
+    {"id": "songrec",     "name": "SongRec",                          "key": "roudix.apps.songrec.enable",    "default": True},
+    {"id": "easyeffects", "name": "EasyEffects",                      "key": "roudix.apps.easyeffects.enable","default": True},
+]
+
+
 # Independent system toggles, unrelated to each other — grouped into a
 # "System" page rather than creating one category per option.
 SYSTEM_TOGGLES = [
@@ -399,6 +418,8 @@ SYSTEM_TOGGLES = [
     {"id": "fastfetchNix",   "name": L("Config fastfetch Roudix", "Roudix fastfetch config"),          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
     {"id": "fstrim",         "name": L("Fstrim (TRIM auto pour SSD/NVMe)", "Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
     {"id": "vmGuest",        "name": L("Invité VM (QEMU/Spice agent)", "VM guest (QEMU/Spice agent)"),     "key": "roudix.vmGuest.enable",         "default": False},
+    {"id": "podman",         "name": "Podman",                          "key": "roudix.podman.enable",          "default": False},
+    {"id": "distrobox",      "name": "Distrobox",                       "key": "roudix.distrobox.enable",       "default": False},
 ]
 
 
@@ -683,6 +704,11 @@ APP_ICON_THEME_NAMES = {
     # Torrent clients
     "qbittorrent": "qbittorrent",
     "deluge":     "deluge",
+    # Music players
+    "spotify":    "spotify",
+    # "ytmdesktop" deliberately excluded: niche app, not in mainstream
+    # icon themes — needs real, hand-drawn art of its own (see docstring
+    # above). Falls back to a generic icon until then.
 }
 
 
@@ -1189,6 +1215,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             ("login_shell", L("Shell de connexion", "Login Shell")),
             ("filemanager", L("Gestionnaire de fichiers", "File Manager")),
             ("chat",        L("Client de chat", "Chat Client")),
+            ("apps",        L("Applications", "Apps")),
             ("system",      L("Système", "System")),
             ("integration", L("Intégration", "Integration")),
             ("icon_theme", L("Thème d'icônes", "Icon Theme")),
@@ -1614,6 +1641,35 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.content_stack.add_named(chat_page, "chat")
 
+        # ── "Apps" page: optional apps + the player/client choices that ────
+        # used to be crammed into "System" alongside unrelated system
+        # toggles. These are all app-level choices (what gets installed),
+        # not system-level ones (services, kernel/GPU tweaks...), so they
+        # get their own page.
+        apps_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        apps_page.set_margin_top(4)
+        apps_page.set_margin_start(16)
+        apps_page.set_margin_end(16)
+        apps_page.set_margin_bottom(16)
+
+        apps_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in APPS_TOGGLES}
+        self.apps_group = ToggleListGroup(L("Apps optionnelles", "Optional apps"), APPS_TOGGLES, apps_current)
+        apps_page.append(self.apps_group)
+
+        current_video_player = get_string_option("roudix.videoPlayer", "vlc")
+        self.video_player_selector = SelectorGroup(L("Lecteur vidéo", "Video player"), VIDEO_PLAYERS, current_video_player, dark)
+        apps_page.append(self.video_player_selector)
+
+        current_torrent_client = get_string_option("roudix.torrentClient", "none")
+        self.torrent_client_selector = SelectorGroup(L("Client torrent", "Torrent client"), TORRENT_CLIENTS, current_torrent_client, dark)
+        apps_page.append(self.torrent_client_selector)
+
+        current_music_player = get_string_option("roudix.musicPlayer", "spotify")
+        self.music_player_selector = SelectorGroup(L("Lecteur de musique", "Music player"), MUSIC_PLAYERS, current_music_player, dark)
+        apps_page.append(self.music_player_selector)
+
+        self.content_stack.add_named(apps_page, "apps")
+
         # ── "System" page: independent toggles + RGB backend ───────────────
         system_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         system_page.set_margin_top(4)
@@ -1640,14 +1696,6 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         current_rgb = get_string_option("roudix.rgb", "none")
         self.rgb_selector = SelectorGroup(L("Backend RGB", "RGB backend"), RGB_BACKENDS, current_rgb, dark)
         system_page.append(self.rgb_selector)
-
-        current_video_player = get_string_option("roudix.videoPlayer", "vlc")
-        self.video_player_selector = SelectorGroup(L("Lecteur vidéo", "Video player"), VIDEO_PLAYERS, current_video_player, dark)
-        system_page.append(self.video_player_selector)
-
-        current_torrent_client = get_string_option("roudix.torrentClient", "none")
-        self.torrent_client_selector = SelectorGroup(L("Client torrent", "Torrent client"), TORRENT_CLIENTS, current_torrent_client, dark)
-        system_page.append(self.torrent_client_selector)
 
         self.content_stack.add_named(system_page, "system")
 
@@ -1984,6 +2032,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.rgb_selector.update_icons(dark)
         self.video_player_selector.update_icons(dark)
         self.torrent_client_selector.update_icons(dark)
+        self.music_player_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 
@@ -2098,6 +2147,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_telegram = self.telegram_selector.selected_id
         telegram_changed = new_telegram != cur_telegram
 
+        # Optional apps (GIMP, Inkscape, SongRec, EasyEffects...)
+        apps_changes = _diff_bool_items(APPS_TOGGLES, self.apps_group.get_states())
+
         # Independent system toggles
         system_changes = _diff_bool_items(self.system_toggles, self.system_group.get_states())
 
@@ -2116,6 +2168,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_torrent_client = self.torrent_client_selector.selected_id
         torrent_client_changed = new_torrent_client != cur_torrent_client
 
+        # Music player
+        cur_music_player = get_string_option("roudix.musicPlayer", "spotify")
+        new_music_player = self.music_player_selector.selected_id
+        music_player_changed = new_music_player != cur_music_player
+
         # Icon theme
         cur_icon_theme = get_string_option("roudix.iconTheme", "papirus")
         new_icon_theme = self.icon_theme_selector.selected_id
@@ -2126,7 +2183,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     zen_mods_changed, scratchpad_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
                     discord_changed, telegram_changed,
+                    apps_changes,
                     system_changes, rgb_changed, video_player_changed, torrent_client_changed,
+                    music_player_changed,
                     icon_theme_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed,
                     cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed]):
@@ -2182,6 +2241,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{L('Lecteur vidéo', 'Video player')}: <b>{cur_video_player}</b> → <b>{new_video_player}</b>")
         if torrent_client_changed:
             changes.append(f"{L('Client torrent', 'Torrent client')}: <b>{cur_torrent_client}</b> → <b>{new_torrent_client}</b>")
+        if music_player_changed:
+            changes.append(f"{L('Lecteur de musique', 'Music player')}: <b>{cur_music_player}</b> → <b>{new_music_player}</b>")
         if icon_theme_changed:
             changes.append(f"{L('Thème d\'icônes', 'Icon theme')}: <b>{cur_icon_theme}</b> → <b>{new_icon_theme}</b>")
         if gaming_master_changed:
@@ -2198,6 +2259,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
         if video_editor_changed:
             changes.append(f"{L('Éditeur vidéo', 'Video editor')}: <b>{cur_video_editor}</b> → <b>{new_video_editor}</b>")
+        for _key, new_val, name, _file in apps_changes.values():
+            changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
         for _key, new_val, name, _file in system_changes.values():
             changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
         body_changes = "\n".join(changes)
@@ -2222,10 +2285,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "rgb_changed": rgb_changed, "new_rgb": new_rgb,
             "video_player_changed": video_player_changed, "new_video_player": new_video_player,
             "torrent_client_changed": torrent_client_changed, "new_torrent_client": new_torrent_client,
+            "music_player_changed": music_player_changed, "new_music_player": new_music_player,
             "icon_theme_changed": icon_theme_changed, "new_icon_theme": new_icon_theme,
             "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
             "gaming_changes": gaming_changes,
             "gaming_extras_changes": gaming_extras_changes,
+            "apps_changes": apps_changes,
             "system_changes": system_changes,
             "cc_master_changed": cc_master_changed, "new_cc_master": new_cc_master,
             "cc_changes": cc_changes,
@@ -2419,6 +2484,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 )
                 return
 
+        if pending["music_player_changed"]:
+            result = set_string_option("roudix.musicPlayer", pending["new_music_player"])
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config lecteur de musique : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing music player config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
         if pending["icon_theme_changed"]:
             result = set_string_option("roudix.iconTheme", pending["new_icon_theme"])
             if result is not True:
@@ -2480,6 +2553,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     L(f"<span color='red'>Erreur d'écriture — config video editor : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing video editor config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        for key, new_val, name, file in pending["apps_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config {name} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 

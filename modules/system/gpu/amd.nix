@@ -3,11 +3,11 @@
 lib.mkIf (config.hardware.myGpu == "amd") {
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
+  hardware.amdgpu.opencl.enable = true;
 
   environment.systemPackages = with pkgs; [
     rocmPackages.rocm-smi
     amdgpu_top
-    rocmPackages.clr
     mesa
   ];
 

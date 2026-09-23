@@ -63,12 +63,12 @@ class InstallState:
     zen_sine_mods: list = field(default_factory=list)  # roudix.zen.sine.mods
 
     # ── Desktop ───────────────────────────────────────────────────────────
-    desktop: str = "niri"            # niri | gnome | kde | hyprland | mangowc
+    desktop: str = "niri"            # niri | gnome | kde | hyprland | mangowc | umbriel
     desktop_shell: str = "noctalia"  # noctalia | dms | caelestia (only for niri/hyprland)
     default_shell: str = "fish"      # fish | bash
     editor: str = "zed"              # roudix.editor — vscode | zed | neovim | none
     desktop_integration: str = "gnome"  # roudix.desktopIntegration — gnome | kde
-                                         # only meaningful for niri/hyprland/mangowc
+                                         # only meaningful for niri/hyprland/mangowc/umbriel
                                          # (gnome/kde manage their own keyring/portal)
 
     # ── System behaviour ─────────────────────────────────────────────────
@@ -110,16 +110,21 @@ class InstallState:
     telegram: str = "none"           # roudix.telegram — none | telegram | ayugram
     video_player: str = "vlc"        # roudix.videoPlayer — vlc | clapper | mpv | celluloid | none
     torrent_client: str = "none"     # roudix.torrentClient — none | qbittorrent | fragments | deluge
+    music_player: str = "spotify"    # roudix.musicPlayer — spotify | ytmdesktop | none
     waydroid_enable: bool = False
 
     # ── Optional common apps (roudix.apps.*, all true by default) ──────────
     app_gimp: bool = True
     app_inkscape: bool = True
-    app_spotify: bool = True         # Spotify + Spicetify (Comfy theme)
     app_songrec: bool = True
     app_easyeffects: bool = True     # + rnnoise-plugin
+    app_signal: bool = False
+    app_zapzap: bool = False
+    app_fluxer: bool = False
+    mail_client: str = "none"
+    password_manager: str = "none"
 
-    # ── Spicetify (only meaningful if app_spotify) ──────────────────────────
+    # ── Spicetify (only meaningful if music_player == "spotify") ────────────
     spicetify_theme: str = "colorful"        # roudix.spicetify.theme — colorful | comfy
     spicetify_color_scheme: str = ""         # roudix.spicetify.colorScheme — "" = theme default (null)
     spicetify_adblock: bool = True

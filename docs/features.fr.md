@@ -118,16 +118,41 @@
 
 ## Musique
 
-- Spotify patché avec Spicetify (débrayable via `roudix.apps.spotify.enable`)
-- Thème local, "colorful" par défaut (ou "comfy") — voir options ci-dessous
-- Extensions adblock + masquage des podcasts
+À choisir via `roudix.musicPlayer` — `"spotify"` (défaut), `"ytmdesktop"` ou
+`"none"`.
+
+- `"spotify"` — Spotify patché avec Spicetify. Thème local, "colorful" par
+  défaut (ou "comfy"), plus extensions adblock + masquage des podcasts —
+  voir options ci-dessous.
+- `"ytmdesktop"` — YouTube Music Desktop App (client YouTube Music non
+  officiel, basé sur Electron).
 
 ## Apps communes optionnelles
 
 GIMP, Inkscape, SongRec et EasyEffects (+ rnnoise-plugin) sont installés par
 défaut mais chacun est débrayable individuellement via
-`roudix.apps.<nom>.enable` (`gimp`, `inkscape`, `songrec`, `easyeffects`) —
-comme `roudix.apps.spotify.enable` ci-dessus.
+`roudix.apps.<nom>.enable` (`gimp`, `inkscape`, `songrec`, `easyeffects`).
+
+Signal et ZapZap (client WhatsApp non officiel, à l'allure native) n'ont pas
+de véritable alternative entre lesquelles switcher : ce sont de simples
+booléens opt-in, désactivés par défaut — `roudix.apps.signal.enable` et
+`roudix.apps.zapzap.enable`.
+
+Fluxer, une alternative auto-hébergeable à Discord, est le même genre de
+booléen opt-in : `roudix.apps.fluxer.enable`. Il n'est pas encore dans
+nixpkgs, donc il vient directement du paquet prébuilt `fluxer-desktop` de
+l'input flake `nix-gaming-edge`. Volontairement indépendant de
+`roudix.discord` et de `roudix.gaming.enable` — rien n'empêche de vouloir
+Discord et Fluxer en même temps, ou Fluxer sans setup gaming du tout.
+
+Un client mail et un gestionnaire de mots de passe sont aussi disponibles,
+opt-in (désactivés par défaut) : `roudix.mailClient` — `"thunderbird"`
+(complet), `"betterbird"` (fork de Thunderbird peaufiné, tiré de l'input
+flake [betterbird-nix](https://github.com/TheAnachronism/betterbird-nix) —
+pas encore dans nixpkgs) ou `"geary"` (client léger GNOME) ;
+`roudix.passwordManager` —
+`"bitwarden"` (synchronisé), `"keepassxc"` (coffre local, hors-ligne) ou
+`"protonpass"` (synchronisé, compte Proton).
 
 Également disponible, désactivé par défaut : un client torrent via
 `roudix.torrentClient` — `"qbittorrent"` (complet, basé sur Qt),

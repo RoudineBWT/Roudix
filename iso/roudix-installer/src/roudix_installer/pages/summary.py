@@ -59,11 +59,11 @@ class SummaryPage(Adw.NavigationPage):
             ("CPU", s.cpu),
             ("Kernel", f"{kernel_display} ({kernel_source})"),
             (L("Navigateur", "Browser"), s.browser + (" + Zen" if s.zen_browser else "")),
-            (L("Bureau", "Desktop"), f"{s.desktop}" + (f" + {s.desktop_shell}" if s.desktop in ("niri", "hyprland") else "")),
+            (L("Bureau", "Desktop"), f"{s.desktop}" + (f" + {s.desktop_shell}" if s.desktop in ("niri", "hyprland", "mangowc", "umbriel") else "")),
             (L("Éditeur", "Editor"), s.editor),
             (
                 L("Trousseau / portal", "Keyring / portal"),
-                s.desktop_integration if s.desktop in ("niri", "hyprland", "mangowc") else L("n/a (géré par le bureau)", "n/a (managed by the desktop)"),
+                s.desktop_integration if s.desktop in ("niri", "hyprland", "mangowc", "umbriel") else L("n/a (géré par le bureau)", "n/a (managed by the desktop)"),
             ),
             (L("Shell", "Shell"), s.default_shell),
             ("VM / Gaming", f"{'VM' if s.vm_guest else L('bare metal', 'bare metal')} — gaming "
@@ -86,13 +86,18 @@ class SummaryPage(Adw.NavigationPage):
             ("Telegram", s.telegram),
             (L("Lecteur vidéo", "Video player"), s.video_player),
             (L("Client torrent", "Torrent client"), s.torrent_client),
+            (L("Lecteur de musique", "Music player"), s.music_player),
+            (L("Client mail", "Mail client"), s.mail_client),
+            (L("Gestionnaire de mots de passe", "Password manager"), s.password_manager),
             ("Waydroid", L("activé", "enabled") if s.waydroid_enable else L("désactivé", "disabled")),
             ("Apps", ", ".join(filter(None, [
                 "" if s.app_gimp else L("sans GIMP", "no GIMP"),
                 "" if s.app_inkscape else L("sans Inkscape", "no Inkscape"),
-                "" if s.app_spotify else L("sans Spotify", "no Spotify"),
                 "" if s.app_songrec else L("sans SongRec", "no SongRec"),
                 "" if s.app_easyeffects else L("sans EasyEffects", "no EasyEffects"),
+                "+ Signal" if s.app_signal else "",
+                "+ ZapZap" if s.app_zapzap else "",
+                "+ Fluxer" if s.app_fluxer else "",
             ])) or L("config par défaut", "default set")),
         ] + ([
             ("Spicetify", f"{s.spicetify_theme}"
@@ -102,7 +107,7 @@ class SummaryPage(Adw.NavigationPage):
                     L("masquer podcasts", "hide podcasts") if s.spicetify_hide_podcasts else "",
                     "marketplace" if s.spicetify_marketplace else "",
                 ])) or L("sans extension", "no extensions"))),
-        ] if s.app_spotify else []) + [
+        ] if s.music_player == "spotify" else []) + [
             (
                 L("Création de contenu", "Content Creation"),
                 (

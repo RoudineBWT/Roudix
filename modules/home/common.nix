@@ -57,6 +57,47 @@ let
     none        = null;
   }.${torrentClientType};
 
+  # Music player — was two independent roudix.apps.{spotify,ytmdesktop}.enable
+  # booleans (both true by default); now a choice. "spotify" installs
+  # nothing here itself — it's installed via ./spicetify.nix
+  # (programs.spicetify), imported below only for that choice.
+  musicPlayerType = osConfig.roudix.musicPlayer or "spotify";
+
+  musicPlayerPackage = {
+    ytmdesktop = pkgs.ytmdesktop;
+    spotify    = null; # installed via ./spicetify.nix instead
+    none       = null;
+  }.${musicPlayerType};
+
+  mailClientType = osConfig.roudix.mailClient or "none";
+
+  # Betterbird isn't in nixpkgs — same pattern as fluxerPackage below,
+  # pulled straight from its own flake input's prebuilt package.
+  betterbirdPackage = inputs.betterbird-nix.packages.${pkgs.stdenv.hostPlatform.system}.betterbird;
+
+  mailClientPackage = {
+    thunderbird = pkgs.thunderbird;
+    betterbird  = betterbirdPackage;
+    geary       = pkgs.geary;
+    none        = null;
+  }.${mailClientType};
+
+  passwordManagerType = osConfig.roudix.passwordManager or "none";
+
+  passwordManagerPackage = {
+    bitwarden  = pkgs.bitwarden-desktop;
+    keepassxc  = pkgs.keepassxc;
+    protonpass = pkgs.proton-pass;
+    none       = null;
+  }.${passwordManagerType};
+
+  # Fluxer — a self-hostable Discord alternative. Not in nixpkgs yet, so it
+  # comes straight from the nix-gaming-edge flake's prebuilt package rather
+  # than a map like matrix/discord/telegram above. Deliberately independent
+  # of roudix.discord (people may want both) and of roudix.gaming.enable
+  # (it has nothing to do with gaming, so it doesn't need that overlay).
+  fluxerPackage = inputs.nix-gaming-edge.packages.${pkgs.stdenv.hostPlatform.system}.fluxer-desktop;
+
   terminalType = osConfig.roudix.terminal or "ghostty";
 
   terminalPackage = {
@@ -160,8 +201,8 @@ in
     zenHomeModules.${zenVariant}
   ] ++ lib.optional (builtins.pathExists ./git.nix) ./git.nix
     ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
-    # Spotify + Spicetify (roudix.apps.spotify.enable)
-    ++ lib.optional osConfig.roudix.apps.spotify.enable ./spicetify.nix
+    # Spotify + Spicetify (roudix.musicPlayer == "spotify")
+    ++ lib.optional (musicPlayerType == "spotify") ./spicetify.nix
     # Widevine CDM pointer for Helium (DRM playback), only when helium is
     # actually one of the selected browsers.
     ++ lib.optional (lib.elem "helium" osConfig.roudix.browsers) ./helium-widevine.nix;
@@ -218,6 +259,11 @@ in
   ++ lib.optional osConfig.roudix.apps.inkscape.enable pkgs.inkscape
   ++ lib.optional osConfig.roudix.apps.songrec.enable pkgs.songrec
   ++ lib.optionals osConfig.roudix.apps.easyeffects.enable [ pkgs.easyeffects pkgs.rnnoise-plugin ]
+  ++ lib.optional osConfig.roudix.apps.signal.enable pkgs.signal-desktop
+  ++ lib.optional osConfig.roudix.apps.zapzap.enable pkgs.zapzap
+  ++ lib.optional osConfig.roudix.apps.fluxer.enable fluxerPackage
+  ++ lib.optional (mailClientPackage != null) mailClientPackage
+  ++ lib.optional (passwordManagerPackage != null) passwordManagerPackage
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage
   # Discord (optionnel)
@@ -228,6 +274,8 @@ in
   ++ videoPlayerPackages
   # Torrent client (optional)
   ++ lib.optional (torrentClientPackage != null) torrentClientPackage
+  # Music player — Spotify (via spicetify.nix, above), ytmdesktop, or none
+  ++ lib.optional (musicPlayerPackage != null) musicPlayerPackage
   # Note: Zen Browser is no longer added here as a raw package — see
   # `programs.zen-browser` below, driven by `osConfig.roudix.zen.*`.
   # Terminal choisi par l'utilisateur (roudix.terminal)

@@ -102,6 +102,7 @@ def _desktops():
         ("kde", "KDE Plasma"),
         ("hyprland", "Hyprland"),
         ("mangowc", "MangoWC"),
+        ("umbriel", "Umbriel"),
     ]
 
 
@@ -248,6 +249,31 @@ def _torrent_client():
         ("qbittorrent", "qBittorrent"),
         ("fragments", L("Fragments (client GNOME minimaliste)", "Fragments (minimal GNOME client)")),
         ("deluge", "Deluge"),
+    ]
+
+
+def _music_player():
+    return [
+        ("spotify", L("Spotify + Spicetify (défaut)", "Spotify + Spicetify (default)")),
+        ("ytmdesktop", "YouTube Music Desktop"),
+        ("none", L("Aucun", "None")),
+    ]
+
+
+def _mail_client():
+    return [
+        ("none", L("Aucun", "None")),
+        ("thunderbird", L("Thunderbird (complet)", "Thunderbird (full-featured)")),
+        ("geary", L("Geary (léger, GNOME)", "Geary (lightweight, GNOME)")),
+    ]
+
+
+def _password_manager():
+    return [
+        ("none", L("Aucun", "None")),
+        ("bitwarden", L("Bitwarden (coffre synchronisé)", "Bitwarden (cloud-synced vault)")),
+        ("keepassxc", L("KeePassXC (coffre local, hors-ligne)", "KeePassXC (local, offline vault)")),
+        ("protonpass", L("Proton Pass (coffre synchronisé)", "Proton Pass (cloud-synced vault)")),
     ]
 
 
@@ -888,6 +914,21 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.torrent_client_row)
 
+        self.music_player_row = self._combo(
+            L("Lecteur de musique", "Music player"), _music_player(), state.music_player
+        )
+        extra_group.add(self.music_player_row)
+
+        self.mail_client_row = self._combo(
+            L("Client mail", "Mail client"), _mail_client(), state.mail_client
+        )
+        extra_group.add(self.mail_client_row)
+
+        self.password_manager_row = self._combo(
+            L("Gestionnaire de mots de passe", "Password manager"), _password_manager(), state.password_manager
+        )
+        extra_group.add(self.password_manager_row)
+
         self.waydroid_row = Adw.SwitchRow(title="Waydroid (Android)")
         self.waydroid_row.set_active(state.waydroid_enable)
         extra_group.add(self.waydroid_row)
@@ -909,10 +950,6 @@ class OptionsPage(Adw.NavigationPage):
         self.app_inkscape_row = Adw.SwitchRow(title="Inkscape")
         self.app_inkscape_row.set_active(state.app_inkscape)
         apps_group.add(self.app_inkscape_row)
-
-        self.app_spotify_row = Adw.SwitchRow(title="Spotify (+ Spicetify)")
-        self.app_spotify_row.set_active(state.app_spotify)
-        apps_group.add(self.app_spotify_row)
 
         self.spicetify_theme_row = self._combo(
             L("Thème Spicetify", "Spicetify theme"), _spicetify_themes(), state.spicetify_theme
@@ -951,6 +988,30 @@ class OptionsPage(Adw.NavigationPage):
         self.app_easyeffects_row = Adw.SwitchRow(title="EasyEffects (+ rnnoise)")
         self.app_easyeffects_row.set_active(state.app_easyeffects)
         apps_group.add(self.app_easyeffects_row)
+
+        self.app_signal_row = Adw.SwitchRow(
+            title="Signal",
+            subtitle=L("Messagerie chiffrée de bout en bout", "End-to-end encrypted messenger"),
+        )
+        self.app_signal_row.set_active(state.app_signal)
+        apps_group.add(self.app_signal_row)
+
+        self.app_zapzap_row = Adw.SwitchRow(
+            title="ZapZap",
+            subtitle=L("Client WhatsApp non-officiel", "Unofficial WhatsApp client"),
+        )
+        self.app_zapzap_row.set_active(state.app_zapzap)
+        apps_group.add(self.app_zapzap_row)
+
+        self.app_fluxer_row = Adw.SwitchRow(
+            title="Fluxer",
+            subtitle=L(
+                "Alternative à Discord, auto-hébergeable (indépendant du choix Discord ci-dessus)",
+                "Self-hostable Discord alternative (independent of the Discord choice above)",
+            ),
+        )
+        self.app_fluxer_row.set_active(state.app_fluxer)
+        apps_group.add(self.app_fluxer_row)
 
         box.append(apps_group)
         self._sync_spicetify_rows()
@@ -1039,7 +1100,7 @@ class OptionsPage(Adw.NavigationPage):
         self.memory_rgb_row.connect("notify::active", lambda *_: self._sync_memory_rows())
         self.zen_row.connect("notify::active", lambda *_: self._sync_zen_rows())
         self.zen_sine_row.connect("notify::active", lambda *_: self._sync_zen_rows())
-        self.app_spotify_row.connect("notify::active", lambda *_: self._sync_spicetify_rows())
+        self.music_player_row.connect("notify::selected", lambda *_: self._sync_spicetify_rows())
         self.content_creation_row.connect(
             "notify::active", lambda *_: self._sync_content_creation_rows()
         )
@@ -1113,21 +1174,21 @@ class OptionsPage(Adw.NavigationPage):
 
     def _sync_shell_row(self):
         desktop = self._selected_value(self.desktop_row)
-        self.shell_row.set_visible(desktop in ("niri", "hyprland", "mangowc"))
+        self.shell_row.set_visible(desktop in ("niri", "hyprland", "mangowc", "umbriel"))
 
     def _sync_desktop_integration_row(self):
         # GNOME/KDE manage their own keyring/portal stack — this option
         # only matters for the "bare" compositors.
         desktop = self._selected_value(self.desktop_row)
         self.desktop_integration_row.set_visible(
-            desktop in ("niri", "hyprland", "mangowc")
+            desktop in ("niri", "hyprland", "mangowc", "umbriel")
         )
 
     def _sync_file_manager_row(self):
         # GNOME/KDE have one obvious native file manager, so hide the
         # question entirely and lock the value to it — matches
         # roudix-installer.sh, which doesn't even ask on those desktops.
-        # niri/hyprland/mangowc don't ship an opinionated file manager, so
+        # niri/hyprland/mangowc/umbriel don't ship an opinionated file manager, so
         # show the row and leave whatever the user already picked
         # untouched when landing on one of those.
         desktop = self._selected_value(self.desktop_row)
@@ -1156,7 +1217,7 @@ class OptionsPage(Adw.NavigationPage):
         self.zen_sine_mods_row.set_visible(zen_active and self.zen_sine_row.get_active())
 
     def _sync_spicetify_rows(self):
-        spotify_active = self.app_spotify_row.get_active()
+        spotify_active = self._selected_value(self.music_player_row) == "spotify"
         for row in (
             self.spicetify_theme_row,
             self.spicetify_color_scheme_row,
@@ -1270,10 +1331,12 @@ class OptionsPage(Adw.NavigationPage):
         s.telegram = self._selected_value(self.telegram_row)
         s.video_player = self._selected_value(self.video_player_row)
         s.torrent_client = self._selected_value(self.torrent_client_row)
+        s.music_player = self._selected_value(self.music_player_row)
+        s.mail_client = self._selected_value(self.mail_client_row)
+        s.password_manager = self._selected_value(self.password_manager_row)
         s.waydroid_enable = self.waydroid_row.get_active()
         s.app_gimp = self.app_gimp_row.get_active()
         s.app_inkscape = self.app_inkscape_row.get_active()
-        s.app_spotify = self.app_spotify_row.get_active()
         s.spicetify_theme = self._selected_value(self.spicetify_theme_row)
         s.spicetify_color_scheme = self.spicetify_color_scheme_row.get_text().strip()
         s.spicetify_adblock = self.spicetify_adblock_row.get_active()
@@ -1281,6 +1344,9 @@ class OptionsPage(Adw.NavigationPage):
         s.spicetify_marketplace = self.spicetify_marketplace_row.get_active()
         s.app_songrec = self.app_songrec_row.get_active()
         s.app_easyeffects = self.app_easyeffects_row.get_active()
+        s.app_signal = self.app_signal_row.get_active()
+        s.app_zapzap = self.app_zapzap_row.get_active()
+        s.app_fluxer = self.app_fluxer_row.get_active()
 
         s.content_creation_enable = self.content_creation_row.get_active()
         s.obs_enable = self.obs_row.get_active()

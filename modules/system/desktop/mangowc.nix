@@ -40,7 +40,7 @@ in
     };
 
     # ── Noctalia greeter (replaces ly when shell == noctalia) ────────────
-    programs.noctalia-greeter = lib.mkIf isNoctalia {
+    services.displayManager.noctalia-greeter = lib.mkIf isNoctalia {
       enable = true;
       greeter-args = "--session mangowc";
       settings = {
