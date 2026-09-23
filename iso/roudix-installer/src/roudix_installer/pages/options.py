@@ -260,6 +260,23 @@ def _music_player():
     ]
 
 
+def _mail_client():
+    return [
+        ("none", L("Aucun", "None")),
+        ("thunderbird", L("Thunderbird (complet)", "Thunderbird (full-featured)")),
+        ("geary", L("Geary (léger, GNOME)", "Geary (lightweight, GNOME)")),
+    ]
+
+
+def _password_manager():
+    return [
+        ("none", L("Aucun", "None")),
+        ("bitwarden", L("Bitwarden (coffre synchronisé)", "Bitwarden (cloud-synced vault)")),
+        ("keepassxc", L("KeePassXC (coffre local, hors-ligne)", "KeePassXC (local, offline vault)")),
+        ("protonpass", L("Proton Pass (coffre synchronisé)", "Proton Pass (cloud-synced vault)")),
+    ]
+
+
 def _spicetify_themes():
     return [
         ("colorful", L("Colorful (défaut)", "Colorful (default)")),
@@ -902,6 +919,16 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.music_player_row)
 
+        self.mail_client_row = self._combo(
+            L("Client mail", "Mail client"), _mail_client(), state.mail_client
+        )
+        extra_group.add(self.mail_client_row)
+
+        self.password_manager_row = self._combo(
+            L("Gestionnaire de mots de passe", "Password manager"), _password_manager(), state.password_manager
+        )
+        extra_group.add(self.password_manager_row)
+
         self.waydroid_row = Adw.SwitchRow(title="Waydroid (Android)")
         self.waydroid_row.set_active(state.waydroid_enable)
         extra_group.add(self.waydroid_row)
@@ -961,6 +988,30 @@ class OptionsPage(Adw.NavigationPage):
         self.app_easyeffects_row = Adw.SwitchRow(title="EasyEffects (+ rnnoise)")
         self.app_easyeffects_row.set_active(state.app_easyeffects)
         apps_group.add(self.app_easyeffects_row)
+
+        self.app_signal_row = Adw.SwitchRow(
+            title="Signal",
+            subtitle=L("Messagerie chiffrée de bout en bout", "End-to-end encrypted messenger"),
+        )
+        self.app_signal_row.set_active(state.app_signal)
+        apps_group.add(self.app_signal_row)
+
+        self.app_zapzap_row = Adw.SwitchRow(
+            title="ZapZap",
+            subtitle=L("Client WhatsApp non-officiel", "Unofficial WhatsApp client"),
+        )
+        self.app_zapzap_row.set_active(state.app_zapzap)
+        apps_group.add(self.app_zapzap_row)
+
+        self.app_fluxer_row = Adw.SwitchRow(
+            title="Fluxer",
+            subtitle=L(
+                "Alternative à Discord, auto-hébergeable (indépendant du choix Discord ci-dessus)",
+                "Self-hostable Discord alternative (independent of the Discord choice above)",
+            ),
+        )
+        self.app_fluxer_row.set_active(state.app_fluxer)
+        apps_group.add(self.app_fluxer_row)
 
         box.append(apps_group)
         self._sync_spicetify_rows()
@@ -1281,6 +1332,8 @@ class OptionsPage(Adw.NavigationPage):
         s.video_player = self._selected_value(self.video_player_row)
         s.torrent_client = self._selected_value(self.torrent_client_row)
         s.music_player = self._selected_value(self.music_player_row)
+        s.mail_client = self._selected_value(self.mail_client_row)
+        s.password_manager = self._selected_value(self.password_manager_row)
         s.waydroid_enable = self.waydroid_row.get_active()
         s.app_gimp = self.app_gimp_row.get_active()
         s.app_inkscape = self.app_inkscape_row.get_active()
@@ -1291,6 +1344,9 @@ class OptionsPage(Adw.NavigationPage):
         s.spicetify_marketplace = self.spicetify_marketplace_row.get_active()
         s.app_songrec = self.app_songrec_row.get_active()
         s.app_easyeffects = self.app_easyeffects_row.get_active()
+        s.app_signal = self.app_signal_row.get_active()
+        s.app_zapzap = self.app_zapzap_row.get_active()
+        s.app_fluxer = self.app_fluxer_row.get_active()
 
         s.content_creation_enable = self.content_creation_row.get_active()
         s.obs_enable = self.obs_row.get_active()

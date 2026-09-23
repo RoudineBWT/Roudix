@@ -87,12 +87,17 @@ class SummaryPage(Adw.NavigationPage):
             (L("Lecteur vidéo", "Video player"), s.video_player),
             (L("Client torrent", "Torrent client"), s.torrent_client),
             (L("Lecteur de musique", "Music player"), s.music_player),
+            (L("Client mail", "Mail client"), s.mail_client),
+            (L("Gestionnaire de mots de passe", "Password manager"), s.password_manager),
             ("Waydroid", L("activé", "enabled") if s.waydroid_enable else L("désactivé", "disabled")),
             ("Apps", ", ".join(filter(None, [
                 "" if s.app_gimp else L("sans GIMP", "no GIMP"),
                 "" if s.app_inkscape else L("sans Inkscape", "no Inkscape"),
                 "" if s.app_songrec else L("sans SongRec", "no SongRec"),
                 "" if s.app_easyeffects else L("sans EasyEffects", "no EasyEffects"),
+                "+ Signal" if s.app_signal else "",
+                "+ ZapZap" if s.app_zapzap else "",
+                "+ Fluxer" if s.app_fluxer else "",
             ])) or L("config par défaut", "default set")),
         ] + ([
             ("Spicetify", f"{s.spicetify_theme}"

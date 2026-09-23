@@ -118,6 +118,11 @@ class InstallState:
     app_inkscape: bool = True
     app_songrec: bool = True
     app_easyeffects: bool = True     # + rnnoise-plugin
+    app_signal: bool = False
+    app_zapzap: bool = False
+    app_fluxer: bool = False
+    mail_client: str = "none"
+    password_manager: str = "none"
 
     # ── Spicetify (only meaningful if music_player == "spotify") ────────────
     spicetify_theme: str = "colorful"        # roudix.spicetify.theme — colorful | comfy

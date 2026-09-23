@@ -32,5 +32,28 @@
       default = true;
       description = "Install EasyEffects + the rnnoise plugin (audio EQ / noise reduction).";
     };
+
+    signal.enable = lib.mkOption {
+      type    = lib.types.bool;
+      default = false;
+      description = "Install Signal Desktop (`pkgs.signal-desktop`).";
+    };
+
+    zapzap.enable = lib.mkOption {
+      type    = lib.types.bool;
+      default = false;
+      description = "Install ZapZap, an unofficial native-feeling WhatsApp desktop client (`pkgs.zapzap`).";
+    };
+
+    fluxer.enable = lib.mkOption {
+      type    = lib.types.bool;
+      default = false;
+      description = ''
+        Install Fluxer, a self-hostable Discord alternative, from the
+        nix-gaming-edge flake's prebuilt `fluxer-desktop` package (not in
+        nixpkgs yet). Independent of `roudix.discord` and
+        `roudix.gaming.enable` — people can want both Discord and Fluxer.
+      '';
+    };
   };
 }

@@ -69,6 +69,30 @@ let
     none       = null;
   }.${musicPlayerType};
 
+  mailClientType = osConfig.roudix.mailClient or "none";
+
+  mailClientPackage = {
+    thunderbird = pkgs.thunderbird;
+    geary       = pkgs.geary;
+    none        = null;
+  }.${mailClientType};
+
+  passwordManagerType = osConfig.roudix.passwordManager or "none";
+
+  passwordManagerPackage = {
+    bitwarden  = pkgs.bitwarden-desktop;
+    keepassxc  = pkgs.keepassxc;
+    protonpass = pkgs.proton-pass;
+    none       = null;
+  }.${passwordManagerType};
+
+  # Fluxer — a self-hostable Discord alternative. Not in nixpkgs yet, so it
+  # comes straight from the nix-gaming-edge flake's prebuilt package rather
+  # than a map like matrix/discord/telegram above. Deliberately independent
+  # of roudix.discord (people may want both) and of roudix.gaming.enable
+  # (it has nothing to do with gaming, so it doesn't need that overlay).
+  fluxerPackage = inputs.nix-gaming-edge.packages.${pkgs.stdenv.hostPlatform.system}.fluxer-desktop;
+
   terminalType = osConfig.roudix.terminal or "ghostty";
 
   terminalPackage = {
@@ -230,6 +254,11 @@ in
   ++ lib.optional osConfig.roudix.apps.inkscape.enable pkgs.inkscape
   ++ lib.optional osConfig.roudix.apps.songrec.enable pkgs.songrec
   ++ lib.optionals osConfig.roudix.apps.easyeffects.enable [ pkgs.easyeffects pkgs.rnnoise-plugin ]
+  ++ lib.optional osConfig.roudix.apps.signal.enable pkgs.signal-desktop
+  ++ lib.optional osConfig.roudix.apps.zapzap.enable pkgs.zapzap
+  ++ lib.optional osConfig.roudix.apps.fluxer.enable fluxerPackage
+  ++ lib.optional (mailClientPackage != null) mailClientPackage
+  ++ lib.optional (passwordManagerPackage != null) passwordManagerPackage
   # Matrix client (optional)
   ++ lib.optional (matrixPackage != null) matrixPackage
   # Discord (optionnel)

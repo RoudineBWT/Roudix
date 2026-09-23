@@ -33,6 +33,8 @@
     ../../modules/system/video-player.nix
     ../../modules/system/torrent-client.nix
     ../../modules/system/music-player.nix
+    ../../modules/system/mail-client.nix
+    ../../modules/system/password-manager.nix
     ../../modules/system/appimage.nix
     ../../modules/system/filemanager.nix
     ../../modules/system/terminal.nix

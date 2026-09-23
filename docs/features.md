@@ -133,6 +133,23 @@ GIMP, Inkscape, SongRec and EasyEffects (+ rnnoise-plugin) ship by default but
 can each be turned off individually via `roudix.apps.<name>.enable` (`gimp`,
 `inkscape`, `songrec`, `easyeffects`).
 
+Signal and ZapZap (an unofficial, native-feeling WhatsApp desktop client)
+have no real alternative to switch between, so they're plain opt-in booleans,
+off by default: `roudix.apps.signal.enable` and `roudix.apps.zapzap.enable`.
+
+Fluxer, a self-hostable Discord alternative, is the same kind of opt-in
+boolean: `roudix.apps.fluxer.enable`. It isn't in nixpkgs yet, so it's
+pulled straight from the `nix-gaming-edge` flake input's prebuilt
+`fluxer-desktop` package. It's deliberately independent of `roudix.discord`
+and `roudix.gaming.enable` — nothing stops you from wanting both Discord
+and Fluxer, or Fluxer without any gaming setup.
+
+A mail client and a password manager are also available, opt-in (off by
+default): `roudix.mailClient` — `"thunderbird"` (full-featured) or
+`"geary"` (lightweight GNOME client); `roudix.passwordManager` —
+`"bitwarden"` (cloud-synced), `"keepassxc"` (local, offline vault) or
+`"protonpass"` (cloud-synced, Proton account).
+
 Also available, opt-in (off by default): a torrent client via
 `roudix.torrentClient` — `"qbittorrent"` (feature-rich, Qt-based),
 `"fragments"` (minimal GNOME/libadwaita client), `"deluge"` (plugin-based) or

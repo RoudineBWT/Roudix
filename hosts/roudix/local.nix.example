@@ -95,11 +95,21 @@
   roudix.videoPlayer = "vlc"; # "vlc" (default), "clapper" (GTK4), "mpv" (+ yt-dlp) or "celluloid" — "none" for no video player
   roudix.torrentClient = "none"; # "qbittorrent", "fragments" (minimal GNOME client), "deluge" or "none" (off by default)
   roudix.musicPlayer = "spotify"; # "spotify" (+ Spicetify, default), "ytmdesktop" or "none"
+  roudix.mailClient = "none"; # "thunderbird" (full-featured), "geary" (lightweight GNOME) or "none"
+  roudix.passwordManager = "none"; # "bitwarden" (cloud), "keepassxc" (local vault), "protonpass" (cloud) or "none"
   # Individually disable these "common" apps (all true by default):
   # roudix.apps.gimp.enable        = false;
   # roudix.apps.inkscape.enable    = false;
   # roudix.apps.songrec.enable     = false;
   # roudix.apps.easyeffects.enable = false; # + rnnoise-plugin
+  # Signal, ZapZap (unofficial WhatsApp client) and Fluxer (self-hostable
+  # Discord alternative, packaged via the nix-gaming-edge flake) have no
+  # real alternative to switch between, so they're just opt-in booleans,
+  # off by default. Fluxer is independent of roudix.discord on purpose —
+  # people may well want both:
+  # roudix.apps.signal.enable = true;
+  # roudix.apps.zapzap.enable = true;
+  # roudix.apps.fluxer.enable = true;
   # Spicetify (active only if roudix.musicPlayer = "spotify"):
   # roudix.spicetify.theme = "comfy"; # "colorful" (default) or "comfy"
   # roudix.spicetify.colorScheme = "dracula"; # null (theme default) or a scheme name from its color.ini

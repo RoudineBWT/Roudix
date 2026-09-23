@@ -172,12 +172,17 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.videoPlayer", state.video_player)
     t = _sub_string(t, "roudix.torrentClient", state.torrent_client)
     t = _sub_string(t, "roudix.musicPlayer", state.music_player)
+    t = _sub_string(t, "roudix.mailClient", state.mail_client)
+    t = _sub_string(t, "roudix.passwordManager", state.password_manager)
     t = _sub_bool(t, "roudix.waydroid.enable", state.waydroid_enable)
 
     t = _set_bool_option(t, "roudix.apps.gimp.enable", state.app_gimp)
     t = _set_bool_option(t, "roudix.apps.inkscape.enable", state.app_inkscape)
     t = _set_bool_option(t, "roudix.apps.songrec.enable", state.app_songrec)
     t = _set_bool_option(t, "roudix.apps.easyeffects.enable", state.app_easyeffects)
+    t = _set_bool_option(t, "roudix.apps.signal.enable", state.app_signal)
+    t = _set_bool_option(t, "roudix.apps.zapzap.enable", state.app_zapzap)
+    t = _set_bool_option(t, "roudix.apps.fluxer.enable", state.app_fluxer)
 
     if state.music_player == "spotify":
         t = _set_string_option(t, "roudix.spicetify.theme", state.spicetify_theme)
