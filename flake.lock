@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "betterbird-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789557473,
+        "narHash": "sha256-9sAJ7W8l2fR3pg7BMN23FFvFDWMX0nuBF+zOv9e3/us=",
+        "owner": "TheAnachronism",
+        "repo": "betterbird-nix",
+        "rev": "af4ef2f5ae75a00cea140ce956eec4fa9d7bad1e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TheAnachronism",
+        "repo": "betterbird-nix",
+        "type": "github"
+      }
+    },
     "brave-previews": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -151,11 +171,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790127892,
-        "narHash": "sha256-06IZexVo5nqZeiC3zboN9lf9YiBEwcq90nyY8vXZuF0=",
+        "lastModified": 1790129675,
+        "narHash": "sha256-joNWdcl7Nzpc8uG3e8gZPLqdbsoTQouuRg+xWZbKNpE=",
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
-        "rev": "edf936973f9624f8061b4a10370e0d19b2153d9a",
+        "rev": "62098c8add6b9e5f0803f0c515200d1bee447eb4",
         "type": "github"
       },
       "original": {
@@ -334,11 +354,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790128159,
-        "narHash": "sha256-ZAd7VUcc6V4p0C65Ngdf9dt72Ix1TabuNWAEhxI/Py8=",
+        "lastModified": 1790128814,
+        "narHash": "sha256-6Gm9q+wW3E4Ey4F6wEbJAwaMsEK6hvCYfTW7yY64ZfA=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "9fc630b32efbcee34295820ee44d7d65252b7fb3",
+        "rev": "0b2f1129177f70c5f0f5d88bb53c49ca47d0bfc0",
         "type": "github"
       },
       "original": {
@@ -611,11 +631,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1790127566,
-        "narHash": "sha256-njMYsbQrwDFjib7ujh2bRpv0Wrkz3GM4/S33vPbCJtI=",
+        "lastModified": 1790129251,
+        "narHash": "sha256-hnCbO2PRL+EftlNv0mUJQI8Lg0t3/zL87hbrlpD9l/4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "47bb56e6aaab74a2c09ab9c51926b14705d71915",
+        "rev": "bee02066546d9018a0b45090a0afbff09f756640",
         "type": "github"
       },
       "original": {
@@ -829,6 +849,7 @@
     },
     "root": {
       "inputs": {
+        "betterbird-nix": "betterbird-nix",
         "brave-previews": "brave-previews",
         "caelestia-shell": "caelestia-shell",
         "chaotic": "chaotic",
@@ -993,11 +1014,11 @@
         "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel"
       },
       "locked": {
-        "lastModified": 1790126020,
-        "narHash": "sha256-r9sZyCQdRTVGU3mLZHvUwgPJgBg7VDQGdv81N2e9xTE=",
+        "lastModified": 1790129980,
+        "narHash": "sha256-ckhgX9vnImfX93rorOmXXZDE503V7VF5eVegNqocsiI=",
         "ref": "refs/heads/main",
-        "rev": "e754b159539ed8dbdedecec765b82f7aefbe0135",
-        "revCount": 1013,
+        "rev": "bbca89f13f0166ff370d250f611b4f0600b57db6",
+        "revCount": 1014,
         "type": "git",
         "url": "https://github.com/noctalia-dev/umbriel"
       },
