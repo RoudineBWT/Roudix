@@ -448,6 +448,8 @@ GAMING_EXTRAS = [
     {"id": "ananicy", "name": L("Ananicy (ordonnanceur process)", "Ananicy (process scheduler)"), "key": "roudix.gaming.ananicy.enable", "default": False},
     {"id": "gtaFix",  "name": L("Correctif hosts GTA Online", "GTA Online hosts fix"),     "key": "roudix.hosts.gtaFix.enable",   "default": False},
     {"id": "millennium", "name": L("Millennium (client Steam modifié : thèmes et plugins)", "Millennium (modded Steam client: themes and plugins)"), "key": "roudix.gaming.steam.millennium.enable", "default": False},
+    {"id": "gamescopeSession", "name": L("Session « Steam (Gaming Mode) » (gamescope, niri/umbriel/gnome/kde)", "“Steam (Gaming Mode)” session (gamescope, niri/umbriel/gnome/kde)"), "key": "roudix.gaming.gamescopeSession.enable", "default": False},
+    {"id": "decky", "name": L("Decky Loader (plugins Steam, compilé au 1er rebuild)", "Decky Loader (Steam plugins, compiled on first rebuild)"), "key": "roudix.gaming.gamescopeSession.decky.enable", "default": False},
 ]
 
 # roudix.zen.variant — enum, exposed as a SelectorGroup (like EDITORS).
