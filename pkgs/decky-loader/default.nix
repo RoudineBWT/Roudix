@@ -2,7 +2,8 @@
 #
 # Source: Jovian-Experiments/Jovian-NixOS, pkgs/decky-loader/default.nix at
 # e2647dadda77487caba8055556dedde2e0448d83 (development, 2026-09-15,
-# decky-loader 3.2.9), unchanged apart from this header. Vendored instead of
+# decky-loader 3.2.9), unchanged apart from this header and one line of
+# trailing whitespace stripped. Vendored instead of
 # taking Jovian as an input/tarball: only this one derivation is needed, not
 # its overlay (which redefines gamescope/steam/mesa).
 #
@@ -55,7 +56,7 @@ python3.pkgs.buildPythonPackage rec {
     cd ../backend
   '';
 
-  build-system = with python3.pkgs; [ 
+  build-system = with python3.pkgs; [
     poetry-core
     poetry-dynamic-versioning
   ];
