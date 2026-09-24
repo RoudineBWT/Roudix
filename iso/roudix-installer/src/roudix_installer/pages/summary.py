@@ -75,6 +75,7 @@ class SummaryPage(Adw.NavigationPage):
                 f"{s.keyboard_layout}" + (f" ({s.keyboard_variant})" if s.keyboard_variant else ""),
             ),
             ("RGB", s.rgb + (f", RAM {s.memory_type}" if s.rgb == "openlinkhub" and s.memory_rgb_enable else "")),
+            (L("Branche", "Branch"), s.branch),
             (L("Extras", "Extras"), ", ".join(filter(None, [
                 "GTA fix" if s.gta_fix else "",
                 "Flatpak" if s.flatpak else "",

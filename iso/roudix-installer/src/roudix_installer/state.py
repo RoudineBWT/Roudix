@@ -105,6 +105,7 @@ class InstallState:
     virtualization: bool = False
     autoupdate: bool = True
     autoupdate_interval: str = "1h"
+    branch: str = "main"             # roudix.autoupdate.branch — main | testing | dev (also the branch cloned)
     bootloader: str = "limine"       # limine | systemd-boot
     matrix_client: str = "none"      # none | element | cinny
     discord: str = "vencord"         # roudix.discord — vencord | vanilla | none

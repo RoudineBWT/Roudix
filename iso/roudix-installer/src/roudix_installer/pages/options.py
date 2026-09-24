@@ -209,6 +209,14 @@ def _bootloaders():
     ]
 
 
+def _branches():
+    return [
+        ("main", L("main — stable, ~toutes les 2 semaines (recommandé)", "main — stable, ~every 2 weeks (recommended)")),
+        ("testing", L("testing — ~tous les 2 jours, peut parfois casser", "testing — ~every 2 days, may occasionally break")),
+        ("dev", L("dev — derniers changements, le moins stable", "dev — latest changes, least stable")),
+    ]
+
+
 def _matrix():
     return [
         ("none", L("Aucun", "None")),
@@ -897,6 +905,12 @@ class OptionsPage(Adw.NavigationPage):
         self.autoupdate_interval_row.set_text(state.autoupdate_interval)
         extra_group.add(self.autoupdate_interval_row)
 
+        self.branch_row = self._combo(
+            L("Branche (installation + mises à jour)", "Branch (install + updates)"),
+            _branches(), state.branch,
+        )
+        extra_group.add(self.branch_row)
+
         self.bootloader_row = self._combo(
             L("Bootloader", "Bootloader"), _bootloaders(), state.bootloader
         )
@@ -1340,6 +1354,7 @@ class OptionsPage(Adw.NavigationPage):
         s.virtualization = self.virt_row.get_active()
         s.autoupdate = self.autoupdate_row.get_active()
         s.autoupdate_interval = self.autoupdate_interval_row.get_text()
+        s.branch = self._selected_value(self.branch_row)
         s.bootloader = self._selected_value(self.bootloader_row)
         s.matrix_client = self._selected_value(self.matrix_row)
         s.discord = self._selected_value(self.discord_row)

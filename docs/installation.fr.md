@@ -38,7 +38,7 @@ chmod +x roudix-installer.sh
 ```
 
 L'installeur gère tout de façon interactive :
-- Clone le dépôt, génère `hardware-configuration.nix`, crée tous les fichiers de config locaux
+- Demande quelle branche installer et suivre (`main` = stable, `testing`, `dev`), la clone, génère `hardware-configuration.nix`, crée tous les fichiers de config locaux
 - **Détecte automatiquement les autres OS** via la NVRAM EFI (`efibootmgr`) — pas besoin de chercher le PARTUUID manuellement
 - **Détecte automatiquement le GPU et le CPU** (`lspci` / `/proc/cpuinfo`) — présélectionne et demande confirmation
 - **Détecte si vous êtes dans une VM** (`systemd-detect-virt`) — active en avance le mode invité VM et prévient que la détection GPU/CPU peut être imprécise

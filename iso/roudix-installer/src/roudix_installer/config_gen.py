@@ -166,6 +166,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_bool(t, "roudix.virtualization.enable", state.virtualization)
     t = _sub_bool(t, "roudix.autoupdate.enable", state.autoupdate)
     t = _sub_string(t, "roudix.autoupdate.interval", state.autoupdate_interval)
+    t = _sub_string(t, "roudix.autoupdate.branch", state.branch)
     t = _sub_string(t, "roudix.boot.bootloader", state.bootloader)
     t = _sub_string(t, "roudix.matrixClient", state.matrix_client)
     t = _sub_string(t, "roudix.discord", state.discord)

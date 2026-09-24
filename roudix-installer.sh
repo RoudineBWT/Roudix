@@ -146,6 +146,32 @@ ask "Your username (used for the home directory):" USERNAME
 [[ -z "$USERNAME" ]] && error "Username cannot be empty."
 
 INSTALL_DIR="/home/${USERNAME}/.config/roudix"
+REPO_URL="https://github.com/RoudineBWT/Roudix"
+
+# ── Branch selection ──────────────────────────────────────────────────────────
+pick "Which branch do you want to install and follow?" BRANCH \
+  "main|Stable — updated about every 2 weeks (recommended)" \
+  "testing|Testing — updated about every 2 days, may occasionally break" \
+  "dev|Dev — latest changes, least stable"
+info "Selected branch: ${BRANCH}"
+
+clone_repo() {
+  mkdir -p "/home/${USERNAME}/.config"
+  git clone --branch "$BRANCH" "$REPO_URL" "$INSTALL_DIR" \
+    || error "Failed to clone branch '${BRANCH}'."
+}
+
+use_existing_repo() {
+  # Keep the existing checkout, but move it to the selected branch.
+  if git -C "$INSTALL_DIR" fetch origin "$BRANCH" \
+     && git -C "$INSTALL_DIR" checkout "$BRANCH" \
+     && git -C "$INSTALL_DIR" merge --ff-only "origin/$BRANCH"; then
+    success "Existing repo is now on branch '${BRANCH}'."
+  else
+    BRANCH="$(git -C "$INSTALL_DIR" rev-parse --abbrev-ref HEAD)"
+    warn "Could not switch to the selected branch (local changes?) — staying on '${BRANCH}'."
+  fi
+}
 
 # ── Clone repo ────────────────────────────────────────────────────────────────
 if [[ -d "$INSTALL_DIR" ]]; then
@@ -154,28 +180,26 @@ if [[ -d "$INSTALL_DIR" ]]; then
     read -rp "Re-clone from scratch? [y/N]: " confirm
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
       rm -rf "$INSTALL_DIR"
-      mkdir -p "/home/${USERNAME}/.config"
-      git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
-      success "Repository re-cloned."
+      clone_repo
+      success "Repository re-cloned (branch '${BRANCH}')."
     else
       info "Using existing repo."
+      use_existing_repo
     fi
   else
     warn "Directory $INSTALL_DIR exists but is not a git repo."
     read -rp "Delete and clone? [y/N]: " confirm
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
       rm -rf "$INSTALL_DIR"
-      mkdir -p "/home/${USERNAME}/.config"
-      git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
-      success "Repository cloned."
+      clone_repo
+      success "Repository cloned (branch '${BRANCH}')."
     else
       info "Using existing directory."
     fi
   fi
 else
-  mkdir -p "/home/${USERNAME}/.config"
-  git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
-  success "Repository cloned."
+  clone_repo
+  success "Repository cloned (branch '${BRANCH}')."
 fi
 
 cd "$INSTALL_DIR"
@@ -1074,6 +1098,7 @@ sed -i -E "s/roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix
 sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.virtualization.enable = ${VIRTUALIZATION}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.autoupdate.enable    = ${AUTOUPDATE}/" hosts/roudix/local.nix
 sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
+set_kernel_option hosts/roudix/local.nix "roudix.autoupdate.branch" "true" "${BRANCH}"
 sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/roudix/local.nix
@@ -1142,6 +1167,7 @@ check_opt "roudix.hosts.gtaFix.enable" "roudix\.hosts\.gtaFix\.enable[[:space:]]
 check_opt "roudix.flatpak.enable"      "roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*${FLATPAK}"
 check_opt "roudix.virtualization.enable" "roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*${VIRTUALIZATION}"
 check_opt "roudix.autoupdate.enable"   "roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*${AUTOUPDATE}"
+check_opt "roudix.autoupdate.branch"   "^[[:space:]]*roudix\.autoupdate\.branch[[:space:]]*=[[:space:]]*\"${BRANCH}\""
 check_opt "roudix.boot.bootloader"     "roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"${BOOTLOADER}\""
 check_opt "roudix.matrixClient"        "roudix\.matrixClient[[:space:]]*=[[:space:]]*\"${MATRIX_CLIENT}\""
 check_opt "roudix.discord" "roudix\.discord[[:space:]]*=[[:space:]]*\"${DISCORD}\""
@@ -1197,6 +1223,7 @@ echo -e "
   ${BOLD}GTA Fix       :${NC} $GTA_FIX
   ${BOLD}Flatpak       :${NC} $FLATPAK
   ${BOLD}Virtualization:${NC} $VIRTUALIZATION
+  ${BOLD}Branch        :${NC} $BRANCH
   ${BOLD}Auto-update   :${NC} $AUTOUPDATE $([ "$AUTOUPDATE" == "true" ] && echo "(every $AUTOUPDATE_INTERVAL)")
   ${BOLD}Bootloader    :${NC} $BOOTLOADER
   ${BOLD}Matrix client :${NC} $MATRIX_CLIENT

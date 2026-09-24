@@ -38,7 +38,7 @@ chmod +x roudix-installer.sh
 ```
 
 The installer handles everything interactively:
-- Clones the repo, generates `hardware-configuration.nix`, creates all local config files
+- Asks which branch to install and follow (`main` = stable, `testing`, `dev`), clones it, generates `hardware-configuration.nix`, creates all local config files
 - **Detects other OSes automatically** via EFI NVRAM (`efibootmgr`) — no manual PARTUUID lookup needed
 - **Detects GPU and CPU automatically** (`lspci` / `/proc/cpuinfo`) — pre-selects and asks for confirmation
 - **Detects if running in a VM** (`systemd-detect-virt`) — pre-enables VM guest mode and warns that GPU/CPU detection may be inaccurate

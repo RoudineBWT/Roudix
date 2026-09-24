@@ -313,8 +313,21 @@ class ProgressPage(Adw.NavigationPage):
         GLib.idle_add(self._set_status, L("Copie de la configuration…", "Copying the configuration…"), 0.4)
         self._run_cmd(["mkdir", "-p", "/mnt/etc/nixos"])
 
-        if Path("/iso-cfg").is_dir():
+        branch = self.state.branch
+        # /iso-cfg is a snapshot of `main` taken when the ISO was built, so it
+        # only matches the default choice. Any other branch is cloned from
+        # GitHub (needs network in the live session).
+        if Path("/iso-cfg").is_dir() and branch == "main":
             self._run_cmd(["cp", "-r", "/iso-cfg/.", "/mnt/etc/nixos/"])
+        elif Path("/iso-cfg").is_dir():
+            GLib.idle_add(
+                self._log,
+                L(
+                    f"Branche « {branch} » choisie — clone depuis GitHub (l'ISO embarque uniquement main).",
+                    f"Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main).",
+                ),
+            )
+            self._run_cmd(["git", "clone", "--branch", branch, "https://github.com/RoudineBWT/Roudix", "/mnt/etc/nixos"])
         else:
             # /iso-cfg only exists inside an ISO actually built with the
             # current iso-configuration.nix (isoImage.contents embeds it).
@@ -330,7 +343,7 @@ class ProgressPage(Adw.NavigationPage):
                     "or testing outside an ISO) — cloning straight from GitHub instead.",
                 ),
             )
-            self._run_cmd(["git", "clone", "https://github.com/RoudineBWT/Roudix", "/mnt/etc/nixos"])
+            self._run_cmd(["git", "clone", "--branch", branch, "https://github.com/RoudineBWT/Roudix", "/mnt/etc/nixos"])
 
         GLib.idle_add(self._set_status, L("Détection du matériel…", "Detecting hardware…"), 0.5)
         # Generate into the default location then copy — same as
