@@ -2,7 +2,7 @@ name: Sync testing to main
 
 on:
   schedule:
-    - cron: '0 3 */2 * *'  # tous les 2 jours à 03h00 UTC
+    - cron: '0 3 1,15 * *'  # le 1er et le 15 de chaque mois à 03h00 UTC
   workflow_dispatch:
 
 jobs:
