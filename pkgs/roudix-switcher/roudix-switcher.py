@@ -318,20 +318,82 @@ BRANCHES = [
 ]
 
 
+def current_repo_branch() -> str:
+    """Branch the local checkout is actually on (what the machine really
+    follows), falling back to roudix.autoupdate.branch when NH_FLAKE isn't a
+    git repo or HEAD is detached / on an unknown branch. Reading the checkout
+    rather than local.nix means a commented-out or missing option can't make
+    the selector show \"main\" while the machine is really on dev."""
+    try:
+        r = subprocess.run(["git", "-C", NH_FLAKE, "rev-parse", "--abbrev-ref", "HEAD"],
+                           capture_output=True, text=True)
+        name = r.stdout.strip()
+        if r.returncode == 0 and name in {b["id"] for b in BRANCHES}:
+            return name
+    except Exception:
+        pass
+    return get_string_option("roudix.autoupdate.branch", "main")
+
+
+def write_branch_option(branch: str):
+    """set_string_option() + uncomment the line if local.nix ships it as
+    `# roudix.autoupdate.branch = ...` (set_string_option alone would keep
+    the leading '#', so the option would silently stay at its default)."""
+    result = set_string_option("roudix.autoupdate.branch", branch)
+    if result is not True:
+        return result
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+        new = re.sub(r'(?m)^(\s*)#\s*(roudix\.autoupdate\.branch\s*=)', r'\1\2', content)
+        if new != content:
+            with open(CONFIG_FILE, "w") as f:
+                f.write(new)
+    except Exception as e:
+        return str(e)
+    return True
+
+
 def switch_repo_branch(branch: str):
-    """Move the local Roudix checkout (NH_FLAKE) to `branch`.
-    Returns (ok, message). Uses `checkout -B` without --force, so a tracked
-    local modification that would be overwritten aborts the switch instead
-    of being lost. Untracked/ignored files (local.nix, username.nix,
-    hardware-configuration.nix) are never touched."""
+    """Move the local Roudix checkout (NH_FLAKE) to `branch` WITHOUT ever
+    discarding local work (this machine may be the one committing/pushing).
+    Returns (ok, message); when ok, a non-empty message is a warning.
+    - no `--force`, no `reset --hard`: a tracked local modification that
+      would be overwritten aborts the switch instead of being lost;
+    - if the local branch already exists it is only fast-forwarded to
+      origin; if it has commits origin doesn't have (unpushed / diverged) it
+      is left exactly as is, with a warning;
+    - untracked/ignored files (local.nix, username.nix,
+      hardware-configuration.nix) are never touched."""
     if not os.path.isdir(os.path.join(NH_FLAKE, ".git")):
         return False, L("~/.config/roudix n'est pas un dépôt git — la branche ne peut pas être changée.",
                         "~/.config/roudix is not a git repository — the branch cannot be switched.")
-    for cmd in (["git", "-C", NH_FLAKE, "fetch", "origin", branch],
-                ["git", "-C", NH_FLAKE, "checkout", "-B", branch, "FETCH_HEAD"]):
-        r = subprocess.run(cmd, capture_output=True, text=True)
+
+    def git(*args):
+        return subprocess.run(["git", "-C", NH_FLAKE, *args], capture_output=True, text=True)
+
+    def err(r, fallback):
+        return (r.stderr or r.stdout).strip() or fallback
+
+    r = git("fetch", "origin", branch)
+    if r.returncode != 0:
+        return False, err(r, "git fetch failed")
+
+    if git("rev-parse", "--verify", "--quiet", f"refs/heads/{branch}").returncode == 0:
+        r = git("checkout", branch)
         if r.returncode != 0:
-            return False, (r.stderr or r.stdout).strip() or f"{' '.join(cmd)} failed"
+            return False, err(r, "git checkout failed")
+        r = git("merge", "--ff-only", "FETCH_HEAD")
+        if r.returncode != 0:
+            return True, L(
+                f"La branche locale « {branch} » a des commits absents d'origin (non poussés ?) — conservée telle quelle, non mise à jour.",
+                f"Local branch '{branch}' has commits origin doesn't have (unpushed?) — kept as is, not updated.",
+            )
+        return True, ""
+
+    r = git("checkout", "-b", branch, "FETCH_HEAD")
+    if r.returncode != 0:
+        return False, err(r, "git checkout failed")
     return True, ""
 
 
@@ -1752,7 +1814,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.rgb_selector = SelectorGroup(L("Backend RGB", "RGB backend"), RGB_BACKENDS, current_rgb, dark)
         system_page.append(self.rgb_selector)
 
-        current_branch = get_string_option("roudix.autoupdate.branch", "main")
+        current_branch = current_repo_branch()
         self.branch_selector = SelectorGroup(L("Branche de mise à jour", "Update branch"), BRANCHES, current_branch, dark)
         system_page.append(self.branch_selector)
 
@@ -2230,7 +2292,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         torrent_client_changed = new_torrent_client != cur_torrent_client
 
         # Update branch
-        cur_branch = get_string_option("roudix.autoupdate.branch", "main")
+        cur_branch = current_repo_branch()
         new_branch = self.branch_selector.selected_id
         branch_changed = new_branch != cur_branch
 
@@ -2658,17 +2720,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 )
                 return
 
-        # The git checkout itself happens in run_rebuild (network, off the UI
-        # thread); the old value is kept so a failed switch can be rolled back.
-        self._branch_switch = None
-        if pending["branch_changed"]:
-            result = set_string_option("roudix.autoupdate.branch", pending["new_branch"])
-            if result is not True:
-                self.status.set_markup(
-                    L(f"<span color='red'>Erreur d'écriture — branche de mise à jour : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing update branch config: {GLib.markup_escape_text(result)}</span>")
-                )
-                return
-            self._branch_switch = (pending["cur_branch"], pending["new_branch"])
+        # Git checkout + option write both happen in run_rebuild (network, off
+        # the UI thread): local.nix is only touched once the switch succeeded.
+        self._branch_switch = (pending["cur_branch"], pending["new_branch"]) if pending["branch_changed"] else None
 
         self.status.set_markup("")
         GLib.idle_add(self.term_frame.set_visible, True)
@@ -2709,7 +2763,6 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 GLib.idle_add(self._term_append, L(f"Passage à la branche {new_branch}…", f"Switching to branch {new_branch}…"), "dim")
                 ok, msg = switch_repo_branch(new_branch)
                 if not ok:
-                    set_string_option("roudix.autoupdate.branch", old_branch)  # roll back
                     log.error("Branch switch to %s failed: %s", new_branch, msg)
                     GLib.idle_add(self._term_append, L(f"✗ Impossible de passer à {new_branch} : {msg}", f"✗ Could not switch to {new_branch}: {msg}"), "error")
                     GLib.idle_add(self._stop_progress)
@@ -2722,6 +2775,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     )
                     return
                 GLib.idle_add(self._term_append, L(f"✓ Dépôt sur la branche {new_branch}.", f"✓ Repository on branch {new_branch}."), "info")
+                if msg:
+                    GLib.idle_add(self._term_append, f"⚠ {msg}", "error")
+                res = write_branch_option(new_branch)
+                if res is not True:
+                    log.error("Could not write roudix.autoupdate.branch: %s", res)
+                    GLib.idle_add(self._term_append, L(f"⚠ Branche non écrite dans local.nix : {res}", f"⚠ Branch not written to local.nix: {res}"), "error")
 
             proc = subprocess.Popen(
                 [

@@ -19,6 +19,8 @@ Pour configurer l'intervalle ou la branche, surchargez dans `local.nix` :
 
 La branche se choisit dans l'installateur (script et installateur graphique de l'ISO). Tu peux la changer plus tard depuis **Roudix Switcher → Système → Branche de mise à jour**, qui bascule aussi ton dépôt local `~/.config/roudix` sur cette branche avant la reconstruction.
 
+L'auto-update ne fait que des fast-forward : si ta machine a des commits locaux absents de GitHub (ou a divergé), il n'y touche pas et te notifie à la place.
+
 Vérifier la dernière exécution :
 
 ```bash

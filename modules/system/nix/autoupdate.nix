@@ -127,6 +127,20 @@ in {
           exit 0
         fi
 
+        # ── Never discard local work ──────────────────────────────────────
+        # Only fast-forward. If this machine is ahead of origin (unpushed
+        # commits — e.g. the maintainer's own machine) there is nothing to
+        # pull; if it has diverged, refuse instead of overwriting. Nobody
+        # force-pushes these branches (the sync workflows only merge), so a
+        # plain fast-forward is always possible on a normal user machine.
+        if ${pkgs.git}/bin/git merge-base --is-ancestor "$REMOTE" "$LOCAL"; then
+          echo "[roudix-autoupdate] Local is ahead of origin/${cfg.branch} (unpushed commits) — nothing to pull."
+          exit 0
+        fi
+        if ! ${pkgs.git}/bin/git merge-base --is-ancestor "$LOCAL" "$REMOTE"; then
+          _fail "local history has diverged from origin/${cfg.branch} — refusing to overwrite local commits, resolve manually"
+        fi
+
         echo "[roudix-autoupdate] Changes detected — updating..."
         echo "  local:  $LOCAL"
         echo "  remote: $REMOTE"
@@ -137,15 +151,12 @@ in {
           "New changes found on ${cfg.branch}. Updating and scheduling rebuild..." \
           "software-update-available"
 
-        # `reset --hard` instead of `pull --rebase`: nobody but the maintainer
-        # commits locally on a Roudix machine, so there is nothing to rebase —
-        # only something that can conflict if upstream history was rewritten
-        # (force-push). A hard reset to the fetched ref can't conflict, and
-        # it only touches git-tracked files: local.nix, username.nix,
-        # hardware-configuration.nix and everything else in .gitignore are
-        # left exactly as they are.
-        sudo -u ${username} ${pkgs.git}/bin/git reset --hard "origin/${cfg.branch}" \
-          || _fail "git reset --hard failed"
+        # Fast-forward only (no `reset --hard`): it can never throw away a
+        # local commit, and it aborts if a tracked local modification would be
+        # overwritten. Untracked/ignored files (local.nix, username.nix,
+        # hardware-configuration.nix...) are left exactly as they are.
+        sudo -u ${username} ${pkgs.git}/bin/git merge --ff-only "origin/${cfg.branch}" \
+          || _fail "git merge --ff-only failed (local modifications in the way?)"
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
         if ! ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}#roudix; then

@@ -19,6 +19,8 @@ To configure the interval or branch, override in `local.nix`:
 
 The branch is chosen in the installer (both the script and the graphical ISO installer). You can change it later from **Roudix Switcher → System → Update branch**, which also switches your local `~/.config/roudix` checkout to that branch before rebuilding.
 
+Auto-update only ever fast-forwards: if your machine has local commits that are not on GitHub (or has diverged), it does not touch them and notifies you instead.
+
 Check the last run:
 
 ```bash
