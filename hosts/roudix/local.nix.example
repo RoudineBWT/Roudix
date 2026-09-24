@@ -63,14 +63,14 @@
   # Steam client: false = stock Steam (default). true = Millennium, a modded
   # Steam client with theme/plugin support (github:SteamClientHomebrew/Millennium).
   # Only applies if roudix.gaming.enable = true.
-  # roudix.gaming.steam.millennium.enable = true;
+  # roudix.gaming.steam.millennium.enable = false;
   # Console-like "Steam (Gaming Mode)" session, picked on the login screen:
   # Steam Big Picture in gamescope, "Switch to Desktop" goes to your desktop
   # and the "Return to Gaming Mode" app comes back. niri, umbriel, gnome, kde.
-  # roudix.gaming.gamescopeSession.enable  = true;
+  # roudix.gaming.gamescopeSession.enable  = false;
   # roudix.gaming.gamescopeSession.extraArgs = [ "--prefer-output" "DP-1" ]; # extra gamescope args
   # Decky Loader (Steam plugins). No binary cache: compiled on first rebuild.
-  # roudix.gaming.gamescopeSession.decky.enable = true;
+  # roudix.gaming.gamescopeSession.decky.enable = false;
   roudix.undervolt.only-amd.enable        = true;         # enable undervolting just for amd gpu.
   roudix.contentCreation.enable = true; # disable to skip OBS, video editor, virtual cam, etc.
   # roudix.contentCreation.obs.enable = false;
