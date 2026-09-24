@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   # ── Optional "common apps" ────────────────────────────────────────────
-  # These used to be hardcoded in `modules/home/common.nix`'s package
+  # These used to be hardcoded in `modules/home/apps/common-apps.nix`'s package
   # list, so they default to true (matching the previous always-installed
   # behaviour). Read on the home-manager side via osConfig.
   # (mpv, qbittorrent and spotify/ytmdesktop used to live here too —

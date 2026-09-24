@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   # ── Telegram: none, official Telegram Desktop, or the AyuGram fork ──────
-  # Read on the home-manager side (modules/home/common.nix) via osConfig —
+  # Read on the home-manager side (modules/home/apps/telegram.nix) via osConfig —
   # same pattern as roudix.discord / roudix.matrixClient. Used to live as a
   # plain roudix.apps.telegram.enable boolean (always installing
   # telegram-desktop) — promoted to its own enum, like Discord, so an

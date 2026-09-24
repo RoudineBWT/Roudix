@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   # ── Torrent client: pick one, or none ───────────────────────────────────
-  # Read on the home-manager side (modules/home/common.nix) via osConfig —
+  # Read on the home-manager side (modules/home/apps/torrent-client.nix) via osConfig —
   # same pattern as roudix.discord / roudix.matrixClient / roudix.telegram.
   # Used to be a plain roudix.apps.qbittorrent.enable boolean (always
   # qBittorrent) — promoted to its own enum so an alternative client can be

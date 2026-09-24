@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   # ── Password manager: pick one, or none ──────────────────────────────────
-  # Read on the home-manager side (modules/home/common.nix) via osConfig —
+  # Read on the home-manager side (modules/home/apps/password-manager.nix) via osConfig —
   # same pattern as roudix.torrentClient / roudix.mailClient.
   options.roudix.passwordManager = lib.mkOption {
     type    = lib.types.enum [ "none" "bitwarden" "keepassxc" "protonpass" ];

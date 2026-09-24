@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   # ── Music player: pick one, or none ─────────────────────────────────────
-  # Read on the home-manager side (modules/home/common.nix) via osConfig —
+  # Read on the home-manager side (modules/home/apps/music-player.nix) via osConfig —
   # same pattern as roudix.videoPlayer / roudix.torrentClient.
   #
   # Used to be two independent roudix.apps.{spotify,ytmdesktop}.enable

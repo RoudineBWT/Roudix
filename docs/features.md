@@ -169,7 +169,7 @@ Also available, opt-in (off by default): a torrent client via
 ## Browser
 
 - Configurable browser list via `roudix.browsers` option
-- Supports `brave`, `helium` (via amaanq/helium-flake, includes the DRM patch — Widevine playback is wired up automatically via `modules/home/helium-widevine.nix` when `helium` is selected), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, or `[]` for none
+- Supports `brave`, `helium` (via amaanq/helium-flake, includes the DRM patch — Widevine playback is wired up automatically via `modules/home/apps/helium-widevine.nix` when `helium` is selected), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, or `[]` for none
 - Zen Browser available separately via `roudix.zen.enable = true` (disabled by default); channel selectable via `roudix.zen.variant` — `"twilight"` (default) or `"beta"`
 
 ## Other

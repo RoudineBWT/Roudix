@@ -19,7 +19,7 @@ in
 
       # One boolean per plugin (like roudix.gaming.apps.<id>.enable) rather
       # than a list: each one gets toggled independently in local.nix, and
-      # that's what the wrapOBS in `modules/home/common.nix` consumes.
+      # that's what the wrapOBS in `modules/home/apps/content-creation.nix` consumes.
       # Maps to `pkgs.obs-studio-plugins.*`.
       plugins = {
         vkcapture.enable = lib.mkOption {
@@ -84,7 +84,7 @@ in
       type = lib.types.enum [ "kdenlive" "davinci-resolve" "davinci-resolve-studio" "shotcut" "none" ];
       default = "kdenlive";
       description = ''
-        Video editor installed (see `modules/home/common.nix`).
+        Video editor installed (see `modules/home/apps/content-creation.nix`).
         "davinci-resolve" is the free edition; "davinci-resolve-studio" is
         the paid one (same package, requires a Blackmagic license) — both
         are "unfree" and already covered by `nixpkgs.config.allowUnfree`

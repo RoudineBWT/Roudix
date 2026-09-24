@@ -9,4 +9,6 @@ modules/home/niri-custom.nix
 modules/home/mango-custom.nix
 modules/home/umbriel-custom.nix
 modules/home/git.nix
+modules/home/dev/ssh.nix
+modules/home/dev/gitwatch.nix
 __pycache__/

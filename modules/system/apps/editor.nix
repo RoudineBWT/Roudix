@@ -5,7 +5,7 @@
     default = "zed";
     description = ''
       Éditeur de code par défaut installé côté home-manager
-      (voir modules/home/common.nix). "none" pour n'en installer aucun
+      (voir modules/home/apps/editor.nix). "none" pour n'en installer aucun
       (utile si tu préfères gérer ton éditeur toi-même, ex: AppImage,
       Flatpak, ou snap).
     '';

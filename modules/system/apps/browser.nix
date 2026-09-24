@@ -57,7 +57,7 @@ in {
         description = ''
           Zen release channel to install (drives which
           `inputs.zen-browser.homeModules.<variant>` gets imported in
-          `modules/home/common.nix`):
+          `modules/home/apps/browser.nix`):
             "beta"     — Zen's regular (Firefox-based) release channel,
                          slower-moving, most stable
             "twilight" — nightly builds of Zen Beta, mirrored by the

@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   # ── Mail client: pick one, or none ───────────────────────────────────────
-  # Read on the home-manager side (modules/home/common.nix) via osConfig —
+  # Read on the home-manager side (modules/home/apps/mail-client.nix) via osConfig —
   # same pattern as roudix.torrentClient / roudix.videoPlayer.
   options.roudix.mailClient = lib.mkOption {
     type    = lib.types.enum [ "none" "thunderbird" "betterbird" "geary" ];

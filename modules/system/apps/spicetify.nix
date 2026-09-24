@@ -2,7 +2,7 @@
 {
   # ── Spicetify (Spotify theming) ──────────────────────────────────────────
   # Only meaningful when `roudix.musicPlayer` is "spotify" — that option
-  # gates whether `modules/home/spicetify.nix` even gets imported (which is
+  # gates whether `modules/home/apps/spicetify.nix` even gets imported (which is
   # what actually installs Spotify + Spicetify). These just control WHAT
   # gets enabled once it is imported. Read on the home-manager side via
   # osConfig, same pattern as roudix.discord / roudix.matrixClient.

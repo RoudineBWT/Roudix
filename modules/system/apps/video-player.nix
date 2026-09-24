@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   # ── Video player: pick one, or none ─────────────────────────────────────
-  # Read on the home-manager side (modules/home/common.nix) via osConfig —
+  # Read on the home-manager side (modules/home/apps/video-player.nix) via osConfig —
   # same pattern as roudix.discord / roudix.matrixClient / roudix.telegram.
   #
   # Used to be two separate, unrelated things: Clapper was hardcoded

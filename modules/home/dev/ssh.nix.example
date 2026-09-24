@@ -19,11 +19,12 @@
         user = "git";
         identityFile = "~/.ssh/id_ed25519";
       };
-      "minecraft-server" = {
-        hostname = "192.168.1.44";
-          user = "admin";
-          identityFile = "~/.ssh/minecraft-server";
-        };
+      # Add your own private/LAN hosts here, e.g.:
+      # "my-server" = {
+      #   hostname = "192.168.1.x";
+      #   user = "admin";
+      #   identityFile = "~/.ssh/my-server";
+      # };
     };
   };
 }

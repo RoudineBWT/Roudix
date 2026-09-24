@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   # ── Discord: none, vanilla, or Vencord-patched ──────────────────────────
-  # Read on the home-manager side (modules/home/common.nix) via osConfig —
+  # Read on the home-manager side (modules/home/apps/discord.nix) via osConfig —
   # that's where the discord package is actually installed
   # (home.packages); this option only controls WHICH package is chosen
   # (or none).
