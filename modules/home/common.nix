@@ -24,6 +24,9 @@ in
     # choice — discord, terminal, editor, browsers, content creation...).
     # Mirrors modules/system/apps/, which only declares the options.
     ./apps
+    # roudix-welcome: écran de bienvenue au premier démarrage de session
+    # (roudix.welcome.enable, default true — voir roudix-welcome.nix).
+    ./roudix-welcome.nix
   ] ++ lib.optional (builtins.pathExists ./dev/ssh.nix) ./dev/ssh.nix
     ++ lib.optional (builtins.pathExists ./dev/gitwatch.nix) ./dev/gitwatch.nix
     ++ lib.optional (builtins.pathExists ./git.nix) ./git.nix
