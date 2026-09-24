@@ -1,0 +1,113 @@
+name: Sync dev to testing
+
+on:
+  schedule:
+    - cron: '0 3 */2 * *'  # tous les 2 jours à 03h00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: testing-branch
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: testing
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Merge dev into testing (local, not pushed yet)
+        run: |
+          git fetch origin dev
+          if ! git merge origin/dev --no-edit; then
+            CONFLICTS=$(git diff --name-only --diff-filter=U)
+            if [ "$CONFLICTS" = "flake.lock" ]; then
+              BASE=$(git merge-base HEAD origin/dev)
+              if git diff --quiet "$BASE" origin/dev -- flake.lock; then
+                echo "dev didn't touch flake.lock — keeping testing's (fresher) lock."
+                git checkout --ours flake.lock
+              else
+                echo "dev deliberately changed flake.lock — using dev's lock."
+                git checkout --theirs flake.lock
+              fi
+              git add flake.lock
+              git commit --no-edit
+            else
+              echo "Merge conflict outside flake.lock — aborting, needs manual resolution:"
+              echo "$CONFLICTS"
+              exit 1
+            fi
+          fi
+
+      - name: Create CI-only stubs for required machine-local files
+        id: local_stubs
+        run: |
+          CREATED=""
+
+          if [ ! -f hosts/roudix/hardware-configuration.nix ]; then
+            cat > hosts/roudix/hardware-configuration.nix << 'EOF'
+          { config, lib, pkgs, modulesPath, ... }:
+
+          {
+            imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+
+            boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" ];
+            boot.initrd.kernelModules = [ ];
+            boot.kernelModules = [ "kvm-intel" ];
+            boot.extraModulePackages = [ ];
+
+            fileSystems."/" = {
+              device = "/dev/disk/by-label/nixos";
+              fsType = "ext4";
+            };
+
+            swapDevices = [ ];
+
+            nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+            hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
+          }
+          EOF
+            git add -N -f hosts/roudix/hardware-configuration.nix
+            CREATED="$CREATED hosts/roudix/hardware-configuration.nix"
+          fi
+
+          if [ ! -f hosts/roudix/username.nix ]; then
+            cat > hosts/roudix/username.nix << 'EOF'
+          "ci-runner"
+          EOF
+            git add -N -f hosts/roudix/username.nix
+            CREATED="$CREATED hosts/roudix/username.nix"
+          fi
+
+          echo "created_files=$CREATED" >> "$GITHUB_OUTPUT"
+
+      - name: Build NixOS configuration (validation gate)
+        run: |
+          nix build .#nixosConfigurations.roudix.config.system.build.toplevel \
+            --accept-flake-config \
+            --no-link \
+            -L
+
+      - name: Remove CI-only stubs
+        if: steps.local_stubs.outputs.created_files != ''
+        run: |
+          for f in ${{ steps.local_stubs.outputs.created_files }}; do
+            git reset -- "$f"
+            rm -f "$f"
+          done
+
+      - name: Push
+        run: git push origin testing
