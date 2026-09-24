@@ -35,6 +35,7 @@
 - `protonup-qt` on KDE, `protonplus` on other DEs
 - Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft, or Modrinth App as an alternative — `roudix.gaming.apps.modrinth.enable`) and Vintage Story (via roudix-caches)
 - Each gaming app individually toggleable via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (all `true` by default)
+- Optional [Millennium](https://github.com/SteamClientHomebrew/Millennium) modded Steam client (themes + plugins) — off by default, enable with `roudix.gaming.steam.millennium.enable = true` (or from the installer). Unofficial mod; the `game-performance` sandbox tweak and the Proton compat tools keep working, and setting it back to `false` restores stock Steam
 
 ## Desktop (Niri)
 

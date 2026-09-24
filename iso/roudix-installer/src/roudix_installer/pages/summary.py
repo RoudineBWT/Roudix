@@ -67,7 +67,8 @@ class SummaryPage(Adw.NavigationPage):
             ),
             (L("Shell", "Shell"), s.default_shell),
             ("VM / Gaming", f"{'VM' if s.vm_guest else L('bare metal', 'bare metal')} — gaming "
-                            f"{L('activé', 'enabled') if s.gaming else L('désactivé', 'disabled')}"),
+                            f"{L('activé', 'enabled') if s.gaming else L('désactivé', 'disabled')}"
+                            f"{' + Millennium' if s.gaming and s.gaming_steam_millennium else ''}"),
             (L("Locale", "Locale"), f"{s.timezone} — {s.locale} — {s.keymap}"),
             (
                 L("Clavier graphique", "Graphical keyboard"),

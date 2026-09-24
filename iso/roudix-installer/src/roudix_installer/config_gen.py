@@ -153,6 +153,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
         t = _set_bool_option(t, "roudix.gaming.apps.modrinth.enable", state.gaming_apps_modrinth)
         t = _set_bool_option(t, "roudix.gaming.apps.vintagestory.enable", state.gaming_apps_vintagestory)
         t = _set_bool_option(t, "roudix.gaming.apps.mangohud.enable", state.gaming_apps_mangohud)
+        t = _set_bool_option(t, "roudix.gaming.steam.millennium.enable", state.gaming_steam_millennium)
     t = _sub_bool(t, "roudix.mesa.useGit", state.mesa_use_git)
     t = _sub_string(t, "time.timeZone", state.timezone)
     t = _sub_string(t, "environment.sessionVariables.TZ", state.timezone)

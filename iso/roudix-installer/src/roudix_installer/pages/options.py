@@ -743,6 +743,19 @@ class OptionsPage(Adw.NavigationPage):
         self.ananicy_row.set_active(state.ananicy_enable)
         sys_group.add(self.ananicy_row)
 
+        self.millennium_row = Adw.SwitchRow(
+            title=L(
+                "Millennium (client Steam modifié : thèmes et plugins)",
+                "Millennium (modded Steam client: themes and plugins)",
+            ),
+            subtitle=L(
+                "Mod non officiel — désactivé = Steam standard",
+                "Unofficial mod — off = stock Steam",
+            ),
+        )
+        self.millennium_row.set_active(state.gaming_steam_millennium)
+        sys_group.add(self.millennium_row)
+
         self.gaming_apps_rows = {}
         for attr, title_fr, title_en, default in (
             ("lutris", "Lutris", "Lutris", state.gaming_apps_lutris),
@@ -1229,6 +1242,7 @@ class OptionsPage(Adw.NavigationPage):
 
     def _sync_ananicy_row(self):
         self.ananicy_row.set_visible(self.gaming_row.get_active())
+        self.millennium_row.set_visible(self.gaming_row.get_active())
         for row in self.gaming_apps_rows.values():
             row.set_visible(self.gaming_row.get_active())
 
@@ -1300,6 +1314,7 @@ class OptionsPage(Adw.NavigationPage):
         s.vm_guest = self.vm_guest_row.get_active()
         s.gaming = self.gaming_row.get_active()
         s.ananicy_enable = self.ananicy_row.get_active()
+        s.gaming_steam_millennium = self.millennium_row.get_active()
         s.gaming_apps_lutris = self.gaming_apps_rows["lutris"].get_active()
         s.gaming_apps_heroic = self.gaming_apps_rows["heroic"].get_active()
         s.gaming_apps_faugus = self.gaming_apps_rows["faugus"].get_active()

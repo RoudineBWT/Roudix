@@ -50,6 +50,16 @@ let
      proton-ge-bin
      proton-cachyos-x86_64-v3
    ];
+
+  useMillennium = config.roudix.gaming.steam.millennium.enable;
+
+  # Without this, roudix-game-performance fails silently as soon as
+  # it's invoked from the Launch Options: Steam's FHS sandbox only
+  # bind-mounts a whitelist of /etc files (not /etc/tuned), so tuned-adm
+  # crashes with a FileNotFoundError on tuned-main.conf.
+  steamExtraBwrapArgs = [
+    "--ro-bind-try /etc/tuned /etc/tuned"
+  ];
 in
 {
   options.roudix.gaming.enable = lib.mkOption {
@@ -96,6 +106,21 @@ in
     };
   };
 
+  options.roudix.gaming.steam.millennium.enable = lib.mkOption {
+    description = ''
+      Use Millennium (https://github.com/SteamClientHomebrew/Millennium),
+      a modded Steam client that adds theme and plugin support, instead of
+      the stock Steam client (opt-in, disabled by default).
+
+      Only takes effect when roudix.gaming.enable = true. Millennium is an
+      unofficial third-party mod: a Steam client update can occasionally
+      break it until upstream catches up. Setting this back to false
+      restores the stock client on the next rebuild.
+    '';
+    type = lib.types.bool;
+    default = false;
+  };
+
   options.roudix.gaming.ananicy.enable = lib.mkOption {
     description = ''
       Active ananicy-cpp au boot (opt-in, désactivé par défaut). Si false,
@@ -110,8 +135,15 @@ in
   config = lib.mkIf config.roudix.gaming.enable {
 
     nixpkgs.overlays = [
-      #inputs.millennium.overlays.default
       inputs.nix-gaming-edge.overlays.default
+    ] ++ lib.optionals useMillennium [
+      # millennium-steam is built on top of pkgs.steam, so pkgs.steam must
+      # already carry our sandbox tweaks (see steamExtraBwrapArgs) by the
+      # time Millennium's overlay is applied — hence this order.
+      (final: prev: {
+        steam = prev.steam.override { extraBwrapArgs = steamExtraBwrapArgs; };
+      })
+      inputs.millennium.overlays.default
     ];
   # ── Steam ────────────────────────────────────────────────────────────────
   programs.steam = {
@@ -123,15 +155,13 @@ in
       args = [ "--prefer-output" "DP-1" ];
     };
     extraCompatPackages = steamCompatTools;
-    # Without this, roudix-game-performance fails silently as soon as
-    # it's invoked from the Launch Options: Steam's FHS sandbox only
-    # bind-mounts a whitelist of /etc files (not /etc/tuned), so tuned-adm
-    # crashes with a FileNotFoundError on tuned-main.conf.
-    package = pkgs.steam.override {
-      extraBwrapArgs = [
-        "--ro-bind-try /etc/tuned /etc/tuned"
-      ];
-    };
+    # Stock Steam, or Millennium's modded client when
+    # roudix.gaming.steam.millennium.enable = true. Both get the
+    # /etc/tuned bind-mount (see steamExtraBwrapArgs in the let block).
+    package =
+      if useMillennium
+      then pkgs.millennium-steam
+      else pkgs.steam.override { extraBwrapArgs = steamExtraBwrapArgs; };
   };
 
   # ── Gamescope ────────────────────────────────────────────────────────────
@@ -178,7 +208,6 @@ in
                       # Steam Launch Options: /run/current-system/sw/bin/roudix-game-performance %command%
                       # (full path required: Steam doesn't always inherit the current profile's up-to-date PATH)
     gamescope-wsi
-    #millennium-steam
   ];
 
   # ── Controller support ─────────────────────────────────────────────────────

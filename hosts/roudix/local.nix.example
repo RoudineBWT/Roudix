@@ -60,6 +60,10 @@
   # roudix.gaming.apps.modrinth.enable      = true;  # alternative to Prism Launcher, off by default
   # roudix.gaming.apps.vintagestory.enable = false;
   # roudix.gaming.apps.mangohud.enable     = false;
+  # Steam client: false = stock Steam (default). true = Millennium, a modded
+  # Steam client with theme/plugin support (github:SteamClientHomebrew/Millennium).
+  # Only applies if roudix.gaming.enable = true.
+  # roudix.gaming.steam.millennium.enable = true;
   roudix.undervolt.only-amd.enable        = true;         # enable undervolting just for amd gpu.
   roudix.contentCreation.enable = true; # disable to skip OBS, video editor, virtual cam, etc.
   # roudix.contentCreation.obs.enable = false;

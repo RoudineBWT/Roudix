@@ -358,6 +358,7 @@ ZEN_MODS = [
 GAMING_EXTRAS = [
     {"id": "ananicy", "name": L("Ananicy (ordonnanceur process)", "Ananicy (process scheduler)"), "key": "roudix.gaming.ananicy.enable", "default": False},
     {"id": "gtaFix",  "name": L("Correctif hosts GTA Online", "GTA Online hosts fix"),     "key": "roudix.hosts.gtaFix.enable",   "default": False},
+    {"id": "millennium", "name": L("Millennium (client Steam modifié : thèmes et plugins)", "Millennium (modded Steam client: themes and plugins)"), "key": "roudix.gaming.steam.millennium.enable", "default": False},
 ]
 
 # roudix.zen.variant — enum, exposed as a SelectorGroup (like EDITORS).
@@ -541,6 +542,8 @@ def get_bool_option(key: str, default: bool, path: str = None) -> bool:
     try:
         with open(path) as f:
             for line in f:
+                if line.lstrip().startswith("#"):
+                    continue  # commented-out example (local.nix.example), not a value
                 if key in line:
                     m = re.search(re.escape(key) + r"\s*=\s*(true|false)", line)
                     if m:
@@ -558,9 +561,13 @@ def set_bool_option(key: str, value: bool, path: str = None):
         with open(path) as f:
             content = f.read()
         val = "true" if value else "false"
-        pattern = re.escape(key) + r"\s*=\s*(true|false)"
-        if re.search(pattern, content):
-            new = re.sub(pattern, f"{key} = {val}", content)
+        # Anchored to an active line: a commented-out `# key = true;` example
+        # must not be "updated" in place (it would stay commented, so the
+        # change would silently do nothing) — in that case the else branch
+        # adds a real line and leaves the example alone.
+        pattern = re.compile(r"^([ \t]*)" + re.escape(key) + r"\s*=\s*(true|false)", re.MULTILINE)
+        if pattern.search(content):
+            new = pattern.sub(lambda m: f"{m.group(1)}{key} = {val}", content)
         else:
             new = _insert_before_closing_brace(content, f"{key} = {val};")
         with open(path, "w") as f:

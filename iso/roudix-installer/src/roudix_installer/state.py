@@ -81,6 +81,7 @@ class InstallState:
     gaming_apps_modrinth: bool = False      # roudix.gaming.apps.modrinth.enable — alt. to Prism, off by default
     gaming_apps_vintagestory: bool = True   # roudix.gaming.apps.vintagestory.enable
     gaming_apps_mangohud: bool = True       # roudix.gaming.apps.mangohud.enable
+    gaming_steam_millennium: bool = False   # roudix.gaming.steam.millennium.enable — modded Steam client, off by default
     timezone: str = "Europe/Brussels"
     locale: str = "fr_BE.UTF-8"
     keymap: str = "be-latin1"         # console.keyMap — TTY only, before the graphical session

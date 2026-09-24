@@ -114,7 +114,8 @@ set_bool_option() {
   local file="$1" key="$2" value="$3"
   local escaped_key
   escaped_key=$(printf '%s' "$key" | sed 's/[.[\*^$]/\\&/g')
-  sed -i -E "s|^([[:space:]]*)#?[[:space:]]*(${escaped_key}[[:space:]]*=[[:space:]]*)(true|false)|\1\2${value}|" "$file"
+  # '@' as the s/// delimiter: '|' would collide with the (true|false) alternation.
+  sed -i -E "s@^([[:space:]]*)#?[[:space:]]*(${escaped_key}[[:space:]]*=[[:space:]]*)(true|false)@\1\2${value}@" "$file"
 }
 
 # ── Bootstrap: git + nix flakes ──────────────────────────────────────────────
@@ -672,9 +673,13 @@ GAMING_PRISMLAUNCHER="true"
 GAMING_MODRINTH="true"
 GAMING_VINTAGESTORY="true"
 GAMING_MANGOHUD="true"
+GAMING_MILLENNIUM="false"
 if [[ "$GAMING" == "true" ]]; then
   pick_bool "Enable ananicy-cpp? (auto-nice scheduler tweaks for gaming/apps)" ANANICY \
     "Yes" "No — off by default"
+
+  pick_bool "Use Millennium? (modded Steam client with theme/plugin support — unofficial mod)" GAMING_MILLENNIUM \
+    "Yes — Millennium (modded Steam client)" "No — stock Steam (default)"
 
   read -rp "Customize which gaming apps get installed? (Lutris, Heroic, Faugus, Prism Launcher, Modrinth, Vintage Story, MangoHud — all enabled by default) [y/N]: " customize_gaming_apps
   if [[ "$customize_gaming_apps" =~ ^[Yy]$ ]]; then
@@ -1057,6 +1062,7 @@ if [[ "$GAMING" == "true" ]]; then
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.modrinth.enable" "${GAMING_MODRINTH}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.vintagestory.enable" "${GAMING_VINTAGESTORY}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.mangohud.enable" "${GAMING_MANGOHUD}"
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.steam.millennium.enable" "${GAMING_MILLENNIUM}"
 fi
 sed -i -E "s/roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*(true|false)/roudix.mesa.useGit = ${MESA_GIT}/" hosts/roudix/local.nix
 sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
@@ -1126,6 +1132,7 @@ if [[ "$GAMING" == "true" ]]; then
   check_opt "roudix.gaming.apps.modrinth.enable"      "roudix\.gaming\.apps\.modrinth\.enable[[:space:]]*=[[:space:]]*${GAMING_MODRINTH}"
   check_opt "roudix.gaming.apps.vintagestory.enable" "roudix\.gaming\.apps\.vintagestory\.enable[[:space:]]*=[[:space:]]*${GAMING_VINTAGESTORY}"
   check_opt "roudix.gaming.apps.mangohud.enable"     "roudix\.gaming\.apps\.mangohud\.enable[[:space:]]*=[[:space:]]*${GAMING_MANGOHUD}"
+  check_opt "roudix.gaming.steam.millennium.enable"  "roudix\.gaming\.steam\.millennium\.enable[[:space:]]*=[[:space:]]*${GAMING_MILLENNIUM}"
 fi
 check_opt "roudix.mesa.useGit"         "roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*${MESA_GIT}"
 check_opt "time.timeZone"              "time\.timeZone[[:space:]]*=[[:space:]]*\"${TIMEZONE}\""
@@ -1180,6 +1187,7 @@ echo -e "
   ${BOLD}Gaming        :${NC} $GAMING
   ${BOLD}Gaming apps   :${NC} $([ "$GAMING" == "true" ] && echo "Lutris:$GAMING_LUTRIS Heroic:$GAMING_HEROIC Faugus:$GAMING_FAUGUS Prism:$GAMING_PRISMLAUNCHER VintageStory:$GAMING_VINTAGESTORY MangoHud:$GAMING_MANGOHUD" || echo "n/a")
   ${BOLD}Ananicy       :${NC} $([ "$GAMING" == "true" ] && echo "$ANANICY" || echo "n/a")
+  ${BOLD}Millennium    :${NC} $([ "$GAMING" == "true" ] && echo "$GAMING_MILLENNIUM" || echo "n/a")
   ${BOLD}Undervolt AMD :${NC} $([[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]] && echo "$UNDERVOLT" || echo "n/a")
   ${BOLD}Mesa-git      :${NC} $MESA_GIT
   ${BOLD}Timezone      :${NC} $TIMEZONE
