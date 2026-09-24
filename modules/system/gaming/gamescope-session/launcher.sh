@@ -33,8 +33,6 @@ refresh_hz() {
 
 exec gamescope --steam \
   --adaptive-sync \
-  --hdr-enabled \
-  --hdr-itm-enabled \
   --mangoapp \
-  -r "$(refresh_hz)" @extra_args@ \
+  -r "$(refresh_hz)" @hdr_args@ @extra_args@ \
   -- steam -tenfoot -pipewire-dmabuf -steamos3 -gamepadui

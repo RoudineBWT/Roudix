@@ -68,6 +68,7 @@
   # Steam Big Picture in gamescope, "Switch to Desktop" goes to your desktop
   # and the "Return to Gaming Mode" app comes back. niri, umbriel, gnome, kde.
   # roudix.gaming.gamescopeSession.enable  = false;
+  # roudix.gaming.gamescopeSession.hdr.enable = false; # drop gamescope's HDR flags (no HDR display / games misbehaving)
   # roudix.gaming.gamescopeSession.extraArgs = [ "--prefer-output" "DP-1" ]; # extra gamescope args
   # Decky Loader (Steam plugins). No binary cache: compiled on first rebuild.
   # roudix.gaming.gamescopeSession.decky.enable = false;

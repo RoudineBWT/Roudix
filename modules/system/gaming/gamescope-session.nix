@@ -62,6 +62,7 @@ let
     text = fill ./gamescope-session/launcher.sh {
       inherit tz;
       decky_setup = if cfg.decky.enable then deckySetup else ":";
+      hdr_args    = lib.optionalString cfg.hdr.enable "--hdr-enabled --hdr-itm-enabled";
       extra_args  = lib.escapeShellArgs cfg.extraArgs;
     };
   };
@@ -138,13 +139,25 @@ in
       '';
     };
 
+    hdr.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = ''
+        Start gamescope with HDR support (--hdr-enabled --hdr-itm-enabled),
+        which is what makes Steam's "Enable HDR" toggle appear. Turn it off
+        on a display without HDR, or as the first thing to try if games
+        misbehave (hang on launch, black screen) in Gaming Mode.
+      '';
+    };
+
     extraArgs = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
       example = [ "--prefer-output" "DP-1" ];
       description = ''
         Extra gamescope arguments for the Gaming Mode session, appended to
-        the defaults (VRR, HDR, MangoApp, detected refresh rate).
+        the defaults (VRR, MangoApp, detected refresh rate, and HDR unless
+        hdr.enable is false).
       '';
     };
 
