@@ -133,8 +133,15 @@ class RoudixWelcomeWindow(Adw.ApplicationWindow):
     def __init__(self, app):
         super().__init__(application=app)
         self.set_title(L("Bienvenue sur Roudix", "Welcome to Roudix"))
+        # Resizable (not resizable(False) like roudix-kernel-switcher):
+        # the content here is expected to grow over time (more resources,
+        # more launchers...), so let people make the window bigger instead
+        # of fighting a fixed size later. set_default_size is just the
+        # initial size; set_size_request keeps it from being shrunk below
+        # a point where the hero/logo stops making sense.
         self.set_default_size(560, 720)
-        self.set_resizable(False)
+        self.set_size_request(420, 480)
+        self.set_resizable(True)
 
         toolbar = Adw.ToolbarView()
         self.set_content(toolbar)
