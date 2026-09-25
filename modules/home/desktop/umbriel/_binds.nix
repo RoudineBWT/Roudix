@@ -65,6 +65,13 @@ in
     "Mod+Ctrl+Home" = "column-move-to-first";
     "Mod+Ctrl+End" = "column-move-to-last";
 
+    # niri-style consume/expel: stack the focused window into the
+    # neighboring column, or split it back out into its own column.
+    "Mod+BracketLeft" = "window-consume-or-expel-left";
+    "Mod+BracketRight" = "window-consume-or-expel-right";
+    "Mod+Shift+BracketLeft" = "window-consume-left";
+    "Mod+Shift+BracketRight" = "window-consume-right";
+
     "Mod+Shift+Left" = "output-focus-left";
     "Mod+Shift+Right" = "output-focus-right";
     "Mod+Shift+Up" = "output-focus-up";
@@ -138,11 +145,19 @@ in
     # the active layout's main axis, with no particular anchor.
     "Mod+Minus" = "window-modify-primary-extent:-0.1";
     "Mod+Equal" = "window-modify-primary-extent:0.1";
+    # Secondary extent (row height within a column/master area/stack) —
+    # niri's set-window-height equivalent, now available.
+    "Mod+Shift+Minus" = "window-modify-secondary-extent:-0.1";
+    "Mod+Shift+Equal" = "window-modify-secondary-extent:0.1";
     # niri's center-column/center-visible-columns equivalents.
     "Mod+C" = "column-center";
     "Mod+Shift+C" = "window-center";
-    # ⚠ No window-height action (set-window-height) or
-    # tabbed-column-display in Umbriel yet. Not mapped.
+    # No tabbed-column-display equivalent in Umbriel. Not mapped.
+
+    # ─── Master layout (chat workspace, DP-3/1) ───
+    # No-op outside master layout (see Actions → Layout differences).
+    "Mod+Ctrl+Equal" = "layout-master-count-increase";
+    "Mod+Ctrl+Minus" = "layout-master-count-decrease";
 
     # ─── Modes ───
     "Mod+T" = "window-toggle-floating";
@@ -156,9 +171,11 @@ in
     # the window) — Umbriel has no native "focused window" action.
     "Ctrl+Shift+3" = ''spawn:sh -c "grim -g \"$(slurp -w)\" - | wl-copy"'';
 
-    # ⚠ No equivalent to niri's toggle-keyboard-shortcuts-inhibit (release
-    # shortcuts captured by a fullscreen app). `submap:reset` solves a
-    # different problem (leaving a submap).
+    # niri's toggle-keyboard-shortcuts-inhibit equivalent: releases
+    # shortcuts captured by a fullscreen game/remote-desktop client.
+    # allow_when_inhibited=true keeps this one escape hatch working even
+    # while inhibited — Umbriel would otherwise pass it through too.
+    "Mod+Ctrl+Shift+Escape" = { action = "shortcuts-inhibit-toggle"; allow_when_inhibited = true; repeat = false; };
 
     "Ctrl+Alt+Delete" = "session-quit";
     "Mod+Shift+R" = "config-reload";
