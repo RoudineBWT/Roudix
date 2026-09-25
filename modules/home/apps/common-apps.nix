@@ -2,10 +2,11 @@
 let
   # Fluxer — a self-hostable Discord alternative. Not in nixpkgs yet, so it
   # comes straight from the nix-gaming-edge flake's prebuilt package rather
-  # than a map like matrix/discord/telegram (../matrix.nix, ../discord.nix,
-  # ../telegram.nix). Deliberately independent of roudix.discord (people
-  # may want both) and of roudix.gaming.enable (it has nothing to do with
-  # gaming, so it doesn't need that overlay). Option declared in
+  # than a map like matrix/discord/telegram (communication/matrix.nix,
+  # communication/discord.nix, communication/telegram.nix). Deliberately
+  # independent of roudix.discord (people may want both) and of
+  # roudix.gaming.enable (it has nothing to do with gaming, so it doesn't
+  # need that overlay). Option declared in
   # modules/system/apps/apps.nix
   fluxerPackage = inputs.nix-gaming-edge.packages.${pkgs.stdenv.hostPlatform.system}.fluxer-desktop;
 in
