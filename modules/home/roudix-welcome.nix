@@ -13,7 +13,7 @@ in
       Installe roudix-welcome et le lance automatiquement au démarrage de
       la session graphique. L'utilisateur peut désactiver l'autostart lui-
       même via l'interrupteur "Afficher au démarrage" dans l'app — ce
-      switch écrit un simple fichier marqueur (~/.config/roudix/welcome-disabled)
+      switch écrit un simple fichier marqueur (~/.local/state/roudix-welcome/disabled)
       lu par le ConditionPathExists du service ci-dessous, sans jamais
       toucher à l'enable/disable systemd géré par Home Manager. Ainsi le
       choix de l'utilisateur survit aux rebuilds (nh os switch/boot).
@@ -30,7 +30,7 @@ in
         PartOf = [ "graphical-session.target" ];
         # Bascule utilisateur, pas géré par systemctl enable/disable : voir
         # la description de l'option ci-dessus.
-        ConditionPathExists = "!%h/.config/roudix/welcome-disabled";
+        ConditionPathExists = "!%h/.local/state/roudix-welcome/disabled";
       };
 
       Service = {

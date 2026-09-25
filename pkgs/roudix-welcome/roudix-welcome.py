@@ -18,7 +18,13 @@ LOG_FILE = os.path.join(LOG_DIR, "welcome.log")
 # only thing the "Show at startup" switch below does. It never touches
 # systemd enablement itself, so the toggle survives `nh os switch` rebuilds
 # instead of being fought by Home Manager re-linking the unit every time.
-DISABLED_MARKER = os.path.expanduser("~/.config/roudix/welcome-disabled")
+#
+# NOTE: this must NOT live under ~/.config/roudix — that's the root of the
+# git-cloned Roudix repo itself (the autoupdate/gitwatch "clone directly"
+# model), so a marker there gets picked up and auto-committed by gitwatch.
+# ~/.local/state is the correct XDG spot for this kind of per-user runtime
+# state, and matches LOG_DIR above.
+DISABLED_MARKER = os.path.expanduser("~/.local/state/roudix-welcome/disabled")
 
 GITHUB_URL = "https://github.com/RoudineBWT/Roudix"
 
