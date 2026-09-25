@@ -114,7 +114,8 @@ set_bool_option() {
   local file="$1" key="$2" value="$3"
   local escaped_key
   escaped_key=$(printf '%s' "$key" | sed 's/[.[\*^$]/\\&/g')
-  sed -i -E "s|^([[:space:]]*)#?[[:space:]]*(${escaped_key}[[:space:]]*=[[:space:]]*)(true|false)|\1\2${value}|" "$file"
+  # '@' as the s/// delimiter: '|' would collide with the (true|false) alternation.
+  sed -i -E "s@^([[:space:]]*)#?[[:space:]]*(${escaped_key}[[:space:]]*=[[:space:]]*)(true|false)@\1\2${value}@" "$file"
 }
 
 # ── Bootstrap: git + nix flakes ──────────────────────────────────────────────
@@ -145,6 +146,32 @@ ask "Your username (used for the home directory):" USERNAME
 [[ -z "$USERNAME" ]] && error "Username cannot be empty."
 
 INSTALL_DIR="/home/${USERNAME}/.config/roudix"
+REPO_URL="https://github.com/RoudineBWT/Roudix"
+
+# ── Branch selection ──────────────────────────────────────────────────────────
+pick "Which branch do you want to install and follow?" BRANCH \
+  "main|Stable — updated about every 2 weeks (recommended)" \
+  "testing|Testing — updated about every 2 days, may occasionally break" \
+  "dev|Dev — latest changes, least stable"
+info "Selected branch: ${BRANCH}"
+
+clone_repo() {
+  mkdir -p "/home/${USERNAME}/.config"
+  git clone --branch "$BRANCH" "$REPO_URL" "$INSTALL_DIR" \
+    || error "Failed to clone branch '${BRANCH}'."
+}
+
+use_existing_repo() {
+  # Keep the existing checkout, but move it to the selected branch.
+  if git -C "$INSTALL_DIR" fetch origin "$BRANCH" \
+     && git -C "$INSTALL_DIR" checkout "$BRANCH" \
+     && git -C "$INSTALL_DIR" merge --ff-only "origin/$BRANCH"; then
+    success "Existing repo is now on branch '${BRANCH}'."
+  else
+    BRANCH="$(git -C "$INSTALL_DIR" rev-parse --abbrev-ref HEAD)"
+    warn "Could not switch to the selected branch (local changes?) — staying on '${BRANCH}'."
+  fi
+}
 
 # ── Clone repo ────────────────────────────────────────────────────────────────
 if [[ -d "$INSTALL_DIR" ]]; then
@@ -153,28 +180,26 @@ if [[ -d "$INSTALL_DIR" ]]; then
     read -rp "Re-clone from scratch? [y/N]: " confirm
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
       rm -rf "$INSTALL_DIR"
-      mkdir -p "/home/${USERNAME}/.config"
-      git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
-      success "Repository re-cloned."
+      clone_repo
+      success "Repository re-cloned (branch '${BRANCH}')."
     else
       info "Using existing repo."
+      use_existing_repo
     fi
   else
     warn "Directory $INSTALL_DIR exists but is not a git repo."
     read -rp "Delete and clone? [y/N]: " confirm
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
       rm -rf "$INSTALL_DIR"
-      mkdir -p "/home/${USERNAME}/.config"
-      git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
-      success "Repository cloned."
+      clone_repo
+      success "Repository cloned (branch '${BRANCH}')."
     else
       info "Using existing directory."
     fi
   fi
 else
-  mkdir -p "/home/${USERNAME}/.config"
-  git clone https://github.com/RoudineBWT/Roudix "$INSTALL_DIR"
-  success "Repository cloned."
+  clone_repo
+  success "Repository cloned (branch '${BRANCH}')."
 fi
 
 cd "$INSTALL_DIR"
@@ -299,12 +324,12 @@ success "hardware-configuration.nix generated."
 # ── Copy local.nix ────────────────────────────────────────────────────────────
 info "Creating local.nix from example..."
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
-cp home/local.nix.example home/local.nix
+cp modules/home/local.nix.example modules/home/local.nix
 success "local.nix created."
 
 # ── Copy boot.local.nix ───────────────────────────────────────────────────────
 info "Creating boot.local.nix from example..."
-cp modules/system/boot.local.nix.example modules/system/boot.local.nix
+cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 success "boot.local.nix created."
 
 # ── Multi-boot: detect other OS via EFI NVRAM ─────────────────────────────────
@@ -312,7 +337,7 @@ echo -e "\n${BOLD}════════════════════�
 info "Detecting other systems (EFI NVRAM)..."
 echo -e "${BOLD}══════════════════════════════════════${NC}"
 
-BOOT_LOCAL_NIX="modules/system/boot.local.nix"
+BOOT_LOCAL_NIX="modules/system/boot/boot.local.nix"
 
 # Entries we want to skip — NixOS/Roudix itself and firmware tools
 SKIP_PATTERN="nixos|roudix|uefi|firmware|setup|shell|pxe|ipv4|ipv6|network|floppy|optical|cd|dvd|usb boot"
@@ -672,9 +697,13 @@ GAMING_PRISMLAUNCHER="true"
 GAMING_MODRINTH="true"
 GAMING_VINTAGESTORY="true"
 GAMING_MANGOHUD="true"
+GAMING_MILLENNIUM="false"
 if [[ "$GAMING" == "true" ]]; then
   pick_bool "Enable ananicy-cpp? (auto-nice scheduler tweaks for gaming/apps)" ANANICY \
     "Yes" "No — off by default"
+
+  pick_bool "Use Millennium? (modded Steam client with theme/plugin support — unofficial mod)" GAMING_MILLENNIUM \
+    "Yes — Millennium (modded Steam client)" "No — stock Steam (default)"
 
   read -rp "Customize which gaming apps get installed? (Lutris, Heroic, Faugus, Prism Launcher, Modrinth, Vintage Story, MangoHud — all enabled by default) [y/N]: " customize_gaming_apps
   if [[ "$customize_gaming_apps" =~ ^[Yy]$ ]]; then
@@ -1057,6 +1086,7 @@ if [[ "$GAMING" == "true" ]]; then
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.modrinth.enable" "${GAMING_MODRINTH}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.vintagestory.enable" "${GAMING_VINTAGESTORY}"
   set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.mangohud.enable" "${GAMING_MANGOHUD}"
+  set_bool_option hosts/roudix/local.nix "roudix.gaming.steam.millennium.enable" "${GAMING_MILLENNIUM}"
 fi
 sed -i -E "s/roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*(true|false)/roudix.mesa.useGit = ${MESA_GIT}/" hosts/roudix/local.nix
 sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
@@ -1068,6 +1098,7 @@ sed -i -E "s/roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix
 sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.virtualization.enable = ${VIRTUALIZATION}/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.autoupdate.enable    = ${AUTOUPDATE}/" hosts/roudix/local.nix
 sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
+set_kernel_option hosts/roudix/local.nix "roudix.autoupdate.branch" "true" "${BRANCH}"
 sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/roudix/local.nix
 sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/roudix/local.nix
 sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/roudix/local.nix
@@ -1126,6 +1157,7 @@ if [[ "$GAMING" == "true" ]]; then
   check_opt "roudix.gaming.apps.modrinth.enable"      "roudix\.gaming\.apps\.modrinth\.enable[[:space:]]*=[[:space:]]*${GAMING_MODRINTH}"
   check_opt "roudix.gaming.apps.vintagestory.enable" "roudix\.gaming\.apps\.vintagestory\.enable[[:space:]]*=[[:space:]]*${GAMING_VINTAGESTORY}"
   check_opt "roudix.gaming.apps.mangohud.enable"     "roudix\.gaming\.apps\.mangohud\.enable[[:space:]]*=[[:space:]]*${GAMING_MANGOHUD}"
+  check_opt "roudix.gaming.steam.millennium.enable"  "roudix\.gaming\.steam\.millennium\.enable[[:space:]]*=[[:space:]]*${GAMING_MILLENNIUM}"
 fi
 check_opt "roudix.mesa.useGit"         "roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*${MESA_GIT}"
 check_opt "time.timeZone"              "time\.timeZone[[:space:]]*=[[:space:]]*\"${TIMEZONE}\""
@@ -1135,6 +1167,7 @@ check_opt "roudix.hosts.gtaFix.enable" "roudix\.hosts\.gtaFix\.enable[[:space:]]
 check_opt "roudix.flatpak.enable"      "roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*${FLATPAK}"
 check_opt "roudix.virtualization.enable" "roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*${VIRTUALIZATION}"
 check_opt "roudix.autoupdate.enable"   "roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*${AUTOUPDATE}"
+check_opt "roudix.autoupdate.branch"   "^[[:space:]]*roudix\.autoupdate\.branch[[:space:]]*=[[:space:]]*\"${BRANCH}\""
 check_opt "roudix.boot.bootloader"     "roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"${BOOTLOADER}\""
 check_opt "roudix.matrixClient"        "roudix\.matrixClient[[:space:]]*=[[:space:]]*\"${MATRIX_CLIENT}\""
 check_opt "roudix.discord" "roudix\.discord[[:space:]]*=[[:space:]]*\"${DISCORD}\""
@@ -1180,6 +1213,7 @@ echo -e "
   ${BOLD}Gaming        :${NC} $GAMING
   ${BOLD}Gaming apps   :${NC} $([ "$GAMING" == "true" ] && echo "Lutris:$GAMING_LUTRIS Heroic:$GAMING_HEROIC Faugus:$GAMING_FAUGUS Prism:$GAMING_PRISMLAUNCHER VintageStory:$GAMING_VINTAGESTORY MangoHud:$GAMING_MANGOHUD" || echo "n/a")
   ${BOLD}Ananicy       :${NC} $([ "$GAMING" == "true" ] && echo "$ANANICY" || echo "n/a")
+  ${BOLD}Millennium    :${NC} $([ "$GAMING" == "true" ] && echo "$GAMING_MILLENNIUM" || echo "n/a")
   ${BOLD}Undervolt AMD :${NC} $([[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]] && echo "$UNDERVOLT" || echo "n/a")
   ${BOLD}Mesa-git      :${NC} $MESA_GIT
   ${BOLD}Timezone      :${NC} $TIMEZONE
@@ -1189,6 +1223,7 @@ echo -e "
   ${BOLD}GTA Fix       :${NC} $GTA_FIX
   ${BOLD}Flatpak       :${NC} $FLATPAK
   ${BOLD}Virtualization:${NC} $VIRTUALIZATION
+  ${BOLD}Branch        :${NC} $BRANCH
   ${BOLD}Auto-update   :${NC} $AUTOUPDATE $([ "$AUTOUPDATE" == "true" ] && echo "(every $AUTOUPDATE_INTERVAL)")
   ${BOLD}Bootloader    :${NC} $BOOTLOADER
   ${BOLD}Matrix client :${NC} $MATRIX_CLIENT

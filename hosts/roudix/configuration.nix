@@ -2,47 +2,17 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/system/shell.nix
-    ../../modules/system/autoupdate.nix
-    ../../modules/system/common.nix
+    ../../modules/system/core
+    ../../modules/system/nix
     ../../modules/system/desktop
-    ../../modules/system/environment.nix
-    ../../modules/system/browser.nix
-    ../../modules/system/boot.nix
-    ../../modules/system/kernel.nix
-    ../../modules/system/gaming.nix
-    ../../modules/system/content-creation.nix
-    ../../modules/system/apps.nix
-    ../../modules/system/spicetify.nix
-    ../../modules/system/scx.nix
-    ../../modules/system/flatpak.nix
+    ../../modules/system/boot
+    ../../modules/system/gaming
+    ../../modules/system/apps
+    ../../modules/system/packaging
     ../../modules/system/gpu
-    ../../modules/system/roudix-rgb.nix
-    ../../modules/system/cpu.nix
-    ../../modules/system/pipewire.nix
-    ../../modules/system/fstrim.nix
-    ../../modules/system/virtualization.nix
-    ../../modules/system/containers.nix
-    ../../modules/system/vm-guest.nix
-    ../../modules/system/update.nix
-    ../../modules/system/hosts-gta.nix
-    ../../modules/system/mesa-git.nix
-    ../../modules/system/waydroid.nix
-    ../../modules/system/matrix.nix
-    ../../modules/system/telegram.nix
-    ../../modules/system/video-player.nix
-    ../../modules/system/torrent-client.nix
-    ../../modules/system/music-player.nix
-    ../../modules/system/mail-client.nix
-    ../../modules/system/password-manager.nix
-    ../../modules/system/appimage.nix
-    ../../modules/system/filemanager.nix
-    ../../modules/system/terminal.nix
-    ../../modules/system/editor.nix
-    ../../modules/system/desktop-integration.nix
-    ../../modules/system/icon-theme.nix
-    ../../modules/system/keyboard.nix
-    ../../modules/system/discord.nix
+    ../../modules/system/rgb
+    ../../modules/system/audio
+    ../../modules/system/virtualization
      inputs.brave-previews.nixosModules.default
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
   ++ lib.optional (builtins.pathExists ../../modules/system/gpu/undervolt.nix) ../../modules/system/gpu/undervolt.nix;

@@ -7,6 +7,11 @@
     ./hyprland.nix
     ./mangowc.nix
     ./umbriel.nix
+    # DE-agnostic desktop-session settings (dconf, XKB layout, icon-theme
+    # option consumed by modules/home/theming/gtk-theme.nix)
+    ./desktop-integration.nix
+    ./icon-theme.nix
+    ./keyboard.nix
   ];
 
   # ── Desktop environment option ───────────────────────────────────────────

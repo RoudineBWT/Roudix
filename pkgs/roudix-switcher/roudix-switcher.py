@@ -163,7 +163,7 @@ DESKTOP_INTEGRATIONS = [
 # their own native stack.
 DESKTOP_INTEGRATION_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
 
-# roudix.iconTheme (modules/system/icon-theme.nix) — same "bare compositors
+# roudix.iconTheme (modules/system/desktop/icon-theme.nix) — same "bare compositors
 # only" scope as desktop integration above: GNOME/KDE always keep their own
 # native icon picker (GNOME Settings / System Settings), and Papirus/Tela
 # there is whatever the user already chose that way, independent of this.
@@ -308,6 +308,95 @@ TORRENT_CLIENTS = [
     {"id": "none",        "name": L("Aucun", "None"), "subtitle": L("N'installer aucun client torrent", "Don't install a torrent client"), "icon": "none.svg"},
 ]
 
+# roudix.autoupdate.branch — git branch this machine follows (auto-update +
+# what the local ~/.config/roudix checkout is switched to on apply).
+# Reuses the SelectorGroup pattern; "none.svg" is just the neutral icon.
+BRANCHES = [
+    {"id": "main",    "name": "main",    "subtitle": L("Stable — mise à jour environ toutes les 2 semaines (défaut)", "Stable — updated about every 2 weeks (default)"), "icon": "none.svg"},
+    {"id": "testing", "name": "testing", "subtitle": L("Test — mise à jour environ tous les 2 jours, peut parfois casser", "Testing — updated about every 2 days, may occasionally break"), "icon": "none.svg"},
+    {"id": "dev",     "name": "dev",     "subtitle": L("Dev — derniers changements, le moins stable", "Dev — latest changes, least stable"), "icon": "none.svg"},
+]
+
+
+def current_repo_branch() -> str:
+    """Branch the local checkout is actually on (what the machine really
+    follows), falling back to roudix.autoupdate.branch when NH_FLAKE isn't a
+    git repo or HEAD is detached / on an unknown branch. Reading the checkout
+    rather than local.nix means a commented-out or missing option can't make
+    the selector show \"main\" while the machine is really on dev."""
+    try:
+        r = subprocess.run(["git", "-C", NH_FLAKE, "rev-parse", "--abbrev-ref", "HEAD"],
+                           capture_output=True, text=True)
+        name = r.stdout.strip()
+        if r.returncode == 0 and name in {b["id"] for b in BRANCHES}:
+            return name
+    except Exception:
+        pass
+    return get_string_option("roudix.autoupdate.branch", "main")
+
+
+def write_branch_option(branch: str):
+    """set_string_option() + uncomment the line if local.nix ships it as
+    `# roudix.autoupdate.branch = ...` (set_string_option alone would keep
+    the leading '#', so the option would silently stay at its default)."""
+    result = set_string_option("roudix.autoupdate.branch", branch)
+    if result is not True:
+        return result
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+        new = re.sub(r'(?m)^(\s*)#\s*(roudix\.autoupdate\.branch\s*=)', r'\1\2', content)
+        if new != content:
+            with open(CONFIG_FILE, "w") as f:
+                f.write(new)
+    except Exception as e:
+        return str(e)
+    return True
+
+
+def switch_repo_branch(branch: str):
+    """Move the local Roudix checkout (NH_FLAKE) to `branch` WITHOUT ever
+    discarding local work (this machine may be the one committing/pushing).
+    Returns (ok, message); when ok, a non-empty message is a warning.
+    - no `--force`, no `reset --hard`: a tracked local modification that
+      would be overwritten aborts the switch instead of being lost;
+    - if the local branch already exists it is only fast-forwarded to
+      origin; if it has commits origin doesn't have (unpushed / diverged) it
+      is left exactly as is, with a warning;
+    - untracked/ignored files (local.nix, username.nix,
+      hardware-configuration.nix) are never touched."""
+    if not os.path.isdir(os.path.join(NH_FLAKE, ".git")):
+        return False, L("~/.config/roudix n'est pas un dépôt git — la branche ne peut pas être changée.",
+                        "~/.config/roudix is not a git repository — the branch cannot be switched.")
+
+    def git(*args):
+        return subprocess.run(["git", "-C", NH_FLAKE, *args], capture_output=True, text=True)
+
+    def err(r, fallback):
+        return (r.stderr or r.stdout).strip() or fallback
+
+    r = git("fetch", "origin", branch)
+    if r.returncode != 0:
+        return False, err(r, "git fetch failed")
+
+    if git("rev-parse", "--verify", "--quiet", f"refs/heads/{branch}").returncode == 0:
+        r = git("checkout", branch)
+        if r.returncode != 0:
+            return False, err(r, "git checkout failed")
+        r = git("merge", "--ff-only", "FETCH_HEAD")
+        if r.returncode != 0:
+            return True, L(
+                f"La branche locale « {branch} » a des commits absents d'origin (non poussés ?) — conservée telle quelle, non mise à jour.",
+                f"Local branch '{branch}' has commits origin doesn't have (unpushed?) — kept as is, not updated.",
+            )
+        return True, ""
+
+    r = git("checkout", "-b", branch, "FETCH_HEAD")
+    if r.returncode != 0:
+        return False, err(r, "git checkout failed")
+    return True, ""
+
+
 MUSIC_PLAYERS = [
     {"id": "spotify",    "name": "Spotify",              "subtitle": L("+ Spicetify (défaut)", "+ Spicetify (default)"), "icon": "spotify.svg"},
     {"id": "ytmdesktop", "name": "YouTube Music Desktop", "subtitle": L("Client YouTube Music non officiel", "Unofficial YouTube Music client"), "icon": "youtube-music-desktop-app.svg"},
@@ -358,6 +447,9 @@ ZEN_MODS = [
 GAMING_EXTRAS = [
     {"id": "ananicy", "name": L("Ananicy (ordonnanceur process)", "Ananicy (process scheduler)"), "key": "roudix.gaming.ananicy.enable", "default": False},
     {"id": "gtaFix",  "name": L("Correctif hosts GTA Online", "GTA Online hosts fix"),     "key": "roudix.hosts.gtaFix.enable",   "default": False},
+    {"id": "millennium", "name": L("Millennium (client Steam modifié : thèmes et plugins)", "Millennium (modded Steam client: themes and plugins)"), "key": "roudix.gaming.steam.millennium.enable", "default": False},
+    {"id": "gamescopeSession", "name": L("Session « Steam (Gaming Mode) » (gamescope, niri/umbriel/gnome/kde)", "“Steam (Gaming Mode)” session (gamescope, niri/umbriel/gnome/kde)"), "key": "roudix.gaming.gamescopeSession.enable", "default": False},
+    {"id": "decky", "name": L("Decky Loader (plugins Steam, compilé au 1er rebuild)", "Decky Loader (Steam plugins, compiled on first rebuild)"), "key": "roudix.gaming.gamescopeSession.decky.enable", "default": False},
 ]
 
 # roudix.zen.variant — enum, exposed as a SelectorGroup (like EDITORS).
@@ -402,7 +494,7 @@ CONTENT_CREATION_TOGGLES = [
 ]
 
 
-# Optional common apps (roudix.apps.*, modules/system/apps.nix) — all
+# Optional common apps (roudix.apps.*, modules/system/apps/apps.nix) — all
 # true by default, shown as a toggle group on the "System" page.
 # (spotify/ytmdesktop used to live here too — they're now
 # roudix.musicPlayer, a SelectorGroup like VIDEO_PLAYERS/TORRENT_CLIENTS,
@@ -425,7 +517,7 @@ SYSTEM_TOGGLES = [
     {"id": "autoupdate",     "name": L("Auto-update (git pull + rebuild programmé)", "Auto-update (scheduled git pull + rebuild)"), "key": "roudix.autoupdate.enable", "default": False},
     {"id": "undervoltAmd",   "name": L("Undervolt GPU AMD (LACT)", "AMD GPU undervolt (LACT)"),         "key": "roudix.undervolt.only-amd.enable", "default": False},
     # "file": roudix.fastfetch.useNix is a Home Manager option (defined in
-    # modules/home/fastfetch.nix), not a system option — so it must be
+    # modules/home/shell/fastfetch.nix), not a system option — so it must be
     # written to HOME_CONFIG_FILE, not CONFIG_FILE.
     {"id": "fastfetchNix",   "name": L("Config fastfetch Roudix", "Roudix fastfetch config"),          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
     {"id": "fstrim",         "name": L("Fstrim (TRIM auto pour SSD/NVMe)", "Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
@@ -541,6 +633,8 @@ def get_bool_option(key: str, default: bool, path: str = None) -> bool:
     try:
         with open(path) as f:
             for line in f:
+                if line.lstrip().startswith("#"):
+                    continue  # commented-out example (local.nix.example), not a value
                 if key in line:
                     m = re.search(re.escape(key) + r"\s*=\s*(true|false)", line)
                     if m:
@@ -558,9 +652,13 @@ def set_bool_option(key: str, value: bool, path: str = None):
         with open(path) as f:
             content = f.read()
         val = "true" if value else "false"
-        pattern = re.escape(key) + r"\s*=\s*(true|false)"
-        if re.search(pattern, content):
-            new = re.sub(pattern, f"{key} = {val}", content)
+        # Anchored to an active line: a commented-out `# key = true;` example
+        # must not be "updated" in place (it would stay commented, so the
+        # change would silently do nothing) — in that case the else branch
+        # adds a real line and leaves the example alone.
+        pattern = re.compile(r"^([ \t]*)" + re.escape(key) + r"\s*=\s*(true|false)", re.MULTILINE)
+        if pattern.search(content):
+            new = pattern.sub(lambda m: f"{m.group(1)}{key} = {val}", content)
         else:
             new = _insert_before_closing_brace(content, f"{key} = {val};")
         with open(path, "w") as f:
@@ -1718,6 +1816,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.rgb_selector = SelectorGroup(L("Backend RGB", "RGB backend"), RGB_BACKENDS, current_rgb, dark)
         system_page.append(self.rgb_selector)
 
+        current_branch = current_repo_branch()
+        self.branch_selector = SelectorGroup(L("Branche de mise à jour", "Update branch"), BRANCHES, current_branch, dark)
+        system_page.append(self.branch_selector)
+
         self.content_stack.add_named(system_page, "system")
 
         # ── "Integration" page: keyring/portal backend ─────────────────────
@@ -2051,6 +2153,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.discord_selector.update_icons(dark)
         self.telegram_selector.update_icons(dark)
         self.rgb_selector.update_icons(dark)
+        self.branch_selector.update_icons(dark)
         self.video_player_selector.update_icons(dark)
         self.torrent_client_selector.update_icons(dark)
         self.music_player_selector.update_icons(dark)
@@ -2190,6 +2293,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_torrent_client = self.torrent_client_selector.selected_id
         torrent_client_changed = new_torrent_client != cur_torrent_client
 
+        # Update branch
+        cur_branch = current_repo_branch()
+        new_branch = self.branch_selector.selected_id
+        branch_changed = new_branch != cur_branch
+
         # Music player
         cur_music_player = get_string_option("roudix.musicPlayer", "spotify")
         new_music_player = self.music_player_selector.selected_id
@@ -2212,7 +2320,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     discord_changed, telegram_changed,
                     apps_changes,
                     system_changes, rgb_changed, video_player_changed, torrent_client_changed,
-                    music_player_changed,
+                    music_player_changed, branch_changed,
                     mail_client_changed,
                     icon_theme_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed,
@@ -2269,6 +2377,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{L('Lecteur vidéo', 'Video player')}: <b>{cur_video_player}</b> → <b>{new_video_player}</b>")
         if torrent_client_changed:
             changes.append(f"{L('Client torrent', 'Torrent client')}: <b>{cur_torrent_client}</b> → <b>{new_torrent_client}</b>")
+        if branch_changed:
+            changes.append(f"{L('Branche de mise à jour', 'Update branch')}: <b>{cur_branch}</b> → <b>{new_branch}</b>")
         if music_player_changed:
             changes.append(f"{L('Lecteur de musique', 'Music player')}: <b>{cur_music_player}</b> → <b>{new_music_player}</b>")
         if mail_client_changed:
@@ -2316,6 +2426,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "video_player_changed": video_player_changed, "new_video_player": new_video_player,
             "torrent_client_changed": torrent_client_changed, "new_torrent_client": new_torrent_client,
             "music_player_changed": music_player_changed, "new_music_player": new_music_player,
+            "branch_changed": branch_changed, "cur_branch": cur_branch, "new_branch": new_branch,
             "mail_client_changed": mail_client_changed, "new_mail_client": new_mail_client,
             "icon_theme_changed": icon_theme_changed, "new_icon_theme": new_icon_theme,
             "gaming_master_changed": gaming_master_changed, "new_gaming_master": new_gaming_master,
@@ -2611,6 +2722,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 )
                 return
 
+        # Git checkout + option write both happen in run_rebuild (network, off
+        # the UI thread): local.nix is only touched once the switch succeeded.
+        self._branch_switch = (pending["cur_branch"], pending["new_branch"]) if pending["branch_changed"] else None
+
         self.status.set_markup("")
         GLib.idle_add(self.term_frame.set_visible, True)
         GLib.idle_add(self._term_clear)
@@ -2643,6 +2758,31 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             log.info(cmd_str)
             GLib.idle_add(self._term_append, cmd_str, "dim")
             GLib.idle_add(self._term_append, L("Vérification des dépôts...", "Checking repositories..."), "dim")
+
+            branch_switch = getattr(self, "_branch_switch", None)
+            if branch_switch:
+                old_branch, new_branch = branch_switch
+                GLib.idle_add(self._term_append, L(f"Passage à la branche {new_branch}…", f"Switching to branch {new_branch}…"), "dim")
+                ok, msg = switch_repo_branch(new_branch)
+                if not ok:
+                    log.error("Branch switch to %s failed: %s", new_branch, msg)
+                    GLib.idle_add(self._term_append, L(f"✗ Impossible de passer à {new_branch} : {msg}", f"✗ Could not switch to {new_branch}: {msg}"), "error")
+                    GLib.idle_add(self._stop_progress)
+                    GLib.idle_add(
+                        self.status.set_markup,
+                        L(
+                            f"<span color='red'>✗ Changement de branche échoué — rien n'a été modifié. {GLib.markup_escape_text(msg)}</span>",
+                            f"<span color='red'>✗ Branch switch failed — nothing was changed. {GLib.markup_escape_text(msg)}</span>",
+                        ),
+                    )
+                    return
+                GLib.idle_add(self._term_append, L(f"✓ Dépôt sur la branche {new_branch}.", f"✓ Repository on branch {new_branch}."), "info")
+                if msg:
+                    GLib.idle_add(self._term_append, f"⚠ {msg}", "error")
+                res = write_branch_option(new_branch)
+                if res is not True:
+                    log.error("Could not write roudix.autoupdate.branch: %s", res)
+                    GLib.idle_add(self._term_append, L(f"⚠ Branche non écrite dans local.nix : {res}", f"⚠ Branch not written to local.nix: {res}"), "error")
 
             proc = subprocess.Popen(
                 [

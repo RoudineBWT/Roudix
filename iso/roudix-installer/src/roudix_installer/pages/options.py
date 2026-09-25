@@ -209,6 +209,14 @@ def _bootloaders():
     ]
 
 
+def _branches():
+    return [
+        ("main", L("main — stable, ~toutes les 2 semaines (recommandé)", "main — stable, ~every 2 weeks (recommended)")),
+        ("testing", L("testing — ~tous les 2 jours, peut parfois casser", "testing — ~every 2 days, may occasionally break")),
+        ("dev", L("dev — derniers changements, le moins stable", "dev — latest changes, least stable")),
+    ]
+
+
 def _matrix():
     return [
         ("none", L("Aucun", "None")),
@@ -743,6 +751,19 @@ class OptionsPage(Adw.NavigationPage):
         self.ananicy_row.set_active(state.ananicy_enable)
         sys_group.add(self.ananicy_row)
 
+        self.millennium_row = Adw.SwitchRow(
+            title=L(
+                "Millennium (client Steam modifié : thèmes et plugins)",
+                "Millennium (modded Steam client: themes and plugins)",
+            ),
+            subtitle=L(
+                "Mod non officiel — désactivé = Steam standard",
+                "Unofficial mod — off = stock Steam",
+            ),
+        )
+        self.millennium_row.set_active(state.gaming_steam_millennium)
+        sys_group.add(self.millennium_row)
+
         self.gaming_apps_rows = {}
         for attr, title_fr, title_en, default in (
             ("lutris", "Lutris", "Lutris", state.gaming_apps_lutris),
@@ -883,6 +904,12 @@ class OptionsPage(Adw.NavigationPage):
         )
         self.autoupdate_interval_row.set_text(state.autoupdate_interval)
         extra_group.add(self.autoupdate_interval_row)
+
+        self.branch_row = self._combo(
+            L("Branche (installation + mises à jour)", "Branch (install + updates)"),
+            _branches(), state.branch,
+        )
+        extra_group.add(self.branch_row)
 
         self.bootloader_row = self._combo(
             L("Bootloader", "Bootloader"), _bootloaders(), state.bootloader
@@ -1229,6 +1256,7 @@ class OptionsPage(Adw.NavigationPage):
 
     def _sync_ananicy_row(self):
         self.ananicy_row.set_visible(self.gaming_row.get_active())
+        self.millennium_row.set_visible(self.gaming_row.get_active())
         for row in self.gaming_apps_rows.values():
             row.set_visible(self.gaming_row.get_active())
 
@@ -1300,6 +1328,7 @@ class OptionsPage(Adw.NavigationPage):
         s.vm_guest = self.vm_guest_row.get_active()
         s.gaming = self.gaming_row.get_active()
         s.ananicy_enable = self.ananicy_row.get_active()
+        s.gaming_steam_millennium = self.millennium_row.get_active()
         s.gaming_apps_lutris = self.gaming_apps_rows["lutris"].get_active()
         s.gaming_apps_heroic = self.gaming_apps_rows["heroic"].get_active()
         s.gaming_apps_faugus = self.gaming_apps_rows["faugus"].get_active()
@@ -1325,6 +1354,7 @@ class OptionsPage(Adw.NavigationPage):
         s.virtualization = self.virt_row.get_active()
         s.autoupdate = self.autoupdate_row.get_active()
         s.autoupdate_interval = self.autoupdate_interval_row.get_text()
+        s.branch = self._selected_value(self.branch_row)
         s.bootloader = self._selected_value(self.bootloader_row)
         s.matrix_client = self._selected_value(self.matrix_row)
         s.discord = self._selected_value(self.discord_row)

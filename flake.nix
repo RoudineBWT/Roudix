@@ -166,7 +166,8 @@
     roudix-scheduler-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-scheduler-switcher {
       scxctl = roudix-caches.packages.x86_64-linux.scxctl;
     };
-    specialArgs = { inherit inputs username roudixSwitcher roudixBranding roudix-kernel-switcher roudix-scheduler-switcher ; dotfiles = self + /dotfiles; };
+    roudixWelcome = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-welcome {};
+    specialArgs = { inherit inputs username roudixSwitcher roudixBranding roudix-kernel-switcher roudix-scheduler-switcher roudixWelcome; dotfiles = self + /dotfiles; };
   in
   {
     # ── Main desktop configuration ───────────────────────────────────────
@@ -194,13 +195,7 @@
           home-manager.users.${username} = { lib, ... }: {
             imports = [
               ./modules/home/common.nix
-              ./modules/home/desktop/niri/default.nix
-              ./modules/home/hyprland.nix
-              ./modules/home/mangowc.nix
-              ./modules/home/desktop/umbriel/default.nix
-              ./modules/home/kde.nix
-              ./modules/home/gnome.nix
-              ./modules/home/shell-modules.nix
+              ./modules/home/desktop
             ] ++ lib.optional (builtins.pathExists ./modules/home/local.nix) ./modules/home/local.nix;
           };
         }

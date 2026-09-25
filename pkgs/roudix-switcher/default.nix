@@ -4,7 +4,7 @@ let
   # each theme's own real "folder" glyph as a live preview (see
   # _theme_preview_icon() in roudix-switcher.py) instead of hand-drawn
   # placeholder art. Picking a theme in the UI does NOT depend on these
-  # being installed system-wide — modules/home/gtk-theme.nix pulls in
+  # being installed system-wide — modules/home/theming/gtk-theme.nix pulls in
   # whichever one is actually selected via roudix.iconTheme on its own.
   iconThemesForPreview = with pkgs; [
     papirus-icon-theme
