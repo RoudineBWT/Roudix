@@ -17,6 +17,21 @@
     ];
 
     layer-rules = [
+      # DMS's own wallpaper layer isn't placed on niri's overview backdrop
+      # by default; without this it gets cloned onto every workspace card
+      # in the overview instead of staying fixed. "quickshell" is the raw
+      # namespace DMS's wallpaper surface uses (regardless of the
+      # dms:-prefixed convention for the rest of its layers).
+      {
+        matches = [ { namespace = "^quickshell$"; } ];
+        place-within-backdrop = true;
+      }
+      # Only relevant if DMS's "Blur Layer" wallpaper option is enabled
+      # (Settings → Wallpaper): that variant runs on its own namespace.
+      {
+        matches = [ { namespace = "dms:blurwallpaper"; } ];
+        place-within-backdrop = true;
+      }
       {
         matches = [ { namespace = "^dms:clipboard$"; } ];
         block-out-from = "screencast";
