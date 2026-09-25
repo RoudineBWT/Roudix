@@ -41,6 +41,16 @@ For Wayland compositors (Niri, Hyprland, MangoWC), you can switch the shell/bar 
 
 **Note:** Caelestia is only available on Hyprland. The shell is injected into the session through `ROUDIX_HYPR_SHELL`, so there are no separate `hyprland-dms/` or `hyprland-caelestia/` trees to keep in sync.
 
+### Shell autostart
+
+Shell startup is owned by the compositor, so only the selected shell is started:
+
+- **Hyprland:** `noctalia` / `dms run` / `caelestia-shell` from the `hyprland.start` Lua hook.
+- **MangoWC:** `noctalia` / `dms run` from MangoWC `autostart_sh`.
+- The selected shell's Home Manager systemd autostart is disabled to prevent duplicate instances.
+
+This follows the current Noctalia compositor-autostart guidance and DMS guidance for Hyprland/MangoWC.
+
 To change it, edit `hosts/roudix/local.nix`:
 
 ```nix

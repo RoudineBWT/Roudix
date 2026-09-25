@@ -50,3 +50,13 @@ rebuild
 ```
 
 Un redémarrage de session peut être nécessaire après un changement de shell ou d'environnement.
+## Shell autostart
+
+The shell selected by `roudix.desktop.shell` is started once by Hyprland:
+
+- `noctalia` → `noctalia`
+- `dms` → `dms run`
+- `caelestia` → `caelestia-shell`
+
+Home Manager systemd startup for these shells is disabled in the Hyprland module, so there is no second shell instance. MangoWC follows the same model for Noctalia and DMS through `autostart_sh`.
+

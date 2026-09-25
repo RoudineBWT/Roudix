@@ -23,7 +23,6 @@ in
     ./_rules-common.nix
     ./_rules-apps.nix
     ./_rules-gaming.nix
-    ./_autostart.nix
   ]
   ++ lib.optionals (isMango && isNoctalia) [ ./_binds-noctalia.nix ]
   ++ lib.optionals (isMango && isDms) [ ./_binds-dms.nix ];
@@ -31,7 +30,13 @@ in
   config = lib.mkIf isMango {
     programs.noctalia = lib.mkIf isNoctalia {
       enable = true;
-      package = null;
+      package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      systemd.enable = false;
+    };
+
+    programs.dank-material-shell = lib.mkIf isDms {
+      enable = true;
+      systemd.enable = false;
     };
 
     wayland.windowManager.mango = {
@@ -59,7 +64,11 @@ in
         source=~/.config/mango/dms/outputs.conf
       '';
 
-      autostart_sh = "";
+      autostart_sh = lib.concatStringsSep "\n" [
+        (if isNoctalia then "noctalia" else "dms run")
+        "discord"
+        "openrgb"
+      ];
     };
 
     home.activation.mangoDmsFiles = lib.mkIf isDms (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -90,8 +99,6 @@ in
       libsForQt5.qt5ct
       gvfs
       cava
-    ] ++ lib.optionals isNoctalia [
-      inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
   };
 }

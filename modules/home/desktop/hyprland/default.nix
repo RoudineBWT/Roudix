@@ -37,12 +37,20 @@ in
     # ── Noctalia ─────────────────────────────────────────────────────────────
     programs.noctalia = lib.mkIf (shellType == "noctalia") {
       enable = true;
-      package = null;
+      package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      systemd.enable = false;
     };
 
-    # ── Caelestia ────────────────────────────────────────────────────────────
-    # No programs.* option — the homeManagerModules.default handles the
-    # systemd service automatically. Just add the package in home.packages.
+    programs.dank-material-shell = lib.mkIf (shellType == "dms") {
+      enable = true;
+      systemd.enable = false;
+    };
+
+    programs.caelestia = lib.mkIf (shellType == "caelestia") {
+      enable = true;
+      systemd.enable = false;
+      cli.enable = true;
+    };
 
     # ── Hyprland Lua configuration ─────────────────────────────────────────
     # Copy the modular Lua tree file-by-file so the Nix-generated plugin loader
@@ -119,12 +127,6 @@ in
       # Misc
       gvfs
       cava
-    ]
-    ++ lib.optionals (shellType == "noctalia") [
-      inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ]
-    ++ lib.optionals (shellType == "caelestia") [
-      inputs.caelestia-shell.packages.${pkgs.stdenv.hostPlatform.system}.with-cli
     ]
     ;
   };
