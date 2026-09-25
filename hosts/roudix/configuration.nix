@@ -2,17 +2,16 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/system/shell.nix
+    ../../modules/system/core
     ../../modules/system/nix
     ../../modules/system/desktop
-    ../../modules/system/environment.nix
     ../../modules/system/boot
     ../../modules/system/gaming
     ../../modules/system/apps
+    ../../modules/system/packaging
     ../../modules/system/gpu
     ../../modules/system/rgb
-    ../../modules/system/pipewire.nix
-    ../../modules/system/fstrim.nix
+    ../../modules/system/audio
     ../../modules/system/virtualization
      inputs.brave-previews.nixosModules.default
   ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
