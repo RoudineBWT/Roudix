@@ -231,7 +231,7 @@ def write_config(state: InstallState, config_root: Path):
     """
     hosts_dir = config_root / "hosts" / "roudix"
     home_dir = config_root / "modules" / "home"
-    boot_local = config_root / "modules" / "system" / "boot.local.nix"
+    boot_local = config_root / "modules" / "system" / "boot" / "boot.local.nix"
 
     (hosts_dir / "username.nix").write_text(f'"{state.username}"\n')
 
@@ -241,6 +241,6 @@ def write_config(state: InstallState, config_root: Path):
 
     shutil.copy(home_dir / "local.nix.example", home_dir / "local.nix")
 
-    boot_example = config_root / "modules" / "system" / "boot.local.nix.example"
+    boot_example = config_root / "modules" / "system" / "boot" / "boot.local.nix.example"
     if boot_example.exists():
         shutil.copy(boot_example, boot_local)
