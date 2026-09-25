@@ -31,17 +31,17 @@ roudix-switch kde
 
 ## Graphical shells (Niri, Hyprland & MangoWC only)
 
-For Wayland compositors (Niri, Hyprland, MangoWC), you can switch the shell/bar stack independently from the compositor. Each shell gets its own dotfiles folder.
+For Wayland compositors (Niri, Hyprland, MangoWC), you can switch the shell/bar stack independently from the compositor. For Hyprland, **one configuration tree** (`dotfiles/hyprland/`) contains the common binds and selects the shell from `roudix.desktop.shell`.
 
-| Value | Shell | Dotfiles folders |
-|-------|-------|-----------------|
-| `noctalia` | Noctalia | `dotfiles/niri/` · `dotfiles/hyprland/` · `dotfiles/mangowc/` |
-| `dms` | DankMaterialShell | `dotfiles/niri-dms/` · `dotfiles/hyprland-dms/` · `dotfiles/mangowc-dms/` |
-| `caelestia` | Caelestia | `dotfiles/hyprland-caelestia/` |
+| Value | Shell | Hyprland |
+|-------|-------|----------|
+| `noctalia` | Noctalia | `dotfiles/hyprland/` |
+| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
-**Note:** caelestia is only available on Hyprland. Umbriel doesn't appear in this table — it's Noctalia's own compositor and doesn't support switching shells.
+**Note:** Caelestia is only available on Hyprland. The shell is injected into the session through `ROUDIX_HYPR_SHELL`, so there are no separate `hyprland-dms/` or `hyprland-caelestia/` trees to keep in sync.
 
-To change, edit `hosts/roudix/local.nix`:
+To change it, edit `hosts/roudix/local.nix`:
 
 ```nix
 roudix.desktop.shell = "noctalia"; # "noctalia", "dms" or "caelestia"
@@ -60,8 +60,6 @@ roudix-shell-switch dms
 ```
 
 > **Note:** `roudix-shell-switch` uses `nh os boot` — changes apply on next reboot.
-
-> **Note:** If the shell-specific dotfiles folder doesn't exist yet in the repo, Nix automatically falls back to the Noctalia folder so the build never breaks.
 
 ---
 
@@ -126,7 +124,17 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 
 Since it's one big text blob rather than a few Nix lines, it fits better in its own file — see `home/mango-custom.nix.example`.
 
-**Hyprland works differently.** Because Hyprland's config language changes too frequently (`.conf` → `.lua` → who knows next), Nix no longer generates any entry-point file for it. The entire dotfiles folder is copied as-is — you own the format. Put whatever `hyprland.conf`, `hyprland.lua`, or other entry point you want directly in `dotfiles/hyprland/cfg/` (or `dotfiles/hyprland-dms/cfg/`, etc.) and Hyprland will pick it up.
+**Hyprland now uses the modular Lua configuration in `dotfiles/hyprland/`.** The entry point is `dotfiles/hyprland/hyprland.lua`, which loads the `config/` modules for monitors, layouts, animations, binds, window rules and shell integrations. Nix copies this tree as-is to `~/.config/hypr/`.
+
+The current configuration targets Hyprland 0.55+ and uses the native `dwindle`, `master` and `scrolling` layouts. The Nix module generates a small `config/nix-plugins.lua` loader before the entry point; `borders-plus-plus` is included by Roudix. The `dynamic_cursors` block remains optional and only applies when that plugin is present.
+
+### Customizing Hyprland
+
+Machine-specific values (the `DP-1`/`DP-3` outputs, primary monitor, default applications, keyboard, etc.) live under `dotfiles/hyprland/config/`. Edit them directly if you keep your Hyprland setup in the Roudix repository.
+
+For personal overrides without changing tracked files, use `home/local.nix` with `xdg.configFile."hypr/..."` and `lib.mkForce`.
+
+> After changing the Lua configuration, run `rebuild`. A session restart may be required for shell or environment changes.
 
 > See `home/niri-custom.nix.example`, `home/umbriel-custom.nix.example`, `home/mango-custom.nix.example` and `home/local.nix.example` for the full list of examples.
 
