@@ -16,6 +16,12 @@ This script re-derives every such reference it can find and checks it
 against the actual tree, so that kind of drift shows up as a CI failure
 instead of a support request three weeks later.
 
+A reference matching a .gitignore entry (local.nix, hardware-configuration.nix,
+boot.local.nix, ...) is expected to be absent on a fresh checkout — CI never
+generates those — so it's only flagged if even its *parent directory* is
+missing, which would mean the surrounding area moved, not just the local
+file being ungenerated.
+
 Usage:
     python3 scripts/check-path-refs.py            # scan the whole repo
     python3 scripts/check-path-refs.py --paths pkgs iso/roudix-installer
@@ -26,11 +32,44 @@ Exit status: 0 if every reference resolves, 1 otherwise (for CI gating).
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import re
 import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def load_gitignore(root: Path) -> list[tuple[str, bool]]:
+    """Return [(pattern, is_negation), ...] from the root .gitignore.
+
+    Minimal parser: no nested .gitignore, no directory-only ('/') nuance
+    beyond what fnmatch already gives us — good enough for the small,
+    mostly-literal patterns this repo actually uses.
+    """
+    gitignore = root / ".gitignore"
+    if not gitignore.is_file():
+        return []
+    rules = []
+    for line in gitignore.read_text(errors="ignore").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        negate = line.startswith("!")
+        if negate:
+            line = line[1:]
+        rules.append((line.rstrip("/"), negate))
+    return rules
+
+
+def is_gitignored(rel_path: str, rules: list[tuple[str, bool]]) -> bool:
+    ignored = False
+    for pattern, negate in rules:
+        if fnmatch.fnmatch(rel_path, pattern) or fnmatch.fnmatch(
+            "/" + rel_path, pattern
+        ):
+            ignored = not negate
+    return ignored
 
 # Only files under these top-level directories are considered "the repo
 # tree" for existence-checking purposes — this is also used as the anchor
@@ -97,13 +136,22 @@ def find_candidates(text: str) -> set[str]:
     return {c for c in found if c.endswith(CHECKED_SUFFIXES)}
 
 
-def scan_file(path: Path) -> list[str]:
+def scan_file(path: Path, gitignore_rules: list[tuple[str, bool]]) -> list[str]:
     text = path.read_text(errors="ignore")
     missing = []
     for candidate in sorted(find_candidates(text)):
         if candidate in ALLOWLIST:
             continue
-        if not (REPO_ROOT / candidate).exists():
+        if (REPO_ROOT / candidate).exists():
+            continue
+        if is_gitignored(candidate, gitignore_rules):
+            # Expected to be absent on a fresh checkout (machine-local /
+            # generated file) — only a real problem if the surrounding
+            # directory is gone too, meaning the area itself moved.
+            if (REPO_ROOT / candidate).parent.is_dir():
+                continue
+            missing.append(f"{candidate}  [gitignored, and its parent dir is also missing]")
+        else:
             missing.append(candidate)
     return missing
 
@@ -135,9 +183,11 @@ def main() -> int:
         print("No .py/.sh files found under the given paths.", file=sys.stderr)
         return 1
 
+    gitignore_rules = load_gitignore(REPO_ROOT)
+
     had_errors = False
     for path in targets:
-        missing = scan_file(path)
+        missing = scan_file(path, gitignore_rules)
         if missing:
             had_errors = True
             rel = path.relative_to(REPO_ROOT)
