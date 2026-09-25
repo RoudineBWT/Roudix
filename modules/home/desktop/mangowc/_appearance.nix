@@ -15,7 +15,7 @@
     scratchpadcolor = "0xc4939dff";
     globalcolor = "0x8d64cfff";
     overlaycolor = "0x95C381ff";
-    border_radius = 20;
+    border_radius = 0;
     no_border_when_single = 0;
     no_radius_when_single = 0;
 
