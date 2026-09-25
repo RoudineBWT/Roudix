@@ -4,5 +4,7 @@
 ## text-concatenation trick needed).
 { ... }:
 {
-  programs.mango.settings.include.files = [ "noctalia.conf" ];
+  wayland.windowManager.mango.extraConfig = ''
+    source-optional=~/.config/mango/noctalia.conf
+  '';
 }
