@@ -7,7 +7,7 @@
     repeat_rate = 25;
     repeat_delay = 600;
 
-    accel_profile = 1;
+    accel_profile = 0;
     accel_speed = 0.0;
     tap_to_click = 1;
     tap_and_drag = 1;
