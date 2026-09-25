@@ -9,6 +9,7 @@ in
     bind = [
       "SUPER,Return,spawn,${terminalCmd}"
       "SUPER,E,spawn,${fileManagerCmd}"
+      "SUPER+SHIFT,B,spawn,zen-twilight"
       "SUPER,Q,killclient"
       "SUPER,F,togglefullscreen"
       "SUPER,T,togglefloating"
