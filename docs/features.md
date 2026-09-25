@@ -36,7 +36,7 @@
 - Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft, or Modrinth App as an alternative — `roudix.gaming.apps.modrinth.enable`) and Vintage Story (via roudix-caches)
 - Each gaming app individually toggleable via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (all `true` by default)
 - Optional [Millennium](https://github.com/SteamClientHomebrew/Millennium) modded Steam client (themes + plugins) — off by default, enable with `roudix.gaming.steam.millennium.enable = true` (or from the installer). Unofficial mod; the `game-performance` sandbox tweak and the Proton compat tools keep working, and setting it back to `false` restores stock Steam
-- Optional console-like Gaming Mode: `roudix.gaming.gamescopeSession.enable` adds a "Steam (Gaming Mode)" session on the login screen (Steam Big Picture in gamescope, VRR/HDR/MangoApp, refresh rate detected at launch). "Switch to Desktop" in Steam opens your desktop, and the "Return to Gaming Mode" app goes back without passing through the login screen. Based on GLF-OS; supports niri, umbriel, GNOME and KDE for now
+- Optional console-like Gaming Mode: `roudix.gaming.gamescopeSession.enable` adds a "Steam (Gaming Mode)" session on the login screen (Steam Big Picture in gamescope, VRR/HDR/MangoApp, refresh rate detected at launch). "Switch to Desktop" in Steam opens your desktop, and the "Return to Gaming Mode" app goes back without passing through the login screen. Based on GLF-OS; supports niri, umbriel, GNOME, KDE, Hyprland and MangoWC
 - Optional Decky Loader (Steam plugins) via `roudix.gaming.gamescopeSession.decky.enable`, vendored from Jovian-NixOS in `pkgs/decky-loader`; no binary cache, so it is compiled locally on the first rebuild
 
 ## Desktop (Niri)

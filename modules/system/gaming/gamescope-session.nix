@@ -10,7 +10,6 @@ let
   #   start : command that runs the session and returns when it ends;
   #   quit  : soft logout that ends only the desktop, never the whole
   #           logind session (the wrapper lives in it).
-  # hyprland and mangowc aren't wired yet (see the assertion below).
   desktops = {
     niri = {
       env   = "XDG_CURRENT_DESKTOP=niri XDG_SESSION_DESKTOP=niri DESKTOP_SESSION=niri";
@@ -31,6 +30,16 @@ let
       env   = "XDG_CURRENT_DESKTOP=KDE XDG_SESSION_DESKTOP=plasma DESKTOP_SESSION=plasma";
       start = "${pkgs.kdePackages.plasma-workspace}/libexec/plasma-dbus-run-session-if-needed ${pkgs.kdePackages.plasma-workspace}/bin/startplasma-wayland";
       quit  = "${pkgs.kdePackages.qttools}/bin/qdbus org.kde.Shutdown /Shutdown org.kde.Shutdown.logout";
+    };
+    hyprland = {
+      env   = "XDG_CURRENT_DESKTOP=Hyprland XDG_SESSION_DESKTOP=hyprland DESKTOP_SESSION=hyprland";
+      start = "/run/current-system/sw/bin/uwsm start -F -- /run/current-system/sw/bin/start-hyprland";
+      quit  = "/run/current-system/sw/bin/hyprctl dispatch exit";
+    };
+    mangowc = {
+      env   = "XDG_CURRENT_DESKTOP=Mango XDG_SESSION_DESKTOP=mangowc DESKTOP_SESSION=mangowc";
+      start = "/run/current-system/sw/bin/mango";
+      quit  = "/run/current-system/sw/bin/mmsg dispatch quit";
     };
   };
   desk = desktops.${desktopType} or null;
@@ -134,7 +143,7 @@ in
         "Return to Gaming Mode" app (or `roudix-return-to-gaming-mode`) goes
         back, without passing through the login screen.
 
-        Supported desktops: niri, umbriel, gnome, kde (asserted at build).
+        Supported desktops: niri, umbriel, gnome, kde, hyprland, mangowc.
         Based on GLF-OS' gamescope module.
       '';
     };
