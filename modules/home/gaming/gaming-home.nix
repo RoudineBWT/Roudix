@@ -1,6 +1,5 @@
 { pkgs, inputs, lib, osConfig, ... }:
 let
-  pkgs-stable = import inputs.nixpkgs-stable { system = pkgs.stdenv.hostPlatform; config.allowUnfree = true; };
   isKde = osConfig.roudix.desktop.type == "kde";
   isGaming = osConfig.roudix.gaming.enable;
   apps = osConfig.roudix.gaming.apps;

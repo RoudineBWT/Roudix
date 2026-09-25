@@ -140,7 +140,7 @@ in
       # millennium-steam is built on top of pkgs.steam, so pkgs.steam must
       # already carry our sandbox tweaks (see steamExtraBwrapArgs) by the
       # time Millennium's overlay is applied — hence this order.
-      (final: prev: {
+      (_final: prev: {
         steam = prev.steam.override { extraBwrapArgs = steamExtraBwrapArgs; };
       })
       inputs.millennium.overlays.default

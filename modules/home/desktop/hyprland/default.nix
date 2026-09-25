@@ -1,20 +1,6 @@
 { pkgs, inputs, config, lib, osConfig, dotfiles, ... }:
 let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
-
-  resolveHyprDotfiles = shell:
-    let
-      candidates = {
-        noctalia  = "${dotfiles}/hyprland";
-        dms       = "${dotfiles}/hyprland-dms";
-        caelestia = "${dotfiles}/hyprland-caelestia";
-      };
-      desired  = candidates.${shell} or candidates.noctalia;
-      fallback = candidates.noctalia;
-    in
-      if builtins.pathExists desired then desired else fallback;
-
-  hyprDir = resolveHyprDotfiles shellType;
 in
 {
   imports = [
