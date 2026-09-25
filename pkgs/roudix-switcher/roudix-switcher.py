@@ -517,7 +517,7 @@ SYSTEM_TOGGLES = [
     {"id": "autoupdate",     "name": L("Auto-update (git pull + rebuild programmé)", "Auto-update (scheduled git pull + rebuild)"), "key": "roudix.autoupdate.enable", "default": False},
     {"id": "undervoltAmd",   "name": L("Undervolt GPU AMD (LACT)", "AMD GPU undervolt (LACT)"),         "key": "roudix.undervolt.only-amd.enable", "default": False},
     # "file": roudix.fastfetch.useNix is a Home Manager option (defined in
-    # modules/home/fastfetch.nix), not a system option — so it must be
+    # modules/home/shell/fastfetch.nix), not a system option — so it must be
     # written to HOME_CONFIG_FILE, not CONFIG_FILE.
     {"id": "fastfetchNix",   "name": L("Config fastfetch Roudix", "Roudix fastfetch config"),          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
     {"id": "fstrim",         "name": L("Fstrim (TRIM auto pour SSD/NVMe)", "Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
