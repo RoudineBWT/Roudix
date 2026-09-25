@@ -24,7 +24,7 @@ in
     ./_rules-apps.nix
     ./_rules-gaming.nix
   ]
-  ++ lib.optionals (isMango && isNoctalia) [ ./_binds-noctalia.nix ./_include-noctalia.nix ]
+  ++ lib.optionals (isMango && isNoctalia) [ ./_binds-noctalia.nix ./_include-noctalia.nix ./_noctalia-workspaces.nix ]
   ++ lib.optionals (isMango && isDms) [ ./_binds-dms.nix ];
 
   config = lib.mkIf isMango {
