@@ -1,6 +1,30 @@
 { pkgs, inputs, config, lib, osConfig, dotfiles, ... }:
 let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
+  hyprFiles = [
+    "hyprland.lua"
+    "README.md"
+    "config/animations.lua"
+    "config/autostart.lua"
+    "config/colors.lua"
+    "config/decorations.lua"
+    "config/defaults.lua"
+    "config/environment.lua"
+    "config/input.lua"
+    "config/layout.lua"
+    "config/misc.lua"
+    "config/monitors.lua"
+    "config/shell.lua"
+    "config/workspaces.lua"
+    "config/binds/common.lua"
+    "config/rules/apps.lua"
+    "config/rules/common.lua"
+    "config/rules/gaming.lua"
+    "config/shells/caelestia.lua"
+    "config/shells/dms.lua"
+    "config/shells/noctalia.lua"
+    "scripts/gamemode.sh"
+  ];
 in
 {
   imports = [
@@ -23,35 +47,13 @@ in
     # ── Hyprland Lua configuration ─────────────────────────────────────────
     # Copy the modular Lua tree file-by-file so the Nix-generated plugin loader
     # can coexist with the user-owned configuration.
-    hyprFiles = [
-      "hyprland.lua"
-      "README.md"
-      "config/animations.lua"
-      "config/autostart.lua"
-      "config/colors.lua"
-      "config/decorations.lua"
-      "config/defaults.lua"
-      "config/environment.lua"
-      "config/input.lua"
-      "config/layout.lua"
-      "config/misc.lua"
-      "config/monitors.lua"
-      "config/shell.lua"
-      "config/workspaces.lua"
-      "config/binds/common.lua"
-      "config/rules/apps.lua"
-      "config/rules/common.lua"
-      "config/rules/gaming.lua"
-      "config/shells/caelestia.lua"
-      "config/shells/dms.lua"
-      "config/shells/noctalia.lua"
-      "scripts/gamemode.sh"
-    ];
-
     xdg.configFile = lib.mkMerge [
-      (lib.genAttrs hyprFiles (file: {
-        source = "${dotfiles}/hyprland/${file}";
-      }))
+      (lib.listToAttrs (map (file: {
+        name = "hypr/${file}";
+        value = {
+          source = "${dotfiles}/hyprland/${file}";
+        };
+      }) hyprFiles))
       {
         "hypr/config/nix-plugins.lua".text =
           let
