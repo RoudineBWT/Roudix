@@ -34,6 +34,8 @@ in
           };
         };
 
+    # DMS is started by its user systemd service for MangoWC. Do not also
+    # launch `dms run` from MangoWC autostart_sh, or DMS would be started twice.
     programs.dank-material-shell = lib.mkIf isDms {
       enable = true;
       systemd.enable = true;

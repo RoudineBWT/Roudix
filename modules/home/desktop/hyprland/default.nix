@@ -3,6 +3,7 @@ let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
   hyprFiles = [
     "hyprland.lua"
+    "README.md"
     "config/animations.lua"
     "config/autostart.lua"
     "config/colors.lua"

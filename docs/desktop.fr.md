@@ -43,13 +43,16 @@ Pour les compositeurs Wayland (Niri, Hyprland, MangoWC), vous pouvez changer la 
 
 ### Démarrage automatique du shell
 
-Le démarrage du shell est géré par le compositeur : un seul shell sélectionné est lancé :
+Le démarrage dépend du shell et du compositeur, avec une seule méthode active par shell :
 
-- **Hyprland :** `noctalia` / `dms run` / `caelestia-shell` depuis le hook Lua `hyprland.start`.
-- **MangoWC :** `noctalia` / `dms run` via `autostart_sh`.
-- Le démarrage systemd du shell sélectionné est désactivé afin d'éviter les doubles instances.
+- **Hyprland + Noctalia :** `noctalia` depuis le hook Lua `hyprland.start`.
+- **Hyprland + Caelestia :** `caelestia-shell` depuis le hook Lua `hyprland.start`.
+- **Hyprland + DMS :** service systemd utilisateur DMS ; Hyprland exporte l’environnement vers systemd au démarrage.
+- **MangoWC + Noctalia :** `noctalia` depuis `autostart_sh`.
+- **MangoWC + DMS :** service systemd utilisateur DMS, démarré via `mango-session.target` ; MangoWC n’exécute donc pas `dms run`.
 
-Cela suit les recommandations actuelles de Noctalia pour l'autostart par compositeur et de DMS pour Hyprland/MangoWC.
+DMS ne doit pas être lancé à la fois par systemd et par le compositor : sa documentation officielle recommande de supprimer `dms run` lorsqu’on utilise le service systemd. citeturn1search0turn1search2
+
 
 Pour changer, modifiez `hosts/roudix/local.nix` :
 

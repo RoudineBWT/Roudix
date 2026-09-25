@@ -64,11 +64,10 @@ in
         source=~/.config/mango/dms/outputs.conf
       '';
 
-      autostart_sh = lib.concatStringsSep "\n" [
-        (if isNoctalia then "noctalia" else "dms run")
-        "discord"
-        "openrgb"
-      ];
+      autostart_sh = lib.concatStringsSep "\n" (
+        lib.optional isNoctalia "noctalia"
+        ++ [ "discord" "openrgb" ]
+      );
     };
 
     home.activation.mangoDmsFiles = lib.mkIf isDms (lib.hm.dag.entryAfter [ "writeBoundary" ] ''

@@ -43,13 +43,16 @@ For Wayland compositors (Niri, Hyprland, MangoWC), you can switch the shell/bar 
 
 ### Shell autostart
 
-Shell startup is owned by the compositor, so only the selected shell is started:
+Startup depends on the selected shell and compositor, with exactly one startup mechanism per shell:
 
-- **Hyprland:** `noctalia` / `dms run` / `caelestia-shell` from the `hyprland.start` Lua hook.
-- **MangoWC:** `noctalia` / `dms run` from MangoWC `autostart_sh`.
-- The selected shell's Home Manager systemd autostart is disabled to prevent duplicate instances.
+- **Hyprland + Noctalia:** `noctalia` from the `hyprland.start` Lua hook.
+- **Hyprland + Caelestia:** `caelestia-shell` from the `hyprland.start` Lua hook.
+- **Hyprland + DMS:** DMS user systemd service; Hyprland exports the session environment to systemd at startup.
+- **MangoWC + Noctalia:** `noctalia` from MangoWC `autostart_sh`.
+- **MangoWC + DMS:** DMS user systemd service, reached through `mango-session.target`; MangoWC therefore does not execute `dms run`.
 
-This follows the current Noctalia compositor-autostart guidance and DMS guidance for Hyprland/MangoWC.
+DMS must not be started both by systemd and by the compositor: its official documentation recommends removing `dms run` when the systemd service is used. citeturn1search0turn1search2
+
 
 To change it, edit `hosts/roudix/local.nix`:
 

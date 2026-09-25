@@ -1,6 +1,5 @@
 -- Roudix autostart.
--- The selected shell is started by Hyprland itself, exactly once.
--- Shell startup is intentionally compositor-owned, not systemd-owned.
+-- Noctalia/Caelestia are compositor-owned. DMS is owned by its systemd user service.
 local shell = os.getenv("ROUDIX_HYPR_SHELL") or "noctalia"
 
 hl.on("hyprland.start", function()
@@ -8,8 +7,6 @@ hl.on("hyprland.start", function()
 
     if shell == "noctalia" then
         hl.exec_cmd("noctalia")
-    elseif shell == "dms" then
-        hl.exec_cmd("dms run")
     elseif shell == "caelestia" then
         hl.exec_cmd("caelestia-shell")
     end
