@@ -12,10 +12,8 @@ in
   home.stateVersion = "26.11";
 
   imports = [
-    ./fastfetch.nix
-    ./fish.nix
-    ./bash.nix
-    ./gaming-home.nix
+    ./shell
+    ./gaming
     # GTK theme/icons/cursor + dconf for GSettings-reading apps (GTK3/4,
     # Chromium-family browsers incl. Helium). Imported unconditionally;
     # a no-op on gnome/kde, which theme themselves natively.
@@ -29,7 +27,7 @@ in
     ./roudix-welcome.nix
   ] ++ lib.optional (builtins.pathExists ./dev/ssh.nix) ./dev/ssh.nix
     ++ lib.optional (builtins.pathExists ./dev/gitwatch.nix) ./dev/gitwatch.nix
-    ++ lib.optional (builtins.pathExists ./git.nix) ./git.nix
+    ++ lib.optional (builtins.pathExists ./dev/git.nix) ./dev/git.nix
     ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
 
   # ── Default branding wallpaper ───────────────────────────────────────────
