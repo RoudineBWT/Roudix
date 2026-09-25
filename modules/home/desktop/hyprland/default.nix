@@ -30,6 +30,7 @@ in
   imports = [
     ../../theming/mangohud.nix
     ../../theming/papirus-folders.nix
+    ../../theming/tela-icon.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "hyprland") {
