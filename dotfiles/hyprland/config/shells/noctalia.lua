@@ -3,7 +3,8 @@ local ipc = "noctalia msg "
 
 hl.bind(
     "SUPER + SHIFT + Escape",
-    hl.dsp.show_hotkey_overlay()
+    hl.dsp.exec_cmd(ipc .. "panel-toggle kenn/keybind-cheatsheet:cheatsheet"),
+    { description = "Keybind Cheatsheet" }
 )
 hl.bind("SUPER + D", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind("SUPER + SHIFT + Q", hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
