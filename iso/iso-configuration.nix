@@ -105,20 +105,26 @@
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     substituters = [
-      "https://cache.nixos.org"
-      "https://roudix.cachix.org"
+      "https://attic.xuyh0120.win/lantian"
       "https://noctalia.cachix.org"
+      "https://prismlauncher.cachix.org"
       "https://nix-community.cachix.org"
+      "https://roudix.cachix.org"
       "https://nix-cache.tokidoki.dev/tokidoki"
       "https://nyx-cache.chaotic.cx/"
+      "https://niri-epireyn.cachix.org"
+      "https://hyprland.cachix.org"
     ];
     trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
+      "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
+      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      "prismlauncher.cachix.org-1:9/n/FGyABA2jLUVfY+DEp4hKds/rwO+SCOtbOkDzd+c="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCUSeBw="
+      "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
       "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
       "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     ];
     sandbox = false;
   };
@@ -162,6 +168,33 @@
     algorithm = "zstd";
     memoryPercent = 100;
   };
+
+
+  # A plain applications-menu entry, in addition to the autostart one
+  # below — /etc/xdg/autostart is only ever read for session autostart,
+  # never scanned by GNOME's app grid (which reads XDG_DATA_DIRS/applications,
+  # i.e. /run/current-system/sw/share/applications here). Without this,
+  # closing the installer by accident leaves no way to relaunch it short
+  # of a terminal.
+  (pkgs.writeTextFile {
+    name = "roudix-installer-desktop-item";
+    destination = "/share/applications/roudix-installer.desktop";
+    text = ''
+      [Desktop Entry]
+      Type=Application
+      Version=1.0
+      Name=Install Roudix
+      GenericName=System Installer
+      TryExec=roudix-installer
+      Exec=${installerExec}
+      Comment=Roudix Installer
+      Icon=roudix
+      Terminal=false
+      StartupNotify=true
+      Categories=System;
+    '';
+  })
+];
 
   # ── Embed the Roudix flake in the ISO ─────────────────────────────────
   # The rsync workflow copies the main repo into iso/roudix-cfg/ at build time.
