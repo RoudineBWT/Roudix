@@ -2,7 +2,15 @@
 let
   terminalCmd = osConfig.roudix.terminal or "ghostty";
   fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
-  browserCmd = osConfig.roudix.browser.command or null;
+
+  # Same "resolved from roudix.*" pattern as niri/umbriel (see
+  # umbriel/default.nix) — no lib.mkForce needed here: mango's `bind` is a
+  # flat list of "MODS,KEY,ACTION,ARGS" strings, not an attrsOf, so there's
+  # no per-key merge to win, just entries to append.
+  browserDefault = osConfig.roudix.browser.default or null;
+  browserCmd     = osConfig.roudix.browser.command or null;
+  browserList    = osConfig.roudix.browser.commands or [ ];
+  extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
 in
 {
   wayland.windowManager.mango.settings = {
@@ -78,7 +86,11 @@ in
       "SUPER+SHIFT,P,toggle_monitor,current"
       "CTRL+ALT,Delete,quit"
     ]
-    ++ lib.optional (browserCmd != null) "SUPER,B,spawn,${browserCmd}";
+    ++ lib.optional (browserCmd != null) "SUPER,B,spawn,${browserCmd}"
+    # Un bind par navigateur roudix.browsers au-delà du défaut (Mod+B) —
+    # même principe que le Mod+Ctrl+Alt+N de niri/umbriel. Mod+Shift+B reste
+    # câblé sur zen-twilight ci-dessus, indépendamment de cette liste.
+    ++ (lib.imap1 (i: b: "SUPER+CTRL+ALT,${toString i},spawn,${b.command}") extraBrowsers);
 
     mousebind = [
       "SUPER,btn_left,moveresize,curmove"
