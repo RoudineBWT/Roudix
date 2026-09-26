@@ -41,6 +41,26 @@ let
   browserCmd     = osConfig.roudix.browser.command or null;
   browserList    = osConfig.roudix.browser.commands or [ ];
   extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
+
+  # Noctalia's keybind-cheatsheet uses hyprctl binds -j as the live source of
+  # truth, then scans a Lua file for categories/descriptions. Scanning our full
+  # hyprland.lua tree is unnecessarily expensive (and can hit Noctalia's Luau
+  # CPU budget), so give it a tiny metadata-only file containing just the
+  # common + Noctalia bind descriptions.
+  noctaliaCheatsheet = pkgs.runCommand "roudix-noctalia-cheatsheet.lua" { } ''
+    cat > $out <<'EOF'
+    -- Généré par modules/home/desktop/hyprland/default.nix — NE PAS ÉDITER.
+    -- Les binds live viennent de `hyprctl binds -j`; ce fichier ne contient
+    -- que les catégories et descriptions que le plugin Noctalia doit scanner.
+    EOF
+    awk '
+      /^-- [0-9]+ / { print; next }
+      /description = \"/ {
+        if (match($0, /description = \"[^\"]*\"( *\.\. *[A-Za-z0-9_\[\]]+)?/))
+          print substr($0, RSTART, RLENGTH)
+      }
+    ' "${dotfiles}/hyprland/config/binds/common.lua" "${dotfiles}/hyprland/config/shells/noctalia.lua" >> $out
+  '';
 in
 {
   imports = [
@@ -59,6 +79,12 @@ in
       enable = true;
       package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
       systemd.enable = false;
+      settings.plugin_settings."kenn/keybind-cheatsheet" = {
+        # The live bind list still comes from Hyprland; this tiny file only
+        # supplies the categories/descriptions for the Noctalia plugin.
+        hyprland_lua_config = "~/.config/hypr/noctalia-cheatsheet.lua";
+        hyprland_parser = "lua";
+      };
     };
 
     programs.dank-material-shell = lib.mkIf (shellType == "dms") {
@@ -126,6 +152,9 @@ in
           -- Mod+Ctrl+Alt+N dans binds/common.lua.
           BROWSER_ALT = EXTRA_BROWSERS[1] and EXTRA_BROWSERS[1].command or nil
         '';
+      }
+      {
+        "hypr/noctalia-cheatsheet.lua".source = noctaliaCheatsheet;
       }
     ];
 
