@@ -29,6 +29,13 @@
           # but it does need qemu/qemu-img itself present on the system.
           qemu_kvm
         ];
+
+        systemd.tmpfiles.rules = [
+          "d /usr/share/OVMF 0755 root root -"
+          "L+ /usr/share/OVMF/OVMF_CODE.fd - - - - ${pkgs.OVMF.fd}/FV/OVMF_CODE.fd"
+          "L+ /usr/share/OVMF/OVMF_VARS.fd - - - - ${pkgs.OVMF.fd}/FV/OVMF_VARS.fd"
+        ];
+
       }
 
       (lib.mkIf (!config.roudix.virtualization.enable) {
