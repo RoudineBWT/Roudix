@@ -132,6 +132,38 @@ SHELL_SUPPORTED_DE    = {"niri", "hyprland", "mangowc", "umbriel"}
 CAELESTIA_SUPPORTED_DE = {"hyprland"}
 UMBRIEL_SUPPORTED_DE = {"umbriel"}
 
+# roudix.<de>.scratchpadApps (modules/system/desktop/{mangowc,umbriel}.nix) —
+# each of these compositors has its own independent scratchpadApps option,
+# so the toggle below is shown for either and reads/writes whichever key
+# matches the DE currently selected in the picker.
+SCRATCHPAD_SUPPORTED_DE = {"mangowc", "umbriel"}
+
+SCRATCHPAD_NOTE = {
+    "mangowc": L(
+        "MangoWC uniquement — Discord/Telegram/Element et Spotify vivent dans "
+        "des scratchpads nommés (chacun avec son propre raccourci) au lieu de "
+        "rester tuilés sur un tag fixe.",
+        "MangoWC only — Discord/Telegram/Element and Spotify live in named "
+        "scratchpads (each with its own shortcut) instead of staying tiled "
+        "on a fixed tag.",
+    ),
+    "umbriel": L(
+        "Umbriel uniquement — Discord/Telegram et Spotify vivent dans des "
+        "scratchpads nommés (affichés/masqués via un raccourci) au lieu de "
+        "rester tuilés sur une sortie/espace de travail fixe.",
+        "Umbriel only — Discord/Telegram and Spotify live in named "
+        "scratchpads (shown/hidden with a shortcut) instead of "
+        "staying tiled on a fixed output/workspace.",
+    ),
+}
+
+SCRATCHPAD_DE_LABEL = {"mangowc": "MangoWC", "umbriel": "Umbriel"}
+
+
+def scratchpad_option_key(de_id: str) -> str:
+    """roudix.<de>.scratchpadApps — only meaningful for SCRATCHPAD_SUPPORTED_DE."""
+    return f"roudix.{de_id}.scratchpadApps"
+
 # ── Tweaks: editor, keyring/portal, gaming apps ───────────────────────────
 # These three categories follow the same principle as DE/shell: a value
 # chosen among several (enum, written as a string in local.nix), or a set
@@ -1431,35 +1463,31 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.shell_selector.set_visible(current_de in SHELL_SUPPORTED_DE)
         desktop_page.append(self.shell_selector)
 
-        # roudix.umbriel.scratchpadApps (modules/system/desktop/umbriel.nix) —
-        # Umbriel only: toggles chat/Spotify apps between fixed tiling
-        # (false, default) and named scratchpads (true).
+        # roudix.<de>.scratchpadApps (modules/system/desktop/{mangowc,umbriel}.nix)
+        # — MangoWC and Umbriel each have their own scratchpadApps option:
+        # toggles chat/Spotify apps between fixed tiling (false, default)
+        # and named scratchpads (true). Shown for either DE; the row reads
+        # and writes whichever key matches the DE currently selected.
         self.scratchpad_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self.scratchpad_row.set_margin_top(8)
-        scratchpad_label = Gtk.Label(label=L("Apps en scratchpad (Umbriel)", "Umbriel scratchpad apps"), halign=Gtk.Align.START)
-        scratchpad_label.set_hexpand(True)
+        self.scratchpad_label = Gtk.Label(label=L("Apps en scratchpad", "Scratchpad apps"), halign=Gtk.Align.START)
+        self.scratchpad_label.set_hexpand(True)
         self.scratchpad_switch = Gtk.Switch()
         self.scratchpad_switch.set_valign(Gtk.Align.CENTER)
-        self.scratchpad_switch.set_active(get_bool_option("roudix.umbriel.scratchpadApps", False))
-        self.scratchpad_row.append(scratchpad_label)
+        initial_scratchpad_de = current_de if current_de in SCRATCHPAD_SUPPORTED_DE else "umbriel"
+        self.scratchpad_switch.set_active(get_bool_option(scratchpad_option_key(initial_scratchpad_de), False))
+        self.scratchpad_row.append(self.scratchpad_label)
         self.scratchpad_row.append(self.scratchpad_switch)
-        self.scratchpad_row.set_visible(current_de in UMBRIEL_SUPPORTED_DE)
+        self.scratchpad_row.set_visible(current_de in SCRATCHPAD_SUPPORTED_DE)
         desktop_page.append(self.scratchpad_row)
 
         self.scratchpad_note = Gtk.Label(
-            label=L(
-                "Umbriel uniquement — Discord/Telegram et Spotify vivent dans des "
-                "scratchpads nommés (affichés/masqués via un raccourci) au lieu de "
-                "rester tuilés sur une sortie/espace de travail fixe.",
-                "Umbriel only — Discord/Telegram and Spotify live in named "
-                "scratchpads (shown/hidden with a shortcut) instead of "
-                "staying tiled on a fixed output/workspace.",
-            ),
+            label=SCRATCHPAD_NOTE[initial_scratchpad_de],
         )
         self.scratchpad_note.add_css_class("dim-label")
         self.scratchpad_note.set_wrap(True)
         self.scratchpad_note.set_halign(Gtk.Align.START)
-        self.scratchpad_note.set_visible(current_de in UMBRIEL_SUPPORTED_DE)
+        self.scratchpad_note.set_visible(current_de in SCRATCHPAD_SUPPORTED_DE)
         desktop_page.append(self.scratchpad_note)
 
         self.content_stack.add_named(desktop_page, "desktop")
@@ -2121,9 +2149,15 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._update_filemanager_visibility(new_de)
         self._update_icon_theme_visibility(new_de)
 
-        umbriel_visible = new_de in UMBRIEL_SUPPORTED_DE
-        self.scratchpad_row.set_visible(umbriel_visible)
-        self.scratchpad_note.set_visible(umbriel_visible)
+        scratchpad_visible = new_de in SCRATCHPAD_SUPPORTED_DE
+        self.scratchpad_row.set_visible(scratchpad_visible)
+        self.scratchpad_note.set_visible(scratchpad_visible)
+        if scratchpad_visible:
+            # Reload this DE's own persisted value rather than carrying
+            # over whatever the switch showed for the previous DE —
+            # mangowc and umbriel each have their own independent option.
+            self.scratchpad_note.set_label(SCRATCHPAD_NOTE[new_de])
+            self.scratchpad_switch.set_active(get_bool_option(scratchpad_option_key(new_de), False))
 
         if not visible:
             return
@@ -2202,12 +2236,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_zen_variant = self.zen_variant_selector.selected_id
         zen_variant_changed = new_zen_variant != cur_zen_variant
 
-        # roudix.umbriel.scratchpadApps — only makes sense under Umbriel,
-        # but nothing prevents reading/writing the switch even hidden (it
-        # keeps its previous state while not shown).
-        cur_scratchpad = get_bool_option("roudix.umbriel.scratchpadApps", False)
-        new_scratchpad = self.scratchpad_switch.get_active()
-        scratchpad_changed = new_scratchpad != cur_scratchpad
+        # roudix.<de>.scratchpadApps — only makes sense under MangoWC/Umbriel.
+        # The key depends on new_de (the DE being applied to), since that's
+        # the option namespace the toggle is meant for going forward.
+        scratchpad_relevant = new_de in SCRATCHPAD_SUPPORTED_DE
+        scratchpad_key = scratchpad_option_key(new_de) if scratchpad_relevant else None
+        cur_scratchpad = get_bool_option(scratchpad_key, False) if scratchpad_relevant else False
+        new_scratchpad = self.scratchpad_switch.get_active() if scratchpad_relevant else cur_scratchpad
+        scratchpad_changed = scratchpad_relevant and (new_scratchpad != cur_scratchpad)
 
         cur_sine = get_bool_option("roudix.zen.sine.enable", False)
         new_sine = self.sine_switch.get_active()
@@ -2360,7 +2396,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if zen_mods_changed:
             changes.append(f"{L('Mods Zen', 'Zen mods')}: <b>{', '.join(new_zen_mods) or _none}</b>")
         if scratchpad_changed:
-            changes.append(f"{L('Apps en scratchpad (Umbriel)', 'Umbriel scratchpad apps')}: <b>{_en if new_scratchpad else _dis}</b>")
+            changes.append(f"{L('Apps en scratchpad', 'Scratchpad apps')} ({SCRATCHPAD_DE_LABEL[new_de]}): <b>{_en if new_scratchpad else _dis}</b>")
         if login_shell_changed:
             changes.append(f"{L('Shell de connexion', 'Login shell')}: <b>{cur_login_shell}</b> → <b>{new_login_shell}</b>")
         if filemanager_changed:
@@ -2416,7 +2452,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "zen_variant_changed": zen_variant_changed, "new_zen_variant": new_zen_variant,
             "sine_changed": sine_changed, "new_sine": new_sine,
             "zen_mods_changed": zen_mods_changed, "new_zen_mods": new_zen_mods, "zen_mods_key": zen_mods_key,
-            "scratchpad_changed": scratchpad_changed, "new_scratchpad": new_scratchpad,
+            "scratchpad_changed": scratchpad_changed, "new_scratchpad": new_scratchpad, "scratchpad_key": scratchpad_key,
             "login_shell_changed": login_shell_changed, "new_login_shell": new_login_shell,
             "filemanager_changed": filemanager_changed, "new_filemanager": new_filemanager,
             "matrix_changed": matrix_changed, "new_matrix": new_matrix,
@@ -2555,10 +2591,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 return
 
         if pending["scratchpad_changed"]:
-            result = set_bool_option("roudix.umbriel.scratchpadApps", pending["new_scratchpad"])
+            result = set_bool_option(pending["scratchpad_key"], pending["new_scratchpad"])
             if result is not True:
                 self.status.set_markup(
-                    L(f"<span color='red'>Erreur d'écriture — config Umbriel scratchpad : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing Umbriel scratchpad config: {GLib.markup_escape_text(result)}</span>")
+                    L(f"<span color='red'>Erreur d'écriture — config scratchpad : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing scratchpad config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
