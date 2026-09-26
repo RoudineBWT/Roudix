@@ -16,7 +16,7 @@ else
         keyword decoration:rounding 0; \
         keyword general:gaps_in 0; \
         keyword general:gaps_out 0; \
-        keyword misc:vfr 1; \
+        keyword debug:vfr 1; \
         keyword misc:vrr 0"
     touch "$STATE_FILE"
     notify-send "Roudix" "Mode jeu activé" -i input-gaming
