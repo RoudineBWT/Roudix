@@ -1,6 +1,8 @@
 -- Gaming rules for Roudix Hyprland.
 
-local gamingWorkspace = "name:\u{f0297}"
+-- Ciblage par id numérique (stable), pas name:<glyphe> — voir config/ws.lua.
+local ws = require("config.ws")
+local gamingWorkspace = tostring(ws.games.id)
 local gamingApps = "^(steam_app.*|gamescope)$"
 
 hl.window_rule({ match = { content = "game" }, workspace = gamingWorkspace })

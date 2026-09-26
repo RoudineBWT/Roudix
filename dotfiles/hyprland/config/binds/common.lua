@@ -3,8 +3,24 @@ local mainMod = "SUPER"
 local launchPrefix = "uwsm app -- "
 
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(launchPrefix .. TERMINAL))
-hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd(launchPrefix .. BROWSER_ALT))
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(launchPrefix .. BROWSER))
+-- BROWSER / BROWSER_ALT sont résolus depuis roudix.* par config/nix-apps.lua
+-- (généré par hyprland/default.nix) et peuvent être nil si aucun navigateur
+-- n'est configuré côté NixOS — binds gardés conditionnels pour ne pas planter
+-- au chargement dans ce cas.
+if BROWSER then
+    hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(launchPrefix .. BROWSER))
+end
+if BROWSER_ALT then
+    hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd(launchPrefix .. BROWSER_ALT))
+end
+-- Un bind par navigateur supplémentaire (au-delà de BROWSER/BROWSER_ALT),
+-- même principe que le Mod+Ctrl+Alt+N de niri/umbriel/mangowc pour
+-- roudix.browser.commands.
+if EXTRA_BROWSERS then
+    for i, b in ipairs(EXTRA_BROWSERS) do
+        hl.bind(mainMod .. " + CONTROL + ALT + " .. i, hl.dsp.exec_cmd(launchPrefix .. b.command))
+    end
+end
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(launchPrefix .. FILE_MANAGER))
 hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(launchPrefix .. CALCULATOR))
@@ -34,11 +50,12 @@ end
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag())
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize())
 
-local namedWorkspaces = {{"1","\u{f0239}"},{"2","\u{e8da}"},{"3","\u{e795}"},{"4","\u{f0297}"},{"5","\u{f024b}"},{"6","\u{f1ff}"},{"7","\u{e743}"},{"8","\u{f075a}"}}
-for _, ws in ipairs(namedWorkspaces) do
-    local target = "name:" .. ws[2]
-    hl.bind(mainMod .. " + " .. ws[1], hl.dsp.focus({ workspace = target }))
-    hl.bind(mainMod .. " + CONTROL + " .. ws[1], hl.dsp.window.move({ workspace = target, follow = false }))
+-- Ciblage par id numérique (stable) plutôt que name:<glyphe> (id instable,
+-- voir config/ws.lua) — Mod+1..8 suit l'ordre déclaré dans ws.lua.
+local ws = require("config.ws")
+for i in ipairs(ws.__order) do
+    hl.bind(mainMod .. " + " .. i, hl.dsp.focus({ workspace = i }))
+    hl.bind(mainMod .. " + CONTROL + " .. i, hl.dsp.window.move({ workspace = i, follow = false }))
 end
 hl.bind(mainMod .. " + 9", hl.dsp.focus({ workspace = 9 }))
 hl.bind(mainMod .. " + CONTROL + 9", hl.dsp.window.move({ workspace = 9, follow = false }))

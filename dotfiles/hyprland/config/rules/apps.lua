@@ -1,31 +1,33 @@
 -- Application placement and appearance rules for Roudix Hyprland.
 
-local gamingWorkspace = "name:\u{f0297}"
+-- Ciblage par id numérique (stable), pas name:<glyphe> — voir config/ws.lua.
+local ws = require("config.ws")
+local gamingWorkspace = tostring(ws.games.id)
 
 -- File manager / editor / development.
-hl.window_rule({ match = { class = "^(org\\.gnome\\.Nautilus)$", title = "negative:^(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$" }, workspace = "name:\u{f024b}" })
+hl.window_rule({ match = { class = "^(org\\.gnome\\.Nautilus)$", title = "negative:^(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$" }, workspace = tostring(ws.files.id) })
 hl.window_rule({ match = { class = "^(org\\.gnome\\.Nautilus)$", title = "^(Save As|Enregistrer Sous)$" }, float = true })
-hl.window_rule({ match = { class = "^(org\\.gnome\\.TextEditor)$" }, workspace = "name:\u{f024b}" })
-hl.window_rule({ match = { class = "^(dev\\.zed\\.Zed)$" }, workspace = "name:\u{e8da}" })
-hl.window_rule({ match = { class = "^(kitty)$" }, workspace = "name:\u{e795}", float = true })
-hl.window_rule({ match = { class = "^(ghostty|com\\.mitchellh\\.ghostty)$" }, workspace = "name:\u{e795}", float = true })
-hl.window_rule({ match = { class = "^(org\\.gnome\\.Ptyxis)$" }, workspace = "name:\u{e795}" })
+hl.window_rule({ match = { class = "^(org\\.gnome\\.TextEditor)$" }, workspace = tostring(ws.files.id) })
+hl.window_rule({ match = { class = "^(dev\\.zed\\.Zed)$" }, workspace = tostring(ws.code.id) })
+hl.window_rule({ match = { class = "^(kitty)$" }, workspace = tostring(ws.term.id), float = true })
+hl.window_rule({ match = { class = "^(ghostty|com\\.mitchellh\\.ghostty)$" }, workspace = tostring(ws.term.id), float = true })
+hl.window_rule({ match = { class = "^(org\\.gnome\\.Ptyxis)$" }, workspace = tostring(ws.term.id) })
 
 -- Media player.
 hl.window_rule({ match = { class = "^(com\\.github\\.rafostar\\.Clapper|io\\.github\\.rafostar\\.Clapper)$", title = "^$" }, float = true, center = true })
 hl.window_rule({ match = { class = "^(com\\.github\\.rafostar\\.Clapper|io\\.github\\.rafostar\\.Clapper)$" }, opacity = "1.0 override" })
 
 -- Communication / music.
-hl.window_rule({ match = { class = "^(vesktop|discord)$" }, workspace = "name:\u{f1ff}" })
-hl.window_rule({ match = { class = "^(Element)$" }, workspace = "name:\u{f1ff}" })
-hl.window_rule({ match = { class = "^(org\\.telegram\\.desktop)$" }, workspace = "name:\u{e743}" })
-hl.window_rule({ match = { class = "^(Spotify)$" }, workspace = "name:\u{f075a}" })
-hl.window_rule({ match = { class = "^(org\\.kde\\.easyeffects)$" }, workspace = "name:\u{f075a}" })
+hl.window_rule({ match = { class = "^(vesktop|discord)$" }, workspace = tostring(ws.comm.id) })
+hl.window_rule({ match = { class = "^(Element)$" }, workspace = tostring(ws.comm.id) })
+hl.window_rule({ match = { class = "^(org\\.telegram\\.desktop)$" }, workspace = tostring(ws.chat.id) })
+hl.window_rule({ match = { class = "^(Spotify)$" }, workspace = tostring(ws.music.id) })
+hl.window_rule({ match = { class = "^(org\\.kde\\.easyeffects)$" }, workspace = tostring(ws.music.id) })
 
 -- Browsers. Exclude PIP so the common PIP rule remains effective.
 local pipTitleExclude = "negative:^([Pp]icture[-\\s]?[Ii]n[-\\s]?[Pp]icture)(.*)$"
 local browserClasses = "^(firefox|zen|zen-twilight|brave-origin-beta|brave-browser)$"
-hl.window_rule({ match = { class = browserClasses, title = pipTitleExclude }, workspace = "name:\u{f0239}", size = "monitor_w monitor_h" })
+hl.window_rule({ match = { class = browserClasses, title = pipTitleExclude }, workspace = tostring(ws.web.id), size = "monitor_w monitor_h" })
 hl.window_rule({ match = { class = browserClasses }, opacity = "0.9 override" })
 
 -- Ghostty default floating size.
