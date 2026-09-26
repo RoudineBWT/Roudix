@@ -1,6 +1,10 @@
 -- Noctalia integration for Roudix Hyprland.
 local ipc = "noctalia msg "
 
+hl.bind(
+    "SUPER + SHIFT + Escape",
+    hl.dsp.show_hotkey_overlay()
+)
 hl.bind("SUPER + D", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind("SUPER + SHIFT + Q", hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
 hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd(ipc .. "screen-lock"))
