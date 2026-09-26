@@ -160,6 +160,31 @@
     vim
     htop
     networkmanagerapplet
+
+    # A plain applications-menu entry, in addition to the autostart one
+    # below — /etc/xdg/autostart is only ever read for session autostart,
+    # never scanned by GNOME's app grid (which reads XDG_DATA_DIRS/applications,
+    # i.e. /run/current-system/sw/share/applications here). Without this,
+    # closing the installer by accident leaves no way to relaunch it short
+    # of a terminal.
+    (pkgs.writeTextFile {
+      name = "roudix-installer-desktop-item";
+      destination = "/share/applications/roudix-installer.desktop";
+      text = ''
+        [Desktop Entry]
+        Type=Application
+        Version=1.0
+        Name=Install Roudix
+        GenericName=System Installer
+        TryExec=roudix-installer
+        Exec=sh -c "sudo --preserve-env=WAYLAND_DISPLAY,XDG_RUNTIME_DIR,DISPLAY roudix-installer"
+        Comment=Roudix Installer
+        Icon=roudix
+        Terminal=false
+        StartupNotify=true
+        Categories=System;
+      '';
+    })
   ];
 
 
@@ -168,33 +193,6 @@
     algorithm = "zstd";
     memoryPercent = 100;
   };
-
-
-  # A plain applications-menu entry, in addition to the autostart one
-  # below — /etc/xdg/autostart is only ever read for session autostart,
-  # never scanned by GNOME's app grid (which reads XDG_DATA_DIRS/applications,
-  # i.e. /run/current-system/sw/share/applications here). Without this,
-  # closing the installer by accident leaves no way to relaunch it short
-  # of a terminal.
-  (pkgs.writeTextFile {
-    name = "roudix-installer-desktop-item";
-    destination = "/share/applications/roudix-installer.desktop";
-    text = ''
-      [Desktop Entry]
-      Type=Application
-      Version=1.0
-      Name=Install Roudix
-      GenericName=System Installer
-      TryExec=roudix-installer
-      Exec=${installerExec}
-      Comment=Roudix Installer
-      Icon=roudix
-      Terminal=false
-      StartupNotify=true
-      Categories=System;
-    '';
-  })
-];
 
   # ── Embed the Roudix flake in the ISO ─────────────────────────────────
   # The rsync workflow copies the main repo into iso/roudix-cfg/ at build time.
