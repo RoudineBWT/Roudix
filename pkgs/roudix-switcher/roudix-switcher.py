@@ -544,6 +544,7 @@ APPS_TOGGLES = [
 SYSTEM_TOGGLES = [
     {"id": "flatpak",        "name": "Flatpak",                          "key": "roudix.flatpak.enable",        "default": False},
     {"id": "virtualization", "name": L("Virtualisation (QEMU/KVM)", "Virtualization (QEMU/KVM)"),        "key": "roudix.virtualization.enable",  "default": False},
+    {"id": "vmCurator",      "name": L("vm-curator (TUI QEMU sans libvirt)", "vm-curator (libvirt-free QEMU TUI)"), "key": "roudix.virtualization.vmCurator.enable", "default": False},
     {"id": "waydroid",       "name": L("Waydroid (apps Android)", "Waydroid (Android apps)"),          "key": "roudix.waydroid.enable",        "default": False},
     {"id": "mesaGit",        "name": L("Mesa-git (pilotes GPU bleeding-edge)", "Mesa-git (bleeding-edge GPU drivers)"), "key": "roudix.mesa.useGit",        "default": False},
     {"id": "autoupdate",     "name": L("Auto-update (git pull + rebuild programmé)", "Auto-update (scheduled git pull + rebuild)"), "key": "roudix.autoupdate.enable", "default": False},

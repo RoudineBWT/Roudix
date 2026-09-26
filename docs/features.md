@@ -203,5 +203,6 @@ Also available, opt-in (off by default): a torrent client via
 - Video player selectable via `roudix.videoPlayer` — `"vlc"` (widest format support, default), `"clapper"` (modern GTK4 player), `"mpv"` (+ yt-dlp, minimal/streaming), `"celluloid"` (GTK front-end for mpv) or `"none"`; applies on every desktop (used to be Clapper hardcoded on bare compositors only, plus a separate DE-agnostic mpv toggle)
 - AppImage support enabled via `appimage.nix`
 - Waydroid (Android container) — optional, `roudix.waydroid.enable = true`
-- QEMU/KVM + Virt-Manager (optional)
+- QEMU/KVM + Virt-Manager (optional, `roudix.virtualization.enable`)
+- vm-curator (optional, `roudix.virtualization.vmCurator.enable`) — Rust TUI alternative to virt-manager, drives QEMU directly (no libvirt), with 3D acceleration and GPU passthrough support; can be enabled independently or alongside the libvirt stack
 - VM guest optimizations module (clipboard sharing, auto-resize, QEMU agent, Spice)

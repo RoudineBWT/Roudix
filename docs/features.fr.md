@@ -205,5 +205,6 @@ pas encore dans nixpkgs) ou `"geary"` (client léger GNOME) ;
 - Lecteur vidéo sélectionnable via `roudix.videoPlayer` — `"vlc"` (support de formats le plus large, défaut), `"clapper"` (lecteur GTK4 moderne), `"mpv"` (+ yt-dlp, minimaliste/streaming), `"celluloid"` (interface GTK pour mpv) ou `"none"` ; s'applique sur tous les bureaux (auparavant Clapper était codé en dur sur les compositeurs bruts uniquement, avec un toggle mpv séparé indépendant du DE)
 - Support AppImage activé via `appimage.nix`
 - Waydroid (conteneur Android) — optionnel, `roudix.waydroid.enable = true`
-- QEMU/KVM + Virt-Manager (optionnel)
+- QEMU/KVM + Virt-Manager (optionnel, `roudix.virtualization.enable`)
+- vm-curator (optionnel, `roudix.virtualization.vmCurator.enable`) — TUI Rust alternative à virt-manager, pilote QEMU directement (sans libvirt), avec accélération 3D et GPU passthrough ; activable indépendamment ou en plus de la stack libvirt
 - Module d'optimisations invité VM (partage du presse-papiers, redimensionnement auto, agent QEMU, Spice)
