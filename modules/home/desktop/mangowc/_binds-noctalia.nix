@@ -2,6 +2,7 @@
 {
   wayland.windowManager.mango.settings = {
     bind = [
+      "SUPER,SHIFT,Escape,show_hotkey_overlay"
       "SUPER+SHIFT,Q,spawn,noctalia msg panel-toggle session"
       "SUPER,D,spawn,noctalia msg panel-toggle launcher"
       "SUPER+ALT,L,spawn,noctalia msg screen-lock"
