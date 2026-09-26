@@ -38,10 +38,10 @@
     shadows = 1;
     layer_shadows = 1;
     shadow_only_floating = 1;
-    shadows_size = 12;
-    shadows_blur = 15;
+    shadows_size = 6;
+    shadows_blur = 24;
     shadows_position_x = 0;
     shadows_position_y = 0;
-    shadowscolor = "0x000000ff";
+    shadowscolor = "0x00000066";
   };
 }
