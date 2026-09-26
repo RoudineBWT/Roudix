@@ -20,6 +20,7 @@ in
     ./_output.nix
     ./_env.nix
     ./_binds-common.nix
+    ./_binds-scratchpad.nix
     ./_rules-common.nix
     ./_rules-apps.nix
     ./_rules-gaming.nix

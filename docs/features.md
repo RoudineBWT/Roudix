@@ -70,6 +70,9 @@
 - Unfocused window opacity (0.85)
 - Hotarea overview (corner mouse gesture)
 - Floating snap + drag tile-to-tile
+- Scratchpad support: a generic pool for any window (move/toggle/restore),
+  plus an opt-in (`roudix.mangowc.scratchpadApps`) named scratchpad per
+  app for Discord/Element/Telegram/Spotify — each with its own toggle key
 
 ## Desktop (Umbriel)
 

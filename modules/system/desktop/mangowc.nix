@@ -10,6 +10,29 @@ in
 {
   imports = [ ./ly.nix ];
 
+  # ── User-facing options ────────────────────────────────────────────────
+  options.roudix.mangowc = {
+    scratchpadApps = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        MangoWC only. When true, Discord/Telegram/Element and Spotify live
+        in named scratchpads (hidden by default, shown/hidden with a
+        shortcut) instead of being tiled to a fixed tag. When false
+        (default), they stay tiled exactly as before — set this in
+        local.nix if you want the scratchpad workflow instead.
+
+        Unlike Umbriel's named scratchpads, MangoWC's
+        `toggle_named_scratchpad` matches a single appid/title at a time,
+        so there is no single shortcut that shows/hides a whole group
+        (e.g. Discord+Telegram together) — each app gets its own key. The
+        generic "misc" scratchpad pool (send/toggle/restore any window,
+        SUPER+SHIFT+Space / SUPER+Space / SUPER+Ctrl+Space) is always
+        available regardless of this option.
+      '';
+    };
+  };
+
   config = lib.mkIf isMango {
     programs.mango = {
           enable = true;

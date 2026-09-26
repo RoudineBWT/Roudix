@@ -24,6 +24,15 @@
   # false — pinned to a fixed output/workspace/position (default)
   roudix.umbriel.scratchpadApps = false;
 
+  # ── MangoWC : scratchpads ───────────────────────────────────────────────
+  # Only used when roudix.desktop.type = "mangowc"
+  # true  — Discord/Element/Telegram/Spotify live in named scratchpads
+  #         (each with its own toggle: Mod+Alt+D/E/T/M). The generic
+  #         "misc" pool (Mod+Shift+Space/Mod+Space/Mod+Ctrl+Space) is
+  #         always available regardless of this option.
+  # false — tiled to a fixed tag (default)
+  roudix.mangowc.scratchpadApps = false;
+
   # ── Browser ───────────────────────────────────────────────────────────────
   roudix.browsers = ["helium" "brave-origin-beta" ];               # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable           = true;        # install Zen Browser (from zen-browser flake input)

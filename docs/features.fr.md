@@ -70,6 +70,10 @@
 - Opacité des fenêtres non focalisées (0.85)
 - Vue d'ensemble Hotarea (geste souris dans le coin)
 - Snap flottant + glisser-déposer tuile-à-tuile
+- Support du scratchpad : un pool générique pour n'importe quelle fenêtre
+  (déplacer/basculer/restaurer), plus un scratchpad nommé par app
+  (Discord/Element/Telegram/Spotify), activable via
+  `roudix.mangowc.scratchpadApps` — chacun avec sa propre touche
 
 ## Bureau (Umbriel)
 
