@@ -156,6 +156,13 @@
     networkmanagerapplet
   ];
 
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 100;
+  };
+
   # ── Embed the Roudix flake in the ISO ─────────────────────────────────
   # The rsync workflow copies the main repo into iso/roudix-cfg/ at build time.
   # roudix-installer copies /iso/iso-cfg/ to /mnt/etc/nixos/ then runs:
