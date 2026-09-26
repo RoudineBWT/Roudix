@@ -116,12 +116,18 @@ def _mark_detected(pairs, detected_value):
     ]
 
 
-def _shells(desktop_hint_hypr=True):
+def _shells(desktop=None):
+    # Umbriel only has Noctalia support so far; Caelestia's setup is
+    # Hyprland-specific (its Quickshell config assumes Hyprland's IPC), so it
+    # only makes sense to offer it there. Niri/MangoWC get Noctalia + DMS.
+    if desktop == "umbriel":
+        return [("noctalia", L("Noctalia — shell par défaut", "Noctalia — default shell"))]
+
     base = [
         ("noctalia", L("Noctalia — shell par défaut", "Noctalia — default shell")),
         ("dms", "DankMaterialShell — Material 3"),
     ]
-    if desktop_hint_hypr:
+    if desktop == "hyprland":
         base = base + [
             (
                 "caelestia",
@@ -272,6 +278,10 @@ def _mail_client():
     return [
         ("none", L("Aucun", "None")),
         ("thunderbird", L("Thunderbird (complet)", "Thunderbird (full-featured)")),
+        (
+            "betterbird",
+            L("Betterbird (fork de Thunderbird)", "Betterbird (Thunderbird fork)"),
+        ),
         ("geary", L("Geary (léger, GNOME)", "Geary (lightweight, GNOME)")),
     ]
 
@@ -674,7 +684,7 @@ class OptionsPage(Adw.NavigationPage):
 
         self.shell_row = self._combo(
             L("Shell graphique (bar/UI)", "Graphical shell (bar/UI)"),
-            _shells(),
+            _shells(state.desktop),
             state.desktop_shell,
         )
         desktop_group.add(self.shell_row)
@@ -1202,6 +1212,23 @@ class OptionsPage(Adw.NavigationPage):
     def _sync_shell_row(self):
         desktop = self._selected_value(self.desktop_row)
         self.shell_row.set_visible(desktop in ("niri", "hyprland", "mangowc", "umbriel"))
+
+        pairs = _shells(desktop)
+        values = [v for v, _ in pairs]
+        labels = [l for _, l in pairs]
+        # Keep whatever the user already had selected if it's still a valid
+        # choice for this compositor (e.g. switching mangowc → niri keeps
+        # "dms"); otherwise fall back to noctalia rather than leaving a
+        # now-invalid selection (e.g. "caelestia" surviving a switch away
+        # from hyprland, or anything but noctalia surviving a switch to
+        # umbriel).
+        try:
+            current = self._selected_value(self.shell_row)
+        except (KeyError, IndexError):
+            current = self.state.desktop_shell
+        self.shell_row.set_model(Gtk.StringList.new(labels))
+        self.shell_row.set_selected(values.index(current) if current in values else 0)
+        self._rows[id(self.shell_row)] = values
 
     def _sync_desktop_integration_row(self):
         # GNOME/KDE manage their own keyring/portal stack — this option
