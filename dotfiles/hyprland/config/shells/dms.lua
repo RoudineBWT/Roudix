@@ -1,6 +1,11 @@
 -- DankMaterialShell integration for Roudix Hyprland.
 local dms = "dms "
 
+hl.bind(
+    "SUPER + SHIFT + Escape",
+    hl.dsp.exec_cmd("dms ipc call keybinds toggle hyprland"),
+    { description = "Keybind Cheatsheet" }
+)
 hl.bind("SUPER + D", hl.dsp.exec_cmd(dms .. "ipc call spotlight toggle"))
 hl.bind("SUPER + SHIFT + Q", hl.dsp.exec_cmd(dms .. "ipc call powermenu toggle"))
 hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd(dms .. "ipc call lock lock"))
