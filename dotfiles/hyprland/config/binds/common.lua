@@ -114,3 +114,26 @@ hl.bind(mainMod .. " + I", hl.dsp.layout("inhibit_scroll"), { description = "Tog
 hl.bind("CONTROL + ALT + Delete", hl.dsp.exec_cmd("hyprctl dispatch exit"), { description = "Exit Hyprland" })
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("hyprctl dispatch dpms off"), { description = "Turn monitors off" })
 hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("hyprctl kill"), { description = "Kill active window" })
+
+local gameModeOn = false
+
+local function toggleGameMode()
+    gameModeOn = not gameModeOn
+
+    hl.config({
+        animations = { enabled = not gameModeOn },
+        decoration = {
+            blur     = { enabled = not gameModeOn },
+            shadow   = { enabled = not gameModeOn },
+            rounding = gameModeOn and 0 or 10,
+        },
+        general = {
+            gaps_in  = gameModeOn and 0 or 3,
+            gaps_out = gameModeOn and 0 or 9,
+        },
+    })
+
+    hl.exec_cmd("notify-send 'Roudix' '" .. (gameModeOn and "Mode jeu activé" or "Mode jeu désactivé") .. "'")
+end
+
+hl.bind(mainMod .. " + SHIFT + G", toggleGameMode)
