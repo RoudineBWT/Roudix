@@ -1,20 +1,25 @@
 -- Workspace rules wiki https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
--- Parité complète avec dotfiles/niri-noc-v5/cfg/rules.kdl
--- Les noms de workspaces SONT les glyphes Nerd Font (comme en Niri) : pas de mapping
--- icône séparé côté Noctalia, l'icône est directement le "name" lu par le widget workspaces.
--- Glyphes écrits en \u{XXXX} (échappement Lua natif) plutôt qu'en brut : certains
--- codepoints de la zone privée Unicode (U+E000-U+F8FF) étaient corrompus/supprimés
--- en UTF-8 littéral selon l'éditeur/pipeline utilisé pour écrire le fichier.
--- Adapte "monitor" aux noms confirmés par `hyprctl monitors`
+-- Parity with niri/_output.nix (same Nerd Font glyphs, same role).
+--
+-- Targeting by numeric ID (stable), NOT by name:<glyph> (ID is unstable on the
+-- Hyprland side: hyprwm/Hyprland#665 / #14520 — see config/ws.lua). The icon
+-- becomes a cosmetic `default_name` on a `persistent` workspace_rule,
+-- exactly following Noctalia's official recommendation:
+-- https://docs.noctalia.dev/noctalia/compositor-settings/hyprland/#persistent-workspaces
+--
+-- `persistent = true` keeps the workspace visible in the Noctalia bar even
+-- when empty (otherwise, only workspaces containing a window appear).
+-- Single source of truth: config/ws.lua (shared with binds/common.lua and
+-- rules/apps.lua, rules/gaming.lua) — adding/removing a workspace there
+-- is sufficient; this file updates automatically.
+local ws = require("config.ws")
 
--- Moniteur principal (équivalent "Lenovo Group Limited Legion 27Q-10 UNA07260" en Niri)
-hl.workspace_rule({ workspace = "name:\u{f0239}", monitor = "DP-1", default = true }) -- web (Firefox/Zen/Brave)
-hl.workspace_rule({ workspace = "name:\u{e8da}",   monitor = "DP-1" })                 -- code (Zed)
-hl.workspace_rule({ workspace = "name:\u{e795}",   monitor = "DP-1" })                 -- term (kitty/Ptyxis)
-hl.workspace_rule({ workspace = "name:\u{f0297}",  monitor = "DP-1" })                 -- gaming (Steam)
-hl.workspace_rule({ workspace = "name:\u{f024b}",  monitor = "DP-1" })                 -- files (Nautilus)
-
--- Moniteur secondaire (équivalent "HKC OVERSEAS LIMITED 24E4 0000000000001" en Niri)
-hl.workspace_rule({ workspace = "name:\u{f1ff}",  monitor = "DP-3" })                 -- comm (Discord/Element)
-hl.workspace_rule({ workspace = "name:\u{f075a}", monitor = "DP-3" })                 -- music (Spotify/easyeffects)
-hl.workspace_rule({ workspace = "name:\u{e743}",  monitor = "DP-3" })                 -- chat (Telegram)
+for i, w in ipairs(ws.__order) do
+    hl.workspace_rule({
+        workspace = tostring(i),
+        monitor = w.monitor,
+        persistent = true,
+        default_name = w.glyph,
+        default = (i == 1), -- premier workspace déclaré = défaut (web, DP-1)
+    })
+end
