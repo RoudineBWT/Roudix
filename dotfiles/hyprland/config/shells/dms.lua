@@ -3,7 +3,7 @@ local dms = "dms "
 
 hl.bind(
     "SUPER + SHIFT + Escape",
-    hl.dsp.exec_cmd("dms ipc call keybinds toggle hyprland"),
+    hl.dsp.exec_cmd(dms .. "ipc call keybinds toggle hyprland"),
     { description = "Keybind Cheatsheet" }
 )
 hl.bind("SUPER + D", hl.dsp.exec_cmd(dms .. "ipc call spotlight toggle"))
