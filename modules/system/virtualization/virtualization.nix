@@ -33,7 +33,7 @@
         systemd.tmpfiles.rules = [
           "d /usr/share/OVMF 0755 root root -"
           "L+ /usr/share/OVMF/OVMF_CODE.fd - - - - ${pkgs.OVMF.fd}/FV/OVMF_CODE.fd"
-          "L+ /usr/share/OVMF/OVMF_VARS.fd - - - - ${pkgs.OVMF.fd}/FV/OVMF_VARS.fd"
+          "C+ /usr/share/OVMF/OVMF_VARS.fd 0644 root root - ${pkgs.OVMF.fd}/FV/OVMF_VARS.fd"
         ];
 
       }
