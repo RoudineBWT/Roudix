@@ -19,7 +19,15 @@
         src = ./.;
         format = "pyproject";
 
-        nativeBuildInputs = [ pkgs.wrapGAppsHook4 pkgs.gobject-introspection ];
+        # hicolor-icon-theme's setup hook is what actually runs
+        # gtk-update-icon-cache over $out/share/icons/hicolor at build time —
+        # without it the icon we copy in postInstall below is on disk but
+        # never picked up by icon-name lookups.
+        nativeBuildInputs = [
+          pkgs.wrapGAppsHook4
+          pkgs.gobject-introspection
+          pkgs.hicolor-icon-theme
+        ];
         buildInputs = [ pkgs.gtk4 pkgs.libadwaita ];
         propagatedBuildInputs = [
           pkgs.python3Packages.pygobject3
@@ -38,6 +46,16 @@
             pkgs.nixos-install-tools
           ]}"
         ];
+
+        # Ship the app's own hicolor icon (data/icons/hicolor/...) alongside
+        # the Python package — buildPythonApplication only installs the
+        # importable package by default, so the icon theme tree needs an
+        # explicit copy into $out/share for icon lookups (Icon=roudix-installer
+        # in the .desktop entries) to resolve.
+        postInstall = ''
+          mkdir -p $out/share/icons
+          cp -r data/icons/hicolor $out/share/icons/
+        '';
 
         meta.mainProgram = "roudix-installer";
       };

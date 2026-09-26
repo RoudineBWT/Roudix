@@ -179,7 +179,7 @@
         TryExec=roudix-installer
         Exec=sh -c "sudo --preserve-env=WAYLAND_DISPLAY,XDG_RUNTIME_DIR,DISPLAY roudix-installer"
         Comment=Roudix Installer
-        Icon=roudix
+        Icon=roudix-installer
         Terminal=false
         StartupNotify=true
         Categories=System;
@@ -221,7 +221,7 @@
     TryExec=roudix-installer
     Exec=sh -c "sudo --preserve-env=WAYLAND_DISPLAY,XDG_RUNTIME_DIR,DISPLAY roudix-installer"
     Comment=Roudix Installer
-    Icon=roudix
+    Icon=roudix-installer
     Terminal=false
     StartupNotify=true
     Categories=System;
