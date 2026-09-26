@@ -105,6 +105,7 @@
   roudix.desktopIntegration = "gnome"; # "gnome" or "kde"
   roudix.flatpak.enable       = true;        # enable Flatpak support
   roudix.virtualization.enable = true;       # enable libvirt / virt-manager
+  roudix.virtualization.vmCurator.enable = false; # enable vm-curator / qemu-kvm -- alternative to virt-manager
   roudix.vmGuest.enable       = true;        # enable only inside a VM
   roudix.autoupdate.enable    = false;         # automatic NixOS updates
   roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
