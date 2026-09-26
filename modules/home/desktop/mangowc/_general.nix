@@ -7,13 +7,13 @@
     repeat_rate = 25;
     repeat_delay = 600;
 
-    accel_profile = 0;
-    accel_speed = 0.0;
+    mouse_accel_profile = 0;
+    mouse_accel_speed = 0.0;
     tap_to_click = 1;
     tap_and_drag = 1;
     drag_lock = 1;
     trackpad_natural_scrolling = 1;
-    trackpad_disable_while_typing = 1;
+    disable_while_typing = 1;
 
     xwayland_persistence = 1;
     syncobj_enable = 1;

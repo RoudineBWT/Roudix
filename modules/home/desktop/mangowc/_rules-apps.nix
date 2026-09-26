@@ -2,9 +2,9 @@
 {
   wayland.windowManager.mango.settings.windowrule = [
     # Communication / utility apps
-    "tags:4,isfloating:1,width:1316,height:1011,appid:^discord$"
-    "tags:4,isfloating:1,width:1316,height:1011,appid:^Element$"
-    "tags:4,isfloating:1,width:555,height:1011,appid:^(org\\.telegram\\.desktop|TelegramDesktop)$"
+    "tags:4,appid:^discord$"
+    "tags:4,appid:^Element$"
+    "tags:4,appid:^(org\\.telegram\\.desktop|TelegramDesktop)$"
 
     # Terminals / editors
     "tags:3,isfloating:1,width:1505,height:755,appid:^com\\.mitchellh\\.ghostty$"

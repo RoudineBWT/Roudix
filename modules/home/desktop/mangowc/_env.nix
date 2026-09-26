@@ -13,7 +13,6 @@ in
     "QT_AUTO_SCREEN_SCALE_FACTOR,1"
     "EGL_PLATFORM,wayland"
     "CLUTTER_BACKEND,wayland"
-    "TERM,${terminalCmd}"
     "TERMINAL,${terminalCmd}"
     "_JAVA_AWT_WM_NONREPARENTING,1"
     "ELECTRON_OZONE_PLATFORM_HINT,auto"
