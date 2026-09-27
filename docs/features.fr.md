@@ -37,7 +37,7 @@
 - Chaque app gaming activable/désactivable individuellement via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (toutes `true` par défaut)
 - Client Steam modifié [Millennium](https://github.com/SteamClientHomebrew/Millennium) en option (thèmes + plugins) — désactivé par défaut, à activer avec `roudix.gaming.steam.millennium.enable = true` (ou depuis l'installeur). Mod non officiel ; le correctif de sandbox `game-performance` et les outils de compatibilité Proton continuent de fonctionner, et repasser à `false` rétablit Steam standard
 - Mode Gaming façon console en option : `roudix.gaming.gamescopeSession.enable` ajoute une session « Steam (Gaming Mode) » à l'écran de connexion (Steam Big Picture dans gamescope, VRR/HDR/MangoApp, fréquence de l'écran détectée au lancement). « Passer au bureau » dans Steam ouvre ton bureau, et l'app « Return to Gaming Mode » revient au jeu sans repasser par l'écran de connexion. Basé sur GLF-OS ; niri, umbriel, GNOME, KDE, Hyprland et MangoWC
-- Decky Loader (plugins Steam) en option via `roudix.gaming.gamescopeSession.decky.enable`, importé de Jovian-NixOS dans `pkgs/decky-loader` ; aucun cache binaire, donc compilé localement au premier rebuild
+- Decky Loader (plugins Steam) en option via `roudix.gaming.gamescopeSession.decky.enable`, récupéré via l'input flake Jovian-NixOS (`nix flake update jovian` pour le mettre à jour, aucun sha à maintenir à la main) ; aucun cache binaire, donc compilé localement au premier rebuild
 
 ## Bureau (Niri)
 

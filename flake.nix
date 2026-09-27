@@ -90,6 +90,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Only pkgs/decky-loader is used from this (see gamescope-session.nix),
+    # never its overlay/modules, which redefine gamescope/steam/mesa. Safe to
+    # follow our nixpkgs: Jovian's own flake pins nixos-unstable too, same
+    # channel as ours, so this is not the bun-style fixed-output-derivation
+    # mismatch millennium has above. `nix flake update jovian` bumps it, no
+    # sha to hand-maintain like GLF-OS' fetchTarball does.
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     helium = {
       url = "github:x13-me/helium-nix/rolling";
       inputs.nixpkgs.follows = "nixpkgs";

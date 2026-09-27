@@ -1,21 +1,18 @@
-# Called by Steam when the user picks "Switch to Desktop" in Big Picture.
-# The argument Steam passes (plasma, desktop...) is ignored: Roudix has a
-# single active desktop, chosen at build time (roudix.desktop.type).
+# Appelé par Steam quand on choisit "Passer au bureau" dans Big Picture.
+# L'argument transmis par Steam (plasma, desktop...) est ignoré : Roudix a
+# un seul bureau actif, choisi au build (roudix.desktop.type).
+#
+# Doit rendre la main tout de suite : Steam attend la fin de ce script
+# avant de poursuivre son propre arrêt, donc toute attente ici retarde
+# exactement ce qu'elle est censée attendre. Le vrai travail (fermeture
+# de Steam, filet de sécurité gamescope) part en tâche de fond, détaché
+# de ce script, dans shutdown-watchdog.sh.
 
 runtime_dir="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 state_file="$runtime_dir/steamos-session-select"
 
 printf 'desktop\n' > "$state_file"
 
-# Clean Steam shutdown first: it saves its config and syncs the cloud before
-# giving control back. gamescope exits on its own when its child steam goes.
-steam -shutdown || true
-
-# Safety net if steam ignores -shutdown (frozen client): terminate gamescope
-# ourselves. SIGTERM, never SIGKILL, or the DRM lease isn't released and the
-# desktop that follows starts on a black screen.
-for _ in $(seq 1 10); do
-  pgrep -x steam >/dev/null || exit 0
-  sleep 1
-done
-pkill -TERM -x gamescope || true
+# setsid --fork : le filet de sécurité survit à la fin de ce script (et à
+# celle de Steam et de gamescope) sans le retenir.
+setsid --fork @watchdog@ >/dev/null 2>&1 || true
