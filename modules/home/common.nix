@@ -3,8 +3,6 @@ let
   desktopType = osConfig.roudix.desktop.type;
   shellType = osConfig.roudix.desktop.shell or "noctalia";
   isHyprlandOrNiri = desktopType == "hyprland" || desktopType == "niri";
-
-  brandingWallpaper = "${roudixBranding}/share/backgrounds/roudix/roudix-dark.png";
 in
 {
   home.username = username;

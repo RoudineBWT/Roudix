@@ -309,41 +309,114 @@ class ProgressPage(Adw.NavigationPage):
 
     # ── Configuration ─────────────────────────────────────────────────────
 
+    def _resolve_branch(self, repo_url: str, branch: str) -> str:
+        """
+        Confirms the chosen branch actually exists on the remote before we
+        rely on it, via a plain `git ls-remote` (no clone needed for that).
+        Best-effort: this is a convenience check, not a hard requirement —
+        if it can't run at all (e.g. `git` not up yet, DNS not ready this
+        early), we just proceed with the branch as chosen and let the real
+        clone/checkout below report any actual failure.
+        """
+        GLib.idle_add(self._log, L(f"Vérification de la branche « {branch} »…", f"Checking branch '{branch}'…"))
+        try:
+            proc = subprocess.run(
+                self._priv(["git", "ls-remote", "--exit-code", "--heads", repo_url, branch]),
+                capture_output=True, text=True, stdin=subprocess.DEVNULL,
+            )
+        except Exception:  # noqa: BLE001 — no git / no network yet: skip the check, don't fail on it
+            return branch
+
+        if proc.returncode == 0 and proc.stdout.strip():
+            return branch
+
+        if branch != "main":
+            GLib.idle_add(
+                self._log,
+                L(
+                    f"Branche « {branch} » introuvable sur {repo_url} — retour sur « main ».",
+                    f"Branch '{branch}' not found on {repo_url} — falling back to 'main'.",
+                ),
+            )
+            return "main"
+        # main itself didn't answer (likely no network at all): let the
+        # clone/copy step below surface that failure clearly instead of
+        # guessing further here.
+        return branch
+
+    def _clone_and_checkout(self, repo_url: str, branch: str):
+        """
+        Explicit clone + checkout (rather than a single `git clone --branch`)
+        so the checkout is its own visible, loggable step and failures are
+        unambiguous: a bad clone fails at "git clone", a branch that vanished
+        between the ls-remote check above and now fails at "git checkout"
+        with git's own error in the log.
+        """
+        self._run_cmd(["git", "clone", repo_url, "/mnt/etc/nixos"])
+        self._run_cmd(["git", "-C", "/mnt/etc/nixos", "checkout", branch])
+
+    def _verify_config_layout(self, branch: str):
+        """
+        Best-effort sanity check that the branch we just checked out still
+        has the files config_gen.write_config() below expects at their usual
+        path. `testing`/`dev` can restructure the repo ahead of `main` — this
+        never blocks the install (that's the "only if possible" part), it
+        just puts a clear warning in the log instead of a confusing failure
+        a few steps later.
+        """
+        example = Path("/mnt/etc/nixos/hosts/roudix/local.nix.example")
+        if not example.is_file():
+            GLib.idle_add(
+                self._log,
+                L(
+                    f"Avertissement: hosts/roudix/local.nix.example introuvable sur la branche « {branch} » — "
+                    "la génération de local.nix pourrait échouer.",
+                    f"Warning: hosts/roudix/local.nix.example not found on branch '{branch}' — "
+                    "local.nix generation may fail.",
+                ),
+            )
+
     def _step_config(self):
         GLib.idle_add(self._set_status, L("Copie de la configuration…", "Copying the configuration…"), 0.4)
         self._run_cmd(["mkdir", "-p", "/mnt/etc/nixos"])
 
-        branch = self.state.branch
+        repo_url = "https://github.com/RoudineBWT/Roudix"
+        branch = self._resolve_branch(repo_url, self.state.branch)
+        self.state.branch = branch  # keep local.nix / autoupdate.branch and the summary in sync
+                                     # with whatever branch we actually end up using (fallback included)
+
         # /iso-cfg is a snapshot of `main` taken when the ISO was built, so it
         # only matches the default choice. Any other branch is cloned from
         # GitHub (needs network in the live session).
         if Path("/iso-cfg").is_dir() and branch == "main":
             self._run_cmd(["cp", "-r", "/iso-cfg/.", "/mnt/etc/nixos/"])
-        elif Path("/iso-cfg").is_dir():
-            GLib.idle_add(
-                self._log,
-                L(
-                    f"Branche « {branch} » choisie — clone depuis GitHub (l'ISO embarque uniquement main).",
-                    f"Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main).",
-                ),
-            )
-            self._run_cmd(["git", "clone", "--branch", branch, "https://github.com/RoudineBWT/Roudix", "/mnt/etc/nixos"])
         else:
-            # /iso-cfg only exists inside an ISO actually built with the
-            # current iso-configuration.nix (isoImage.contents embeds it).
-            # Booted an older ISO, or testing outside one entirely? Fall
-            # back to a plain clone — same source roudix-installer.sh used
-            # before there was an ISO pipeline at all.
-            GLib.idle_add(
-                self._log,
-                L(
-                    "/iso-cfg introuvable (ISO pas (encore) reconstruite avec "
-                    "isoImage.contents, ou test hors ISO) — clone direct depuis GitHub à la place.",
-                    "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, "
-                    "or testing outside an ISO) — cloning straight from GitHub instead.",
-                ),
-            )
-            self._run_cmd(["git", "clone", "--branch", branch, "https://github.com/RoudineBWT/Roudix", "/mnt/etc/nixos"])
+            if Path("/iso-cfg").is_dir():
+                GLib.idle_add(
+                    self._log,
+                    L(
+                        f"Branche « {branch} » choisie — clone depuis GitHub (l'ISO embarque uniquement main).",
+                        f"Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main).",
+                    ),
+                )
+            else:
+                # /iso-cfg only exists inside an ISO actually built with the
+                # current iso-configuration.nix (isoImage.contents embeds it).
+                # Booted an older ISO, or testing outside one entirely? Fall
+                # back to a plain clone — same source roudix-installer.sh used
+                # before there was an ISO pipeline at all.
+                GLib.idle_add(
+                    self._log,
+                    L(
+                        "/iso-cfg introuvable (ISO pas (encore) reconstruite avec "
+                        "isoImage.contents, ou test hors ISO) — clone direct depuis GitHub à la place.",
+                        "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, "
+                        "or testing outside an ISO) — cloning straight from GitHub instead.",
+                    ),
+                )
+            self._clone_and_checkout(repo_url, branch)
+
+        self._verify_config_layout(branch)
 
         GLib.idle_add(self._set_status, L("Détection du matériel…", "Detecting hardware…"), 0.5)
         # Generate into the default location then copy — same as

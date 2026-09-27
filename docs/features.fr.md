@@ -36,7 +36,7 @@
 - Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft, ou Modrinth App en alternative — `roudix.gaming.apps.modrinth.enable`) et Vintage Story (via roudix-caches)
 - Chaque app gaming activable/désactivable individuellement via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (toutes `true` par défaut)
 - Client Steam modifié [Millennium](https://github.com/SteamClientHomebrew/Millennium) en option (thèmes + plugins) — désactivé par défaut, à activer avec `roudix.gaming.steam.millennium.enable = true` (ou depuis l'installeur). Mod non officiel ; le correctif de sandbox `game-performance` et les outils de compatibilité Proton continuent de fonctionner, et repasser à `false` rétablit Steam standard
-- Mode Gaming façon console en option : `roudix.gaming.gamescopeSession.enable` ajoute une session « Steam (Gaming Mode) » à l'écran de connexion (Steam Big Picture dans gamescope, VRR/HDR/MangoApp, fréquence de l'écran détectée au lancement). « Passer au bureau » dans Steam ouvre ton bureau, et l'app « Return to Gaming Mode » revient au jeu sans repasser par l'écran de connexion. Basé sur GLF-OS ; niri, umbriel, GNOME et KDE pour l'instant
+- Mode Gaming façon console en option : `roudix.gaming.gamescopeSession.enable` ajoute une session « Steam (Gaming Mode) » à l'écran de connexion (Steam Big Picture dans gamescope, VRR/HDR/MangoApp, fréquence de l'écran détectée au lancement). « Passer au bureau » dans Steam ouvre ton bureau, et l'app « Return to Gaming Mode » revient au jeu sans repasser par l'écran de connexion. Basé sur GLF-OS ; niri, umbriel, GNOME, KDE, Hyprland et MangoWC
 - Decky Loader (plugins Steam) en option via `roudix.gaming.gamescopeSession.decky.enable`, importé de Jovian-NixOS dans `pkgs/decky-loader` ; aucun cache binaire, donc compilé localement au premier rebuild
 
 ## Bureau (Niri)
@@ -70,6 +70,10 @@
 - Opacité des fenêtres non focalisées (0.85)
 - Vue d'ensemble Hotarea (geste souris dans le coin)
 - Snap flottant + glisser-déposer tuile-à-tuile
+- Support du scratchpad : un pool générique pour n'importe quelle fenêtre
+  (déplacer/basculer/restaurer), plus un scratchpad nommé par app
+  (Discord/Element/Telegram/Spotify), activable via
+  `roudix.mangowc.scratchpadApps` — chacun avec sa propre touche
 
 ## Bureau (Umbriel)
 
@@ -201,5 +205,6 @@ pas encore dans nixpkgs) ou `"geary"` (client léger GNOME) ;
 - Lecteur vidéo sélectionnable via `roudix.videoPlayer` — `"vlc"` (support de formats le plus large, défaut), `"clapper"` (lecteur GTK4 moderne), `"mpv"` (+ yt-dlp, minimaliste/streaming), `"celluloid"` (interface GTK pour mpv) ou `"none"` ; s'applique sur tous les bureaux (auparavant Clapper était codé en dur sur les compositeurs bruts uniquement, avec un toggle mpv séparé indépendant du DE)
 - Support AppImage activé via `appimage.nix`
 - Waydroid (conteneur Android) — optionnel, `roudix.waydroid.enable = true`
-- QEMU/KVM + Virt-Manager (optionnel)
+- QEMU/KVM + Virt-Manager (optionnel, `roudix.virtualization.enable`)
+- vm-curator (optionnel, `roudix.virtualization.vmCurator.enable`) — TUI Rust alternative à virt-manager, pilote QEMU directement (sans libvirt), avec accélération 3D et GPU passthrough ; activable indépendamment ou en plus de la stack libvirt
 - Module d'optimisations invité VM (partage du presse-papiers, redimensionnement auto, agent QEMU, Spice)

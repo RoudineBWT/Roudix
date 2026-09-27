@@ -56,12 +56,14 @@ class WelcomePage(Adw.NavigationPage):
         self.box.append(subtitle)
 
         button_row = Gtk.Box(spacing=12, halign=Gtk.Align.CENTER)
-        fr_btn = Gtk.Button(label="Français", css_classes=["pill"])
-        fr_btn.connect("clicked", lambda *_: self._choose_lang("fr"))
+        # Order matches the subtitle above ("Choose your language / Choisis ta
+        # langue" — English first): English button first, then French.
         en_btn = Gtk.Button(label="English", css_classes=["pill"])
         en_btn.connect("clicked", lambda *_: self._choose_lang("en"))
-        button_row.append(fr_btn)
+        fr_btn = Gtk.Button(label="Français", css_classes=["pill"])
+        fr_btn.connect("clicked", lambda *_: self._choose_lang("fr"))
         button_row.append(en_btn)
+        button_row.append(fr_btn)
         self.box.append(button_row)
 
     def _choose_lang(self, lang: str):

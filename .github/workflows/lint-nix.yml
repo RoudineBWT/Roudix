@@ -28,5 +28,11 @@ jobs:
       - name: statix (anti-patterns / style — report only)
         run: nix run nixpkgs#statix -- check . || true
 
+      # --no-lambda-pattern-names: NixOS/Home-Manager modules are all called
+      # with a large standard arg set ({ config, lib, pkgs, inputs,
+      # username, ... }:), and any given file only uses a few of them — an
+      # unused destructured pattern name is the norm here, not a bug.
+      # Real dead code (an unused `let` binding, an unused plain lambda
+      # arg) is still caught and still fails the build.
       - name: deadnix (unused bindings/imports)
-        run: nix run nixpkgs#deadnix -- --fail .
+        run: nix run nixpkgs#deadnix -- --fail --no-lambda-pattern-names .

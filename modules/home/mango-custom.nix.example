@@ -4,25 +4,34 @@
   # Copy this file to mango-custom.nix (without .example) next to local.nix
   # — auto-imported (see `imports` in local.nix), gitignored like it.
   #
-  # ⚠ Different from niri/umbriel: MangoWC has no mature typed Nix module
-  # (even looking at real multi-compositor configs, nobody uses one in
-  # practice — just raw text generated via xdg.configFile). So there's NO
-  # key-by-key merging possible here: the only override point is the
-  # `user.conf` file, sourced LAST in config.conf (see mangowc.nix) —
-  # whatever you put here wins over everything else, in the order mango
-  # reads the file top to bottom.
+  # MangoWC now ships a proper typed Home Manager module (imported as
+  # `inputs.mango.hmModules.mango` in default.nix): everything is written
+  # through `wayland.windowManager.mango.settings`, a structured Nix
+  # attrset that gets converted to MangoWC's config.conf syntax for you.
+  # Nested attrs are flattened with underscores (e.g. `blur_params.radius`
+  # becomes `blur_params_radius`), and list-valued keys (`bind`,
+  # `windowrule`, `tagrule`, `monitorrule`, `mousebind`, `axisbind`, ...)
+  # declared here are merged with the ones from every other mangowc/*.nix
+  # module — no more raw-text `user.conf` / xdg.configFile hack needed,
+  # and no lib.mkForce required for that.
   #
-  # Since this replaces the whole file, no need for partial lib.mkForce:
-  # put all your personal content in one go.
+  # If you do need to hard-override a scalar key set elsewhere (rather
+  # than just adding to a list), use lib.mkForce on that specific value,
+  # e.g. `borderpx = lib.mkForce 4;`.
 
-  xdg.configFile."mango/user.conf".text = lib.mkForce ''
-    # Your personal binds/rules, in MangoWC format (see the repo's
-    # cfg/*.conf for syntax: bind=MOD,key,action,argument / windowrule=...).
-
-    # Example: remap a bind
-    # bind=SUPER,T,spawn,alacritty
+  wayland.windowManager.mango.settings = {
+    # Example: remap a bind (gets appended to the ones in _binds-common.nix)
+    # bind = [ "SUPER,T,spawn,alacritty" ];
 
     # Example: an extra window rule
-    # windowrule=tags:3,appid:^mpv$
-  '';
+    # windowrule = [ "tags:3,appid:^mpv$" ];
+
+    # Example: override a monitor's resolution/refresh/position (gets
+    # appended to the ones in _output.nix — use the same `name:^...$` so it
+    # actually targets the same output, see `wlr-randr` for real names)
+    # monitorrule = [ "name:^DP-1$,width:1920,height:1080,refresh:60,x:0,y:0,scale:1,vrr:0,rr:0" ];
+
+    # Example: hard-override a scalar set elsewhere (e.g. in _appearance.nix)
+    # borderpx = lib.mkForce 4;
+  };
 }

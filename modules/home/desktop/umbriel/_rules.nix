@@ -151,10 +151,6 @@ in
       default_output = "DP-1";
       default_workspace = 4;
       default_fullscreen = true;
-      # Allows tearing on this window (requires tearing=true on output
-      # DP-1, see _output.nix). Umbriel only enables it when the window
-      # is actually fullscreen.
-      tearing = true;
     }
     {
       match.app_id = "^heroic$";
@@ -173,7 +169,18 @@ in
       default_output = "DP-1";
       default_workspace = 4;
       default_fullscreen = true;
+    }
+    # match.content_type = "game" (new selector, docs.noctalia.dev/umbriel/
+    # window-rules/): catches any window Umbriel/the content-type protocol
+    # identifies as a game, so tearing/VRR no longer need to be repeated
+    # per app_id above (steam_app_*, Minecraft previously each set
+    # `tearing = true` by hand). Output DP-1 still needs tearing=true set
+    # globally in _output.nix for async presentation to be allowed at all;
+    # this just requests it whenever content_type says "game".
+    {
+      match.content_type = "game";
       tearing = true;
+      vrr = "always";
     }
     {
       match.app_id = "^firefox$";

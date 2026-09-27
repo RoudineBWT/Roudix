@@ -1,7 +1,4 @@
 { pkgs, lib, config, roudixBranding, ... }:
-let
-  roudix-branding = pkgs.callPackage ./pkgs/roudix-branding {};
-in
 {
   environment.systemPackages = with pkgs; [
     (lib.hiPrio roudixBranding)

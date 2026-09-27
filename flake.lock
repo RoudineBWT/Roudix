@@ -171,11 +171,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790454334,
-        "narHash": "sha256-k8CP70/esUpJ4cGzQr7bopnUJAahe2yCZwK6eoaLKKM=",
+        "lastModified": 1790488950,
+        "narHash": "sha256-ZzVgXuEaNG/gFbVum2RCB/Wvl2n8LhL5Nxh4NE1D8Po=",
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
-        "rev": "9dc5b2c5af7d18b7231f425fe0d8fa7243233109",
+        "rev": "56234761261d90cb431cc5348fe9f81efb68b633",
         "type": "github"
       },
       "original": {
@@ -313,16 +313,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1790262736,
-        "narHash": "sha256-2mkmw6gwssQTXpDHStOE/xa9iDBOroH8reHGv+B2QRk=",
-        "owner": "amaanq",
-        "repo": "helium-flake",
-        "rev": "1ef59c8e91ee66d0468c32fdeec290391c42a829",
+        "lastModified": 1790195834,
+        "narHash": "sha256-DodYu3rB7COiEhO13LE4pEPxsCmgUN4xFR19IIaFxRc=",
+        "owner": "x13-me",
+        "repo": "helium-nix",
+        "rev": "2693cdeb0f7b80004c6ed764e65a30e155a686b3",
         "type": "github"
       },
       "original": {
-        "owner": "amaanq",
-        "repo": "helium-flake",
+        "owner": "x13-me",
+        "ref": "rolling",
+        "repo": "helium-nix",
         "type": "github"
       }
     },
@@ -631,11 +632,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1790488376,
-        "narHash": "sha256-AhsqPAGWtX1kPkRSXw9nBu9NYrNncmnv9MFWhHHe8qM=",
+        "lastModified": 1790493055,
+        "narHash": "sha256-krm9KmyOdYBbgYI8KFsRTNYRd8r96geEDno+o4e976c=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c6336bc5647e7f97ff950c45d4b773d6c741407e",
+        "rev": "a2ffba684fad985bece6855faba980088caadf21",
         "type": "github"
       },
       "original": {

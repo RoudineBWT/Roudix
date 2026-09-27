@@ -36,6 +36,7 @@ in
       Service = {
         Type = "simple";
         ExecStart = "${roudixWelcome}/bin/roudix-welcome";
+        KillMode = "process";
       };
 
       Install.WantedBy = [ "graphical-session.target" ];
