@@ -41,6 +41,8 @@ class InstallState:
     # ── Hardware ──────────────────────────────────────────────────────────
     gpu: str = "amd"                 # amd | amd-legacy | nvidia | intel
     nvidia_laptop: bool = False
+    laptop: bool = False             # roudix.laptop.enable — TLP, force-disables tuned
+    laptop_thinkpad: bool = False    # roudix.laptop.thinkpad — 40/80% charge thresholds
     undervolt_enable: bool = False   # roudix.undervolt.only-amd.enable — AMD/AMD-legacy only (lact)
     cpu: str = "amd"                 # amd | intel
     kernel: str = "cachyos-latest-v3"        # hardware.myKernel (xddxdd) — used when gpu != "nvidia"

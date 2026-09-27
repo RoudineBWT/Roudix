@@ -585,6 +585,42 @@ class OptionsPage(Adw.NavigationPage):
         self.nvidia_laptop_row.set_active(state.nvidia_laptop)
         hw_group.add(self.nvidia_laptop_row)
 
+        self.laptop_row = Adw.SwitchRow(
+            title=L(
+                "Ordinateur portable (TLP)",
+                "Laptop (TLP)",
+            )
+        )
+        self.laptop_row.set_active(state.laptop)
+        hw_group.add(self.laptop_row)
+
+        # roudix.laptop.enable force-disables tuned (see
+        # modules/system/power/laptop.nix) — surface the same trade-off
+        # here that the gaming module warns about at eval time.
+        self.laptop_gaming_note = Gtk.Label(
+            label=L(
+                "Désactive tuned au profit de TLP : si le jeu est aussi activé, "
+                "game-performance lancera les jeux normalement mais sans le "
+                "profil CPU roudix-gaming.",
+                "Disables tuned in favor of TLP: if gaming is also enabled, "
+                "game-performance will still launch games normally but "
+                "without the roudix-gaming CPU profile.",
+            ),
+            css_classes=["dim-label", "caption"],
+            wrap=True,
+            xalign=0,
+            visible=False,
+        )
+
+        self.thinkpad_row = Adw.SwitchRow(
+            title=L(
+                "ThinkPad (seuils de charge batterie 40/80%)",
+                "ThinkPad (40/80% battery charge thresholds)",
+            )
+        )
+        self.thinkpad_row.set_active(state.laptop_thinkpad)
+        hw_group.add(self.thinkpad_row)
+
         self.undervolt_row = Adw.SwitchRow(
             title=L(
                 "Undervolting GPU AMD (lact, amdgpu.ppfeaturemask)",
@@ -604,6 +640,7 @@ class OptionsPage(Adw.NavigationPage):
         self.kernel_row = self._combo(L("Kernel", "Kernel"), _kernels(), state.kernel)
         hw_group.add(self.kernel_row)
         box.append(hw_group)
+        box.append(self.laptop_gaming_note)
 
         if gpu_detected or cpu_detected:
             hw_note = Gtk.Label(
@@ -971,6 +1008,7 @@ class OptionsPage(Adw.NavigationPage):
         extra_group.add(self.waydroid_row)
         box.append(extra_group)
         self._sync_autoupdate_row()
+        self._sync_laptop_row()
 
         # ── Apps ──
         apps_group = Adw.PreferencesGroup(
@@ -1131,6 +1169,8 @@ class OptionsPage(Adw.NavigationPage):
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_undervolt_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
+        self.laptop_row.connect("notify::active", lambda *_: self._sync_laptop_row())
+        self.gaming_row.connect("notify::active", lambda *_: self._sync_laptop_row())
         self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
         self.rgb_row.connect("notify::selected", lambda *_: self._sync_memory_rows())
@@ -1187,6 +1227,12 @@ class OptionsPage(Adw.NavigationPage):
     def _sync_undervolt_row(self):
         self.undervolt_row.set_visible(
             self._selected_value(self.gpu_row) in ("amd", "amd-legacy")
+        )
+
+    def _sync_laptop_row(self):
+        self.thinkpad_row.set_visible(self.laptop_row.get_active())
+        self.laptop_gaming_note.set_visible(
+            self.laptop_row.get_active() and self.gaming_row.get_active()
         )
 
     def _sync_kernel_row(self):
@@ -1324,6 +1370,8 @@ class OptionsPage(Adw.NavigationPage):
         s.password = password
         s.gpu = self._selected_value(self.gpu_row)
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()
+        s.laptop = self.laptop_row.get_active()
+        s.laptop_thinkpad = self.thinkpad_row.get_active()
         s.undervolt_enable = self.undervolt_row.get_active()
         s.cpu = self._selected_value(self.cpu_row)
         kernel_value = self._selected_value(self.kernel_row)

@@ -548,6 +548,8 @@ SYSTEM_TOGGLES = [
     {"id": "waydroid",       "name": L("Waydroid (apps Android)", "Waydroid (Android apps)"),          "key": "roudix.waydroid.enable",        "default": False},
     {"id": "mesaGit",        "name": L("Mesa-git (pilotes GPU bleeding-edge)", "Mesa-git (bleeding-edge GPU drivers)"), "key": "roudix.mesa.useGit",        "default": False},
     {"id": "autoupdate",     "name": L("Auto-update (git pull + rebuild programmé)", "Auto-update (scheduled git pull + rebuild)"), "key": "roudix.autoupdate.enable", "default": False},
+    {"id": "laptop",         "name": L("Laptop — TLP (désactive tuned)", "Laptop — TLP (disables tuned)"), "key": "roudix.laptop.enable", "default": False},
+    {"id": "laptopThinkpad", "name": L("ThinkPad — seuils de charge 40/80%", "ThinkPad — 40/80% charge thresholds"), "key": "roudix.laptop.thinkpad", "default": False},
     {"id": "undervoltAmd",   "name": L("Undervolt GPU AMD (LACT)", "AMD GPU undervolt (LACT)"),         "key": "roudix.undervolt.only-amd.enable", "default": False},
     # "file": roudix.fastfetch.useNix is a Home Manager option (defined in
     # modules/home/shell/fastfetch.nix), not a system option — so it must be
