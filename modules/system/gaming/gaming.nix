@@ -8,9 +8,19 @@ let
     TUNED_ADM=${pkgs.tuned}/bin/tuned-adm
     GAME_PROFILE=roudix-gaming
     FALLBACK_PROFILE=balanced
+    LAPTOP_MODE=${if config.roudix.laptop.enable then "1" else "0"}
 
     if ! command -v "$TUNED_ADM" &>/dev/null; then
         echo "Error: tuned-adm not found" >&2
+        exec "$@"
+    fi
+
+    # tuned is force-disabled whenever roudix.laptop.enable is true (TLP
+    # takes over, see modules/system/power/laptop.nix) — the tuned-adm
+    # binary is still in the closure but the daemon isn't running, so
+    # querying it would just D-Bus-timeout. Skip straight to launching the
+    # game instead of waiting on a check we already know will fail.
+    if [ "$LAPTOP_MODE" = "1" ]; then
         exec "$@"
     fi
 
@@ -133,6 +143,9 @@ in
   };
 
   config = lib.mkIf config.roudix.gaming.enable {
+
+    warnings = lib.optional config.roudix.laptop.enable
+      "roudix.gaming.enable and roudix.laptop.enable are both true: tuned is force-disabled on laptops in favor of TLP, so game-performance will launch games directly without the roudix-gaming CPU profile (no crash, no error — the profile switch is just a no-op). Set roudix.gaming.enable = false on non-gaming laptops to install Lutris/Heroic/etc. as well.";
 
     nixpkgs.overlays = [
       inputs.nix-gaming-edge.overlays.default

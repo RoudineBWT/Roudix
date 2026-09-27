@@ -50,6 +50,16 @@
   hardware.myGpu    = "amd";                  # "amd", "nvidia" or "intel"
   hardware.nvidiaLaptop = false;              # enable this only for Laptops with nvidia Dgpu
   hardware.myCpu    = "intel";               # "intel" or "amd"
+
+  # ── Laptop power (TLP) ────────────────────────────────────────────────────
+  # Force-disables tuned (see modules/system/power/laptop.nix) — if
+  # roudix.gaming.enable is also true, game-performance becomes a no-op
+  # instead of erroring; set roudix.gaming.enable = false on non-gaming
+  # laptops instead.
+  roudix.laptop.enable   = false;             # true on any laptop
+  roudix.laptop.thinkpad = false;             # true on ThinkPads — enables charge thresholds below
+  roudix.laptop.batteryChargeThresholds.start = 40; # %
+  roudix.laptop.batteryChargeThresholds.stop  = 80; # %
   hardware.myKernel = "cachyos-latest-v3"; # see README for all variants — used when hardware.myGpu != "nvidia"
   # hardware.myKernelChaotic = "cachyos"; # Chaotic-Nyx variant (cachyos, cachyos-lts, cachyos-server, cachyos-hardened) — used when hardware.myGpu == "nvidia", ships nvidia_cachyos precompiled
   # ↑ Only one of the two should be active (uncommented) at a time — comment
