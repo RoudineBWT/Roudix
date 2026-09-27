@@ -19,7 +19,7 @@
       style = "none"; # the shader below replaces popin/scale
       # "${...}" forces path → string coercion: Nix copies the .glsl into
       # the store and umbriel gets a ready-made absolute path.
-      shader = "${./_shaders/windows-in.glsl}";
+      #shader = "${./_shaders/windows-in.glsl}";
     };
 
     windows_out = {
@@ -27,7 +27,7 @@
       duration_ms = 150;
       curve = "easeout";
       style = "fade"; # ignored while shader is set, kept as a fallback
-      shader = "${./_shaders/windows-out.glsl}";
+      #shader = "${./_shaders/windows-out.glsl}";
     };
 
     windows_move = {
@@ -55,7 +55,7 @@
       enabled = true;
       duration_ms = 200;
       curve = "easeout";
-      shader = "${./_shaders/scratchpad.glsl}"; # slide+fade, see _shaders/scratchpad.glsl
+      #shader = "${./_shaders/scratchpad.glsl}"; # slide+fade, see _shaders/scratchpad.glsl
       dim = 0.5;
       blur = true;
       scale = 0.0;        # 0 = keep the window's remembered geometry
