@@ -1,0 +1,2 @@
+{ ... }:
+{ imports = [ ./gaming-home.nix ]; }

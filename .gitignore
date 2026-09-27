@@ -2,11 +2,13 @@ hosts/roudix/local.nix
 hosts/roudix/hardware-configuration.nix
 modules/home/local.nix
 hosts/roudix/username.nix
-modules/system/boot.local.nix
+modules/system/boot/boot.local.nix
 dotfiles/perso/*
 !dotfiles/perso/README.md
 modules/home/niri-custom.nix
 modules/home/mango-custom.nix
 modules/home/umbriel-custom.nix
-modules/home/git.nix
+modules/home/dev/git.nix
+modules/home/dev/ssh.nix
+modules/home/dev/gitwatch.nix
 __pycache__/

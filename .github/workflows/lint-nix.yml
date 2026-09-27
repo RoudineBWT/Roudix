@@ -1,0 +1,32 @@
+name: Lint Nix
+
+on:
+  push:
+    branches: [dev, testing, main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      # Both tools work at the syntax/AST level (no flake evaluation), so
+      # they run fine even though machine-local files (local.nix,
+      # hardware-configuration.nix, ...) aren't present on a CI checkout —
+      # unlike `nix build`, they never need those.
+
+      # Non-blocking: statix's warnings here are overwhelmingly this repo's
+      # deliberate style (repeated `services.x = {...}` blocks grouped by
+      # category with comments, `{ ... }:` on files that use none of their
+      # args, etc.), not bugs — so a warning shouldn't fail the build. It
+      # still shows up in the log for anyone who wants to skim it.
+      - name: statix (anti-patterns / style — report only)
+        run: nix run nixpkgs#statix -- check . || true
+
+      - name: deadnix (unused bindings/imports)
+        run: nix run nixpkgs#deadnix -- --fail .

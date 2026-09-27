@@ -5,7 +5,7 @@ let
 
   # nvidia_cachyos is provided by Chaotic-Nyx, precompiled and matched to
   # the Chaotic kernel selected via hardware.myKernelChaotic (see
-  # modules/system/kernel.nix) => no local module rebuild on every kernel
+  # modules/system/boot/kernel.nix) => no local module rebuild on every kernel
   # bump. Variants outside the Chaotic-Nyx cache: no precompiled
   # nvidia_cachyos module for these nixpkgs kernels (linux-zen, default
   # LTS, latest mainline).

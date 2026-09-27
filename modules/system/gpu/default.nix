@@ -6,6 +6,7 @@
     ./nvidia.nix
     ./intel.nix
     ./vm.nix
+    ./mesa-git.nix
   ];
 
   options = {

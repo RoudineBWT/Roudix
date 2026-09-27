@@ -35,6 +35,9 @@
 - `protonup-qt` on KDE, `protonplus` on other DEs
 - Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft, or Modrinth App as an alternative — `roudix.gaming.apps.modrinth.enable`) and Vintage Story (via roudix-caches)
 - Each gaming app individually toggleable via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (all `true` by default)
+- Optional [Millennium](https://github.com/SteamClientHomebrew/Millennium) modded Steam client (themes + plugins) — off by default, enable with `roudix.gaming.steam.millennium.enable = true` (or from the installer). Unofficial mod; the `game-performance` sandbox tweak and the Proton compat tools keep working, and setting it back to `false` restores stock Steam
+- Optional console-like Gaming Mode: `roudix.gaming.gamescopeSession.enable` adds a "Steam (Gaming Mode)" session on the login screen (Steam Big Picture in gamescope, VRR/HDR/MangoApp, refresh rate detected at launch). "Switch to Desktop" in Steam opens your desktop, and the "Return to Gaming Mode" app goes back without passing through the login screen. Based on GLF-OS; supports niri, umbriel, GNOME and KDE for now
+- Optional Decky Loader (Steam plugins) via `roudix.gaming.gamescopeSession.decky.enable`, vendored from Jovian-NixOS in `pkgs/decky-loader`; no binary cache, so it is compiled locally on the first rebuild
 
 ## Desktop (Niri)
 
@@ -168,7 +171,7 @@ Also available, opt-in (off by default): a torrent client via
 ## Browser
 
 - Configurable browser list via `roudix.browsers` option
-- Supports `brave`, `helium` (via amaanq/helium-flake, includes the DRM patch — Widevine playback is wired up automatically via `modules/home/helium-widevine.nix` when `helium` is selected), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, or `[]` for none
+- Supports `brave`, `helium` (via amaanq/helium-flake, includes the DRM patch — Widevine playback is wired up automatically via `modules/home/apps/browser/helium-widevine.nix` when `helium` is selected), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, or `[]` for none
 - Zen Browser available separately via `roudix.zen.enable = true` (disabled by default); channel selectable via `roudix.zen.variant` — `"twilight"` (default) or `"beta"`
 
 ## Other

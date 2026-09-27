@@ -60,6 +60,18 @@
   # roudix.gaming.apps.modrinth.enable      = true;  # alternative to Prism Launcher, off by default
   # roudix.gaming.apps.vintagestory.enable = false;
   # roudix.gaming.apps.mangohud.enable     = false;
+  # Steam client: false = stock Steam (default). true = Millennium, a modded
+  # Steam client with theme/plugin support (github:SteamClientHomebrew/Millennium).
+  # Only applies if roudix.gaming.enable = true.
+  # roudix.gaming.steam.millennium.enable = false;
+  # Console-like "Steam (Gaming Mode)" session, picked on the login screen:
+  # Steam Big Picture in gamescope, "Switch to Desktop" goes to your desktop
+  # and the "Return to Gaming Mode" app comes back. niri, umbriel, gnome, kde.
+  # roudix.gaming.gamescopeSession.enable  = false;
+  # roudix.gaming.gamescopeSession.hdr.enable = false; # drop gamescope's HDR flags (no HDR display / games misbehaving)
+  # roudix.gaming.gamescopeSession.extraArgs = [ "--prefer-output" "DP-1" ]; # extra gamescope args
+  # Decky Loader (Steam plugins). No binary cache: compiled on first rebuild.
+  # roudix.gaming.gamescopeSession.decky.enable = false;
   roudix.undervolt.only-amd.enable        = true;         # enable undervolting just for amd gpu.
   roudix.contentCreation.enable = true; # disable to skip OBS, video editor, virtual cam, etc.
   # roudix.contentCreation.obs.enable = false;
@@ -87,6 +99,7 @@
   roudix.vmGuest.enable       = true;        # enable only inside a VM
   roudix.autoupdate.enable    = false;         # automatic NixOS updates
   roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
+  roudix.autoupdate.branch    = "main";       # branch to track: "main" (stable), "testing" or "dev"
   roudix.mesa.useGit = false;  # false = mesa stable
   roudix.waydroid.enable = false;
   roudix.matrixClient = "element"; # "element", "cinny" or "none"
@@ -118,7 +131,9 @@
   # roudix.spicetify.marketplace.enable = false;
   # ── Misc ──────────────────────────────────────────────────────────────────
   roudix.hosts.gtaFix.enable  = true;      # fix GTA Online to play with your friends but they need to block battleye telemetry in /etc/hosts and if they are on windows in C:\Windows\System32\drivers\etc\hosts
-  # roudix.autoupdate.branch   = "main";
+  # roudix.iconTheme = "tela";
+  # roudix.podman.enable = true;
+  # roudix.distrobox.enable = true;
 
   # ── Locale / Timezone ─────────────────────────────────────────────────────
   time.timeZone                        = "Europe/Brussels";

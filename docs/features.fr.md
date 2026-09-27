@@ -35,6 +35,9 @@
 - `protonup-qt` sur KDE, `protonplus` sur les autres environnements
 - Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft, ou Modrinth App en alternative — `roudix.gaming.apps.modrinth.enable`) et Vintage Story (via roudix-caches)
 - Chaque app gaming activable/désactivable individuellement via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (toutes `true` par défaut)
+- Client Steam modifié [Millennium](https://github.com/SteamClientHomebrew/Millennium) en option (thèmes + plugins) — désactivé par défaut, à activer avec `roudix.gaming.steam.millennium.enable = true` (ou depuis l'installeur). Mod non officiel ; le correctif de sandbox `game-performance` et les outils de compatibilité Proton continuent de fonctionner, et repasser à `false` rétablit Steam standard
+- Mode Gaming façon console en option : `roudix.gaming.gamescopeSession.enable` ajoute une session « Steam (Gaming Mode) » à l'écran de connexion (Steam Big Picture dans gamescope, VRR/HDR/MangoApp, fréquence de l'écran détectée au lancement). « Passer au bureau » dans Steam ouvre ton bureau, et l'app « Return to Gaming Mode » revient au jeu sans repasser par l'écran de connexion. Basé sur GLF-OS ; niri, umbriel, GNOME et KDE pour l'instant
+- Decky Loader (plugins Steam) en option via `roudix.gaming.gamescopeSession.decky.enable`, importé de Jovian-NixOS dans `pkgs/decky-loader` ; aucun cache binaire, donc compilé localement au premier rebuild
 
 ## Bureau (Niri)
 
@@ -169,7 +172,7 @@ pas encore dans nixpkgs) ou `"geary"` (client léger GNOME) ;
 ## Navigateur
 
 - Liste de navigateurs configurable via l'option `roudix.browsers`
-- Supporte `brave`, `helium` (via amaanq/helium-flake, avec le patch DRM — la lecture Widevine est branchée automatiquement via `modules/home/helium-widevine.nix` quand `helium` est sélectionné), `vivaldi` (avec les codecs ffmpeg), `firefox`, `librewolf`, `chromium`, ou `[]` pour aucun
+- Supporte `brave`, `helium` (via amaanq/helium-flake, avec le patch DRM — la lecture Widevine est branchée automatiquement via `modules/home/apps/browser/helium-widevine.nix` quand `helium` est sélectionné), `vivaldi` (avec les codecs ffmpeg), `firefox`, `librewolf`, `chromium`, ou `[]` pour aucun
 - Zen Browser disponible séparément via `roudix.zen.enable = true` (désactivé par défaut) ; canal sélectionnable via `roudix.zen.variant` — `"twilight"` (défaut) ou `"beta"`
 
 ## Autre

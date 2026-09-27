@@ -153,6 +153,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
         t = _set_bool_option(t, "roudix.gaming.apps.modrinth.enable", state.gaming_apps_modrinth)
         t = _set_bool_option(t, "roudix.gaming.apps.vintagestory.enable", state.gaming_apps_vintagestory)
         t = _set_bool_option(t, "roudix.gaming.apps.mangohud.enable", state.gaming_apps_mangohud)
+        t = _set_bool_option(t, "roudix.gaming.steam.millennium.enable", state.gaming_steam_millennium)
     t = _sub_bool(t, "roudix.mesa.useGit", state.mesa_use_git)
     t = _sub_string(t, "time.timeZone", state.timezone)
     t = _sub_string(t, "environment.sessionVariables.TZ", state.timezone)
@@ -165,6 +166,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_bool(t, "roudix.virtualization.enable", state.virtualization)
     t = _sub_bool(t, "roudix.autoupdate.enable", state.autoupdate)
     t = _sub_string(t, "roudix.autoupdate.interval", state.autoupdate_interval)
+    t = _sub_string(t, "roudix.autoupdate.branch", state.branch)
     t = _sub_string(t, "roudix.boot.bootloader", state.bootloader)
     t = _sub_string(t, "roudix.matrixClient", state.matrix_client)
     t = _sub_string(t, "roudix.discord", state.discord)
@@ -229,7 +231,7 @@ def write_config(state: InstallState, config_root: Path):
     """
     hosts_dir = config_root / "hosts" / "roudix"
     home_dir = config_root / "modules" / "home"
-    boot_local = config_root / "modules" / "system" / "boot.local.nix"
+    boot_local = config_root / "modules" / "system" / "boot" / "boot.local.nix"
 
     (hosts_dir / "username.nix").write_text(f'"{state.username}"\n')
 
@@ -239,6 +241,6 @@ def write_config(state: InstallState, config_root: Path):
 
     shutil.copy(home_dir / "local.nix.example", home_dir / "local.nix")
 
-    boot_example = config_root / "modules" / "system" / "boot.local.nix.example"
+    boot_example = config_root / "modules" / "system" / "boot" / "boot.local.nix.example"
     if boot_example.exists():
         shutil.copy(boot_example, boot_local)

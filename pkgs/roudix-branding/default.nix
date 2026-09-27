@@ -60,6 +60,8 @@ stdenvNoCC.mkDerivation {
     cp $src/wallpapers/roudix_wallpaper_cosmos.svg $out/share/backgrounds/roudix/roudix_wallpaper_cosmos.svg
     cp $src/wallpapers/roudix_wallpaper_dark_logo.svg $out/share/backgrounds/roudix/roudix_wallpaper_dark_logo.svg
     cp $src/wallpapers/roudix_wallpaper_light_logo.svg $out/share/backgrounds/roudix/roudix_wallpaper_light_logo.svg
+    cp $src/wallpapers/roudix_wallpaper_orbit.svg $out/share/backgrounds/roudix/roudix_wallpaper_orbit.svg
+    cp $src/wallpapers/roudix_wallpaper_drift.svg $out/share/backgrounds/roudix/roudix_wallpaper_drift.svg
     cp $src/wallpapers/Roudix_Moonrise.jpg $out/share/backgrounds/roudix/Roudix_Moonrise.jpg
 
     # ── Wallpapers PNG GNOME (libpng/librsvg crash workaround) ────────────────
@@ -100,6 +102,20 @@ stdenvNoCC.mkDerivation {
             -define png:color-type=2 \
             -depth 8 \
             $out/share/backgrounds/roudix/roudix_wallpaper_light_logo.png
+
+    convert $src/wallpapers/roudix_wallpaper_orbit.svg \
+      -resize 3840x2160 \
+      -strip \
+      -define png:color-type=2 \
+      -depth 8 \
+      $out/share/backgrounds/roudix/roudix_wallpaper_orbit.png
+
+    convert $src/wallpapers/roudix_wallpaper_drift.svg \
+      -resize 3840x2160 \
+      -strip \
+      -define png:color-type=2 \
+      -depth 8 \
+      $out/share/backgrounds/roudix/roudix_wallpaper_drift.png
 
     # ── Wallpaper KDE Dark ────────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixDark/contents/images
@@ -226,6 +242,56 @@ JSONEOF
 }
 JSONEOF
 
+    # ── Wallpaper KDE Orbit ───────────────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixOrbit/contents/images
+
+    convert $src/wallpapers/roudix_wallpaper_orbit.svg \
+      -resize 3840x2160 \
+      $out/share/wallpapers/RoudixOrbit/contents/images/3840x2160.png
+
+    convert $src/wallpapers/roudix_wallpaper_orbit.svg \
+      -resize 400x250 \
+      $out/share/wallpapers/RoudixOrbit/contents/screenshot.png
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixOrbit/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixOrbit",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Orbit",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixOrbit"
+}
+JSONEOF
+
+    # ── Wallpaper KDE Drift ───────────────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixDrift/contents/images
+
+    convert $src/wallpapers/roudix_wallpaper_drift.svg \
+      -resize 3840x2160 \
+      $out/share/wallpapers/RoudixDrift/contents/images/3840x2160.png
+
+    convert $src/wallpapers/roudix_wallpaper_drift.svg \
+      -resize 400x250 \
+      $out/share/wallpapers/RoudixDrift/contents/screenshot.png
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixDrift/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixDrift",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Drift",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixDrift"
+}
+JSONEOF
+
     # ── Wallpaper KDE Moonrise ────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixMoonrise/contents/images
 
@@ -288,6 +354,22 @@ JSONEOF
     <options>zoom</options>
     <shade_type>solid</shade_type>
     <pcolor>#eff1f5</pcolor>
+    <scolor>#1e1e2e</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Roudix Orbit</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_orbit.png</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#1e1e2e</pcolor>
+    <scolor>#1e1e2e</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Roudix Drift</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_drift.png</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#1e1e2e</pcolor>
     <scolor>#1e1e2e</scolor>
   </wallpaper>
 </wallpapers>

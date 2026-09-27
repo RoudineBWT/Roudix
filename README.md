@@ -87,20 +87,6 @@ roudix/
 │       ├── local.nix.example        # copy this to local.nix to get started
 │       └── hardware-configuration.nix
 │
-├── home/                            # Home Manager — user-level configuration
-│   ├── common.nix                   # Shared home config (all users & DEs)
-│   ├── local.nix                    # gitignored — your personal home overrides
-│   ├── local.nix.example            # copy this to home/local.nix to get started
-│   ├── niri-custom.nix.example      # optional — copy to niri-custom.nix for niri overrides (auto-imported)
-│   ├── umbriel-custom.nix.example   # optional — copy to umbriel-custom.nix for Umbriel overrides (auto-imported)
-│   ├── mango-custom.nix.example     # optional — copy to mango-custom.nix for MangoWC overrides (auto-imported)
-│   ├── gnome.nix                    # Home config for GNOME (wallpaper, theme, icons, cursor)
-│   ├── gnome-extensions.nix         # GNOME extensions — packages, enabled UUIDs, dconf settings
-│   ├── kde.nix                      # Home config for KDE (wallpaper, theme, icons, cursor)
-│   ├── hyprland.nix                 # Home config for Hyprland (shell-aware)
-│   ├── mangowc.nix                  # Home config for MangoWC (screenshot.sh, packages) — text-based, no typed Nix schema
-│   └── shell-modules.nix            # Shared shell module imports (noctalia, dms, caelestia)
-│
 ├── dotfiles/                        # Raw config files managed by Home Manager
 │   ├── easyeffects/                 # EasyEffects presets
 │   ├── fastfetch/
@@ -122,59 +108,72 @@ roudix/
 └── modules/
     ├── system/                      # NixOS system-level modules
     │   ├── desktop/                 # Desktop environment modules (NixOS-level)
-    │   ├── default.nix              # Desktop options (roudix.desktop.type + roudix.desktop.shell)
-    │   ├── niri.nix                 # Niri + polkit
-    │   ├── hyprland.nix             # Hyprland + UWSM + polkit + xdg-portal
-    │   ├── gnome.nix                # GNOME
-    │   ├── kde.nix                  # KDE Plasma 6 + plasma-login-manager
-    │   ├── mango.nix                # Mangowc + polkit
-    │   └── umbriel.nix              # Umbriel + polkit
-    │
-    ├── autoupdate.nix           # Auto git pull + rebuild on config changes
-    ├── binary-caches.nix        # Nix binary caches (substituters + trusted keys)
-    ├── boot.nix                 # Limine bootloader + multi-OS entries
-    ├── boot.local.nix           # gitignored — your personal boot entries
-    ├── boot.local.nix.example   # copy this to boot.local.nix to get started
-    ├── browser.nix              # Browser selection (roudix.browsers + roudix.zen.enable)
-    ├── common.nix               # Shared system config (all hosts)
-    ├── cpu.nix                  # CPU configuration (Intel/AMD microcode + i2c modules)
-    ├── desktop-integration.nix  # Keyring + xdg-desktop-portal stack for bare compositors (roudix.desktopIntegration)
-    ├── discord.nix              # Discord selection — none / vanilla / vencord (roudix.discord)
-    ├── editor.nix               # Code editor selection — zed / vscode / neovim / none (roudix.editor)
-    ├── environment.nix          # Environment variables
-    ├── flatpak.nix              # Flatpak service + auto update
-    ├── fstrim.nix               # fstrim for SSD/NVMe
-    ├── gaming.nix               # Steam, Gamescope, ananicy-cpp, game-performance (tuned-adm), per-app toggles (roudix.gaming.apps.*)
-    ├── gpu/                     # GPU configuration (AMD/NVIDIA/Intel/VM — split per vendor)
-    ├── hosts-gta.nix            # BattlEye hosts block (GTA fix, optional)
-    ├── kernel.nix               # Kernel variant selection — CachyOS variants + plain nixpkgs (zen/lts/latest/testing)
-    ├── keyboard.nix             # Graphical (Wayland) keyboard layout/variant (roudix.keyboardLayout / roudix.keyboardVariant)
-    ├── matrix.nix               # Matrix client selection (roudix.matrixClient)
-    ├── appimage.nix             # AppImage support
-    ├── openlinkhub.nix          # OpenLinkHub — Corsair iCUE Link driver + RAM RGB (roudix.memory.*)
-    ├── openrgb.nix              # OpenRGB LED control
-    ├── roudix-rgb.nix           # RGB controller routing (openlinkhub / openrgb / none)
-    ├── pipewire.nix             # PipeWire audio + rnnoise noise suppression
-    ├── update.nix               # Flake update configuration
-    ├── version.nix              # Roudix OS branding (os-release, distroName)
-    ├── virtualization.nix       # QEMU/KVM (disabled by default)
-    └── vm-guest.nix             # VM guest optimizations (clipboard, QEMU agent, Spice)
-    └── # filemanager, terminal option to choose your favorite terminal and file manager do it via local.nix in host/roudix/
+    │   │   ├── default.nix          # Desktop options (roudix.desktop.type + roudix.desktop.shell)
+    │   │   └── niri.nix / hyprland.nix / gnome.nix / kde.nix / mangowc.nix / umbriel.nix
+    │   │
+    │   ├── boot/                    # Bootloader, kernel & CPU
+    │   │   ├── boot.nix             # Limine/systemd-boot + multi-OS entries
+    │   │   ├── boot.local.nix       # gitignored — your personal boot entries
+    │   │   ├── boot.local.nix.example
+    │   │   ├── kernel.nix           # Kernel variant selection — CachyOS variants + plain nixpkgs
+    │   │   ├── cpu.nix              # Intel/AMD microcode + i2c modules
+    │   │   └── bootloader/          # Limine wallpaper asset
+    │   │
+    │   ├── apps/                    # App-selection modules (one roudix.* option each)
+    │   │   ├── apps.nix / appimage.nix / flatpak.nix / browser.nix / discord.nix
+    │   │   ├── telegram.nix / matrix.nix / mail-client.nix / music-player.nix
+    │   │   ├── video-player.nix / torrent-client.nix / password-manager.nix
+    │   │   └── filemanager.nix / editor.nix / terminal.nix / spicetify.nix / content-creation.nix
+    │   │
+    │   ├── virtualization/          # QEMU/KVM, containers, VM-guest tweaks, Waydroid
+    │   │   └── virtualization.nix / containers.nix / vm-guest.nix / waydroid.nix
+    │   │
+    │   ├── rgb/                     # RGB controller routing
+    │   │   ├── default.nix          # roudix.rgb option (openlinkhub / openrgb / none)
+    │   │   └── openlinkhub.nix / openrgb.nix
+    │   │
+    │   ├── gaming/                  # Steam, Gamescope, ananicy-cpp, tuned-adm, SCX schedulers
+    │   │   └── gaming.nix / scx.nix
+    │   │
+    │   ├── gpu/                     # GPU configuration (AMD/NVIDIA/Intel/VM + mesa-git)
+    │   │
+    │   ├── autoupdate.nix       # Auto git pull + rebuild on config changes
+    │   ├── binary-caches.nix    # Nix binary caches (substituters + trusted keys)
+    │   ├── common.nix           # Shared system config (all hosts)
+    │   ├── desktop-integration.nix  # Keyring + xdg-desktop-portal stack for bare compositors
+    │   ├── environment.nix      # Environment variables
+    │   ├── fstrim.nix           # fstrim for SSD/NVMe
+    │   ├── hosts-gta.nix        # BattlEye hosts block (GTA fix, optional)
+    │   ├── icon-theme.nix       # System-wide icon theme selection
+    │   ├── keyboard.nix         # Graphical (Wayland) keyboard layout/variant
+    │   ├── pipewire.nix         # PipeWire audio + rnnoise noise suppression
+    │   ├── shell.nix            # Default shell (fish/bash)
+    │   ├── update.nix           # Flake update configuration
+    │   └── version.nix          # Roudix OS branding (os-release, distroName)
+    │   # terminal/file manager: pick your favorite via local.nix in hosts/roudix/
     │
     └── home/                        # Home Manager user-level modules
+        ├── common.nix               # Shared home config (all users & DEs)
         ├── bash.nix                 # Bash shell config + roudix-switch + roudix-shell-switch
         ├── fastfetch.nix            # Fastfetch + fish autostart
         ├── fish.nix                 # Fish shell + aliases + roudix-switch + roudix-shell-switch
         ├── gaming-home.nix          # User gaming packages (proton, mangohud...)
         ├── git.nix                  # Git config
-        ├── mangohud.nix             # MangoHud overlay
-        ├── papirus-icon.nix         # Papirus icon theme
-        ├── papirus-folders.nix      # Papirus folder color configuration
-        ├── tela-icon.nix            # Tela icon theme
+        ├── mangohud.nix             # MangoHud overlay (shared across DEs)
+        ├── papirus-icon.nix         # Papirus icon theme (shared across DEs)
+        ├── papirus-folders.nix      # Papirus folder color configuration (shared)
+        ├── tela-icon.nix            # Tela icon theme (shared across DEs)
         ├── spicetify.nix            # Spotify + Spicetify (Comfy theme)
         ├── ssh.nix                  # SSH + GitHub
-        ├── # mango and hyprland will soon get the same approch to niri and umbriel
-        └── desktop/                 # Per-compositor Home Manager config (Nix-native)
+        ├── shell-modules.nix        # Shared shell module imports (noctalia, dms, caelestia)
+        └── desktop/                 # One folder per DE — Home Manager side, mirrors modules/system/desktop/
+            ├── default.nix          # Imports all six unconditionally (each is internally lib.mkIf-guarded)
+            ├── gnome/
+            │   ├── default.nix      # Wallpaper, theme, icons, cursor
+            │   └── _extensions.nix  # GNOME extensions — packages, enabled UUIDs, dconf settings
+            ├── kde/default.nix      # plasma-manager config (wallpaper, panels, lock screen)
+            ├── hyprland/default.nix # Shell-aware (noctalia/dms/caelestia), plugins, packages
+            ├── mangowc/default.nix  # Generated mango config.conf/apps.conf, packages
             ├── niri/                # programs.niri.settings, split by topic, shell-aware
             │   ├── default.nix      # assembles settings, live-theme include, packages
             │   ├── _general.nix     # environment, autostart, cursor (shell-aware)

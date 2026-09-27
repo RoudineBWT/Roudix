@@ -38,7 +38,7 @@ chmod +x roudix-installer.sh
 ```
 
 The installer handles everything interactively:
-- Clones the repo, generates `hardware-configuration.nix`, creates all local config files
+- Asks which branch to install and follow (`main` = stable, `testing`, `dev`), clones it, generates `hardware-configuration.nix`, creates all local config files
 - **Detects other OSes automatically** via EFI NVRAM (`efibootmgr`) — no manual PARTUUID lookup needed
 - **Detects GPU and CPU automatically** (`lspci` / `/proc/cpuinfo`) — pre-selects and asks for confirmation
 - **Detects if running in a VM** (`systemd-detect-virt`) — pre-enables VM guest mode and warns that GPU/CPU detection may be inaccurate
@@ -90,7 +90,7 @@ Instead, create your local override files (all gitignored):
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
 cp home/local.nix.example home/local.nix
-cp modules/system/boot.local.nix.example modules/system/boot.local.nix
+cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 ```
 
 Edit `hosts/roudix/local.nix` to match your hardware:
@@ -329,14 +329,14 @@ fileSystems."/mnt/gaming" = lib.mkForce {
 
 Limine can boot other operating systems on separate disks. `boot.local.nix` controls the extra entries — it is gitignored and never overwritten by `git pull`.
 
-**Never edit `modules/system/boot.nix` directly** — it gets overwritten on `git pull`.
+**Never edit `modules/system/boot/boot.nix` directly** — it gets overwritten on `git pull`.
 
 #### If you used the automated installer
 
 The installer detected your other OSes automatically from the EFI NVRAM (`efibootmgr`) and wrote `boot.local.nix` for you — no manual action needed. You can review the result:
 
 ```bash
-cat modules/system/boot.local.nix
+cat modules/system/boot/boot.local.nix
 ```
 
 #### If you are installing manually
@@ -349,7 +349,7 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 Look for partitions with `vfat` filesystem type and `EFI system partition` label — those are your ESPs.
 
-**Edit `modules/system/boot.local.nix`** and add your entries:
+**Edit `modules/system/boot/boot.local.nix`** and add your entries:
 
 ```nix
 {

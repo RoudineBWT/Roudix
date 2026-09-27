@@ -227,4 +227,4 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> `lib.mkForce` est nécessaire pour surcharger les valeurs par défaut définies dans `home/kde.nix`.
+> `lib.mkForce` est nécessaire pour surcharger les valeurs par défaut définies dans `home/desktop/kde/default.nix`.
