@@ -18,26 +18,39 @@
 ##                        stay Catppuccin whatever the wallpaper.
 ##
 ## Docs: https://docs.noctalia.dev/umbriel/animation/
-{ lib, osConfig, ... }:
+{ lib, pkgs, osConfig, ... }:
 let
   setup = osConfig.roudix.umbriel.effects or "roudix";
 
-  # ── sakura-roudix: Catppuccin Mocha, Peach accent ─────────────────────────
+  # ── sakura-roudix: Catppuccin Mocha, Peach ────────────────────────────────
   # Presets with `palette = true` read [colors].accent_primary,
   # accent_secondary, warning and error (umbriel_palette_at 0.0/0.25/0.5/0.75).
-  # The Sakura shaders call these blush / fuchsia / gold / rose.
-  # Edit the hex values to recolor.
-  # Not covered: the very dark shadow tone and the white highlights are
-  # constants inside the shaders themselves, and other [colors] entries
-  # (window shadow, overview tint...) still come from Noctalia's include.
+  # What each slot paints in the Sakura shaders:
+  #   accent_primary   ("blush")   petals, cursor, focus glow      → Peach
+  #   accent_secondary ("fuchsia") petal rim, glints               → Maroon
+  #   warning          ("gold")    flower centers                  → Yellow
+  #   error            ("rose")    vine body (branches + leaves)   → Peach
+  # The vine body is built from the LAST slot ("rose"), so if it stays red/pink
+  # the whole border looks pink even when the petals are Peach.
   mocha = {
     accent_primary   = "#fab387"; # Peach
-    accent_secondary = "#cba6f7"; # Mauve
+    accent_secondary = "#eba0ac"; # Maroon
     warning          = "#f9e2af"; # Yellow
-    error            = "#f38ba8"; # Red
+    error            = "#fab387"; # Peach (vine body)
   };
 
+  # The shaders also hard-code a dark plum (vec3(0.035, 0.008, 0.028)) that is
+  # mixed into the "rose" slot for shadows/branches. Swap it for Catppuccin
+  # Crust (#11111b) in a private copy, so "sakura-overdrive" stays untouched.
+  crust = "vec3(0.067, 0.067, 0.106)";
+
   sakuraSrc = ./_effects/sakura-overdrive;
+
+  sakuraRoudixEffects = pkgs.runCommand "umbriel-sakura-roudix-effects" { } ''
+    cp -r ${sakuraSrc} $out
+    chmod -R u+w $out
+    sed -i 's/vec3(0\.035, 0\.008, 0\.028)/${crust}/g' $out/*.glsl
+  '';
 
   # Config shared by both Sakura variants (only the effect.toml differs).
   sakuraCommon = {
@@ -94,7 +107,7 @@ let
     };
 
     sakura-roudix = sakuraCommon // {
-      files = [ "${sakuraSrc}/effect.toml" ];
+      files = [ "${sakuraRoudixEffects}/effect.toml" ];
       colors = mocha;
     };
   };
