@@ -123,7 +123,7 @@ class InstallState:
     telegram: str = "none"           # roudix.telegram — none | telegram | ayugram
     video_player: str = "vlc"        # roudix.videoPlayer — vlc | clapper | mpv | celluloid | none
     torrent_client: str = "none"     # roudix.torrentClient — none | qbittorrent | fragments | deluge
-    music_player: str = "spotify"    # roudix.musicPlayer — spotify | ytmdesktop | none
+    music_player: str = "spotify"    # roudix.musicPlayer — spotify | ytmdesktop | sonora | none
     waydroid_enable: bool = False
 
     # ── Optional common apps (roudix.apps.*, all true by default) ──────────

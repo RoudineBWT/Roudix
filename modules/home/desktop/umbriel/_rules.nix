@@ -250,6 +250,19 @@ in
           then { default_scratchpad = "music"; default_floating_size = { width = 0.8; height = 0.85; }; default_pinned = true; }
           else { default_maximize = true; })
     )
+    (
+    {
+      # Sonora (roudix.musicPlayer = "sonora"): same placement as Spotify.
+      # app_id not verified against a running Sonora yet — unanchored
+      # [Ss]onora on purpose so "sonora" / "Sonora" / "org.*.Sonora" all
+      # match; tighten it once the real app_id is known.
+      match.app_id = "[Ss]onora";
+      default_output = "DP-3";
+      default_workspace = 2;
+    } // (if scratchpadApps
+          then { default_scratchpad = "music"; default_floating_size = { width = 0.8; height = 0.85; }; default_pinned = true; }
+          else { default_maximize = true; })
+    )
     {
       match.app_id = "^(com\\.kde\\.easyeffects|com\\.github\\.wwmm\\.easyeffects)$";
       default_output = "DP-3";

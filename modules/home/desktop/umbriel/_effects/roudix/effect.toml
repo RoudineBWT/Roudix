@@ -1,0 +1,17 @@
+# Roudix — Umbriel effect presets (kind = "animation").
+# Loaded through [include] (see _animation.nix); the `shader` paths below are
+# relative to this file, and each preset is then selected by name with
+# `animation.<event>.effect = "<preset>"`.
+# Same mechanism as Ly-sec/nixos (desktops/umbriel/home/effects/*/effect.toml).
+
+[effects.preset.roudix-window-in]
+kind = "animation"
+shader = "windows-in.glsl"
+
+[effects.preset.roudix-window-out]
+kind = "animation"
+shader = "windows-out.glsl"
+
+[effects.preset.roudix-scratchpad]
+kind = "animation"
+shader = "scratchpad.glsl"

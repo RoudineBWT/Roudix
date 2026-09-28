@@ -3,11 +3,74 @@
 ## niri has no equivalent granular animation system, so these settings
 ## are Umbriel-specific, chosen to be subtle and consistent with each other.
 ##
+## Two selectable effect setups (roudix.umbriel.effects, declared in
+## modules/system/desktop/umbriel.nix):
+##   "roudix"           — subtle default (_effects/roudix/)
+##   "sakura-overdrive" — Ly-sec's full shader suite: animated border, screen
+##                        and cursor effects + per-event animations
+##                        (_effects/sakura-overdrive/, from Ly-sec/nixos).
+##                        Its presets read Umbriel's palette, supplied by the
+##                        Noctalia include, so it only looks right on Noctalia.
+##
 ## Docs: https://docs.noctalia.dev/umbriel/animation/
-{ ... }:
-{
-  programs.umbriel.settings = {
-  animation = {
+{ lib, osConfig, ... }:
+let
+  setup = osConfig.roudix.umbriel.effects or "roudix";
+
+  # Every effect.toml is copied to the store with its directory, so the
+  # relative `shader = "x.glsl"` paths inside it resolve.
+  setups = {
+    roudix = {
+      files = [ "${./_effects/roudix}/effect.toml" ];
+      animation = { };
+    };
+
+    sakura-overdrive = {
+      files = [ "${./_effects/sakura-overdrive}/effect.toml" ];
+      appearance.outer_border_width = 0;
+      effects = {
+        border = "sakura-vine";
+        window = "";
+        screen = "sakura-dream";
+        cursor = "mahou-twinkle";
+        max_fps = 60;
+        in_capture = false;
+      };
+      animation = {
+        beziers = {
+          window_flow = [ 0.20 0.75 0.25 1.0 ];
+        };
+        windows_in = {
+          effect = "sakura-materialize";
+          duration_ms = 620;
+          curve = "linear";
+        };
+        windows_out = {
+          effect = "sakura-materialize";
+          duration_ms = 500;
+          curve = "linear";
+        };
+        windows_move = {
+          duration_ms = 240;
+          curve = "window_flow";
+          effect = "sakura-rush";
+        };
+        workspaces.effect = "sakura-shift";
+        scratchpad.effect = "magic-summon";
+        border = {
+          enabled = true;
+          duration_ms = 210;
+          curve = "linear";
+          effect = "sakura-focus";
+        };
+        windows_drag.physics = true;
+      };
+    };
+  };
+
+  selected = setups.${setup} or (throw "unknown roudix.umbriel.effects: ${setup}");
+
+  baseAnimation = {
     enabled = true;
     duration_ms = 250;
     curve = "easeout";
@@ -16,18 +79,14 @@
       enabled = true;
       duration_ms = 150;
       curve = "easeout";
-      style = "none"; # the shader below replaces popin/scale
-      # "${...}" forces path → string coercion: Nix copies the .glsl into
-      # the store and umbriel gets a ready-made absolute path.
-      #shader = "${./_shaders/windows-in.glsl}";
+      effect = "roudix-window-in"; # _effects/roudix/windows-in.glsl (replaces popin)
     };
 
     windows_out = {
       enabled = true;
       duration_ms = 150;
       curve = "easeout";
-      style = "fade"; # ignored while shader is set, kept as a fallback
-      #shader = "${./_shaders/windows-out.glsl}";
+      effect = "roudix-window-out"; # _effects/roudix/windows-out.glsl (replaces fade)
     };
 
     windows_move = {
@@ -55,7 +114,7 @@
       enabled = true;
       duration_ms = 200;
       curve = "easeout";
-      #shader = "${./_shaders/scratchpad.glsl}"; # slide+fade, see _shaders/scratchpad.glsl
+      effect = "roudix-scratchpad"; # _effects/roudix/scratchpad.glsl (slide+fade)
       dim = 0.5;
       blur = true;
       scale = 0.0;        # 0 = keep the window's remembered geometry
@@ -84,5 +143,13 @@
       curve = "easeout";
     };
   };
-  };
+in
+{
+  programs.umbriel.settings = {
+    # Merges with the include list in _include-noctalia.nix.
+    include.files = selected.files;
+    animation = lib.recursiveUpdate baseAnimation selected.animation;
+  }
+  // lib.optionalAttrs (selected ? appearance) { inherit (selected) appearance; }
+  // lib.optionalAttrs (selected ? effects) { inherit (selected) effects; };
 }

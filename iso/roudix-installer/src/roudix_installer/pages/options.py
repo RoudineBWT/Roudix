@@ -271,6 +271,7 @@ def _music_player():
     return [
         ("spotify", L("Spotify + Spicetify (défaut)", "Spotify + Spicetify (default)")),
         ("ytmdesktop", "YouTube Music Desktop"),
+        ("sonora", "Sonora (Spotify / YouTube Music)"),
         ("none", L("Aucun", "None")),
     ]
 

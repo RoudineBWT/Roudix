@@ -23,6 +23,7 @@
   #         send-back with a shortcut: Mod+Alt+D/M, Mod+Alt+Shift+D/M)
   # false — pinned to a fixed output/workspace/position (default)
   roudix.umbriel.scratchpadApps = false;
+  # roudix.umbriel.effects = "sakura-overdrive"; # "roudix" (default, subtle) or "sakura-overdrive" (Ly-sec's shader suite, needs Noctalia)
 
   # ── MangoWC : scratchpads ───────────────────────────────────────────────
   # Only used when roudix.desktop.type = "mangowc"
@@ -127,7 +128,7 @@
   roudix.telegram = "none"; # "telegram" (official), "ayugram" (fork: ghost mode, anti-recall...) or "none"
   roudix.videoPlayer = "vlc"; # "vlc" (default), "clapper" (GTK4), "mpv" (+ yt-dlp) or "celluloid" — "none" for no video player
   roudix.torrentClient = "none"; # "qbittorrent", "fragments" (minimal GNOME client), "deluge" or "none" (off by default)
-  roudix.musicPlayer = "spotify"; # "spotify" (+ Spicetify, default), "ytmdesktop" or "none"
+  roudix.musicPlayer = "spotify"; # "spotify" (+ Spicetify, default), "ytmdesktop", "sonora" (Spotify/YT Music/... in one native app) or "none"
   roudix.mailClient = "none"; # "thunderbird" (full-featured), "betterbird" (Thunderbird fork), "geary" (lightweight GNOME) or "none"
   roudix.passwordManager = "none"; # "bitwarden" (cloud), "keepassxc" (local vault), "protonpass" (cloud) or "none"
   # Individually disable these "common" apps (all true by default):
@@ -143,6 +144,8 @@
   # roudix.apps.signal.enable = true;
   # roudix.apps.zapzap.enable = true;
   # roudix.apps.fluxer.enable = true;
+  # Sonora (active only if roudix.musicPlayer = "sonora"):
+  # roudix.sonora.provider = "youtube"; # null (Sonora's own default) or a provider id, "youtube" = YouTube Music
   # Spicetify (active only if roudix.musicPlayer = "spotify"):
   # roudix.spicetify.theme = "comfy"; # "colorful" (default) or "comfy"
   # roudix.spicetify.colorScheme = "dracula"; # null (theme default) or a scheme name from its color.ini
