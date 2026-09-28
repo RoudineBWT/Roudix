@@ -20,15 +20,6 @@
   # programs.umbriel.settings.window_rule = [
   #   { match.app_id = "^mpv$"; default_floating = true; }
   # ];
- programs.umbriel.settings.window_rule = lib.mkForce [
-  {
-      match.app_id = "^com\\.mitchellh\\.ghostty$";
-      default_floating = true;
-      default_floating_size_px = { width = 1505; height = 755; };
-      blur = true;
-    }
-];
-
 
   # -- Replace the whole animation section -----------------------------------
   # programs.umbriel.settings.animation = lib.mkForce {
