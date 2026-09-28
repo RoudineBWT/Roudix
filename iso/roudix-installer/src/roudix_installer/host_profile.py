@@ -11,6 +11,7 @@ defaults. Hosts without the marker (hosts/roudix) show every question, as
 before. config_gen's substitutions are already no-ops for keys absent from
 the example, so hiding a row never writes anything for it.
 """
+import os
 import re
 from pathlib import Path
 
@@ -20,7 +21,16 @@ _KEY = re.compile(r"^\s*#?\s*([A-Za-z_][\w.\-]*)\s*=")
 
 
 def _roots():
-    roots = [Path("/iso-cfg"), Path("/mnt/etc/nixos")]
+    # isoImage.contents (iso/iso-configuration.nix, target "/iso-cfg") writes
+    # into the ISO image itself, which the live system mounts on /iso — so the
+    # embedded config is normally at /iso/iso-cfg. /iso-cfg is kept as a
+    # fallback for setups where it is bind-mounted or copied to the root.
+    roots = [Path("/iso/iso-cfg"), Path("/iso-cfg"), Path("/mnt/etc/nixos")]
+    # Testing outside an ISO (nix run from a repo checkout): point this at the
+    # checkout so hosts/<name>/ can be found — see ROUDIX_INSTALLER_DRY_RUN.
+    override = os.environ.get("ROUDIX_CFG_ROOT")
+    if override:
+        roots.insert(0, Path(override))
     try:  # running from a repo checkout: iso/roudix-installer/src/roudix_installer/
         roots.append(Path(__file__).resolve().parents[4])
     except IndexError:
@@ -45,20 +55,34 @@ def available_hosts():
     return sorted(found, key=lambda n: (n != "roudix", n))
 
 
-def listed_options(hostname: str):
-    """Set of option names listed for this host, or None = show everything
-    (no marker, or its local.nix.example can't be found — fail open)."""
+def find_config_root(hostname: str):
+    """Root of the config tree (the one holding hosts/<hostname>/local.nix.example),
+    or None if it can't be found anywhere."""
     if not hostname or "/" in hostname or hostname.startswith("."):
         return None
     for root in _roots():
-        example = root / "hosts" / hostname / "local.nix.example"
-        if not example.is_file():
-            continue
-        lines = example.read_text(encoding="utf-8", errors="replace").splitlines()
-        if not any(l.startswith(MARKER) for l in lines):
-            return None
-        return {m.group(1) for l in lines if FIXED not in l and (m := _KEY.match(l))}
+        if (root / "hosts" / hostname / "local.nix.example").is_file():
+            return root
     return None
+
+
+def find_example(hostname: str):
+    """Path of hosts/<hostname>/local.nix.example in the first place it exists,
+    or None if it can't be found anywhere."""
+    root = find_config_root(hostname)
+    return None if root is None else root / "hosts" / hostname / "local.nix.example"
+
+
+def listed_options(hostname: str):
+    """Set of option names listed for this host, or None = show everything
+    (no marker, or its local.nix.example can't be found — fail open)."""
+    example = find_example(hostname)
+    if example is None:
+        return None
+    lines = example.read_text(encoding="utf-8", errors="replace").splitlines()
+    if not any(l.startswith(MARKER) for l in lines):
+        return None
+    return {m.group(1) for l in lines if FIXED not in l and (m := _KEY.match(l))}
 
 
 def restore_fixed_lines(example_text: str, patched_text: str) -> str:

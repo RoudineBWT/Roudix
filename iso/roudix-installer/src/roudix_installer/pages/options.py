@@ -529,23 +529,6 @@ class OptionsPage(Adw.NavigationPage):
         self.username_row.set_text(state.username)
         user_group.add(self.username_row)
 
-        # One entry per existing hosts/<name>/ directory ("roudix" = the full
-        # desktop profile, "nixie" = the light hands-off laptop profile).
-        # The chosen host also becomes networking.hostName, and decides which
-        # questions the wizard asks (see host_profile.py).
-        host_labels = {
-            "roudix": L("roudix — bureau complet", "roudix — full desktop"),
-            "nixie": L("nixie — portable léger, peu de questions", "nixie — light laptop, few questions"),
-        }
-        host_names = host_profile.available_hosts()
-        if state.hostname not in host_names:
-            host_names.append(state.hostname)
-        self.hostname_row = self._combo(
-            L("Profil / hôte", "Profile / host"),
-            [(n, host_labels.get(n, n)) for n in host_names],
-            state.hostname,
-        )
-        user_group.add(self.hostname_row)
 
         self.password_row = Adw.PasswordEntryRow(title=L("Mot de passe", "Password"))
         user_group.add(self.password_row)
@@ -1314,11 +1297,12 @@ class OptionsPage(Adw.NavigationPage):
         for row in getattr(self, "obs_plugin_rows", {}).values():
             self._make_hideable(row)
             self._host_widgets.append((row, ["roudix.contentCreation.obs.enable"]))
-        self.hostname_row.connect("notify::selected", lambda *_: self._on_hostname_changed())
         self._on_hostname_changed()
 
     def _on_hostname_changed(self):
-        listed = host_profile.listed_options(self._selected_value(self.hostname_row))
+        # The host (hosts/<name>/, also networking.hostName) is chosen on the
+        # Welcome page, before this page is built.
+        listed = host_profile.listed_options(self.state.hostname or "roudix")
         for widget, keys in self._host_widgets:
             hidden = listed is not None and not any(k in listed for k in keys)
             widget._host_hidden = hidden
@@ -1507,7 +1491,6 @@ class OptionsPage(Adw.NavigationPage):
 
         s = self.state
         s.username = self.username_row.get_text()
-        s.hostname = self._selected_value(self.hostname_row)
         s.password = password
         s.gpu = self._selected_value(self.gpu_row)
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()
