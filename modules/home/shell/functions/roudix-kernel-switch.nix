@@ -1,7 +1,7 @@
 { ... }: {
   fish = ''
     set kernel $argv[1]
-    set config_file "$NH_FLAKE/hosts/roudix/local.nix"
+    set config_file "$NH_FLAKE/hosts/"(hostname)"/local.nix"
     set gpu (grep -oP 'hardware\.myGpu\s*=\s*"\K[^"]+' $config_file 2>/dev/null)
 
     if test "$gpu" = "nvidia"
@@ -104,7 +104,7 @@
   bash = ''
     roudix-kernel-switch() {
       local kernel="$1"
-      local config_file="$NH_FLAKE/hosts/roudix/local.nix"
+      local config_file="$NH_FLAKE/hosts/$(hostname)/local.nix"
       local gpu key
       gpu=$(grep -oP 'hardware\.myGpu\s*=\s*"\K[^"]+' "$config_file" 2>/dev/null)
       key="myKernel"

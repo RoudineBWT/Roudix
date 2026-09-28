@@ -1,5 +1,6 @@
 from gi.repository import Adw, Gtk
 
+from roudix_installer import host_profile
 from roudix_installer.hardware_detect import detect_cpu, detect_gpu
 from roudix_installer.i18n import L
 from roudix_installer.ui_helpers import page_with_header
@@ -527,6 +528,13 @@ class OptionsPage(Adw.NavigationPage):
         self.username_row.set_text(state.username)
         user_group.add(self.username_row)
 
+        # Must match an existing hosts/<name>/ directory in the repo
+        # ("roudix" = the full desktop profile, "nixie" = the light
+        # hands-off laptop profile). Also becomes networking.hostName.
+        self.hostname_row = Adw.EntryRow(title=L("Profil / nom d'hôte (dossier hosts/)", "Profile / hostname (hosts/ folder)"))
+        self.hostname_row.set_text(state.hostname)
+        user_group.add(self.hostname_row)
+
         self.password_row = Adw.PasswordEntryRow(title=L("Mot de passe", "Password"))
         user_group.add(self.password_row)
 
@@ -903,7 +911,7 @@ class OptionsPage(Adw.NavigationPage):
         box.append(rgb_group)
         self._sync_memory_rows()
 
-        rgb_note = Gtk.Label(
+        self.rgb_note = rgb_note = Gtk.Label(
             label=L(
                 "SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via "
                 "« i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' ».",
@@ -1186,6 +1194,13 @@ class OptionsPage(Adw.NavigationPage):
             "notify::active", lambda *_: self._sync_autoupdate_row()
         )
 
+        self._init_host_filter({
+            "hw_group": hw_group, "browser_group": browser_group,
+            "desktop_group": desktop_group, "sys_group": sys_group,
+            "rgb_group": rgb_group, "extra_group": extra_group,
+            "apps_group": apps_group, "cc_group": cc_group,
+        })
+
         next_btn = Gtk.Button(
             label=L("Continuer", "Continue"),
             css_classes=["suggested-action", "pill"],
@@ -1196,6 +1211,119 @@ class OptionsPage(Adw.NavigationPage):
         box.append(next_btn)
 
         self.set_child(page_with_header(L("Options", "Options"), scroller))
+
+
+    # ── per-host question filter (see host_profile.py) ───────────────────
+    # row attribute -> nix option(s) it sets. A row is shown when any of
+    # its options is listed in the host's local.nix.example.
+    HOST_ROW_KEYS = {
+        "gpu_row": ["hardware.myGpu"], "nvidia_laptop_row": ["hardware.nvidiaLaptop"],
+        "laptop_row": ["roudix.laptop.enable"], "thinkpad_row": ["roudix.laptop.thinkpad"],
+        "laptop_gaming_note": ["roudix.gaming.enable"],
+        "undervolt_row": ["roudix.undervolt.only-amd.enable"], "cpu_row": ["hardware.myCpu"],
+        "kernel_row": ["hardware.myKernel", "hardware.myKernelChaotic"],
+        "browser_row": ["roudix.browsers"], "brave_variant_row": ["roudix.browsers"],
+        "zen_row": ["roudix.zen.enable"], "zen_variant_row": ["roudix.zen.variant"],
+        "zen_mods_row": ["roudix.zen.mods"], "zen_sine_row": ["roudix.zen.sine.enable"],
+        "zen_sine_mods_row": ["roudix.zen.sine.mods"],
+        "desktop_row": ["roudix.desktop.type"], "shell_row": ["roudix.desktop.shell"],
+        "default_shell_row": ["roudix.shell"], "terminal_row": ["roudix.terminal"],
+        "file_manager_row": ["roudix.fileManager"], "editor_row": ["roudix.editor"],
+        "desktop_integration_row": ["roudix.desktopIntegration"],
+        "vm_guest_row": ["roudix.vmGuest.enable"], "gaming_row": ["roudix.gaming.enable"],
+        "ananicy_row": ["roudix.gaming.ananicy.enable"],
+        "millennium_row": ["roudix.gaming.steam.millennium.enable"],
+        "mesa_git_row": ["roudix.mesa.useGit"], "timezone_row": ["time.timeZone"],
+        "locale_row": ["i18n.defaultLocale"], "keymap_row": ["console.keyMap"],
+        "gfx_keyboard_row": ["roudix.keyboardLayout"],
+        "rgb_row": ["roudix.rgb"], "rgb_note": ["roudix.rgb"],
+        "memory_rgb_row": ["roudix.memory.enable"], "memory_type_row": ["roudix.memory.type"],
+        "memory_smbus_row": ["roudix.memory.smBus"], "memory_sku_row": ["roudix.memory.sku"],
+        "gta_fix_row": ["roudix.hosts.gtaFix.enable"], "flatpak_row": ["roudix.flatpak.enable"],
+        "virt_row": ["roudix.virtualization.enable"], "autoupdate_row": ["roudix.autoupdate.enable"],
+        "autoupdate_interval_row": ["roudix.autoupdate.interval"],
+        "branch_row": ["roudix.autoupdate.branch"], "bootloader_row": ["roudix.boot.bootloader"],
+        "matrix_row": ["roudix.matrixClient"], "discord_row": ["roudix.discord"],
+        "telegram_row": ["roudix.telegram"], "video_player_row": ["roudix.videoPlayer"],
+        "torrent_client_row": ["roudix.torrentClient"], "music_player_row": ["roudix.musicPlayer"],
+        "mail_client_row": ["roudix.mailClient"], "password_manager_row": ["roudix.passwordManager"],
+        "waydroid_row": ["roudix.waydroid.enable"],
+        "app_gimp_row": ["roudix.apps.gimp.enable"], "app_inkscape_row": ["roudix.apps.inkscape.enable"],
+        "app_songrec_row": ["roudix.apps.songrec.enable"], "app_easyeffects_row": ["roudix.apps.easyeffects.enable"],
+        "app_signal_row": ["roudix.apps.signal.enable"], "app_zapzap_row": ["roudix.apps.zapzap.enable"],
+        "app_fluxer_row": ["roudix.apps.fluxer.enable"],
+        "spicetify_theme_row": ["roudix.spicetify.theme"],
+        "spicetify_color_scheme_row": ["roudix.spicetify.colorScheme"],
+        "spicetify_adblock_row": ["roudix.spicetify.extensions.adblock.enable"],
+        "spicetify_hide_podcasts_row": ["roudix.spicetify.extensions.hidePodcasts.enable"],
+        "spicetify_marketplace_row": ["roudix.spicetify.marketplace.enable"],
+        "content_creation_row": ["roudix.contentCreation.enable"], "obs_row": ["roudix.contentCreation.obs.enable"],
+        "video_editor_row": ["roudix.contentCreation.videoEditor"],
+        "virtual_camera_row": ["roudix.contentCreation.virtualCamera.enable"],
+        "chatterino_row": ["roudix.contentCreation.streaming.chatterino.enable"],
+    }
+    # group -> rows it contains (a group with no visible row is hidden too)
+    HOST_GROUP_ROWS = {
+        "hw_group": ["gpu_row", "nvidia_laptop_row", "laptop_row", "thinkpad_row", "undervolt_row", "cpu_row", "kernel_row"],
+        "browser_group": ["browser_row", "brave_variant_row", "zen_row", "zen_variant_row", "zen_mods_row", "zen_sine_row", "zen_sine_mods_row"],
+        "desktop_group": ["desktop_row", "shell_row", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
+        "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
+        "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
+        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
+        "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row"],
+        "cc_group": ["content_creation_row", "obs_row", "video_editor_row", "virtual_camera_row", "chatterino_row"],
+    }
+
+    @staticmethod
+    def _make_hideable(widget):
+        """The _sync_* methods keep calling widget.set_visible(...) to show or
+        hide rows depending on other answers; wrap it so a row hidden by the
+        host profile stays hidden whatever they ask for."""
+        if getattr(widget, "_host_hideable", False):
+            return
+        original = widget.set_visible
+        widget._host_hidden = False
+        widget._host_original_set_visible = original
+        widget._host_hideable = True
+        widget.set_visible = lambda visible, _w=widget, _o=original: _o(False if _w._host_hidden else visible)
+
+    def _init_host_filter(self, groups):
+        self._host_groups = groups
+        self._host_widgets = []          # (widget, [option keys])
+        for attr, keys in self.HOST_ROW_KEYS.items():
+            w = getattr(self, attr, None)
+            if w is not None:
+                self._make_hideable(w)
+                self._host_widgets.append((w, keys))
+        # rows built in loops
+        for attr, row in getattr(self, "gaming_apps_rows", {}).items():
+            self._make_hideable(row)
+            self._host_widgets.append((row, [f"roudix.gaming.apps.{attr}.enable"]))
+        for row in getattr(self, "obs_plugin_rows", {}).values():
+            self._make_hideable(row)
+            self._host_widgets.append((row, ["roudix.contentCreation.obs.enable"]))
+        self.hostname_row.connect("changed", lambda *_: self._on_hostname_changed())
+        self._on_hostname_changed()
+
+    def _on_hostname_changed(self):
+        listed = host_profile.listed_options(self.hostname_row.get_text().strip() or "roudix")
+        for widget, keys in self._host_widgets:
+            hidden = listed is not None and not any(k in listed for k in keys)
+            widget._host_hidden = hidden
+            widget._host_original_set_visible(not hidden)
+        # let the existing sync methods recompute the dynamic rows
+        for name in ("_sync_nvidia_row", "_sync_undervolt_row", "_sync_laptop_row", "_sync_kernel_row",
+                     "_sync_brave_row", "_sync_shell_row", "_sync_desktop_integration_row",
+                     "_sync_file_manager_row", "_sync_memory_rows", "_sync_zen_rows",
+                     "_sync_spicetify_rows", "_sync_ananicy_row", "_sync_content_creation_rows",
+                     "_sync_autoupdate_row"):
+            try:
+                getattr(self, name)()
+            except Exception:
+                pass
+        for gname, group in self._host_groups.items():
+            rows = [getattr(self, r, None) for r in self.HOST_GROUP_ROWS[gname]]
+            group.set_visible(any(r is not None and not getattr(r, "_host_hidden", False) for r in rows))
 
     # ── helpers ──────────────────────────────────────────────────────────
 
@@ -1367,6 +1495,7 @@ class OptionsPage(Adw.NavigationPage):
 
         s = self.state
         s.username = self.username_row.get_text()
+        s.hostname = self.hostname_row.get_text().strip() or "roudix"
         s.password = password
         s.gpu = self._selected_value(self.gpu_row)
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()

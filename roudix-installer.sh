@@ -17,9 +17,91 @@ success() { echo -e "${GREEN}${BOLD}[✓]${NC} $*"; }
 warn()    { echo -e "${YELLOW}${BOLD}[!]${NC} $*"; }
 error()   { echo -e "${RED}${BOLD}[✗]${NC} $*"; exit 1; }
 
+# ── Host profile: hide questions the selected host doesn't use ───────────────
+# A host opts in by putting this exact line in its local.nix.example:
+#   # roudix-installer: only-listed
+# Then a question is asked only if the option it sets appears in that file
+# (commented or not). Without the marker (e.g. hosts/roudix) every question
+# is asked, exactly as before. Hidden questions leave their variable empty:
+# every sed below is a no-op when its key is absent from local.nix, and
+# check_opt skips the same keys, so nothing is written or verified for them.
+HOST_ONLY_LISTED=false
+HOST_EXAMPLE=""
+
+declare -A VAR_KEY=(
+  [GPU]=hardware.myGpu                 [NVIDIA_LAPTOP]=hardware.nvidiaLaptop
+  [CPU]=hardware.myCpu                 [KERNEL]=hardware.myKernel
+  [KERNEL_CHAOTIC]=hardware.myKernelChaotic
+  [UNDERVOLT]=roudix.undervolt.only-amd.enable
+  [BROWSER]=roudix.browsers            [ZEN]=roudix.zen.enable
+  [ZEN_SINE]=roudix.zen.sine.enable    [ZEN_MODS]=roudix.zen.mods
+  [ZEN_SINE_MODS]=roudix.zen.sine.mods
+  [DE]=roudix.desktop.type             [DESKTOP_SHELL]=roudix.desktop.shell
+  [DESKTOP_INTEGRATION]=roudix.desktopIntegration
+  [SHELL_DEFAULT]=roudix.shell         [TERMINAL]=roudix.terminal
+  [FILE_MANAGER]=roudix.fileManager    [EDITOR]=roudix.editor
+  [VM_GUEST]=roudix.vmGuest.enable     [GAMING]=roudix.gaming.enable
+  [ANANICY]=roudix.gaming.ananicy.enable
+  [GAMING_MILLENNIUM]=roudix.gaming.steam.millennium.enable
+  [GAMING_LUTRIS]=roudix.gaming.apps.lutris.enable
+  [GAMING_HEROIC]=roudix.gaming.apps.heroic.enable
+  [GAMING_FAUGUS]=roudix.gaming.apps.faugus.enable
+  [GAMING_PRISMLAUNCHER]=roudix.gaming.apps.prismlauncher.enable
+  [GAMING_MODRINTH]=roudix.gaming.apps.modrinth.enable
+  [GAMING_VINTAGESTORY]=roudix.gaming.apps.vintagestory.enable
+  [GAMING_MANGOHUD]=roudix.gaming.apps.mangohud.enable
+  [MESA_GIT]=roudix.mesa.useGit        [TIMEZONE]=time.timeZone
+  [KEYMAP]=console.keyMap              [GFX_KEYBOARD]=roudix.keyboardLayout
+  [LOCALE]=i18n.defaultLocale          [RGB]=roudix.rgb
+  [MEMORY_ENABLE]=roudix.memory.enable [MEMORY_TYPE]=roudix.memory.type
+  [MEMORY_SMBUS]=roudix.memory.smBus   [MEMORY_SKU]=roudix.memory.sku
+  [GTA_FIX]=roudix.hosts.gtaFix.enable [FLATPAK]=roudix.flatpak.enable
+  [VIRTUALIZATION]=roudix.virtualization.enable
+  [AUTOUPDATE]=roudix.autoupdate.enable
+  [BOOTLOADER]=roudix.boot.bootloader  [MATRIX_CLIENT]=roudix.matrixClient
+  [DISCORD]=roudix.discord             [TELEGRAM]=roudix.telegram
+  [VIDEO_PLAYER]=roudix.videoPlayer    [TORRENT_CLIENT]=roudix.torrentClient
+  [MAIL_CLIENT]=roudix.mailClient      [WAYDROID]=roudix.waydroid.enable
+)
+
+key_in_host_example() {
+  local esc
+  esc=$(printf '%s' "$1" | sed 's/[.[\*^$]/\\&/g')
+  # lines tagged '# roudix-installer: fixed' count as unlisted (never asked)
+  grep -E "^[[:space:]]*#?[[:space:]]*${esc}[[:space:]]*=" "$HOST_EXAMPLE" | grep -qv 'roudix-installer: fixed'
+}
+
+restore_fixed_lines() {
+  # Put every '# roudix-installer: fixed' line of the example back verbatim
+  # in local.nix, whatever the seds above did to it.
+  [[ "$HOST_ONLY_LISTED" == true ]] || return 0
+  local line key esc
+  while IFS= read -r line; do
+    key=$(sed -E 's/^[[:space:]]*#?[[:space:]]*([A-Za-z_][A-Za-z0-9_.-]*)[[:space:]]*=.*/\1/' <<<"$line")
+    esc=$(printf '%s' "$key" | sed 's/[.[\*^$]/\\&/g')
+    LINE="$line" PAT="^[[:space:]]*#?[[:space:]]*${esc}[[:space:]]*=" \
+      awk '$0 ~ ENVIRON["PAT"] { print ENVIRON["LINE"]; next } { print }' "$LOCAL_NIX" > "${LOCAL_NIX}.tmp" \
+      && mv "${LOCAL_NIX}.tmp" "$LOCAL_NIX"
+  done < <(grep 'roudix-installer: fixed' "$HOST_EXAMPLE" || true)
+}
+
+hidden_key() {
+  # hidden_key <nix.option> — true if this host hides the option's question
+  [[ "$HOST_ONLY_LISTED" == true ]] || return 1
+  ! key_in_host_example "$1"
+}
+
+hidden_var() {
+  # hidden_var <VAR_NAME> — variables without a mapping are always asked
+  local key="${VAR_KEY[$1]:-}"
+  [[ -n "$key" ]] || return 1
+  hidden_key "$key"
+}
+
 ask() {
   local prompt="$1"
   local var_name="$2"
+  if hidden_var "$var_name"; then printf -v "$var_name" '%s' ""; return 0; fi
   echo -e "${BOLD}$prompt${NC}"
   read -r "$var_name"
 }
@@ -29,6 +111,7 @@ pick() {
   local prompt="$1"; shift
   local var_name="$1"; shift
   local options=("$@")
+  if hidden_var "$var_name"; then printf -v "$var_name" '%s' ""; return 0; fi
 
   echo -e "\n${BOLD}$prompt${NC}"
   for i in "${!options[@]}"; do
@@ -57,6 +140,7 @@ pick_bool() {
   local var_name="$2"
   local true_desc="$3"
   local false_desc="$4"
+  if hidden_var "$var_name"; then printf -v "$var_name" '%s' ""; return 0; fi
 
   echo -e "\n${BOLD}$prompt${NC}"
   printf "  ${CYAN}%2d)${NC} %-6s %s\n" 0 "false" "$false_desc"
@@ -145,6 +229,16 @@ echo ""
 ask "Your username (used for the home directory):" USERNAME
 [[ -z "$USERNAME" ]] && error "Username cannot be empty."
 
+# ── Host ──────────────────────────────────────────────────────────────────────
+# Must match a hosts/<name>/ directory already present in the repo (tracked
+# files: configuration.nix + local.nix.example — see hosts/roudix/ or
+# hosts/nixie/ as templates for a new machine) and, once installed,
+# this machine's own networking.hostName — nh/nixos-rebuild pick the
+# nixosConfigurations attribute to build from the running hostname.
+echo ""
+ask "Host name for this machine (matches a hosts/<name>/ dir in the repo, e.g. 'roudix' or 'nixie'):" HOSTNAME
+[[ -z "$HOSTNAME" ]] && HOSTNAME="roudix"
+
 INSTALL_DIR="/home/${USERNAME}/.config/roudix"
 REPO_URL="https://github.com/RoudineBWT/Roudix"
 
@@ -204,16 +298,29 @@ fi
 
 cd "$INSTALL_DIR"
 
+# ── Verify this host is defined in the repo ────────────────────────────────────
+if [[ ! -f "hosts/${HOSTNAME}/configuration.nix" ]]; then
+  error "hosts/${HOSTNAME}/configuration.nix doesn't exist on branch '${BRANCH}'. Create it first (copy hosts/roudix/configuration.nix as a starting point, adjust it, commit it — see hosts/nixie/ for a lighter-profile example), then re-run this installer with this host name."
+fi
+
+# ── Host profile (which questions to ask) ─────────────────────────────────────
+HOST_EXAMPLE="hosts/${HOSTNAME}/local.nix.example"
+[[ -f "$HOST_EXAMPLE" ]] || error "$HOST_EXAMPLE not found — every host needs one (it is what this installer patches into local.nix)."
+if grep -q '^# roudix-installer: only-listed' "$HOST_EXAMPLE"; then
+  HOST_ONLY_LISTED=true
+  info "Host '${HOSTNAME}': only the options listed in its local.nix.example will be asked."
+fi
+
 # ── Create username.nix ───────────────────────────────────────────────────────
 info "Creating username.nix..."
-echo "\"${USERNAME}\"" > "hosts/roudix/username.nix"
+echo "\"${USERNAME}\"" > "hosts/${HOSTNAME}/username.nix"
 success "username.nix created."
 
 # ── Generate hardware config ──────────────────────────────────────────────────
 info "Generating hardware-configuration.nix..."
 
 HW_CONFIG_STDERR=$(mktemp)
-HW_CONFIG_FILE="hosts/roudix/hardware-configuration.nix"
+HW_CONFIG_FILE="hosts/${HOSTNAME}/hardware-configuration.nix"
 
 # Generate into /etc/nixos (default) then copy — avoids stdout truncation on btrfs
 if ! nixos-generate-config 2>"$HW_CONFIG_STDERR"; then
@@ -323,7 +430,7 @@ success "hardware-configuration.nix generated."
 
 # ── Copy local.nix ────────────────────────────────────────────────────────────
 info "Creating local.nix from example..."
-cp hosts/roudix/local.nix.example hosts/roudix/local.nix
+cp "hosts/${HOSTNAME}/local.nix.example" "hosts/${HOSTNAME}/local.nix"
 cp modules/home/local.nix.example modules/home/local.nix
 success "local.nix created."
 
@@ -452,6 +559,9 @@ echo -e "\n${BOLD}════════════════════�
 info "Hardware & software configuration"
 echo -e "${BOLD}══════════════════════════════════════${NC}"
 
+if hidden_key hardware.myGpu; then
+  DETECTED_GPU=""; GPU=""; NVIDIA_LAPTOP="false"
+else
 # Auto-detect GPU via sysfs PCI vendor IDs (works without lspci on live ISO)
 DETECTED_GPU=""
 NVIDIA_LAPTOP="false"
@@ -517,6 +627,7 @@ else
       "Oui — laptop Intel/AMD + NVIDIA" "Non — desktop ou NVIDIA seul"
   fi
 fi
+fi
 
 UNDERVOLT="false"
 if [[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]]; then
@@ -524,6 +635,9 @@ if [[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]]; then
     "Yes" "No"
 fi
 
+if hidden_key hardware.myCpu; then
+  DETECTED_CPU=""; CPU=""
+else
 # Auto-detect CPU vendor
 DETECTED_CPU=""
 if grep -q "AuthenticAMD" /proc/cpuinfo 2>/dev/null; then
@@ -546,6 +660,7 @@ else
   pick "CPU:" CPU \
     "amd|AMD CPU" \
     "intel|Intel CPU"
+fi
 fi
 
 KERNEL="cachyos-latest-v3"
@@ -999,7 +1114,7 @@ pick_bool "Enable automatic updates?" AUTOUPDATE \
   "Yes" "No"
 
 AUTOUPDATE_INTERVAL="1h"
-if [[ "$AUTOUPDATE" == "true" ]]; then
+if [[ "$AUTOUPDATE" == "true" ]] && ! hidden_key roudix.autoupdate.interval; then
   echo -e "\n${BOLD}Auto-update check interval (e.g. 1h, 6h, 12h, 24h) [default: 1h]:${NC}"
   read -rp "Interval: " input_interval
   [[ -n "$input_interval" ]] && AUTOUPDATE_INTERVAL="$input_interval"
@@ -1049,70 +1164,70 @@ pick_bool "Enable Waydroid? (Android container)" WAYDROID \
 # ── Write local.nix ───────────────────────────────────────────────────────────
 info "Writing configuration to local.nix..."
 
-sed -i "s/roudix\.rgb[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.rgb        = \"${RGB}\"/"          hosts/roudix/local.nix
-sed -i "s/hardware\.myGpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/roudix/local.nix
-sed -i -E "s/hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*(true|false)/hardware.nvidiaLaptop = ${NVIDIA_LAPTOP}/" hosts/roudix/local.nix
-sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/roudix/local.nix
+sed -i "s/roudix\.rgb[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.rgb        = \"${RGB}\"/"          hosts/${HOSTNAME}/local.nix
+sed -i "s/hardware\.myGpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/${HOSTNAME}/local.nix
+sed -i -E "s/hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*(true|false)/hardware.nvidiaLaptop = ${NVIDIA_LAPTOP}/" hosts/${HOSTNAME}/local.nix
+sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/${HOSTNAME}/local.nix
 if [[ "$GPU" == "nvidia" ]]; then
-  set_kernel_option hosts/roudix/local.nix "hardware.myKernel" "false" "${KERNEL}"
-  set_kernel_option hosts/roudix/local.nix "hardware.myKernelChaotic" "true" "${KERNEL_CHAOTIC}"
+  set_kernel_option hosts/${HOSTNAME}/local.nix "hardware.myKernel" "false" "${KERNEL}"
+  set_kernel_option hosts/${HOSTNAME}/local.nix "hardware.myKernelChaotic" "true" "${KERNEL_CHAOTIC}"
 else
-  set_kernel_option hosts/roudix/local.nix "hardware.myKernel" "true" "${KERNEL}"
-  set_kernel_option hosts/roudix/local.nix "hardware.myKernelChaotic" "false" "${KERNEL_CHAOTIC}"
+  set_kernel_option hosts/${HOSTNAME}/local.nix "hardware.myKernel" "true" "${KERNEL}"
+  set_kernel_option hosts/${HOSTNAME}/local.nix "hardware.myKernelChaotic" "false" "${KERNEL_CHAOTIC}"
 fi
-sed -i "s/roudix\.browsers[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.browsers = [\"${BROWSER}\"]/"    hosts/roudix/local.nix
-sed -i -E "s/roudix\.zen\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.enable           = ${ZEN}/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.zen\.sine\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.sine.enable = ${ZEN_SINE}/" hosts/roudix/local.nix
-sed -i "s/roudix\.zen\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.mods = [$(nix_list_from_csv "$ZEN_MODS")]/" hosts/roudix/local.nix
-sed -i "s/roudix\.zen\.sine\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.sine.mods = [$(nix_list_from_csv "$ZEN_SINE_MODS")]/" hosts/roudix/local.nix
-sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.desktop\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.shell = \"${DESKTOP_SHELL}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.editor[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.editor = \"${EDITOR}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.desktopIntegration[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktopIntegration = \"${DESKTOP_INTEGRATION}\"/" hosts/roudix/local.nix
-sed -i "s|roudix\.keyboardLayout[[:space:]]*=[[:space:]]*\"[^\"]*\"|roudix.keyboardLayout                = \"${GFX_KEYBOARD_LAYOUT}\"|" hosts/roudix/local.nix
-sed -i "s|roudix\.keyboardVariant[[:space:]]*=[[:space:]]*\"[^\"]*\"|roudix.keyboardVariant                = \"${GFX_KEYBOARD_VARIANT}\"|" hosts/roudix/local.nix
-sed -i "s/roudix\.terminal[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.terminal = \"${TERMINAL}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.fileManager[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.fileManager = \"${FILE_MANAGER}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.shell = \"${SHELL_DEFAULT}\"/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.undervolt\.only-amd\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.undervolt.only-amd.enable        = ${UNDERVOLT}/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.gaming\.ananicy\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.ananicy.enable = ${ANANICY}/" hosts/roudix/local.nix
+sed -i "s/roudix\.browsers[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.browsers = [\"${BROWSER}\"]/"    hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.zen\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.enable           = ${ZEN}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.zen\.sine\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.sine.enable = ${ZEN_SINE}/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.zen\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.mods = [$(nix_list_from_csv "$ZEN_MODS")]/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.zen\.sine\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.sine.mods = [$(nix_list_from_csv "$ZEN_SINE_MODS")]/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.desktop\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.type = \"${DE}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.desktop\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktop.shell = \"${DESKTOP_SHELL}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.editor[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.editor = \"${EDITOR}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.desktopIntegration[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.desktopIntegration = \"${DESKTOP_INTEGRATION}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s|roudix\.keyboardLayout[[:space:]]*=[[:space:]]*\"[^\"]*\"|roudix.keyboardLayout                = \"${GFX_KEYBOARD_LAYOUT}\"|" hosts/${HOSTNAME}/local.nix
+sed -i "s|roudix\.keyboardVariant[[:space:]]*=[[:space:]]*\"[^\"]*\"|roudix.keyboardVariant                = \"${GFX_KEYBOARD_VARIANT}\"|" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.terminal[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.terminal = \"${TERMINAL}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.fileManager[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.fileManager = \"${FILE_MANAGER}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.shell[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.shell = \"${SHELL_DEFAULT}\"/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.vmGuest\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vmGuest.enable       = ${VM_GUEST}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.gaming\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.enable        = ${GAMING}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.undervolt\.only-amd\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.undervolt.only-amd.enable        = ${UNDERVOLT}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.gaming\.ananicy\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.gaming.ananicy.enable = ${ANANICY}/" hosts/${HOSTNAME}/local.nix
 if [[ "$GAMING" == "true" ]]; then
-  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.lutris.enable" "${GAMING_LUTRIS}"
-  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.heroic.enable" "${GAMING_HEROIC}"
-  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.faugus.enable" "${GAMING_FAUGUS}"
-  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.prismlauncher.enable" "${GAMING_PRISMLAUNCHER}"
-  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.modrinth.enable" "${GAMING_MODRINTH}"
-  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.vintagestory.enable" "${GAMING_VINTAGESTORY}"
-  set_bool_option hosts/roudix/local.nix "roudix.gaming.apps.mangohud.enable" "${GAMING_MANGOHUD}"
-  set_bool_option hosts/roudix/local.nix "roudix.gaming.steam.millennium.enable" "${GAMING_MILLENNIUM}"
+  set_bool_option hosts/${HOSTNAME}/local.nix "roudix.gaming.apps.lutris.enable" "${GAMING_LUTRIS}"
+  set_bool_option hosts/${HOSTNAME}/local.nix "roudix.gaming.apps.heroic.enable" "${GAMING_HEROIC}"
+  set_bool_option hosts/${HOSTNAME}/local.nix "roudix.gaming.apps.faugus.enable" "${GAMING_FAUGUS}"
+  set_bool_option hosts/${HOSTNAME}/local.nix "roudix.gaming.apps.prismlauncher.enable" "${GAMING_PRISMLAUNCHER}"
+  set_bool_option hosts/${HOSTNAME}/local.nix "roudix.gaming.apps.modrinth.enable" "${GAMING_MODRINTH}"
+  set_bool_option hosts/${HOSTNAME}/local.nix "roudix.gaming.apps.vintagestory.enable" "${GAMING_VINTAGESTORY}"
+  set_bool_option hosts/${HOSTNAME}/local.nix "roudix.gaming.apps.mangohud.enable" "${GAMING_MANGOHUD}"
+  set_bool_option hosts/${HOSTNAME}/local.nix "roudix.gaming.steam.millennium.enable" "${GAMING_MILLENNIUM}"
 fi
-sed -i -E "s/roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*(true|false)/roudix.mesa.useGit = ${MESA_GIT}/" hosts/roudix/local.nix
-sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/roudix/local.nix
-sed -i "s|environment\.sessionVariables\.TZ[[:space:]]*=[[:space:]]*\"[^\"]*\"|environment.sessionVariables.TZ      = \"${TIMEZONE}\"|" hosts/roudix/local.nix
-sed -i "s|i18n\.defaultLocale[[:space:]]*=[[:space:]]*\"[^\"]*\"|i18n.defaultLocale                   = \"${LOCALE}\"|"       hosts/roudix/local.nix
-sed -i "s|console\.keyMap[[:space:]]*=[[:space:]]*\"[^\"]*\"|console.keyMap                       = \"${KEYMAP}\"|"           hosts/roudix/local.nix
-sed -i -E "s/roudix\.hosts\.gtaFix\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.hosts.gtaFix.enable  = ${GTA_FIX}/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.flatpak.enable       = ${FLATPAK}/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.virtualization.enable = ${VIRTUALIZATION}/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.autoupdate.enable    = ${AUTOUPDATE}/" hosts/roudix/local.nix
-sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/roudix/local.nix
-set_kernel_option hosts/roudix/local.nix "roudix.autoupdate.branch" "true" "${BRANCH}"
-sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.telegram[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.telegram = \"${TELEGRAM}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.videoPlayer[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.videoPlayer = \"${VIDEO_PLAYER}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.torrentClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.torrentClient = \"${TORRENT_CLIENT}\"/" hosts/roudix/local.nix
-sed -i "s/roudix\.mailClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.mailClient = \"${MAIL_CLIENT}\"/" hosts/roudix/local.nix
-sed -i -E "s/roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.waydroid.enable = ${WAYDROID}/" hosts/roudix/local.nix
+sed -i -E "s/roudix\.mesa\.useGit[[:space:]]*=[[:space:]]*(true|false)/roudix.mesa.useGit = ${MESA_GIT}/" hosts/${HOSTNAME}/local.nix
+sed -i "s|time\.timeZone[[:space:]]*=[[:space:]]*\"[^\"]*\"|time.timeZone                        = \"${TIMEZONE}\"|"         hosts/${HOSTNAME}/local.nix
+sed -i "s|environment\.sessionVariables\.TZ[[:space:]]*=[[:space:]]*\"[^\"]*\"|environment.sessionVariables.TZ      = \"${TIMEZONE}\"|" hosts/${HOSTNAME}/local.nix
+sed -i "s|i18n\.defaultLocale[[:space:]]*=[[:space:]]*\"[^\"]*\"|i18n.defaultLocale                   = \"${LOCALE}\"|"       hosts/${HOSTNAME}/local.nix
+sed -i "s|console\.keyMap[[:space:]]*=[[:space:]]*\"[^\"]*\"|console.keyMap                       = \"${KEYMAP}\"|"           hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.hosts\.gtaFix\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.hosts.gtaFix.enable  = ${GTA_FIX}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.flatpak\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.flatpak.enable       = ${FLATPAK}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.virtualization\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.virtualization.enable = ${VIRTUALIZATION}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.autoupdate.enable    = ${AUTOUPDATE}/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/${HOSTNAME}/local.nix
+set_kernel_option hosts/${HOSTNAME}/local.nix "roudix.autoupdate.branch" "true" "${BRANCH}"
+sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.telegram[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.telegram = \"${TELEGRAM}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.videoPlayer[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.videoPlayer = \"${VIDEO_PLAYER}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.torrentClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.torrentClient = \"${TORRENT_CLIENT}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.mailClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.mailClient = \"${MAIL_CLIENT}\"/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.waydroid.enable = ${WAYDROID}/" hosts/${HOSTNAME}/local.nix
 
 if [[ "$RGB" == "openlinkhub" ]]; then
-  sed -i -E "s/roudix\.memory\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.memory.enable = ${MEMORY_ENABLE}/"   hosts/roudix/local.nix
-  sed -i "s/roudix\.memory\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.type   = \"${MEMORY_TYPE}\"/"       hosts/roudix/local.nix
-  sed -i "s/roudix\.memory\.smBus[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.smBus  = \"${MEMORY_SMBUS}\"/"     hosts/roudix/local.nix
-  sed -i "s/roudix\.memory\.sku[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.sku    = \"${MEMORY_SKU}\"/"         hosts/roudix/local.nix
+  sed -i -E "s/roudix\.memory\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.memory.enable = ${MEMORY_ENABLE}/"   hosts/${HOSTNAME}/local.nix
+  sed -i "s/roudix\.memory\.type[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.type   = \"${MEMORY_TYPE}\"/"       hosts/${HOSTNAME}/local.nix
+  sed -i "s/roudix\.memory\.smBus[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.smBus  = \"${MEMORY_SMBUS}\"/"     hosts/${HOSTNAME}/local.nix
+  sed -i "s/roudix\.memory\.sku[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.memory.sku    = \"${MEMORY_SKU}\"/"         hosts/${HOSTNAME}/local.nix
 fi
 
 # ── Verify local.nix was actually written as expected ─────────────────────────
@@ -1121,12 +1236,14 @@ fi
 # these regexes expect. Re-check each option now so a silent mismatch is
 # reported immediately instead of being discovered at boot with the wrong
 # config applied.
-LOCAL_NIX="hosts/roudix/local.nix"
+LOCAL_NIX="hosts/${HOSTNAME}/local.nix"
+restore_fixed_lines
 VERIFY_FAILED=0
 
 check_opt() {
   # check_opt <description> <grep -E pattern>
   local desc="$1" pattern="$2"
+  hidden_key "$desc" && return 0    # option not listed for this host — nothing was written
   if ! grep -qE "$pattern" "$LOCAL_NIX"; then
     warn "Could not confirm '${desc}' was written to $(basename "$LOCAL_NIX") — check it manually."
     VERIFY_FAILED=1
@@ -1243,22 +1360,22 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
   info "Checking if 'switch' is safe..."
   cd "$INSTALL_DIR" || error "Failed to enter install directory."
 
-  if dry_output=$(sudo nixos-rebuild switch --flake path:$(pwd)#roudix --dry-run 2>&1); then
+  if dry_output=$(sudo nixos-rebuild switch --flake path:$(pwd)#${HOSTNAME} --dry-run 2>&1); then
     if echo "$dry_output" | grep -q "not recommended"; then
       warn "'switch' is not recommended by NixOS. Using 'boot' instead..."
-      sudo nixos-rebuild boot --flake path:$(pwd)#roudix --accept-flake-config
+      sudo nixos-rebuild boot --flake path:$(pwd)#${HOSTNAME} --accept-flake-config
       success "Configuration built with 'boot'."
       warn "Reboot required to apply the new configuration."
     else
       info "'switch' seems safe. Applying..."
-      sudo nixos-rebuild switch --flake path:$(pwd)#roudix --accept-flake-config
+      sudo nixos-rebuild switch --flake path:$(pwd)#${HOSTNAME} --accept-flake-config
       success "Configuration applied successfully!"
 
       warn "Please reboot your system to complete the setup."
     fi
   else
     warn "Dry-run failed. Using 'boot' as fallback..."
-    sudo nixos-rebuild boot --flake path:$(pwd)#roudix --accept-flake-config
+    sudo nixos-rebuild boot --flake path:$(pwd)#${HOSTNAME} --accept-flake-config
     success "Configuration built with 'boot'."
     warn "Reboot required to apply the new configuration."
   fi
@@ -1272,7 +1389,7 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
 else
   warn "You can apply it later manually."
   echo -e "  ${CYAN}cd $INSTALL_DIR${NC}"
-  echo -e "  ${CYAN}sudo nixos-rebuild boot --flake path:${pwd}#roudix --accept-flake-config${NC}"
+  echo -e "  ${CYAN}sudo nixos-rebuild boot --flake path:${pwd}#${HOSTNAME} --accept-flake-config${NC}"
   echo ""
   warn "Reboot required after applying the configuration."
 fi

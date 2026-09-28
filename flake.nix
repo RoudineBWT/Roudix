@@ -168,9 +168,6 @@
     xdg-desktop-portal-umbriel,
     ... }:
   let
-  # ← username is defined in hosts/roudix/username.nix (gitignored)
-  # Create it with: echo '"yourusername"' > hosts/roudix/username.nix
-    username = import ./hosts/roudix/username.nix;
     roudixSwitcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-switcher {};
     roudixBranding  = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-branding {};
     roudix-kernel-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-kernel-switcher {};
@@ -178,39 +175,67 @@
       scxctl = roudix-caches.packages.x86_64-linux.scxctl;
     };
     roudixWelcome = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-welcome {};
-    specialArgs = { inherit inputs username roudixSwitcher roudixBranding roudix-kernel-switcher roudix-scheduler-switcher roudixWelcome; dotfiles = self + /dotfiles; };
+
+    # username is NOT here anymore: it's per-host, read from
+    # hosts/<hostName>/username.nix (gitignored). Base args shared by
+    # every host — each mkHost call adds its own `username`.
+    baseSpecialArgs = { inherit inputs roudixSwitcher roudixBranding roudix-kernel-switcher roudix-scheduler-switcher roudixWelcome; dotfiles = self + /dotfiles; };
+
+    # ── Host builder ──────────────────────────────────────────────────────
+    # One host = one directory under ./hosts/<hostName>/ containing:
+    #   configuration.nix          (tracked — networking.hostName + option
+    #                                overrides for this machine)
+    #   local.nix                  (gitignored — personal tweaks, optional)
+    #   username.nix                (gitignored — create with:
+    #                                echo '"yourusername"' > hosts/<hostName>/username.nix)
+    #   hardware-configuration.nix  (gitignored — from nixos-generate-config)
+    # `nixosConfigurations.<hostName>` is what roudix.autoupdate.flakeAttr
+    # must match on that machine (see modules/system/nix/autoupdate.nix).
+    mkHost = hostName:
+      let
+        username = import (./hosts + "/${hostName}/username.nix");
+        specialArgs = baseSpecialArgs // { inherit username; };
+      in
+      nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        inherit specialArgs;
+        modules = [
+          niri.nixosModules.niri
+          inputs.dms.nixosModules.dank-material-shell
+          inputs.noctalia-greeter.nixosModules.default
+          inputs.dank-greeter.nixosModules.default
+          nix-flatpak.nixosModules.nix-flatpak
+          inputs.mango.nixosModules.mango
+          chaotic.nixosModules.default
+          (./hosts + "/${hostName}/configuration.nix")
+          ./version.nix
+          ./branding.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "bak";
+            home-manager.extraSpecialArgs = specialArgs;
+            home-manager.users.${username} = { lib, ... }: {
+              imports = [
+                ./modules/home/common.nix
+                ./modules/home/desktop
+              ] ++ lib.optional (builtins.pathExists ./modules/home/local.nix) ./modules/home/local.nix;
+            };
+          }
+        ];
+      };
   in
   {
-    # ── Main desktop configuration ───────────────────────────────────────
-    # Use 'roudix-switch <de>' to change desktop environment
-    nixosConfigurations.roudix = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = specialArgs;
-      modules = [
-        niri.nixosModules.niri
-        inputs.dms.nixosModules.dank-material-shell
-        inputs.noctalia-greeter.nixosModules.default
-        inputs.dank-greeter.nixosModules.default
-        nix-flatpak.nixosModules.nix-flatpak
-        inputs.mango.nixosModules.mango
-        chaotic.nixosModules.default
-        ./hosts/roudix/configuration.nix
-        ./version.nix
-        ./branding.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "bak";
-          home-manager.extraSpecialArgs = specialArgs;
-          home-manager.users.${username} = { lib, ... }: {
-            imports = [
-              ./modules/home/common.nix
-              ./modules/home/desktop
-            ] ++ lib.optional (builtins.pathExists ./modules/home/local.nix) ./modules/home/local.nix;
-          };
-        }
-      ];
-    };
+    # ── Every directory under ./hosts/ becomes a nixosConfigurations
+    # attribute automatically — add a host by creating hosts/<name>/, no
+    # edit to this file needed. (Use 'roudix-switch <de>' to change desktop
+    # environment on the machine you're on.)
+    nixosConfigurations =
+      let
+        hostDirs = builtins.readDir ./hosts;
+        hostNames = builtins.attrNames (nixpkgs.lib.filterAttrs (_: type: type == "directory") hostDirs);
+      in
+      nixpkgs.lib.genAttrs hostNames mkHost;
   };
 }

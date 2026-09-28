@@ -35,6 +35,15 @@ class DiskChoice:
 class InstallState:
     username: str = "roudine"
     password: str = ""  # plaintext, in-memory only — only the hash is ever written to disk
+    hostname: str = "roudix"  # matches hosts/<hostname>/ in the repo AND becomes
+                               # networking.hostName — nh/nixos-rebuild pick the
+                               # nixosConfigurations attribute to build from the
+                               # running machine's own hostname, so these two must
+                               # stay equal. Must be an existing hosts/<hostname>/
+                               # directory (with configuration.nix already committed
+                               # on the selected branch) — this installer patches
+                               # local.nix/username.nix into it, it does not invent
+                               # a new host profile from scratch.
 
     disk: DiskChoice = field(default_factory=DiskChoice)
 

@@ -8,6 +8,7 @@ import re
 import shutil
 from pathlib import Path
 
+from roudix_installer.host_profile import restore_fixed_lines
 from roudix_installer.state import InstallState
 
 
@@ -231,7 +232,7 @@ def write_config(state: InstallState, config_root: Path):
     Mirrors: username.nix, local.nix from example + sed, home/local.nix
     copied verbatim, boot.local.nix copied verbatim (EFI detection TODO).
     """
-    hosts_dir = config_root / "hosts" / "roudix"
+    hosts_dir = config_root / "hosts" / state.hostname
     home_dir = config_root / "modules" / "home"
     boot_local = config_root / "modules" / "system" / "boot" / "boot.local.nix"
 
@@ -239,7 +240,8 @@ def write_config(state: InstallState, config_root: Path):
 
     example = hosts_dir / "local.nix.example"
     local_nix = hosts_dir / "local.nix"
-    local_nix.write_text(patch_local_nix(state, example.read_text()))
+    example_text = example.read_text()
+    local_nix.write_text(restore_fixed_lines(example_text, patch_local_nix(state, example_text)))
 
     shutil.copy(home_dir / "local.nix.example", home_dir / "local.nix")
 

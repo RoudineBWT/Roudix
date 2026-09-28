@@ -364,14 +364,15 @@ class ProgressPage(Adw.NavigationPage):
         just puts a clear warning in the log instead of a confusing failure
         a few steps later.
         """
-        example = Path("/mnt/etc/nixos/hosts/roudix/local.nix.example")
+        host = self.state.hostname
+        example = Path(f"/mnt/etc/nixos/hosts/{host}/local.nix.example")
         if not example.is_file():
             GLib.idle_add(
                 self._log,
                 L(
-                    f"Avertissement: hosts/roudix/local.nix.example introuvable sur la branche « {branch} » — "
+                    f"Avertissement: hosts/{host}/local.nix.example introuvable sur la branche « {branch} » — "
                     "la génération de local.nix pourrait échouer.",
-                    f"Warning: hosts/roudix/local.nix.example not found on branch '{branch}' — "
+                    f"Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
                     "local.nix generation may fail.",
                 ),
             )
@@ -426,7 +427,7 @@ class ProgressPage(Adw.NavigationPage):
         # would on physical hardware; disko modes work the same way
         # since disko has already mounted everything by this point.
         self._run_cmd(["nixos-generate-config", "--root", "/mnt"])
-        hw_config = Path("/mnt/etc/nixos/hosts/roudix/hardware-configuration.nix")
+        hw_config = Path(f"/mnt/etc/nixos/hosts/{self.state.hostname}/hardware-configuration.nix")
         self._run_cmd(["cp", "/mnt/etc/nixos/hardware-configuration.nix", str(hw_config)])
 
         patched = btrfs_patch.patch_hardware_config(hw_config)
@@ -441,7 +442,7 @@ class ProgressPage(Adw.NavigationPage):
 
         GLib.idle_add(self._set_status, L("Génération de local.nix / username.nix…", "Generating local.nix / username.nix…"), 0.6)
         config_gen.write_config(self.state, Path("/mnt/etc/nixos"))
-        GLib.idle_add(self._log, L("hosts/roudix/local.nix, username.nix, home/local.nix écrits.", "hosts/roudix/local.nix, username.nix, home/local.nix written."))
+        GLib.idle_add(self._log, L(f"hosts/{self.state.hostname}/local.nix, username.nix, home/local.nix écrits.", f"hosts/{self.state.hostname}/local.nix, username.nix, home/local.nix written."))
 
         # nixos-install --flake resolves /mnt/etc/nixos through Nix's
         # git+file fetcher whenever that directory is a git repo (always
@@ -455,8 +456,8 @@ class ProgressPage(Adw.NavigationPage):
             "bash", "-c",
             "if [ -d /mnt/etc/nixos/.git ]; then "
             "git -C /mnt/etc/nixos add -A; "
-            "for f in hosts/roudix/hardware-configuration.nix hosts/roudix/local.nix "
-            "hosts/roudix/username.nix modules/home/local.nix modules/system/boot/boot.local.nix; do "
+            f"for f in hosts/{self.state.hostname}/hardware-configuration.nix hosts/{self.state.hostname}/local.nix "
+            f"hosts/{self.state.hostname}/username.nix modules/home/local.nix modules/system/boot/boot.local.nix; do "
             "[ -f \"/mnt/etc/nixos/$f\" ] && git -C /mnt/etc/nixos add -f \"$f\"; "
             "done; "
             "fi",
@@ -468,7 +469,7 @@ class ProgressPage(Adw.NavigationPage):
         GLib.idle_add(self._set_status, L("Installation du système…", "Installing the system…"), 0.75)
         self._run_cmd([
             "nixos-install",
-            "--flake", "/mnt/etc/nixos#roudix",
+            "--flake", f"/mnt/etc/nixos#{self.state.hostname}",
             "--no-root-passwd",
             "--option", "accept-flake-config", "true",
         ])

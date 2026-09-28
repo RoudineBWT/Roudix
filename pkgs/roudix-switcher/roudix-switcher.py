@@ -2,6 +2,7 @@
 import gi
 import os
 import re
+import socket
 import subprocess
 import sys
 import logging
@@ -11,7 +12,14 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib, Pango, Gdk
 
-CONFIG_FILE = os.path.expanduser("~/.config/roudix/hosts/roudix/local.nix")
+# Multi-host: the machine's own hostname doubles as its hosts/<name>/
+# directory and its `nixosConfigurations.<name>` flake attribute (both
+# hosts/roudix and hosts/nixie set networking.hostName to match
+# their directory name — see flake.nix's automatic host discovery).
+# ROUDIX_HOST lets you override this (e.g. testing against another
+# host's local.nix without renaming the machine).
+ROUDIX_HOST = os.environ.get("ROUDIX_HOST") or socket.gethostname()
+CONFIG_FILE = os.path.expanduser(f"~/.config/roudix/hosts/{ROUDIX_HOST}/local.nix")
 # roudix.fastfetch.useNix (and any future Home Manager option) doesn't
 # live in the system config — it must be written here, or the rebuild
 # fails with "The option `roudix.fastfetch' does not exist".
@@ -20,6 +28,48 @@ NH_FLAKE    = os.path.expanduser("~/.config/roudix")
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 ICONS_DIR   = os.path.join(SCRIPT_DIR, "../share/roudix-switcher/icons")
+
+# ── Per-host option filter ────────────────────────────────────────────────
+# Same contract as roudix-installer (iso/roudix-installer/src/roudix_installer/
+# host_profile.py): a host opts in by putting `# roudix-installer: only-listed`
+# on a line of hosts/<n>/local.nix.example. Then only the options that appear
+# in that file (commented or not) are shown here; everything else is hidden
+# and never written. A line tagged `# roudix-installer: fixed` is specific to
+# that machine and is never offered either. Without the marker (hosts/roudix)
+# or without the example file, everything is shown (fail open).
+HOST_ONLY_LISTED_MARKER = "# roudix-installer: only-listed"
+HOST_FIXED_TAG          = "roudix-installer: fixed"
+_HOST_KEY_RE            = re.compile(r"^\s*#?\s*([A-Za-z_][\w.\-]*)\s*=")
+
+
+def host_listed_options():
+    """Set of option names listed for this host, or None = show everything."""
+    if not ROUDIX_HOST or "/" in ROUDIX_HOST or ROUDIX_HOST.startswith("."):
+        return None
+    example = os.path.join(NH_FLAKE, "hosts", ROUDIX_HOST, "local.nix.example")
+    try:
+        with open(example, encoding="utf-8", errors="replace") as f:
+            lines = f.read().splitlines()
+    except OSError:
+        return None
+    if not any(l.startswith(HOST_ONLY_LISTED_MARKER) for l in lines):
+        return None
+    return {m.group(1) for l in lines if HOST_FIXED_TAG not in l and (m := _HOST_KEY_RE.match(l))}
+
+
+HOST_LISTED = host_listed_options()
+
+
+def host_lists(*keys) -> bool:
+    """True if at least one of `keys` should be shown for this host."""
+    return HOST_LISTED is None or any(k in HOST_LISTED for k in keys)
+
+
+def host_filter_items(items: list) -> list:
+    """Checklist items to show. Home Manager options (item[\"file\"] other than
+    the host's local.nix) aren't described by hosts/<n>/local.nix.example, so
+    they are always kept."""
+    return [i for i in items if i.get("file", CONFIG_FILE) != CONFIG_FILE or host_lists(i["key"])]
 
 LOG_DIR     = os.path.expanduser("~/.local/share/roudix-switcher")
 LOG_FILE    = os.path.join(LOG_DIR, "switcher.log")
@@ -1502,7 +1552,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         gaming_page.set_margin_end(16)
         gaming_page.set_margin_bottom(16)
 
-        gaming_header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self.gaming_header = gaming_header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         gaming_title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
         gtitle = Gtk.Label(label="Gaming", halign=Gtk.Align.START)
         gtitle.add_css_class("title-2")
@@ -1522,19 +1572,22 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.gaming_master_switch.set_active(cur_gaming_master)
         gaming_header.append(self.gaming_master_switch)
         gaming_page.append(gaming_header)
-        gaming_page.append(Gtk.Separator())
+        self.gaming_sep = Gtk.Separator()
+        gaming_page.append(self.gaming_sep)
 
-        gaming_current = {app["id"]: get_bool_option(app["key"], app["default"]) for app in GAMING_APPS}
-        self.gaming_apps_group = ToggleListGroup("", GAMING_APPS, gaming_current)
+        self.gaming_apps = host_filter_items(GAMING_APPS)
+        gaming_current = {app["id"]: get_bool_option(app["key"], app["default"]) for app in self.gaming_apps}
+        self.gaming_apps_group = ToggleListGroup("", self.gaming_apps, gaming_current)
         self.gaming_apps_group.set_sensitive(cur_gaming_master)
         gaming_page.append(self.gaming_apps_group)
 
-        extras_label = Gtk.Label(halign=Gtk.Align.START)
+        self.gaming_extras_label = extras_label = Gtk.Label(halign=Gtk.Align.START)
         extras_label.set_markup("<b>Tweaks</b>")
         extras_label.set_margin_top(8)
         gaming_page.append(extras_label)
-        gaming_extras_current = {e["id"]: get_bool_option(e["key"], e["default"]) for e in GAMING_EXTRAS}
-        self.gaming_extras_group = ToggleListGroup("", GAMING_EXTRAS, gaming_extras_current)
+        self.gaming_extras = host_filter_items(GAMING_EXTRAS)
+        gaming_extras_current = {e["id"]: get_bool_option(e["key"], e["default"]) for e in self.gaming_extras}
+        self.gaming_extras_group = ToggleListGroup("", self.gaming_extras, gaming_extras_current)
         gaming_page.append(self.gaming_extras_group)
 
         self.gaming_master_switch.connect("notify::active", self._on_gaming_master_toggled)
@@ -1550,7 +1603,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         cc_page.set_margin_end(16)
         cc_page.set_margin_bottom(16)
 
-        cc_master_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self.cc_master_row = cc_master_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         cc_master_label = Gtk.Label(label=L("Création de contenu", "Content Creation"), halign=Gtk.Align.START)
         cc_master_label.set_hexpand(True)
         self.cc_master_switch = Gtk.Switch()
@@ -1560,12 +1613,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         cc_master_row.append(self.cc_master_switch)
         cc_page.append(cc_master_row)
 
-        cc_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in CONTENT_CREATION_TOGGLES}
-        self.cc_group = ToggleListGroup("", CONTENT_CREATION_TOGGLES, cc_current)
+        self.cc_toggles = host_filter_items(CONTENT_CREATION_TOGGLES)
+        cc_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.cc_toggles}
+        self.cc_group = ToggleListGroup("", self.cc_toggles, cc_current)
         cc_page.append(self.cc_group)
 
-        current_obs_plugins = {p["id"]: get_bool_option(p["key"], p["default"]) for p in OBS_PLUGINS}
-        self.obs_plugins_group = ToggleListGroup(L("Plugins OBS", "OBS plugins"), OBS_PLUGINS, current_obs_plugins)
+        self.obs_plugins = host_filter_items(OBS_PLUGINS)
+        current_obs_plugins = {p["id"]: get_bool_option(p["key"], p["default"]) for p in self.obs_plugins}
+        self.obs_plugins_group = ToggleListGroup(L("Plugins OBS", "OBS plugins"), self.obs_plugins, current_obs_plugins)
         cc_page.append(self.obs_plugins_group)
 
         current_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
@@ -1646,7 +1701,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         # Sine switch only makes sense if Zen is enabled, and the mods
         # checklist only if Sine is too — so the three are chained in
         # cascade rather than always visible.
-        zen_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self.zen_row = zen_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         zen_row.set_margin_top(8)
         zen_label = Gtk.Label(label="Zen Browser", halign=Gtk.Align.START)
         zen_label.set_hexpand(True)
@@ -1798,8 +1853,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         apps_page.set_margin_end(16)
         apps_page.set_margin_bottom(16)
 
-        apps_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in APPS_TOGGLES}
-        self.apps_group = ToggleListGroup(L("Apps optionnelles", "Optional apps"), APPS_TOGGLES, apps_current)
+        self.apps_toggles = host_filter_items(APPS_TOGGLES)
+        apps_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.apps_toggles}
+        self.apps_group = ToggleListGroup(L("Apps optionnelles", "Optional apps"), self.apps_toggles, apps_current)
         apps_page.append(self.apps_group)
 
         current_video_player = get_string_option("roudix.videoPlayer", "vlc")
@@ -1832,10 +1888,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         # showing this switch on a machine where hardware.myGpu isn't
         # "amd"/"amd-legacy" (see hosts/roudix/local.nix).
         current_gpu = get_string_option("hardware.myGpu", "amd")
-        self.system_toggles = [
+        self.system_toggles = host_filter_items([
             t for t in SYSTEM_TOGGLES
             if t["id"] != "undervoltAmd" or current_gpu in ("amd", "amd-legacy")
-        ]
+        ])
         system_current = {
             t["id"]: get_bool_option(t["key"], t["default"], path=t.get("file", CONFIG_FILE))
             for t in self.system_toggles
@@ -1952,6 +2008,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._update_integration_visibility(current_de)
         self._update_filemanager_visibility(current_de)
         self._update_icon_theme_visibility(current_de)
+        self._apply_host_filter()
 
         # ── Integrated terminal ───────────────────────────────────────────
         # Hidden by default: while no rebuild is running, this frame is
@@ -2090,6 +2147,110 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             GLib.source_remove(self._pulse_source)
             self._pulse_source = None
         self.progress_bar.set_visible(False)
+
+    # ── per-host option filter (see host_listed_options) ─────────────────
+    @staticmethod
+    def _make_hideable(widget):
+        """Several _update_* callbacks keep calling widget.set_visible(...)
+        depending on other answers; wrap it so a widget hidden because the
+        host doesn't list its option stays hidden whatever they ask for."""
+        if getattr(widget, "_host_hideable", False):
+            return
+        original = widget.set_visible
+        widget._host_hidden = False
+        widget._host_original_set_visible = original
+        widget._host_hideable = True
+        widget.set_visible = lambda visible, _w=widget, _o=original: _o(False if _w._host_hidden else visible)
+
+    def _host_hide(self, widget, hidden: bool):
+        if widget is None:
+            return
+        self._make_hideable(widget)
+        widget._host_hidden = hidden
+        if hidden:
+            widget._host_original_set_visible(False)
+
+    def _apply_host_filter(self):
+        """Hide the widgets/pages whose option isn't listed in
+        hosts/<host>/local.nix.example (only for hosts carrying the
+        `only-listed` marker). Hidden widgets keep the value read from
+        local.nix, so on_apply() sees no change for them and never writes
+        anything for them."""
+        if HOST_LISTED is None:
+            return
+        scratchpad_keys = [scratchpad_option_key(d) for d in SCRATCHPAD_SUPPORTED_DE]
+        zen_mod_keys = ["roudix.zen.mods", "roudix.zen.sine.mods"]
+        # category -> [(widget, shown)]
+        pages = {
+            "desktop": [
+                (self.de_selector,     host_lists("roudix.desktop.type")),
+                (self.shell_selector,  host_lists("roudix.desktop.shell")),
+                (self.scratchpad_row,  host_lists(*scratchpad_keys)),
+                (self.scratchpad_note, host_lists(*scratchpad_keys)),
+            ],
+            "gaming": [
+                (self.gaming_header,       host_lists("roudix.gaming.enable")),
+                (self.gaming_sep,          host_lists("roudix.gaming.enable")),
+                (self.gaming_apps_group,   bool(self.gaming_apps)),
+                (self.gaming_extras_label, bool(self.gaming_extras)),
+                (self.gaming_extras_group, bool(self.gaming_extras)),
+            ],
+            "content_creation": [
+                (self.cc_master_row,           host_lists("roudix.contentCreation.enable")),
+                (self.cc_group,                bool(self.cc_toggles)),
+                (self.obs_plugins_group,       bool(self.obs_plugins)),
+                (self.video_editor_selector,   host_lists("roudix.contentCreation.videoEditor")),
+            ],
+            "editor":      [(self.editor_selector,      host_lists("roudix.editor"))],
+            "terminal":    [(self.terminal_selector,    host_lists("roudix.terminal"))],
+            "browser": [
+                (self.browser_group,         host_lists("roudix.browsers")),
+                (self.zen_row,               host_lists("roudix.zen.enable")),
+                (self.zen_variant_selector,  host_lists("roudix.zen.variant")),
+                (self.sine_row,              host_lists("roudix.zen.sine.enable")),
+                (self.sine_note,             host_lists(*zen_mod_keys)),
+                (self.zen_mods_group,        host_lists(*zen_mod_keys)),
+                (self.zen_mods_placeholder,  host_lists(*zen_mod_keys)),
+            ],
+            "login_shell": [(self.login_shell_selector, host_lists("roudix.shell"))],
+            "filemanager": [(self.filemanager_selector, host_lists("roudix.fileManager"))],
+            "chat": [
+                (self.matrix_selector,   host_lists("roudix.matrixClient")),
+                (self.discord_selector,  host_lists("roudix.discord")),
+                (self.telegram_selector, host_lists("roudix.telegram")),
+            ],
+            "apps": [
+                (self.apps_group,             bool(self.apps_toggles)),
+                (self.video_player_selector,  host_lists("roudix.videoPlayer")),
+                (self.torrent_client_selector, host_lists("roudix.torrentClient")),
+                (self.music_player_selector,  host_lists("roudix.musicPlayer")),
+                (self.mail_client_selector,   host_lists("roudix.mailClient")),
+            ],
+            "system": [
+                (self.system_group,     bool(self.system_toggles)),
+                (self.rgb_selector,     host_lists("roudix.rgb")),
+                (self.branch_selector,  host_lists("roudix.autoupdate.branch")),
+            ],
+            "integration": [(self.integration_selector, host_lists("roudix.desktopIntegration"))],
+            "icon_theme":  [(self.icon_theme_selector,  host_lists("roudix.iconTheme"))],
+        }
+        for cat_id, widgets in pages.items():
+            for widget, shown in widgets:
+                self._host_hide(widget, not shown)
+            row = self._category_rows[cat_id]
+            page_hidden = not any(shown for _w, shown in widgets)
+            self._host_hide(row, page_hidden)
+            if cat_id == "gaming":
+                self._host_hide(self.gaming_counter_label, page_hidden)
+
+        # Land on the first page that is still there.
+        selected = self.category_list.get_selected_row()
+        if selected is None or getattr(selected, "_host_hidden", False):
+            for cat_id in pages:
+                row = self._category_rows[cat_id]
+                if row.get_visible() and not getattr(row, "_host_hidden", False):
+                    self.category_list.select_row(row)
+                    break
 
     def _on_category_selected(self, listbox, row):
         if row is None:
@@ -2261,10 +2422,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         zen_mods_changed = new_zen_mods != cur_zen_mods
 
         # Gaming apps: independent booleans, only touch the ones that changed
-        gaming_changes = _diff_bool_items(GAMING_APPS, self.gaming_apps_group.get_states())
+        gaming_changes = _diff_bool_items(self.gaming_apps, self.gaming_apps_group.get_states())
 
         # Extra gaming tweaks (ananicy, GTA fix)
-        gaming_extras_changes = _diff_bool_items(GAMING_EXTRAS, self.gaming_extras_group.get_states())
+        gaming_extras_changes = _diff_bool_items(self.gaming_extras, self.gaming_extras_group.get_states())
 
         # Master switch for the gaming group
         cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
@@ -2277,9 +2438,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_cc_master = self.cc_master_switch.get_active()
         cc_master_changed = new_cc_master != cur_cc_master
 
-        cc_changes = _diff_bool_items(CONTENT_CREATION_TOGGLES, self.cc_group.get_states())
+        cc_changes = _diff_bool_items(self.cc_toggles, self.cc_group.get_states())
 
-        obs_plugins_changes = _diff_bool_items(OBS_PLUGINS, self.obs_plugins_group.get_states())
+        obs_plugins_changes = _diff_bool_items(self.obs_plugins, self.obs_plugins_group.get_states())
 
         cur_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
         new_video_editor = self.video_editor_selector.selected_id
@@ -2312,7 +2473,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         telegram_changed = new_telegram != cur_telegram
 
         # Optional apps (GIMP, Inkscape, SongRec, EasyEffects...)
-        apps_changes = _diff_bool_items(APPS_TOGGLES, self.apps_group.get_states())
+        apps_changes = _diff_bool_items(self.apps_toggles, self.apps_group.get_states())
 
         # Independent system toggles
         system_changes = _diff_bool_items(self.system_toggles, self.system_group.get_states())

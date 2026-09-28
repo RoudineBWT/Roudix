@@ -1,7 +1,7 @@
 { ... }: {
   fish = ''
     set de $argv[1]
-    set config_file "$NH_FLAKE/hosts/roudix/local.nix"
+    set config_file "$NH_FLAKE/hosts/"(hostname)"/local.nix"
 
     if test -z "$de"
       echo "Usage: roudix-switch [niri|gnome|kde|hyprland|mangowc|umbriel]"
@@ -32,7 +32,7 @@
   bash = ''
     roudix-switch() {
       local de="$1"
-      local config_file="$NH_FLAKE/hosts/roudix/local.nix"
+      local config_file="$NH_FLAKE/hosts/$(hostname)/local.nix"
 
       if [[ -z "$de" ]]; then
         echo "Usage: roudix-switch [niri|gnome|kde|hyprland|mangowc|umbriel]"
