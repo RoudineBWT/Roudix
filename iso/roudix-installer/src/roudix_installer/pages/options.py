@@ -1,6 +1,6 @@
 from gi.repository import Adw, Gtk
 
-from roudix_installer import host_profile
+from roudix_installer import host_defaults, host_profile
 from roudix_installer.hardware_detect import detect_cpu, detect_gpu
 from roudix_installer.i18n import L
 from roudix_installer.ui_helpers import page_with_header
@@ -546,6 +546,21 @@ class OptionsPage(Adw.NavigationPage):
         )
         box.append(user_group)
         box.append(self.password_warning)
+
+        # ── Answers pre-filled from the chosen profile ──
+        # For a profile that lists its options (nixie), start from the values
+        # of its local.nix.example instead of the wizard's generic defaults.
+        # Done before hardware detection below, so a detected GPU/CPU still
+        # wins over the example's (which describes one specific machine).
+        seeded = host_defaults.seed_state(state, state.hostname, allowed=self._seed_allowed())
+        if seeded:
+            box.append(Gtk.Label(
+                label=L(
+                    f"Réponses préremplies avec les valeurs du profil « {state.hostname} ».",
+                    f"Answers pre-filled with the \u201c{state.hostname}\u201d profile's values.",
+                ),
+                css_classes=["dim-label", "caption"], wrap=True, xalign=0,
+            ))
 
         # ── Hardware ──
         gpu_detected, nvidia_laptop_detected = detect_gpu()
@@ -1268,6 +1283,44 @@ class OptionsPage(Adw.NavigationPage):
         "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row"],
         "cc_group": ["content_creation_row", "obs_row", "video_editor_row", "virtual_camera_row", "chatterino_row"],
     }
+
+    @staticmethod
+    def _seed_allowed():
+        """Values each row can actually show — an example value outside these
+        is ignored (a combo would silently fall back to its first entry)."""
+        def vals(pairs):
+            return [v for v, _ in pairs]
+        return {
+            "gpu": ["amd", "amd-legacy", "nvidia", "intel"],
+            "cpu": ["amd", "intel"],
+            "kernel": vals(_kernels()),
+            "kernel_chaotic": vals(_kernels_chaotic()),
+            "browser": vals(_browsers()),
+            "desktop": vals(_desktops()),
+            "desktop_shell": lambda st: vals(_shells(st.desktop)),
+            "default_shell": vals(_default_shells()),
+            "terminal": vals(_terminals()),
+            "file_manager": vals(_file_managers()),
+            "editor": vals(_editors()),
+            "desktop_integration": vals(_desktop_integrations()),
+            "rgb": vals(_rgb_options()),
+            "bootloader": vals(_bootloaders()),
+            "branch": vals(_branches()),
+            "matrix_client": vals(_matrix()),
+            "discord": vals(_discord()),
+            "telegram": vals(_telegram()),
+            "video_player": vals(_video_player()),
+            "torrent_client": vals(_torrent_client()),
+            "music_player": vals(_music_player()),
+            "mail_client": vals(_mail_client()),
+            "password_manager": vals(_password_manager()),
+            "spicetify_theme": vals(_spicetify_themes()),
+            "timezone": vals(_timezones()),
+            "locale": vals(_locales()),
+            "keymap": vals(_keymaps()),
+            "zen_variant": ["twilight", "beta"],
+            "memory_type": ["ddr5", "ddr4"],
+        }
 
     @staticmethod
     def _make_hideable(widget):
