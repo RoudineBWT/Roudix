@@ -35,12 +35,23 @@ class DiskChoice:
 class InstallState:
     username: str = "roudine"
     password: str = ""  # plaintext, in-memory only — only the hash is ever written to disk
+    hostname: str = "roudix"  # matches hosts/<hostname>/ in the repo AND becomes
+                               # networking.hostName — nh/nixos-rebuild pick the
+                               # nixosConfigurations attribute to build from the
+                               # running machine's own hostname, so these two must
+                               # stay equal. Must be an existing hosts/<hostname>/
+                               # directory (with configuration.nix already committed
+                               # on the selected branch) — this installer patches
+                               # local.nix/username.nix into it, it does not invent
+                               # a new host profile from scratch.
 
     disk: DiskChoice = field(default_factory=DiskChoice)
 
     # ── Hardware ──────────────────────────────────────────────────────────
     gpu: str = "amd"                 # amd | amd-legacy | nvidia | intel
     nvidia_laptop: bool = False
+    laptop: bool = False             # roudix.laptop.enable — TLP, force-disables tuned
+    laptop_thinkpad: bool = False    # roudix.laptop.thinkpad — 40/80% charge thresholds
     undervolt_enable: bool = False   # roudix.undervolt.only-amd.enable — AMD/AMD-legacy only (lact)
     cpu: str = "amd"                 # amd | intel
     kernel: str = "cachyos-latest-v3"        # hardware.myKernel (xddxdd) — used when gpu != "nvidia"
@@ -112,7 +123,7 @@ class InstallState:
     telegram: str = "none"           # roudix.telegram — none | telegram | ayugram
     video_player: str = "vlc"        # roudix.videoPlayer — vlc | clapper | mpv | celluloid | none
     torrent_client: str = "none"     # roudix.torrentClient — none | qbittorrent | fragments | deluge
-    music_player: str = "spotify"    # roudix.musicPlayer — spotify | ytmdesktop | none
+    music_player: str = "spotify"    # roudix.musicPlayer — spotify | ytmdesktop | sonora | none
     waydroid_enable: bool = False
 
     # ── Optional common apps (roudix.apps.*, all true by default) ──────────

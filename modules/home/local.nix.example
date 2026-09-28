@@ -95,49 +95,51 @@
   # };
 
   # ── KDE overrides ────────────────────────────────────────────────────────
+  # Roudix applies its KDE look once (first login), so you normally just
+  # change things in System Settings. Everything below is only for pinning a
+  # value declaratively: plasma-manager re-applies it on EVERY rebuild.
 
-  # Override wallpaper
+  # Override wallpaper (still defined by the repo -> mkForce)
   # programs.plasma.workspace.wallpaper = lib.mkForce "/home/youruser/Pictures/my-wallpaper.jpg";
 
-  # Override color scheme
-  # programs.plasma.colorscheme = lib.mkForce "Catppuccin-Mocha";
+  # Pin color scheme / icons / cursor (no mkForce: the repo doesn't set them)
+  # programs.plasma.workspace.colorScheme = "BreezeDark";
+  # programs.plasma.workspace.iconTheme = "Papirus-Dark";
 
-  # Override Kickoff icon
+  # Override the panel (still defined by the repo -> mkForce)
   # programs.plasma.panels = lib.mkForce [{ ... }];
 
   # ── GNOME overrides ──────────────────────────────────────────────────────
+  # Roudix ships GNOME's look as dconf DEFAULTS: change it in Settings/Tweaks
+  # and it sticks across rebuilds. Setting a key here instead PINS it: it is
+  # re-applied on every rebuild and overrides the UI. (No mkForce needed.)
 
-  # Override light wallpaper
+  # Pin light wallpaper
   # dconf.settings."org/gnome/desktop/background".picture-uri =
-  #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper.png";
+  #   "file:///home/youruser/Pictures/my-wallpaper.png";
 
-  # Override dark wallpaper
+  # Pin dark wallpaper
   # dconf.settings."org/gnome/desktop/background".picture-uri-dark =
-  #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+  #   "file:///home/youruser/Pictures/my-wallpaper-dark.png";
 
-  # Override screensaver wallpaper
+  # Pin screensaver wallpaper
   # dconf.settings."org/gnome/desktop/screensaver".picture-uri =
-  #   lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+  #   "file:///home/youruser/Pictures/my-wallpaper-dark.png";
 
-  # Override light/dark mode
+  # Pin light/dark mode
   # dconf.settings."org/gnome/desktop/interface".color-scheme =
-  #   lib.mkForce "prefer-light"; # or "prefer-dark"
+  #   "prefer-light"; # or "prefer-dark"
 
-  # Override GTK theme
-  # dconf.settings."org/gnome/desktop/interface".gtk-theme =
-  #   lib.mkForce "adw-gtk3";
+  # Pin GTK theme
+  # dconf.settings."org/gnome/desktop/interface".gtk-theme = "adw-gtk3";
 
-  # Override icon theme
-  # dconf.settings."org/gnome/desktop/interface".icon-theme =
-  #   lib.mkForce "Papirus";
+  # Pin icon theme
+  # dconf.settings."org/gnome/desktop/interface".icon-theme = "Papirus";
 
-  # Override cursor theme
-  # dconf.settings."org/gnome/desktop/interface".cursor-theme =
-  #   lib.mkForce "capitaine-cursors";
-  # dconf.settings."org/gnome/desktop/interface".cursor-size =
-  #   lib.mkForce 32;
+  # Pin cursor theme
+  # dconf.settings."org/gnome/desktop/interface".cursor-theme = "capitaine-cursors";
+  # dconf.settings."org/gnome/desktop/interface".cursor-size = 32;
 
-  # Override system font
-  # dconf.settings."org/gnome/desktop/interface".font-name =
-  #   lib.mkForce "Inter 11";
+  # Pin system font
+  # dconf.settings."org/gnome/desktop/interface".font-name = "Inter 11";
 }

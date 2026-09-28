@@ -3,8 +3,6 @@ let
   desktopType = osConfig.roudix.desktop.type;
   shellType = osConfig.roudix.desktop.shell or "noctalia";
   isHyprlandOrNiri = desktopType == "hyprland" || desktopType == "niri";
-
-  brandingWallpaper = "${roudixBranding}/share/backgrounds/roudix/roudix-dark.png";
 in
 {
   home.username = username;
@@ -78,7 +76,10 @@ in
     createDirectories = true;
   };
 
-  dconf.settings = {
+  # On GNOME this key is a system dconf *default* instead (see
+  # modules/system/desktop/gnome.nix), so that changing it in Tweaks sticks
+  # across rebuilds. home-manager's dconf.settings would reset it every switch.
+  dconf.settings = lib.mkIf (desktopType != "gnome") {
     "org/gnome/desktop/interface" = {
       gtk-enable-primary-paste = true;
     };

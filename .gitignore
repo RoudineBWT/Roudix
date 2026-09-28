@@ -1,7 +1,7 @@
-hosts/roudix/local.nix
-hosts/roudix/hardware-configuration.nix
+hosts/*/local.nix
+hosts/*/hardware-configuration.nix
+hosts/*/username.nix
 modules/home/local.nix
-hosts/roudix/username.nix
 modules/system/boot/boot.local.nix
 dotfiles/perso/*
 !dotfiles/perso/README.md

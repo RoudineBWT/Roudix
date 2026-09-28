@@ -1,5 +1,6 @@
 from gi.repository import Adw, Gtk
 
+from roudix_installer import host_defaults, host_profile
 from roudix_installer.hardware_detect import detect_cpu, detect_gpu
 from roudix_installer.i18n import L
 from roudix_installer.ui_helpers import page_with_header
@@ -116,12 +117,18 @@ def _mark_detected(pairs, detected_value):
     ]
 
 
-def _shells(desktop_hint_hypr=True):
+def _shells(desktop=None):
+    # Umbriel only has Noctalia support so far; Caelestia's setup is
+    # Hyprland-specific (its Quickshell config assumes Hyprland's IPC), so it
+    # only makes sense to offer it there. Niri/MangoWC get Noctalia + DMS.
+    if desktop == "umbriel":
+        return [("noctalia", L("Noctalia — shell par défaut", "Noctalia — default shell"))]
+
     base = [
         ("noctalia", L("Noctalia — shell par défaut", "Noctalia — default shell")),
         ("dms", "DankMaterialShell — Material 3"),
     ]
-    if desktop_hint_hypr:
+    if desktop == "hyprland":
         base = base + [
             (
                 "caelestia",
@@ -264,6 +271,7 @@ def _music_player():
     return [
         ("spotify", L("Spotify + Spicetify (défaut)", "Spotify + Spicetify (default)")),
         ("ytmdesktop", "YouTube Music Desktop"),
+        ("sonora", "Sonora (Spotify / YouTube Music)"),
         ("none", L("Aucun", "None")),
     ]
 
@@ -272,6 +280,10 @@ def _mail_client():
     return [
         ("none", L("Aucun", "None")),
         ("thunderbird", L("Thunderbird (complet)", "Thunderbird (full-featured)")),
+        (
+            "betterbird",
+            L("Betterbird (fork de Thunderbird)", "Betterbird (Thunderbird fork)"),
+        ),
         ("geary", L("Geary (léger, GNOME)", "Geary (lightweight, GNOME)")),
     ]
 
@@ -517,6 +529,7 @@ class OptionsPage(Adw.NavigationPage):
         self.username_row.set_text(state.username)
         user_group.add(self.username_row)
 
+
         self.password_row = Adw.PasswordEntryRow(title=L("Mot de passe", "Password"))
         user_group.add(self.password_row)
 
@@ -533,6 +546,21 @@ class OptionsPage(Adw.NavigationPage):
         )
         box.append(user_group)
         box.append(self.password_warning)
+
+        # ── Answers pre-filled from the chosen profile ──
+        # For a profile that lists its options (nixie), start from the values
+        # of its local.nix.example instead of the wizard's generic defaults.
+        # Done before hardware detection below, so a detected GPU/CPU still
+        # wins over the example's (which describes one specific machine).
+        seeded = host_defaults.seed_state(state, state.hostname, allowed=self._seed_allowed())
+        if seeded:
+            box.append(Gtk.Label(
+                label=L(
+                    f"Réponses préremplies avec les valeurs du profil « {state.hostname} ».",
+                    f"Answers pre-filled with the \u201c{state.hostname}\u201d profile's values.",
+                ),
+                css_classes=["dim-label", "caption"], wrap=True, xalign=0,
+            ))
 
         # ── Hardware ──
         gpu_detected, nvidia_laptop_detected = detect_gpu()
@@ -575,6 +603,42 @@ class OptionsPage(Adw.NavigationPage):
         self.nvidia_laptop_row.set_active(state.nvidia_laptop)
         hw_group.add(self.nvidia_laptop_row)
 
+        self.laptop_row = Adw.SwitchRow(
+            title=L(
+                "Ordinateur portable (TLP)",
+                "Laptop (TLP)",
+            )
+        )
+        self.laptop_row.set_active(state.laptop)
+        hw_group.add(self.laptop_row)
+
+        # roudix.laptop.enable force-disables tuned (see
+        # modules/system/power/laptop.nix) — surface the same trade-off
+        # here that the gaming module warns about at eval time.
+        self.laptop_gaming_note = Gtk.Label(
+            label=L(
+                "Désactive tuned au profit de TLP : si le jeu est aussi activé, "
+                "game-performance lancera les jeux normalement mais sans le "
+                "profil CPU roudix-gaming.",
+                "Disables tuned in favor of TLP: if gaming is also enabled, "
+                "game-performance will still launch games normally but "
+                "without the roudix-gaming CPU profile.",
+            ),
+            css_classes=["dim-label", "caption"],
+            wrap=True,
+            xalign=0,
+            visible=False,
+        )
+
+        self.thinkpad_row = Adw.SwitchRow(
+            title=L(
+                "ThinkPad (seuils de charge batterie 40/80%)",
+                "ThinkPad (40/80% battery charge thresholds)",
+            )
+        )
+        self.thinkpad_row.set_active(state.laptop_thinkpad)
+        hw_group.add(self.thinkpad_row)
+
         self.undervolt_row = Adw.SwitchRow(
             title=L(
                 "Undervolting GPU AMD (lact, amdgpu.ppfeaturemask)",
@@ -594,6 +658,7 @@ class OptionsPage(Adw.NavigationPage):
         self.kernel_row = self._combo(L("Kernel", "Kernel"), _kernels(), state.kernel)
         hw_group.add(self.kernel_row)
         box.append(hw_group)
+        box.append(self.laptop_gaming_note)
 
         if gpu_detected or cpu_detected:
             hw_note = Gtk.Label(
@@ -674,7 +739,7 @@ class OptionsPage(Adw.NavigationPage):
 
         self.shell_row = self._combo(
             L("Shell graphique (bar/UI)", "Graphical shell (bar/UI)"),
-            _shells(),
+            _shells(state.desktop),
             state.desktop_shell,
         )
         desktop_group.add(self.shell_row)
@@ -856,7 +921,7 @@ class OptionsPage(Adw.NavigationPage):
         box.append(rgb_group)
         self._sync_memory_rows()
 
-        rgb_note = Gtk.Label(
+        self.rgb_note = rgb_note = Gtk.Label(
             label=L(
                 "SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via "
                 "« i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' ».",
@@ -961,6 +1026,7 @@ class OptionsPage(Adw.NavigationPage):
         extra_group.add(self.waydroid_row)
         box.append(extra_group)
         self._sync_autoupdate_row()
+        self._sync_laptop_row()
 
         # ── Apps ──
         apps_group = Adw.PreferencesGroup(
@@ -1121,6 +1187,8 @@ class OptionsPage(Adw.NavigationPage):
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_undervolt_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
+        self.laptop_row.connect("notify::active", lambda *_: self._sync_laptop_row())
+        self.gaming_row.connect("notify::active", lambda *_: self._sync_laptop_row())
         self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
         self.rgb_row.connect("notify::selected", lambda *_: self._sync_memory_rows())
@@ -1136,6 +1204,13 @@ class OptionsPage(Adw.NavigationPage):
             "notify::active", lambda *_: self._sync_autoupdate_row()
         )
 
+        self._init_host_filter({
+            "hw_group": hw_group, "browser_group": browser_group,
+            "desktop_group": desktop_group, "sys_group": sys_group,
+            "rgb_group": rgb_group, "extra_group": extra_group,
+            "apps_group": apps_group, "cc_group": cc_group,
+        })
+
         next_btn = Gtk.Button(
             label=L("Continuer", "Continue"),
             css_classes=["suggested-action", "pill"],
@@ -1146,6 +1221,158 @@ class OptionsPage(Adw.NavigationPage):
         box.append(next_btn)
 
         self.set_child(page_with_header(L("Options", "Options"), scroller))
+
+
+    # ── per-host question filter (see host_profile.py) ───────────────────
+    # row attribute -> nix option(s) it sets. A row is shown when any of
+    # its options is listed in the host's local.nix.example.
+    HOST_ROW_KEYS = {
+        "gpu_row": ["hardware.myGpu"], "nvidia_laptop_row": ["hardware.nvidiaLaptop"],
+        "laptop_row": ["roudix.laptop.enable"], "thinkpad_row": ["roudix.laptop.thinkpad"],
+        "laptop_gaming_note": ["roudix.gaming.enable"],
+        "undervolt_row": ["roudix.undervolt.only-amd.enable"], "cpu_row": ["hardware.myCpu"],
+        "kernel_row": ["hardware.myKernel", "hardware.myKernelChaotic"],
+        "browser_row": ["roudix.browsers"], "brave_variant_row": ["roudix.browsers"],
+        "zen_row": ["roudix.zen.enable"], "zen_variant_row": ["roudix.zen.variant"],
+        "zen_mods_row": ["roudix.zen.mods"], "zen_sine_row": ["roudix.zen.sine.enable"],
+        "zen_sine_mods_row": ["roudix.zen.sine.mods"],
+        "desktop_row": ["roudix.desktop.type"], "shell_row": ["roudix.desktop.shell"],
+        "default_shell_row": ["roudix.shell"], "terminal_row": ["roudix.terminal"],
+        "file_manager_row": ["roudix.fileManager"], "editor_row": ["roudix.editor"],
+        "desktop_integration_row": ["roudix.desktopIntegration"],
+        "vm_guest_row": ["roudix.vmGuest.enable"], "gaming_row": ["roudix.gaming.enable"],
+        "ananicy_row": ["roudix.gaming.ananicy.enable"],
+        "millennium_row": ["roudix.gaming.steam.millennium.enable"],
+        "mesa_git_row": ["roudix.mesa.useGit"], "timezone_row": ["time.timeZone"],
+        "locale_row": ["i18n.defaultLocale"], "keymap_row": ["console.keyMap"],
+        "gfx_keyboard_row": ["roudix.keyboardLayout"],
+        "rgb_row": ["roudix.rgb"], "rgb_note": ["roudix.rgb"],
+        "memory_rgb_row": ["roudix.memory.enable"], "memory_type_row": ["roudix.memory.type"],
+        "memory_smbus_row": ["roudix.memory.smBus"], "memory_sku_row": ["roudix.memory.sku"],
+        "gta_fix_row": ["roudix.hosts.gtaFix.enable"], "flatpak_row": ["roudix.flatpak.enable"],
+        "virt_row": ["roudix.virtualization.enable"], "autoupdate_row": ["roudix.autoupdate.enable"],
+        "autoupdate_interval_row": ["roudix.autoupdate.interval"],
+        "branch_row": ["roudix.autoupdate.branch"], "bootloader_row": ["roudix.boot.bootloader"],
+        "matrix_row": ["roudix.matrixClient"], "discord_row": ["roudix.discord"],
+        "telegram_row": ["roudix.telegram"], "video_player_row": ["roudix.videoPlayer"],
+        "torrent_client_row": ["roudix.torrentClient"], "music_player_row": ["roudix.musicPlayer"],
+        "mail_client_row": ["roudix.mailClient"], "password_manager_row": ["roudix.passwordManager"],
+        "waydroid_row": ["roudix.waydroid.enable"],
+        "app_gimp_row": ["roudix.apps.gimp.enable"], "app_inkscape_row": ["roudix.apps.inkscape.enable"],
+        "app_songrec_row": ["roudix.apps.songrec.enable"], "app_easyeffects_row": ["roudix.apps.easyeffects.enable"],
+        "app_signal_row": ["roudix.apps.signal.enable"], "app_zapzap_row": ["roudix.apps.zapzap.enable"],
+        "app_fluxer_row": ["roudix.apps.fluxer.enable"],
+        "spicetify_theme_row": ["roudix.spicetify.theme"],
+        "spicetify_color_scheme_row": ["roudix.spicetify.colorScheme"],
+        "spicetify_adblock_row": ["roudix.spicetify.extensions.adblock.enable"],
+        "spicetify_hide_podcasts_row": ["roudix.spicetify.extensions.hidePodcasts.enable"],
+        "spicetify_marketplace_row": ["roudix.spicetify.marketplace.enable"],
+        "content_creation_row": ["roudix.contentCreation.enable"], "obs_row": ["roudix.contentCreation.obs.enable"],
+        "video_editor_row": ["roudix.contentCreation.videoEditor"],
+        "virtual_camera_row": ["roudix.contentCreation.virtualCamera.enable"],
+        "chatterino_row": ["roudix.contentCreation.streaming.chatterino.enable"],
+    }
+    # group -> rows it contains (a group with no visible row is hidden too)
+    HOST_GROUP_ROWS = {
+        "hw_group": ["gpu_row", "nvidia_laptop_row", "laptop_row", "thinkpad_row", "undervolt_row", "cpu_row", "kernel_row"],
+        "browser_group": ["browser_row", "brave_variant_row", "zen_row", "zen_variant_row", "zen_mods_row", "zen_sine_row", "zen_sine_mods_row"],
+        "desktop_group": ["desktop_row", "shell_row", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
+        "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
+        "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
+        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
+        "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row"],
+        "cc_group": ["content_creation_row", "obs_row", "video_editor_row", "virtual_camera_row", "chatterino_row"],
+    }
+
+    @staticmethod
+    def _seed_allowed():
+        """Values each row can actually show — an example value outside these
+        is ignored (a combo would silently fall back to its first entry)."""
+        def vals(pairs):
+            return [v for v, _ in pairs]
+        return {
+            "gpu": ["amd", "amd-legacy", "nvidia", "intel"],
+            "cpu": ["amd", "intel"],
+            "kernel": vals(_kernels()),
+            "kernel_chaotic": vals(_kernels_chaotic()),
+            "browser": vals(_browsers()),
+            "desktop": vals(_desktops()),
+            "desktop_shell": lambda st: vals(_shells(st.desktop)),
+            "default_shell": vals(_default_shells()),
+            "terminal": vals(_terminals()),
+            "file_manager": vals(_file_managers()),
+            "editor": vals(_editors()),
+            "desktop_integration": vals(_desktop_integrations()),
+            "rgb": vals(_rgb_options()),
+            "bootloader": vals(_bootloaders()),
+            "branch": vals(_branches()),
+            "matrix_client": vals(_matrix()),
+            "discord": vals(_discord()),
+            "telegram": vals(_telegram()),
+            "video_player": vals(_video_player()),
+            "torrent_client": vals(_torrent_client()),
+            "music_player": vals(_music_player()),
+            "mail_client": vals(_mail_client()),
+            "password_manager": vals(_password_manager()),
+            "spicetify_theme": vals(_spicetify_themes()),
+            "timezone": vals(_timezones()),
+            "locale": vals(_locales()),
+            "keymap": vals(_keymaps()),
+            "zen_variant": ["twilight", "beta"],
+            "memory_type": ["ddr5", "ddr4"],
+        }
+
+    @staticmethod
+    def _make_hideable(widget):
+        """The _sync_* methods keep calling widget.set_visible(...) to show or
+        hide rows depending on other answers; wrap it so a row hidden by the
+        host profile stays hidden whatever they ask for."""
+        if getattr(widget, "_host_hideable", False):
+            return
+        original = widget.set_visible
+        widget._host_hidden = False
+        widget._host_original_set_visible = original
+        widget._host_hideable = True
+        widget.set_visible = lambda visible, _w=widget, _o=original: _o(False if _w._host_hidden else visible)
+
+    def _init_host_filter(self, groups):
+        self._host_groups = groups
+        self._host_widgets = []          # (widget, [option keys])
+        for attr, keys in self.HOST_ROW_KEYS.items():
+            w = getattr(self, attr, None)
+            if w is not None:
+                self._make_hideable(w)
+                self._host_widgets.append((w, keys))
+        # rows built in loops
+        for attr, row in getattr(self, "gaming_apps_rows", {}).items():
+            self._make_hideable(row)
+            self._host_widgets.append((row, [f"roudix.gaming.apps.{attr}.enable"]))
+        for row in getattr(self, "obs_plugin_rows", {}).values():
+            self._make_hideable(row)
+            self._host_widgets.append((row, ["roudix.contentCreation.obs.enable"]))
+        self._on_hostname_changed()
+
+    def _on_hostname_changed(self):
+        # The host (hosts/<name>/, also networking.hostName) is chosen on the
+        # Welcome page, before this page is built.
+        listed = host_profile.listed_options(self.state.hostname or "roudix")
+        for widget, keys in self._host_widgets:
+            hidden = listed is not None and not any(k in listed for k in keys)
+            widget._host_hidden = hidden
+            widget._host_original_set_visible(not hidden)
+        # let the existing sync methods recompute the dynamic rows
+        for name in ("_sync_nvidia_row", "_sync_undervolt_row", "_sync_laptop_row", "_sync_kernel_row",
+                     "_sync_brave_row", "_sync_shell_row", "_sync_desktop_integration_row",
+                     "_sync_file_manager_row", "_sync_memory_rows", "_sync_zen_rows",
+                     "_sync_spicetify_rows", "_sync_ananicy_row", "_sync_content_creation_rows",
+                     "_sync_autoupdate_row"):
+            try:
+                getattr(self, name)()
+            except Exception:
+                pass
+        for gname, group in self._host_groups.items():
+            rows = [getattr(self, r, None) for r in self.HOST_GROUP_ROWS[gname]]
+            group.set_visible(any(r is not None and not getattr(r, "_host_hidden", False) for r in rows))
 
     # ── helpers ──────────────────────────────────────────────────────────
 
@@ -1179,6 +1406,12 @@ class OptionsPage(Adw.NavigationPage):
             self._selected_value(self.gpu_row) in ("amd", "amd-legacy")
         )
 
+    def _sync_laptop_row(self):
+        self.thinkpad_row.set_visible(self.laptop_row.get_active())
+        self.laptop_gaming_note.set_visible(
+            self.laptop_row.get_active() and self.gaming_row.get_active()
+        )
+
     def _sync_kernel_row(self):
         is_nvidia = self._selected_value(self.gpu_row) == "nvidia"
         pairs = _kernels_chaotic() if is_nvidia else _kernels()
@@ -1202,6 +1435,23 @@ class OptionsPage(Adw.NavigationPage):
     def _sync_shell_row(self):
         desktop = self._selected_value(self.desktop_row)
         self.shell_row.set_visible(desktop in ("niri", "hyprland", "mangowc", "umbriel"))
+
+        pairs = _shells(desktop)
+        values = [v for v, _ in pairs]
+        labels = [l for _, l in pairs]
+        # Keep whatever the user already had selected if it's still a valid
+        # choice for this compositor (e.g. switching mangowc → niri keeps
+        # "dms"); otherwise fall back to noctalia rather than leaving a
+        # now-invalid selection (e.g. "caelestia" surviving a switch away
+        # from hyprland, or anything but noctalia surviving a switch to
+        # umbriel).
+        try:
+            current = self._selected_value(self.shell_row)
+        except (KeyError, IndexError):
+            current = self.state.desktop_shell
+        self.shell_row.set_model(Gtk.StringList.new(labels))
+        self.shell_row.set_selected(values.index(current) if current in values else 0)
+        self._rows[id(self.shell_row)] = values
 
     def _sync_desktop_integration_row(self):
         # GNOME/KDE manage their own keyring/portal stack — this option
@@ -1297,6 +1547,8 @@ class OptionsPage(Adw.NavigationPage):
         s.password = password
         s.gpu = self._selected_value(self.gpu_row)
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()
+        s.laptop = self.laptop_row.get_active()
+        s.laptop_thinkpad = self.thinkpad_row.get_active()
         s.undervolt_enable = self.undervolt_row.get_active()
         s.cpu = self._selected_value(self.cpu_row)
         kernel_value = self._selected_value(self.kernel_row)

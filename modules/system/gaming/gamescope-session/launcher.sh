@@ -17,8 +17,11 @@ refresh_hz() {
   hz=$(drm_info -j 2>/dev/null | jq -r '
     [ .[] | .connectors[]? | select(.status == 1) ] | .[0] as $c |
     if $c == null then empty else
-      ($c.modes | max_by(.hdisplay * .vdisplay) | {hdisplay, vdisplay}) as $native |
-      ([ $c.modes[] | select(.hdisplay == $native.hdisplay and .vdisplay == $native.vdisplay) | .vrefresh ] | max)
+      # 4096x2160 est ignoré par gamescope lui-même (g_badModes) : le garder
+      # fausserait -r si un écran l affiche parmi ses modes.
+      [ $c.modes[] | select(.hdisplay != 4096 or .vdisplay != 2160) ] as $modes |
+      ($modes | max_by(.hdisplay * .vdisplay) | {hdisplay, vdisplay}) as $native |
+      ([ $modes[] | select(.hdisplay == $native.hdisplay and .vdisplay == $native.vdisplay) | .vrefresh ] | max)
     end
   ' 2>/dev/null || true)
 

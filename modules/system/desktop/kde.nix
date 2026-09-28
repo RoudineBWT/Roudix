@@ -31,6 +31,27 @@ lib.mkIf isKde {
     '';
   };
 
+  # ── Config defaults under ~/.config ───────────────────────────────────────
+  # KConfig reads /etc/xdg/<file> as a fallback below ~/.config/<file>: these
+  # are defaults for anything the user never set. Once they change the
+  # setting in System Settings it is stored in their own file and wins; a
+  # rebuild never touches it (unlike plasma-manager's `input.*` /
+  # `kscreenlocker.*`, which are re-written on every activation).
+  #
+  # NumLock: 0 = on, 1 = off, 2 = leave unchanged.
+  environment.etc."xdg/kcminputrc".text = ''
+    [Keyboard]
+    NumLock=0
+  '';
+
+  environment.etc."xdg/kscreenlockerrc".text = ''
+    [Greeter]
+    WallpaperPlugin=org.kde.image
+
+    [Greeter][Wallpaper][org.kde.image][General]
+    Image=${wallpaperDark}
+  '';
+
   # ── Hardware ──────────────────────────────────────────────────────────────
   hardware.bluetooth.enable = true;
 

@@ -1,4 +1,5 @@
-## _layout.nix — Umbriel: [layout], [layout.scrolling].
+## _layout.nix — Umbriel: [layout], [layout.scrolling], [layout.dwindle],
+## [layout.master].
 ##
 ## Docs: https://docs.noctalia.dev/umbriel/layout/
 { ... }:
@@ -12,20 +13,25 @@
     mode = "scrolling";
     gap = 9; # niri: layout { gaps 9 }
 
-    # ⚠ width_presets is rejected by `umbriel validate` ("unknown key
-    # layout.width_presets") even though it's still documented as of this
-    # writing. The window-cycle-width action it fed has also been renamed
-    # to window-cycle-primary-extent/-back (see _binds.nix), so the key
-    # likely moved too (maybe `primary_extent_presets`) but the exact name
-    # isn't confirmed. Check `examples/config.toml` next to your installed
-    # umbriel binary (`readlink -f $(which umbriel)`, look for share/umbriel/)
-    # or `umbriel msg --help` before re-enabling.
-    # width_presets = [ 0.33333 0.5 0.66667 ];
+    # Renamed from `width_presets` (confirmed via docs.noctalia.dev/umbriel/layout/
+    # as of writing: top-level [layout] key, not nested under scrolling/master).
+    # Feeds window-cycle-primary-extent/-back AND window-cycle-secondary-extent/-back
+    # (both extent axes share this one list — see _binds.nix).
+    extent_presets = [ 0.33333 0.5 0.66667 ];
 
     master = {
       position = "left";        # main column on the left, stack on the right
       default_width_fraction = 0.55;
       new_on_top = true;        # a new window joins the top of the stack
+      # new_becomes_master defaults to false (new windows join the stack,
+      # not the master slot) — already what we want for the chat workspace.
+    };
+
+    dwindle = {
+      # Keeps split directions fixed once created instead of re-adapting to
+      # geometry changes — steadier regions on the Zed/Term workspaces
+      # (both dwindle) when windows open/close.
+      preserve_split = true;
     };
 
     scrolling = {
@@ -34,28 +40,22 @@
       # Default is "vertical" (workspaces stacked vertically), which makes
       # the scrolling strip horizontal — the niri-style behavior we want —
       # so no output override is needed here.
-      # ⚠ `default_width_fraction` is rejected here ("unknown key
-      # layout.scrolling.default_width_fraction") even though it's still
-      # documented and referenced by the Window Rules doc, and even though
-      # the same key under [layout.master] above IS accepted — so this
-      # looks like a scrolling-specific move/rename rather than a global
-      # one (possibly to a per-output setting; the Layout doc mentions an
-      # "output-specific default" for the initial scrolling width). Left
-      # commented until the exact name is confirmed; new columns keep
-      # whatever size the client requests in the meantime.
-      # default_width_fraction = 0.5;
-      center_underfull_strip = true;
-      # ⚠ `expand_single_column` is rejected by `umbriel validate`
-      # ("unknown key layout.scrolling.expand_single_column") and isn't
-      # confirmed under another name in the current docs. Umbriel's keys
-      # move fast between versions — re-test later if you want this
-      # behavior (a single column filling the viewport).
-      # expand_single_column = true;
       #
-      # ⚠ `center_focused` (partial niri center-focused-column equivalent)
-      # has the same unconfirmed status. Left commented — decomment to
-      # test, but check `umbriel validate` before reloading.
-      # center_focused = true;
+      # Renamed from `default_width_fraction` (confirmed via
+      # docs.noctalia.dev/umbriel/layout/: scrolling-specific move, distinct
+      # from the still-valid `layout.master.default_width_fraction` above).
+      # Matches the packaged config's own default.
+      default_extent_fraction = 0.5;
+      center_underfull_strip = true;
+      # `expand_single_column` still doesn't exist in the current docs —
+      # confirmed gone, not just renamed. Left out.
+      #
+      # `center_focused` is a string enum, not a bool ("never" | "always" |
+      # "on_overflow" — docs.noctalia.dev/umbriel/layout/), so the old
+      # `= true` would have been rejected anyway. "on_overflow" is the
+      # closest match to niri's center-focused-column behavior: only
+      # recenters once the strip overflows the viewport.
+      center_focused = "on_overflow";
     };
   };
   };

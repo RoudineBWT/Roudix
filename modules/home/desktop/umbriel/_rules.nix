@@ -76,7 +76,6 @@ in
       default_floating = true;
       default_floating_size_px = { width = 1505; height = 755; };
       blur = true;
-      default_pinned = true;
     }
     {
       match.app_id = "^firefox$";
@@ -151,10 +150,6 @@ in
       default_output = "DP-1";
       default_workspace = 4;
       default_fullscreen = true;
-      # Allows tearing on this window (requires tearing=true on output
-      # DP-1, see _output.nix). Umbriel only enables it when the window
-      # is actually fullscreen.
-      tearing = true;
     }
     {
       match.app_id = "^heroic$";
@@ -173,7 +168,18 @@ in
       default_output = "DP-1";
       default_workspace = 4;
       default_fullscreen = true;
+    }
+    # match.content_type = "game" (new selector, docs.noctalia.dev/umbriel/
+    # window-rules/): catches any window Umbriel/the content-type protocol
+    # identifies as a game, so tearing/VRR no longer need to be repeated
+    # per app_id above (steam_app_*, Minecraft previously each set
+    # `tearing = true` by hand). Output DP-1 still needs tearing=true set
+    # globally in _output.nix for async presentation to be allowed at all;
+    # this just requests it whenever content_type says "game".
+    {
+      match.content_type = "game";
       tearing = true;
+      vrr = "always";
     }
     {
       match.app_id = "^firefox$";
@@ -237,6 +243,19 @@ in
       # (scratchpad, sized as a fraction to stay correct across resolution
       # changes) are mutually exclusive, hence the conditional //.
       match.app_id = "^Spotify$";
+      default_output = "DP-3";
+      default_workspace = 2;
+    } // (if scratchpadApps
+          then { default_scratchpad = "music"; default_floating_size = { width = 0.8; height = 0.85; }; default_pinned = true; }
+          else { default_maximize = true; })
+    )
+    (
+    {
+      # Sonora (roudix.musicPlayer = "sonora"): same placement as Spotify.
+      # app_id not verified against a running Sonora yet — unanchored
+      # [Ss]onora on purpose so "sonora" / "Sonora" / "org.*.Sonora" all
+      # match; tighten it once the real app_id is known.
+      match.app_id = "[Ss]onora";
       default_output = "DP-3";
       default_workspace = 2;
     } // (if scratchpadApps

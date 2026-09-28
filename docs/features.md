@@ -36,8 +36,8 @@
 - Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft, or Modrinth App as an alternative — `roudix.gaming.apps.modrinth.enable`) and Vintage Story (via roudix-caches)
 - Each gaming app individually toggleable via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (all `true` by default)
 - Optional [Millennium](https://github.com/SteamClientHomebrew/Millennium) modded Steam client (themes + plugins) — off by default, enable with `roudix.gaming.steam.millennium.enable = true` (or from the installer). Unofficial mod; the `game-performance` sandbox tweak and the Proton compat tools keep working, and setting it back to `false` restores stock Steam
-- Optional console-like Gaming Mode: `roudix.gaming.gamescopeSession.enable` adds a "Steam (Gaming Mode)" session on the login screen (Steam Big Picture in gamescope, VRR/HDR/MangoApp, refresh rate detected at launch). "Switch to Desktop" in Steam opens your desktop, and the "Return to Gaming Mode" app goes back without passing through the login screen. Based on GLF-OS; supports niri, umbriel, GNOME and KDE for now
-- Optional Decky Loader (Steam plugins) via `roudix.gaming.gamescopeSession.decky.enable`, vendored from Jovian-NixOS in `pkgs/decky-loader`; no binary cache, so it is compiled locally on the first rebuild
+- Optional console-like Gaming Mode: `roudix.gaming.gamescopeSession.enable` adds a "Steam (Gaming Mode)" session on the login screen (Steam Big Picture in gamescope, VRR/HDR/MangoApp, refresh rate detected at launch). "Switch to Desktop" in Steam opens your desktop, and the "Return to Gaming Mode" app goes back without passing through the login screen. Based on GLF-OS; supports niri, umbriel, GNOME, KDE, Hyprland and MangoWC
+- Optional Decky Loader (Steam plugins) via `roudix.gaming.gamescopeSession.decky.enable`, fetched from Jovian-NixOS' flake input (`nix flake update jovian` to bump it, no sha to maintain by hand); no binary cache, so it is compiled locally on the first rebuild
 
 ## Desktop (Niri)
 
@@ -70,6 +70,9 @@
 - Unfocused window opacity (0.85)
 - Hotarea overview (corner mouse gesture)
 - Floating snap + drag tile-to-tile
+- Scratchpad support: a generic pool for any window (move/toggle/restore),
+  plus an opt-in (`roudix.mangowc.scratchpadApps`) named scratchpad per
+  app for Discord/Element/Telegram/Spotify — each with its own toggle key
 
 ## Desktop (Umbriel)
 
@@ -121,14 +124,19 @@
 
 ## Music
 
-Pick one via `roudix.musicPlayer` — `"spotify"` (default), `"ytmdesktop"` or
-`"none"`.
+Pick one via `roudix.musicPlayer` — `"spotify"` (default), `"ytmdesktop"`,
+`"sonora"` or `"none"`.
 
 - `"spotify"` — Spotify patched with Spicetify. Local theme, "colorful" by
   default (or "comfy"), plus adblock + hide podcasts extensions — see
   toggles below.
 - `"ytmdesktop"` — YouTube Music Desktop App (unofficial, Electron-based
   YouTube Music client).
+- `"sonora"` — [Sonora](https://github.com/sonorahq/sonora), a native
+  (Rust/GPUI) client for Spotify, YouTube Music, Apple Music, Deezer and
+  Subsonic in a single app. Optional `roudix.sonora.provider` picks the
+  provider it starts on (`"youtube"` = YouTube Music). It doesn't bypass
+  subscriptions: if a service requires one, so does Sonora.
 
 ## Optional common apps
 
@@ -200,5 +208,6 @@ Also available, opt-in (off by default): a torrent client via
 - Video player selectable via `roudix.videoPlayer` — `"vlc"` (widest format support, default), `"clapper"` (modern GTK4 player), `"mpv"` (+ yt-dlp, minimal/streaming), `"celluloid"` (GTK front-end for mpv) or `"none"`; applies on every desktop (used to be Clapper hardcoded on bare compositors only, plus a separate DE-agnostic mpv toggle)
 - AppImage support enabled via `appimage.nix`
 - Waydroid (Android container) — optional, `roudix.waydroid.enable = true`
-- QEMU/KVM + Virt-Manager (optional)
+- QEMU/KVM + Virt-Manager (optional, `roudix.virtualization.enable`)
+- vm-curator (optional, `roudix.virtualization.vmCurator.enable`) — Rust TUI alternative to virt-manager, drives QEMU directly (no libvirt), with 3D acceleration and GPU passthrough support; can be enabled independently or alongside the libvirt stack
 - VM guest optimizations module (clipboard sharing, auto-resize, QEMU agent, Spice)

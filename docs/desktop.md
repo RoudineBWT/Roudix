@@ -31,17 +31,30 @@ roudix-switch kde
 
 ## Graphical shells (Niri, Hyprland & MangoWC only)
 
-For Wayland compositors (Niri, Hyprland, MangoWC), you can switch the shell/bar stack independently from the compositor. Each shell gets its own dotfiles folder.
+For Wayland compositors (Niri, Hyprland, MangoWC), you can switch the shell/bar stack independently from the compositor. For Hyprland, **one configuration tree** (`dotfiles/hyprland/`) contains the common binds and selects the shell from `roudix.desktop.shell`.
 
-| Value | Shell | Dotfiles folders |
-|-------|-------|-----------------|
-| `noctalia` | Noctalia | `dotfiles/niri/` · `dotfiles/hyprland/` · `dotfiles/mangowc/` |
-| `dms` | DankMaterialShell | `dotfiles/niri-dms/` · `dotfiles/hyprland-dms/` · `dotfiles/mangowc-dms/` |
-| `caelestia` | Caelestia | `dotfiles/hyprland-caelestia/` |
+| Value | Shell | Hyprland |
+|-------|-------|----------|
+| `noctalia` | Noctalia | `dotfiles/hyprland/` |
+| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
-**Note:** caelestia is only available on Hyprland. Umbriel doesn't appear in this table — it's Noctalia's own compositor and doesn't support switching shells.
+**Note:** Caelestia is only available on Hyprland. The shell is injected into the session through `ROUDIX_HYPR_SHELL`, so there are no separate `hyprland-dms/` or `hyprland-caelestia/` trees to keep in sync.
 
-To change, edit `hosts/roudix/local.nix`:
+### Shell autostart
+
+Startup depends on the selected shell and compositor, with exactly one startup mechanism per shell:
+
+- **Hyprland + Noctalia:** `noctalia` from the `hyprland.start` Lua hook.
+- **Hyprland + Caelestia:** `caelestia-shell` from the `hyprland.start` Lua hook.
+- **Hyprland + DMS:** DMS user systemd service; Hyprland exports the session environment to systemd at startup.
+- **MangoWC + Noctalia:** `noctalia` from MangoWC `autostart_sh`.
+- **MangoWC + DMS:** DMS user systemd service, reached through `mango-session.target`; MangoWC therefore does not execute `dms run`.
+
+DMS must not be started both by systemd and by the compositor: its official documentation recommends removing `dms run` when the systemd service is used. citeturn1search0turn1search2
+
+
+To change it, edit `hosts/roudix/local.nix`:
 
 ```nix
 roudix.desktop.shell = "noctalia"; # "noctalia", "dms" or "caelestia"
@@ -60,8 +73,6 @@ roudix-shell-switch dms
 ```
 
 > **Note:** `roudix-shell-switch` uses `nh os boot` — changes apply on next reboot.
-
-> **Note:** If the shell-specific dotfiles folder doesn't exist yet in the repo, Nix automatically falls back to the Noctalia folder so the build never breaks.
 
 ---
 
@@ -126,7 +137,17 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 
 Since it's one big text blob rather than a few Nix lines, it fits better in its own file — see `home/mango-custom.nix.example`.
 
-**Hyprland works differently.** Because Hyprland's config language changes too frequently (`.conf` → `.lua` → who knows next), Nix no longer generates any entry-point file for it. The entire dotfiles folder is copied as-is — you own the format. Put whatever `hyprland.conf`, `hyprland.lua`, or other entry point you want directly in `dotfiles/hyprland/cfg/` (or `dotfiles/hyprland-dms/cfg/`, etc.) and Hyprland will pick it up.
+**Hyprland now uses the modular Lua configuration in `dotfiles/hyprland/`.** The entry point is `dotfiles/hyprland/hyprland.lua`, which loads the `config/` modules for monitors, layouts, animations, binds, window rules and shell integrations. Nix copies this tree as-is to `~/.config/hypr/`.
+
+The current configuration targets Hyprland 0.55+ and uses the native `dwindle`, `master` and `scrolling` layouts. The Nix module generates a small `config/nix-plugins.lua` loader before the entry point; `borders-plus-plus` is included by Roudix. The `dynamic_cursors` block remains optional and only applies when that plugin is present.
+
+### Customizing Hyprland
+
+Machine-specific values (the `DP-1`/`DP-3` outputs, primary monitor, default applications, keyboard, etc.) live under `dotfiles/hyprland/config/`. Edit them directly if you keep your Hyprland setup in the Roudix repository.
+
+For personal overrides without changing tracked files, use `home/local.nix` with `xdg.configFile."hypr/..."` and `lib.mkForce`.
+
+> After changing the Lua configuration, run `rebuild`. A session restart may be required for shell or environment changes.
 
 > See `home/niri-custom.nix.example`, `home/umbriel-custom.nix.example`, `home/mango-custom.nix.example` and `home/local.nix.example` for the full list of examples.
 
@@ -156,33 +177,29 @@ roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [ pop-shell ];
 roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 ```
 
-**Wallpaper** (`home/local.nix`)
+**Changing the look by hand (recommended)**
+
+Roudix ships GNOME's look (wallpaper, dark theme, icons, cursor, extension settings) as *defaults*. Change anything in Settings, Tweaks or an extension's preferences and it is yours: a rebuild never reverts it. Roudix updates only change the defaults of settings you have not touched.
+
+**Forcing a value from your config** (`home/local.nix`)
+
+If you would rather pin a value declaratively, set it through home-manager. Unlike the manual route above, it is re-applied on **every** rebuild and overrides what you change in the UI:
 ```nix
 dconf.settings."org/gnome/desktop/background".picture-uri =
-  lib.mkForce "file:///home/youruser/Pictures/my-wallpaper.png";
+  "file:///home/youruser/Pictures/my-wallpaper.png";
 dconf.settings."org/gnome/desktop/background".picture-uri-dark =
-  lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+  "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-light"; # or "prefer-dark"
+dconf.settings."org/gnome/desktop/interface".icon-theme = "Papirus";
+dconf.settings."org/gnome/desktop/interface".cursor-theme = "capitaine-cursors";
+dconf.settings."org/gnome/desktop/interface".cursor-size = 32;
 ```
+No `lib.mkForce` needed: home-manager no longer defines these keys.
 
-**Light/dark mode** (`home/local.nix`)
-```nix
-dconf.settings."org/gnome/desktop/interface".color-scheme =
-  lib.mkForce "prefer-light"; # or "prefer-dark"
-```
-
-**Icon theme** (`home/local.nix`)
-```nix
-dconf.settings."org/gnome/desktop/interface".icon-theme =
-  lib.mkForce "Papirus";
-# Other values: "Papirus-Dark", "Papirus-Light", "hicolor"
-```
-
-**Cursor** (`home/local.nix`)
-```nix
-dconf.settings."org/gnome/desktop/interface".cursor-theme =
-  lib.mkForce "capitaine-cursors";
-dconf.settings."org/gnome/desktop/interface".cursor-size =
-  lib.mkForce 32;
+**Getting the Roudix defaults back** for a setting (or a whole section)
+```sh
+dconf reset /org/gnome/desktop/interface/icon-theme
+dconf reset -f /org/gnome/shell/extensions/dash-to-panel/
 ```
 
 > See `hosts/roudix/local.nix.example` and `home/local.nix.example` for all available GNOME override options.
@@ -191,23 +208,28 @@ dconf.settings."org/gnome/desktop/interface".cursor-size =
 
 ## KDE Plasma overrides
 
-When using `roudix.desktop.type = "kde"`, you can override any plasma-manager setting in `home/local.nix`:
+When using `roudix.desktop.type = "kde"`:
+
+Roudix applies its KDE look **once**, never on every rebuild, so anything you change in System Settings stays:
+
+- **Dark theme, icons, cursor**: applied at first login only, guarded by `~/.local/state/roudix/kde-theme-seeded`. To get the Roudix look back on purpose: `rm ~/.local/state/roudix/kde-theme-seeded` and log out/in.
+- **NumLock on startup, lock-screen wallpaper**: plain KConfig defaults in `/etc/xdg`, which sit below your `~/.config` and never override it.
+- **Wallpaper and panel**: applied by plasma-manager at first login, then only re-run if Roudix itself changes their definition in an update.
+
+**Pinning values from your config** (`home/local.nix`)
+
+Anything you set through plasma-manager is re-applied on **every** rebuild, so use it only for what you want to be declarative:
 
 **Wallpaper**
 ```nix
 programs.plasma.workspace.wallpaper = lib.mkForce "/home/youruser/Pictures/wallpaper.jpg";
 ```
 
-**Icon theme**
+**Color scheme / icons / cursor**
 ```nix
-programs.plasma.workspace.iconTheme = lib.mkForce "Papirus-Dark";
-# Other values: "Papirus", "Papirus-Light", "breeze-dark", "breeze"
-```
-
-**Color scheme / Look & Feel**
-```nix
-programs.plasma.workspace.colorScheme = lib.mkForce "BreezeDark";
-programs.plasma.workspace.lookAndFeel = lib.mkForce "org.kde.breezedark.desktop";
+programs.plasma.workspace.colorScheme = "BreezeDark";
+programs.plasma.workspace.iconTheme = "Papirus-Dark";
+programs.plasma.workspace.cursor.theme = "capitaine-cursors-white";
 ```
 
 **Taskbar / Panels**
@@ -218,7 +240,7 @@ programs.plasma.panels = lib.mkForce [
     widgets = [
       { kickoff.icon = "/path/to/your/icon.svg"; }
       "org.kde.plasma.icontasks"
-      "org.kde.plasma.marginsseperator"
+      "org.kde.plasma.marginsseparator"
       "org.kde.plasma.systemtray"
       "org.kde.plasma.digitalclock"
       "org.kde.plasma.showdesktop"
@@ -227,4 +249,4 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> `lib.mkForce` is required to override the defaults set in `home/desktop/kde/default.nix`.
+> `lib.mkForce` is only needed for `wallpaper` and `panels`, which are still defined in `home/desktop/kde/default.nix`.

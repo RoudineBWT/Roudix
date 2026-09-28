@@ -6,7 +6,7 @@ from typing import Optional
 
 from gi.repository import Adw, Gdk, GLib, Gtk, Pango
 
-from roudix_installer import btrfs_patch, config_gen, disko_gen
+from roudix_installer import btrfs_patch, config_gen, disko_gen, host_profile
 from roudix_installer.i18n import L
 from roudix_installer.ui_helpers import page_with_header
 
@@ -215,8 +215,50 @@ class ProgressPage(Adw.NavigationPage):
     def _start(self):
         threading.Thread(target=self._run, daemon=True).start()
 
+    def _dry_run(self):
+        """ROUDIX_INSTALLER_DRY_RUN=1: never partition, mount or install — only
+        generate the config the wizard *would* write (into a temp dir) and
+        show it, so the wizard can be checked on a normal desktop."""
+        import difflib
+        import shutil
+        import tempfile
+
+        host = self.state.hostname
+        GLib.idle_add(self._set_status, L("Simulation — rien n'est écrit sur les disques", "Dry run — nothing is written to disk"), 0.5)
+        src = host_profile.find_config_root(host)
+        if src is None:
+            raise RuntimeError(L(
+                f"hosts/{host}/local.nix.example introuvable (essaie ROUDIX_CFG_ROOT=<chemin du repo>)",
+                f"hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the repo>)",
+            ))
+        GLib.idle_add(self._log, f"[dry-run] host={host}  branch={self.state.branch}  config from {src}")
+        with tempfile.TemporaryDirectory(prefix="roudix-dry-run-") as tmp:
+            tmp = Path(tmp)
+            for rel in (f"hosts/{host}/local.nix.example", "modules/home/local.nix.example",
+                        "modules/system/boot/boot.local.nix.example"):
+                if (src / rel).is_file():
+                    (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy(src / rel, tmp / rel)
+            config_gen.write_config(self.state, tmp)
+            example = (tmp / f"hosts/{host}/local.nix.example").read_text().splitlines()
+            result = (tmp / f"hosts/{host}/local.nix").read_text().splitlines()
+            username = (tmp / f"hosts/{host}/username.nix").read_text().strip()
+        GLib.idle_add(self._log, f"[dry-run] hosts/{host}/username.nix = {username}")
+        GLib.idle_add(self._log, f"[dry-run] hosts/{host}/local.nix — lines changed vs local.nix.example:")
+        changed = [l for l in difflib.unified_diff(example, result, "local.nix.example", "local.nix", n=0, lineterm="")
+                   if not l.startswith(("---", "+++", "@@"))]
+        for line in changed or ["(none)"]:
+            GLib.idle_add(self._log, line)
+        GLib.idle_add(self._log, f"[dry-run] hosts/{host}/local.nix — full result:")
+        for line in result:
+            GLib.idle_add(self._log, line)
+        GLib.idle_add(self._set_status, L("Simulation terminée — ferme la fenêtre", "Dry run finished — close the window"), 1.0)
+
     def _run(self):
         try:
+            if os.environ.get("ROUDIX_INSTALLER_DRY_RUN"):
+                self._dry_run()
+                return
             self._step_partition()
             self._step_config()
             self._step_install()
@@ -309,41 +351,115 @@ class ProgressPage(Adw.NavigationPage):
 
     # ── Configuration ─────────────────────────────────────────────────────
 
+    def _resolve_branch(self, repo_url: str, branch: str) -> str:
+        """
+        Confirms the chosen branch actually exists on the remote before we
+        rely on it, via a plain `git ls-remote` (no clone needed for that).
+        Best-effort: this is a convenience check, not a hard requirement —
+        if it can't run at all (e.g. `git` not up yet, DNS not ready this
+        early), we just proceed with the branch as chosen and let the real
+        clone/checkout below report any actual failure.
+        """
+        GLib.idle_add(self._log, L(f"Vérification de la branche « {branch} »…", f"Checking branch '{branch}'…"))
+        try:
+            proc = subprocess.run(
+                self._priv(["git", "ls-remote", "--exit-code", "--heads", repo_url, branch]),
+                capture_output=True, text=True, stdin=subprocess.DEVNULL,
+            )
+        except Exception:  # noqa: BLE001 — no git / no network yet: skip the check, don't fail on it
+            return branch
+
+        if proc.returncode == 0 and proc.stdout.strip():
+            return branch
+
+        if branch != "main":
+            GLib.idle_add(
+                self._log,
+                L(
+                    f"Branche « {branch} » introuvable sur {repo_url} — retour sur « main ».",
+                    f"Branch '{branch}' not found on {repo_url} — falling back to 'main'.",
+                ),
+            )
+            return "main"
+        # main itself didn't answer (likely no network at all): let the
+        # clone/copy step below surface that failure clearly instead of
+        # guessing further here.
+        return branch
+
+    def _clone_and_checkout(self, repo_url: str, branch: str):
+        """
+        Explicit clone + checkout (rather than a single `git clone --branch`)
+        so the checkout is its own visible, loggable step and failures are
+        unambiguous: a bad clone fails at "git clone", a branch that vanished
+        between the ls-remote check above and now fails at "git checkout"
+        with git's own error in the log.
+        """
+        self._run_cmd(["git", "clone", repo_url, "/mnt/etc/nixos"])
+        self._run_cmd(["git", "-C", "/mnt/etc/nixos", "checkout", branch])
+
+    def _verify_config_layout(self, branch: str):
+        """
+        Best-effort sanity check that the branch we just checked out still
+        has the files config_gen.write_config() below expects at their usual
+        path. `testing`/`dev` can restructure the repo ahead of `main` — this
+        never blocks the install (that's the "only if possible" part), it
+        just puts a clear warning in the log instead of a confusing failure
+        a few steps later.
+        """
+        host = self.state.hostname
+        example = Path(f"/mnt/etc/nixos/hosts/{host}/local.nix.example")
+        if not example.is_file():
+            GLib.idle_add(
+                self._log,
+                L(
+                    f"Avertissement: hosts/{host}/local.nix.example introuvable sur la branche « {branch} » — "
+                    "la génération de local.nix pourrait échouer.",
+                    f"Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
+                    "local.nix generation may fail.",
+                ),
+            )
+
     def _step_config(self):
         GLib.idle_add(self._set_status, L("Copie de la configuration…", "Copying the configuration…"), 0.4)
         self._run_cmd(["mkdir", "-p", "/mnt/etc/nixos"])
 
-        branch = self.state.branch
+        repo_url = "https://github.com/RoudineBWT/Roudix"
+        branch = self._resolve_branch(repo_url, self.state.branch)
+        self.state.branch = branch  # keep local.nix / autoupdate.branch and the summary in sync
+                                     # with whatever branch we actually end up using (fallback included)
+
         # /iso-cfg is a snapshot of `main` taken when the ISO was built, so it
         # only matches the default choice. Any other branch is cloned from
         # GitHub (needs network in the live session).
         if Path("/iso-cfg").is_dir() and branch == "main":
             self._run_cmd(["cp", "-r", "/iso-cfg/.", "/mnt/etc/nixos/"])
-        elif Path("/iso-cfg").is_dir():
-            GLib.idle_add(
-                self._log,
-                L(
-                    f"Branche « {branch} » choisie — clone depuis GitHub (l'ISO embarque uniquement main).",
-                    f"Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main).",
-                ),
-            )
-            self._run_cmd(["git", "clone", "--branch", branch, "https://github.com/RoudineBWT/Roudix", "/mnt/etc/nixos"])
         else:
-            # /iso-cfg only exists inside an ISO actually built with the
-            # current iso-configuration.nix (isoImage.contents embeds it).
-            # Booted an older ISO, or testing outside one entirely? Fall
-            # back to a plain clone — same source roudix-installer.sh used
-            # before there was an ISO pipeline at all.
-            GLib.idle_add(
-                self._log,
-                L(
-                    "/iso-cfg introuvable (ISO pas (encore) reconstruite avec "
-                    "isoImage.contents, ou test hors ISO) — clone direct depuis GitHub à la place.",
-                    "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, "
-                    "or testing outside an ISO) — cloning straight from GitHub instead.",
-                ),
-            )
-            self._run_cmd(["git", "clone", "--branch", branch, "https://github.com/RoudineBWT/Roudix", "/mnt/etc/nixos"])
+            if Path("/iso-cfg").is_dir():
+                GLib.idle_add(
+                    self._log,
+                    L(
+                        f"Branche « {branch} » choisie — clone depuis GitHub (l'ISO embarque uniquement main).",
+                        f"Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main).",
+                    ),
+                )
+            else:
+                # /iso-cfg only exists inside an ISO actually built with the
+                # current iso-configuration.nix (isoImage.contents embeds it).
+                # Booted an older ISO, or testing outside one entirely? Fall
+                # back to a plain clone — same source roudix-installer.sh used
+                # before there was an ISO pipeline at all.
+                GLib.idle_add(
+                    self._log,
+                    L(
+                        "/iso-cfg introuvable (ISO pas (encore) reconstruite avec "
+                        "isoImage.contents, ou test hors ISO) — clone direct depuis GitHub à la place.",
+                        "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, "
+                        "or testing outside an ISO) — cloning straight from GitHub instead.",
+                    ),
+                )
+            self._clone_and_checkout(repo_url, branch)
+
+        self._verify_config_layout(branch)
 
         GLib.idle_add(self._set_status, L("Détection du matériel…", "Detecting hardware…"), 0.5)
         # Generate into the default location then copy — same as
@@ -353,7 +469,7 @@ class ProgressPage(Adw.NavigationPage):
         # would on physical hardware; disko modes work the same way
         # since disko has already mounted everything by this point.
         self._run_cmd(["nixos-generate-config", "--root", "/mnt"])
-        hw_config = Path("/mnt/etc/nixos/hosts/roudix/hardware-configuration.nix")
+        hw_config = Path(f"/mnt/etc/nixos/hosts/{self.state.hostname}/hardware-configuration.nix")
         self._run_cmd(["cp", "/mnt/etc/nixos/hardware-configuration.nix", str(hw_config)])
 
         patched = btrfs_patch.patch_hardware_config(hw_config)
@@ -368,7 +484,7 @@ class ProgressPage(Adw.NavigationPage):
 
         GLib.idle_add(self._set_status, L("Génération de local.nix / username.nix…", "Generating local.nix / username.nix…"), 0.6)
         config_gen.write_config(self.state, Path("/mnt/etc/nixos"))
-        GLib.idle_add(self._log, L("hosts/roudix/local.nix, username.nix, home/local.nix écrits.", "hosts/roudix/local.nix, username.nix, home/local.nix written."))
+        GLib.idle_add(self._log, L(f"hosts/{self.state.hostname}/local.nix, username.nix, home/local.nix écrits.", f"hosts/{self.state.hostname}/local.nix, username.nix, home/local.nix written."))
 
         # nixos-install --flake resolves /mnt/etc/nixos through Nix's
         # git+file fetcher whenever that directory is a git repo (always
@@ -382,8 +498,8 @@ class ProgressPage(Adw.NavigationPage):
             "bash", "-c",
             "if [ -d /mnt/etc/nixos/.git ]; then "
             "git -C /mnt/etc/nixos add -A; "
-            "for f in hosts/roudix/hardware-configuration.nix hosts/roudix/local.nix "
-            "hosts/roudix/username.nix modules/home/local.nix modules/system/boot/boot.local.nix; do "
+            f"for f in hosts/{self.state.hostname}/hardware-configuration.nix hosts/{self.state.hostname}/local.nix "
+            f"hosts/{self.state.hostname}/username.nix modules/home/local.nix modules/system/boot/boot.local.nix; do "
             "[ -f \"/mnt/etc/nixos/$f\" ] && git -C /mnt/etc/nixos add -f \"$f\"; "
             "done; "
             "fi",
@@ -395,7 +511,7 @@ class ProgressPage(Adw.NavigationPage):
         GLib.idle_add(self._set_status, L("Installation du système…", "Installing the system…"), 0.75)
         self._run_cmd([
             "nixos-install",
-            "--flake", "/mnt/etc/nixos#roudix",
+            "--flake", f"/mnt/etc/nixos#{self.state.hostname}",
             "--no-root-passwd",
             "--option", "accept-flake-config", "true",
         ])

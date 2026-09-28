@@ -1,4 +1,4 @@
-{ config, lib, pkgs, username, ... }:
+{ config, lib, pkgs, inputs, username, ... }:
 let
   cfg         = config.roudix.gaming.gamescopeSession;
   desktopType = config.roudix.desktop.type;
@@ -10,7 +10,6 @@ let
   #   start : command that runs the session and returns when it ends;
   #   quit  : soft logout that ends only the desktop, never the whole
   #           logind session (the wrapper lives in it).
-  # hyprland and mangowc aren't wired yet (see the assertion below).
   desktops = {
     niri = {
       env   = "XDG_CURRENT_DESKTOP=niri XDG_SESSION_DESKTOP=niri DESKTOP_SESSION=niri";
@@ -31,6 +30,16 @@ let
       env   = "XDG_CURRENT_DESKTOP=KDE XDG_SESSION_DESKTOP=plasma DESKTOP_SESSION=plasma";
       start = "${pkgs.kdePackages.plasma-workspace}/libexec/plasma-dbus-run-session-if-needed ${pkgs.kdePackages.plasma-workspace}/bin/startplasma-wayland";
       quit  = "${pkgs.kdePackages.qttools}/bin/qdbus org.kde.Shutdown /Shutdown org.kde.Shutdown.logout";
+    };
+    hyprland = {
+      env   = "XDG_CURRENT_DESKTOP=Hyprland XDG_SESSION_DESKTOP=hyprland DESKTOP_SESSION=hyprland";
+      start = "/run/current-system/sw/bin/uwsm start -- hyprland-uwsm.desktop";
+      quit  = "/run/current-system/sw/bin/hyprctl dispatch exit";
+    };
+    mangowc = {
+      env   = "XDG_CURRENT_DESKTOP=Mango XDG_SESSION_DESKTOP=mangowc DESKTOP_SESSION=mangowc";
+      start = "/run/current-system/sw/bin/mango";
+      quit  = "/run/current-system/sw/bin/mmsg dispatch quit";
     };
   };
   desk = desktops.${desktopType} or null;
@@ -77,11 +86,21 @@ let
     };
   };
 
+  # Detached from steamos-session-select (see that script for why): the
+  # actual Steam shutdown / gamescope fallback-kill work.
+  shutdownWatchdog = pkgs.writeShellApplication {
+    name = "roudix-gaming-shutdown-watchdog";
+    runtimeInputs = [ pkgs.coreutils pkgs.procps pkgs.util-linux ];
+    text = fill ./gamescope-session/shutdown-watchdog.sh { };
+  };
+
   # Name imposed by Steam: it calls this binary from "Switch to Desktop".
   steamosSessionSelect = pkgs.writeShellApplication {
     name = "steamos-session-select";
-    runtimeInputs = [ pkgs.coreutils pkgs.procps ];
-    text = fill ./gamescope-session/steamos-session-select.sh { };
+    runtimeInputs = [ pkgs.coreutils pkgs.util-linux ];
+    text = fill ./gamescope-session/steamos-session-select.sh {
+      watchdog = "${shutdownWatchdog}/bin/roudix-gaming-shutdown-watchdog";
+    };
   };
 
   returnToGamingMode = pkgs.writeShellApplication {
@@ -118,7 +137,9 @@ let
         passthru.providedSessions = [ "roudix-gaming-mode" ];
       });
 
-  deckyPkg      = pkgs.callPackage ../../../pkgs/decky-loader { };
+  # Fetched via the `jovian` flake input (flake.nix), not vendored: see the
+  # comment on that input for why following our own nixpkgs is safe here.
+  deckyPkg      = pkgs.callPackage "${inputs.jovian}/pkgs/decky-loader" { };
   deckyStateDir = "/var/lib/decky-loader";
   userCfg       = config.users.users.${username};
 in
@@ -134,7 +155,7 @@ in
         "Return to Gaming Mode" app (or `roudix-return-to-gaming-mode`) goes
         back, without passing through the login screen.
 
-        Supported desktops: niri, umbriel, gnome, kde (asserted at build).
+        Supported desktops: niri, umbriel, gnome, kde, hyprland, mangowc.
         Based on GLF-OS' gamescope module.
       '';
     };
@@ -166,10 +187,11 @@ in
       default = false;
       description = ''
         Decky Loader (plugins for Steam's Big Picture / Steam Deck UI).
-        Packaged in pkgs/decky-loader, vendored from Jovian-NixOS. No binary
-        cache exists for it: the first rebuild compiles it locally (pnpm
-        frontend + Python). Works on its own, but its UI lives in Big
-        Picture, so it's mostly useful with the Gaming Mode session.
+        Fetched from Jovian-NixOS's flake input (only pkgs/decky-loader, not
+        their overlay/modules). No binary cache exists for it: the first
+        rebuild compiles it locally (pnpm frontend + Python). Works on its
+        own, but its UI lives in Big Picture, so it's mostly useful with the
+        Gaming Mode session.
       '';
     };
   };

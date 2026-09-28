@@ -40,6 +40,7 @@ class RoudixInstallerWindow(Adw.ApplicationWindow):
         self.set_content(self.stack)
 
         self.pages = {}
+        self._built_for = {}  # page name -> hostname it was built for
         self.page_factories = {
             "disk": lambda: DiskPage(self.state, on_next=lambda: self.goto("options")),
             "options": lambda: OptionsPage(self.state, on_next=lambda: self.goto("summary")),
@@ -53,8 +54,13 @@ class RoudixInstallerWindow(Adw.ApplicationWindow):
     def goto(self, name: str):
         # Built on first visit (after language has been chosen on Welcome),
         # then reused — Adw.NavigationView keeps popped pages alive anyway.
+        # Options and Summary depend on the profile picked on Welcome: if the
+        # user went back and chose another one, build them again.
+        if name in ("options", "summary") and self._built_for.get(name) != self.state.hostname:
+            self.pages.pop(name, None)
         if name not in self.pages:
             self.pages[name] = self.page_factories[name]()
+            self._built_for[name] = self.state.hostname
         self.stack.push(self.pages[name])
 
 

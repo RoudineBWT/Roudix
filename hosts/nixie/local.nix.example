@@ -1,0 +1,51 @@
+# roudix-installer: only-listed
+# ── local.nix (nixie) ─────────────────────────────────────────────────────
+# Personal overrides for this specific machine — gitignored, never
+# touched by git pull / roudix-autoupdate.
+# The installers copy this file to hosts/nixie/local.nix and patch it.
+#
+# The marker on the first line tells them to ask ONLY about the options
+# listed below (commented or not) — add a line here to make the wizard ask
+# about it, remove one to hide it. A trailing "# roudix-installer: fixed"
+# keeps a line as-is: never asked, never rewritten by the wizard. Everything not listed keeps the defaults
+# from configuration.nix (which mirror the values below, so a build without
+# a local.nix — CI, for instance — gives the same system).
+# ──────────────────────────────────────────────────────────────────────────
+{ lib, pkgs, ... }:
+{
+  # ── Hardware — ThinkPad L380 (Intel i3/i5-8250U, UHD 620) ────────────────
+  hardware.myGpu    = "intel";                  # "amd", "nvidia" or "intel"
+  hardware.myCpu    = "intel";                  # "intel" or "amd"
+  hardware.myKernel = "cachyos-lts-lto-v3";     # see README for all variants
+
+  # ── Laptop (TLP + thinkpad_acpi) — fixed for this machine ────────────────
+  roudix.laptop.enable   = true; # roudix-installer: fixed
+  roudix.laptop.thinkpad = true; # roudix-installer: fixed
+  roudix.laptop.batteryChargeThresholds.start = 40; # roudix-installer: fixed
+  roudix.laptop.batteryChargeThresholds.stop  = 80; # roudix-installer: fixed
+
+  # ── Desktop & apps ───────────────────────────────────────────────────────
+  roudix.desktop.type = "gnome";                # simplest DE for a non-technical user
+  roudix.browsers     = ["helium"];             # "brave", "helium", "firefox", "vivaldi"...
+  roudix.terminal     = "ghostty";
+  roudix.flatpak.enable = true;                 # easy manual app installs, outside of what you maintain
+
+  # ── Boot ─────────────────────────────────────────────────────────────────
+  roudix.boot.bootloader = "systemd-boot";      # "limine" or "systemd-boot"
+
+  # ── Hands-off updates: the whole point of this host ──────────────────────
+  roudix.autoupdate.enable   = true;
+  roudix.autoupdate.interval = "1h";            # check interval (e.g. 1h, 6h, 24h)
+  roudix.autoupdate.branch   = "main";          # "main" (stable), "testing" or "dev"
+
+  # ── Locale / time / keyboard ─────────────────────────────────────────────
+  time.timeZone                   = "Europe/Brussels";
+  environment.sessionVariables.TZ = "Europe/Brussels";
+  i18n.defaultLocale              = "fr_BE.UTF-8";
+  console.keyMap                  = "be-latin1";
+
+  # --- Gaming -----------------------------------------------------------------
+    roudix.gaming.enable        = true;         # disable to skip Steam, Wine, etc.
+  # Individually disable apps from the gaming group (all true by default):
+  # roudix.gaming.apps.heroic.enable       = false;
+}
