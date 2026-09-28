@@ -127,7 +127,7 @@
     };
     nix-gaming-edge = {
        url = "github:powerofthe69/nix-gaming-edge/nightly";
-       inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     betterbird-nix = {
       url = "github:TheAnachronism/betterbird-nix";
