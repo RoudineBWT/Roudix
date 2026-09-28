@@ -784,6 +784,22 @@
     },
     "nixpkgs_5": {
       "locked": {
+        "lastModified": 1789149629,
+        "narHash": "sha256-H6GwaZzZf+4npqv0tph94w9tZddSjFjmQrVsW0z78uk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "eaad089433ca2bb662274377d33df3d0e51ef28b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_6": {
+      "locked": {
         "lastModified": 1785571196,
         "narHash": "sha256-xwSqxTsama0YTtS78+4YyCm6jJg09v78QWfP1cAyoVA=",
         "rev": "148bab9c1c3c53136ecb44a6ea356a0ed5b39b06",
@@ -795,7 +811,7 @@
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
       }
     },
-    "nixpkgs_6": {
+    "nixpkgs_7": {
       "locked": {
         "lastModified": 1785828668,
         "narHash": "sha256-VFlH/0nM6kkWQox9IaTqx2eCT3pmkr8bB7iVZ1bkaLs=",
@@ -915,6 +931,7 @@
         "noctalia-greeter": "noctalia-greeter",
         "plasma-manager": "plasma-manager",
         "roudix-caches": "roudix-caches",
+        "sonora": "sonora",
         "spicetify-nix": "spicetify-nix",
         "umbriel": "umbriel",
         "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel_2",
@@ -964,6 +981,27 @@
         "type": "github"
       }
     },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "sonora",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789196581,
+        "narHash": "sha256-yJr1Bt4fKkKIpPYbsKGqJ0VFdoDnURgRwuffmBQ2WzY=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "228ecefb6329d5a531b77b46b581a2f0c26ee056",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
     "scenefx": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -984,6 +1022,25 @@
       "original": {
         "owner": "wlrfx",
         "repo": "scenefx",
+        "type": "github"
+      }
+    },
+    "sonora": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_5",
+        "rust-overlay": "rust-overlay_2"
+      },
+      "locked": {
+        "lastModified": 1790362344,
+        "narHash": "sha256-Y2vaIbopi/poBboWCxYyF+1X6dAI9D/rQhUmMEFP3hs=",
+        "owner": "sonorahq",
+        "repo": "sonora",
+        "rev": "b135b9c66d5bfc59d00752dfd3a2cd821c6c24af",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sonorahq",
+        "repo": "sonora",
         "type": "github"
       }
     },
@@ -1055,7 +1112,7 @@
     },
     "umbriel": {
       "inputs": {
-        "nixpkgs": "nixpkgs_5",
+        "nixpkgs": "nixpkgs_6",
         "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel"
       },
       "locked": {
@@ -1095,7 +1152,7 @@
     },
     "xdg-desktop-portal-umbriel_2": {
       "inputs": {
-        "nixpkgs": "nixpkgs_6"
+        "nixpkgs": "nixpkgs_7"
       },
       "locked": {
         "lastModified": 1790459405,
