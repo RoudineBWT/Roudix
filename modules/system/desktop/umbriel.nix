@@ -34,8 +34,8 @@ in
                                border, screen and cursor effects and shader
                                animations on every event. Colors come from the
                                Noctalia palette, so use it with the Noctalia shell.
-          "sakura-roudix"    : the same suite recolored to Catppuccin Mocha + Peach
-                               (fixed colors, independent of the wallpaper/Noctalia).
+          "sakura-roudix"    : the same suite with Catppuccin Mocha + Peach colors
+                               (fixed, independent of the wallpaper/Noctalia).
       '';
     };
   };
