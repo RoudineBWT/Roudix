@@ -54,6 +54,7 @@ let
 
   # Config shared by both Sakura variants (only the effect.toml differs).
   sakuraCommon = {
+    appearance.border_width = 0;
     appearance.outer_border_width = 0;
     effects = {
       border = "sakura-vine";
