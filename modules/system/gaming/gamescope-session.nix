@@ -1,4 +1,4 @@
-{ config, lib, pkgs, username, ... }:
+{ config, lib, pkgs, inputs, username, ... }:
 let
   cfg         = config.roudix.gaming.gamescopeSession;
   desktopType = config.roudix.desktop.type;
@@ -86,11 +86,21 @@ let
     };
   };
 
+  # Detached from steamos-session-select (see that script for why): the
+  # actual Steam shutdown / gamescope fallback-kill work.
+  shutdownWatchdog = pkgs.writeShellApplication {
+    name = "roudix-gaming-shutdown-watchdog";
+    runtimeInputs = [ pkgs.coreutils pkgs.procps pkgs.util-linux ];
+    text = fill ./gamescope-session/shutdown-watchdog.sh { };
+  };
+
   # Name imposed by Steam: it calls this binary from "Switch to Desktop".
   steamosSessionSelect = pkgs.writeShellApplication {
     name = "steamos-session-select";
-    runtimeInputs = [ pkgs.coreutils pkgs.procps ];
-    text = fill ./gamescope-session/steamos-session-select.sh { };
+    runtimeInputs = [ pkgs.coreutils pkgs.util-linux ];
+    text = fill ./gamescope-session/steamos-session-select.sh {
+      watchdog = "${shutdownWatchdog}/bin/roudix-gaming-shutdown-watchdog";
+    };
   };
 
   returnToGamingMode = pkgs.writeShellApplication {
@@ -127,7 +137,9 @@ let
         passthru.providedSessions = [ "roudix-gaming-mode" ];
       });
 
-  deckyPkg      = pkgs.callPackage ../../../pkgs/decky-loader { };
+  # Fetched via the `jovian` flake input (flake.nix), not vendored: see the
+  # comment on that input for why following our own nixpkgs is safe here.
+  deckyPkg      = pkgs.callPackage "${inputs.jovian}/pkgs/decky-loader" { };
   deckyStateDir = "/var/lib/decky-loader";
   userCfg       = config.users.users.${username};
 in
@@ -175,10 +187,11 @@ in
       default = false;
       description = ''
         Decky Loader (plugins for Steam's Big Picture / Steam Deck UI).
-        Packaged in pkgs/decky-loader, vendored from Jovian-NixOS. No binary
-        cache exists for it: the first rebuild compiles it locally (pnpm
-        frontend + Python). Works on its own, but its UI lives in Big
-        Picture, so it's mostly useful with the Gaming Mode session.
+        Fetched from Jovian-NixOS's flake input (only pkgs/decky-loader, not
+        their overlay/modules). No binary cache exists for it: the first
+        rebuild compiles it locally (pnpm frontend + Python). Works on its
+        own, but its UI lives in Big Picture, so it's mostly useful with the
+        Gaming Mode session.
       '';
     };
   };

@@ -49,8 +49,10 @@ jobs:
         run: |
           CREATED=""
 
-          if [ ! -f hosts/roudix/hardware-configuration.nix ]; then
-            cat > hosts/roudix/hardware-configuration.nix << 'EOF'
+          # One pair of stubs per host directory (hosts/roudix, hosts/nixie,
+          # ...): flake.nix discovers every hosts/<name>/ automatically and
+          # imports each one's username.nix / hardware-configuration.nix.
+          cat > /tmp/hw-stub.nix << 'EOF'
           { config, lib, pkgs, modulesPath, ... }:
 
           {
@@ -72,17 +74,27 @@ jobs:
             hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
           }
           EOF
-            git add -N -f hosts/roudix/hardware-configuration.nix
-            CREATED="$CREATED hosts/roudix/hardware-configuration.nix"
-          fi
 
-          if [ ! -f hosts/roudix/username.nix ]; then
-            cat > hosts/roudix/username.nix << 'EOF'
-          "ci-runner"
-          EOF
-            git add -N -f hosts/roudix/username.nix
-            CREATED="$CREATED hosts/roudix/username.nix"
-          fi
+          for host_dir in hosts/*/; do
+            host="$(basename "$host_dir")"
+            [ -f "hosts/$host/configuration.nix" ] || continue
+
+            if [ ! -f "hosts/$host/hardware-configuration.nix" ]; then
+              cp /tmp/hw-stub.nix "hosts/$host/hardware-configuration.nix"
+              git add -N -f "hosts/$host/hardware-configuration.nix"
+              CREATED="$CREATED hosts/$host/hardware-configuration.nix"
+              echo "Created CI-only stub: hosts/$host/hardware-configuration.nix"
+            fi
+
+            # flake.nix imports this as a plain string per host:
+            # `username = import ./hosts/<host>/username.nix;`
+            if [ ! -f "hosts/$host/username.nix" ]; then
+              echo '"ci-runner"' > "hosts/$host/username.nix"
+              git add -N -f "hosts/$host/username.nix"
+              CREATED="$CREATED hosts/$host/username.nix"
+              echo "Created CI-only stub: hosts/$host/username.nix"
+            fi
+          done
 
           echo "created_files=$CREATED" >> "$GITHUB_OUTPUT"
 
@@ -90,10 +102,19 @@ jobs:
       - name: Build NixOS configuration (validation gate)
         if: steps.lock_status.outputs.changed == 'true'
         run: |
-          nix build .#nixosConfigurations.roudix.config.system.build.toplevel \
-            --accept-flake-config \
-            --no-link \
-            -L
+          # Every host is validated, not just roudix: nixie self-updates from
+          # this branch unattended, so a build that only breaks for it must
+          # stop the workflow here too.
+          for host_dir in hosts/*/; do
+            host="$(basename "$host_dir")"
+            [ -f "hosts/$host/configuration.nix" ] || continue
+            echo "::group::Build $host"
+            nix build ".#nixosConfigurations.$host.config.system.build.toplevel" \
+              --accept-flake-config \
+              --no-link \
+              -L
+            echo "::endgroup::"
+          done
 
       - name: Remove CI-only stubs
         if: steps.lock_status.outputs.changed == 'true' && steps.local_stubs.outputs.created_files != ''

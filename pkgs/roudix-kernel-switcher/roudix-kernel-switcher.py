@@ -13,6 +13,7 @@ from gi.repository import Gtk, Adw, GLib, Gio, Pango
 import os
 import re
 import shutil
+import socket
 import subprocess
 import threading
 import logging
@@ -22,7 +23,10 @@ import time
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
 NH_FLAKE    = os.environ.get("NH_FLAKE", os.path.expanduser("~/.config/roudix"))
-CONFIG_FILE = os.path.join(NH_FLAKE, "hosts", "roudix", "local.nix")
+# Multi-host: see roudix-switcher.py's ROUDIX_HOST comment — the machine's
+# own hostname is also its hosts/<name>/ directory name.
+ROUDIX_HOST = os.environ.get("ROUDIX_HOST") or socket.gethostname()
+CONFIG_FILE = os.path.join(NH_FLAKE, "hosts", ROUDIX_HOST, "local.nix")
 
 ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 

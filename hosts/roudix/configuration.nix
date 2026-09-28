@@ -11,6 +11,7 @@
     ../../modules/system/packaging
     ../../modules/system/gpu
     ../../modules/system/rgb
+    ../../modules/system/power
     ../../modules/system/audio
     ../../modules/system/virtualization
      inputs.brave-previews.nixosModules.default
@@ -43,6 +44,8 @@
   roudix.distrobox.enable      = lib.mkDefault false;
   roudix.vmGuest.enable        = lib.mkDefault false; # enable only inside a VM
   roudix.hosts.gtaFix.enable   = lib.mkDefault false;
+  roudix.laptop.enable         = lib.mkDefault false; # true on laptops (TLP)
+  roudix.laptop.thinkpad       = lib.mkDefault false; # true on ThinkPads (charge thresholds)
   roudix.autoupdate.enable     = lib.mkDefault true;
   roudix.mesa.useGit = lib.mkDefault false;  # false = nixpkgs stable mesa
   roudix.waydroid.enable = lib.mkDefault false;

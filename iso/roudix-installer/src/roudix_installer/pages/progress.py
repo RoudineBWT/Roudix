@@ -6,7 +6,7 @@ from typing import Optional
 
 from gi.repository import Adw, Gdk, GLib, Gtk, Pango
 
-from roudix_installer import btrfs_patch, config_gen, disko_gen
+from roudix_installer import btrfs_patch, config_gen, disko_gen, host_profile
 from roudix_installer.i18n import L
 from roudix_installer.ui_helpers import page_with_header
 
@@ -215,8 +215,50 @@ class ProgressPage(Adw.NavigationPage):
     def _start(self):
         threading.Thread(target=self._run, daemon=True).start()
 
+    def _dry_run(self):
+        """ROUDIX_INSTALLER_DRY_RUN=1: never partition, mount or install — only
+        generate the config the wizard *would* write (into a temp dir) and
+        show it, so the wizard can be checked on a normal desktop."""
+        import difflib
+        import shutil
+        import tempfile
+
+        host = self.state.hostname
+        GLib.idle_add(self._set_status, L("Simulation — rien n'est écrit sur les disques", "Dry run — nothing is written to disk"), 0.5)
+        src = host_profile.find_config_root(host)
+        if src is None:
+            raise RuntimeError(L(
+                f"hosts/{host}/local.nix.example introuvable (essaie ROUDIX_CFG_ROOT=<chemin du repo>)",
+                f"hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the repo>)",
+            ))
+        GLib.idle_add(self._log, f"[dry-run] host={host}  branch={self.state.branch}  config from {src}")
+        with tempfile.TemporaryDirectory(prefix="roudix-dry-run-") as tmp:
+            tmp = Path(tmp)
+            for rel in (f"hosts/{host}/local.nix.example", "modules/home/local.nix.example",
+                        "modules/system/boot/boot.local.nix.example"):
+                if (src / rel).is_file():
+                    (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy(src / rel, tmp / rel)
+            config_gen.write_config(self.state, tmp)
+            example = (tmp / f"hosts/{host}/local.nix.example").read_text().splitlines()
+            result = (tmp / f"hosts/{host}/local.nix").read_text().splitlines()
+            username = (tmp / f"hosts/{host}/username.nix").read_text().strip()
+        GLib.idle_add(self._log, f"[dry-run] hosts/{host}/username.nix = {username}")
+        GLib.idle_add(self._log, f"[dry-run] hosts/{host}/local.nix — lines changed vs local.nix.example:")
+        changed = [l for l in difflib.unified_diff(example, result, "local.nix.example", "local.nix", n=0, lineterm="")
+                   if not l.startswith(("---", "+++", "@@"))]
+        for line in changed or ["(none)"]:
+            GLib.idle_add(self._log, line)
+        GLib.idle_add(self._log, f"[dry-run] hosts/{host}/local.nix — full result:")
+        for line in result:
+            GLib.idle_add(self._log, line)
+        GLib.idle_add(self._set_status, L("Simulation terminée — ferme la fenêtre", "Dry run finished — close the window"), 1.0)
+
     def _run(self):
         try:
+            if os.environ.get("ROUDIX_INSTALLER_DRY_RUN"):
+                self._dry_run()
+                return
             self._step_partition()
             self._step_config()
             self._step_install()
@@ -364,14 +406,15 @@ class ProgressPage(Adw.NavigationPage):
         just puts a clear warning in the log instead of a confusing failure
         a few steps later.
         """
-        example = Path("/mnt/etc/nixos/hosts/roudix/local.nix.example")
+        host = self.state.hostname
+        example = Path(f"/mnt/etc/nixos/hosts/{host}/local.nix.example")
         if not example.is_file():
             GLib.idle_add(
                 self._log,
                 L(
-                    f"Avertissement: hosts/roudix/local.nix.example introuvable sur la branche « {branch} » — "
+                    f"Avertissement: hosts/{host}/local.nix.example introuvable sur la branche « {branch} » — "
                     "la génération de local.nix pourrait échouer.",
-                    f"Warning: hosts/roudix/local.nix.example not found on branch '{branch}' — "
+                    f"Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
                     "local.nix generation may fail.",
                 ),
             )
@@ -426,7 +469,7 @@ class ProgressPage(Adw.NavigationPage):
         # would on physical hardware; disko modes work the same way
         # since disko has already mounted everything by this point.
         self._run_cmd(["nixos-generate-config", "--root", "/mnt"])
-        hw_config = Path("/mnt/etc/nixos/hosts/roudix/hardware-configuration.nix")
+        hw_config = Path(f"/mnt/etc/nixos/hosts/{self.state.hostname}/hardware-configuration.nix")
         self._run_cmd(["cp", "/mnt/etc/nixos/hardware-configuration.nix", str(hw_config)])
 
         patched = btrfs_patch.patch_hardware_config(hw_config)
@@ -441,7 +484,7 @@ class ProgressPage(Adw.NavigationPage):
 
         GLib.idle_add(self._set_status, L("Génération de local.nix / username.nix…", "Generating local.nix / username.nix…"), 0.6)
         config_gen.write_config(self.state, Path("/mnt/etc/nixos"))
-        GLib.idle_add(self._log, L("hosts/roudix/local.nix, username.nix, home/local.nix écrits.", "hosts/roudix/local.nix, username.nix, home/local.nix written."))
+        GLib.idle_add(self._log, L(f"hosts/{self.state.hostname}/local.nix, username.nix, home/local.nix écrits.", f"hosts/{self.state.hostname}/local.nix, username.nix, home/local.nix written."))
 
         # nixos-install --flake resolves /mnt/etc/nixos through Nix's
         # git+file fetcher whenever that directory is a git repo (always
@@ -455,8 +498,8 @@ class ProgressPage(Adw.NavigationPage):
             "bash", "-c",
             "if [ -d /mnt/etc/nixos/.git ]; then "
             "git -C /mnt/etc/nixos add -A; "
-            "for f in hosts/roudix/hardware-configuration.nix hosts/roudix/local.nix "
-            "hosts/roudix/username.nix modules/home/local.nix modules/system/boot/boot.local.nix; do "
+            f"for f in hosts/{self.state.hostname}/hardware-configuration.nix hosts/{self.state.hostname}/local.nix "
+            f"hosts/{self.state.hostname}/username.nix modules/home/local.nix modules/system/boot/boot.local.nix; do "
             "[ -f \"/mnt/etc/nixos/$f\" ] && git -C /mnt/etc/nixos add -f \"$f\"; "
             "done; "
             "fi",
@@ -468,7 +511,7 @@ class ProgressPage(Adw.NavigationPage):
         GLib.idle_add(self._set_status, L("Installation du système…", "Installing the system…"), 0.75)
         self._run_cmd([
             "nixos-install",
-            "--flake", "/mnt/etc/nixos#roudix",
+            "--flake", f"/mnt/etc/nixos#{self.state.hostname}",
             "--no-root-passwd",
             "--option", "accept-flake-config", "true",
         ])

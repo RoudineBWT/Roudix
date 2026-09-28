@@ -23,6 +23,19 @@ in
         scratchpad workflow instead.
       '';
     };
+
+    effects = lib.mkOption {
+      type = lib.types.enum [ "roudix" "sakura-overdrive" ];
+      default = "roudix";
+      description = ''
+        Umbriel only. Shader/animation setup:
+          "roudix"           : subtle window in/out + scratchpad shaders (default).
+          "sakura-overdrive" : Ly-sec's full sakura/magical-girl suite — animated
+                               border, screen and cursor effects and shader
+                               animations on every event. Colors come from the
+                               Noctalia palette, so use it with the Noctalia shell.
+      '';
+    };
   };
 
   config = lib.mkIf isUmbriel {

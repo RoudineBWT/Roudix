@@ -37,7 +37,7 @@
 - Each gaming app individually toggleable via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (all `true` by default)
 - Optional [Millennium](https://github.com/SteamClientHomebrew/Millennium) modded Steam client (themes + plugins) — off by default, enable with `roudix.gaming.steam.millennium.enable = true` (or from the installer). Unofficial mod; the `game-performance` sandbox tweak and the Proton compat tools keep working, and setting it back to `false` restores stock Steam
 - Optional console-like Gaming Mode: `roudix.gaming.gamescopeSession.enable` adds a "Steam (Gaming Mode)" session on the login screen (Steam Big Picture in gamescope, VRR/HDR/MangoApp, refresh rate detected at launch). "Switch to Desktop" in Steam opens your desktop, and the "Return to Gaming Mode" app goes back without passing through the login screen. Based on GLF-OS; supports niri, umbriel, GNOME, KDE, Hyprland and MangoWC
-- Optional Decky Loader (Steam plugins) via `roudix.gaming.gamescopeSession.decky.enable`, vendored from Jovian-NixOS in `pkgs/decky-loader`; no binary cache, so it is compiled locally on the first rebuild
+- Optional Decky Loader (Steam plugins) via `roudix.gaming.gamescopeSession.decky.enable`, fetched from Jovian-NixOS' flake input (`nix flake update jovian` to bump it, no sha to maintain by hand); no binary cache, so it is compiled locally on the first rebuild
 
 ## Desktop (Niri)
 
@@ -124,14 +124,19 @@
 
 ## Music
 
-Pick one via `roudix.musicPlayer` — `"spotify"` (default), `"ytmdesktop"` or
-`"none"`.
+Pick one via `roudix.musicPlayer` — `"spotify"` (default), `"ytmdesktop"`,
+`"sonora"` or `"none"`.
 
 - `"spotify"` — Spotify patched with Spicetify. Local theme, "colorful" by
   default (or "comfy"), plus adblock + hide podcasts extensions — see
   toggles below.
 - `"ytmdesktop"` — YouTube Music Desktop App (unofficial, Electron-based
   YouTube Music client).
+- `"sonora"` — [Sonora](https://github.com/sonorahq/sonora), a native
+  (Rust/GPUI) client for Spotify, YouTube Music, Apple Music, Deezer and
+  Subsonic in a single app. Optional `roudix.sonora.provider` picks the
+  provider it starts on (`"youtube"` = YouTube Music). It doesn't bypass
+  subscriptions: if a service requires one, so does Sonora.
 
 ## Optional common apps
 

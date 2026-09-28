@@ -159,7 +159,13 @@ in {
           || _fail "git merge --ff-only failed (local modifications in the way?)"
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
-        if ! ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}#roudix; then
+        # No '#<attr>' here: nh (like nixos-rebuild) picks the
+        # nixosConfigurations attribute matching this machine's own
+        # hostname automatically — same convention modules/home/shell's
+        # update/roudix-switch fish functions already rely on. This is
+        # why every host's networking.hostName MUST equal its
+        # hosts/<name>/ directory name.
+        if ! ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}; then
           _fail "build failed for revision $REMOTE — repo is on the new commit but the next boot was NOT scheduled; the current generation is untouched"
         fi
 

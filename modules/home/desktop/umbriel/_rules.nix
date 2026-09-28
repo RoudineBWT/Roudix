@@ -76,7 +76,6 @@ in
       default_floating = true;
       default_floating_size_px = { width = 1505; height = 755; };
       blur = true;
-      default_pinned = true;
     }
     {
       match.app_id = "^firefox$";
@@ -244,6 +243,19 @@ in
       # (scratchpad, sized as a fraction to stay correct across resolution
       # changes) are mutually exclusive, hence the conditional //.
       match.app_id = "^Spotify$";
+      default_output = "DP-3";
+      default_workspace = 2;
+    } // (if scratchpadApps
+          then { default_scratchpad = "music"; default_floating_size = { width = 0.8; height = 0.85; }; default_pinned = true; }
+          else { default_maximize = true; })
+    )
+    (
+    {
+      # Sonora (roudix.musicPlayer = "sonora"): same placement as Spotify.
+      # app_id not verified against a running Sonora yet — unanchored
+      # [Ss]onora on purpose so "sonora" / "Sonora" / "org.*.Sonora" all
+      # match; tighten it once the real app_id is known.
+      match.app_id = "[Ss]onora";
       default_output = "DP-3";
       default_workspace = 2;
     } // (if scratchpadApps

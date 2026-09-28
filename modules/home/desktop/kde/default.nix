@@ -1,6 +1,8 @@
 { lib, pkgs, osConfig, inputs, ... }:
 let
   wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
+
+  kwriteconfig6 = "${pkgs.kdePackages.kconfig}/bin/kwriteconfig6";
 in
 {
   imports = [
@@ -9,41 +11,60 @@ in
     ../../theming/papirus-folders.nix
   ];
 
+  # ── How Roudix ships its KDE look without overriding the user ─────────────
+  # plasma-manager has three behaviours, and only one of them is safe here:
+  #
+  #  1. Settings that end up in a config file (workspace.colorScheme,
+  #     lookAndFeel, cursorTheme, iconTheme, input.*, kscreenlocker...) are
+  #     re-written on EVERY home-manager activation, i.e. every rebuild.
+  #     -> not used for anything the user may want to change.
+  #  2. Panels and wallpaper are "desktop scripts": they run at login, but
+  #     only when their generated content changed since the last run. So
+  #     they are applied once, then left alone (until Roudix itself changes
+  #     the panel/wallpaper definition — see the note next to `panels`).
+  #  3. `startup.startupScript` runs at login; with the marker file below it
+  #     runs exactly once per user, ever.
+  #
+  # Theme defaults therefore go through (3); lock-screen wallpaper and NumLock
+  # are plain KConfig defaults in /etc/xdg (modules/system/desktop/kde.nix),
+  # which sit *under* ~/.config and never override it.
   config = lib.mkIf (osConfig.roudix.desktop.type == "kde") {
     programs.plasma = {
       enable = true;
 
-      input = {
-          keyboard = {
-            numlockOnStartup = "on";
-          };
-        };
+      # ── First-login theme (dark) ──────────────────────────────────────────
+      # Run once, guarded by a marker file, then never again: whatever the
+      # user picks afterwards in System Settings is theirs. To re-apply the
+      # Roudix look on purpose: rm ~/.local/state/roudix/kde-theme-seeded
+      startup.startupScript."roudix_theme_defaults" = {
+        priority = 1;
+        text = ''
+          marker="$HOME/.local/state/roudix/kde-theme-seeded"
+          if [ ! -f "$marker" ]; then
+            plasma-apply-lookandfeel -a org.kde.breezedark.desktop
+            plasma-apply-colorscheme BreezeDark
+            plasma-apply-cursortheme capitaine-cursors-white
+            # Icons via kwriteconfig6 rather than plasma-manager: keeps
+            # kdeglobals a normal, writable file (papirusSync / telaSync
+            # patch its [Icons] Theme= key with sed).
+            ${kwriteconfig6} --file kdeglobals --group Icons --key Theme "Papirus-Dark"
+            mkdir -p "$(dirname "$marker")" && touch "$marker"
+          fi
+        '';
+      };
 
       workspace = {
-        # ── Dark theme ──────────────────────────────────────────────────
-        lookAndFeel = "org.kde.breezedark.desktop";
-        colorScheme = "BreezeDark";
-        # iconTheme deliberately left out here: otherwise plasma-manager
-        # turns kdeglobals into a read-only symlink to the Nix store,
-        # which then stops papirusSync/telaSync (noctalia hooks) from
-        # patching the [Icons] Theme= key with sed. The default value is
-        # set further below via home.activation + kwriteconfig6, on a
-        # kdeglobals file that stays normal/mutable.
-        cursorTheme = "capitaine-cursors-white";
-
-
-        # Default Roudix Dark wallpaper
+        # Default Roudix Dark wallpaper (applied at first login by a desktop
+        # script, not re-applied afterwards).
         # Override in home/local.nix:
         #   programs.plasma.workspace.wallpaper = lib.mkForce "/path/wallpaper.jpg";
         wallpaper = wallpaperDark;
       };
 
-      # ── Lock screen ────────────────────────────────────────────
-      # Override in home/local.nix:
-      #   programs.plasma.kscreenlocker.appearance.wallpaper = lib.mkForce "/path/wallpaper.jpg";
-      kscreenlocker.appearance.wallpaper = wallpaperDark;
-
       # ── Taskbar ────────────────────────────────────────────────
+      # Applied at first login, then left alone. Caveat: if a future Roudix
+      # update changes this definition, plasma-manager re-runs ALL desktop
+      # scripts once (panel + wallpaper), which resets the user's panel.
       # Override in home/local.nix:
       #   programs.plasma.panels = lib.mkForce [ ... ];
       panels = [
@@ -63,15 +84,5 @@ in
         }
       ];
     };
-
-    # ── KDE icon theme, outside plasma-manager ────────────────────────────
-    # Written with kwriteconfig6 (native KDE mutator) instead of letting
-    # plasma-manager manage kdeglobals: the file stays a normal text file,
-    # later editable by papirusSync/telaSync without conflicting with the
-    # immutable symlink the declarative path would produce.
-    home.activation.setKdeIconTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-        --file kdeglobals --group Icons --key Theme "Papirus-Dark"
-    '';
   };
 }

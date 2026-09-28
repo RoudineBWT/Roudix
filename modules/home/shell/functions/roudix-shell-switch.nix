@@ -1,7 +1,7 @@
 { lib, onHyprland, shellList, availableShells, availableShellsList, ... }: {
   fish = ''
     set shell $argv[1]
-    set config_file "$NH_FLAKE/hosts/roudix/local.nix"
+    set config_file "$NH_FLAKE/hosts/"(hostname)"/local.nix"
 
     if test -z "$shell"
       echo "Usage: roudix-shell-switch [${shellList}]"
@@ -33,7 +33,7 @@
   bash = ''
     roudix-shell-switch() {
       local shell="$1"
-      local config_file="$NH_FLAKE/hosts/roudix/local.nix"
+      local config_file="$NH_FLAKE/hosts/$(hostname)/local.nix"
 
       if [[ -z "$shell" ]]; then
         echo "Usage: roudix-shell-switch [${availableShellsList}]"
