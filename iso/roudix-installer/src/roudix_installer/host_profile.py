@@ -28,6 +28,23 @@ def _roots():
     return roots
 
 
+def available_hosts():
+    """Names of the installable hosts (hosts/<name>/ with a configuration.nix),
+    'roudix' first. Looks in the same places as listed_options(); falls back to
+    the two known profiles if nothing can be found, so the menu is never empty."""
+    found = set()
+    for root in _roots():
+        hosts_dir = root / "hosts"
+        if not hosts_dir.is_dir():
+            continue
+        for d in hosts_dir.iterdir():
+            if d.is_dir() and not d.name.startswith(".") and (d / "configuration.nix").is_file():
+                found.add(d.name)
+    if not found:
+        found = {"roudix", "nixie"}
+    return sorted(found, key=lambda n: (n != "roudix", n))
+
+
 def listed_options(hostname: str):
     """Set of option names listed for this host, or None = show everything
     (no marker, or its local.nix.example can't be found — fail open)."""
