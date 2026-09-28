@@ -236,4 +236,3 @@ Personal config files live in `dotfiles/perso/` — they are gitignored (except 
 See [`dotfiles/perso/README.md`](dotfiles/perso/README.md) for structure and usage.
 
 For compositor-level overrides (monitors, keybinds, gaps…), use the generated user override files instead — they are managed by home-manager and safe from `git pull`. See [Desktop & shells](docs/desktop.md#personal-compositor-overrides) for details.
-# test
