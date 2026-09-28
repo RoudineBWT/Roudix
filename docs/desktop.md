@@ -177,33 +177,29 @@ roudix.gnome.extraExtensions = with pkgs.gnomeExtensions; [ pop-shell ];
 roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 ```
 
-**Wallpaper** (`home/local.nix`)
+**Changing the look by hand (recommended)**
+
+Roudix ships GNOME's look (wallpaper, dark theme, icons, cursor, extension settings) as *defaults*. Change anything in Settings, Tweaks or an extension's preferences and it is yours: a rebuild never reverts it. Roudix updates only change the defaults of settings you have not touched.
+
+**Forcing a value from your config** (`home/local.nix`)
+
+If you would rather pin a value declaratively, set it through home-manager. Unlike the manual route above, it is re-applied on **every** rebuild and overrides what you change in the UI:
 ```nix
 dconf.settings."org/gnome/desktop/background".picture-uri =
-  lib.mkForce "file:///home/youruser/Pictures/my-wallpaper.png";
+  "file:///home/youruser/Pictures/my-wallpaper.png";
 dconf.settings."org/gnome/desktop/background".picture-uri-dark =
-  lib.mkForce "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+  "file:///home/youruser/Pictures/my-wallpaper-dark.png";
+dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-light"; # or "prefer-dark"
+dconf.settings."org/gnome/desktop/interface".icon-theme = "Papirus";
+dconf.settings."org/gnome/desktop/interface".cursor-theme = "capitaine-cursors";
+dconf.settings."org/gnome/desktop/interface".cursor-size = 32;
 ```
+No `lib.mkForce` needed: home-manager no longer defines these keys.
 
-**Light/dark mode** (`home/local.nix`)
-```nix
-dconf.settings."org/gnome/desktop/interface".color-scheme =
-  lib.mkForce "prefer-light"; # or "prefer-dark"
-```
-
-**Icon theme** (`home/local.nix`)
-```nix
-dconf.settings."org/gnome/desktop/interface".icon-theme =
-  lib.mkForce "Papirus";
-# Other values: "Papirus-Dark", "Papirus-Light", "hicolor"
-```
-
-**Cursor** (`home/local.nix`)
-```nix
-dconf.settings."org/gnome/desktop/interface".cursor-theme =
-  lib.mkForce "capitaine-cursors";
-dconf.settings."org/gnome/desktop/interface".cursor-size =
-  lib.mkForce 32;
+**Getting the Roudix defaults back** for a setting (or a whole section)
+```sh
+dconf reset /org/gnome/desktop/interface/icon-theme
+dconf reset -f /org/gnome/shell/extensions/dash-to-panel/
 ```
 
 > See `hosts/roudix/local.nix.example` and `home/local.nix.example` for all available GNOME override options.
@@ -212,23 +208,28 @@ dconf.settings."org/gnome/desktop/interface".cursor-size =
 
 ## KDE Plasma overrides
 
-When using `roudix.desktop.type = "kde"`, you can override any plasma-manager setting in `home/local.nix`:
+When using `roudix.desktop.type = "kde"`:
+
+Roudix applies its KDE look **once**, never on every rebuild, so anything you change in System Settings stays:
+
+- **Dark theme, icons, cursor**: applied at first login only, guarded by `~/.local/state/roudix/kde-theme-seeded`. To get the Roudix look back on purpose: `rm ~/.local/state/roudix/kde-theme-seeded` and log out/in.
+- **NumLock on startup, lock-screen wallpaper**: plain KConfig defaults in `/etc/xdg`, which sit below your `~/.config` and never override it.
+- **Wallpaper and panel**: applied by plasma-manager at first login, then only re-run if Roudix itself changes their definition in an update.
+
+**Pinning values from your config** (`home/local.nix`)
+
+Anything you set through plasma-manager is re-applied on **every** rebuild, so use it only for what you want to be declarative:
 
 **Wallpaper**
 ```nix
 programs.plasma.workspace.wallpaper = lib.mkForce "/home/youruser/Pictures/wallpaper.jpg";
 ```
 
-**Icon theme**
+**Color scheme / icons / cursor**
 ```nix
-programs.plasma.workspace.iconTheme = lib.mkForce "Papirus-Dark";
-# Other values: "Papirus", "Papirus-Light", "breeze-dark", "breeze"
-```
-
-**Color scheme / Look & Feel**
-```nix
-programs.plasma.workspace.colorScheme = lib.mkForce "BreezeDark";
-programs.plasma.workspace.lookAndFeel = lib.mkForce "org.kde.breezedark.desktop";
+programs.plasma.workspace.colorScheme = "BreezeDark";
+programs.plasma.workspace.iconTheme = "Papirus-Dark";
+programs.plasma.workspace.cursor.theme = "capitaine-cursors-white";
 ```
 
 **Taskbar / Panels**
@@ -239,7 +240,7 @@ programs.plasma.panels = lib.mkForce [
     widgets = [
       { kickoff.icon = "/path/to/your/icon.svg"; }
       "org.kde.plasma.icontasks"
-      "org.kde.plasma.marginsseperator"
+      "org.kde.plasma.marginsseparator"
       "org.kde.plasma.systemtray"
       "org.kde.plasma.digitalclock"
       "org.kde.plasma.showdesktop"
@@ -248,4 +249,4 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> `lib.mkForce` is required to override the defaults set in `home/desktop/kde/default.nix`.
+> `lib.mkForce` is only needed for `wallpaper` and `panels`, which are still defined in `home/desktop/kde/default.nix`.

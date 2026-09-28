@@ -76,7 +76,10 @@ in
     createDirectories = true;
   };
 
-  dconf.settings = {
+  # On GNOME this key is a system dconf *default* instead (see
+  # modules/system/desktop/gnome.nix), so that changing it in Tweaks sticks
+  # across rebuilds. home-manager's dconf.settings would reset it every switch.
+  dconf.settings = lib.mkIf (desktopType != "gnome") {
     "org/gnome/desktop/interface" = {
       gtk-enable-primary-paste = true;
     };
