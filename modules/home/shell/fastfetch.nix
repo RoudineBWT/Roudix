@@ -24,8 +24,8 @@
           type = "auto";
           source = "${dotfiles}/fastfetch/roudix-ascii.txt";
           height = 38;
-          "color": {
-            "1": "#fab387";
+          "color"= {
+            "1" = "#fab387";
           };
         };
 
