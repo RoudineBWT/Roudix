@@ -21,46 +21,46 @@
         "$schema" = "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json";
 
         logo = {
-          type = "kitty-direct";
-          source = "${dotfiles}/fastfetch/roudix-logo-tokyonight.png";
-          height = 100;
-          padding = {
-            right = 5;
+          type = "auto";
+          source = "${dotfiles}/fastfetch/roudix-ascii.txt";
+          height = 38;
+          "color"= {
+            "1" = "#fab387";
           };
         };
 
         display = {
           separator = "  ";
-          color = "#7aa2f7";
+          color = "#fab387";
         };
 
         modules = [
           { type = "break"; }
           { type = "custom"; format = "─────────── System ───────────"; }
-          { type = "os";       key = "󱄅 OS";        keyColor = "#7aa2f7"; }
-          { type = "kernel";   key = " Kernel";     keyColor = "#7aa2f7"; }
-          { type = "uptime";   key = "󰔟 Uptime";    keyColor = "#7aa2f7"; }
+          { type = "os";       key = "󱄅 OS";        keyColor = "#fab387"; }
+          { type = "kernel";   key = " Kernel";     keyColor = "#fab387"; }
+          { type = "uptime";   key = "󰔟 Uptime";    keyColor = "#fab387"; }
           {
             type = "command";
             key = "󱎫 OS Age";
-            keyColor = "#7aa2f7";
+            keyColor = "#fab387";
             text = "b=$(stat -c %W /); n=$(date +%s); echo $(( (n - b) / 86400 )) days";
           }
           { type = "custom"; format = "────────── Hardware ──────────"; }
-          { type = "cpu";    key = " CPU";  showPeCoreCount = true; keyColor = "#7dcfff"; }
-          { type = "gpu";    key = "󰍛 GPU";  keyColor = "#7dcfff"; }
-          { type = "memory"; key = " Memory"; keyColor = "#7dcfff"; }
+          { type = "cpu";    key = " CPU";  showPeCoreCount = true; keyColor = "#fab387"; }
+          { type = "gpu";    key = "󰍛 GPU";  keyColor = "#fab387"; }
+          { type = "memory"; key = " Memory"; keyColor = "#fab387"; }
           { type = "custom"; format = "────────── Software ─────────"; }
-          { type = "wm";       key = "󰇄 Compositor"; keyColor = "#bb9af7"; }
-          { type = "terminal"; key = " Terminal";    keyColor = "#bb9af7"; }
-          { type = "shell";    key = " Shell";       keyColor = "#bb9af7"; }
-          { type = "packages"; key = " Packages";   keyColor = "#bb9af7"; }
+          { type = "wm";       key = "󰇄 Compositor"; keyColor = "#fab387"; }
+          { type = "terminal"; key = " Terminal";    keyColor = "#fab387"; }
+          { type = "shell";    key = " Shell";       keyColor = "#fab387"; }
+          { type = "packages"; key = " Packages";   keyColor = "#fab387"; }
           { type = "custom"; format = "───────────────────────────────"; }
           { type = "custom"; format = "─────────── Challenge ───────────"; }
           {
             type = "command";
             key = "󰔸 Challenge";
-            keyColor = "#e0af68";
+            keyColor = "#fab387";
             text = ''
               start=$(stat -c %W /); end=$((start + 63072000)); now=$(date +%s)
               elapsed=$(( now - start )); total=$(( end - start ))
