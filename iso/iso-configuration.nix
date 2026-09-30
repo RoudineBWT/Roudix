@@ -151,8 +151,8 @@
     dmidecode
 
     nixos-install-tools
-    roudix-installer.packages.${pkgs.system}.default
-    disko.packages.${pkgs.system}.disko
+    roudix-installer.packages.${pkgs.stdenv.hostPlatform.system}.default
+    disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
 
     python3
     xdg-user-dirs
