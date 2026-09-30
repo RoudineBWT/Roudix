@@ -12,9 +12,9 @@
 
 <br/>
 
-| Niri + DankMaterialShell | Niri + Noctalia |
-|:---:|:---:|
-| ![Niri + DMS](assets/screenshot/my-dms-setup.png) | ![Niri + Noctalia](assets/screenshot/my-noctalia-setup.png) |
+| Aperçu |
+|:---:|
+| ![Preview](assets/screenshot/preview.png)
 
 <sub>Personnalisation perso — la vôtre sera différente selon votre configuration 👀</sub>
 
