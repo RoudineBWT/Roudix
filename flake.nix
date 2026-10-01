@@ -49,6 +49,7 @@
 
     noctalia = {
       url = "github:noctalia-dev/noctalia/cachix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     noctalia-greeter = {
@@ -138,8 +139,14 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
-    umbriel.url = "git+https://github.com/noctalia-dev/umbriel";
-    xdg-desktop-portal-umbriel.url = "github:noctalia-dev/xdg-desktop-portal-umbriel";
+      umbriel = {
+        url = "git+https://github.com/noctalia-dev/umbriel";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      xdg-desktop-portal-umbriel = {
+        url = "github:noctalia-dev/xdg-desktop-portal-umbriel";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
 
     # Sonora — native (Rust/GPUI) music client: Spotify, YouTube Music, Apple
     # Music, Deezer, Subsonic... One of the roudix.musicPlayer choices. No
