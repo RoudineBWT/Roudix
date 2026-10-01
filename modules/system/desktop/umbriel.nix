@@ -25,7 +25,7 @@ in
     };
 
     effects = lib.mkOption {
-      type = lib.types.enum [ "roudix" "sakura-overdrive" ];
+      type = lib.types.enum [ "roudix" "sakura-overdrive" "sakura-roudix" ];
       default = "roudix";
       description = ''
         Umbriel only. Shader/animation setup:
@@ -34,6 +34,8 @@ in
                                border, screen and cursor effects and shader
                                animations on every event. Colors come from the
                                Noctalia palette, so use it with the Noctalia shell.
+          "sakura-roudix"    : the same suite with Catppuccin Mocha + Peach colors
+                               (fixed, independent of the wallpaper/Noctalia).
       '';
     };
   };
