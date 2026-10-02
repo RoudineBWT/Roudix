@@ -18,16 +18,30 @@ let
   # scratchpad shader (applies in both cases; it's a no-op when no
   # scratchpad is shown).
   scratchpadApps = osConfig.roudix.umbriel.scratchpadApps or false;
+
+  # spawn_when_empty (umbriel PR #255): toggling an EMPTY scratchpad runs this
+  # command and the first window it opens joins the scratchpad and is shown.
+  # One bind then launches AND shows the app (instead of one bind to spawn and
+  # another to toggle). Command for "music" follows roudix.musicPlayer.
+  # ⚠ "sonora" binary name not verified against the sonora package.
+  musicPlayerCmd = {
+    spotify    = "spotify";
+    ytmdesktop = "ytmdesktop";
+    sonora     = "sonora";
+  }.${osConfig.roudix.musicPlayer or "spotify"} or null;
 in
 {
   programs.umbriel.settings = {
   # scratchpad = [] while scratchpadApps is false: no [[scratchpad]] entry
   # in TOML → Umbriel keeps the implicit "default" scratchpad, so
   # Mod+Shift+Space/Mod+Space/etc. below work without a suffix.
+  # "communication" only relaunches Discord when the scratchpad holds no window
+  # at all (Telegram open = not empty, so no spawn); "misc" has no command.
   scratchpad = lib.optionals scratchpadApps [
     { name = "misc"; }
-    { name = "communication"; }
-    { name = "music"; }
+    { name = "communication"; spawn_when_empty = "discord"; }
+    ({ name = "music"; }
+      // lib.optionalAttrs (musicPlayerCmd != null) { spawn_when_empty = musicPlayerCmd; })
   ];
 
   window_rule = [

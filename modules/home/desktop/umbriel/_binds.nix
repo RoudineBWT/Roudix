@@ -152,7 +152,19 @@ in
     # niri's center-column/center-visible-columns equivalents.
     "Mod+C" = "column-center";
     "Mod+Shift+C" = "window-center";
-    # No tabbed-column-display equivalent in Umbriel. Not mapped.
+    # Tab groups (umbriel ec677ac, #312) = niri's toggle-column-tabbed-display.
+    # Scrolling: tabs the focused window with the windows stacked beside it;
+    # master: tabs the whole master/stack area; dwindle: refused (no-op).
+    # Mod+W is already the wallpaper picker above (umbriel's built-in
+    # Mod+W for tabs doesn't apply since this config lists its own binds),
+    # hence Mod+Alt+T. Mod+Alt+Left/Right switch tab, Mod+Alt+Shift+* reorder.
+    # window-move-up/down (Mod+Ctrl+Up/Down) already take a tab out of a
+    # group or a window into one.
+    "Mod+Alt+T" = { action = "column-toggle-tabbed"; repeat = false; };
+    "Mod+Alt+Right" = "column-focus-tab-next";
+    "Mod+Alt+Left" = "column-focus-tab-previous";
+    "Mod+Alt+Shift+Right" = "column-move-tab-next";
+    "Mod+Alt+Shift+Left" = "column-move-tab-previous";
 
     # ─── Master layout (chat workspace, DP-3/1) ───
     # No-op outside master layout (see Actions → Layout differences).

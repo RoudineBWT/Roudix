@@ -152,7 +152,10 @@
     # Music, Deezer, Subsonic... One of the roudix.musicPlayer choices. No
     # `nixpkgs.follows` on purpose: its default package is a prebuilt release
     # binary, and its source build pins its own Rust toolchain.
-    sonora.url = "github:sonorahq/sonora";
+    sonora ={
+      url = "github:sonorahq/sonora";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

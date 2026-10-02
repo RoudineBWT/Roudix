@@ -34,6 +34,13 @@
       preserve_split = true;
     };
 
+    # Tab groups (ec677ac): see the Mod+Alt+T binds in _binds.nix. Appearance
+    # of the bar is in _appearance.nix ([appearance.tab_bar]).
+    tabs = {
+      new_tab_position = "after_active"; # a consumed/dropped window joins next to the active tab
+      middle_click_closes = true;        # middle-click a slot to close that tab
+    };
+
     scrolling = {
       # `direction` was removed: scroll direction now follows the output's
       # `workspace_axis` (docs.noctalia.dev/umbriel/outputs/#settings).
