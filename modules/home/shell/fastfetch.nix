@@ -4,16 +4,14 @@
     useNix = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "fastfetch via nix or not";
+      description = "Use the Nix-managed Fastfetch configuration";
     };
   };
 
   config = {
     # ── Fastfetch ────────────────────────────────────────────────────────────
-    # The package is always installed, whether useNix is true or false.
-    # useNix = false: keeps only the package, your own config in
-    #                 ~/.config/fastfetch stays in use.
-    # useNix = true : also applies the Roudix config below.
+    # useNix = false: only install Fastfetch and keep the user's own config.
+    # useNix = true : install Fastfetch and apply the Roudix configuration.
     programs.fastfetch = {
       enable = true;
 
@@ -23,8 +21,8 @@
         logo = {
           type = "auto";
           source = "${dotfiles}/fastfetch/roudix-ascii.txt";
-          height = 38;
-          "color"= {
+          width = 38;
+          color = {
             "1" = "#fab387";
           };
         };
@@ -36,53 +34,125 @@
 
         modules = [
           { type = "break"; }
-          { type = "custom"; format = "─────────── System ───────────"; }
-          { type = "os";       key = "󱄅 OS";        keyColor = "#fab387"; }
-          { type = "kernel";   key = " Kernel";     keyColor = "#fab387"; }
-          { type = "uptime";   key = "󰔟 Uptime";    keyColor = "#fab387"; }
+
+          {
+            type = "custom";
+            format = "─────────── System ───────────";
+          }
+          {
+            type = "os";
+            key = "󱄅 OS";
+            keyColor = "#fab387";
+          }
+          {
+            type = "kernel";
+            key = " Kernel";
+            keyColor = "#fab387";
+          }
+          {
+            type = "uptime";
+            key = "󰔟 Uptime";
+            keyColor = "#fab387";
+          }
           {
             type = "command";
             key = "󱎫 OS Age";
             keyColor = "#fab387";
             text = "b=$(stat -c %W /); n=$(date +%s); echo $(( (n - b) / 86400 )) days";
           }
-          { type = "custom"; format = "────────── Hardware ──────────"; }
-          { type = "cpu";    key = " CPU";  showPeCoreCount = true; keyColor = "#fab387"; }
-          { type = "gpu";    key = "󰍛 GPU";  keyColor = "#fab387"; }
-          { type = "memory"; key = " Memory"; keyColor = "#fab387"; }
-          { type = "custom"; format = "────────── Software ─────────"; }
-          { type = "wm";       key = "󰇄 Compositor"; keyColor = "#fab387"; }
-          { type = "terminal"; key = " Terminal";    keyColor = "#fab387"; }
-          { type = "shell";    key = " Shell";       keyColor = "#fab387"; }
-          { type = "packages"; key = " Packages";   keyColor = "#fab387"; }
-          { type = "custom"; format = "───────────────────────────────"; }
-          { type = "custom"; format = "─────────── Challenge ───────────"; }
+
+          {
+            type = "custom";
+            format = "────────── Hardware ──────────";
+          }
+          {
+            type = "cpu";
+            key = " CPU";
+            showPeCoreCount = true;
+            keyColor = "#fab387";
+          }
+          {
+            type = "gpu";
+            key = "󰍛 GPU";
+            keyColor = "#fab387";
+          }
+          {
+            type = "memory";
+            key = " Memory";
+            keyColor = "#fab387";
+          }
+
+          {
+            type = "custom";
+            format = "────────── Software ─────────";
+          }
+          {
+            type = "wm";
+            key = "󰇄 Compositor";
+            keyColor = "#fab387";
+          }
+          {
+            type = "terminal";
+            key = " Terminal";
+            keyColor = "#fab387";
+          }
+          {
+            type = "shell";
+            key = " Shell";
+            keyColor = "#fab387";
+          }
+          {
+            type = "packages";
+            key = " Packages";
+            keyColor = "#fab387";
+          }
+
+          {
+            type = "custom";
+            format = "─────────── Challenge ───────────";
+          }
           {
             type = "command";
             key = "󰔸 Challenge";
             keyColor = "#fab387";
             text = ''
-              start=$(stat -c %W /); end=$((start + 63072000)); now=$(date +%s)
-              elapsed=$(( now - start )); total=$(( end - start ))
-              pct=$(( elapsed * 100 / total ))
-              days_done=$(( elapsed / 86400 )); days_left=$(( (end - now) / 86400 ))
-              filled=$(( pct * 20 / 100 )); empty=$(( 20 - filled ))
-              bar=$(printf '█%.0s' $(seq 1 $filled 2>/dev/null))$(printf '░%.0s' $(seq 1 $empty 2>/dev/null))
+              start=$(stat -c %W /)
+              end=$((start + 63072000))
+              now=$(date +%s)
+              elapsed=$((now - start))
+              total=$((end - start))
+              pct=$((elapsed * 100 / total))
+              days_done=$((elapsed / 86400))
+              days_left=$(((end - now) / 86400))
+              filled=$((pct * 20 / 100))
+              empty=$((20 - filled))
+              bar=$(printf '█%.0s' $(seq 1 "$filled" 2>/dev/null))$(printf '░%.0s' $(seq 1 "$empty" 2>/dev/null))
               echo "[$bar] $pct% — $days_done days / 730 days ($days_left remaining)"
             '';
           }
-          { type = "custom"; format = "───────────────────────────────"; }
+
+          {
+            type = "custom";
+            format = "───────────────────────────────";
+          }
+          {
+            type = "custom";
+            key = "  ";
+            format = "  \u001b[38;2;250;179;135mRomeo, Oscar, Uniform, Delta, India, X-ray!\u001b[0m";
+            newline = true;
+          }
+
           { type = "break"; }
         ];
       };
     };
 
-    # Roudix branding file: only relevant when using the Nix config.
-    xdg.configFile."fastfetch/roudix.txt" = lib.mkIf config.roudix.fastfetch.useNix {
-      source = "${dotfiles}/fastfetch/roudix.txt";
+    # Roudix branding file used by the Nix-managed Fastfetch configuration.
+    xdg.configFile."fastfetch/roudix-ascii.txt" = lib.mkIf config.roudix.fastfetch.useNix {
+      source = "${dotfiles}/fastfetch/roudix-ascii.txt";
     };
 
-    # Runs fastfetch on every interactive fish shell, regardless of useNix.
+    # Runs Fastfetch in every interactive Fish shell.
     xdg.configFile."fish/conf.d/fastfetch.fish" = {
       text = ''
         fastfetch
