@@ -191,11 +191,12 @@
       scxctl = roudix-caches.packages.x86_64-linux.scxctl;
     };
     roudixWelcome = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-welcome {};
+    roudixStore = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-store {};
 
     # username is NOT here anymore: it's per-host, read from
     # hosts/<hostName>/username.nix (gitignored). Base args shared by
     # every host — each mkHost call adds its own `username`.
-    baseSpecialArgs = { inherit inputs roudixSwitcher roudixBranding roudix-kernel-switcher roudix-scheduler-switcher roudixWelcome; dotfiles = self + /dotfiles; };
+    baseSpecialArgs = { inherit inputs roudixSwitcher roudixBranding roudix-kernel-switcher roudix-scheduler-switcher roudixWelcome roudixStore; dotfiles = self + /dotfiles; };
 
     # ── Host builder ──────────────────────────────────────────────────────
     # One host = one directory under ./hosts/<hostName>/ containing:

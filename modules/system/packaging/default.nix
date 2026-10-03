@@ -4,5 +4,6 @@
   imports = [
     ./appimage.nix
     ./flatpak.nix
+    ./store.nix
   ];
 }
