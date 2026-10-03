@@ -260,7 +260,7 @@ def _telegram():
 
 def _video_player():
     return [
-        ("vlc", L("VLC (défaut, plus large support de formats)", "VLC (default, widest format support)")),
+        ("vlc", L("VLC (plus large support de formats)", "VLC (widest format support)")),
         ("clapper", L("Clapper (GTK4 moderne)", "Clapper (modern GTK4)")),
         ("mpv", L("mpv (+ yt-dlp)", "mpv (+ yt-dlp)")),
         ("celluloid", L("Celluloid (interface GTK pour mpv)", "Celluloid (GTK front-end for mpv)")),
@@ -279,7 +279,7 @@ def _torrent_client():
 
 def _music_player():
     return [
-        ("spotify", L("Spotify + Spicetify (défaut)", "Spotify + Spicetify (default)")),
+        ("spotify", L("Spotify + Spicetify", "Spotify + Spicetify")),
         ("ytmdesktop", "YouTube Music Desktop"),
         ("sonora", "Sonora (Spotify / YouTube Music)"),
         ("none", L("Aucun", "None")),
@@ -1092,8 +1092,8 @@ class OptionsPage(Adw.NavigationPage):
         apps_group = Adw.PreferencesGroup(
             title="Apps",
             description=L(
-                "Désactive celles que tu ne veux pas préinstallées.",
-                "Turn off any you don't want preinstalled.",
+                "Active celles que tu veux préinstallées.",
+                "Turn on the ones you want preinstalled.",
             ),
         )
         self.app_gimp_row = Adw.SwitchRow(title="GIMP")

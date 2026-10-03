@@ -45,7 +45,7 @@
   console.keyMap                  = "be-latin1";
 
   # --- Gaming -----------------------------------------------------------------
-    roudix.gaming.enable        = true;         # disable to skip Steam, Wine, etc.
-  # Individually disable apps from the gaming group (all true by default):
+  roudix.gaming.enable        = false;        # true = Steam, Wine, etc.
+  # Individually disable apps from the gaming group (on by default once gaming is enabled):
   # roudix.gaming.apps.heroic.enable       = false;
 }

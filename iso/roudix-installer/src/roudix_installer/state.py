@@ -64,7 +64,7 @@ class InstallState:
                                               # into. Worth checking upstream / adding the line back.
 
     # ── Browser ───────────────────────────────────────────────────────────
-    browser: str = "brave"           # none | brave(-beta/-nightly/-origin-*) | helium | vivaldi
+    browser: str = "none"            # none (default → roudix.browsers = []) | brave(-beta/-nightly/-origin-*) | helium | vivaldi
                                       # | firefox | librewolf | google-chrome | microsoft-edge
                                       # | ungoogled-chromium | chromium
     zen_browser: bool = False
@@ -86,21 +86,21 @@ class InstallState:
     latest_dms: bool = False
     latest_caelestia: bool = False
     default_shell: str = "fish"      # fish | bash
-    editor: str = "zed"              # roudix.editor — vscode | zed | neovim | none
+    editor: str = "none"             # roudix.editor — vscode | zed | neovim | none
     desktop_integration: str = "gnome"  # roudix.desktopIntegration — gnome | kde
                                          # only meaningful for niri/hyprland/mangowc/umbriel
                                          # (gnome/kde manage their own keyring/portal)
 
     # ── System behaviour ─────────────────────────────────────────────────
     vm_guest: bool = False
-    gaming: bool = True
-    gaming_apps_lutris: bool = True         # roudix.gaming.apps.lutris.enable
-    gaming_apps_heroic: bool = True         # roudix.gaming.apps.heroic.enable
-    gaming_apps_faugus: bool = True         # roudix.gaming.apps.faugus.enable
-    gaming_apps_prismlauncher: bool = True  # roudix.gaming.apps.prismlauncher.enable
-    gaming_apps_modrinth: bool = False      # roudix.gaming.apps.modrinth.enable — alt. to Prism, off by default
-    gaming_apps_vintagestory: bool = True   # roudix.gaming.apps.vintagestory.enable
-    gaming_apps_mangohud: bool = True       # roudix.gaming.apps.mangohud.enable
+    gaming: bool = False
+    gaming_apps_lutris: bool = False        # roudix.gaming.apps.lutris.enable
+    gaming_apps_heroic: bool = False        # roudix.gaming.apps.heroic.enable
+    gaming_apps_faugus: bool = False        # roudix.gaming.apps.faugus.enable
+    gaming_apps_prismlauncher: bool = False # roudix.gaming.apps.prismlauncher.enable
+    gaming_apps_modrinth: bool = False      # roudix.gaming.apps.modrinth.enable — alt. to Prism
+    gaming_apps_vintagestory: bool = False  # roudix.gaming.apps.vintagestory.enable
+    gaming_apps_mangohud: bool = False      # roudix.gaming.apps.mangohud.enable
     gaming_steam_millennium: bool = False   # roudix.gaming.steam.millennium.enable — modded Steam client, off by default
     timezone: str = "Europe/Brussels"
     locale: str = "fr_BE.UTF-8"
@@ -128,18 +128,18 @@ class InstallState:
     branch: str = "main"             # roudix.autoupdate.branch — main | testing | dev (also the branch cloned)
     bootloader: str = "limine"       # limine | systemd-boot
     matrix_client: str = "none"      # none | element | cinny
-    discord: str = "vencord"         # roudix.discord — vencord | vanilla | none
+    discord: str = "none"            # roudix.discord — vencord | vanilla | none
     telegram: str = "none"           # roudix.telegram — none | telegram | ayugram
-    video_player: str = "vlc"        # roudix.videoPlayer — vlc | clapper | mpv | celluloid | none
+    video_player: str = "none"       # roudix.videoPlayer — vlc | clapper | mpv | celluloid | none
     torrent_client: str = "none"     # roudix.torrentClient — none | qbittorrent | fragments | deluge
-    music_player: str = "spotify"    # roudix.musicPlayer — spotify | ytmdesktop | sonora | none
+    music_player: str = "none"       # roudix.musicPlayer — spotify | ytmdesktop | sonora | none
     waydroid_enable: bool = False
 
-    # ── Optional common apps (roudix.apps.*, all true by default) ──────────
-    app_gimp: bool = True
-    app_inkscape: bool = True
-    app_songrec: bool = True
-    app_easyeffects: bool = True     # + rnnoise-plugin
+    # ── Optional common apps (roudix.apps.*, all off by default) ───────────
+    app_gimp: bool = False
+    app_inkscape: bool = False
+    app_songrec: bool = False
+    app_easyeffects: bool = False    # + rnnoise-plugin
     app_signal: bool = False
     app_zapzap: bool = False
     app_fluxer: bool = False
@@ -159,13 +159,13 @@ class InstallState:
     mesa_use_git: bool = False       # roudix.mesa.useGit — false = mesa stable
 
     # ── Content creation ─────────────────────────────────────────────────
-    content_creation_enable: bool = True   # roudix.contentCreation.enable
-    obs_enable: bool = True                # roudix.contentCreation.obs.enable
+    content_creation_enable: bool = False  # roudix.contentCreation.enable
+    obs_enable: bool = False               # roudix.contentCreation.obs.enable
     # roudix.contentCreation.obs.plugins.<id>.enable — one boolean per plugin.
     # Aitum Multistream replaces obs-multi-rtmp (multistreaming plugin
     # maintained by the Aitum team, independent encoders/bitrate per platform).
-    obs_plugin_vkcapture: bool = True
-    obs_plugin_pipewire_audio_capture: bool = True
+    obs_plugin_vkcapture: bool = False
+    obs_plugin_pipewire_audio_capture: bool = False
     obs_plugin_background_removal: bool = False
     obs_plugin_move_transition: bool = False
     obs_plugin_aitum_multistream: bool = False
@@ -174,7 +174,7 @@ class InstallState:
     obs_plugin_advanced_scene_switcher: bool = False
     obs_plugin_input_overlay: bool = False
     obs_plugin_waveform: bool = False
-    video_editor: str = "kdenlive"         # roudix.contentCreation.videoEditor —
+    video_editor: str = "none"             # roudix.contentCreation.videoEditor —
                                             # kdenlive | davinci-resolve | davinci-resolve-studio | shotcut | none
-    virtual_camera_enable: bool = True     # roudix.contentCreation.virtualCamera.enable
+    virtual_camera_enable: bool = False    # roudix.contentCreation.virtualCamera.enable
     chatterino_enable: bool = False        # roudix.contentCreation.streaming.chatterino.enable

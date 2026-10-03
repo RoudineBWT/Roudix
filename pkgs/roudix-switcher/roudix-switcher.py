@@ -258,7 +258,7 @@ def scratchpad_option_key(de_id: str) -> str:
 # and roudix.gaming.apps.* on the Nix side.
 
 EDITORS = [
-    {"id": "zed",    "name": "Zed",     "subtitle": L("Éditeur rapide, accéléré par le GPU (défaut Roudix)", "Fast GPU-accelerated editor (Roudix default)"), "icon": "zed.svg"},
+    {"id": "zed",    "name": "Zed",     "subtitle": L("Éditeur rapide, accéléré par le GPU", "Fast GPU-accelerated editor"), "icon": "zed.svg"},
     {"id": "vscode", "name": "VS Code", "subtitle": L("Éditeur de Microsoft, immense écosystème d'extensions", "Microsoft's editor, huge extension ecosystem"),  "icon": "vscode.svg"},
     {"id": "neovim", "name": "Neovim",  "subtitle": L("Basé terminal, piloté au clavier", "Terminal-based, keyboard-driven"),                "icon": "neovim.svg"},
     {"id": "none",   "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun éditeur par défaut", "Don't install a default editor"),                 "icon": "none.svg"},
@@ -336,13 +336,13 @@ KNOWN_ICON_THEME_IDS = {
 
 # name -> Nix option (roudix.gaming.apps.<id>.enable), all true by default
 GAMING_APPS = [
-    {"id": "lutris",        "name": "Lutris",         "key": "roudix.gaming.apps.lutris.enable",        "default": True},
-    {"id": "heroic",        "name": "Heroic",         "key": "roudix.gaming.apps.heroic.enable",        "default": True},
-    {"id": "faugus",        "name": "Faugus Launcher","key": "roudix.gaming.apps.faugus.enable",        "default": True},
-    {"id": "prismlauncher", "name": "Prism Launcher", "key": "roudix.gaming.apps.prismlauncher.enable", "default": True},
-    {"id": "modrinth",      "name": "Modrinth",       "key": "roudix.gaming.apps.modrinth.enable",      "default": True},
-    {"id": "vintagestory",  "name": "Vintage Story",  "key": "roudix.gaming.apps.vintagestory.enable",  "default": True},
-    {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable",      "default": True},
+    {"id": "lutris",        "name": "Lutris",         "key": "roudix.gaming.apps.lutris.enable",        "default": False},
+    {"id": "heroic",        "name": "Heroic",         "key": "roudix.gaming.apps.heroic.enable",        "default": False},
+    {"id": "faugus",        "name": "Faugus Launcher","key": "roudix.gaming.apps.faugus.enable",        "default": False},
+    {"id": "prismlauncher", "name": "Prism Launcher", "key": "roudix.gaming.apps.prismlauncher.enable", "default": False},
+    {"id": "modrinth",      "name": "Modrinth",       "key": "roudix.gaming.apps.modrinth.enable",      "default": False},
+    {"id": "vintagestory",  "name": "Vintage Story",  "key": "roudix.gaming.apps.vintagestory.enable",  "default": False},
+    {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable",      "default": False},
 ]
 
 TERMINALS = [
@@ -395,13 +395,13 @@ FILE_MANAGERS = [
 FILE_MANAGER_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
 
 MATRIX_CLIENTS = [
-    {"id": "element", "name": "Element", "subtitle": L("Client Matrix complet (défaut)", "Full-featured Matrix client (default)"),      "icon": "element.svg"},
+    {"id": "element", "name": "Element", "subtitle": L("Client Matrix complet", "Full-featured Matrix client"),      "icon": "element.svg"},
     {"id": "cinny",   "name": "Cinny",   "subtitle": L("Client Matrix léger", "Lightweight Matrix client"),                 "icon": "cinny.svg"},
     {"id": "none",    "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun client Matrix", "Don't install a Matrix client"),     "icon": "none.svg"},
 ]
 
 DISCORD_OPTIONS = [
-    {"id": "vencord", "name": "Vencord", "subtitle": L("Discord avec Vencord déjà patché (défaut)", "Discord with Vencord already patched in (default)"), "icon": "vencord.svg"},
+    {"id": "vencord", "name": "Vencord", "subtitle": L("Discord avec Vencord déjà patché", "Discord with Vencord already patched in"), "icon": "vencord.svg"},
     {"id": "vanilla", "name": "Vanilla", "subtitle": L("Discord sans aucun patch client", "Discord with no client patches"),            "icon": "discord.svg"},
     {"id": "none",    "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun client Discord", "Don't install a Discord client"),           "icon": "none.svg"},
 ]
@@ -413,7 +413,7 @@ TELEGRAM_OPTIONS = [
 ]
 
 VIDEO_PLAYERS = [
-    {"id": "vlc",       "name": "VLC",       "subtitle": L("Le plus large support de formats (défaut)", "Widest format/codec support (default)"), "icon": "vlc.svg"},
+    {"id": "vlc",       "name": "VLC",       "subtitle": L("Le plus large support de formats", "Widest format/codec support"), "icon": "vlc.svg"},
     {"id": "clapper",   "name": "Clapper",   "subtitle": L("Lecteur GTK4 moderne", "Modern GTK4 player"), "icon": "clapper.svg"},
     {"id": "mpv",       "name": "mpv",       "subtitle": L("+ yt-dlp — minimaliste, streaming/URL", "+ yt-dlp — minimal, URL/streaming support"), "icon": "mpv.svg"},
     {"id": "celluloid", "name": "Celluloid", "subtitle": L("Interface GTK pour mpv", "GTK front-end for mpv"), "icon": "celluloid.svg"},
@@ -517,7 +517,7 @@ def switch_repo_branch(branch: str):
 
 
 MUSIC_PLAYERS = [
-    {"id": "spotify",    "name": "Spotify",              "subtitle": L("+ Spicetify (défaut)", "+ Spicetify (default)"), "icon": "spotify.svg"},
+    {"id": "spotify",    "name": "Spotify",              "subtitle": L("+ Spicetify", "+ Spicetify"), "icon": "spotify.svg"},
     {"id": "ytmdesktop", "name": "YouTube Music Desktop", "subtitle": L("Client YouTube Music non officiel", "Unofficial YouTube Music client"), "icon": "youtube-music-desktop-app.svg"},
     {"id": "none",       "name": L("Aucun", "None"),      "subtitle": L("N'installer aucun lecteur de musique", "Don't install a music player"), "icon": "none.svg"},
 ]
@@ -579,7 +579,7 @@ ZEN_VARIANTS = [
 
 # roudix.contentCreation.videoEditor — enum, exposed as a SelectorGroup.
 VIDEO_EDITORS = [
-    {"id": "kdenlive",              "name": "Kdenlive",              "subtitle": L("Éditeur libre basé sur KDE (défaut Roudix)", "Free KDE-based editor (Roudix default)"),                    "icon": "kdenlive.svg"},
+    {"id": "kdenlive",              "name": "Kdenlive",              "subtitle": L("Éditeur libre basé sur KDE", "Free KDE-based editor"),                    "icon": "kdenlive.svg"},
     {"id": "davinci-resolve",        "name": "DaVinci Resolve",       "subtitle": L("Édition gratuite — étalonnage, VFX, niveau pro", "Free edition — color grading, VFX, pro-grade"),                 "icon": "davinci-resolve.svg"},
     {"id": "davinci-resolve-studio", "name": "DaVinci Resolve Studio","subtitle": L("Édition payante de ci-dessus — licence Blackmagic requise", "Paid edition of the above — requires a Blackmagic license"),"icon": "davinci-resolve.svg"},
     {"id": "shotcut",                 "name": "Shotcut",               "subtitle": L("Léger, multiplateforme, basé sur FFmpeg", "Lightweight, cross-platform, FFmpeg-based"),                        "icon": "shotcut.svg"},
@@ -593,8 +593,8 @@ VIDEO_EDITORS = [
 # known for obs-vertical-canvas), with independent encoders/bitrate per
 # platform.
 OBS_PLUGINS = [
-    {"id": "vkcapture",              "name": L("VKCapture (capture jeux Vulkan/OpenGL)", "VKCapture (Vulkan/OpenGL game capture)"),              "key": "roudix.contentCreation.obs.plugins.vkcapture.enable",              "default": True},
-    {"id": "pipewireAudioCapture",   "name": L("Pipewire Audio Capture (audio par application)", "Pipewire Audio Capture (per-app audio)"),      "key": "roudix.contentCreation.obs.plugins.pipewireAudioCapture.enable",   "default": True},
+    {"id": "vkcapture",              "name": L("VKCapture (capture jeux Vulkan/OpenGL)", "VKCapture (Vulkan/OpenGL game capture)"),              "key": "roudix.contentCreation.obs.plugins.vkcapture.enable",              "default": False},
+    {"id": "pipewireAudioCapture",   "name": L("Pipewire Audio Capture (audio par application)", "Pipewire Audio Capture (per-app audio)"),      "key": "roudix.contentCreation.obs.plugins.pipewireAudioCapture.enable",   "default": False},
     {"id": "backgroundRemoval",      "name": L("Background Removal (fond virtuel IA)", "Background Removal (AI virtual background)"),                "key": "roudix.contentCreation.obs.plugins.backgroundRemoval.enable",      "default": False},
     {"id": "moveTransition",         "name": L("Move Transition (animations de sources)", "Move Transition (source animations)"),             "key": "roudix.contentCreation.obs.plugins.moveTransition.enable",         "default": False},
     {"id": "aitumMultistream",       "name": L("Aitum Multistream (stream multi-plateformes)", "Aitum Multistream (multi-platform streaming)"),        "key": "roudix.contentCreation.obs.plugins.aitumMultistream.enable",       "default": False},
@@ -607,8 +607,8 @@ OBS_PLUGINS = [
 
 # Independent toggles on the Content Creation page (like SYSTEM_TOGGLES).
 CONTENT_CREATION_TOGGLES = [
-    {"id": "obs",           "name": "OBS Studio",                       "key": "roudix.contentCreation.obs.enable",                    "default": True},
-    {"id": "virtualCamera", "name": L("Webcam virtuelle (v4l2loopback)", "Virtual camera (v4l2loopback)"),   "key": "roudix.contentCreation.virtualCamera.enable",          "default": True},
+    {"id": "obs",           "name": "OBS Studio",                       "key": "roudix.contentCreation.obs.enable",                    "default": False},
+    {"id": "virtualCamera", "name": L("Webcam virtuelle (v4l2loopback)", "Virtual camera (v4l2loopback)"),   "key": "roudix.contentCreation.virtualCamera.enable",          "default": False},
     {"id": "chatterino",    "name": L("Chatterino2 (chat Twitch tiers)", "Chatterino2 (third-party Twitch chat)"),   "key": "roudix.contentCreation.streaming.chatterino.enable",   "default": False},
 ]
 
@@ -619,10 +619,10 @@ CONTENT_CREATION_TOGGLES = [
 # roudix.musicPlayer, a SelectorGroup like VIDEO_PLAYERS/TORRENT_CLIENTS,
 # since they became a real alternative instead of two independent on/offs.)
 APPS_TOGGLES = [
-    {"id": "gimp",        "name": "GIMP",                             "key": "roudix.apps.gimp.enable",       "default": True},
-    {"id": "inkscape",    "name": "Inkscape",                         "key": "roudix.apps.inkscape.enable",   "default": True},
-    {"id": "songrec",     "name": "SongRec",                          "key": "roudix.apps.songrec.enable",    "default": True},
-    {"id": "easyeffects", "name": "EasyEffects",                      "key": "roudix.apps.easyeffects.enable","default": True},
+    {"id": "gimp",        "name": "GIMP",                             "key": "roudix.apps.gimp.enable",       "default": False},
+    {"id": "inkscape",    "name": "Inkscape",                         "key": "roudix.apps.inkscape.enable",   "default": False},
+    {"id": "songrec",     "name": "SongRec",                          "key": "roudix.apps.songrec.enable",    "default": False},
+    {"id": "easyeffects", "name": "EasyEffects",                      "key": "roudix.apps.easyeffects.enable","default": False},
 ]
 
 
@@ -1640,7 +1640,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         gaming_title_box.set_hexpand(True)
         gaming_header.append(gaming_title_box)
 
-        cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
+        cur_gaming_master = get_bool_option("roudix.gaming.enable", False)
         self.gaming_master_switch = Gtk.Switch()
         self.gaming_master_switch.set_valign(Gtk.Align.CENTER)
         self.gaming_master_switch.set_active(cur_gaming_master)
@@ -1682,7 +1682,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         cc_master_label.set_hexpand(True)
         self.cc_master_switch = Gtk.Switch()
         self.cc_master_switch.set_valign(Gtk.Align.CENTER)
-        self.cc_master_switch.set_active(get_bool_option("roudix.contentCreation.enable", True))
+        self.cc_master_switch.set_active(get_bool_option("roudix.contentCreation.enable", False))
         cc_master_row.append(cc_master_label)
         cc_master_row.append(self.cc_master_switch)
         cc_page.append(cc_master_row)
@@ -1697,7 +1697,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.obs_plugins_group = ToggleListGroup(L("Plugins OBS", "OBS plugins"), self.obs_plugins, current_obs_plugins)
         cc_page.append(self.obs_plugins_group)
 
-        current_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
+        current_video_editor = get_string_option("roudix.contentCreation.videoEditor", "none")
         self.video_editor_selector = SelectorGroup(L("Éditeur vidéo", "Video editor"), VIDEO_EDITORS, current_video_editor, dark)
         cc_page.append(self.video_editor_selector)
 
@@ -1719,7 +1719,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         editor_page.set_margin_end(16)
         editor_page.set_margin_bottom(16)
 
-        current_editor = get_string_option("roudix.editor", "zed")
+        current_editor = get_string_option("roudix.editor", "none")
         self.editor_selector = SelectorGroup(L("Éditeur par défaut", "Default editor"), EDITORS, current_editor, dark)
         editor_page.append(self.editor_selector)
 
@@ -1762,7 +1762,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         browser_page.append(bsubtitle)
         browser_page.append(Gtk.Separator())
 
-        current_browsers = set(get_list_option("roudix.browsers", ["brave"]))
+        current_browsers = set(get_list_option("roudix.browsers", []))
         browser_current = {b["id"]: (b["id"] in current_browsers) for b in BROWSERS}
         self.browser_group = ToggleListGroup("", BROWSERS, browser_current)
         browser_page.append(self.browser_group)
@@ -1902,11 +1902,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         chat_page.set_margin_end(16)
         chat_page.set_margin_bottom(16)
 
-        current_matrix = get_string_option("roudix.matrixClient", "element")
+        current_matrix = get_string_option("roudix.matrixClient", "none")
         self.matrix_selector = SelectorGroup(L("Client Matrix", "Matrix client"), MATRIX_CLIENTS, current_matrix, dark)
         chat_page.append(self.matrix_selector)
 
-        current_discord = get_string_option("roudix.discord", "vencord")
+        current_discord = get_string_option("roudix.discord", "none")
         self.discord_selector = SelectorGroup("Discord", DISCORD_OPTIONS, current_discord, dark)
         chat_page.append(self.discord_selector)
 
@@ -1932,7 +1932,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.apps_group = ToggleListGroup(L("Apps optionnelles", "Optional apps"), self.apps_toggles, apps_current)
         apps_page.append(self.apps_group)
 
-        current_video_player = get_string_option("roudix.videoPlayer", "vlc")
+        current_video_player = get_string_option("roudix.videoPlayer", "none")
         self.video_player_selector = SelectorGroup(L("Lecteur vidéo", "Video player"), VIDEO_PLAYERS, current_video_player, dark)
         apps_page.append(self.video_player_selector)
 
@@ -1940,7 +1940,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.torrent_client_selector = SelectorGroup(L("Client torrent", "Torrent client"), TORRENT_CLIENTS, current_torrent_client, dark)
         apps_page.append(self.torrent_client_selector)
 
-        current_music_player = get_string_option("roudix.musicPlayer", "spotify")
+        current_music_player = get_string_option("roudix.musicPlayer", "none")
         self.music_player_selector = SelectorGroup(L("Lecteur de musique", "Music player"), MUSIC_PLAYERS, current_music_player, dark)
         apps_page.append(self.music_player_selector)
 
@@ -2492,7 +2492,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         integration_changed = integration_relevant and (new_integration != cur_integration)
 
         # Default editor
-        cur_editor = get_string_option("roudix.editor", "zed")
+        cur_editor = get_string_option("roudix.editor", "none")
         new_editor = self.editor_selector.selected_id
         editor_changed = new_editor != cur_editor
 
@@ -2502,7 +2502,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         terminal_changed = new_terminal != cur_terminal
 
         # Browsers (list) + Zen (separate switch)
-        cur_browsers = get_list_option("roudix.browsers", ["brave"])
+        cur_browsers = get_list_option("roudix.browsers", [])
         new_browsers = [b["id"] for b in BROWSERS if self.browser_group.get_states()[b["id"]]]
         browsers_changed = new_browsers != cur_browsers
 
@@ -2557,13 +2557,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         gaming_extras_changes = _diff_bool_items(self.gaming_extras, self.gaming_extras_group.get_states())
 
         # Master switch for the gaming group
-        cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
+        cur_gaming_master = get_bool_option("roudix.gaming.enable", False)
         new_gaming_master = self.gaming_master_switch.get_active()
         gaming_master_changed = new_gaming_master != cur_gaming_master
 
         # Content creation: master switch + independent toggles + OBS
         # plugins (list) + video editor (enum)
-        cur_cc_master = get_bool_option("roudix.contentCreation.enable", True)
+        cur_cc_master = get_bool_option("roudix.contentCreation.enable", False)
         new_cc_master = self.cc_master_switch.get_active()
         cc_master_changed = new_cc_master != cur_cc_master
 
@@ -2571,7 +2571,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         obs_plugins_changes = _diff_bool_items(self.obs_plugins, self.obs_plugins_group.get_states())
 
-        cur_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
+        cur_video_editor = get_string_option("roudix.contentCreation.videoEditor", "none")
         new_video_editor = self.video_editor_selector.selected_id
         video_editor_changed = new_video_editor != cur_video_editor
 
@@ -2587,12 +2587,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         filemanager_changed = filemanager_relevant and (new_filemanager != cur_filemanager)
 
         # Matrix client
-        cur_matrix = get_string_option("roudix.matrixClient", "element")
+        cur_matrix = get_string_option("roudix.matrixClient", "none")
         new_matrix = self.matrix_selector.selected_id
         matrix_changed = new_matrix != cur_matrix
 
         # Discord
-        cur_discord = get_string_option("roudix.discord", "vencord")
+        cur_discord = get_string_option("roudix.discord", "none")
         new_discord = self.discord_selector.selected_id
         discord_changed = new_discord != cur_discord
 
@@ -2613,7 +2613,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         rgb_changed = new_rgb != cur_rgb
 
         # Video player
-        cur_video_player = get_string_option("roudix.videoPlayer", "vlc")
+        cur_video_player = get_string_option("roudix.videoPlayer", "none")
         new_video_player = self.video_player_selector.selected_id
         video_player_changed = new_video_player != cur_video_player
 
@@ -2628,7 +2628,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         branch_changed = new_branch != cur_branch
 
         # Music player
-        cur_music_player = get_string_option("roudix.musicPlayer", "spotify")
+        cur_music_player = get_string_option("roudix.musicPlayer", "none")
         new_music_player = self.music_player_selector.selected_id
         music_player_changed = new_music_player != cur_music_player
 
