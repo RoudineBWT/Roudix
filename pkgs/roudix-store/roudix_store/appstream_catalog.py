@@ -66,6 +66,22 @@ class _HTMLToTextParser(HTMLParser):
         return text.strip()
 
 
+FLATPAK_APPSTREAM = "/var/lib/flatpak/appstream"
+
+
+def _flatpak_icon_by_id(app_id: str) -> str | None:
+    """Flathub cached icons are <app-id>.png under .../active/icons/<size>/ (or icons/<origin>/<size>/)."""
+    root = Path(FLATPAK_APPSTREAM)
+    if not root.is_dir():
+        return None
+    for size in ("128x128", "64x64", "256x256"):
+        for pattern in (f"*/*/active/icons/{size}/{app_id}.png", f"*/*/active/icons/*/{size}/{app_id}.png"):
+            match = next(root.glob(pattern), None)
+            if match:
+                return str(match)
+    return None
+
+
 class AppStreamCatalog:
     def __init__(self) -> None:
         try:
@@ -86,7 +102,10 @@ class AppStreamCatalog:
         root = os.environ.get("ROUDIX_STORE_CATALOG")
         if root and os.path.isdir(root):
             self.pool.reset_extra_data_locations()
+            self.pool.set_load_std_data_locations(False)  # no OS desktop files/metainfo noise
             self.pool.add_extra_data_location(root, AppStream.FormatStyle.CATALOG)
+        # Flathub metadata is the one `flatpak` keeps under /var/lib/flatpak/appstream
+        self.pool.set_flags(AppStream.PoolFlags.LOAD_FLATPAK)
 
     def load(self) -> list[AppEntry]:
         self.pool.load()
@@ -115,6 +134,9 @@ class AppStreamCatalog:
         summary = self._safe_text(getattr(component, "get_summary", lambda: None)())
         description = self._normalize_description(getattr(component, "get_description", lambda: None)())
         pkg_names = [str(item) for item in self._as_list(getattr(component, "get_pkgnames", lambda: [])())]
+
+        if self._flatpak_bundle(component) is not None:
+            return self._flatpak_entry(component, name, summary, description)
 
         if not name or not pkg_names:
             return None
@@ -145,6 +167,41 @@ class AppStreamCatalog:
             icon_url=icon_url,
             homepage_url=homepage_url,
             kind=self._extract_kind(component),
+        )
+
+    def _flatpak_bundle(self, component: Any) -> str | None:
+        try:
+            bundle = component.get_bundle(self.AppStream.BundleKind.FLATPAK)
+        except Exception:
+            return None
+        return str(bundle.get_id()) if bundle is not None else None
+
+    def _flatpak_entry(self, component: Any, name: str, summary: str, description: str) -> AppEntry | None:
+        """Flathub desktop apps only (no runtimes/addons); only the `flathub` remote."""
+        if not self._extract_kind(component).endswith("DESKTOP_APP") or not name:
+            return None
+        origin = str(getattr(component, "get_origin", lambda: "")() or "")
+        if origin and origin != "flathub":
+            return None
+        app_id = (self._safe_text(component.get_id()) or "").removesuffix(".desktop")
+        if not app_id:
+            return None
+        icon_name, icon_path, icon_url = self._extract_icon(component, name, [app_id])
+        if not icon_path:
+            icon_path = _flatpak_icon_by_id(app_id)
+        return AppEntry(
+            appstream_id=app_id,
+            name=name,
+            summary=summary or "No summary available.",
+            description=description or summary or "No description available.",
+            pkg_names=[app_id],
+            categories=[str(c) for c in self._as_list(getattr(component, "get_categories", lambda: [])())],
+            keywords=self._extract_keywords(component),
+            screenshots=self._extract_screenshots(component),
+            launchables=self._extract_launchables(component) or [f"{app_id}.desktop"],
+            icon_name=icon_name, icon_path=icon_path, icon_url=icon_url,
+            homepage_url=self._extract_homepage(component),
+            kind="DESKTOP_APP", repo_ids=["flathub"], source="flatpak",
         )
 
     def _extract_kind(self, component: Any) -> str:

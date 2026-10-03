@@ -9,4 +9,7 @@ Nobara's [dnf-app-center](https://github.com/Nobara-Project/dnf-app-center)
 - Install/remove: edits a managed block in `local.nix`
   (`roudix.store.packages` → modules/home, `roudix.store.systemPackages` → hosts/<host>),
   then `nh os switch`. A failed rebuild restores both files.
+- Flatpak tab (Nix | Flatpak switch in the sidebar): Flathub metadata comes from what `flatpak` already
+  downloaded (`flatpak update --appstream`); installs go to `roudix.store.flatpaks` in `hosts/<host>/local.nix`
+  (gitignored), handed to nix-flatpak on the next switch. Requires `roudix.flatpak.enable = true`.
 - Not supported (by design): updates page, repositories, RPM drops — updates come from the flake.

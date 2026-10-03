@@ -23,6 +23,7 @@ class AppEntry:
     installed_version: str | None = None
     candidate_version: str | None = None
     repo_ids: list[str] = field(default_factory=list)
+    source: str = "nix"  # "nix" (nixpkgs) or "flatpak" (Flathub)
 
     @property
     def primary_pkg(self) -> str | None:

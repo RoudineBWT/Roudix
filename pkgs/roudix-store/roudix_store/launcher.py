@@ -12,6 +12,7 @@ import os
 EXTRA_DIRS = (
     "/run/current-system/sw/share",
     "/nix/var/nix/profiles/default/share",
+    "/var/lib/flatpak/exports/share",
 )
 
 
@@ -20,7 +21,7 @@ def data_dirs() -> list[str]:
     user = os.environ.get("USER") or os.path.basename(home)
     dirs = [os.environ.get("XDG_DATA_HOME") or os.path.join(home, ".local/share")]
     dirs += [d for d in os.environ.get("XDG_DATA_DIRS", "").split(":") if d]
-    dirs += [os.path.join(home, ".nix-profile/share"), f"/etc/profiles/per-user/{user}/share", *EXTRA_DIRS]
+    dirs += [os.path.join(home, ".local/share/flatpak/exports/share"), os.path.join(home, ".nix-profile/share"), f"/etc/profiles/per-user/{user}/share", *EXTRA_DIRS]
     seen: set[str] = set()
     return [d for d in dirs if not (d in seen or seen.add(d))]
 

@@ -1131,6 +1131,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.apps: list[AppEntry] = []
         self.current_items: list[AppEntry] = []
         self.current_page = "audiovideo"
+        self.source = "nix"  # "nix" or "flatpak": the active catalog (sidebar switch)
         self.current_group = "categories"
         self.news_panel_visible = True
         self.news_text = "Loading news…"
@@ -1474,7 +1475,7 @@ class MainWindow(Adw.ApplicationWindow):
         spacer.set_hexpand(True)
         bar.append(spacer)
 
-        auth_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        auth_box = self.scope_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         auth_box.set_valign(Gtk.Align.CENTER)
 
         auth_label = Gtk.Label(label=_("Install system-wide"))
@@ -1566,6 +1567,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.updater_settings = load_updater_settings()
 
     def _build_sidebar(self) -> None:
+        self.sidebar_box.append(self._build_source_switch())
         self.sidebar_box.append(self._section_label(_("System")))
         for key, title in CATEGORY_GROUPS["system"].items():
             icon = CATEGORY_ICONS["system"].get(key)
@@ -1579,6 +1581,41 @@ class MainWindow(Adw.ApplicationWindow):
         for key, title in CATEGORY_GROUPS["categories"].items():
             icon = CATEGORY_ICONS["categories"].get(key)
             self.sidebar_box.append(self._nav_button(key, title, "categories", icon, indent=True))
+
+    def _build_source_switch(self) -> Gtk.Widget:
+        """Nix | Flatpak — each one is its own catalog (categories, search, Installed)."""
+        box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        box.add_css_class("linked")
+        box.set_margin_top(8)
+        box.set_margin_bottom(6)
+        box.set_margin_start(10)
+        box.set_margin_end(10)
+        box.set_homogeneous(True)
+        self.source_buttons: dict[str, Gtk.ToggleButton] = {}
+        group = None
+        for key, label in (("nix", "Nix"), ("flatpak", "Flatpak")):
+            button = Gtk.ToggleButton(label=label)
+            if group is None:
+                group = button
+            else:
+                button.set_group(group)
+            button.set_active(key == self.source)
+            button.connect("toggled", self._on_source_toggled, key)
+            self.source_buttons[key] = button
+            box.append(button)
+        return box
+
+    def _on_source_toggled(self, button: Gtk.ToggleButton, key: str) -> None:
+        if not button.get_active() or key == self.source:
+            return
+        self.source = key
+        self.scope_box.set_visible(key == "nix")
+        self._invalidate_page_caches()
+        if self.current_group == "system" and self.current_page in {"repositories", "updates"}:
+            self.current_group, self.current_page = "categories", "audiovideo"
+        self._switch_page(self.current_group, self.current_page)
+        if key == "flatpak" and not any(app.source == "flatpak" for app in self.apps):
+            self._show_toast(_("No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update --appstream"))
 
     def _section_label(self, text: str) -> Gtk.Widget:
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=7)
@@ -1837,6 +1874,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.current_search_text,
             self.current_category_filter_text,
             self.current_repo_filter,
+            self.source,
         )
 
     def _show_loading_page(self, message: str) -> None:
@@ -1895,7 +1933,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.news_text = news_text
         self._invalidate_page_caches()
         self._refresh_news_page()
-        self.status_label.set_text(f"Loaded {len(apps)} applications from AppStream.")
+        self.status_label.set_text(f"Loaded {len(apps)} applications ({sum(a.source == 'nix' for a in apps)} nixpkgs, {sum(a.source == 'flatpak' for a in apps)} Flatpak).")
         self._rebuild_repo_page()
         self._populate_repo_filter_dropdown()
         self._switch_page(self.current_group, self.current_page)
@@ -2323,7 +2361,7 @@ class MainWindow(Adw.ApplicationWindow):
         if cached is not None:
             return list(cached)
 
-        items = list(self.apps)
+        items = [app for app in self.apps if app.source == self.source]
         needle = self.current_search_text.casefold()
         show_local_filter = ((self.current_group == "categories") or (self.current_group == "system" and self.current_page in {"installed", "updates"})) and not bool(needle)
 
@@ -2342,7 +2380,7 @@ class MainWindow(Adw.ApplicationWindow):
 
             merged: list[AppEntry] = list(items)
             seen_pkgs = {pkg for app in merged for pkg in app.pkg_names}
-            if self.backend is not None:
+            if self.backend is not None and self.source == "nix":
                 try:
                     fallback = self.backend.search_packages(needle, repo_id=self.current_repo_filter)
                 except Exception:
@@ -2361,7 +2399,7 @@ class MainWindow(Adw.ApplicationWindow):
                 if self.current_page == "installed":
                     items = [app for app in items if app.installed]
                     seen_pkgs = {pkg for app in items for pkg in app.pkg_names}
-                    if self.backend is not None:
+                    if self.backend is not None and self.source == "nix":
                         try:
                             fallback_installed = self.backend.get_installed_packages(repo_id=self.current_repo_filter)
                         except Exception:
@@ -2743,11 +2781,14 @@ class MainWindow(Adw.ApplicationWindow):
             if self.current_app is app:
                 self._open_details(app)
             return
+        if app.installed and app.source == "flatpak" and self.backend and not self.backend.is_declared(app):
+            self._show_toast(f"{app.primary_pkg} was installed outside Roudix Store — remove it with: flatpak uninstall {app.primary_pkg}")
+            return
         if preferred_action == "update":
             self._enqueue_update_batch([app])
             return
         action = preferred_action or ("remove" if app.installed else "install")
-        scope = "system" if self.cache_auth_check.get_active() else "home"
+        scope = "flatpak" if app.source == "flatpak" else ("system" if self.cache_auth_check.get_active() else "home")
         item = QueueItem(app=app, action=action, message=f"Queued to {action} {app.primary_pkg}", scope=scope)
         self.queue_items.append(item)
         self._append_queue_log(f"Queued {action} for {app.primary_pkg} — press Apply to run it")
@@ -3192,7 +3233,7 @@ class MainWindow(Adw.ApplicationWindow):
             card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
             card.add_css_class("queue-item-card")
             title = Gtk.Label(xalign=0)
-            where = {"home": _("user"), "system": _("system")}.get(item.scope, item.scope)
+            where = {"home": _("user"), "system": _("system"), "flatpak": "Flatpak"}.get(item.scope, item.scope)
             title.set_markup(f"<b>{GLib.markup_escape_text(item.display_name)}</b> — {GLib.markup_escape_text(item.action)} ({GLib.markup_escape_text(where)}) · {GLib.markup_escape_text(item.status)}")
             card.append(title)
             self.queue_list_box.append(card)
