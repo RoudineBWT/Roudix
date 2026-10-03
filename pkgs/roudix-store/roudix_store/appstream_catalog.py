@@ -202,20 +202,20 @@ class AppStreamCatalog:
         return None
 
     def _extract_launchables(self, component: Any) -> list[str]:
-        launchables = self._as_list(getattr(component, "get_launchables", lambda: [])())
+        """desktop-ids declared by the component (AppStream Launchable.get_entries())."""
         values: list[str] = []
-        for item in launchables:
-            for attr in ("get_value", "get_name"):
-                fn = getattr(item, attr, None)
-                if fn is None:
-                    continue
-                try:
-                    value = fn()
-                except Exception:
-                    continue
-                if value:
-                    values.append(str(value))
-                    break
+        for item in self._as_list(getattr(component, "get_launchables", lambda: [])()):
+            kind = getattr(item, "get_kind", lambda: None)()
+            kind_name = str(getattr(kind, "value_nick", None) or getattr(kind, "name", None) or kind).lower()
+            if kind is not None and "desktop" not in kind_name:
+                continue  # service / cockpit-manifest / url launchables can't be opened
+            try:
+                entries = item.get_entries()
+            except Exception:
+                entries = []
+            for entry in self._as_list(entries):
+                if entry:
+                    values.append(str(entry))
         return values
 
     def _extract_screenshots(self, component: Any) -> list[str]:

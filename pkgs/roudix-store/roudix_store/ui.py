@@ -23,6 +23,7 @@ from gi.repository import Adw, Gdk, GdkPixbuf, Gio, GLib, GObject, Gtk, Pango
 from .appstream_catalog import AppStreamCatalog, AppStreamUnavailable
 from .nix_backend import NixBackend, NixUnavailable
 from . import update_output
+from . import launcher
 
 import json
 from pathlib import Path as _Path
@@ -168,6 +169,7 @@ class QueueItem:
     file_paths: list[str] = field(default_factory=list)
     label: str | None = None
     update_result: dict = field(default_factory=dict)
+    scope: str = "home"
 
     def __post_init__(self) -> None:
         if not self.pkg_names:
@@ -754,7 +756,10 @@ def _icon_names_from_launchables(app: AppEntry) -> list[str]:
         if not desktop_id.endswith('.desktop'):
             _icon_debug(app, f"skip non-desktop launchable {launchable!r}")
             continue
-        info = Gio.DesktopAppInfo.new(desktop_id)
+        try:
+            info = Gio.DesktopAppInfo.new(desktop_id)  # PyGObject raises TypeError when the app isn't installed
+        except TypeError:
+            info = None
         if info is None:
             _icon_debug(app, f"DesktopAppInfo not found for {desktop_id!r}")
             continue
@@ -1350,6 +1355,15 @@ class MainWindow(Adw.ApplicationWindow):
         queue_button.connect("clicked", lambda *_: self._switch_page("system", "queue"))
         bottom_bar.append(queue_button)
 
+        self.bottom_clear_button = Gtk.Button(label=_("Clear"))
+        self.bottom_clear_button.connect("clicked", lambda *_: self._clear_pending_queue())
+        bottom_bar.append(self.bottom_clear_button)
+
+        self.bottom_apply_button = Gtk.Button(label=_("Apply"))
+        self.bottom_apply_button.add_css_class("suggested-action")
+        self.bottom_apply_button.connect("clicked", lambda *_: self._apply_queue())
+        bottom_bar.append(self.bottom_apply_button)
+
         self._build_list_page()
         self._build_queue_page()
         self._build_repo_page()
@@ -1692,6 +1706,13 @@ class MainWindow(Adw.ApplicationWindow):
 
         queue_actions = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         queue_actions.set_halign(Gtk.Align.START)
+        self.queue_apply_button = Gtk.Button(label=_("Apply"))
+        self.queue_apply_button.add_css_class("suggested-action")
+        self.queue_apply_button.connect("clicked", lambda *_: self._apply_queue())
+        queue_actions.append(self.queue_apply_button)
+        self.queue_clear_button = Gtk.Button(label=_("Clear"))
+        self.queue_clear_button.connect("clicked", lambda *_: self._clear_pending_queue())
+        queue_actions.append(self.queue_clear_button)
         self.view_log_button = Gtk.Button(label=_("View transaction log"))
         self.view_log_button.connect("clicked", self._on_view_transaction_log)
         queue_actions.append(self.view_log_button)
@@ -1878,8 +1899,7 @@ class MainWindow(Adw.ApplicationWindow):
         self._rebuild_repo_page()
         self._populate_repo_filter_dropdown()
         self._switch_page(self.current_group, self.current_page)
-        if self.queue_items and not self.queue_worker_running:
-            GLib.idle_add(self._prompt_install)
+        self._refresh_queue_page()
         return False
 
     def _fetch_news_text(self) -> str:
@@ -2616,12 +2636,12 @@ class MainWindow(Adw.ApplicationWindow):
         self.detail_meta.set_text("\n".join(lines))
 
         queued_label = self._queued_state_label(app)
-        self.detail_action_button.set_label(queued_label or self._default_action_label(app))
-        self.detail_action_button.set_sensitive(bool(app.primary_pkg and self.backend) and queued_label is None)
+        self.detail_action_button.set_label(self._detail_button_label(app, queued_label))
+        self.detail_action_button.set_sensitive(bool(app.primary_pkg and self.backend) and queued_label != "Running")
         self.detail_action_button.remove_css_class("destructive-action")
         self.detail_action_button.remove_css_class("suggested-action")
         self.detail_action_button.add_css_class("destructive-action" if app.installed else "suggested-action")
-        self.detail_open_button.set_sensitive(bool(app.launchables))
+        self.detail_open_button.set_sensitive(bool(app.launchables) and app.installed)
 
         self._rebuild_detail_links(app)
         self._rebuild_detail_screenshots(app)
@@ -2632,11 +2652,17 @@ class MainWindow(Adw.ApplicationWindow):
             return
         app = self.current_app
         queued_label = self._queued_state_label(app)
-        self.detail_action_button.set_label(queued_label or self._default_action_label(app))
-        self.detail_action_button.set_sensitive(bool(app.primary_pkg and self.backend) and queued_label is None)
+        self.detail_action_button.set_label(self._detail_button_label(app, queued_label))
+        self.detail_action_button.set_sensitive(bool(app.primary_pkg and self.backend) and queued_label != "Running")
         self.detail_action_button.remove_css_class("destructive-action")
         self.detail_action_button.remove_css_class("suggested-action")
         self.detail_action_button.add_css_class("destructive-action" if app.installed else "suggested-action")
+        self.detail_open_button.set_sensitive(bool(app.launchables) and app.installed)
+
+    def _detail_button_label(self, app: AppEntry, queued_label: str | None) -> str:
+        if queued_label == "Queued":
+            return _("Remove from queue")
+        return queued_label or self._default_action_label(app)
 
     def _default_action_label(self, app: AppEntry) -> str:
         if self.current_group == "system" and self.current_page == "updates" and app.installed and app.candidate_version and app.candidate_version != app.installed_version:
@@ -2703,24 +2729,34 @@ class MainWindow(Adw.ApplicationWindow):
     def _run_action_for_app(self, app: AppEntry, preferred_action: str | None = None) -> None:
         if not self.backend or not app.primary_pkg:
             return
-        if self._queued_state_label(app) is not None:
-            self._show_toast(f"{app.primary_pkg} is already in the queue.")
+        state = self._queued_state_label(app)
+        if state == "Running":
+            self._show_toast(f"{app.primary_pkg} is being applied right now.")
+            return
+        if state == "Queued":
+            self.queue_items = [i for i in self.queue_items if not (i.status == "queued" and app.primary_pkg in i.pkg_names)]
+            self._append_queue_log(f"Removed {app.primary_pkg} from the queue")
+            self._invalidate_page_caches()
+            self.status_label.set_text(self._queue_status_text())
+            self._refresh_queue_page()
+            self._refresh_main_page()
+            if self.current_app is app:
+                self._open_details(app)
             return
         if preferred_action == "update":
             self._enqueue_update_batch([app])
             return
         action = preferred_action or ("remove" if app.installed else "install")
-        item = QueueItem(app=app, action=action, message=f"Queued to {action} {app.primary_pkg}")
+        scope = "system" if self.cache_auth_check.get_active() else "home"
+        item = QueueItem(app=app, action=action, message=f"Queued to {action} {app.primary_pkg}", scope=scope)
         self.queue_items.append(item)
-        self._append_queue_log(f"Queued {action} for {app.primary_pkg}")
+        self._append_queue_log(f"Queued {action} for {app.primary_pkg} — press Apply to run it")
         self._invalidate_page_caches()
         self.status_label.set_text(self._queue_status_text())
         self._refresh_queue_page()
         self._refresh_main_page()
         if self.current_app is app:
             self._open_details(app)
-        if not self.queue_worker_running:
-            self._start_queue_worker()
 
     def _toggle_update_selection(self, app: AppEntry, selected: bool) -> None:
         pkg = app.primary_pkg
@@ -2838,34 +2874,54 @@ class MainWindow(Adw.ApplicationWindow):
         if not self.queue_worker_running:
             self._start_queue_worker()
 
+    def _apply_queue(self) -> None:
+        """Run every queued change with a single local.nix write and a single rebuild."""
+        if self.queue_worker_running or not self.backend:
+            return
+        if not any(i.status == "queued" for i in self.queue_items):
+            return
+        self._start_queue_worker()
+
+    def _clear_pending_queue(self) -> None:
+        if self.queue_worker_running:
+            return
+        self.queue_items = [i for i in self.queue_items if i.status != "queued"]
+        self._append_queue_log("Cleared the pending queue")
+        self._invalidate_page_caches()
+        self.status_label.set_text(self._queue_status_text())
+        self._refresh_queue_page()
+        self._refresh_main_page()
+        self._refresh_detail_action_button()
+
     def _start_queue_worker(self) -> None:
         if self.queue_worker_running or not self.backend:
+            return
+        batch = [i for i in self.queue_items if i.status == "queued"]
+        if not batch:
             return
         self.queue_worker_running = True
 
         def worker() -> None:
-            while True:
-                item = next((entry for entry in self.queue_items if entry.status == "queued"), None)
-                if item is None:
-                    break
+            for item in batch:
                 GLib.idle_add(self._queue_item_started, item)
+            changes = [(item.action, pkg, item.scope) for item in batch for pkg in (item.pkg_names or [item.pkg_name])]
 
-                def on_event(payload: dict) -> None:
-                    GLib.idle_add(self._handle_queue_event, item, payload)
+            def on_event(payload: dict) -> None:
+                GLib.idle_add(self._handle_batch_event, payload)
 
-                if item.action == "system-update":
-                    target = item.pkg_names
-                elif item.action == 'install-rpms':
-                    target = item.file_paths
-                else:
-                    target = item.pkg_names if item.action == "update" and len(item.pkg_names) > 1 else (item.pkg_names or [item.pkg_name])
-                    if isinstance(target, list) and len(target) == 1:
-                        target = target[0]
-                ok, message = self.backend.execute_action(item.action, target, on_event)
+            ok, message = self.backend.apply_changes(changes, on_event)
+            for item in batch:
                 GLib.idle_add(self._queue_item_finished, item, ok, message)
             GLib.idle_add(self._queue_worker_done)
 
         threading.Thread(target=worker, daemon=True).start()
+
+    def _handle_batch_event(self, payload: dict) -> bool:
+        message = update_output.visible_text(str(payload.get("message") or ""))
+        if message:
+            self._append_queue_log(message)
+            self.bottom_queue_status.set_text(message[:120])
+        return False
 
     def _queue_item_started(self, item: QueueItem) -> bool:
         item.status = "running"
@@ -3114,6 +3170,19 @@ class MainWindow(Adw.ApplicationWindow):
                 self.bottom_queue_progress.pulse()
             self.bottom_queue_status.set_text(self._queue_status_text())
 
+        pending = sum(1 for i in self.queue_items if i.status == "queued")
+        can_apply = pending > 0 and not self.queue_worker_running
+        apply_label = _("Apply") + (f" ({pending})" if pending else "")
+        for name in ("bottom_apply_button", "queue_apply_button"):
+            btn = getattr(self, name, None)
+            if btn is not None:
+                btn.set_label(apply_label)
+                btn.set_sensitive(can_apply)
+        for name in ("bottom_clear_button", "queue_clear_button"):
+            btn = getattr(self, name, None)
+            if btn is not None:
+                btn.set_sensitive(can_apply)
+
         if not self.queue_items:
             empty = Gtk.Label(label=_("No queued package actions yet."), xalign=0)
             empty.add_css_class("dim-label")
@@ -3123,7 +3192,8 @@ class MainWindow(Adw.ApplicationWindow):
             card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
             card.add_css_class("queue-item-card")
             title = Gtk.Label(xalign=0)
-            title.set_markup(f"<b>{GLib.markup_escape_text(item.display_name)}</b> — {GLib.markup_escape_text(item.action)}")
+            where = {"home": _("user"), "system": _("system")}.get(item.scope, item.scope)
+            title.set_markup(f"<b>{GLib.markup_escape_text(item.display_name)}</b> — {GLib.markup_escape_text(item.action)} ({GLib.markup_escape_text(where)}) · {GLib.markup_escape_text(item.status)}")
             card.append(title)
             self.queue_list_box.append(card)
 
@@ -3255,15 +3325,11 @@ class MainWindow(Adw.ApplicationWindow):
         return False
 
     def _on_open_clicked(self, _button: Gtk.Button) -> None:
-        if not self.current_app or not self.current_app.launchables:
+        if not self.current_app:
             return
-        desktop_id = self.current_app.launchables[0]
-        try:
-            subprocess.Popen(["gtk-launch", desktop_id])
-        except FileNotFoundError:
-            self._show_toast(_("gtk-launch not found on this system."))
-        except Exception as exc:
-            self._show_toast(str(exc))
+        ok, message = launcher.launch(self.current_app.launchables, self.get_display().get_app_launch_context())
+        if not ok:
+            self._show_toast(message)
 
     def _show_toast(self, message: str) -> None:
         self.toast_overlay.add_toast(Adw.Toast(title=message[:300]))

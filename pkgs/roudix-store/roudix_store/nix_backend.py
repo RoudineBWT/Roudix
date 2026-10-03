@@ -158,21 +158,24 @@ class NixBackend:
 
     # ── install / remove ─────────────────────────────────────────────────
     def execute_action(self, action: str, pkg_name, event_cb: Callable[[dict], None] | None = None) -> tuple[bool, str]:
+        targets = [pkg_name] if isinstance(pkg_name, str) else list(pkg_name)
+        return self.apply_changes([(action, p, self.scope) for p in targets], event_cb)
+
+    def apply_changes(self, changes, event_cb: Callable[[dict], None] | None = None) -> tuple[bool, str]:
+        """changes: [(action, attr, scope)]. One local.nix write + ONE `nh os switch`."""
         def say(msg: str) -> None:
             if event_cb:
                 event_cb({"event": "log", "message": msg})
 
-        if action not in ("install", "remove"):
-            return False, f"'{action}' is not supported on Roudix (updates come from the flake)."
-        targets = [pkg_name] if isinstance(pkg_name, str) else list(pkg_name)
-        scope_default = self.scope
         new = {s: set(v) for s, v in self.installed.items()}
-        for pkg in targets:
+        for action, pkg, scope in changes:
             if action == "install":
-                new[scope_default].add(pkg)
-            else:
+                new[scope if scope in new else "home"].add(pkg)
+            elif action == "remove":
                 for s in new:
                     new[s].discard(pkg)
+            else:
+                return False, f"'{action}' is not supported on Roudix (updates come from the flake)."
 
         saved = localnix.backup_files()
         for scope, (path, key) in localnix.FILES.items():
