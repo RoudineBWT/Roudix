@@ -135,13 +135,6 @@
             type = "custom";
             format = "───────────────────────────────";
           }
-          {
-            type = "custom";
-            key = "  ";
-            format = "  \u001b[38;2;250;179;135mRomeo, Oscar, Uniform, Delta, India, X-ray!\u001b[0m";
-            newline = true;
-          }
-
           { type = "break"; }
         ];
       };
