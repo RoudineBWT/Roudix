@@ -76,6 +76,27 @@ roudix-shell-switch dms
 
 ---
 
+## nixpkgs or latest version (flake)
+
+By default Roudix uses the **nixpkgs** version of the compositor and of the shell (and of the greeter that goes with it). To get the very latest version, built from the project's own flake, turn it on per component in `local.nix` — or from `roudix-switcher` / the installer, where the switch only appears for the compositor and the shell you selected:
+
+```nix
+roudix.desktop.latest.niri      = true;  # Niri
+roudix.desktop.latest.mangowc   = true;  # MangoWC
+roudix.desktop.latest.umbriel   = true;  # Umbriel
+roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
+roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.caelestia = true;  # Caelestia (the DMS greeter follows it)
+```
+
+Hyprland has no flake version in Roudix: it always comes from nixpkgs.
+
+> **Heads up:** Roudix configurations are written for the **flake (latest) versions first**. On the nixpkgs versions, a configuration error saying that an option, a setting or a config key *does not exist* is **normal**: it was added after the version nixpkgs ships. Wait for nixpkgs to catch up, or set the component to `true`.
+
+> If a flake module does not expose a `package` option (possible for DMS, MangoWC and the DMS greeter), the nixpkgs version cannot be applied: Roudix stays on the flake version and prints a warning at build time.
+
+---
+
 ## Personal compositor overrides
 
 Niri and Umbriel are configured natively in Nix (`programs.niri.settings` / `programs.umbriel.settings`) — real, typed attrsets, not a generated text file. That means overrides are just Nix: add a key that doesn't exist yet and it merges in automatically; touch a key the repo already sets (same output, same keybind) and you need `lib.mkForce`, or Nix will refuse to build with a "conflicting definitions" error.

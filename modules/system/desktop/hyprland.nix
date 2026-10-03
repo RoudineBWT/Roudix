@@ -53,7 +53,7 @@ config = lib.mkIf isHyprland {
     # roudix.desktopIntegration.
     extraPortals = with pkgs;
       [ xdg-desktop-portal-hyprland ]
-      ++ (if isKdeIntegration then [ kdePackages.xdg-desktop-portal-kde ] else [ xdg-desktop-portal-gtk ]);
+      ++ (if isKdeIntegration then [ kdePackages.xdg-desktop-portal-kde xdg-desktop-portal-gtk ] else [ xdg-desktop-portal-gtk ]);
     # "*" lets D-Bus arbitration pick between hyprland/gtk for each
     # interface on its own — non-deterministic, and can break randomly on
     # an update (see discourse.nixos.org, "Portals don't work on Hyprland
@@ -64,6 +64,19 @@ config = lib.mkIf isHyprland {
       default = [ "hyprland" (if isKdeIntegration then "kde" else "gtk") ];
       "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
     };
+    # programs.hyprland installs hyprland-portals.conf (hyprland;gtk), and
+    # xdg-desktop-portal reads the desktop-specific file
+    # (XDG_CURRENT_DESKTOP=Hyprland) BEFORE portals.conf / config.common,
+    # so config.common alone never applied. Forced here in kde mode only.
+    config.hyprland = lib.mkIf isKdeIntegration (lib.mkForce {
+      default = [ "hyprland" "kde" ];
+      "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+      "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+      # gtk portal only for Settings: dark/light follows dconf
+      # (color-scheme) instead of the KDE portal's kdeglobals (= light).
+      "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
+    });
   };
 
   # ── Polkit agent ────────────────────────────────────────────────────────
@@ -86,7 +99,7 @@ config = lib.mkIf isHyprland {
     };
   };
 
-  programs.nautilus-open-any-terminal = {
+  programs.nautilus-open-any-terminal = lib.mkIf (!isKdeIntegration) {
     enable = true;
     terminal = "ghostty";
   };

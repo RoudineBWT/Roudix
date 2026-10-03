@@ -17,6 +17,24 @@
   #   "caelestia" — Caelestia shell  (github:caelestia-dots/shell)
   roudix.desktop.shell = "noctalia";
 
+  # ── Versions : nixpkgs (default) or latest (flake) ────────────────────────
+  # false — version shipped by nixpkgs (default): from cache.nixos.org
+  # true  — latest version, built from the project's own flake
+  # ⚠ Roudix configurations are written for the LATEST (flake) versions
+  #   first. On the nixpkgs versions, an error saying that an option, a
+  #   setting or a config key "does not exist" is NORMAL: it was added after
+  #   the version nixpkgs ships. Wait for nixpkgs to catch up, or set the
+  #   component to true.
+  # Only the compositor you use and the shell you picked matter. Hyprland is
+  # always taken from nixpkgs (no flake version). The greeter follows its
+  # shell (Noctalia -> noctalia-greeter, DMS/Caelestia -> dms-greeter).
+  roudix.desktop.latest.niri      = false;
+  roudix.desktop.latest.mangowc   = false;
+  roudix.desktop.latest.umbriel   = false;
+  roudix.desktop.latest.noctalia  = false;
+  roudix.desktop.latest.dms       = false;
+  roudix.desktop.latest.caelestia = false;
+
   # ── Umbriel : scratchpads ────────────────────────────────────────────────
   # Only used when roudix.desktop.type = "umbriel"
   # true  — Discord/Telegram/Spotify live in named scratchpads (show/hide/

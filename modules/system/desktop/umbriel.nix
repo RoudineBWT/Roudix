@@ -5,6 +5,10 @@ let
   isDms      = shellType == "dms";
   isNoctalia = shellType == "noctalia";
   isKdeIntegration = config.roudix.desktopIntegration == "kde";
+  dp = import ../../desktop-pkgs.nix {
+    inherit pkgs inputs;
+    latest = config.roudix.desktop.latest;
+  };
 in
 {
   imports = [ inputs.umbriel.nixosModules.default ];
@@ -44,19 +48,17 @@ in
     # ── Compositor ────────────────────────────────────────────────────
     # inputs.umbriel = { url = "github:noctalia-dev/umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
     # inputs.umbriel-portal = { url = "github:noctalia-dev/xdg-desktop-portal-umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
-    nixpkgs.overlays = [
-      inputs.umbriel.overlays.default
-    ];
+    # Default: umbriel from nixpkgs. roudix.desktop.latest.umbriel = true:
+    # the flake overlay + the module's own default package (flake, latest).
+    nixpkgs.overlays = lib.optional (dp.wantsLatest "umbriel") inputs.umbriel.overlays.default;
 
     programs.umbriel.enable = true;
-    # programs.umbriel.package already defaults to
-    # inputs.umbriel.packages.${system}.default via the module.
+    programs.umbriel.package = lib.mkIf (dp.useNixpkgs "umbriel") dp.umbriel;
     #
     # Umbriel's README documents a dedicated portal option: it configures
     # xdg.portal AND installs the ScreenCast/Screenshot config on its own
     # (instead of doing it by hand via xdg.portal.config.umbriel below).
-    programs.umbriel.portalPackage =
-      inputs.xdg-desktop-portal-umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    programs.umbriel.portalPackage = dp.umbrielPortal;
 
     # ── DMS greeter (when shell != noctalia) ───────────────────────────────
     programs.dms-greeter = lib.mkIf (!isNoctalia) {
@@ -94,8 +96,18 @@ in
       enable = true;
       extraPortals = with pkgs;
         if isKdeIntegration
-        then [ kdePackages.xdg-desktop-portal-kde ]
+        then [ kdePackages.xdg-desktop-portal-kde xdg-desktop-portal-gtk ]
         else [ xdg-desktop-portal-gtk xdg-desktop-portal-gnome ];
+      # programs.umbriel.portalPackage only sets default = [ umbriel gtk ]
+      # (mkDefault). In kde mode, the fallback is kde and FileChooser is
+      # pinned to it explicitly.
+      config.umbriel = lib.mkIf isKdeIntegration {
+        default = [ "umbriel" "kde" ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+        # gtk portal only for Settings: dark/light follows dconf
+        # (color-scheme) instead of the KDE portal's kdeglobals (= light).
+        "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
+      };
     };
 
     # ── Polkit ────────────────────────────────────────────────────────────

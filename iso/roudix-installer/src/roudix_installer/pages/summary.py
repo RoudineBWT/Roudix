@@ -28,6 +28,21 @@ class SummaryPage(Adw.NavigationPage):
         self.set_child(page_with_header(L("Résumé", "Summary"), scroller))
         self.connect("shown", lambda *_: self._refresh())
 
+    @staticmethod
+    def _versions_rows(s):
+        """nixpkgs (default) or latest (flake) version of the chosen
+        compositor and shell — omitted when neither has a flake version."""
+        parts = []
+        names = {"niri": "Niri", "mangowc": "MangoWC", "umbriel": "Umbriel"}
+        shells = {"noctalia": "Noctalia", "dms": "DMS", "caelestia": "Caelestia"}
+        latest = L("dernière (flake)", "latest (flake)")
+        nixpkgs = "nixpkgs"
+        if s.desktop in names:
+            parts.append(f"{names[s.desktop]}: {latest if getattr(s, 'latest_' + s.desktop) else nixpkgs}")
+        if s.desktop in ("niri", "hyprland", "mangowc", "umbriel") and s.desktop_shell in shells:
+            parts.append(f"{shells[s.desktop_shell]}: {latest if getattr(s, 'latest_' + s.desktop_shell) else nixpkgs}")
+        return [(L("Versions", "Versions"), " · ".join(parts))] if parts else []
+
     def _refresh(self):
         # Same Adw.PreferencesGroup gotcha as disk.py's partition list:
         # get_first_child()/get_next_sibling() on the group walks its
@@ -61,6 +76,7 @@ class SummaryPage(Adw.NavigationPage):
             ("Kernel", f"{kernel_display} ({kernel_source})"),
             (L("Navigateur", "Browser"), s.browser + (" + Zen" if s.zen_browser else "")),
             (L("Bureau", "Desktop"), f"{s.desktop}" + (f" + {s.desktop_shell}" if s.desktop in ("niri", "hyprland", "mangowc", "umbriel") else "")),
+            *self._versions_rows(s),
             (L("Éditeur", "Editor"), s.editor),
             (
                 L("Trousseau / portal", "Keyring / portal"),
