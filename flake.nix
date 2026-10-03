@@ -29,6 +29,12 @@
 
 
   inputs = {
+    # AppStream catalog (icons, categories, screenshots) for nixpkgs — used by roudix-store
+    nixos-appstream-data = {
+      url = "github:vlinkz/nixos-appstream-data";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
@@ -191,7 +197,9 @@
       scxctl = roudix-caches.packages.x86_64-linux.scxctl;
     };
     roudixWelcome = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-welcome {};
-    roudixStore = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-store {};
+    roudixStore = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-store {
+      nixos-appstream-data = inputs.nixos-appstream-data.packages.x86_64-linux.appstream-data;
+    };
 
     # username is NOT here anymore: it's per-host, read from
     # hosts/<hostName>/username.nix (gitignored). Base args shared by
