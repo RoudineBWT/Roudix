@@ -519,6 +519,7 @@ def switch_repo_branch(branch: str):
 MUSIC_PLAYERS = [
     {"id": "spotify",    "name": "Spotify",              "subtitle": L("+ Spicetify", "+ Spicetify"), "icon": "spotify.svg"},
     {"id": "ytmdesktop", "name": "YouTube Music Desktop", "subtitle": L("Client YouTube Music non officiel", "Unofficial YouTube Music client"), "icon": "youtube-music-desktop-app.svg"},
+    {"id": "sonara", "name": "Sonora", "subtitle": L("Client de music écrit en rust et en GPUI", "A native music streaming client, built with Rust and GPUI"), "icon": "sonora.svg"},
     {"id": "none",       "name": L("Aucun", "None"),      "subtitle": L("N'installer aucun lecteur de musique", "Don't install a music player"), "icon": "none.svg"},
 ]
 
