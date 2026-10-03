@@ -2,7 +2,12 @@
 # user (home.packages). Written by roudix-store into a managed block of
 # modules/home/local.nix; you can also edit it by hand. Your own
 # `home.packages = [...]` in local.nix keeps working next to it.
-{ config, lib, pkgs, ... }:
+#
+# roudix.store.flatpaksUser / flatpaksUserBeta — Flatpak app ids installed in the
+# *user* installation (~/.local/share/flatpak) from flathub / flathub-beta, through
+# nix-flatpak's Home Manager module (imported in flake.nix). The system-wide
+# lists (roudix.store.flatpaks / flatpaksBeta) are in modules/system/packaging/store.nix.
+{ config, lib, pkgs, osConfig ? null, ... }:
 let
   cfg = config.roudix.store;
   resolve = name:
@@ -10,14 +15,50 @@ let
     in if r.success && r.value != null
        then r.value
        else lib.warn "roudix-store: '${name}' not found in nixpkgs, skipped" null;
+  userFlatpaks = cfg.flatpaksUser != [ ] || cfg.flatpaksUserBeta != [ ];
+  systemFlatpakOn = lib.attrByPath [ "roudix" "flatpak" "enable" ] true osConfig;
 in
 {
-  options.roudix.store.packages = lib.mkOption {
-    type = lib.types.listOf lib.types.str;
-    default = [ ];
-    example = [ "vlc" "telegram-desktop" ];
-    description = "nixpkgs attribute names installed for the user (managed by roudix-store).";
+  options.roudix.store = {
+    packages = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "vlc" "telegram-desktop" ];
+      description = "nixpkgs attribute names installed for the user (managed by roudix-store).";
+    };
+    flatpaksUser = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "org.mozilla.firefox" ];
+      description = "Flathub application ids installed in the user Flatpak installation (managed by roudix-store).";
+    };
+    flatpaksUserBeta = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "org.mozilla.firefox" ];
+      description = "flathub-beta application ids installed in the user Flatpak installation (managed by roudix-store).";
+    };
   };
 
-  config.home.packages = lib.filter (p: p != null) (map resolve cfg.packages);
+  config = lib.mkMerge [
+    { home.packages = lib.filter (p: p != null) (map resolve cfg.packages); }
+
+    (lib.mkIf userFlatpaks {
+      services.flatpak = {
+        enable = true;
+        # a user installation has its own remotes, separate from the system ones
+        remotes = lib.mkDefault [
+          { name = "flathub"; location = "https://dl.flathub.org/repo/flathub.flatpakrepo"; }
+          { name = "flathub-beta"; location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo"; }
+        ];
+        packages =
+          map (id: { appId = id; origin = "flathub"; }) cfg.flatpaksUser
+          ++ map (id: { appId = id; origin = "flathub-beta"; }) cfg.flatpaksUserBeta;
+      };
+    })
+
+    (lib.mkIf (userFlatpaks && !systemFlatpakOn) {
+      warnings = [ "roudix-store: roudix.store.flatpaksUser / flatpaksUserBeta is set but roudix.flatpak.enable is false (system Flatpak is needed for user installs too)." ];
+    })
+  ];
 }

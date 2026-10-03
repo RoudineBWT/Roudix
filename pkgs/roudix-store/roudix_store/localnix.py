@@ -4,7 +4,10 @@ Scopes and where they live (hosts/*/local.nix and modules/home/local.nix are
 already gitignored, so nothing here ever gets committed or pulled over):
   home    -> ~/.config/roudix/modules/home/local.nix  roudix.store.packages
   system  -> ~/.config/roudix/hosts/<host>/local.nix  roudix.store.systemPackages
-  flatpak -> ~/.config/roudix/hosts/<host>/local.nix  roudix.store.flatpaks
+  flatpak           -> ~/.config/roudix/hosts/<host>/local.nix  roudix.store.flatpaks          (system, flathub)
+  flatpak-beta      -> ~/.config/roudix/hosts/<host>/local.nix  roudix.store.flatpaksBeta      (system, flathub-beta)
+  flatpak-user      -> ~/.config/roudix/modules/home/local.nix  roudix.store.flatpaksUser      (user,   flathub)
+  flatpak-user-beta -> ~/.config/roudix/modules/home/local.nix  roudix.store.flatpaksUserBeta  (user,   flathub-beta)
 """
 from __future__ import annotations
 
@@ -22,7 +25,18 @@ SCOPES = {
     "home": (HOME_FILE, "roudix.store.packages"),
     "system": (HOST_FILE, "roudix.store.systemPackages"),
     "flatpak": (HOST_FILE, "roudix.store.flatpaks"),
+    "flatpak-beta": (HOST_FILE, "roudix.store.flatpaksBeta"),
+    "flatpak-user": (HOME_FILE, "roudix.store.flatpaksUser"),
+    "flatpak-user-beta": (HOME_FILE, "roudix.store.flatpaksUserBeta"),
 }
+# Flatpak scope key by (remote, system?) and back
+FLATPAK_SCOPES = {
+    ("flathub", True): "flatpak",
+    ("flathub-beta", True): "flatpak-beta",
+    ("flathub", False): "flatpak-user",
+    ("flathub-beta", False): "flatpak-user-beta",
+}
+FLATPAK_SCOPE_INFO = {key: (remote, "system" if system else "user") for (remote, system), key in FLATPAK_SCOPES.items()}
 BACKUP_DIR = os.path.expanduser("~/.cache/roudix-store")
 NAME_RE = re.compile(r"^[A-Za-z0-9_][A-Za-z0-9_.+-]*$")
 BEGIN = "# >>> roudix-store (managed by Roudix Store, edit with care) >>>"

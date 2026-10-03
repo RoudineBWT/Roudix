@@ -50,8 +50,9 @@ class NixBackend:
     def __init__(self) -> None:
         self._index: dict[str, dict] | None = None
         self._index_lock = threading.Lock()
-        self.installed: dict[str, set[str]] = {"home": set(), "system": set(), "flatpak": set()}
-        self.flatpak_actual: set[str] = set()  # what `flatpak list` reports, declared or not
+        self.installed: dict[str, set[str]] = {"home": set(), "system": set(), **{k: set() for k in localnix.FLATPAK_SCOPE_INFO}}
+        # what `flatpak list` reports, declared or not: {(app id, remote, "system"|"user")}
+        self.flatpak_actual: set[tuple[str, str, str]] = set()
         self.scope = "home"  # set by the UI switch: "home" (user) or "system"
         self.reload_state()
         threading.Thread(target=self._load_index, daemon=True).start()
@@ -67,22 +68,50 @@ class NixBackend:
         return self.installed["home"] | self.installed["system"]
 
     @staticmethod
-    def _flatpak_list() -> set[str]:
+    def _flatpak_list() -> set[tuple[str, str, str]]:
         try:
-            out = subprocess.run(["flatpak", "list", "--app", "--columns=application"],
+            out = subprocess.run(["flatpak", "list", "--app", "--columns=application,origin,installation"],
                                  capture_output=True, text=True, timeout=15).stdout
         except (OSError, subprocess.SubprocessError):
             return set()
-        return {line.strip() for line in out.splitlines() if line.strip()}
+        found: set[tuple[str, str, str]] = set()
+        for line in out.splitlines():
+            parts = [p.strip() for p in line.split("\t")]
+            if len(parts) >= 3 and parts[0]:
+                found.add((parts[0], parts[1], parts[2]))
+        return found
 
-    def flatpak_installed(self) -> set[str]:
-        return self.installed["flatpak"] | self.flatpak_actual
+    # ── flatpak: remote (flathub / flathub-beta) x scope (system / user) ──
+    @staticmethod
+    def flatpak_remote(app: AppEntry) -> str:
+        return app.repo_ids[0] if app.repo_ids else "flathub"
+
+    def flatpak_scope_key(self, app: AppEntry, system: bool) -> str:
+        """local.nix scope an install of `app` goes to."""
+        return localnix.FLATPAK_SCOPES[(self.flatpak_remote(app), system)]
+
+    def flatpak_where(self, app: AppEntry) -> set[str]:
+        """{"system", "user"}: where `app` (from its own remote) is installed or declared."""
+        remote = self.flatpak_remote(app)
+        where = {scope for (aid, rem, scope) in self.flatpak_actual if aid in app.pkg_names and rem == remote}
+        for key, (rem, scope) in localnix.FLATPAK_SCOPE_INFO.items():
+            if rem == remote and any(p in self.installed.get(key, ()) for p in app.pkg_names):
+                where.add(scope)
+        return where
+
+    def declared_flatpak_scope(self, app: AppEntry) -> str | None:
+        """The local.nix scope that owns `app`, or None when it was installed outside the store."""
+        remote = self.flatpak_remote(app)
+        for key, (rem, _scope) in localnix.FLATPAK_SCOPE_INFO.items():
+            if rem == remote and any(p in self.installed.get(key, ()) for p in app.pkg_names):
+                return key
+        return None
 
     def is_declared(self, app: AppEntry) -> bool:
         """True when local.nix owns this app, so the store can remove it."""
-        scope = "flatpak" if app.source == "flatpak" else None
-        names = self.installed["flatpak"] if scope else self._all_installed()
-        return any(p in names for p in app.pkg_names)
+        if app.source == "flatpak":
+            return self.declared_flatpak_scope(app) is not None
+        return any(p in self._all_installed() for p in app.pkg_names)
 
     def set_cache_authorization(self, enabled: bool) -> None:  # pkexec handles it
         pass
@@ -136,11 +165,10 @@ class NixBackend:
 
     def refresh_app(self, app: AppEntry) -> None:
         if app.source == "flatpak":
-            inst = self.flatpak_installed()
-            app.installed = any(p in inst for p in app.pkg_names)
-            app.installed_version = "flatpak" if app.installed else None
-            app.repo_ids = ["flathub"]
-            return
+            where = self.flatpak_where(app)
+            app.installed = bool(where)
+            app.installed_version = f"flatpak ({', '.join(sorted(where))})" if where else None
+            return  # repo_ids already holds the remote (flathub / flathub-beta)
         inst = self._all_installed()
         app.installed = any(p in inst for p in app.pkg_names)
         info = (self._index or {}).get(app.primary_pkg or "")
@@ -199,8 +227,11 @@ class NixBackend:
             if action == "install":
                 new[scope].add(pkg)
             elif action == "remove":
-                for s in new:
-                    new[s].discard(pkg)
+                if scope in localnix.FLATPAK_SCOPE_INFO:
+                    new[scope].discard(pkg)  # stable and beta of one app id are independent
+                else:
+                    for s in ("home", "system"):
+                        new[s].discard(pkg)
             else:
                 return False, f"'{action}' is not supported on Roudix (updates come from the flake)."
         if new == self.installed:
@@ -214,7 +245,7 @@ class NixBackend:
         for scope in new:
             if new[scope] != self.installed[scope]:
                 say(f"local.nix updated ({scope}): {', '.join(sorted(new[scope] ^ self.installed[scope]))}")
-        if new["flatpak"] != self.installed["flatpak"]:
+        if any(new[k] != self.installed[k] for k in localnix.FLATPAK_SCOPE_INFO):
             say("Flatpak apps are installed/removed by nix-flatpak during the switch — this can take a while.")
 
         cmd = ["nh", "os", "switch", "--elevation-strategy", "pkexec",

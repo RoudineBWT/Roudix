@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import platform
 import re
 import sys
 from urllib.parse import unquote, urlparse
@@ -67,16 +68,27 @@ class _HTMLToTextParser(HTMLParser):
 
 
 FLATPAK_APPSTREAM = "/var/lib/flatpak/appstream"
+# Remotes the store knows about, in display order. libappstream's pool can't be
+# used for them: every Flatpak remote reports origin="flatpak", a stable/beta pair
+# of the same app collapses into ONE pool component, and a user remote named like
+# a system one replaces it. So each remote's appstream.xml.gz is parsed on its own.
+FLATPAK_REMOTES = ("flathub", "flathub-beta")
 
 
-def _flatpak_icon_by_id(app_id: str) -> str | None:
-    """Flathub cached icons are <app-id>.png under .../active/icons/<size>/ (or icons/<origin>/<size>/)."""
-    root = Path(FLATPAK_APPSTREAM)
-    if not root.is_dir():
+def _flatpak_roots() -> list[Path]:
+    """appstream dirs of the system installation, then of the user installation."""
+    data_home = os.environ.get("XDG_DATA_HOME") or str(Path.home() / ".local" / "share")
+    return [Path(FLATPAK_APPSTREAM), Path(data_home) / "flatpak" / "appstream"]
+
+
+def _flatpak_icon_by_id(active: Path, app_id: str) -> str | None:
+    """Flathub cached icons are <app-id>.png under <active>/icons/<size>/ (or icons/<origin>/<size>/)."""
+    icons = active / "icons"
+    if not icons.is_dir():
         return None
     for size in ("128x128", "64x64", "256x256"):
-        for pattern in (f"*/*/active/icons/{size}/{app_id}.png", f"*/*/active/icons/*/{size}/{app_id}.png"):
-            match = next(root.glob(pattern), None)
+        for pattern in (f"{size}/{app_id}.png", f"*/{size}/{app_id}.png"):
+            match = next(icons.glob(pattern), None)
             if match:
                 return str(match)
     return None
@@ -104,8 +116,8 @@ class AppStreamCatalog:
             self.pool.reset_extra_data_locations()
             self.pool.set_load_std_data_locations(False)  # no OS desktop files/metainfo noise
             self.pool.add_extra_data_location(root, AppStream.FormatStyle.CATALOG)
-        # Flathub metadata is the one `flatpak` keeps under /var/lib/flatpak/appstream
-        self.pool.set_flags(AppStream.PoolFlags.LOAD_FLATPAK)
+        # Flatpak remotes are read separately (see _load_flatpak), never through the pool.
+        self.pool.remove_flags(AppStream.PoolFlags.LOAD_FLATPAK)
 
     def load(self) -> list[AppEntry]:
         self.pool.load()
@@ -115,21 +127,47 @@ class AppStreamCatalog:
             if entry:
                 apps.append(entry)
 
-        apps = self._dedupe(apps)
+        apps.extend(self._load_flatpak())
         apps.sort(key=lambda item: item.name.casefold())
         return apps
 
-    @staticmethod
-    def _dedupe(apps: list[AppEntry]) -> list[AppEntry]:
-        seen: set[tuple[str, str]] = set()
+    def _load_flatpak(self) -> list[AppEntry]:
+        """One entry per (app id, remote): stable and beta are separate apps, and the
+        system and user copies of a remote are merged (the install scope is the user's pick)."""
         out: list[AppEntry] = []
-        for app in apps:
-            key = (app.source, app.appstream_id)
-            if key in seen:
+        seen: set[tuple[str, str]] = set()
+        arch = platform.machine()
+        for root in _flatpak_roots():
+            if not root.is_dir():
                 continue
-            seen.add(key)
-            out.append(app)
+            for remote in FLATPAK_REMOTES:
+                # layout: <root>/<remote>/<arch>/active/appstream.xml.gz (+ icons/)
+                for active in sorted(root.glob(f"{remote}/{arch}/active")):
+                    xml = next((f for f in (active / "appstream.xml.gz", active / "appstream.xml") if f.is_file()), None)
+                    if xml is None:
+                        continue
+                    for component in self._parse_flatpak_file(xml, remote):
+                        entry = self._flatpak_entry(component, remote, active)
+                        if entry is None:
+                            continue
+                        key = (entry.appstream_id, remote)
+                        if key in seen:
+                            continue
+                        seen.add(key)
+                        out.append(entry)
         return out
+
+    def _parse_flatpak_file(self, xml: Path, remote: str) -> list[Any]:
+        from gi.repository import Gio  # type: ignore
+
+        metadata = self.AppStream.Metadata()
+        metadata.set_format_style(self.AppStream.FormatStyle.CATALOG)
+        try:
+            metadata.parse_file(Gio.File.new_for_path(str(xml)), self.AppStream.FormatKind.XML)
+        except Exception as exc:  # a broken remote must not take the whole store down
+            print(f"[roudix-store] could not read {xml}: {exc}", file=sys.stderr)
+            return []
+        return self._as_list(metadata.get_components())
 
     def search(self, query: str) -> list[AppEntry]:
         if not query.strip():
@@ -149,7 +187,7 @@ class AppStreamCatalog:
         pkg_names = [str(item) for item in self._as_list(getattr(component, "get_pkgnames", lambda: [])())]
 
         if self._flatpak_bundle(component) is not None:
-            return self._flatpak_entry(component, name, summary, description)
+            return None  # Flatpak apps are handled by _load_flatpak
 
         if not name or not pkg_names:
             return None
@@ -189,25 +227,23 @@ class AppStreamCatalog:
             return None
         return str(bundle.get_id()) if bundle is not None else None
 
-    def _flatpak_entry(self, component: Any, name: str, summary: str, description: str) -> AppEntry | None:
-        """Flathub desktop apps only (no runtimes/addons); only the `flathub` remote."""
-        if not self._extract_kind(component).endswith("DESKTOP_APP") or not name:
+    def _flatpak_entry(self, component: Any, remote: str, active: Path) -> AppEntry | None:
+        """Desktop apps of one remote (no runtimes/addons)."""
+        if not self._extract_kind(component).endswith("DESKTOP_APP"):
             return None
-        # libappstream reports origin="flatpak" for every remote (not "flathub"),
-        # so the origin can't tell flathub from flathub-beta: reject the beta
-        # branch through the bundle id (app/<id>/<arch>/<branch>) instead.
-        origin = str(getattr(component, "get_origin", lambda: "")() or "")
-        if origin and origin not in {"flathub", "flatpak"}:
-            return None
-        bundle_id = self._flatpak_bundle(component) or ""
-        if bundle_id.rsplit("/", 1)[-1] == "beta":
+        name = self._safe_text(getattr(component, "get_name", lambda: None)())
+        if not name:
             return None
         app_id = (self._safe_text(component.get_id()) or "").removesuffix(".desktop")
         if not app_id:
             return None
-        icon_name, icon_path, icon_url = self._extract_icon(component, name, [app_id])
+        if remote == "flathub-beta":
+            name = f"{name} (Beta)"  # same app id as the stable build, so tell them apart in the lists
+        summary = self._safe_text(getattr(component, "get_summary", lambda: None)())
+        description = self._normalize_description(getattr(component, "get_description", lambda: None)())
+        icon_name, icon_path, icon_url = None, _flatpak_icon_by_id(active, app_id), None
         if not icon_path:
-            icon_path = _flatpak_icon_by_id(app_id)
+            icon_name, icon_path, icon_url = self._extract_icon(component, name, [app_id])
         return AppEntry(
             appstream_id=app_id,
             name=name,
@@ -220,7 +256,7 @@ class AppStreamCatalog:
             launchables=self._extract_launchables(component) or [f"{app_id}.desktop"],
             icon_name=icon_name, icon_path=icon_path, icon_url=icon_url,
             homepage_url=self._extract_homepage(component),
-            kind="DESKTOP_APP", repo_ids=["flathub"], source="flatpak",
+            kind="DESKTOP_APP", repo_ids=[remote], source="flatpak",
         )
 
     def _extract_kind(self, component: Any) -> str:

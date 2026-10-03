@@ -1484,7 +1484,7 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.cache_auth_check = Gtk.CheckButton()
         self.cache_auth_check.set_active(False)
-        self.cache_auth_check.set_tooltip_text("Off: installs for your user (modules/home/local.nix). On: whole system (hosts/<host>/local.nix).")
+        self.cache_auth_check.set_tooltip_text("Off: installs for your user (modules/home/local.nix). On: whole system (hosts/<host>/local.nix). Applies to Nix and Flatpak.")
         self.cache_auth_check.set_valign(Gtk.Align.CENTER)
         self.cache_auth_check.connect("toggled", self._on_cache_auth_toggled)
         auth_box.append(self.cache_auth_check)
@@ -1609,7 +1609,6 @@ class MainWindow(Adw.ApplicationWindow):
         if not button.get_active() or key == self.source:
             return
         self.source = key
-        self.scope_box.set_visible(key == "nix")
         self._invalidate_page_caches()
         if self.current_group == "system" and self.current_page in {"repositories", "updates"}:
             self.current_group, self.current_page = "categories", "audiovideo"
@@ -2760,9 +2759,16 @@ class MainWindow(Adw.ApplicationWindow):
     def _queued_state_label(self, app: AppEntry) -> str | None:
         target_pkg = app.primary_pkg
         for item in self.queue_items:
-            if target_pkg and target_pkg in item.pkg_names and item.status in {"queued", "running"}:
+            if target_pkg and target_pkg in item.pkg_names and self._same_remote(item.app, app) and item.status in {"queued", "running"}:
                 return "Queued" if item.status == "queued" else "Running"
         return None
+
+    @staticmethod
+    def _same_remote(a: AppEntry, b: AppEntry) -> bool:
+        """Stable and beta builds of one Flatpak id are different targets."""
+        if a.source != "flatpak" and b.source != "flatpak":
+            return True
+        return a.source == b.source and a.repo_ids == b.repo_ids
 
     def _run_action_for_app(self, app: AppEntry, preferred_action: str | None = None) -> None:
         if not self.backend or not app.primary_pkg:
@@ -2772,7 +2778,7 @@ class MainWindow(Adw.ApplicationWindow):
             self._show_toast(f"{app.primary_pkg} is being applied right now.")
             return
         if state == "Queued":
-            self.queue_items = [i for i in self.queue_items if not (i.status == "queued" and app.primary_pkg in i.pkg_names)]
+            self.queue_items = [i for i in self.queue_items if not (i.status == "queued" and app.primary_pkg in i.pkg_names and self._same_remote(i.app, app))]
             self._append_queue_log(f"Removed {app.primary_pkg} from the queue")
             self._invalidate_page_caches()
             self.status_label.set_text(self._queue_status_text())
@@ -2782,13 +2788,19 @@ class MainWindow(Adw.ApplicationWindow):
                 self._open_details(app)
             return
         if app.installed and app.source == "flatpak" and self.backend and not self.backend.is_declared(app):
-            self._show_toast(f"{app.primary_pkg} was installed outside Roudix Store — remove it with: flatpak uninstall {app.primary_pkg}")
+            user_flag = "--user " if "user" in self.backend.flatpak_where(app) and "system" not in self.backend.flatpak_where(app) else ""
+            self._show_toast(f"{app.primary_pkg} was installed outside Roudix Store — remove it with: flatpak uninstall {user_flag}{app.primary_pkg}")
             return
         if preferred_action == "update":
             self._enqueue_update_batch([app])
             return
         action = preferred_action or ("remove" if app.installed else "install")
-        scope = "flatpak" if app.source == "flatpak" else ("system" if self.cache_auth_check.get_active() else "home")
+        if app.source == "flatpak":
+            # install: the toggle picks system/user; remove: wherever local.nix declared it
+            scope = (self.backend.declared_flatpak_scope(app) if action == "remove" else None) \
+                or self.backend.flatpak_scope_key(app, system=self.cache_auth_check.get_active())
+        else:
+            scope = "system" if self.cache_auth_check.get_active() else "home"
         item = QueueItem(app=app, action=action, message=f"Queued to {action} {app.primary_pkg}", scope=scope)
         self.queue_items.append(item)
         self._append_queue_log(f"Queued {action} for {app.primary_pkg} — press Apply to run it")
@@ -3233,7 +3245,9 @@ class MainWindow(Adw.ApplicationWindow):
             card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
             card.add_css_class("queue-item-card")
             title = Gtk.Label(xalign=0)
-            where = {"home": _("user"), "system": _("system"), "flatpak": "Flatpak"}.get(item.scope, item.scope)
+            where = {"home": _("user"), "system": _("system"),
+                     "flatpak": "Flatpak " + _("system"), "flatpak-beta": "Flatpak Beta " + _("system"),
+                     "flatpak-user": "Flatpak " + _("user"), "flatpak-user-beta": "Flatpak Beta " + _("user")}.get(item.scope, item.scope)
             title.set_markup(f"<b>{GLib.markup_escape_text(item.display_name)}</b> — {GLib.markup_escape_text(item.action)} ({GLib.markup_escape_text(where)}) · {GLib.markup_escape_text(item.status)}")
             card.append(title)
             self.queue_list_box.append(card)

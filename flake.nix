@@ -241,6 +241,8 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "bak";
             home-manager.extraSpecialArgs = specialArgs;
+            # per-user Flatpaks (roudix.store.flatpaksUser / flatpaksUserBeta)
+            home-manager.sharedModules = [ nix-flatpak.homeManagerModules.nix-flatpak ];
             home-manager.users.${username} = { lib, ... }: {
               imports = [
                 ./modules/home/common.nix

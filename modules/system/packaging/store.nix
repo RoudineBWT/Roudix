@@ -3,8 +3,12 @@
 #
 #   roudix.store.systemPackages : nixpkgs attribute names installed system-wide
 #                                 (e.g. "htop", "kdePackages.kate")
-#   roudix.store.flatpaks       : Flathub app ids handed to nix-flatpak
+#   roudix.store.flatpaks       : Flathub app ids handed to nix-flatpak, system-wide
 #                                 (e.g. "org.mozilla.firefox"); needs roudix.flatpak.enable
+#   roudix.store.flatpaksBeta   : same, from the flathub-beta remote
+#
+# The per-user Flatpak lists (roudix.store.flatpaksUser / flatpaksUserBeta) live in
+# modules/home/apps/store.nix (nix-flatpak's Home Manager module).
 #
 # A nixpkgs name that no longer exists in the locked nixpkgs is skipped with a
 # warning instead of breaking the whole rebuild.
@@ -29,7 +33,13 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
       example = [ "org.mozilla.firefox" ];
-      description = "Flathub application ids installed through nix-flatpak (managed by roudix-store).";
+      description = "Flathub application ids installed system-wide through nix-flatpak (managed by roudix-store).";
+    };
+    flatpaksBeta = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "org.mozilla.firefox" ];
+      description = "flathub-beta application ids installed system-wide through nix-flatpak (managed by roudix-store).";
     };
   };
 
@@ -37,11 +47,13 @@ in
     { environment.systemPackages = lib.filter (p: p != null) (map resolve cfg.systemPackages); }
 
     (lib.mkIf config.roudix.flatpak.enable {
-      services.flatpak.packages = map (id: { appId = id; origin = "flathub"; }) cfg.flatpaks;
+      services.flatpak.packages =
+        map (id: { appId = id; origin = "flathub"; }) cfg.flatpaks
+        ++ map (id: { appId = id; origin = "flathub-beta"; }) cfg.flatpaksBeta;
     })
 
-    (lib.mkIf (cfg.flatpaks != [ ] && !config.roudix.flatpak.enable) {
-      warnings = [ "roudix-store: roudix.store.flatpaks is set but roudix.flatpak.enable is false, so no Flatpak will be installed." ];
+    (lib.mkIf ((cfg.flatpaks != [ ] || cfg.flatpaksBeta != [ ]) && !config.roudix.flatpak.enable) {
+      warnings = [ "roudix-store: roudix.store.flatpaks / flatpaksBeta is set but roudix.flatpak.enable is false, so no Flatpak will be installed." ];
     })
   ];
 }
