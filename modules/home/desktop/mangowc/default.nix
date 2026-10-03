@@ -4,6 +4,11 @@ let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
   isNoctalia = shellType == "noctalia";
   isDms = shellType == "dms";
+  dp = import ../../../desktop-pkgs.nix {
+    inherit pkgs inputs;
+    latest = osConfig.roudix.desktop.latest;
+  };
+  integrationApps = import ../_integration-apps.nix { inherit pkgs osConfig; };
 in
 {
   imports = [
@@ -31,7 +36,7 @@ in
   config = lib.mkIf isMango {
     programs.noctalia = lib.mkIf isNoctalia {
       enable = true;
-      package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      package = dp.noctalia;
       systemd.enable = false;
     };
 
@@ -42,7 +47,7 @@ in
 
     wayland.windowManager.mango = {
       enable = true;
-      package = inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.mango;
+      package = dp.mango;
 
       systemd = {
         enable = true;
@@ -78,7 +83,7 @@ in
       touch "$HOME/.config/mango/dms/outputs.conf"
     '');
 
-    home.packages = with pkgs; [
+    home.packages = integrationApps.desktopApps ++ (with pkgs; [
       awww
       xwayland-satellite
       playerctl
@@ -86,10 +91,7 @@ in
       pwvucontrol
       kdePackages.qtmultimedia
       mpvpaper
-      gnome-text-editor
-      gnome-disk-utility
       mission-center
-      loupe
       gpu-screen-recorder
       nwg-look
       adw-gtk3
@@ -99,6 +101,6 @@ in
       libsForQt5.qt5ct
       gvfs
       cava
-    ];
+    ]);
   };
 }

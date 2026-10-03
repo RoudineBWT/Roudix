@@ -28,6 +28,21 @@ class SummaryPage(Adw.NavigationPage):
         self.set_child(page_with_header(L("Résumé", "Summary"), scroller))
         self.connect("shown", lambda *_: self._refresh())
 
+    @staticmethod
+    def _versions_rows(s):
+        """nixpkgs (default) or latest (flake) version of the chosen
+        compositor and shell — omitted when neither has a flake version."""
+        parts = []
+        names = {"niri": "Niri", "mangowc": "MangoWC", "umbriel": "Umbriel"}
+        shells = {"noctalia": "Noctalia", "dms": "DMS", "caelestia": "Caelestia"}
+        latest = L("dernière (flake)", "latest (flake)")
+        nixpkgs = "nixpkgs"
+        if s.desktop in names:
+            parts.append(f"{names[s.desktop]}: {latest if getattr(s, 'latest_' + s.desktop) else nixpkgs}")
+        if s.desktop in ("niri", "hyprland", "mangowc", "umbriel") and s.desktop_shell in shells:
+            parts.append(f"{shells[s.desktop_shell]}: {latest if getattr(s, 'latest_' + s.desktop_shell) else nixpkgs}")
+        return [(L("Versions", "Versions"), " · ".join(parts))] if parts else []
+
     def _refresh(self):
         # Same Adw.PreferencesGroup gotcha as disk.py's partition list:
         # get_first_child()/get_next_sibling() on the group walks its
@@ -61,6 +76,7 @@ class SummaryPage(Adw.NavigationPage):
             ("Kernel", f"{kernel_display} ({kernel_source})"),
             (L("Navigateur", "Browser"), s.browser + (" + Zen" if s.zen_browser else "")),
             (L("Bureau", "Desktop"), f"{s.desktop}" + (f" + {s.desktop_shell}" if s.desktop in ("niri", "hyprland", "mangowc", "umbriel") else "")),
+            *self._versions_rows(s),
             (L("Éditeur", "Editor"), s.editor),
             (
                 L("Trousseau / portal", "Keyring / portal"),
@@ -94,14 +110,14 @@ class SummaryPage(Adw.NavigationPage):
             (L("Gestionnaire de mots de passe", "Password manager"), s.password_manager),
             ("Waydroid", L("activé", "enabled") if s.waydroid_enable else L("désactivé", "disabled")),
             ("Apps", ", ".join(filter(None, [
-                "" if s.app_gimp else L("sans GIMP", "no GIMP"),
-                "" if s.app_inkscape else L("sans Inkscape", "no Inkscape"),
-                "" if s.app_songrec else L("sans SongRec", "no SongRec"),
-                "" if s.app_easyeffects else L("sans EasyEffects", "no EasyEffects"),
+                "+ GIMP" if s.app_gimp else "",
+                "+ Inkscape" if s.app_inkscape else "",
+                "+ SongRec" if s.app_songrec else "",
+                "+ EasyEffects" if s.app_easyeffects else "",
                 "+ Signal" if s.app_signal else "",
                 "+ ZapZap" if s.app_zapzap else "",
                 "+ Fluxer" if s.app_fluxer else "",
-            ])) or L("config par défaut", "default set")),
+            ])) or L("aucune", "none")),
         ] + ([
             ("Spicetify", f"{s.spicetify_theme}"
                 + (f" ({s.spicetify_color_scheme})" if s.spicetify_color_scheme else "")

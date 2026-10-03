@@ -21,6 +21,13 @@
         saturation = 1.0;
       };
 
+      # Bar of a tab group (ec677ac). Colors ([colors.tab_bar]) keep Umbriel's
+      # defaults unless the included noctalia.toml provides them.
+      tab_bar = {
+        style = "titles";
+        hide_when_single = true; # no bar (and no reserved space) for a one-window group
+      };
+
       shadow = {
         enabled = true;
         # `color` is no longer a key under [appearance.shadow]: shadow

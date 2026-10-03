@@ -1,7 +1,8 @@
 ## _general.nix — niri: prefer-no-csd, screenshot-path, environment,
 ## debug, hotkey-overlay, spawn-at-startup, cursor (vary by shell).
-{ osConfig, lib, ... }:
+{ osConfig, lib, pkgs, ... }:
 let
+  integrationApps = import ../_integration-apps.nix { inherit pkgs osConfig; };
   shellType = osConfig.roudix.desktop.shell or "noctalia";
   isNoctalia = shellType == "noctalia";
 in
@@ -64,7 +65,7 @@ in
       ++ (if isNoctalia then [
         { command = [ "noctalia" ]; }
       ] else [
-        { command = [ "/run/current-system/sw/libexec/polkit-gnome-authentication-agent-1" ]; }
+        { command = [ integrationApps.polkitAgentExe ]; }
       ]);
   };
 }

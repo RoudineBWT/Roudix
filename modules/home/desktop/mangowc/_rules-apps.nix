@@ -42,9 +42,9 @@ in
     "tags:9,appid:^brave-browser$"
 
     # Desktop / file / media apps
-    "tags:6,appid:^org\\.gnome\\.Nautilus$"
-    "isfloating:1,appid:^org\\.gnome\\.Nautilus$,title:^(Save As|Open)$"
-    "tags:6,appid:^org\\.gnome\\.TextEditor$"
+    "tags:6,appid:^org\\.(gnome\\.Nautilus|kde\\.dolphin)$"
+    "isfloating:1,appid:^org\\.(gnome\\.Nautilus|kde\\.dolphin)$,title:^(Save As|Open)$"
+    "tags:6,appid:^org\\.(gnome\\.TextEditor|kde\\.kate)$"
   ]
   ++ (if scratchpadApps then [
     "isnamedscratchpad:1,appid:^spotify$"

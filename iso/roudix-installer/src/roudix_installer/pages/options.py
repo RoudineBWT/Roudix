@@ -138,6 +138,16 @@ def _shells(desktop=None):
     return base
 
 
+# Compositors / shells that have a flake ("latest") version next to the
+# nixpkgs one. Hyprland has no flake version in Roudix: no switch for it.
+LATEST_DESKTOPS = {"niri": "Niri", "mangowc": "MangoWC", "umbriel": "Umbriel"}
+LATEST_SHELLS = {"noctalia": "Noctalia", "dms": "DMS", "caelestia": "Caelestia"}
+
+
+def _latest_title(name):
+    return L(f"{name} — dernière version (flake)", f"{name} — latest version (flake)")
+
+
 def _default_shells():
     return [("fish", L("Fish (recommandé)", "Fish (recommended)")), ("bash", "Bash")]
 
@@ -250,7 +260,7 @@ def _telegram():
 
 def _video_player():
     return [
-        ("vlc", L("VLC (défaut, plus large support de formats)", "VLC (default, widest format support)")),
+        ("vlc", L("VLC (plus large support de formats)", "VLC (widest format support)")),
         ("clapper", L("Clapper (GTK4 moderne)", "Clapper (modern GTK4)")),
         ("mpv", L("mpv (+ yt-dlp)", "mpv (+ yt-dlp)")),
         ("celluloid", L("Celluloid (interface GTK pour mpv)", "Celluloid (GTK front-end for mpv)")),
@@ -269,7 +279,7 @@ def _torrent_client():
 
 def _music_player():
     return [
-        ("spotify", L("Spotify + Spicetify (défaut)", "Spotify + Spicetify (default)")),
+        ("spotify", L("Spotify + Spicetify", "Spotify + Spicetify")),
         ("ytmdesktop", "YouTube Music Desktop"),
         ("sonora", "Sonora (Spotify / YouTube Music)"),
         ("none", L("Aucun", "None")),
@@ -744,6 +754,55 @@ class OptionsPage(Adw.NavigationPage):
         )
         desktop_group.add(self.shell_row)
 
+        # roudix.desktop.latest.<id>: off (default) = nixpkgs version, on =
+        # latest version from the project's flake. One row for the chosen
+        # compositor, one for the chosen shell; each is only shown while that
+        # compositor / shell is selected (see _sync_latest_rows).
+        self.latest_de_row = Adw.SwitchRow(
+            title=_latest_title("Niri"),
+            subtitle=L(
+                "Désactivé : version de nixpkgs",
+                "Off: nixpkgs version",
+            ),
+        )
+        self.latest_de_row.set_active(False)
+        desktop_group.add(self.latest_de_row)
+
+        self.latest_shell_row = Adw.SwitchRow(
+            title=_latest_title("Noctalia"),
+            subtitle=L(
+                "Désactivé : version de nixpkgs",
+                "Off: nixpkgs version",
+            ),
+        )
+        self.latest_shell_row.set_active(False)
+        desktop_group.add(self.latest_shell_row)
+
+        self.latest_note = Gtk.Label(
+            label=L(
+                "⚠ Les configurations Roudix sont écrites en priorité pour les "
+                "versions flake (les plus récentes). Sur la version nixpkgs, une "
+                "erreur de configuration disant qu'une option, un réglage ou une "
+                "clé « n'existe pas » est normale : elle a été ajoutée après la "
+                "version de nixpkgs. Patiente que nixpkgs la rattrape, ou active "
+                "la dernière version.",
+                "⚠ Roudix configurations are written for the flake (latest) "
+                "versions first. On the nixpkgs version, a configuration error "
+                "saying that an option, a setting or a key \"does not exist\" is "
+                "normal: it was added after the nixpkgs version. Wait for nixpkgs "
+                "to catch up, or turn the latest version on.",
+            ),
+            css_classes=["dim-label", "caption"],
+            wrap=True,
+            xalign=0,
+            visible=False,
+        )
+        self.latest_note.set_margin_start(12)
+        self.latest_note.set_margin_end(12)
+        self.latest_note.set_margin_top(6)
+        self.latest_note.set_margin_bottom(6)
+        desktop_group.add(self.latest_note)
+
         self.default_shell_row = self._combo(
             L("Shell par défaut", "Default shell"),
             _default_shells(),
@@ -781,6 +840,7 @@ class OptionsPage(Adw.NavigationPage):
         desktop_group.add(self.desktop_integration_row)
         box.append(desktop_group)
         self._sync_shell_row()
+        self._sync_latest_rows()
         self._sync_file_manager_row()
         self._sync_desktop_integration_row()
         self.desktop_row.connect(
@@ -1032,8 +1092,8 @@ class OptionsPage(Adw.NavigationPage):
         apps_group = Adw.PreferencesGroup(
             title="Apps",
             description=L(
-                "Désactive celles que tu ne veux pas préinstallées.",
-                "Turn off any you don't want preinstalled.",
+                "Active celles que tu veux préinstallées.",
+                "Turn on the ones you want preinstalled.",
             ),
         )
         self.app_gimp_row = Adw.SwitchRow(title="GIMP")
@@ -1191,6 +1251,8 @@ class OptionsPage(Adw.NavigationPage):
         self.gaming_row.connect("notify::active", lambda *_: self._sync_laptop_row())
         self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
+        self.desktop_row.connect("notify::selected", lambda *_: self._sync_latest_rows())
+        self.shell_row.connect("notify::selected", lambda *_: self._sync_latest_rows())
         self.rgb_row.connect("notify::selected", lambda *_: self._sync_memory_rows())
         self.memory_rgb_row.connect("notify::active", lambda *_: self._sync_memory_rows())
         self.zen_row.connect("notify::active", lambda *_: self._sync_zen_rows())
@@ -1237,6 +1299,9 @@ class OptionsPage(Adw.NavigationPage):
         "zen_mods_row": ["roudix.zen.mods"], "zen_sine_row": ["roudix.zen.sine.enable"],
         "zen_sine_mods_row": ["roudix.zen.sine.mods"],
         "desktop_row": ["roudix.desktop.type"], "shell_row": ["roudix.desktop.shell"],
+        "latest_de_row": ["roudix.desktop.latest.niri", "roudix.desktop.latest.mangowc", "roudix.desktop.latest.umbriel"],
+        "latest_shell_row": ["roudix.desktop.latest.noctalia", "roudix.desktop.latest.dms", "roudix.desktop.latest.caelestia"],
+        "latest_note": ["roudix.desktop.latest.niri", "roudix.desktop.latest.mangowc", "roudix.desktop.latest.umbriel", "roudix.desktop.latest.noctalia", "roudix.desktop.latest.dms", "roudix.desktop.latest.caelestia"],
         "default_shell_row": ["roudix.shell"], "terminal_row": ["roudix.terminal"],
         "file_manager_row": ["roudix.fileManager"], "editor_row": ["roudix.editor"],
         "desktop_integration_row": ["roudix.desktopIntegration"],
@@ -1276,7 +1341,7 @@ class OptionsPage(Adw.NavigationPage):
     HOST_GROUP_ROWS = {
         "hw_group": ["gpu_row", "nvidia_laptop_row", "laptop_row", "thinkpad_row", "undervolt_row", "cpu_row", "kernel_row"],
         "browser_group": ["browser_row", "brave_variant_row", "zen_row", "zen_variant_row", "zen_mods_row", "zen_sine_row", "zen_sine_mods_row"],
-        "desktop_group": ["desktop_row", "shell_row", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
+        "desktop_group": ["desktop_row", "shell_row", "latest_de_row", "latest_shell_row", "latest_note", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
         "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
         "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
         "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
@@ -1362,7 +1427,7 @@ class OptionsPage(Adw.NavigationPage):
             widget._host_original_set_visible(not hidden)
         # let the existing sync methods recompute the dynamic rows
         for name in ("_sync_nvidia_row", "_sync_undervolt_row", "_sync_laptop_row", "_sync_kernel_row",
-                     "_sync_brave_row", "_sync_shell_row", "_sync_desktop_integration_row",
+                     "_sync_brave_row", "_sync_shell_row", "_sync_latest_rows", "_sync_desktop_integration_row",
                      "_sync_file_manager_row", "_sync_memory_rows", "_sync_zen_rows",
                      "_sync_spicetify_rows", "_sync_ananicy_row", "_sync_content_creation_rows",
                      "_sync_autoupdate_row"):
@@ -1452,6 +1517,30 @@ class OptionsPage(Adw.NavigationPage):
         self.shell_row.set_model(Gtk.StringList.new(labels))
         self.shell_row.set_selected(values.index(current) if current in values else 0)
         self._rows[id(self.shell_row)] = values
+
+    def _sync_latest_rows(self):
+        """Show the nixpkgs/latest switch of the selected compositor and of
+        the selected shell, and only those (Hyprland has no flake version)."""
+        desktop = self._selected_value(self.desktop_row)
+        has_shell = desktop in ("niri", "hyprland", "mangowc", "umbriel")
+        try:
+            shell = self._selected_value(self.shell_row) if has_shell else None
+        except (KeyError, IndexError):
+            # shell_row's model is being rebuilt by _sync_shell_row: the
+            # final call (after it finishes) will see a consistent state.
+            shell = None
+
+        de_visible = desktop in LATEST_DESKTOPS
+        shell_visible = shell in LATEST_SHELLS
+        self.latest_de_row.set_visible(de_visible)
+        self.latest_shell_row.set_visible(shell_visible)
+        if de_visible:
+            self.latest_de_row.set_title(_latest_title(LATEST_DESKTOPS[desktop]))
+            self.latest_de_row.set_active(getattr(self.state, f"latest_{desktop}", False))
+        if shell_visible:
+            self.latest_shell_row.set_title(_latest_title(LATEST_SHELLS[shell]))
+            self.latest_shell_row.set_active(getattr(self.state, f"latest_{shell}", False))
+        self.latest_note.set_visible(de_visible or shell_visible)
 
     def _sync_desktop_integration_row(self):
         # GNOME/KDE manage their own keyring/portal stack — this option
@@ -1571,6 +1660,15 @@ class OptionsPage(Adw.NavigationPage):
 
         s.desktop = self._selected_value(self.desktop_row)
         s.desktop_shell = self._selected_value(self.shell_row)
+        # nixpkgs (False) / latest-flake (True): only the compositor and the
+        # shell actually chosen keep their switch; the others fall back to
+        # the nixpkgs default so a stale answer is never written.
+        for _name in ("niri", "mangowc", "umbriel", "noctalia", "dms", "caelestia"):
+            setattr(s, f"latest_{_name}", False)
+        if self.latest_de_row.get_visible() and s.desktop in LATEST_DESKTOPS:
+            setattr(s, f"latest_{s.desktop}", self.latest_de_row.get_active())
+        if self.latest_shell_row.get_visible() and s.desktop_shell in LATEST_SHELLS:
+            setattr(s, f"latest_{s.desktop_shell}", self.latest_shell_row.get_active())
         s.default_shell = self._selected_value(self.default_shell_row)
         s.terminal = self._selected_value(self.terminal_row)
         s.file_manager = self._selected_value(self.file_manager_row)

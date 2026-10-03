@@ -4,6 +4,11 @@ let
   isNoctalia = shellType == "noctalia";
   isDms      = shellType == "dms";
 
+  dp = import ../../../desktop-pkgs.nix {
+    inherit pkgs inputs;
+    latest = osConfig.roudix.desktop.latest;
+  };
+
   terminalCmd = osConfig.roudix.terminal or "ghostty";
   fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
 
@@ -11,6 +16,7 @@ let
   browserCmd     = osConfig.roudix.browser.command or null;
   browserList    = osConfig.roudix.browser.commands or [ ];
   extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
+  integrationApps = import ../_integration-apps.nix { inherit pkgs osConfig; };
 in
 {
   # ⚠ Do NOT import `inputs.niri.homeModules.niri` here: it's already
@@ -49,6 +55,10 @@ in
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "niri") {
 
+    # The home-side niri package is what _include-*.nix validates the
+    # generated config against: keep it identical to the system one.
+    programs.niri.package = lib.mkIf (dp.useNixpkgs "niri") dp.niri;
+
     # ── Noctalia (shell) ─────────────────────────────────────────────────
     programs.noctalia = lib.mkIf isNoctalia {
       enable = true;
@@ -85,7 +95,7 @@ in
     }) extraBrowsers));
 
     # ── Packages ─────────────────────────────────────────────────────────
-    home.packages = with pkgs; [
+    home.packages = integrationApps.desktopApps ++ (with pkgs; [
       awww
       xwayland-satellite
       playerctl
@@ -94,10 +104,7 @@ in
       kdePackages.qtmultimedia
       mpvpaper
 
-      gnome-text-editor
-      gnome-disk-utility
       mission-center
-      loupe
       gpu-screen-recorder
 
       nwg-look
@@ -110,9 +117,9 @@ in
 
       gvfs
       cava
-    ]
+    ])
     ++ lib.optionals isNoctalia [
-      inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+      dp.noctalia
     ];
   };
 }

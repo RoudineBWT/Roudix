@@ -209,6 +209,43 @@ SCRATCHPAD_NOTE = {
 
 SCRATCHPAD_DE_LABEL = {"mangowc": "MangoWC", "umbriel": "Umbriel"}
 
+# roudix.desktop.latest.<id> (modules/system/desktop/default.nix) — false
+# (default) = the nixpkgs version, true = the latest version built from the
+# project's own flake. One switch for the chosen compositor and one for the
+# chosen shell, each shown only while that compositor / shell is selected.
+# Hyprland has no flake version in Roudix (always nixpkgs): no switch.
+LATEST_DE_IDS    = {"niri", "mangowc", "umbriel"}
+LATEST_SHELL_IDS = {"noctalia", "dms", "caelestia"}
+LATEST_LABEL = {
+    "niri": "Niri", "mangowc": "MangoWC", "umbriel": "Umbriel",
+    "noctalia": "Noctalia", "dms": "DMS", "caelestia": "Caelestia",
+}
+
+LATEST_NOTE = L(
+    "Désactivé (défaut) : version de nixpkgs. Activé : toute dernière version, "
+    "construite depuis le flake du projet. ⚠ Les configurations Roudix sont "
+    "écrites en priorité pour les versions flake : sur la version nixpkgs, une "
+    "erreur de configuration disant qu'une option, un réglage ou une clé "
+    "« n'existe pas » est normale (ajoutée après la version de nixpkgs). "
+    "Patiente que nixpkgs la rattrape, ou active la dernière version.",
+    "Off (default): nixpkgs version. On: the very latest version, built from the "
+    "project's own flake. ⚠ Roudix configurations are written for the flake "
+    "versions first: on the nixpkgs version, a configuration error saying that "
+    "an option, a setting or a key \"does not exist\" is normal (it was added "
+    "after the nixpkgs version). Wait for nixpkgs to catch up, or turn the "
+    "latest version on.",
+)
+
+
+def latest_option_key(component: str) -> str:
+    """roudix.desktop.latest.<component> — see LATEST_DE_IDS / LATEST_SHELL_IDS."""
+    return f"roudix.desktop.latest.{component}"
+
+
+def latest_switch_label(component: str) -> str:
+    name = LATEST_LABEL[component]
+    return L(f"{name} — dernière version (flake)", f"{name} — latest version (flake)")
+
 
 def scratchpad_option_key(de_id: str) -> str:
     """roudix.<de>.scratchpadApps — only meaningful for SCRATCHPAD_SUPPORTED_DE."""
@@ -221,7 +258,7 @@ def scratchpad_option_key(de_id: str) -> str:
 # and roudix.gaming.apps.* on the Nix side.
 
 EDITORS = [
-    {"id": "zed",    "name": "Zed",     "subtitle": L("Éditeur rapide, accéléré par le GPU (défaut Roudix)", "Fast GPU-accelerated editor (Roudix default)"), "icon": "zed.svg"},
+    {"id": "zed",    "name": "Zed",     "subtitle": L("Éditeur rapide, accéléré par le GPU", "Fast GPU-accelerated editor"), "icon": "zed.svg"},
     {"id": "vscode", "name": "VS Code", "subtitle": L("Éditeur de Microsoft, immense écosystème d'extensions", "Microsoft's editor, huge extension ecosystem"),  "icon": "vscode.svg"},
     {"id": "neovim", "name": "Neovim",  "subtitle": L("Basé terminal, piloté au clavier", "Terminal-based, keyboard-driven"),                "icon": "neovim.svg"},
     {"id": "none",   "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun éditeur par défaut", "Don't install a default editor"),                 "icon": "none.svg"},
@@ -299,13 +336,13 @@ KNOWN_ICON_THEME_IDS = {
 
 # name -> Nix option (roudix.gaming.apps.<id>.enable), all true by default
 GAMING_APPS = [
-    {"id": "lutris",        "name": "Lutris",         "key": "roudix.gaming.apps.lutris.enable",        "default": True},
-    {"id": "heroic",        "name": "Heroic",         "key": "roudix.gaming.apps.heroic.enable",        "default": True},
-    {"id": "faugus",        "name": "Faugus Launcher","key": "roudix.gaming.apps.faugus.enable",        "default": True},
-    {"id": "prismlauncher", "name": "Prism Launcher", "key": "roudix.gaming.apps.prismlauncher.enable", "default": True},
-    {"id": "modrinth",      "name": "Modrinth",       "key": "roudix.gaming.apps.modrinth.enable",      "default": True},
-    {"id": "vintagestory",  "name": "Vintage Story",  "key": "roudix.gaming.apps.vintagestory.enable",  "default": True},
-    {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable",      "default": True},
+    {"id": "lutris",        "name": "Lutris",         "key": "roudix.gaming.apps.lutris.enable",        "default": False},
+    {"id": "heroic",        "name": "Heroic",         "key": "roudix.gaming.apps.heroic.enable",        "default": False},
+    {"id": "faugus",        "name": "Faugus Launcher","key": "roudix.gaming.apps.faugus.enable",        "default": False},
+    {"id": "prismlauncher", "name": "Prism Launcher", "key": "roudix.gaming.apps.prismlauncher.enable", "default": False},
+    {"id": "modrinth",      "name": "Modrinth",       "key": "roudix.gaming.apps.modrinth.enable",      "default": False},
+    {"id": "vintagestory",  "name": "Vintage Story",  "key": "roudix.gaming.apps.vintagestory.enable",  "default": False},
+    {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable",      "default": False},
 ]
 
 TERMINALS = [
@@ -358,13 +395,13 @@ FILE_MANAGERS = [
 FILE_MANAGER_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
 
 MATRIX_CLIENTS = [
-    {"id": "element", "name": "Element", "subtitle": L("Client Matrix complet (défaut)", "Full-featured Matrix client (default)"),      "icon": "element.svg"},
+    {"id": "element", "name": "Element", "subtitle": L("Client Matrix complet", "Full-featured Matrix client"),      "icon": "element.svg"},
     {"id": "cinny",   "name": "Cinny",   "subtitle": L("Client Matrix léger", "Lightweight Matrix client"),                 "icon": "cinny.svg"},
     {"id": "none",    "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun client Matrix", "Don't install a Matrix client"),     "icon": "none.svg"},
 ]
 
 DISCORD_OPTIONS = [
-    {"id": "vencord", "name": "Vencord", "subtitle": L("Discord avec Vencord déjà patché (défaut)", "Discord with Vencord already patched in (default)"), "icon": "vencord.svg"},
+    {"id": "vencord", "name": "Vencord", "subtitle": L("Discord avec Vencord déjà patché", "Discord with Vencord already patched in"), "icon": "vencord.svg"},
     {"id": "vanilla", "name": "Vanilla", "subtitle": L("Discord sans aucun patch client", "Discord with no client patches"),            "icon": "discord.svg"},
     {"id": "none",    "name": L("Aucun", "None"),    "subtitle": L("N'installer aucun client Discord", "Don't install a Discord client"),           "icon": "none.svg"},
 ]
@@ -376,7 +413,7 @@ TELEGRAM_OPTIONS = [
 ]
 
 VIDEO_PLAYERS = [
-    {"id": "vlc",       "name": "VLC",       "subtitle": L("Le plus large support de formats (défaut)", "Widest format/codec support (default)"), "icon": "vlc.svg"},
+    {"id": "vlc",       "name": "VLC",       "subtitle": L("Le plus large support de formats", "Widest format/codec support"), "icon": "vlc.svg"},
     {"id": "clapper",   "name": "Clapper",   "subtitle": L("Lecteur GTK4 moderne", "Modern GTK4 player"), "icon": "clapper.svg"},
     {"id": "mpv",       "name": "mpv",       "subtitle": L("+ yt-dlp — minimaliste, streaming/URL", "+ yt-dlp — minimal, URL/streaming support"), "icon": "mpv.svg"},
     {"id": "celluloid", "name": "Celluloid", "subtitle": L("Interface GTK pour mpv", "GTK front-end for mpv"), "icon": "celluloid.svg"},
@@ -480,7 +517,7 @@ def switch_repo_branch(branch: str):
 
 
 MUSIC_PLAYERS = [
-    {"id": "spotify",    "name": "Spotify",              "subtitle": L("+ Spicetify (défaut)", "+ Spicetify (default)"), "icon": "spotify.svg"},
+    {"id": "spotify",    "name": "Spotify",              "subtitle": L("+ Spicetify", "+ Spicetify"), "icon": "spotify.svg"},
     {"id": "ytmdesktop", "name": "YouTube Music Desktop", "subtitle": L("Client YouTube Music non officiel", "Unofficial YouTube Music client"), "icon": "youtube-music-desktop-app.svg"},
     {"id": "none",       "name": L("Aucun", "None"),      "subtitle": L("N'installer aucun lecteur de musique", "Don't install a music player"), "icon": "none.svg"},
 ]
@@ -542,7 +579,7 @@ ZEN_VARIANTS = [
 
 # roudix.contentCreation.videoEditor — enum, exposed as a SelectorGroup.
 VIDEO_EDITORS = [
-    {"id": "kdenlive",              "name": "Kdenlive",              "subtitle": L("Éditeur libre basé sur KDE (défaut Roudix)", "Free KDE-based editor (Roudix default)"),                    "icon": "kdenlive.svg"},
+    {"id": "kdenlive",              "name": "Kdenlive",              "subtitle": L("Éditeur libre basé sur KDE", "Free KDE-based editor"),                    "icon": "kdenlive.svg"},
     {"id": "davinci-resolve",        "name": "DaVinci Resolve",       "subtitle": L("Édition gratuite — étalonnage, VFX, niveau pro", "Free edition — color grading, VFX, pro-grade"),                 "icon": "davinci-resolve.svg"},
     {"id": "davinci-resolve-studio", "name": "DaVinci Resolve Studio","subtitle": L("Édition payante de ci-dessus — licence Blackmagic requise", "Paid edition of the above — requires a Blackmagic license"),"icon": "davinci-resolve.svg"},
     {"id": "shotcut",                 "name": "Shotcut",               "subtitle": L("Léger, multiplateforme, basé sur FFmpeg", "Lightweight, cross-platform, FFmpeg-based"),                        "icon": "shotcut.svg"},
@@ -556,8 +593,8 @@ VIDEO_EDITORS = [
 # known for obs-vertical-canvas), with independent encoders/bitrate per
 # platform.
 OBS_PLUGINS = [
-    {"id": "vkcapture",              "name": L("VKCapture (capture jeux Vulkan/OpenGL)", "VKCapture (Vulkan/OpenGL game capture)"),              "key": "roudix.contentCreation.obs.plugins.vkcapture.enable",              "default": True},
-    {"id": "pipewireAudioCapture",   "name": L("Pipewire Audio Capture (audio par application)", "Pipewire Audio Capture (per-app audio)"),      "key": "roudix.contentCreation.obs.plugins.pipewireAudioCapture.enable",   "default": True},
+    {"id": "vkcapture",              "name": L("VKCapture (capture jeux Vulkan/OpenGL)", "VKCapture (Vulkan/OpenGL game capture)"),              "key": "roudix.contentCreation.obs.plugins.vkcapture.enable",              "default": False},
+    {"id": "pipewireAudioCapture",   "name": L("Pipewire Audio Capture (audio par application)", "Pipewire Audio Capture (per-app audio)"),      "key": "roudix.contentCreation.obs.plugins.pipewireAudioCapture.enable",   "default": False},
     {"id": "backgroundRemoval",      "name": L("Background Removal (fond virtuel IA)", "Background Removal (AI virtual background)"),                "key": "roudix.contentCreation.obs.plugins.backgroundRemoval.enable",      "default": False},
     {"id": "moveTransition",         "name": L("Move Transition (animations de sources)", "Move Transition (source animations)"),             "key": "roudix.contentCreation.obs.plugins.moveTransition.enable",         "default": False},
     {"id": "aitumMultistream",       "name": L("Aitum Multistream (stream multi-plateformes)", "Aitum Multistream (multi-platform streaming)"),        "key": "roudix.contentCreation.obs.plugins.aitumMultistream.enable",       "default": False},
@@ -570,8 +607,8 @@ OBS_PLUGINS = [
 
 # Independent toggles on the Content Creation page (like SYSTEM_TOGGLES).
 CONTENT_CREATION_TOGGLES = [
-    {"id": "obs",           "name": "OBS Studio",                       "key": "roudix.contentCreation.obs.enable",                    "default": True},
-    {"id": "virtualCamera", "name": L("Webcam virtuelle (v4l2loopback)", "Virtual camera (v4l2loopback)"),   "key": "roudix.contentCreation.virtualCamera.enable",          "default": True},
+    {"id": "obs",           "name": "OBS Studio",                       "key": "roudix.contentCreation.obs.enable",                    "default": False},
+    {"id": "virtualCamera", "name": L("Webcam virtuelle (v4l2loopback)", "Virtual camera (v4l2loopback)"),   "key": "roudix.contentCreation.virtualCamera.enable",          "default": False},
     {"id": "chatterino",    "name": L("Chatterino2 (chat Twitch tiers)", "Chatterino2 (third-party Twitch chat)"),   "key": "roudix.contentCreation.streaming.chatterino.enable",   "default": False},
 ]
 
@@ -582,10 +619,10 @@ CONTENT_CREATION_TOGGLES = [
 # roudix.musicPlayer, a SelectorGroup like VIDEO_PLAYERS/TORRENT_CLIENTS,
 # since they became a real alternative instead of two independent on/offs.)
 APPS_TOGGLES = [
-    {"id": "gimp",        "name": "GIMP",                             "key": "roudix.apps.gimp.enable",       "default": True},
-    {"id": "inkscape",    "name": "Inkscape",                         "key": "roudix.apps.inkscape.enable",   "default": True},
-    {"id": "songrec",     "name": "SongRec",                          "key": "roudix.apps.songrec.enable",    "default": True},
-    {"id": "easyeffects", "name": "EasyEffects",                      "key": "roudix.apps.easyeffects.enable","default": True},
+    {"id": "gimp",        "name": "GIMP",                             "key": "roudix.apps.gimp.enable",       "default": False},
+    {"id": "inkscape",    "name": "Inkscape",                         "key": "roudix.apps.inkscape.enable",   "default": False},
+    {"id": "songrec",     "name": "SongRec",                          "key": "roudix.apps.songrec.enable",    "default": False},
+    {"id": "easyeffects", "name": "EasyEffects",                      "key": "roudix.apps.easyeffects.enable","default": False},
 ]
 
 
@@ -1171,6 +1208,9 @@ class SelectorGroup(Gtk.Box):
         self.append(label)
 
         self.selected_id = current
+        # Optional callback(item_id), called after the selection changed
+        # (user click or programmatic reconciliation).
+        self.on_selected = None
         self.icon_widgets: dict[str, tuple] = {}
         self.rows: dict[str, Gtk.CheckButton] = {}
         self._dark = dark
@@ -1256,6 +1296,8 @@ class SelectorGroup(Gtk.Box):
                     other.handler_block_by_func(self._on_toggled)
                     other.set_active(False)
                     other.handler_unblock_by_func(self._on_toggled)
+            if self.on_selected is not None:
+                self.on_selected(item_id)
 
     def update_icons(self, dark: bool):
         self._dark = dark
@@ -1543,6 +1585,38 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.scratchpad_note.set_visible(current_de in SCRATCHPAD_SUPPORTED_DE)
         desktop_page.append(self.scratchpad_note)
 
+        # roudix.desktop.latest.<id> — nixpkgs (default) or latest (flake)
+        # version of the selected compositor and of the selected shell.
+        self.latest_group = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        latest_title = Gtk.Label(halign=Gtk.Align.START)
+        latest_title.set_markup(f"<b>{L('Versions', 'Versions')}</b>")
+        self.latest_group.append(latest_title)
+
+        def _latest_row(initial_component):
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            label = Gtk.Label(label=latest_switch_label(initial_component), halign=Gtk.Align.START)
+            label.set_hexpand(True)
+            switch = Gtk.Switch()
+            switch.set_valign(Gtk.Align.CENTER)
+            row.append(label)
+            row.append(switch)
+            self.latest_group.append(row)
+            return row, label, switch
+
+        self.latest_de_row, self.latest_de_label, self.latest_de_switch = _latest_row("niri")
+        self.latest_shell_row, self.latest_shell_label, self.latest_shell_switch = _latest_row("noctalia")
+
+        self.latest_note = Gtk.Label(label=LATEST_NOTE)
+        self.latest_note.add_css_class("dim-label")
+        self.latest_note.set_wrap(True)
+        self.latest_note.set_halign(Gtk.Align.START)
+        self.latest_group.append(self.latest_note)
+        desktop_page.append(self.latest_group)
+
+        self.shell_selector.on_selected = lambda _id: self._update_latest_shell_row()
+        self._update_latest_de_row()
+        self._update_latest_shell_row()
+
         self.content_stack.add_named(desktop_page, "desktop")
 
         # ── "Gaming" page: master switch + apps checklist ─────────────────
@@ -1566,7 +1640,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         gaming_title_box.set_hexpand(True)
         gaming_header.append(gaming_title_box)
 
-        cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
+        cur_gaming_master = get_bool_option("roudix.gaming.enable", False)
         self.gaming_master_switch = Gtk.Switch()
         self.gaming_master_switch.set_valign(Gtk.Align.CENTER)
         self.gaming_master_switch.set_active(cur_gaming_master)
@@ -1608,7 +1682,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         cc_master_label.set_hexpand(True)
         self.cc_master_switch = Gtk.Switch()
         self.cc_master_switch.set_valign(Gtk.Align.CENTER)
-        self.cc_master_switch.set_active(get_bool_option("roudix.contentCreation.enable", True))
+        self.cc_master_switch.set_active(get_bool_option("roudix.contentCreation.enable", False))
         cc_master_row.append(cc_master_label)
         cc_master_row.append(self.cc_master_switch)
         cc_page.append(cc_master_row)
@@ -1623,7 +1697,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.obs_plugins_group = ToggleListGroup(L("Plugins OBS", "OBS plugins"), self.obs_plugins, current_obs_plugins)
         cc_page.append(self.obs_plugins_group)
 
-        current_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
+        current_video_editor = get_string_option("roudix.contentCreation.videoEditor", "none")
         self.video_editor_selector = SelectorGroup(L("Éditeur vidéo", "Video editor"), VIDEO_EDITORS, current_video_editor, dark)
         cc_page.append(self.video_editor_selector)
 
@@ -1645,7 +1719,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         editor_page.set_margin_end(16)
         editor_page.set_margin_bottom(16)
 
-        current_editor = get_string_option("roudix.editor", "zed")
+        current_editor = get_string_option("roudix.editor", "none")
         self.editor_selector = SelectorGroup(L("Éditeur par défaut", "Default editor"), EDITORS, current_editor, dark)
         editor_page.append(self.editor_selector)
 
@@ -1688,7 +1762,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         browser_page.append(bsubtitle)
         browser_page.append(Gtk.Separator())
 
-        current_browsers = set(get_list_option("roudix.browsers", ["brave"]))
+        current_browsers = set(get_list_option("roudix.browsers", []))
         browser_current = {b["id"]: (b["id"] in current_browsers) for b in BROWSERS}
         self.browser_group = ToggleListGroup("", BROWSERS, browser_current)
         browser_page.append(self.browser_group)
@@ -1828,11 +1902,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         chat_page.set_margin_end(16)
         chat_page.set_margin_bottom(16)
 
-        current_matrix = get_string_option("roudix.matrixClient", "element")
+        current_matrix = get_string_option("roudix.matrixClient", "none")
         self.matrix_selector = SelectorGroup(L("Client Matrix", "Matrix client"), MATRIX_CLIENTS, current_matrix, dark)
         chat_page.append(self.matrix_selector)
 
-        current_discord = get_string_option("roudix.discord", "vencord")
+        current_discord = get_string_option("roudix.discord", "none")
         self.discord_selector = SelectorGroup("Discord", DISCORD_OPTIONS, current_discord, dark)
         chat_page.append(self.discord_selector)
 
@@ -1858,7 +1932,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.apps_group = ToggleListGroup(L("Apps optionnelles", "Optional apps"), self.apps_toggles, apps_current)
         apps_page.append(self.apps_group)
 
-        current_video_player = get_string_option("roudix.videoPlayer", "vlc")
+        current_video_player = get_string_option("roudix.videoPlayer", "none")
         self.video_player_selector = SelectorGroup(L("Lecteur vidéo", "Video player"), VIDEO_PLAYERS, current_video_player, dark)
         apps_page.append(self.video_player_selector)
 
@@ -1866,7 +1940,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.torrent_client_selector = SelectorGroup(L("Client torrent", "Torrent client"), TORRENT_CLIENTS, current_torrent_client, dark)
         apps_page.append(self.torrent_client_selector)
 
-        current_music_player = get_string_option("roudix.musicPlayer", "spotify")
+        current_music_player = get_string_option("roudix.musicPlayer", "none")
         self.music_player_selector = SelectorGroup(L("Lecteur de musique", "Music player"), MUSIC_PLAYERS, current_music_player, dark)
         apps_page.append(self.music_player_selector)
 
@@ -1928,9 +2002,15 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         integration_note = Gtk.Label(
             label=L(
                 "S'applique uniquement à niri, Hyprland, MangoWC et Umbriel — "
-                "GNOME et KDE gardent toujours leur propre stack native.",
+                "GNOME et KDE gardent toujours leur propre stack native. "
+                "Avec KDE, les apps GNOME (éditeur, visionneuse d'images, disques, "
+                "gestionnaire de fichiers par défaut) sont remplacées par Kate, "
+                "Gwenview, Partition Manager et Dolphin ; adw-gtk3 reste installé.",
                 "Only applies to niri, Hyprland, MangoWC and Umbriel — "
-                "GNOME and KDE always keep their own native stack.",
+                "GNOME and KDE always keep their own native stack. "
+                "With KDE, the GNOME apps (text editor, image viewer, disk utility, "
+                "default file manager) are swapped for Kate, Gwenview, "
+                "Partition Manager and Dolphin; adw-gtk3 stays installed.",
             ),
         )
         integration_note.add_css_class("dim-label")
@@ -2179,6 +2259,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if HOST_LISTED is None:
             return
         scratchpad_keys = [scratchpad_option_key(d) for d in SCRATCHPAD_SUPPORTED_DE]
+        latest_keys = [latest_option_key(c) for c in sorted(LATEST_DE_IDS | LATEST_SHELL_IDS)]
         zen_mod_keys = ["roudix.zen.mods", "roudix.zen.sine.mods"]
         # category -> [(widget, shown)]
         pages = {
@@ -2187,6 +2268,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.shell_selector,  host_lists("roudix.desktop.shell")),
                 (self.scratchpad_row,  host_lists(*scratchpad_keys)),
                 (self.scratchpad_note, host_lists(*scratchpad_keys)),
+                (self.latest_group,    host_lists(*latest_keys)),
             ],
             "gaming": [
                 (self.gaming_header,       host_lists("roudix.gaming.enable")),
@@ -2304,6 +2386,34 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if not supported and self.category_list.get_selected_row() is row:
             self.category_list.select_row(self._category_rows["desktop"])
 
+    def _update_latest_group_visibility(self):
+        self.latest_group.set_visible(
+            self.latest_de_row.get_visible() or self.latest_shell_row.get_visible()
+        )
+
+    def _update_latest_de_row(self):
+        """Compositor switch: shown only for a compositor that has a flake
+        version (niri, mangowc, umbriel). Reloads that compositor's value."""
+        de = self.de_selector.selected_id
+        visible = de in LATEST_DE_IDS
+        self.latest_de_row.set_visible(visible)
+        if visible:
+            self.latest_de_label.set_label(latest_switch_label(de))
+            self.latest_de_switch.set_active(get_bool_option(latest_option_key(de), False))
+        self._update_latest_group_visibility()
+
+    def _update_latest_shell_row(self):
+        """Shell switch: shown only while the selected compositor supports a
+        shell and the selected shell has a flake version."""
+        de = self.de_selector.selected_id
+        shell = self.shell_selector.selected_id
+        visible = de in SHELL_SUPPORTED_DE and shell in LATEST_SHELL_IDS
+        self.latest_shell_row.set_visible(visible)
+        if visible:
+            self.latest_shell_label.set_label(latest_switch_label(shell))
+            self.latest_shell_switch.set_active(get_bool_option(latest_option_key(shell), False))
+        self._update_latest_group_visibility()
+
     def _on_de_toggled(self, check, *_):
         """Affiche/cache le shell selector et met à jour la liste selon le DE choisi."""
         new_de  = self.de_selector.selected_id
@@ -2323,13 +2433,17 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             self.scratchpad_note.set_label(SCRATCHPAD_NOTE[new_de])
             self.scratchpad_switch.set_active(get_bool_option(scratchpad_option_key(new_de), False))
 
+        self._update_latest_de_row()
+
         if not visible:
+            self._update_latest_shell_row()
             return
 
         # Reconciles the displayed shell list with the ones expected for
         # this DE (e.g.: switching to Umbriel → Noctalia only; back to
         # Hyprland → Noctalia/DMS + Caelestia, etc.)
         self.shell_selector.sync_items(shells_for_de(new_de))
+        self._update_latest_shell_row()
 
         log.debug(
             "DE changed to '%s' — shell selector updated (shells: %s)",
@@ -2378,7 +2492,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         integration_changed = integration_relevant and (new_integration != cur_integration)
 
         # Default editor
-        cur_editor = get_string_option("roudix.editor", "zed")
+        cur_editor = get_string_option("roudix.editor", "none")
         new_editor = self.editor_selector.selected_id
         editor_changed = new_editor != cur_editor
 
@@ -2388,7 +2502,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         terminal_changed = new_terminal != cur_terminal
 
         # Browsers (list) + Zen (separate switch)
-        cur_browsers = get_list_option("roudix.browsers", ["brave"])
+        cur_browsers = get_list_option("roudix.browsers", [])
         new_browsers = [b["id"] for b in BROWSERS if self.browser_group.get_states()[b["id"]]]
         browsers_changed = new_browsers != cur_browsers
 
@@ -2409,6 +2523,21 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_scratchpad = self.scratchpad_switch.get_active() if scratchpad_relevant else cur_scratchpad
         scratchpad_changed = scratchpad_relevant and (new_scratchpad != cur_scratchpad)
 
+        # roudix.desktop.latest.<id> — nixpkgs (false) or latest/flake (true)
+        # for the compositor and for the shell being applied. The key follows
+        # the DE/shell being applied to, like scratchpadApps above.
+        latest_de_relevant = new_de in LATEST_DE_IDS
+        latest_de_key = latest_option_key(new_de) if latest_de_relevant else None
+        cur_latest_de = get_bool_option(latest_de_key, False) if latest_de_relevant else False
+        new_latest_de = self.latest_de_switch.get_active() if latest_de_relevant else cur_latest_de
+        latest_de_changed = latest_de_relevant and (new_latest_de != cur_latest_de)
+
+        latest_shell_relevant = shell_relevant and new_shell in LATEST_SHELL_IDS
+        latest_shell_key = latest_option_key(new_shell) if latest_shell_relevant else None
+        cur_latest_shell = get_bool_option(latest_shell_key, False) if latest_shell_relevant else False
+        new_latest_shell = self.latest_shell_switch.get_active() if latest_shell_relevant else cur_latest_shell
+        latest_shell_changed = latest_shell_relevant and (new_latest_shell != cur_latest_shell)
+
         cur_sine = get_bool_option("roudix.zen.sine.enable", False)
         new_sine = self.sine_switch.get_active()
         sine_changed = new_sine != cur_sine
@@ -2428,13 +2557,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         gaming_extras_changes = _diff_bool_items(self.gaming_extras, self.gaming_extras_group.get_states())
 
         # Master switch for the gaming group
-        cur_gaming_master = get_bool_option("roudix.gaming.enable", True)
+        cur_gaming_master = get_bool_option("roudix.gaming.enable", False)
         new_gaming_master = self.gaming_master_switch.get_active()
         gaming_master_changed = new_gaming_master != cur_gaming_master
 
         # Content creation: master switch + independent toggles + OBS
         # plugins (list) + video editor (enum)
-        cur_cc_master = get_bool_option("roudix.contentCreation.enable", True)
+        cur_cc_master = get_bool_option("roudix.contentCreation.enable", False)
         new_cc_master = self.cc_master_switch.get_active()
         cc_master_changed = new_cc_master != cur_cc_master
 
@@ -2442,7 +2571,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         obs_plugins_changes = _diff_bool_items(self.obs_plugins, self.obs_plugins_group.get_states())
 
-        cur_video_editor = get_string_option("roudix.contentCreation.videoEditor", "kdenlive")
+        cur_video_editor = get_string_option("roudix.contentCreation.videoEditor", "none")
         new_video_editor = self.video_editor_selector.selected_id
         video_editor_changed = new_video_editor != cur_video_editor
 
@@ -2458,12 +2587,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         filemanager_changed = filemanager_relevant and (new_filemanager != cur_filemanager)
 
         # Matrix client
-        cur_matrix = get_string_option("roudix.matrixClient", "element")
+        cur_matrix = get_string_option("roudix.matrixClient", "none")
         new_matrix = self.matrix_selector.selected_id
         matrix_changed = new_matrix != cur_matrix
 
         # Discord
-        cur_discord = get_string_option("roudix.discord", "vencord")
+        cur_discord = get_string_option("roudix.discord", "none")
         new_discord = self.discord_selector.selected_id
         discord_changed = new_discord != cur_discord
 
@@ -2484,7 +2613,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         rgb_changed = new_rgb != cur_rgb
 
         # Video player
-        cur_video_player = get_string_option("roudix.videoPlayer", "vlc")
+        cur_video_player = get_string_option("roudix.videoPlayer", "none")
         new_video_player = self.video_player_selector.selected_id
         video_player_changed = new_video_player != cur_video_player
 
@@ -2499,7 +2628,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         branch_changed = new_branch != cur_branch
 
         # Music player
-        cur_music_player = get_string_option("roudix.musicPlayer", "spotify")
+        cur_music_player = get_string_option("roudix.musicPlayer", "none")
         new_music_player = self.music_player_selector.selected_id
         music_player_changed = new_music_player != cur_music_player
 
@@ -2516,6 +2645,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
                     terminal_changed, browsers_changed, zen_changed, zen_variant_changed, sine_changed,
                     zen_mods_changed, scratchpad_changed,
+                    latest_de_changed, latest_shell_changed,
                     login_shell_changed, filemanager_changed, matrix_changed,
                     discord_changed, telegram_changed,
                     apps_changes,
@@ -2561,6 +2691,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{L('Mods Zen', 'Zen mods')}: <b>{', '.join(new_zen_mods) or _none}</b>")
         if scratchpad_changed:
             changes.append(f"{L('Apps en scratchpad', 'Scratchpad apps')} ({SCRATCHPAD_DE_LABEL[new_de]}): <b>{_en if new_scratchpad else _dis}</b>")
+        _latest_txt = L("dernière version (flake)", "latest version (flake)")
+        _nixpkgs_txt = L("version nixpkgs", "nixpkgs version")
+        if latest_de_changed:
+            changes.append(f"{LATEST_LABEL[new_de]}: <b>{_latest_txt if new_latest_de else _nixpkgs_txt}</b>")
+        if latest_shell_changed:
+            changes.append(f"{LATEST_LABEL[new_shell]}: <b>{_latest_txt if new_latest_shell else _nixpkgs_txt}</b>")
         if login_shell_changed:
             changes.append(f"{L('Shell de connexion', 'Login shell')}: <b>{cur_login_shell}</b> → <b>{new_login_shell}</b>")
         if filemanager_changed:
@@ -2617,6 +2753,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "sine_changed": sine_changed, "new_sine": new_sine,
             "zen_mods_changed": zen_mods_changed, "new_zen_mods": new_zen_mods, "zen_mods_key": zen_mods_key,
             "scratchpad_changed": scratchpad_changed, "new_scratchpad": new_scratchpad, "scratchpad_key": scratchpad_key,
+            "latest_de_changed": latest_de_changed, "new_latest_de": new_latest_de, "latest_de_key": latest_de_key,
+            "latest_shell_changed": latest_shell_changed, "new_latest_shell": new_latest_shell, "latest_shell_key": latest_shell_key,
             "login_shell_changed": login_shell_changed, "new_login_shell": new_login_shell,
             "filemanager_changed": filemanager_changed, "new_filemanager": new_filemanager,
             "matrix_changed": matrix_changed, "new_matrix": new_matrix,
@@ -2761,6 +2899,18 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     L(f"<span color='red'>Erreur d'écriture — config scratchpad : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing scratchpad config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
+
+        for _flag, _key, _val in (
+            ("latest_de_changed", "latest_de_key", "new_latest_de"),
+            ("latest_shell_changed", "latest_shell_key", "new_latest_shell"),
+        ):
+            if pending[_flag]:
+                result = set_bool_option(pending[_key], pending[_val])
+                if result is not True:
+                    self.status.set_markup(
+                        L(f"<span color='red'>Erreur d'écriture — version nixpkgs/flake : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing nixpkgs/flake version config: {GLib.markup_escape_text(result)}</span>")
+                    )
+                    return
 
         if pending["login_shell_changed"]:
             result = set_string_option("roudix.shell", pending["new_login_shell"])

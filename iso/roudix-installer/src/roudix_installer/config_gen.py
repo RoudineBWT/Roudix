@@ -24,9 +24,12 @@ def _sub_bool(text: str, key: str, value: bool) -> str:
 
 
 def _sub_list_single(text: str, key: str, value: str) -> str:
-    """key = [ ... ];  ->  key = ["value"];"""
+    """key = [ ... ];  ->  key = ["value"];
+    "none" (or empty) -> key = [];  — "none" is not a member of the
+    roudix.browsers enum, writing ["none"] made the build fail."""
     pattern = re.compile(rf'({re.escape(key)}\s*=\s*)\[[^\]]*\]')
-    return pattern.sub(lambda m: f'{m.group(1)}["{value}"]', text)
+    replacement = "[]" if value in ("", "none") else f'["{value}"]'
+    return pattern.sub(lambda m: f'{m.group(1)}{replacement}', text)
 
 
 def _sub_list(text: str, key: str, values: list) -> str:
@@ -140,6 +143,8 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_list(t, "roudix.zen.sine.mods", state.zen_sine_mods)
     t = _sub_string(t, "roudix.desktop.type", state.desktop)
     t = _sub_string(t, "roudix.desktop.shell", state.desktop_shell)
+    for component in ("niri", "mangowc", "umbriel", "noctalia", "dms", "caelestia"):
+        t = _set_bool_option(t, f"roudix.desktop.latest.{component}", getattr(state, f"latest_{component}"))
     t = _sub_string(t, "roudix.editor", state.editor)
     t = _sub_string(t, "roudix.desktopIntegration", state.desktop_integration)
     t = _sub_string(t, "roudix.terminal", state.terminal)
