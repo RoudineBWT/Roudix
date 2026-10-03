@@ -135,6 +135,13 @@
             type = "custom";
             format = "───────────────────────────────";
           }
+          {
+            type = "custom";
+            key = "  ";
+            format = "  {##fab387}Romeo, Oscar, Uniform, Delta, India, X-ray!{#}";
+            newline = true;
+          }
+
           { type = "break"; }
         ];
       };
