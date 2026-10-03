@@ -76,6 +76,15 @@ class InstallState:
     # ── Desktop ───────────────────────────────────────────────────────────
     desktop: str = "niri"            # niri | gnome | kde | hyprland | mangowc | umbriel
     desktop_shell: str = "noctalia"  # noctalia | dms | caelestia (only for niri/hyprland)
+    # roudix.desktop.latest.<id> — False (default) = nixpkgs version,
+    # True = latest version built from the project's flake. Only the
+    # compositor / shell actually chosen matter (see options.py).
+    latest_niri: bool = False
+    latest_mangowc: bool = False
+    latest_umbriel: bool = False
+    latest_noctalia: bool = False
+    latest_dms: bool = False
+    latest_caelestia: bool = False
     default_shell: str = "fish"      # fish | bash
     editor: str = "zed"              # roudix.editor — vscode | zed | neovim | none
     desktop_integration: str = "gnome"  # roudix.desktopIntegration — gnome | kde

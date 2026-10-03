@@ -3,6 +3,11 @@ let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
   isNoctalia = shellType == "noctalia";
 
+  dp = import ../../../desktop-pkgs.nix {
+    inherit pkgs inputs;
+    latest = osConfig.roudix.desktop.latest;
+  };
+
   terminalCmd = osConfig.roudix.terminal or "ghostty";
   fileManagerCmd = osConfig.roudix.fileManager or "nautilus";
 
@@ -10,6 +15,7 @@ let
   browserCmd     = osConfig.roudix.browser.command or null;
   browserList    = osConfig.roudix.browser.commands or [ ];
   extraBrowsers  = lib.filter (b: b.name != browserDefault) browserList;
+  integrationApps = import ../_integration-apps.nix { inherit pkgs osConfig; };
 in
 {
   imports = [
@@ -49,6 +55,9 @@ in
     programs.umbriel = {
       enable = true;
     };
+    # Default: nixpkgs. With roudix.desktop.latest.umbriel the HM module's
+    # own default (the flake package) applies.
+    programs.umbriel.package = lib.mkIf (dp.useNixpkgs "umbriel") dp.umbriel;
 
     # ── Terminal / browser / files resolved from roudix.* ──────────
     # Same key ("Mod+Return" etc.) as in _binds.nix: attrsOf merges per
@@ -67,7 +76,7 @@ in
     }) extraBrowsers));
 
     # ── Packages ─────────────────────────────────────────────────────────
-    home.packages = with pkgs; [
+    home.packages = integrationApps.desktopApps ++ (with pkgs; [
       awww
       xwayland-satellite
       playerctl
@@ -79,10 +88,7 @@ in
       grim
       slurp
 
-      gnome-text-editor
-      gnome-disk-utility
       mission-center
-      loupe
       gpu-screen-recorder
 
       nwg-look
@@ -95,9 +101,9 @@ in
 
       gvfs
       cava
-    ]
+    ])
     ++ lib.optionals isNoctalia [
-      inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+      dp.noctalia
     ];
   };
 }

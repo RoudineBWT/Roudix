@@ -6,6 +6,18 @@ let
   isNoctalia  = shellType == "noctalia";
   needsPolkit = !isDms;
   isKdeIntegration = config.roudix.desktopIntegration == "kde";
+
+  # kde integration: wlr keeps ScreenCast/Screenshot, everything else
+  # (FileChooser included) goes to the KDE portal. wlr has no FileChooser.
+  kdePortalConfig = {
+    default = [ "wlr" "kde" ];
+    "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+    "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+    "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+    # gtk portal only for Settings: dark/light follows dconf
+    # (color-scheme) instead of the KDE portal's kdeglobals (= light).
+    "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
+  };
 in
 {
   imports = [ ./ly.nix ];
@@ -42,10 +54,22 @@ in
           enable = true;
           wlr.enable = true;
           extraPortals = with pkgs;
-            [ (if isKdeIntegration then kdePackages.xdg-desktop-portal-kde else xdg-desktop-portal-gtk) ];
-          config.common.default = "wlr";
-          # Explicitly set screencast to wlr to avoid gtk taking over
-          config.common."org.freedesktop.impl.portal.ScreenCast" = "wlr";
+            (if isKdeIntegration
+             then [ kdePackages.xdg-desktop-portal-kde xdg-desktop-portal-gtk ]
+             else [ xdg-desktop-portal-gtk ]);
+          # Session runs with XDG_CURRENT_DESKTOP=wlroots, so config.common
+          # is what applies. The mango flake module also ships a
+          # config.mango (default = gtk) and always installs the gtk portal,
+          # so in kde mode config.mango is forced too (in case the session
+          # is ever started with XDG_CURRENT_DESKTOP=mango).
+          config.common =
+            if isKdeIntegration then lib.mkForce kdePortalConfig
+            else {
+              default = "wlr";
+              # Explicitly set screencast to wlr to avoid gtk taking over
+              "org.freedesktop.impl.portal.ScreenCast" = "wlr";
+            };
+          config.mango = lib.mkIf isKdeIntegration (lib.mkForce kdePortalConfig);
 
           # xdg-desktop-portal-wlr.service runs with a minimal PATH
           # (coreutils only, via its own overrides.conf), so it never

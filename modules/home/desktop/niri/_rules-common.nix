@@ -115,7 +115,7 @@ in
       open-floating = true;
     }
     {
-      matches = [ { app-id = "^org\\.gnome\\.Nautilus$"; } ];
+      matches = [ { app-id = "^org\\.(gnome\\.Nautilus|kde\\.dolphin)$"; } ];
       excludes = [
         { app-id = "^xdg-desktop-portal(-gtk)?$"; }
         { title = "(?i)^(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$"; }
@@ -124,7 +124,7 @@ in
       open-maximized = true;
     }
     {
-      matches = [ { app-id = "org.gnome.TextEditor"; } ];
+      matches = [ { app-id = "^org\\.(gnome\\.TextEditor|kde\\.kate)$"; } ];
       open-on-workspace = ws.files;
     }
     {

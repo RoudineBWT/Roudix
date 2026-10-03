@@ -2,6 +2,10 @@
 let
   shellType = osConfig.roudix.desktop.shell or "noctalia";
   isNoctalia = shellType == "noctalia";
+  dp = import ../../../desktop-pkgs.nix {
+    inherit pkgs inputs;
+    latest = osConfig.roudix.desktop.latest;
+  };
   hyprFiles = [
     "hyprland.lua"
     "README.md"
@@ -61,6 +65,7 @@ let
       }
     ' "${dotfiles}/hyprland/config/binds/common.lua" "${dotfiles}/hyprland/config/shells/noctalia.lua" >> $out
   '';
+  integrationApps = import ../_integration-apps.nix { inherit pkgs osConfig; };
 in
 {
   imports = [
@@ -77,7 +82,7 @@ in
     # ── Noctalia ─────────────────────────────────────────────────────────────
     programs.noctalia = lib.mkIf (shellType == "noctalia") {
       enable = true;
-      package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      package = dp.noctalia;
       systemd.enable = false;
       settings.plugin_settings."kenn/keybind-cheatsheet" = {
         # The live bind list still comes from Hyprland; this tiny file only
@@ -166,7 +171,7 @@ in
     };
 
     # ── Packages ─────────────────────────────────────────────────────────────
-    home.packages = with pkgs; [
+    home.packages = integrationApps.desktopApps ++ (with pkgs; [
       wl-clipboard
       pwvucontrol
       kdePackages.qtmultimedia
@@ -175,10 +180,7 @@ in
       satty
 
       # Apps
-      gnome-text-editor
-      gnome-disk-utility
       mission-center
-      loupe
       gpu-screen-recorder
 
       # GTK theming
@@ -194,7 +196,7 @@ in
       # Misc
       gvfs
       cava
-    ]
+    ])
     ;
   };
 }

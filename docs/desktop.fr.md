@@ -76,6 +76,27 @@ roudix-shell-switch dms
 
 ---
 
+## Version nixpkgs ou dernière version (flake)
+
+Par défaut, Roudix utilise la version **nixpkgs** du compositeur et du shell (et du greeter qui va avec). Pour avoir la toute dernière version, construite depuis le flake du projet, activez-la composant par composant dans `local.nix` — ou depuis `roudix-switcher` / l'installateur, où l'interrupteur n'apparaît que pour le compositeur et le shell sélectionnés :
+
+```nix
+roudix.desktop.latest.niri      = true;  # Niri
+roudix.desktop.latest.mangowc   = true;  # MangoWC
+roudix.desktop.latest.umbriel   = true;  # Umbriel
+roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
+roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.caelestia = true;  # Caelestia (le greeter DMS le suit)
+```
+
+Hyprland n'a pas de version flake dans Roudix : il vient toujours de nixpkgs.
+
+> **À savoir :** les configurations Roudix sont écrites en priorité pour les **versions flake (les plus récentes)**. Sur les versions nixpkgs, une erreur de configuration disant qu'une option, un réglage ou une clé de config *n'existe pas* est **normale** : elle a été ajoutée après la version fournie par nixpkgs. Patientez que nixpkgs la rattrape, ou passez le composant à `true`.
+
+> Si un module flake n'expose pas d'option `package` (possible pour DMS, MangoWC et le greeter DMS), la version nixpkgs ne peut pas être appliquée : Roudix reste sur la version flake et affiche un avertissement à la compilation.
+
+---
+
 ## Surcharges personnelles du compositeur
 
 Niri et Umbriel sont configurés nativement en Nix (`programs.niri.settings` / `programs.umbriel.settings`) — de vrais attrsets typés, pas un fichier texte généré. Cela veut dire que les surcharges sont juste du Nix : ajouter une clé qui n'existe pas encore se fusionne automatiquement ; toucher une clé déjà définie par le dépôt (même sortie, même raccourci) nécessite `lib.mkForce`, sinon Nix refusera de build avec une erreur de « définitions conflictuelles ».
