@@ -24,9 +24,12 @@ def _sub_bool(text: str, key: str, value: bool) -> str:
 
 
 def _sub_list_single(text: str, key: str, value: str) -> str:
-    """key = [ ... ];  ->  key = ["value"];"""
+    """key = [ ... ];  ->  key = ["value"];
+    "none" (or empty) -> key = [];  — "none" is not a member of the
+    roudix.browsers enum, writing ["none"] made the build fail."""
     pattern = re.compile(rf'({re.escape(key)}\s*=\s*)\[[^\]]*\]')
-    return pattern.sub(lambda m: f'{m.group(1)}["{value}"]', text)
+    replacement = "[]" if value in ("", "none") else f'["{value}"]'
+    return pattern.sub(lambda m: f'{m.group(1)}{replacement}', text)
 
 
 def _sub_list(text: str, key: str, values: list) -> str:

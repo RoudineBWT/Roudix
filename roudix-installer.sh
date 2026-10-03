@@ -1175,7 +1175,9 @@ else
   set_kernel_option hosts/${HOSTNAME}/local.nix "hardware.myKernel" "true" "${KERNEL}"
   set_kernel_option hosts/${HOSTNAME}/local.nix "hardware.myKernelChaotic" "false" "${KERNEL_CHAOTIC}"
 fi
-sed -i "s/roudix\.browsers[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.browsers = [\"${BROWSER}\"]/"    hosts/${HOSTNAME}/local.nix
+# "none" is not a member of the roudix.browsers enum: it means an empty list.
+if [[ "$BROWSER" == "none" ]]; then BROWSER_NIX=""; else BROWSER_NIX="\"${BROWSER}\""; fi
+sed -i "s/roudix\.browsers[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.browsers = [${BROWSER_NIX}]/"    hosts/${HOSTNAME}/local.nix
 sed -i -E "s/roudix\.zen\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.enable           = ${ZEN}/" hosts/${HOSTNAME}/local.nix
 sed -i -E "s/roudix\.zen\.sine\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.zen.sine.enable = ${ZEN_SINE}/" hosts/${HOSTNAME}/local.nix
 sed -i "s/roudix\.zen\.mods[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.zen.mods = [$(nix_list_from_csv "$ZEN_MODS")]/" hosts/${HOSTNAME}/local.nix
@@ -1256,7 +1258,7 @@ check_opt "roudix.editor"              "roudix\.editor[[:space:]]*=[[:space:]]*\
 check_opt "roudix.desktopIntegration"  "roudix\.desktopIntegration[[:space:]]*=[[:space:]]*\"${DESKTOP_INTEGRATION}\""
 check_opt "roudix.keyboardLayout"      "roudix\.keyboardLayout[[:space:]]*=[[:space:]]*\"${GFX_KEYBOARD_LAYOUT}\""
 check_opt "roudix.keyboardVariant"     "roudix\.keyboardVariant[[:space:]]*=[[:space:]]*\"${GFX_KEYBOARD_VARIANT}\""
-check_opt "roudix.browsers"            "roudix\.browsers[[:space:]]*=[[:space:]]*\[\"${BROWSER}\"\]"
+check_opt "roudix.browsers"            "roudix\.browsers[[:space:]]*=[[:space:]]*\[${BROWSER_NIX}\]"
 check_opt "roudix.zen.enable"          "roudix\.zen\.enable[[:space:]]*=[[:space:]]*${ZEN}"
 check_opt "roudix.terminal"            "roudix\.terminal[[:space:]]*=[[:space:]]*\"${TERMINAL}\""
 check_opt "roudix.fileManager"         "roudix\.fileManager[[:space:]]*=[[:space:]]*\"${FILE_MANAGER}\""
