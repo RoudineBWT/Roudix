@@ -115,8 +115,21 @@ class AppStreamCatalog:
             if entry:
                 apps.append(entry)
 
+        apps = self._dedupe(apps)
         apps.sort(key=lambda item: item.name.casefold())
         return apps
+
+    @staticmethod
+    def _dedupe(apps: list[AppEntry]) -> list[AppEntry]:
+        seen: set[tuple[str, str]] = set()
+        out: list[AppEntry] = []
+        for app in apps:
+            key = (app.source, app.appstream_id)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(app)
+        return out
 
     def search(self, query: str) -> list[AppEntry]:
         if not query.strip():
@@ -180,8 +193,14 @@ class AppStreamCatalog:
         """Flathub desktop apps only (no runtimes/addons); only the `flathub` remote."""
         if not self._extract_kind(component).endswith("DESKTOP_APP") or not name:
             return None
+        # libappstream reports origin="flatpak" for every remote (not "flathub"),
+        # so the origin can't tell flathub from flathub-beta: reject the beta
+        # branch through the bundle id (app/<id>/<arch>/<branch>) instead.
         origin = str(getattr(component, "get_origin", lambda: "")() or "")
-        if origin and origin != "flathub":
+        if origin and origin not in {"flathub", "flatpak"}:
+            return None
+        bundle_id = self._flatpak_bundle(component) or ""
+        if bundle_id.rsplit("/", 1)[-1] == "beta":
             return None
         app_id = (self._safe_text(component.get_id()) or "").removesuffix(".desktop")
         if not app_id:
