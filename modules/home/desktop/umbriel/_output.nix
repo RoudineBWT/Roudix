@@ -48,9 +48,9 @@
   # Web (DP-1/1, DP-3/3)  → scrolling
   # Zed (DP-1/2)          → dwindle
   # Term (DP-1/3)         → dwindle
-  # Games (DP-1/4)        → master
+  # Games (DP-1/4)        → scrolling
   # Files (DP-1/5)        → dwindle
-  # Chat (DP-3/1)         → master
+  # Chat (DP-3/1)         → dwindle
   # Music (DP-3/2)        → dwindle
   workspace = [
     {
@@ -86,7 +86,7 @@
       index = 1; # chat (discord / element / telegram — already floating
                  # via _rules.nix, so the mode only affects anything else
                  # tiled on this workspace)
-      layout.mode = "master";
+      layout.mode = "dwindle";
     }
     {
       output = "DP-3";
