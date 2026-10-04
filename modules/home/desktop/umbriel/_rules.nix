@@ -114,16 +114,12 @@ in
       default_output = "DP-1";
       default_workspace = 1;
       default_maximize = true;
-      opacity = 0.95;
-      blur = true;
     }
     {
       match.title = "^About Zen Twilight$";
       default_output = "DP-1";
       default_workspace = 1;
       default_floating = true;
-      opacity = 0.95;
-      blur = true;
     }
     {
       match.app_id = "^brave-origin-beta$";
