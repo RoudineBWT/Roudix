@@ -38,7 +38,7 @@ pkgs.stdenv.mkDerivation {
     Icon=roudix-logo
     Terminal=false
     Type=Application
-    Categories=System;Settings;
+    Categories=System;Settings;X-Roudix;
     Keywords=welcome;bienvenue;switcher;kernel;scheduler;store;
     EOF
   '';

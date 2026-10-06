@@ -62,7 +62,7 @@ pkgs.stdenv.mkDerivation {
     Icon=io.roudix.switcher
     Terminal=false
     Type=Application
-    Categories=System;Settings;
+    Categories=System;Settings;X-Roudix;
     Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;customize;browser;editor;terminal;gaming;
     EOF
   '';

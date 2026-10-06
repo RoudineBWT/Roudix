@@ -42,7 +42,7 @@ pkgs.stdenv.mkDerivation {
     Icon=io.roudix.kernel-switcher
     Terminal=false
     Type=Application
-    Categories=System;Settings;
+    Categories=System;Settings;X-Roudix;
     Keywords=kernel;cachyos;nix;switch;boot;
     EOF
   '';

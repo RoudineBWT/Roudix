@@ -49,7 +49,7 @@ stdenv.mkDerivation {
     Comment=Choose and apply an SCX scheduler
     Exec=$out/bin/roudix-scheduler
     Icon=io.roudix.scheduler
-    Categories=System;Settings;
+    Categories=System;Settings;X-Roudix;
     EOF
 
     runHook postInstall

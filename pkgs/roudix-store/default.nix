@@ -37,7 +37,7 @@ pkgs.stdenv.mkDerivation {
     Icon=io.roudix.store
     Terminal=false
     Type=Application
-    Categories=System;PackageManager;
+    Categories=System;PackageManager;X-Roudix;
     Keywords=store;software;apps;packages;nixpkgs;install;
     EOF2
   '';

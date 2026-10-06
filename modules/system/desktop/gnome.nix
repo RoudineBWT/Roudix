@@ -21,6 +21,49 @@ let
     (lib.filter (u: !builtins.elem u cfg.disabledExtensions) defaultEnabledUUIDs)
     ++ (map (e: e.extensionUuid or "") cfg.extraExtensions);
 
+  # ── Dock favorites ─────────────────────────────────────────────────────
+  # Desktop-file ids per installed browser / terminal. GNOME silently
+  # ignores ids that don't exist, so a wrong guess just means "not pinned".
+  browserDesktopIds = {
+    "brave"                = [ "brave-browser.desktop" ];
+    "brave-beta"           = [ "brave-browser-beta.desktop" ];
+    "brave-nightly"        = [ "brave-browser-nightly.desktop" ];
+    "brave-origin"         = [ "brave-origin.desktop" ];
+    "brave-origin-beta"    = [ "brave-origin-beta.desktop" ];
+    "brave-origin-nightly" = [ "brave-origin-nightly.desktop" ];
+    "helium"               = [ "helium.desktop" "helium-browser.desktop" ];
+    "vivaldi"              = [ "vivaldi-stable.desktop" ];
+    "chromium"             = [ "chromium-browser.desktop" ];
+    "ungoogled-chromium"   = [ "chromium-browser.desktop" ];
+    "firefox"              = [ "firefox.desktop" ];
+    "librewolf"            = [ "librewolf.desktop" ];
+    "google-chrome"        = [ "google-chrome.desktop" ];
+    "microsoft-edge"       = [ "microsoft-edge.desktop" ];
+  };
+  zenDesktopIds =
+    if config.roudix.zen.variant == "beta"
+    then [ "zen-beta.desktop" "zen.desktop" ]
+    else [ "zen-twilight.desktop" "zen.desktop" ];
+  terminalDesktopIds = {
+    ghostty   = [ "com.mitchellh.ghostty.desktop" ];
+    kitty     = [ "kitty.desktop" ];
+    alacritty = [ "Alacritty.desktop" ];
+    foot      = [ "foot.desktop" ];
+    wezterm   = [ "org.wezfurlong.wezterm.desktop" ];
+    ptyxis    = [ "org.gnome.Ptyxis.desktop" ];
+    konsole   = [ "org.kde.konsole.desktop" ];
+  };
+
+  favoriteApps =
+    [ "org.gnome.Nautilus.desktop" ]
+    ++ lib.concatMap (b: browserDesktopIds.${b} or [ ]) config.roudix.browsers
+    ++ lib.optionals config.roudix.zen.enable zenDesktopIds
+    ++ terminalDesktopIds.${config.roudix.terminal} or [ ]
+    ++ [
+      "io.roudix.store.desktop"
+      "org.gnome.Settings.desktop"
+    ];
+
   # ── Roudix look & feel, as dconf DEFAULTS ─────────────────────────────
   # Written to the *system* dconf database (/etc/dconf/db/user.d), NOT to
   # the user's own database. dconf reads the user db first and falls back
@@ -36,6 +79,11 @@ let
     "org/gnome/shell" = {
       always-show-log-out = true;
       enabled-extensions = activeUUIDs;
+      # Pinned apps (Dash to Dock / Dash to Panel / overview): Files, the
+      # browser(s) and terminal the user selected in Roudix, the Store and
+      # Settings. A default like the rest: once the user pins/unpins
+      # anything, their own list wins.
+      favorite-apps = favoriteApps;
     };
 
     "org/gnome/desktop/background" = {
@@ -53,6 +101,20 @@ let
       cursor-theme = "capitaine-cursors-white";
       cursor-size  = lib.gvariant.mkInt32 (24);
       gtk-enable-primary-paste = true;
+    };
+
+    # ── "Roudix" app folder ───────────────────────────────────────────────
+    # Every Roudix app (Store, Customizer, Kernel Switcher, Scheduler,
+    # Welcome) carries Categories=...;X-Roudix; in its .desktop file, and the
+    # folder collects them by that category. folder-children replaces the
+    # stock list, so GNOME's own default folders are repeated here.
+    "org/gnome/desktop/app-folders" = {
+      folder-children = [ "Utilities" "YaST" "Pardus" "Roudix" ];
+    };
+    "org/gnome/desktop/app-folders/folders/Roudix" = {
+      name = "Roudix";
+      translate = false;
+      categories = [ "X-Roudix" ];
     };
 
     # ── ArcMenu ───────────────────────────────────────────────────────────
