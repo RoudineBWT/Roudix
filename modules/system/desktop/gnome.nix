@@ -54,15 +54,22 @@ let
     konsole   = [ "org.kde.konsole.desktop" ];
   };
 
+  # Same layout as vanilla GNOME / Fedora Workstation (gnome-shell
+  # data/default-apps/dash.txt: browser, Calendar, Files, Software, Text
+  # Editor, Calculator — Fedora only swaps Epiphany for Firefox). Differences:
+  # the browser(s) are the ones selected in Roudix, GNOME Software (excluded
+  # on Roudix) becomes Roudix Store, and the user's terminal is added.
   favoriteApps =
-    [ "org.gnome.Nautilus.desktop" ]
-    ++ lib.concatMap (b: browserDesktopIds.${b} or [ ]) config.roudix.browsers
+    lib.concatMap (b: browserDesktopIds.${b} or [ ]) config.roudix.browsers
     ++ lib.optionals config.roudix.zen.enable zenDesktopIds
-    ++ terminalDesktopIds.${config.roudix.terminal} or [ ]
     ++ [
+      "org.gnome.Calendar.desktop"
+      "org.gnome.Nautilus.desktop"
       "io.roudix.store.desktop"
-      "org.gnome.Settings.desktop"
-    ];
+      "org.gnome.TextEditor.desktop"
+      "org.gnome.Calculator.desktop"
+    ]
+    ++ terminalDesktopIds.${config.roudix.terminal} or [ ];
 
   # ── Roudix look & feel, as dconf DEFAULTS ─────────────────────────────
   # Written to the *system* dconf database (/etc/dconf/db/user.d), NOT to
@@ -79,10 +86,9 @@ let
     "org/gnome/shell" = {
       always-show-log-out = true;
       enabled-extensions = activeUUIDs;
-      # Pinned apps (Dash to Dock / Dash to Panel / overview): Files, the
-      # browser(s) and terminal the user selected in Roudix, the Store and
-      # Settings. A default like the rest: once the user pins/unpins
-      # anything, their own list wins.
+      # Pinned apps (Dash to Dock / Dash to Panel / overview), see
+      # favoriteApps above. A default like the rest: once the user
+      # pins/unpins anything, their own list wins.
       favorite-apps = favoriteApps;
     };
 
@@ -103,13 +109,49 @@ let
       gtk-enable-primary-paste = true;
     };
 
-    # ── "Roudix" app folder ───────────────────────────────────────────────
-    # Every Roudix app (Store, Customizer, Kernel Switcher, Scheduler,
-    # Welcome) carries Categories=...;X-Roudix; in its .desktop file, and the
-    # folder collects them by that category. folder-children replaces the
-    # stock list, so GNOME's own default folders are repeated here.
+    # ── App-grid folders ──────────────────────────────────────────────────
+    # GNOME Shell only creates its stock folders (System, Utilities — plus
+    # YaST/Pardus, useless here — see DEFAULT_FOLDERS in js/ui/appDisplay.js)
+    # when folder-children is EMPTY. Since we set folder-children for our own "Roudix" folder, the
+    # stock ones have to be declared here too, copied from the shell:
+    # same names, same categories, same default app lists
+    # (gnome-shell data/default-apps/{system,utilities}-folder.txt).
+    # Roudix apps (Store, Customizer, Kernel Switcher, Scheduler, Welcome)
+    # carry Categories=...;X-Roudix; in their .desktop and are collected by
+    # that category.
     "org/gnome/desktop/app-folders" = {
-      folder-children = [ "Utilities" "YaST" "Pardus" "Roudix" ];
+      folder-children = [ "System" "Utilities" "Roudix" ];
+    };
+    "org/gnome/desktop/app-folders/folders/System" = {
+      name = "X-GNOME-Shell-System.directory";
+      translate = true;
+      apps = [
+        "nm-connection-editor.desktop"
+        "org.gnome.DejaDup.desktop"
+        "org.gnome.baobab.desktop"
+        "org.gnome.DiskUtility.desktop"
+        "org.gnome.Logs.desktop"
+        "org.freedesktop.MalcontentControl.desktop"
+        "org.freedesktop.GnomeAbrt.desktop"
+        "org.gnome.Sysprof.desktop"
+        "org.gnome.SystemMonitor.desktop"
+        "org.gnome.tweaks.desktop"
+      ];
+    };
+    "org/gnome/desktop/app-folders/folders/Utilities" = {
+      name = "X-GNOME-Shell-Utilities.directory";
+      translate = true;
+      apps = [
+        "org.gnome.Decibels.desktop"
+        "org.gnome.Connections.desktop"
+        "org.gnome.Papers.desktop"
+        "org.gnome.FileRoller.desktop"
+        "org.gnome.font-viewer.desktop"
+        "org.gnome.Loupe.desktop"
+        "org.gnome.seahorse.Application.desktop"
+        "org.gnome.Seahorse.desktop"
+        "org.gnome.Showtime.desktop"
+      ];
     };
     "org/gnome/desktop/app-folders/folders/Roudix" = {
       name = "Roudix";
