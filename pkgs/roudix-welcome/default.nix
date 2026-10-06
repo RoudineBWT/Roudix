@@ -39,12 +39,12 @@ pkgs.stdenv.mkDerivation {
     Terminal=false
     Type=Application
     Categories=System;Settings;
-    Keywords=welcome;bienvenue;switcher;kernel;scheduler;
+    Keywords=welcome;bienvenue;switcher;kernel;scheduler;store;
     EOF
   '';
 
   meta = {
-    description = "Écran de bienvenue Roudix : accès rapide à roudix-switcher, roudix-kernel-switcher et roudix-scheduler";
+    description = "Écran de bienvenue Roudix : accès rapide à roudix-store, roudix-switcher, roudix-kernel-switcher et roudix-scheduler";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
   };
