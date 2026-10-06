@@ -71,6 +71,7 @@ in {
 
     systemd.services.roudix-autoupdate = {
       description = "Roudix — auto pull config and schedule rebuild";
+      onFailure   = [ "roudix-autoupdate-notify-failure.service" ];
       after       = [ "network-online.target" ];
       wants       = [ "network-online.target" ];
       # Only triggered by the timer, never started at activation time
@@ -79,8 +80,10 @@ in {
         Type             = "oneshot";
         User             = "root";
         WorkingDirectory = cfg.configPath;
-        # Prevent the service from hanging forever
-        TimeoutStartSec  = "120";
+        # Prevent the service from hanging forever — but a rebuild (new
+        # kernel, uncached package) easily takes more than 2 minutes, and a
+        # timeout kills the run before `_fail` can notify anyone.
+        TimeoutStartSec  = "2h";
       };
       script = ''
         set -uo pipefail
@@ -178,6 +181,24 @@ in {
           "Roudix — Rebuild scheduled" \
           "Configuration updated successfully. Reboot to apply the new config." \
           "system-reboot"
+      '';
+    };
+
+    # Covers what `_fail` cannot: timeout, kill, crash. A plain `exit 1`
+    # from `_fail` has already notified, so it is skipped here (needs the
+    # MONITOR_* variables systemd passes to OnFailure= units; without them the
+    # worst case is a duplicate notification).
+    systemd.services.roudix-autoupdate-notify-failure = {
+      description = "Roudix — notify when roudix-autoupdate stopped unexpectedly";
+      serviceConfig.Type = "oneshot";
+      script = ''
+        if [ "''${MONITOR_SERVICE_RESULT:-}" = "exit-code" ] && [ "''${MONITOR_EXIT_STATUS:-}" = "1" ]; then
+          exit 0
+        fi
+        ${notify} \
+          "Roudix — Mise à jour interrompue" \
+          "La mise à jour automatique s'est arrêtée de façon inattendue (''${MONITOR_SERVICE_RESULT:-inconnu}). Voir : journalctl -u roudix-autoupdate" \
+          "dialog-error"
       '';
     };
 

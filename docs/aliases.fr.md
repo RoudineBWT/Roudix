@@ -21,7 +21,7 @@
 
 1. `git pull --ff-only` de la branche suivie (ignoré si tu es sur une autre branche, par ex. une branche de feature)
 2. `nh os switch` (ou `nh os boot` avec `--boot`)
-3. Mise à jour des Flatpaks, utilisateur et système (jamais bloquant)
+3. Mise à jour des Flatpaks, utilisateur et système, puis suppression des runtimes inutilisés (jamais bloquant)
 
 Le `flake.lock` récupéré via git est celui que la CI a déjà buildé et validé : un simple `update` ne met donc **pas** à jour les entrées de la flake.
 
@@ -30,6 +30,9 @@ Le `flake.lock` récupéré via git est celui que la CI a déjà buildé et vali
 | `-i`, `--inputs [nom…]` | Met aussi à jour les entrées de la flake en local (toutes, ou seulement celles nommées). Si le build échoue, `flake.lock` est restauré |
 | `-b`, `--boot` | Applique au prochain démarrage au lieu de switcher maintenant |
 | `-c`, `--check` | Indique seulement si de nouveaux commits sont disponibles |
+| `-n`, `--dry` | Simulation (`nh --dry`) : rien n'est pull, bumpé, activé ni mis à jour |
+| `--changes` | Montre ce que le système du prochain démarrage change par rapport à celui qui tourne (pratique après une auto-update) |
+| `--log` | Affiche le log du dernier lancement (gardé dans `~/.local/state/roudix/update.log`) |
 | `--no-inputs` | Saute le bump des entrées (utile avec `roudix.update.bumpInputs = true`) |
 | `--no-pull` / `--no-flatpak` | Saute le pull / la mise à jour Flatpak |
 

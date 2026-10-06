@@ -35,3 +35,5 @@ update
 ```
 
 It does the same pull (same branch, same fast-forward-only rule, same lock so it never overlaps a running auto-update), then rebuilds and updates your Flatpaks. See [`update`](aliases.md#update) for its options.
+
+The build may take up to 2 hours before systemd gives up. If the run is killed or stops unexpectedly (timeout, crash), a notification is sent; a plain error already notifies on its own. After an auto-update, `update --changes` shows what will be applied at the next boot.

@@ -25,6 +25,12 @@ Options:
       --no-pull           Do not git pull the config.
       --no-flatpak        Do not update Flatpaks.
   -c, --check             Only report whether new commits are available.
+  -n, --dry               Ask nh for a dry run: nothing is pulled, bumped,
+                          activated or updated (Flatpaks included).
+      --changes           Show what the next-boot system changes compared to
+                          the running one (useful after an auto-update).
+      --log               Show the log of the last run (output of every run is
+                          kept in ~/.local/state/roudix/update.log).
   -h, --help              Show this help.
 
 Examples:
@@ -57,11 +63,20 @@ notify() {
 
 die() {
   printf '%serror:%s %s\n' "$RED" "$RESET" "$*" >&2
+  if [ -n "${ROUDIX_UPDATE_LOGGING:-}" ]; then
+    printf '    log of this run: update --log\n' >&2
+  fi
   notify dialog-error "Roudix — Échec de la mise à jour" "$*"
   exit 1
 }
 
 # ── Arguments ───────────────────────────────────────────────────────────────
+LOG_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/roudix"
+LOG_FILE="$LOG_DIR/update.log"
+ORIG_ARGS=("$@") # the parsing loop below shifts them away; the log wrapper re-execs with them
+DRY=0
+SHOW_CHANGES=0
+SHOW_LOG=0
 BUMP_INPUTS=$BUMP_INPUTS_DEFAULT
 INPUT_NAMES=()
 ACTION=switch
@@ -84,6 +99,9 @@ while [ $# -gt 0 ]; do
     --no-pull) DO_PULL=0; shift ;;
     --no-flatpak) DO_FLATPAK=0; shift ;;
     -c | --check) CHECK_ONLY=1; shift ;;
+    -n | --dry) DRY=1; shift ;;
+    --changes) SHOW_CHANGES=1; shift ;;
+    --log) SHOW_LOG=1; shift ;;
     -h | --help) usage; exit 0 ;;
     *)
       printf 'update: unknown option: %s\n\n' "$1" >&2
@@ -96,6 +114,32 @@ done
 # ── Preflight ───────────────────────────────────────────────────────────────
 [ "$(id -u)" -ne 0 ] || die "run this as your normal user, not root (sudo is used where needed)."
 [ -d "$CONFIG_PATH" ] || die "config directory $CONFIG_PATH is missing."
+
+if [ "$SHOW_LOG" -eq 1 ]; then
+  if [ ! -f "$LOG_FILE" ]; then
+    printf 'update: no log yet (%s)\n' "$LOG_FILE" >&2
+    exit 1
+  fi
+  # script(1) records raw terminal output: strip colours and carriage returns.
+  sed -E 's/\x1b\[[0-9;?]*[ -\/]*[@-~]//g; s/\r//g' "$LOG_FILE"
+  exit 0
+fi
+
+if [ "$SHOW_CHANGES" -eq 1 ]; then
+  if [ "$(readlink -f /run/current-system)" = "$(readlink -f /nix/var/nix/profiles/system)" ]; then
+    info "the next-boot system is the one already running — nothing pending."
+  else
+    step "Next boot vs running system"
+    nix store diff-closures /run/current-system /nix/var/nix/profiles/system
+  fi
+  exit 0
+fi
+
+# A dry run changes nothing: no merge, no lock bump, no Flatpak update.
+if [ "$DRY" -eq 1 ]; then
+  BUMP_INPUTS=0
+  DO_FLATPAK=0
+fi
 
 IS_GIT=0
 if git -C "$CONFIG_PATH" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -155,6 +199,14 @@ if [ "$CHECK_ONLY" -eq 1 ]; then
   exit 0
 fi
 
+# Keep this run's output (last run only) without losing the terminal: re-exec
+# under script(1), which gives the child a pty so nh keeps its colours and
+# progress bars. Read it back with `update --log`.
+if [ -z "${ROUDIX_UPDATE_LOGGING:-}" ] && command -v script >/dev/null 2>&1 && mkdir -p "$LOG_DIR" 2>/dev/null; then
+  export ROUDIX_UPDATE_LOGGING=1
+  exec script -qefc "$(printf '%q ' "$0" "${ORIG_ARGS[@]}")" "$LOG_FILE"
+fi
+
 if [ "$BUMP_INPUTS" -eq 1 ] && [ -e "$CONFIG_PATH/flake.lock" ] && [ ! -w "$CONFIG_PATH/flake.lock" ]; then
   die "flake.lock is not writable (probably root-owned by the old 'sudo nix flake update'). Fix: sudo chown \"$USER\" \"$CONFIG_PATH/flake.lock\""
 fi
@@ -173,7 +225,9 @@ if [ "$avail_gb" -lt "$MIN_FREE_GB" ]; then
 fi
 
 # Ask for the sudo password once, up front (system Flatpaks, activation).
-sudo -v || die "sudo authentication failed."
+if [ "$DRY" -eq 0 ]; then
+  sudo -v || die "sudo authentication failed."
+fi
 
 # ── Restore flake.lock if a bumped lock does not build ──────────────────────
 LOCK_BACKUP=""
@@ -197,7 +251,7 @@ trap 'exit 143' TERM
 if [ "$DO_PULL" -eq 1 ]; then
   step "Pulling the config (origin/$BRANCH)"
   inspect_remote
-  if [ "$PULL_STATE" = behind ]; then
+  if [ "$PULL_STATE" = behind ] && [ "$DRY" -eq 0 ]; then
     old_rev=$(git -C "$CONFIG_PATH" rev-parse HEAD)
     report_pull_state
     git -C "$CONFIG_PATH" merge --quiet --ff-only "origin/$BRANCH" ||
@@ -205,6 +259,9 @@ if [ "$DO_PULL" -eq 1 ]; then
     git -C "$CONFIG_PATH" log --oneline --no-decorate -n 15 "$old_rev..HEAD" | sed 's/^/      /'
   else
     report_pull_state
+    if [ "$PULL_STATE" = behind ]; then
+      info "(dry run: not pulling — building what is on disk)"
+    fi
   fi
 fi
 
@@ -226,19 +283,35 @@ fi
 # ── 3. Rebuild ──────────────────────────────────────────────────────────────
 # No '#<attr>': nh picks the nixosConfigurations entry matching this machine's
 # hostname (see the note in roudix-autoupdate).
-step "Building the system (nh os $ACTION)"
-nh os "$ACTION" --accept-flake-config "path:$CONFIG_PATH" ||
+DRY_FLAG=()
+if [ "$DRY" -eq 1 ]; then
+  DRY_FLAG=(--dry)
+  step "Dry run (nh os $ACTION --dry)"
+else
+  step "Building the system (nh os $ACTION)"
+fi
+nh os "$ACTION" "${DRY_FLAG[@]}" --accept-flake-config "path:$CONFIG_PATH" ||
   die "build failed — the running system is untouched."
 BUILD_OK=1
+
+if [ "$DRY" -eq 1 ]; then
+  echo
+  step "Dry run complete — nothing was pulled, bumped, activated or updated"
+  exit 0
+fi
 
 # ── 4. Flatpaks (never fatal) ───────────────────────────────────────────────
 if [ "$DO_FLATPAK" -eq 1 ]; then
   if command -v flatpak >/dev/null 2>&1; then
-    step "Updating Flatpaks"
+    step "Updating Flatpaks (and removing unused runtimes)"
     flatpak update --user --noninteractive -y ||
       warn "user Flatpak update failed — continuing."
     sudo "$(command -v flatpak)" update --system --noninteractive -y ||
       warn "system Flatpak update failed — continuing."
+    flatpak uninstall --user --unused --noninteractive -y ||
+      warn "could not remove unused user Flatpak runtimes — continuing."
+    sudo "$(command -v flatpak)" uninstall --system --unused --noninteractive -y ||
+      warn "could not remove unused system Flatpak runtimes — continuing."
   else
     info "flatpak is not installed — skipping."
   fi

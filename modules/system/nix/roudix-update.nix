@@ -9,7 +9,7 @@
 let
   cfg = config.roudix.autoupdate;
 
-  roudix-update = pkgs.writeShellApplication {
+  roudix-update-script = pkgs.writeShellApplication {
     name = "roudix-update";
     runtimeInputs = [
       pkgs.coreutils
@@ -17,7 +17,7 @@ let
       pkgs.gnused
       pkgs.libnotify
       pkgs.nh
-      pkgs.util-linux # flock
+      pkgs.util-linux # flock, script
       config.nix.package
     ];
     text = ''
@@ -28,6 +28,17 @@ let
       BUMP_INPUTS_DEFAULT=${if config.roudix.update.bumpInputs then "1" else "0"}
 
       ${builtins.readFile ./roudix-update.sh}
+    '';
+  };
+  # Script + shell completions (fish wraps aliases, so `update` inherits
+  # roudix-update's completion; the bash file registers both names).
+  roudix-update = pkgs.symlinkJoin {
+    name = "roudix-update";
+    paths = [ roudix-update-script ];
+    nativeBuildInputs = [ pkgs.installShellFiles ];
+    postBuild = ''
+      installShellCompletion --bash --name roudix-update ${./completions/roudix-update.bash}
+      installShellCompletion --fish --name roudix-update.fish ${./completions/roudix-update.fish}
     '';
   };
 in

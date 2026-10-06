@@ -21,7 +21,7 @@ Manual counterpart of [auto-update](autoupdate.md): same repository, same tracke
 
 1. `git pull --ff-only` of the tracked branch (skipped if you are on another branch, e.g. a feature branch)
 2. `nh os switch` (or `nh os boot` with `--boot`)
-3. Flatpak update, user and system (never fatal)
+3. Flatpak update, user and system, then removal of unused runtimes (never fatal)
 
 The `flake.lock` you get from git is the one CI already built and validated, so a plain `update` does **not** bump flake inputs.
 
@@ -30,6 +30,9 @@ The `flake.lock` you get from git is the one CI already built and validated, so 
 | `-i`, `--inputs [name…]` | Also bump flake inputs locally (all of them, or only the named ones). If the build fails, `flake.lock` is restored |
 | `-b`, `--boot` | Apply on next boot instead of switching now |
 | `-c`, `--check` | Only report whether new commits are available |
+| `-n`, `--dry` | Dry run (`nh --dry`): nothing is pulled, bumped, activated or updated |
+| `--changes` | Show what the next-boot system changes vs the running one (handy after an auto-update) |
+| `--log` | Show the log of the last run (kept in `~/.local/state/roudix/update.log`) |
 | `--no-inputs` | Skip the input bump (useful with `roudix.update.bumpInputs = true`) |
 | `--no-pull` / `--no-flatpak` | Skip the pull / the Flatpak update |
 
