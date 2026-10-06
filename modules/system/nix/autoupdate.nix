@@ -101,14 +101,16 @@ in {
 
         # ── Avoid overlapping runs ────────────────────────────────────────
         # (manual `update` command + timer, or two timers after a suspend
-        # catch-up, touching the same clone at the same time)
-        exec 9>/run/lock/roudix-autoupdate.lock
+        # catch-up, touching the same clone at the same time).
+        # The lock is held on the config directory itself, which is also what
+        # `roudix-update` locks: it runs as the normal user and cannot create
+        # a lock file in /run/lock, so a file there could never be shared.
+        cd ${cfg.configPath} || _fail "config directory missing"
+        exec 9<.
         if ! ${pkgs.util-linux}/bin/flock --nonblock 9; then
           echo "[roudix-autoupdate] Another run is already in progress, skipping."
           exit 0
         fi
-
-        cd ${cfg.configPath} || _fail "config directory missing"
 
         # ── Disk space check ──────────────────────────────────────────────
         AVAILABLE_GB=$(( $(${pkgs.coreutils}/bin/df /nix/store | ${pkgs.gawk}/bin/awk 'NR==2 {print $4}') / 1024 / 1024 ))
@@ -162,7 +164,7 @@ in {
         # No '#<attr>' here: nh (like nixos-rebuild) picks the
         # nixosConfigurations attribute matching this machine's own
         # hostname automatically — same convention modules/home/shell's
-        # update/roudix-switch fish functions already rely on. This is
+        # roudix-update/roudix-switch already rely on. This is
         # why every host's networking.hostName MUST equal its
         # hosts/<name>/ directory name.
         if ! ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}; then

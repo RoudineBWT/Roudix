@@ -33,3 +33,5 @@ To manually trigger an update at any time:
 ```fish
 update
 ```
+
+It does the same pull (same branch, same fast-forward-only rule, same lock so it never overlaps a running auto-update), then rebuilds and updates your Flatpaks. See [`update`](aliases.md#update) for its options.

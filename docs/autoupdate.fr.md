@@ -33,3 +33,5 @@ Pour déclencher une mise à jour manuellement à tout moment :
 ```fish
 update
 ```
+
+Il fait le même pull (même branche, même règle fast-forward uniquement, même verrou : il ne chevauche jamais une auto-update en cours), puis rebuild et met à jour tes Flatpaks. Voir [`update`](aliases.fr.md#update) pour ses options.
