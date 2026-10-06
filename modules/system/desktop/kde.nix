@@ -2,7 +2,7 @@
 let
   isKde = config.roudix.desktop.type == "kde";
 
-  wallpaperDark = "${roudixBranding}/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
+  wallpaperDark = "${roudixBranding}/share/wallpapers/RoudixKitsune/contents/images/2560x1440.png";
 
   roudixMenu = {
       text = ''
@@ -41,15 +41,15 @@ lib.mkIf isKde {
   # and references it via /etc/plasmalogin.conf with a file:// prefix
   environment.etc."plasmalogin.conf".text = ''
     [Greeter][Wallpaper][org.kde.image][General]
-    Image=file:///var/lib/plasmalogin/wallpapers/RoudixDark
+    Image=file:///var/lib/plasmalogin/wallpapers/RoudixKitsune
   '';
 
   system.activationScripts.plasmaLoginWallpaper = {
     deps = [ "users" "groups" ];
     text = ''
-      install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images
-      cp ${wallpaperDark} /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images/3840x2160.png
-      cp ${roudixBranding}/share/wallpapers/RoudixDark/metadata.json /var/lib/plasmalogin/wallpapers/RoudixDark/metadata.json
+      install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/RoudixKitsune/contents/images
+      cp ${wallpaperDark} /var/lib/plasmalogin/wallpapers/RoudixKitsune/contents/images/2560x1440.png
+      cp ${roudixBranding}/share/wallpapers/RoudixKitsune/metadata.json /var/lib/plasmalogin/wallpapers/RoudixKitsune/metadata.json
       chown -R plasmalogin:plasmalogin /var/lib/plasmalogin/wallpapers/
     '';
   };
