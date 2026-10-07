@@ -204,7 +204,9 @@ fi
 # progress bars. Read it back with `update --log`.
 if [ -z "${ROUDIX_UPDATE_LOGGING:-}" ] && command -v script >/dev/null 2>&1 && mkdir -p "$LOG_DIR" 2>/dev/null; then
   export ROUDIX_UPDATE_LOGGING=1
-  exec script -qefc "$(printf '%q ' "$0" "${ORIG_ARGS[@]}")" "$LOG_FILE"
+  # script(1) runs the command through $SHELL: force bash, otherwise the user's
+  # fish loads its conf.d (fastfetch...) before every run.
+  exec env SHELL="$BASH" script -qefc "$(printf '%q ' "$0" "${ORIG_ARGS[@]}")" "$LOG_FILE"
 fi
 
 if [ "$BUMP_INPUTS" -eq 1 ] && [ -e "$CONFIG_PATH/flake.lock" ] && [ ! -w "$CONFIG_PATH/flake.lock" ]; then
