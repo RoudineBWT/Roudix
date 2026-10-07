@@ -16,7 +16,7 @@
   # ── Hardware — ThinkPad L380 (Intel i3/i5-8250U, UHD 620) ────────────────
   hardware.myGpu    = "intel";                  # "amd", "nvidia" or "intel"
   hardware.myCpu    = "intel";                  # "intel" or "amd"
-  hardware.myKernel = "cachyos-lts-lto-v3";     # see README for all variants
+  hardware.myKernel = "nixpkgs-lts";     # see README for all variants
 
   # ── Laptop (TLP + thinkpad_acpi) — fixed for this machine ────────────────
   roudix.laptop.enable   = true; # roudix-installer: fixed
@@ -27,7 +27,7 @@
   # ── Desktop & apps ───────────────────────────────────────────────────────
   roudix.desktop.type = "cinnamon";             # classic X11 desktop for a non-technical user / older PC ("gnome" is Wayland-only) # roudix-installer: fixed
   roudix.browsers     = ["helium"];             # "brave", "helium", "firefox", "vivaldi"...
-  roudix.terminal     = "ghostty";
+  roudix.terminal     = "ptyxis";
   roudix.flatpak.enable = true;                 # easy manual app installs, outside of what you maintain
 
   # ── Boot ─────────────────────────────────────────────────────────────────
