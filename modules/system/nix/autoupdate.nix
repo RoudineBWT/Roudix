@@ -1,6 +1,7 @@
 # modules/autoupdate.nix
-# Automatically pulls the Roudix config from GitHub and rebuilds
-# on next reboot if changes are detected. local.nix is never touched.
+# Automatically pulls the Roudix config from GitHub and builds the new
+# generation (nixos-rebuild boot), applied on next reboot, if changes are
+# detected. local.nix is never touched.
 { config, lib, pkgs, username, ... }:
 
 let
@@ -34,7 +35,7 @@ let
   '';
 in {
   options.roudix.autoupdate = {
-    enable = lib.mkEnableOption "Automatic git pull + nh os boot on config changes";
+    enable = lib.mkEnableOption "Automatic git pull + nixos-rebuild boot on config changes";
 
     configPath = lib.mkOption {
       type = lib.types.str;
@@ -77,9 +78,23 @@ in {
       wants       = [ "network-online.target" ];
       # Only triggered by the timer, never started at activation time
       wantedBy    = lib.mkForce [];
-      # systemd services get a minimal PATH: nh shells out to `nix` (and nix
-      # to git for some fetchers), so both must be provided explicitly.
-      path        = [ config.nix.package pkgs.git pkgs.nh ];
+      # systemd services get a minimal PATH: nixos-rebuild shells out to `nix`
+      # (and nix to git/tar/ssh for some fetchers), so provide them explicitly.
+      # Same set as the stock system.autoUpgrade service.
+      path        = [
+        config.nix.package.out
+        config.system.build.nixos-rebuild
+        pkgs.coreutils
+        pkgs.gnutar
+        pkgs.xz.bin
+        pkgs.git
+        config.programs.ssh.package
+      ];
+      environment = {
+        HOME = "/root";
+        # Never prompt: there is no terminal in a service.
+        NIX_CONFIG = "accept-flake-config = true";
+      };
       serviceConfig = {
         # /var/lib/roudix-autoupdate: remembers a revision whose build failed
         StateDirectory   = "roudix-autoupdate";
@@ -188,15 +203,25 @@ in {
         fi
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
-        # No '#<attr>' here: nh (like nixos-rebuild) picks the
-        # nixosConfigurations attribute matching this machine's own
-        # hostname automatically — same convention modules/home/shell's
-        # roudix-update/roudix-switch already rely on. This is
-        # why every host's networking.hostName MUST equal its
-        # hosts/<name>/ directory name.
-        if ! ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}; then
+        # Why nixos-rebuild and not `nh os boot` here: this service runs as
+        # root with no terminal and no sudo in its PATH. nh is built for an
+        # interactive user (it elevates with sudo itself and refuses/chokes as
+        # root), and it died in under a second, before evaluating anything.
+        # `nixos-rebuild boot` is the exact equivalent (builds, adds the
+        # generation to the bootloader, does NOT switch) and is what
+        # system.autoUpgrade uses. The attribute is this machine's hostname,
+        # which must equal its hosts/<name>/ directory name.
+        #  - path: (not git+file:) so untracked files such as local.nix and
+        #    username.nix are part of the flake, like for `update`;
+        #  - --no-write-lock-file: root must never leave a root-owned
+        #    flake.lock in the user's checkout (it would break the next
+        #    `git merge --ff-only`). CI already ships a complete lock.
+        if ! nixos-rebuild boot \
+              --flake "path:${cfg.configPath}#${config.networking.hostName}" \
+              --accept-flake-config \
+              --no-write-lock-file; then
           echo "$REMOTE" > "$PENDING"
-          _fail "build failed for revision $REMOTE — repo is on the new commit but the next boot was NOT scheduled; the current generation is untouched"
+          _fail "build failed for revision $REMOTE — repo is on the new commit but the next boot was NOT scheduled; the current generation is untouched (details: journalctl -u roudix-autoupdate)"
         fi
 
         rm -f "$PENDING"
