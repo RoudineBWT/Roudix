@@ -13,6 +13,7 @@
       "https://nyx-cache.chaotic.cx/"
       "https://niri-epireyn.cachix.org"
       "https://hyprland.cachix.org"
+      "https://umbriel.cachix.org"
     ];
     extra-trusted-public-keys = [
       "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
@@ -24,6 +25,7 @@
       "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
       "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "umbriel.cachix.org-1:JfNq/2yg2S6D6z4Z2dVSZrZlDPQTKtexB6GAVLD98nw="
     ];
   };
 
@@ -147,11 +149,6 @@
 
       umbriel = {
         url = "github:noctalia-dev/umbriel/cachix";
-        #inputs.nixpkgs.follows = "nixpkgs";
-      };
-      xdg-desktop-portal-umbriel = {
-        url = "github:noctalia-dev/xdg-desktop-portal-umbriel";
-        inputs.nixpkgs.follows = "nixpkgs";
       };
 
     # Sonora — native (Rust/GPUI) music client: Spotify, YouTube Music, Apple
@@ -187,7 +184,6 @@
     nix-gaming-edge,
     mango,
     umbriel,
-    xdg-desktop-portal-umbriel,
     ... }:
   let
     roudixSwitcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-switcher {};
