@@ -151,32 +151,28 @@ let
   # instance ids and the JSON layout, and did not work. Patching the schema
   # defaults does not: every new instance gets them, whatever its id (this is
   # how distros ship their own pinned apps). It rebuilds Cinnamon locally.
-  cinnamonAttr = p:
-    lib.findFirst
-      (n: (builtins.tryEval (p ? ${n} && lib.isDerivation p.${n})).value)
-      null [ "cinnamon" "cinnamon-common" ];
-
-  cinnamonDefaultsOverlay = final: prev:
-    let attr = cinnamonAttr prev; in
-    lib.optionalAttrs (attr != null) {
-      ${attr} = prev.${attr}.overrideAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.jq ];
-        postInstall = (old.postInstall or "") + ''
-          patch_default() {
-            f="$out/share/cinnamon/applets/$1/settings-schema.json"
-            if [ -f "$f" ] && jq -e --arg k "$2" 'has($k)' "$f" > /dev/null; then
-              jq --arg k "$2" --argjson v "$3" '.[$k].default = $v' "$f" > "$f.tmp"
-              mv "$f.tmp" "$f"
-            else
-              echo "roudix: $1 has no '$2' key, default left unchanged" >&2
-            fi
-          }
-          patch_default grouped-window-list@cinnamon.org pinned-apps '${builtins.toJSON config.roudix.desktop.cinnamon.pinnedApps}'
-          patch_default menu@cinnamon.org menu-icon-custom true
-          patch_default menu@cinnamon.org menu-icon '"roudix-logo"'
-        '';
-      });
-    };
+  # The attribute name is fixed on purpose: computing it from `prev` (e.g.
+  # checking that prev.cinnamon is a derivation) forces the package while
+  # pkgs itself is being built -> "infinite recursion encountered".
+  cinnamonDefaultsOverlay = final: prev: {
+    cinnamon = prev.cinnamon.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.jq ];
+      postInstall = (old.postInstall or "") + ''
+        patch_default() {
+          f="$out/share/cinnamon/applets/$1/settings-schema.json"
+          if [ -f "$f" ] && jq -e --arg k "$2" 'has($k)' "$f" > /dev/null; then
+            jq --arg k "$2" --argjson v "$3" '.[$k].default = $v' "$f" > "$f.tmp"
+            mv "$f.tmp" "$f"
+          else
+            echo "roudix: $1 has no '$2' key, default left unchanged" >&2
+          fi
+        }
+        patch_default grouped-window-list@cinnamon.org pinned-apps '${builtins.toJSON config.roudix.desktop.cinnamon.pinnedApps}'
+        patch_default menu@cinnamon.org menu-icon-custom true
+        patch_default menu@cinnamon.org menu-icon '"roudix-logo"'
+      '';
+    });
+  };
 
   # Same "Roudix" application-menu category as kde.nix: Roudix apps carry
   # Categories=...;X-Roudix; and this merged menu groups them in one folder.
@@ -221,8 +217,6 @@ in
     # Wayland-only. The nixpkgs module only configures the slick greeter, it
     # does not turn LightDM on.
     nixpkgs.overlays = [ cinnamonDefaultsOverlay ];
-    warnings = lib.optional (cinnamonAttr pkgs == null)
-      "roudix: Cinnamon package not found in nixpkgs: panel pins and the Roudix menu icon are not applied.";
 
     services.xserver.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
