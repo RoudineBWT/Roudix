@@ -10,8 +10,30 @@
   # it directly, to avoid pulling in niri.nix/hyprland.nix/kde.nix/mangowc.nix,
   # which reference flake inputs the ISO's flake doesn't have.
   options.roudix.desktop.type = lib.mkOption {
-    type = lib.types.enum [ "niri" "gnome" "kde" "hyprland" "mangowc" ];
+    type = lib.types.enum [ "niri" "gnome" "kde" "cinnamon" "hyprland" "mangowc" "umbriel" ];
     default = "gnome";
+  };
+
+  # Minimal stand-ins for options gnome.nix reads (favorite apps in the
+  # dash) but that are declared in modules/system/apps/*, which the ISO
+  # doesn't import. Without them the ISO fails to evaluate with
+  # "attribute 'browsers' missing". Defaults only: keep the types aligned
+  # with the real declarations (apps/browser/browser.nix, apps/utilities/
+  # terminal.nix); the live session doesn't use the values for anything else.
+  options.roudix.browsers = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [ ];
+  };
+  options.roudix.zen = {
+    enable = lib.mkOption { type = lib.types.bool; default = false; };
+    variant = lib.mkOption {
+      type = lib.types.enum [ "beta" "twilight" ];
+      default = "twilight";
+    };
+  };
+  options.roudix.terminal = lib.mkOption {
+    type = lib.types.str;
+    default = "ghostty";
   };
 
   # A module with an "options" at the root level must put everything else
