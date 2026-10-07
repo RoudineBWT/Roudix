@@ -78,25 +78,33 @@ in
     default = true;
   };
 
+  # Each launcher/tool defaults to roudix.gaming.enable: on with the full
+  # gaming setup (as before), off without it. They can still be switched on
+  # one by one with roudix.gaming.enable = false (e.g. Heroic alone on a
+  # non-gaming laptop: no Steam/Wine/Gamescope, just that launcher).
   options.roudix.gaming.apps = {
     lutris.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = config.roudix.gaming.enable;
+      defaultText = lib.literalExpression "config.roudix.gaming.enable";
       description = "Installer Lutris.";
     };
     heroic.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = config.roudix.gaming.enable;
+      defaultText = lib.literalExpression "config.roudix.gaming.enable";
       description = "Installer Heroic Games Launcher (Epic/GOG/Amazon).";
     };
     faugus.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = config.roudix.gaming.enable;
+      defaultText = lib.literalExpression "config.roudix.gaming.enable";
       description = "Installer Faugus Launcher.";
     };
     prismlauncher.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = config.roudix.gaming.enable;
+      defaultText = lib.literalExpression "config.roudix.gaming.enable";
       description = "Installer Prism Launcher (Minecraft).";
     };
     modrinth.enable = lib.mkOption {
@@ -106,12 +114,14 @@ in
     };
     vintagestory.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = config.roudix.gaming.enable;
+      defaultText = lib.literalExpression "config.roudix.gaming.enable";
       description = "Installer Vintage Story.";
     };
     mangohud.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = config.roudix.gaming.enable;
+      defaultText = lib.literalExpression "config.roudix.gaming.enable";
       description = "Installer MangoHud (overlay de perfs en jeu).";
     };
   };

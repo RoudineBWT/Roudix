@@ -47,7 +47,6 @@ in
   config = lib.mkIf isUmbriel {
     # ── Compositor ────────────────────────────────────────────────────
     # inputs.umbriel = { url = "github:noctalia-dev/umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
-    # inputs.umbriel-portal = { url = "github:noctalia-dev/xdg-desktop-portal-umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
     # Default: umbriel from nixpkgs. roudix.desktop.latest.umbriel = true:
     # the flake overlay + the module's own default package (flake, latest).
     nixpkgs.overlays = lib.optional (dp.wantsLatest "umbriel") inputs.umbriel.overlays.default;
@@ -55,10 +54,12 @@ in
     programs.umbriel.enable = true;
     programs.umbriel.package = lib.mkIf (dp.useNixpkgs "umbriel") dp.umbriel;
     #
-    # Umbriel's README documents a dedicated portal option: it configures
-    # xdg.portal AND installs the ScreenCast/Screenshot config on its own
-    # (instead of doing it by hand via xdg.portal.config.umbriel below).
-    programs.umbriel.portalPackage = dp.umbrielPortal;
+    # The portal (xdg-desktop-portal-umbriel) now ships with Umbriel's own
+    # NixOS module: programs.umbriel.portalPackage defaults to the portal
+    # flake pinned by the umbriel input, and the module configures xdg.portal
+    # and the ScreenCast/Screenshot config by itself. Nothing to set here (and
+    # no separate flake input) — it always matches the umbriel revision in
+    # flake.lock. Override programs.umbriel.portalPackage only to pin another.
 
     # ── DMS greeter (when shell != noctalia) ───────────────────────────────
     programs.dms-greeter = lib.mkIf (!isNoctalia) {
@@ -86,12 +87,12 @@ in
     };
 
     # ── Portals ──────────────────────────────────────────────────────────
-    # The umbriel backend + its config (ScreenCast/Screenshot) are now
-    # wired by programs.umbriel.portalPackage above. This only keeps the
-    # fallback portals for GTK/GNOME file pickers.
-    # ⚠ Not thoroughly tested — verify in a real session that portalPackage
-    # is sufficient and doesn't conflict with gtk/gnome for the default
-    # portal. Docs: https://github.com/noctalia-dev/xdg-desktop-portal-umbriel
+    # The umbriel backend + its config (ScreenCast/Screenshot) are wired by
+    # Umbriel's own module (see above). This only keeps the fallback portals
+    # for GTK/GNOME file pickers.
+    # ⚠ Not thoroughly tested — verify in a real session that the module's
+    # portal is sufficient and doesn't conflict with gtk/gnome for the
+    # default portal. Docs: https://github.com/noctalia-dev/xdg-desktop-portal-umbriel
     xdg.portal = {
       enable = true;
       extraPortals = with pkgs;
