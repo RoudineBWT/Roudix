@@ -14,7 +14,7 @@ let
 
     # Find the user's D-Bus session address
     USER_ID=$(id -u ${username})
-    DBUS_ADDR=$(cat /proc/$(pgrep -u ${username} -x "dbus-daemon" | head -1)/environ 2>/dev/null \
+    DBUS_ADDR=$(cat /proc/$(${pkgs.procps}/bin/pgrep -u ${username} -x "dbus-daemon" | head -1)/environ 2>/dev/null \
       | tr '\0' '\n' | grep DBUS_SESSION_BUS_ADDRESS | cut -d= -f2-)
 
     if [ -z "$DBUS_ADDR" ]; then
@@ -22,9 +22,10 @@ let
       DBUS_ADDR="unix:path=/run/user/$USER_ID/bus"
     fi
 
-    DBUS_SESSION_BUS_ADDRESS="$DBUS_ADDR" \
-    XDG_RUNTIME_DIR="/run/user/$USER_ID" \
-    sudo -u ${username} \
+    ${pkgs.util-linux}/bin/runuser -u ${username} -- \
+      ${pkgs.coreutils}/bin/env \
+        DBUS_SESSION_BUS_ADDRESS="$DBUS_ADDR" \
+        XDG_RUNTIME_DIR="/run/user/$USER_ID" \
       ${pkgs.libnotify}/bin/notify-send \
         --app-name="Roudix" \
         --icon="$ICON" \
@@ -88,6 +89,11 @@ in {
       script = ''
         set -uo pipefail
 
+        # Run git as the repo owner: the service runs as root, and git refuses
+        # ("dubious ownership") to touch a repo owned by someone else. Running
+        # as the owner also avoids leaving root-owned files inside .git.
+        GIT="${pkgs.util-linux}/bin/runuser -u ${username} -- ${pkgs.coreutils}/bin/env HOME=/home/${username} ${pkgs.git}/bin/git"
+
         # ── Failure notification ─────────────────────────────────────────
         # set -e is deliberately NOT used: on any error we want to notify
         # before exiting, not die silently mid-script with only journalctl
@@ -122,10 +128,10 @@ in {
         fi
 
         echo "[roudix-autoupdate] Fetching origin..."
-        ${pkgs.git}/bin/git fetch origin ${cfg.branch} || _fail "git fetch failed (network?)"
+        $GIT fetch origin ${cfg.branch} || _fail "git fetch failed (network?)"
 
-        LOCAL=$(${pkgs.git}/bin/git rev-parse HEAD)
-        REMOTE=$(${pkgs.git}/bin/git rev-parse origin/${cfg.branch})
+        LOCAL=$($GIT rev-parse HEAD)
+        REMOTE=$($GIT rev-parse origin/${cfg.branch})
 
         if [ "$LOCAL" = "$REMOTE" ]; then
           echo "[roudix-autoupdate] Already up to date ($LOCAL)."
@@ -138,11 +144,11 @@ in {
         # pull; if it has diverged, refuse instead of overwriting. Nobody
         # force-pushes these branches (the sync workflows only merge), so a
         # plain fast-forward is always possible on a normal user machine.
-        if ${pkgs.git}/bin/git merge-base --is-ancestor "$REMOTE" "$LOCAL"; then
+        if $GIT merge-base --is-ancestor "$REMOTE" "$LOCAL"; then
           echo "[roudix-autoupdate] Local is ahead of origin/${cfg.branch} (unpushed commits) — nothing to pull."
           exit 0
         fi
-        if ! ${pkgs.git}/bin/git merge-base --is-ancestor "$LOCAL" "$REMOTE"; then
+        if ! $GIT merge-base --is-ancestor "$LOCAL" "$REMOTE"; then
           _fail "local history has diverged from origin/${cfg.branch} — refusing to overwrite local commits, resolve manually"
         fi
 
@@ -160,7 +166,7 @@ in {
         # local commit, and it aborts if a tracked local modification would be
         # overwritten. Untracked/ignored files (local.nix, username.nix,
         # hardware-configuration.nix...) are left exactly as they are.
-        sudo -u ${username} ${pkgs.git}/bin/git merge --ff-only "origin/${cfg.branch}" \
+        $GIT merge --ff-only "origin/${cfg.branch}" \
           || _fail "git merge --ff-only failed (local modifications in the way?)"
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
