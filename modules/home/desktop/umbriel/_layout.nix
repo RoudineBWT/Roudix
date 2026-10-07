@@ -19,6 +19,14 @@
     # (both extent axes share this one list — see _binds.nix).
     extent_presets = [ 0.33333 0.5 0.66667 ];
 
+    # A window arriving on a workspace (opened, moved, dropped, back from a
+    # scratchpad) makes that workspace's fullscreen window leave fullscreen
+    # (umbriel #249). Only "tiled" (dwindle/master tiles) here: floating and
+    # pinned arrivals (Steam toasts, dialogs, pinned scratchpad apps) must NOT
+    # kick a game out of fullscreen. Scrolling never exits fullscreen anyway.
+    # Other values: "floating", "pinned", "all", or [ ] to disable.
+    new_exits_fullscreen = [ "tiled" ];
+
     master = {
       position = "left";        # main column on the left, stack on the right
       default_width_fraction = 0.55;

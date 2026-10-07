@@ -17,6 +17,10 @@
     touchpad = {
       tap = true;
       natural_scroll = true;
+      # Buttons for 1/2/3-finger taps (umbriel #301): "left_right_middle"
+      # (libinput default) or "left_middle_right". Set explicitly so the
+      # behavior doesn't change if the compositor default ever does.
+      tap_button_map = "left_right_middle";
     };
 
     mouse.accel_profile = "flat";
