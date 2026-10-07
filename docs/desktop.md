@@ -275,7 +275,7 @@ programs.plasma.panels = lib.mkForce [
 
 ## Cinnamon defaults
 
-Cinnamon ships the Roudix Kitsune wallpaper by default, on the desktop and on the LightDM login screen, and pins the default browser (first of `roudix.browsers`), Roudix Store and Settings in the panel. These are defaults: the desktop wallpaper and the panel pins are applied once and never re-applied by a rebuild.
+Cinnamon ships the Roudix Kitsune wallpaper by default, on the desktop and on the LightDM login screen, uses the Roudix logo as the menu icon, and pins the default browser (first of `roudix.browsers`), Roudix Store and Settings in the panel. GTK4 / libadwaita apps follow the dark theme. These are defaults: they only apply to what the user has not changed. Panel pins and the menu icon are patched into Cinnamon itself, so the first build compiles Cinnamon locally.
 
 The login screen (slick-greeter) has no settings app. Change its wallpaper with:
 

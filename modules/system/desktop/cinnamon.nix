@@ -112,28 +112,9 @@ let
   cinnamonDefaults = {
     "org/cinnamon" = {
       # Favorites of the Cinnamon menu (the browser(s) chosen in Roudix, Nemo,
-      # Roudix Store, Settings). The panel's window-list pinning is a per-applet
-      # JSON file under ~/.config/cinnamon/spices, not a dconf key: seeded once
-      # by modules/home/desktop/cinnamon.
+      # Roudix Store, Settings). The panel's window-list pinning and the menu
+      # icon are NOT dconf keys but per-applet defaults, see cinnamonDefaultsOverlay.
       favorite-apps = favoriteApps;
-      # Panel layout = upstream Cinnamon's, written out so that the instance
-      # id of grouped-window-list (the 2 in "...window-list@cinnamon.org:2")
-      # is known: modules/home/desktop/cinnamon seeds its pinned apps there.
-      enabled-applets = [
-        "panel1:left:0:menu@cinnamon.org:0"
-        "panel1:left:1:separator@cinnamon.org:1"
-        "panel1:left:2:grouped-window-list@cinnamon.org:2"
-        "panel1:right:0:systray@cinnamon.org:3"
-        "panel1:right:1:xapp-status@cinnamon.org:4"
-        "panel1:right:2:notifications@cinnamon.org:5"
-        "panel1:right:3:printers@cinnamon.org:6"
-        "panel1:right:4:removable-drives@cinnamon.org:7"
-        "panel1:right:5:keyboard@cinnamon.org:8"
-        "panel1:right:6:network@cinnamon.org:9"
-        "panel1:right:7:sound@cinnamon.org:10"
-        "panel1:right:8:power@cinnamon.org:11"
-        "panel1:right:9:calendar@cinnamon.org:12"
-      ];
     };
     "org/cinnamon/desktop/background" = {
       picture-uri     = wallpaper;
@@ -147,14 +128,55 @@ let
     };
     "org/cinnamon/theme".name = "Mint-Y-Dark-Aqua";
     "org/cinnamon/desktop/wm/preferences".theme = "Mint-Y-Dark-Aqua";
-    # libadwaita / GTK4 apps follow this one.
-    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+    # libadwaita / GTK4 apps follow the color-scheme, which they get from the
+    # settings portal. On Cinnamon that portal is xdg-desktop-portal-xapp,
+    # which reads its own key (org.x.apps.portal) — not the GNOME one — so
+    # both are set: otherwise GTK4 apps stay light with a dark theme.
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme    = "Mint-Y-Dark-Aqua";
+    };
+    "org/x/apps/portal".color-scheme = "prefer-dark";
     # Terminal chosen in Roudix (gnome-terminal is excluded below).
     "org/cinnamon/desktop/default-applications/terminal" = {
       exec     = config.roudix.terminal;
       exec-arg = "-e";
     };
   };
+
+  # ── Per-applet defaults (panel pins, menu icon) ───────────────────────
+  # Cinnamon applets keep their settings in ~/.config/cinnamon/spices/<applet>/
+  # <instance>.json, created on first load from the applet's
+  # settings-schema.json. Seeding those files from home-manager depends on the
+  # instance ids and the JSON layout, and did not work. Patching the schema
+  # defaults does not: every new instance gets them, whatever its id (this is
+  # how distros ship their own pinned apps). It rebuilds Cinnamon locally.
+  cinnamonAttr = p:
+    lib.findFirst
+      (n: (builtins.tryEval (p ? ${n} && lib.isDerivation p.${n})).value)
+      null [ "cinnamon" "cinnamon-common" ];
+
+  cinnamonDefaultsOverlay = final: prev:
+    let attr = cinnamonAttr prev; in
+    lib.optionalAttrs (attr != null) {
+      ${attr} = prev.${attr}.overrideAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.jq ];
+        postInstall = (old.postInstall or "") + ''
+          patch_default() {
+            f="$out/share/cinnamon/applets/$1/settings-schema.json"
+            if [ -f "$f" ] && jq -e --arg k "$2" 'has($k)' "$f" > /dev/null; then
+              jq --arg k "$2" --argjson v "$3" '.[$k].default = $v' "$f" > "$f.tmp"
+              mv "$f.tmp" "$f"
+            else
+              echo "roudix: $1 has no '$2' key, default left unchanged" >&2
+            fi
+          }
+          patch_default grouped-window-list@cinnamon.org pinned-apps '${builtins.toJSON config.roudix.desktop.cinnamon.pinnedApps}'
+          patch_default menu@cinnamon.org menu-icon-custom true
+          patch_default menu@cinnamon.org menu-icon '"roudix-logo"'
+        '';
+      });
+    };
 
   # Same "Roudix" application-menu category as kde.nix: Roudix apps carry
   # Categories=...;X-Roudix; and this merged menu groups them in one folder.
@@ -198,6 +220,10 @@ in
     # That is the point of choosing it on older hardware: GNOME 49 is
     # Wayland-only. The nixpkgs module only configures the slick greeter, it
     # does not turn LightDM on.
+    nixpkgs.overlays = [ cinnamonDefaultsOverlay ];
+    warnings = lib.optional (cinnamonAttr pkgs == null)
+      "roudix: Cinnamon package not found in nixpkgs: panel pins and the Roudix menu icon are not applied.";
+
     services.xserver.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
     # Mutable file (default: Kitsune) — change it with roudix-lightdm-wallpaper.
@@ -217,6 +243,16 @@ in
       layout  = config.roudix.keyboardLayout;
       variant = config.roudix.keyboardVariant;
     };
+
+    # ── Dark GTK4 ─────────────────────────────────────────────────────────────
+    # The settings portal backend that serves color-scheme to libadwaita apps
+    # (gtk reads org.gnome.desktop.interface, see the dconf defaults), plus
+    # the GTK4 fallback for apps that do not use libadwaita.
+    xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    environment.etc."xdg/gtk-4.0/settings.ini".text = ''
+      [Settings]
+      gtk-application-prefer-dark-theme=1
+    '';
 
     # ── Keyring ───────────────────────────────────────────────────────────────
     # The nixpkgs Cinnamon module already enables gnome-keyring; unlock it at
