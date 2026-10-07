@@ -127,6 +127,19 @@ in
     "Mod+Ctrl+8" = "window-move-to-workspace:8";
     "Mod+Ctrl+9" = "window-move-to-workspace:9";
 
+    # Silent moves (umbriel #273): send the focused window to a workspace
+    # WITHOUT following it (focus and view stay on the current workspace).
+    # Same 1..9 numbering rules as above (position on the focused output).
+    "Mod+Alt+1" = "window-move-to-workspace-silent:1";
+    "Mod+Alt+2" = "window-move-to-workspace-silent:2";
+    "Mod+Alt+3" = "window-move-to-workspace-silent:3";
+    "Mod+Alt+4" = "window-move-to-workspace-silent:4";
+    "Mod+Alt+5" = "window-move-to-workspace-silent:5";
+    "Mod+Alt+6" = "window-move-to-workspace-silent:6";
+    "Mod+Alt+7" = "window-move-to-workspace-silent:7";
+    "Mod+Alt+8" = "window-move-to-workspace-silent:8";
+    "Mod+Alt+9" = "window-move-to-workspace-silent:9";
+
     # ⚠ workspace-previous is positional (no wrap, no "last active" like
     # niri's MRU) — always an approximation.
     "Mod+Tab" = "workspace-previous";

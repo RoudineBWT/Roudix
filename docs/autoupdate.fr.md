@@ -33,3 +33,7 @@ Pour déclencher une mise à jour manuellement à tout moment :
 ```fish
 update
 ```
+
+Il fait le même pull (même branche, même règle fast-forward uniquement, même verrou : il ne chevauche jamais une auto-update en cours), puis rebuild et met à jour tes Flatpaks. Voir [`update`](aliases.fr.md#update) pour ses options.
+
+Le build dispose de 2 heures avant que systemd abandonne. Si le lancement est tué ou s'arrête de façon inattendue (timeout, crash), une notification est envoyée ; une erreur « normale » notifie déjà d'elle-même. Après une auto-update, `update --changes` montre ce qui sera appliqué au prochain démarrage.

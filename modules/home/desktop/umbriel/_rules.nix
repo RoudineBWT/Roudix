@@ -114,16 +114,12 @@ in
       default_output = "DP-1";
       default_workspace = 1;
       default_maximize = true;
-      opacity = 0.95;
-      blur = true;
     }
     {
       match.title = "^About Zen Twilight$";
       default_output = "DP-1";
       default_workspace = 1;
       default_floating = true;
-      opacity = 0.95;
-      blur = true;
     }
     {
       match.app_id = "^brave-origin-beta$";
@@ -293,6 +289,34 @@ in
       default_floating_size_px = { width = 800; height = 600; };
       default_position = { x = 32; y = 32; anchor = "bottom_right"; };
     }
+    # ── New per-window decoration / border-color overrides (umbriel #266,
+    # #268, outer_border_width) ───────────────────────────────────────────
+    # Refreshed live while the window is open. Layout spacing keeps using the
+    # GLOBAL border widths, so a rule never moves other windows. Uncomment to
+    # use. Keys: border_color_focused / _unfocused / _outer, border_width,
+    # outer_border_width, corner_radius (0..100), shadow.
+    #
+    # No border at all on a lone window (floats included), niri-style:
+    # {
+    #   match.is_only_window = true;
+    #   border_width = 0;
+    #   outer_border_width = 0;
+    # }
+    #
+    # Tell scratchpad windows apart with a golden border:
+    # {
+    #   match.is_scratchpad = true;
+    #   border_color_focused = "#E5C07BFF";
+    #   border_color_unfocused = "#5C4A2AFF";
+    # }
+    #
+    # Apps drawing their own rounded corners + shadow look best without ours:
+    # {
+    #   match.app_id = "^org\\.gnome\\.TextEditor$";
+    #   border_width = 0;
+    #   corner_radius = 0;
+    #   shadow = false;
+    # }
     # Global blur (niri equivalent: window-rule global { background-effect
     # { blur true; xray false } }) — blur_ignore_alpha=0.0 approximates
     # "xray false" (no unblurred transparent area); verify visually.

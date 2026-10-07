@@ -117,6 +117,37 @@ stdenvNoCC.mkDerivation {
       -depth 8 \
       $out/share/backgrounds/roudix/roudix_wallpaper_drift.png
 
+    # ── Default wallpaper: roudix-kitsune (GNOME + KDE) ───────────────────────
+    convert $src/wallpapers/roudix-kitsune.png \
+      -strip \
+      -define png:color-type=2 \
+      -depth 8 \
+      $out/share/backgrounds/roudix/roudix-kitsune.png
+
+    # ── Wallpaper KDE Kitsune (default) ───────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixKitsune/contents/images
+
+    cp $src/wallpapers/roudix-kitsune.png \
+      $out/share/wallpapers/RoudixKitsune/contents/images/2560x1440.png
+
+    convert $src/wallpapers/roudix-kitsune.png \
+      -resize 400x225 \
+      $out/share/wallpapers/RoudixKitsune/contents/screenshot.png
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixKitsune/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixKitsune",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Kitsune",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixKitsune"
+}
+JSONEOF
+
     # ── Wallpaper KDE Dark ────────────────────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixDark/contents/images
 
@@ -322,6 +353,14 @@ JSONEOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
 <wallpapers>
+  <wallpaper deleted="false">
+    <name>Roudix Kitsune</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#231820</pcolor>
+    <scolor>#231820</scolor>
+  </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-light.png</filename>

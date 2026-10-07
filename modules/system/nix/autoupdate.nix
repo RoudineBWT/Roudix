@@ -71,6 +71,7 @@ in {
 
     systemd.services.roudix-autoupdate = {
       description = "Roudix — auto pull config and schedule rebuild";
+      onFailure   = [ "roudix-autoupdate-notify-failure.service" ];
       after       = [ "network-online.target" ];
       wants       = [ "network-online.target" ];
       # Only triggered by the timer, never started at activation time
@@ -79,8 +80,10 @@ in {
         Type             = "oneshot";
         User             = "root";
         WorkingDirectory = cfg.configPath;
-        # Prevent the service from hanging forever
-        TimeoutStartSec  = "120";
+        # Prevent the service from hanging forever — but a rebuild (new
+        # kernel, uncached package) easily takes more than 2 minutes, and a
+        # timeout kills the run before `_fail` can notify anyone.
+        TimeoutStartSec  = "2h";
       };
       script = ''
         set -uo pipefail
@@ -101,14 +104,16 @@ in {
 
         # ── Avoid overlapping runs ────────────────────────────────────────
         # (manual `update` command + timer, or two timers after a suspend
-        # catch-up, touching the same clone at the same time)
-        exec 9>/run/lock/roudix-autoupdate.lock
+        # catch-up, touching the same clone at the same time).
+        # The lock is held on the config directory itself, which is also what
+        # `roudix-update` locks: it runs as the normal user and cannot create
+        # a lock file in /run/lock, so a file there could never be shared.
+        cd ${cfg.configPath} || _fail "config directory missing"
+        exec 9<.
         if ! ${pkgs.util-linux}/bin/flock --nonblock 9; then
           echo "[roudix-autoupdate] Another run is already in progress, skipping."
           exit 0
         fi
-
-        cd ${cfg.configPath} || _fail "config directory missing"
 
         # ── Disk space check ──────────────────────────────────────────────
         AVAILABLE_GB=$(( $(${pkgs.coreutils}/bin/df /nix/store | ${pkgs.gawk}/bin/awk 'NR==2 {print $4}') / 1024 / 1024 ))
@@ -162,7 +167,7 @@ in {
         # No '#<attr>' here: nh (like nixos-rebuild) picks the
         # nixosConfigurations attribute matching this machine's own
         # hostname automatically — same convention modules/home/shell's
-        # update/roudix-switch fish functions already rely on. This is
+        # roudix-update/roudix-switch already rely on. This is
         # why every host's networking.hostName MUST equal its
         # hosts/<name>/ directory name.
         if ! ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}; then
@@ -176,6 +181,24 @@ in {
           "Roudix — Rebuild scheduled" \
           "Configuration updated successfully. Reboot to apply the new config." \
           "system-reboot"
+      '';
+    };
+
+    # Covers what `_fail` cannot: timeout, kill, crash. A plain `exit 1`
+    # from `_fail` has already notified, so it is skipped here (needs the
+    # MONITOR_* variables systemd passes to OnFailure= units; without them the
+    # worst case is a duplicate notification).
+    systemd.services.roudix-autoupdate-notify-failure = {
+      description = "Roudix — notify when roudix-autoupdate stopped unexpectedly";
+      serviceConfig.Type = "oneshot";
+      script = ''
+        if [ "''${MONITOR_SERVICE_RESULT:-}" = "exit-code" ] && [ "''${MONITOR_EXIT_STATUS:-}" = "1" ]; then
+          exit 0
+        fi
+        ${notify} \
+          "Roudix — Mise à jour interrompue" \
+          "La mise à jour automatique s'est arrêtée de façon inattendue (''${MONITOR_SERVICE_RESULT:-inconnu}). Voir : journalctl -u roudix-autoupdate" \
+          "dialog-error"
       '';
     };
 

@@ -2,7 +2,30 @@
 let
   isKde = config.roudix.desktop.type == "kde";
 
-  wallpaperDark = "${roudixBranding}/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
+  wallpaperDark = "${roudixBranding}/share/wallpapers/RoudixKitsune/contents/images/2560x1440.png";
+
+  roudixMenu = {
+      text = ''
+        <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+          "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">
+        <Menu>
+          <Name>Applications</Name>
+          <Menu>
+            <Name>System</Name>
+            <Exclude><Category>X-Roudix</Category></Exclude>
+          </Menu>
+          <Menu>
+            <Name>Settingsmenu</Name>
+            <Exclude><Category>X-Roudix</Category></Exclude>
+          </Menu>
+          <Menu>
+            <Name>Roudix</Name>
+            <Directory>roudix.directory</Directory>
+            <Include><Category>X-Roudix</Category></Include>
+          </Menu>
+        </Menu>
+      '';
+    };
 in
 lib.mkIf isKde {
   services.displayManager.defaultSession = "plasma";
@@ -18,15 +41,15 @@ lib.mkIf isKde {
   # and references it via /etc/plasmalogin.conf with a file:// prefix
   environment.etc."plasmalogin.conf".text = ''
     [Greeter][Wallpaper][org.kde.image][General]
-    Image=file:///var/lib/plasmalogin/wallpapers/RoudixDark
+    Image=file:///var/lib/plasmalogin/wallpapers/RoudixKitsune
   '';
 
   system.activationScripts.plasmaLoginWallpaper = {
     deps = [ "users" "groups" ];
     text = ''
-      install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images
-      cp ${wallpaperDark} /var/lib/plasmalogin/wallpapers/RoudixDark/contents/images/3840x2160.png
-      cp ${roudixBranding}/share/wallpapers/RoudixDark/metadata.json /var/lib/plasmalogin/wallpapers/RoudixDark/metadata.json
+      install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/RoudixKitsune/contents/images
+      cp ${wallpaperDark} /var/lib/plasmalogin/wallpapers/RoudixKitsune/contents/images/2560x1440.png
+      cp ${roudixBranding}/share/wallpapers/RoudixKitsune/metadata.json /var/lib/plasmalogin/wallpapers/RoudixKitsune/metadata.json
       chown -R plasmalogin:plasmalogin /var/lib/plasmalogin/wallpapers/
     '';
   };
@@ -51,6 +74,16 @@ lib.mkIf isKde {
     [Greeter][Wallpaper][org.kde.image][General]
     Image=${wallpaperDark}
   '';
+
+  # ── "Roudix" category in the application menu (Kickoff) ───────────────
+  # Roudix apps carry Categories=...;X-Roudix; in their .desktop files. This
+  # merged menu turns that tag into a "Roudix" submenu and removes those apps
+  # from System/Settings so they aren't listed twice. Dropped in both merge
+  # dirs because the file name depends on XDG_MENU_PREFIX (plasma- or none).
+  environment.pathsToLink = [ "/share/desktop-directories" ];
+  environment.etc."xdg/menus/applications-merged/roudix.menu" = roudixMenu;
+  environment.etc."xdg/menus/plasma-applications-merged/roudix.menu" = roudixMenu;
+
 
   # ── Hardware ──────────────────────────────────────────────────────────────
   hardware.bluetooth.enable = true;
@@ -89,6 +122,12 @@ lib.mkIf isKde {
   # ── System packages ───────────────────────────────────────────────────────
   # lib.hiPrio on roudix-branding so start-here-kde overrides Papirus
   environment.systemPackages = with pkgs; [
+    (writeTextDir "share/desktop-directories/roudix.directory" ''
+      [Desktop Entry]
+      Type=Directory
+      Name=Roudix
+      Icon=roudix-logo
+    '')
     (lib.hiPrio roudixBranding)
     kdePackages.partitionmanager
     kdePackages.kpmcore

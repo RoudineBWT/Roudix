@@ -32,6 +32,7 @@ in
     ./niri.nix
     ./gnome.nix
     ./kde.nix
+    ./cinnamon.nix
     ./hyprland.nix
     ./mangowc.nix
     ./umbriel.nix
@@ -45,7 +46,7 @@ in
   # ── Desktop environment option ───────────────────────────────────────────
   options.roudix.desktop.type = lib.mkOption {
     description = "Desktop environment selection. Use 'roudix-switch <de>' to change.";
-    type = lib.types.enum [ "niri" "gnome" "kde" "hyprland" "mangowc" "umbriel" ];
+    type = lib.types.enum [ "niri" "gnome" "kde" "cinnamon" "hyprland" "mangowc" "umbriel" ];
     default = "niri";
   };
   # ── Desktop shell option ─────────────────────────────────────────────────

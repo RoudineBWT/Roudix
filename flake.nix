@@ -29,6 +29,12 @@
 
 
   inputs = {
+    # AppStream catalog (icons, categories, screenshots) for nixpkgs — used by roudix-store
+    nixos-appstream-data = {
+      url = "github:vlinkz/nixos-appstream-data";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
@@ -73,7 +79,7 @@
   };
 
     nix-cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel/release";
+      url = "github:xddxdd/nix-cachyos-kernel/master";
     };
 
     zen-browser = {
@@ -140,8 +146,8 @@
       };
 
       umbriel = {
-        url = "git+https://github.com/noctalia-dev/umbriel";
-        inputs.nixpkgs.follows = "nixpkgs";
+        url = "github:noctalia-dev/umbriel/cachix";
+        #inputs.nixpkgs.follows = "nixpkgs";
       };
       xdg-desktop-portal-umbriel = {
         url = "github:noctalia-dev/xdg-desktop-portal-umbriel";
@@ -191,11 +197,14 @@
       scxctl = roudix-caches.packages.x86_64-linux.scxctl;
     };
     roudixWelcome = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-welcome {};
+    roudixStore = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-store {
+      nixos-appstream-data = inputs.nixos-appstream-data.packages.x86_64-linux.appstream-data;
+    };
 
     # username is NOT here anymore: it's per-host, read from
     # hosts/<hostName>/username.nix (gitignored). Base args shared by
     # every host — each mkHost call adds its own `username`.
-    baseSpecialArgs = { inherit inputs roudixSwitcher roudixBranding roudix-kernel-switcher roudix-scheduler-switcher roudixWelcome; dotfiles = self + /dotfiles; };
+    baseSpecialArgs = { inherit inputs roudixSwitcher roudixBranding roudix-kernel-switcher roudix-scheduler-switcher roudixWelcome roudixStore; dotfiles = self + /dotfiles; };
 
     # ── Host builder ──────────────────────────────────────────────────────
     # One host = one directory under ./hosts/<hostName>/ containing:
@@ -232,6 +241,8 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "bak";
             home-manager.extraSpecialArgs = specialArgs;
+            # per-user Flatpaks (roudix.store.flatpaksUser / flatpaksUserBeta)
+            home-manager.sharedModules = [ nix-flatpak.homeManagerModules.nix-flatpak ];
             home-manager.users.${username} = { lib, ... }: {
               imports = [
                 ./modules/home/common.nix

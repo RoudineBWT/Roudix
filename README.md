@@ -149,6 +149,7 @@ roudix/
     │   ├── pipewire.nix         # PipeWire audio + rnnoise noise suppression
     │   ├── shell.nix            # Default shell (fish/bash)
     │   ├── update.nix           # Flake update configuration
+    │   ├── roudix-update.nix    # `update` command (pull + rebuild + Flatpaks), script in roudix-update.sh, shell completions in completions/
     │   └── version.nix          # Roudix OS branding (os-release, distroName)
     │   # terminal/file manager: pick your favorite via local.nix in hosts/roudix/
     │

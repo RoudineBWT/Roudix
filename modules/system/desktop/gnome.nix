@@ -21,6 +21,56 @@ let
     (lib.filter (u: !builtins.elem u cfg.disabledExtensions) defaultEnabledUUIDs)
     ++ (map (e: e.extensionUuid or "") cfg.extraExtensions);
 
+  # ── Dock favorites ─────────────────────────────────────────────────────
+  # Desktop-file ids per installed browser / terminal. GNOME silently
+  # ignores ids that don't exist, so a wrong guess just means "not pinned".
+  browserDesktopIds = {
+    "brave"                = [ "brave-browser.desktop" ];
+    "brave-beta"           = [ "brave-browser-beta.desktop" ];
+    "brave-nightly"        = [ "brave-browser-nightly.desktop" ];
+    "brave-origin"         = [ "brave-origin.desktop" ];
+    "brave-origin-beta"    = [ "brave-origin-beta.desktop" ];
+    "brave-origin-nightly" = [ "brave-origin-nightly.desktop" ];
+    "helium"               = [ "helium.desktop" "helium-browser.desktop" ];
+    "vivaldi"              = [ "vivaldi-stable.desktop" ];
+    "chromium"             = [ "chromium-browser.desktop" ];
+    "ungoogled-chromium"   = [ "chromium-browser.desktop" ];
+    "firefox"              = [ "firefox.desktop" ];
+    "librewolf"            = [ "librewolf.desktop" ];
+    "google-chrome"        = [ "google-chrome.desktop" ];
+    "microsoft-edge"       = [ "microsoft-edge.desktop" ];
+  };
+  zenDesktopIds =
+    if config.roudix.zen.variant == "beta"
+    then [ "zen-beta.desktop" "zen.desktop" ]
+    else [ "zen-twilight.desktop" "zen.desktop" ];
+  terminalDesktopIds = {
+    ghostty   = [ "com.mitchellh.ghostty.desktop" ];
+    kitty     = [ "kitty.desktop" ];
+    alacritty = [ "Alacritty.desktop" ];
+    foot      = [ "foot.desktop" ];
+    wezterm   = [ "org.wezfurlong.wezterm.desktop" ];
+    ptyxis    = [ "org.gnome.Ptyxis.desktop" ];
+    konsole   = [ "org.kde.konsole.desktop" ];
+  };
+
+  # Same layout as vanilla GNOME / Fedora Workstation (gnome-shell
+  # data/default-apps/dash.txt: browser, Calendar, Files, Software, Text
+  # Editor, Calculator — Fedora only swaps Epiphany for Firefox). Differences:
+  # the browser(s) are the ones selected in Roudix, GNOME Software (excluded
+  # on Roudix) becomes Roudix Store, and the user's terminal is added.
+  favoriteApps =
+    lib.concatMap (b: browserDesktopIds.${b} or [ ]) config.roudix.browsers
+    ++ lib.optionals config.roudix.zen.enable zenDesktopIds
+    ++ [
+      "org.gnome.Calendar.desktop"
+      "org.gnome.Nautilus.desktop"
+      "io.roudix.store.desktop"
+      "org.gnome.TextEditor.desktop"
+      "org.gnome.Calculator.desktop"
+    ]
+    ++ terminalDesktopIds.${config.roudix.terminal} or [ ];
+
   # ── Roudix look & feel, as dconf DEFAULTS ─────────────────────────────
   # Written to the *system* dconf database (/etc/dconf/db/user.d), NOT to
   # the user's own database. dconf reads the user db first and falls back
@@ -36,15 +86,19 @@ let
     "org/gnome/shell" = {
       always-show-log-out = true;
       enabled-extensions = activeUUIDs;
+      # Pinned apps (Dash to Dock / Dash to Panel / overview), see
+      # favoriteApps above. A default like the rest: once the user
+      # pins/unpins anything, their own list wins.
+      favorite-apps = favoriteApps;
     };
 
     "org/gnome/desktop/background" = {
-      picture-uri      = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-light.png";
-      picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
+      picture-uri      = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
+      picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
       picture-options  = "zoom";
     };
     "org/gnome/desktop/screensaver" = {
-      picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
+      picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
     };
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
@@ -53,6 +107,56 @@ let
       cursor-theme = "capitaine-cursors-white";
       cursor-size  = lib.gvariant.mkInt32 (24);
       gtk-enable-primary-paste = true;
+    };
+
+    # ── App-grid folders ──────────────────────────────────────────────────
+    # GNOME Shell only creates its stock folders (System, Utilities — plus
+    # YaST/Pardus, useless here — see DEFAULT_FOLDERS in js/ui/appDisplay.js)
+    # when folder-children is EMPTY. Since we set folder-children for our own "Roudix" folder, the
+    # stock ones have to be declared here too, copied from the shell:
+    # same names, same categories, same default app lists
+    # (gnome-shell data/default-apps/{system,utilities}-folder.txt).
+    # Roudix apps (Store, Customizer, Kernel Switcher, Scheduler, Welcome)
+    # carry Categories=...;X-Roudix; in their .desktop and are collected by
+    # that category.
+    "org/gnome/desktop/app-folders" = {
+      folder-children = [ "System" "Utilities" "Roudix" ];
+    };
+    "org/gnome/desktop/app-folders/folders/System" = {
+      name = "X-GNOME-Shell-System.directory";
+      translate = true;
+      apps = [
+        "nm-connection-editor.desktop"
+        "org.gnome.DejaDup.desktop"
+        "org.gnome.baobab.desktop"
+        "org.gnome.DiskUtility.desktop"
+        "org.gnome.Logs.desktop"
+        "org.freedesktop.MalcontentControl.desktop"
+        "org.freedesktop.GnomeAbrt.desktop"
+        "org.gnome.Sysprof.desktop"
+        "org.gnome.SystemMonitor.desktop"
+        "org.gnome.tweaks.desktop"
+      ];
+    };
+    "org/gnome/desktop/app-folders/folders/Utilities" = {
+      name = "X-GNOME-Shell-Utilities.directory";
+      translate = true;
+      apps = [
+        "org.gnome.Decibels.desktop"
+        "org.gnome.Connections.desktop"
+        "org.gnome.Papers.desktop"
+        "org.gnome.FileRoller.desktop"
+        "org.gnome.font-viewer.desktop"
+        "org.gnome.Loupe.desktop"
+        "org.gnome.seahorse.Application.desktop"
+        "org.gnome.Seahorse.desktop"
+        "org.gnome.Showtime.desktop"
+      ];
+    };
+    "org/gnome/desktop/app-folders/folders/Roudix" = {
+      name = "Roudix";
+      translate = false;
+      categories = [ "X-Roudix" ];
     };
 
     # ── ArcMenu ───────────────────────────────────────────────────────────
