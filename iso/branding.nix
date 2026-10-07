@@ -63,8 +63,8 @@
     programs.dconf.profiles.user.databases = [{
       settings = {
         "org/gnome/desktop/background" = {
-          picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
-          picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-dark.png";
+          picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
+          picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
           picture-options = "zoom";
         };
       };
