@@ -1,8 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" version="1.1">
- <circle style="opacity:0.2" cx="24" cy="25" r="20"/>
- <circle style="fill:#8b9a46" cx="24" cy="24" r="20"/>
- <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round" d="M 33,14 C 24,6 11,13 11,24 c 0,9 7,14 14,14 6,0 10,-4 11,-9"/>
- <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round" d="M 29,17 C 23,13 17,17 17,24 c 0,5 4,8 8,8 3,0 5,-2 6,-4"/>
- <circle style="fill:#ffffff" cx="25" cy="24" r="2.5"/>
- <path style="opacity:0.1;fill:#ffffff" d="M 24,4 A 20,20 0 0 0 4,24 20,20 0 0 0 4.02,24.58 20,20 0 0 1 24,5 20,20 0 0 1 43.98,24.42 20,20 0 0 0 44,24 20,20 0 0 0 24,4 Z"/>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" id="svg8" xml:space="preserve" enable-background="new 0 0 23 23" viewBox="0 0 23 23" height="23px" width="23px" y="0px" x="0px" version="1.1"><metadata id="metadata14"><rdf:RDF><cc:Work rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/><dc:title/></cc:Work></rdf:RDF></metadata><defs id="defs12"/><path id="XMLID_9_" d="M 11.5 0 C 5.149 0 0 5.149 0 11.5 C 0 17.852 5.149 23 11.5 23 C 17.852 23 23 17.852 23 11.5 C 23 5.149 17.852 0 11.5 0 z M 11.5 1.9609375 C 16.769 1.9609375 21.039062 6.231 21.039062 11.5 C 21.039062 12.310396 20.928511 13.09242 20.738281 13.84375 L 16.201172 8.8007812 L 10.400391 15.400391 L 13.199219 9.8007812 L 11.800781 7.3007812 L 3.5546875 16.777344 C 2.5486997 15.265661 1.9609375 13.451673 1.9609375 11.5 C 1.9609375 6.231 6.231 1.9609375 11.5 1.9609375 z " style="fill:#dc682e"/><style xmlns="" id="zeninternet-styles">html, body, nav, #nav, .nav, .sticky-category-bar-container, navbar, body &gt; .root-l-content, .p-archiveBody__container, .navbar, .page_wrapper.without-image, #navbar, header &gt; .global-head-cont, header, .toc-sidebar, #header, #temp_banner, .ranavnode, .header, header::before, body &gt; article, app, #root &gt; div &gt; div &gt; .w-full, #app, footer, .sc-tvx700-7.egPRoP, .sidebar-wrap, .p-sectionLinks, section, .main, main::before, #__next, .sidebar-wrapper, .sidebar-footer-wrapper, .sidebar-footer-container::before, #root, .min-h-screen.bg-white, .app, .AppContainer, .app-root, #wrapper, body[data-theme="dark"], body[data-theme="light"], #pass-sidebar, .side-bar, #main, .sidebar, .global-content__content, main, .header-top, #content, #cu-identity, section, .l-root, #__next, .landing-hero, #navigation-wrapper, #global-navbar, .layout__content-wrapper, .head.notfixed, .main-container, #app &gt; div, .btm-nav &gt; a, .oc-content--main, body.dark_mode, body.light_mode, text-div &gt; textarea, #starlight__sidebar, .sidebar-pane, .page--article, #xf-guide, [data-color-theme] body, #__next &gt; div, .hero-right, #middle, .HeaderLinks_header__Ia2QY, #page-content, section[data-role] {
+  background-color: transparent !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition:
+    background-color 0.5s ease-in-out,
+    background 0.5s ease-in-out,
+    border 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out !important;
+}
+:root {
+  --darkreader-background-ffffff: transparent !important;
+}
+@layer {
+  :root,
+  html,
+  body {
+    --darkreader-background-ffffff: transparent !important;
+    background-color: transparent !important;
+  }
+}
+footer, #Footer, .Footer, mfe-footer-pharos-footer, .footer, #footer {
+  display: none !important;
+}
+</style></svg>
