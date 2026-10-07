@@ -25,7 +25,7 @@ in
     set -gx GTK_IM_MODULE simple
     '';
     shellAliases = {
-      update   = "sudo nix flake update --flake $NH_FLAKE && nh os switch --accept-flake-config path:$NH_FLAKE";
+      update   = "roudix-update";
       rebuild  = "nh os switch --accept-flake-config path:$NH_FLAKE";
       cleanup  = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-collect-garbage";
     } // lib.optionalAttrs (shellType == "noctalia") {

@@ -1,8 +1,18 @@
 { lib, pkgs, osConfig, inputs, ... }:
 let
-  wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixDark/contents/images/3840x2160.png";
+  wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixKitsune/contents/images/2560x1440.png";
 
   kwriteconfig6 = "${pkgs.kdePackages.kconfig}/bin/kwriteconfig6";
+
+  terminalDesktopId = {
+    ghostty   = "com.mitchellh.ghostty.desktop";
+    kitty     = "kitty.desktop";
+    alacritty = "Alacritty.desktop";
+    foot      = "foot.desktop";
+    wezterm   = "org.wezfurlong.wezterm.desktop";
+    ptyxis    = "org.gnome.Ptyxis.desktop";
+    konsole   = "org.kde.konsole.desktop";
+  }.${osConfig.roudix.terminal or "ghostty"};
 in
 {
   imports = [
@@ -75,7 +85,15 @@ in
             {
               kickoff.icon = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
             }
-            "org.kde.plasma.icontasks"
+            {
+              iconTasks.launchers = [
+                "preferred://filemanager"
+                "preferred://browser"
+                "applications:${terminalDesktopId}"
+                "applications:io.roudix.store.desktop"
+                "applications:systemsettings.desktop"
+              ];
+            }
             "org.kde.plasma.marginsseparator"
             "org.kde.plasma.systemtray"
             "org.kde.plasma.digitalclock"

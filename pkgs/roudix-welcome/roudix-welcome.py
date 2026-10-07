@@ -90,6 +90,15 @@ def open_uri(uri: str):
 # never takes the launched app down with it.
 APPS = [
     {
+        "id":       "roudix-store",
+        "icon":     "io.roudix.store",
+        "title":    L("Logithèque", "Software Store"),
+        "subtitle": L(
+            "Installe des applications nixpkgs et Flatpak",
+            "Install nixpkgs and Flatpak apps",
+        ),
+    },
+    {
         "id":       "roudix-switcher",
         "icon":     "io.roudix.switcher",
         "title":    L("Personnalisation", "Customizer"),
@@ -198,14 +207,14 @@ class RoudixWelcomeWindow(Adw.ApplicationWindow):
                 "kernel CachyOS et tout un tas de réglages pensés pour toi — "
                 "et pour la famille et les amis à qui tu la partages. Utilise "
                 "les raccourcis ci-dessous pour personnaliser ton système "
-                "ou changer de kernel et d'ordonnanceur.</span>",
+                "ou changer de kernel et d'ordonnanceur, ou la logithèque pour installer des applications.</span>",
                 "<span size='small'>"
                 "Roudix is your personal NixOS distribution: Wayland "
                 "compositors (Niri, Hyprland, MangoWC, Umbriel), GNOME and "
                 "KDE, a CachyOS kernel, and a bunch of tweaks built for you — "
                 "and for the family and friends you share it with. Use the "
-                "shortcuts below to customize your system or switch kernel "
-                "and scheduler.</span>",
+                "shortcuts below to customize your system, switch kernel "
+                "and scheduler, or install apps from the store.</span>",
             )
         )
         description.add_css_class("dim-label")

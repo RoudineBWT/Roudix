@@ -171,11 +171,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791342611,
-        "narHash": "sha256-IJ5Y898/sXP1QQBlQC4KomiVnF53ikgurCUkw+3iMQ0=",
+        "lastModified": 1791357625,
+        "narHash": "sha256-KlFZ2toFim5VOOS7vuq+uYllRNnNhMp9EwaAjj4xwJY=",
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
-        "rev": "07740cc2d59f31da69aa892d82f5c44925be1fcf",
+        "rev": "650b731164656cf749f47a869221c73651576e5e",
         "type": "github"
       },
       "original": {
@@ -239,11 +239,11 @@
         "nixpkgs-lib": "nixpkgs-lib_2"
       },
       "locked": {
-        "lastModified": 1788450739,
-        "narHash": "sha256-glZLQlzIn1fXH6PazR2iUmTo7kzzyYSshrWhLS9TqCU=",
+        "lastModified": 1790898470,
+        "narHash": "sha256-zTwuwezD0w3hpga6a6P8emidzAZFyWqlNeRBlpWOOl8=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "31729ca8cbdb4fa927b34e5f4353e6a83f39e993",
+        "rev": "024633cd702b10285db5cb19b40ad48d2399ba60",
         "type": "github"
       },
       "original": {
@@ -441,11 +441,11 @@
         "scenefx": "scenefx"
       },
       "locked": {
-        "lastModified": 1791346765,
-        "narHash": "sha256-E1bB8IJcASmj7EdMIRnTwkflkQJ+zCQe9+02QzIyvNo=",
+        "lastModified": 1791356008,
+        "narHash": "sha256-+FsPmULl+UfIDtK1dkUE8Y+O/RpxwXUISoBXEyfqkKA=",
         "owner": "DreamMaoMao",
         "repo": "mango",
-        "rev": "5f4472f29d525a83a0f0074fc752344a1e3922a5",
+        "rev": "80eb793bb8a73581d7dc882ba0fdda0ba5cb2609",
         "type": "github"
       },
       "original": {
@@ -560,16 +560,16 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1790564970,
-        "narHash": "sha256-ANcKKTLB5oitjAYPp+iWts5clpbowVbDPVvt03P7Hes=",
+        "lastModified": 1791323700,
+        "narHash": "sha256-zsnnPb7JvVae8cIWb7rmwfZQZ/xqbH9iB7lVXAIzLLw=",
         "owner": "xddxdd",
         "repo": "nix-cachyos-kernel",
-        "rev": "b1332396df6e880d7e3b6b451c6a74132ce8cf66",
+        "rev": "4c06683b1f6db7ac0ef6d17a847f0882a5ceedd2",
         "type": "github"
       },
       "original": {
         "owner": "xddxdd",
-        "ref": "release",
+        "ref": "master",
         "repo": "nix-cachyos-kernel",
         "type": "github"
       }
@@ -632,6 +632,26 @@
         "type": "github"
       }
     },
+    "nixos-appstream-data": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771522738,
+        "narHash": "sha256-uXNpJv687gJMITVYsfuGOywoElKxEcZMRd6HYVHFu24=",
+        "owner": "vlinkz",
+        "repo": "nixos-appstream-data",
+        "rev": "df1a03d7d838026f3c70ca18b1d8867f605ed51c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vlinkz",
+        "repo": "nixos-appstream-data",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1791260994,
@@ -678,11 +698,11 @@
     },
     "nixpkgs-lib_2": {
       "locked": {
-        "lastModified": 1788057806,
-        "narHash": "sha256-DTQSMxzDWmT0zhguthvegnVkn7CFqGCv4IHCzk5ZUpM=",
+        "lastModified": 1790477367,
+        "narHash": "sha256-oujbxmVKDhci2E4EM3KyAbRUgp5/IsCoiA/LfEF7OOk=",
         "owner": "nix-community",
         "repo": "nixpkgs.lib",
-        "rev": "596e2e3940e09b2abbeb03f75fa1828c57fcd72c",
+        "rev": "f7cd230690d9fc982d06129f9189b101fddcfa3b",
         "type": "github"
       },
       "original": {
@@ -693,11 +713,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1791354504,
-        "narHash": "sha256-hiCAuZh0+VZY/H+GcpZlX54dAbUZF/pEfH9CIJCu/vc=",
+        "lastModified": 1791359357,
+        "narHash": "sha256-GkN7dnLeKwahsWmf1o/ICd7yNDK2yKflKhTMlKrgVls=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3895bee2aeab97672b86e2db91d851d1f469c5d7",
+        "rev": "d321ad2b3ea6bd030bb47ecfeef155d98aaf33f2",
         "type": "github"
       },
       "original": {
@@ -757,11 +777,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1790505892,
-        "narHash": "sha256-/pAz2XfqHS//WRn2xRjoqes7Z92qZ0Q1gufZZ3PtuwA=",
+        "lastModified": 1791306635,
+        "narHash": "sha256-Nqzt5UdV1P3iKJdVuKOoQZ2h5TkvrAXl8Oy/ZLmsxSc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "545c226a9af7f59fba5c3873f7c6a65e014c8f5f",
+        "rev": "17841f937d296c623ce015c56fe3fa89e3d52107",
         "type": "github"
       },
       "original": {
@@ -798,6 +818,19 @@
       "original": {
         "type": "tarball",
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"
+      }
+    },
+    "nixpkgs_5": {
+      "locked": {
+        "lastModified": 1790822859,
+        "narHash": "sha256-VBA0QerzzmL+4wxgtwiCdiLwLpJg2/9xOxhgO3BRJQA=",
+        "rev": "c59305bab2065cfecc4944690d9eedbb56f3a9fa",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1083223.c59305bab206/nixexprs.tar.xz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
       }
     },
     "noctalia": {
@@ -900,6 +933,7 @@
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nix-flatpak": "nix-flatpak",
         "nix-gaming-edge": "nix-gaming-edge",
+        "nixos-appstream-data": "nixos-appstream-data",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable": "nixpkgs-stable_2",
@@ -1090,23 +1124,22 @@
     },
     "umbriel": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs_5",
         "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel"
       },
       "locked": {
         "lastModified": 1791346410,
         "narHash": "sha256-xQJTbac5CMp5aZdE4UI+yqUKcq2AQmnvswdVXojCtOY=",
-        "ref": "refs/heads/main",
+        "owner": "noctalia-dev",
+        "repo": "umbriel",
         "rev": "e4b67608c45c69afe1c7b70385d7dee4b506ab55",
-        "revCount": 1183,
-        "type": "git",
-        "url": "https://github.com/noctalia-dev/umbriel"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "https://github.com/noctalia-dev/umbriel"
+        "owner": "noctalia-dev",
+        "ref": "cachix",
+        "repo": "umbriel",
+        "type": "github"
       }
     },
     "xdg-desktop-portal-umbriel": {

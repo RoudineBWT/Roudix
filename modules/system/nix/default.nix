@@ -5,5 +5,6 @@
     ./binary-caches.nix
     ./autoupdate.nix
     ./update.nix
+    ./roudix-update.nix
   ];
 }

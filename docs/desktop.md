@@ -12,11 +12,12 @@ Switch desktop at any time with `roudix-switch <de>` or the **Roudix Customizer*
 | `umbriel` | Umbriel + Noctalia | Scrollable tiling — Noctalia's own native compositor, Noctalia-only (no shell switching) |
 | `gnome` | GNOME 49.5 | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
+| `cinnamon` | Cinnamon | X11 session + LightDM — classic desktop, suited to older hardware (GNOME 49 is Wayland-only) |
 
 To change permanently, edit `hosts/roudix/local.nix`:
 
 ```nix
-roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome" or "kde"
+roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde" or "cinnamon"
 ```
 
 Or use the fish function — it edits the config and rebuilds in one step:
@@ -271,3 +272,20 @@ programs.plasma.panels = lib.mkForce [
 ```
 
 > `lib.mkForce` is only needed for `wallpaper` and `panels`, which are still defined in `home/desktop/kde/default.nix`.
+
+## Cinnamon defaults
+
+Cinnamon ships the Roudix Kitsune wallpaper by default, on the desktop and on the LightDM login screen, uses the Roudix logo as the menu icon, and pins the default browser (first of `roudix.browsers`), Roudix Store and Settings in the panel. GTK4 / libadwaita apps follow the dark theme. These are defaults: they only apply to what the user has not changed. Panel pins (browser, Nemo, Roudix Store, Settings) and the menu icon are applet defaults, shipped as patched copies of two applets: nothing of Cinnamon is rebuilt.
+
+The login screen (slick-greeter) has no settings app. Change its wallpaper with:
+
+```bash
+roudix-lightdm-wallpaper ~/Pictures/wallpaper.jpg   # no rebuild needed
+roudix-lightdm-wallpaper --reset                    # back to Kitsune
+```
+
+Override the pinned apps in `hosts/roudix/local.nix`:
+
+```nix
+roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.desktop" "cinnamon-settings.desktop" ];
+```

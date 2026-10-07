@@ -12,5 +12,6 @@
     ./media
     ./creation
     ./utilities
+    ./store.nix
   ];
 }

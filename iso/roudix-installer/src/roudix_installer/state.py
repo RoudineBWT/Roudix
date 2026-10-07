@@ -74,7 +74,7 @@ class InstallState:
     zen_sine_mods: list = field(default_factory=list)  # roudix.zen.sine.mods
 
     # ── Desktop ───────────────────────────────────────────────────────────
-    desktop: str = "niri"            # niri | gnome | kde | hyprland | mangowc | umbriel
+    desktop: str = "niri"            # niri | gnome | kde | cinnamon | hyprland | mangowc | umbriel
     desktop_shell: str = "noctalia"  # noctalia | dms | caelestia (only for niri/hyprland)
     # roudix.desktop.latest.<id> — False (default) = nixpkgs version,
     # True = latest version built from the project's flake. Only the

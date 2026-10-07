@@ -12,11 +12,12 @@ Changez de bureau à tout moment avec `roudix-switch <de>` ou via l'interface **
 | `umbriel` | Umbriel + Noctalia | Tiling scrollable — le compositeur natif propre à Noctalia, Noctalia uniquement (pas de changement de shell) |
 | `gnome` | GNOME 49.5 | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
+| `cinnamon` | Cinnamon | Session X11 + LightDM — bureau classique, adapté aux vieux PC (GNOME 49 est Wayland uniquement) |
 
 Pour changer de façon permanente, modifiez `hosts/roudix/local.nix` :
 
 ```nix
-roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome" ou "kde"
+roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde" ou "cinnamon"
 ```
 
 Ou utilisez la fonction fish — elle modifie la config et rebuild en une seule étape :
@@ -271,3 +272,20 @@ programs.plasma.panels = lib.mkForce [
 ```
 
 > `lib.mkForce` n'est nécessaire que pour `wallpaper` et `panels`, encore définis dans `home/desktop/kde/default.nix`.
+
+## Défauts Cinnamon
+
+Cinnamon utilise le wallpaper Roudix Kitsune par défaut, sur le bureau et sur l'écran de connexion LightDM, utilise le logo Roudix comme icône du menu, et épingle le navigateur par défaut (le premier de `roudix.browsers`), Roudix Store et les Paramètres dans le panneau. Les apps GTK4 / libadwaita suivent le thème sombre. Ce sont des valeurs par défaut : elles ne s'appliquent qu'à ce que l'utilisateur n'a pas modifié. Les épingles du panneau (navigateur, Nemo, Roudix Store, Paramètres) et l'icône du menu sont des défauts d'applets, livrés par des copies patchées de deux applets : rien de Cinnamon n'est recompilé.
+
+L'écran de connexion (slick-greeter) n'a pas d'application de réglages. Changez son wallpaper avec :
+
+```bash
+roudix-lightdm-wallpaper ~/Images/wallpaper.jpg   # sans rebuild
+roudix-lightdm-wallpaper --reset                  # retour à Kitsune
+```
+
+Surcharger les applications épinglées dans `hosts/roudix/local.nix` :
+
+```nix
+roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.desktop" "cinnamon-settings.desktop" ];
+```

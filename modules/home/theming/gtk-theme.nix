@@ -3,13 +3,13 @@
 let
   desktopType = osConfig.roudix.desktop.type;
 
-  # GNOME (modules/home/desktop/gnome) and KDE (modules/home/desktop/kde) already
-  # apply their own native theming (dconf for GNOME, plasma-manager for
-  # KDE). This module only needs to fill the gap for the "bare" compositors
+  # GNOME (modules/home/desktop/gnome), KDE (modules/home/desktop/kde) and
+  # Cinnamon (modules/system/desktop/cinnamon.nix) already apply their own
+  # native theming (dconf for GNOME/Cinnamon, plasma-manager for KDE). This module only needs to fill the gap for the "bare" compositors
   # (niri, hyprland, mangowc, umbriel), which otherwise ship no GTK theme
   # at all — see the "not applied automatically" note in
   # theming/papirus-icon.nix / theming/tela-icon.nix.
-  needsGtkTheme = desktopType != "gnome" && desktopType != "kde";
+  needsGtkTheme = desktopType != "gnome" && desktopType != "kde" && desktopType != "cinnamon";
 
   # roudix.iconTheme (modules/system/desktop/icon-theme.nix), set via roudix-switcher
   # ("Icon Theme" page, same non-gnome/kde scope) or hosts/roudix/local.nix.

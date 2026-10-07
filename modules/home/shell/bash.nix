@@ -25,7 +25,7 @@ in
         };
     shellAliases = {
       rebuild  = "nh os switch --accept-flake-config path:$NH_FLAKE";
-      update   = "sudo nix flake update --flake $NH_FLAKE && nh os switch --accept-flake-config path:$NH_FLAKE";
+      update   = "roudix-update";
       cleanup  = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-collect-garbage";
     } // lib.optionalAttrs (shellType == "noctalia") {
       noctalia-reload  = "pkill -f quickshell; sleep 1; noctalia-shell --no-duplicate & disown";
