@@ -96,11 +96,12 @@ let
     ];
 
   # Panel (grouped-window-list) pinned apps: the default browser (first of
-  # roudix.browsers), Roudix Store and Cinnamon Settings.
+  # roudix.browsers), Nemo, Roudix Store and Cinnamon Settings.
   pinnedApps =
     lib.optionals (config.roudix.browsers != [ ])
       (browserDesktopIds.${lib.head config.roudix.browsers} or [ ])
     ++ [
+      "nemo.desktop"
       "io.roudix.store.desktop"
       "cinnamon-settings.desktop"
     ];
@@ -113,7 +114,7 @@ let
     "org/cinnamon" = {
       # Favorites of the Cinnamon menu (the browser(s) chosen in Roudix, Nemo,
       # Roudix Store, Settings). The panel's window-list pinning and the menu
-      # icon are NOT dconf keys but per-applet defaults, see cinnamonDefaultsOverlay.
+      # icon are NOT dconf keys but per-applet defaults, see modules/home/desktop/cinnamon.
       favorite-apps = favoriteApps;
     };
     "org/cinnamon/desktop/background" = {
@@ -142,36 +143,6 @@ let
       exec     = config.roudix.terminal;
       exec-arg = "-e";
     };
-  };
-
-  # ── Per-applet defaults (panel pins, menu icon) ───────────────────────
-  # Cinnamon applets keep their settings in ~/.config/cinnamon/spices/<applet>/
-  # <instance>.json, created on first load from the applet's
-  # settings-schema.json. Seeding those files from home-manager depends on the
-  # instance ids and the JSON layout, and did not work. Patching the schema
-  # defaults does not: every new instance gets them, whatever its id (this is
-  # how distros ship their own pinned apps). It rebuilds Cinnamon locally.
-  # The attribute name is fixed on purpose: computing it from `prev` (e.g.
-  # checking that prev.cinnamon is a derivation) forces the package while
-  # pkgs itself is being built -> "infinite recursion encountered".
-  cinnamonDefaultsOverlay = final: prev: {
-    cinnamon = prev.cinnamon.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.jq ];
-      postInstall = (old.postInstall or "") + ''
-        patch_default() {
-          f="$out/share/cinnamon/applets/$1/settings-schema.json"
-          if [ -f "$f" ] && jq -e --arg k "$2" 'has($k)' "$f" > /dev/null; then
-            jq --arg k "$2" --argjson v "$3" '.[$k].default = $v' "$f" > "$f.tmp"
-            mv "$f.tmp" "$f"
-          else
-            echo "roudix: $1 has no '$2' key, default left unchanged" >&2
-          fi
-        }
-        patch_default grouped-window-list@cinnamon.org pinned-apps '${builtins.toJSON config.roudix.desktop.cinnamon.pinnedApps}'
-        patch_default menu@cinnamon.org menu-icon-custom true
-        patch_default menu@cinnamon.org menu-icon '"roudix-logo"'
-      '';
-    });
   };
 
   # Same "Roudix" application-menu category as kde.nix: Roudix apps carry
@@ -205,7 +176,7 @@ in
     default = pinnedApps;
     description = ''
       .desktop ids pinned in the Cinnamon panel window list at first login
-      (default browser, Roudix Store, Settings). Applied once per user, never
+      (default browser, Nemo, Roudix Store, Settings). Applied once per user, never
       re-applied afterwards. Override in local.nix.
     '';
   };
@@ -216,7 +187,6 @@ in
     # That is the point of choosing it on older hardware: GNOME 49 is
     # Wayland-only. The nixpkgs module only configures the slick greeter, it
     # does not turn LightDM on.
-    nixpkgs.overlays = [ cinnamonDefaultsOverlay ];
 
     services.xserver.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
