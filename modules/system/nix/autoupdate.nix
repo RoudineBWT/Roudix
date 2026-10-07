@@ -77,7 +77,12 @@ in {
       wants       = [ "network-online.target" ];
       # Only triggered by the timer, never started at activation time
       wantedBy    = lib.mkForce [];
+      # systemd services get a minimal PATH: nh shells out to `nix` (and nix
+      # to git for some fetchers), so both must be provided explicitly.
+      path        = [ config.nix.package pkgs.git pkgs.nh ];
       serviceConfig = {
+        # /var/lib/roudix-autoupdate: remembers a revision whose build failed
+        StateDirectory   = "roudix-autoupdate";
         Type             = "oneshot";
         User             = "root";
         WorkingDirectory = cfg.configPath;
@@ -133,41 +138,54 @@ in {
         LOCAL=$($GIT rev-parse HEAD)
         REMOTE=$($GIT rev-parse origin/${cfg.branch})
 
+        PENDING=/var/lib/roudix-autoupdate/pending
+        NEED_MERGE=1
+
         if [ "$LOCAL" = "$REMOTE" ]; then
-          echo "[roudix-autoupdate] Already up to date ($LOCAL)."
-          exit 0
+          # The repo can already be on $REMOTE while its build failed on a
+          # previous run (merge succeeded, build did not). Retry in that case
+          # instead of reporting "up to date" forever.
+          if [ -f "$PENDING" ] && [ "$(cat "$PENDING")" = "$LOCAL" ]; then
+            echo "[roudix-autoupdate] Revision $LOCAL was never built successfully — retrying build."
+            NEED_MERGE=0
+          else
+            echo "[roudix-autoupdate] Already up to date ($LOCAL)."
+            exit 0
+          fi
         fi
 
-        # ── Never discard local work ──────────────────────────────────────
-        # Only fast-forward. If this machine is ahead of origin (unpushed
-        # commits — e.g. the maintainer's own machine) there is nothing to
-        # pull; if it has diverged, refuse instead of overwriting. Nobody
-        # force-pushes these branches (the sync workflows only merge), so a
-        # plain fast-forward is always possible on a normal user machine.
-        if $GIT merge-base --is-ancestor "$REMOTE" "$LOCAL"; then
-          echo "[roudix-autoupdate] Local is ahead of origin/${cfg.branch} (unpushed commits) — nothing to pull."
-          exit 0
+        if [ "$NEED_MERGE" = 1 ]; then
+          # ── Never discard local work ──────────────────────────────────────
+          # Only fast-forward. If this machine is ahead of origin (unpushed
+          # commits — e.g. the maintainer's own machine) there is nothing to
+          # pull; if it has diverged, refuse instead of overwriting. Nobody
+          # force-pushes these branches (the sync workflows only merge), so a
+          # plain fast-forward is always possible on a normal user machine.
+          if $GIT merge-base --is-ancestor "$REMOTE" "$LOCAL"; then
+            echo "[roudix-autoupdate] Local is ahead of origin/${cfg.branch} (unpushed commits) — nothing to pull."
+            exit 0
+          fi
+          if ! $GIT merge-base --is-ancestor "$LOCAL" "$REMOTE"; then
+            _fail "local history has diverged from origin/${cfg.branch} — refusing to overwrite local commits, resolve manually"
+          fi
+
+          echo "[roudix-autoupdate] Changes detected — updating..."
+          echo "  local:  $LOCAL"
+          echo "  remote: $REMOTE"
+
+          # Notify: update detected
+          ${notify} \
+            "Roudix — Update detected" \
+            "New changes found on ${cfg.branch}. Updating and scheduling rebuild..." \
+            "software-update-available"
+
+          # Fast-forward only (no `reset --hard`): it can never throw away a
+          # local commit, and it aborts if a tracked local modification would be
+          # overwritten. Untracked/ignored files (local.nix, username.nix,
+          # hardware-configuration.nix...) are left exactly as they are.
+          $GIT merge --ff-only "origin/${cfg.branch}" \
+            || _fail "git merge --ff-only failed (local modifications in the way?)"
         fi
-        if ! $GIT merge-base --is-ancestor "$LOCAL" "$REMOTE"; then
-          _fail "local history has diverged from origin/${cfg.branch} — refusing to overwrite local commits, resolve manually"
-        fi
-
-        echo "[roudix-autoupdate] Changes detected — updating..."
-        echo "  local:  $LOCAL"
-        echo "  remote: $REMOTE"
-
-        # Notify: update detected
-        ${notify} \
-          "Roudix — Update detected" \
-          "New changes found on ${cfg.branch}. Updating and scheduling rebuild..." \
-          "software-update-available"
-
-        # Fast-forward only (no `reset --hard`): it can never throw away a
-        # local commit, and it aborts if a tracked local modification would be
-        # overwritten. Untracked/ignored files (local.nix, username.nix,
-        # hardware-configuration.nix...) are left exactly as they are.
-        $GIT merge --ff-only "origin/${cfg.branch}" \
-          || _fail "git merge --ff-only failed (local modifications in the way?)"
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
         # No '#<attr>' here: nh (like nixos-rebuild) picks the
@@ -177,9 +195,11 @@ in {
         # why every host's networking.hostName MUST equal its
         # hosts/<name>/ directory name.
         if ! ${pkgs.nh}/bin/nh os boot path:${cfg.configPath}; then
+          echo "$REMOTE" > "$PENDING"
           _fail "build failed for revision $REMOTE — repo is on the new commit but the next boot was NOT scheduled; the current generation is untouched"
         fi
 
+        rm -f "$PENDING"
         echo "[roudix-autoupdate] Done — reboot to apply the new config."
 
         # Notify: rebuild scheduled
