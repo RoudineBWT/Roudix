@@ -2,7 +2,70 @@
 let
   isCinnamon = config.roudix.desktop.type == "cinnamon";
 
-  wallpaper = "file:///run/current-system/sw/share/backgrounds/b-kitsune.png";
+  # Default Roudix wallpaper (installed by pkgs/roudix-branding, linked into
+  # /run/current-system/sw/share/backgrounds through desktop-integration.nix).
+  kitsunePath = "/run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
+  wallpaper   = "file://${kitsunePath}";
+
+  # ── LightDM (slick-greeter) wallpaper ─────────────────────────────────
+  # slick-greeter has no settings app, it only reads `background=` from its
+  # config. That config lives in the Nix store, so the path it points to is
+  # a mutable file instead: by default a symlink to the Kitsune wallpaper,
+  # replaced by `roudix-lightdm-wallpaper <image>` — no rebuild needed.
+  lightdmBgDir = "/var/lib/roudix/lightdm";
+  lightdmBg    = "${lightdmBgDir}/background.png";
+
+  roudixLightdmWallpaper = pkgs.writeShellApplication {
+    name = "roudix-lightdm-wallpaper";
+    runtimeInputs = with pkgs; [ coreutils file imagemagick ];
+    text = ''
+      usage() {
+        cat <<'EOF'
+      Usage: roudix-lightdm-wallpaper <image>   set the LightDM login wallpaper
+             roudix-lightdm-wallpaper --reset   restore the Roudix Kitsune default
+      EOF
+      }
+
+      if [ $# -ne 1 ]; then usage >&2; exit 2; fi
+      case "$1" in -h|--help) usage; exit 0 ;; esac
+
+      # Writing to /var/lib needs root; keep the cwd so relative paths work.
+      if [ "$(id -u)" -ne 0 ]; then
+        exec /run/wrappers/bin/sudo "$0" "$@"
+      fi
+
+      dest="${lightdmBg}"
+
+      if [ "$1" = "--reset" ]; then
+        ln -sfn "${kitsunePath}" "$dest"
+        echo "LightDM wallpaper reset to Roudix Kitsune."
+        exit 0
+      fi
+
+      src="$1"
+      if [ ! -f "$src" ] || [ ! -r "$src" ]; then
+        echo "roudix-lightdm-wallpaper: cannot read '$src'" >&2
+        exit 1
+      fi
+      case "$(file --brief --mime-type -- "$src")" in
+        image/*) ;;
+        *) echo "roudix-lightdm-wallpaper: '$src' is not an image" >&2; exit 1 ;;
+      esac
+
+      mkdir -p "$(dirname "$dest")"
+      tmp="$(mktemp "$(dirname "$dest")/.background.XXXXXX")"
+      trap 'rm -f "$tmp"' EXIT
+      # Same normalisation as roudix-branding (8-bit RGB, no alpha, no
+      # metadata): avoids the gdk-pixbuf/libpng crashes on odd PNGs. Written
+      # to a temp file then moved, so the default symlink is replaced instead
+      # of being followed into the read-only store.
+      magick "''${src}[0]" -strip -depth 8 "PNG24:$tmp"
+      chmod 0644 "$tmp"
+      mv -f "$tmp" "$dest"
+      trap - EXIT
+      echo "LightDM wallpaper updated (visible at the next login screen)."
+    '';
+  };
 
   # Same browser -> .desktop id table as gnome.nix (kept in sync by hand;
   # an unknown id is silently ignored by Cinnamon's menu, so a wrong guess
@@ -29,6 +92,17 @@ let
     ++ [
       "nemo.desktop"
       "io.roudix.store.desktop"
+      "cinnamon-settings.desktop"
+    ];
+
+  # Panel (grouped-window-list) pinned apps: the default browser (first of
+  # roudix.browsers), Roudix Store and Cinnamon Settings.
+  pinnedApps =
+    lib.optionals (config.roudix.browsers != [ ])
+      (browserDesktopIds.${lib.head config.roudix.browsers} or [ ])
+    ++ [
+      "io.roudix.store.desktop"
+      "cinnamon-settings.desktop"
     ];
 
   # ── Roudix look & feel, as dconf DEFAULTS ─────────────────────────────
@@ -38,9 +112,28 @@ let
   cinnamonDefaults = {
     "org/cinnamon" = {
       # Favorites of the Cinnamon menu (the browser(s) chosen in Roudix, Nemo,
-      # Roudix Store). The panel's window-list pinning is a per-applet JSON
-      # file under ~/.config/cinnamon/spices, not a dconf key — left to the user.
+      # Roudix Store, Settings). The panel's window-list pinning is a per-applet
+      # JSON file under ~/.config/cinnamon/spices, not a dconf key: seeded once
+      # by modules/home/desktop/cinnamon.
       favorite-apps = favoriteApps;
+      # Panel layout = upstream Cinnamon's, written out so that the instance
+      # id of grouped-window-list (the 2 in "...window-list@cinnamon.org:2")
+      # is known: modules/home/desktop/cinnamon seeds its pinned apps there.
+      enabled-applets = [
+        "panel1:left:0:menu@cinnamon.org:0"
+        "panel1:left:1:separator@cinnamon.org:1"
+        "panel1:left:2:grouped-window-list@cinnamon.org:2"
+        "panel1:right:0:systray@cinnamon.org:3"
+        "panel1:right:1:xapp-status@cinnamon.org:4"
+        "panel1:right:2:notifications@cinnamon.org:5"
+        "panel1:right:3:printers@cinnamon.org:6"
+        "panel1:right:4:removable-drives@cinnamon.org:7"
+        "panel1:right:5:keyboard@cinnamon.org:8"
+        "panel1:right:6:network@cinnamon.org:9"
+        "panel1:right:7:sound@cinnamon.org:10"
+        "panel1:right:8:power@cinnamon.org:11"
+        "panel1:right:9:calendar@cinnamon.org:12"
+      ];
     };
     "org/cinnamon/desktop/background" = {
       picture-uri     = wallpaper;
@@ -88,59 +181,78 @@ let
     '';
   };
 in
-lib.mkIf isCinnamon {
-  # ── X11 session + LightDM ────────────────────────────────────────────────
-  # Cinnamon is an X11 desktop (its Wayland session is still experimental).
-  # That is the point of choosing it on older hardware: GNOME 49 is
-  # Wayland-only. The nixpkgs module only configures the slick greeter, it
-  # does not turn LightDM on.
-  services.xserver.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.lightdm.background =
-    "${roudixBranding}/share/backgrounds/b-kitsune.png";
-  services.displayManager.defaultSession = "cinnamon";
-  services.xserver.desktopManager.cinnamon.enable = true;
-
-  # X11 keyboard layout (greeter + session); other DEs get theirs through
-  # their own compositor/greeter settings, see keyboard.nix.
-  services.xserver.xkb = {
-    layout  = config.roudix.keyboardLayout;
-    variant = config.roudix.keyboardVariant;
+{
+  options.roudix.desktop.cinnamon.pinnedApps = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = pinnedApps;
+    description = ''
+      .desktop ids pinned in the Cinnamon panel window list at first login
+      (default browser, Roudix Store, Settings). Applied once per user, never
+      re-applied afterwards. Override in local.nix.
+    '';
   };
 
-  # ── Keyring ───────────────────────────────────────────────────────────────
-  # The nixpkgs Cinnamon module already enables gnome-keyring; unlock it at
-  # the LightDM login.
-  security.pam.services.lightdm.enableGnomeKeyring = true;
+  config = lib.mkIf isCinnamon {
+    # ── X11 session + LightDM ────────────────────────────────────────────────
+    # Cinnamon is an X11 desktop (its Wayland session is still experimental).
+    # That is the point of choosing it on older hardware: GNOME 49 is
+    # Wayland-only. The nixpkgs module only configures the slick greeter, it
+    # does not turn LightDM on.
+    services.xserver.enable = true;
+    services.xserver.displayManager.lightdm.enable = true;
+    # Mutable file (default: Kitsune) — change it with roudix-lightdm-wallpaper.
+    services.xserver.displayManager.lightdm.background = lightdmBg;
+    systemd.tmpfiles.rules = [
+      "d /var/lib/roudix 0755 root root -"
+      "d ${lightdmBgDir} 0755 root root -"
+      # `L` (not `L+`): created once, never replaces a wallpaper the user set.
+      "L ${lightdmBg} - - - - ${kitsunePath}"
+    ];
+    services.displayManager.defaultSession = "cinnamon";
+    services.xserver.desktopManager.cinnamon.enable = true;
 
-  # ── Look & feel (dconf defaults) ──────────────────────────────────────────
-  programs.dconf.enable = true;
-  programs.dconf.profiles.user.databases = [
-    { settings = cinnamonDefaults; }
-  ];
+    # X11 keyboard layout (greeter + session); other DEs get theirs through
+    # their own compositor/greeter settings, see keyboard.nix.
+    services.xserver.xkb = {
+      layout  = config.roudix.keyboardLayout;
+      variant = config.roudix.keyboardVariant;
+    };
 
-  # ── Menu: "Roudix" category ──────────────────────────────────────────────
-  # Dropped in both merge dirs, as in kde.nix, because the directory name
-  # depends on XDG_MENU_PREFIX.
-  environment.etc."xdg/menus/applications-merged/roudix.menu"          = roudixMenu;
-  environment.etc."xdg/menus/cinnamon-applications-merged/roudix.menu" = roudixMenu;
+    # ── Keyring ───────────────────────────────────────────────────────────────
+    # The nixpkgs Cinnamon module already enables gnome-keyring; unlock it at
+    # the LightDM login.
+    security.pam.services.lightdm.enableGnomeKeyring = true;
 
-  # Roudix provides its own terminal; warpinator opens LAN ports nobody
-  # asked for on a hands-off family machine.
-  environment.cinnamon.excludePackages = with pkgs; [
-    gnome-terminal
-    warpinator
-  ];
+    # ── Look & feel (dconf defaults) ──────────────────────────────────────────
+    programs.dconf.enable = true;
+    programs.dconf.profiles.user.databases = [
+      { settings = cinnamonDefaults; }
+    ];
 
-  environment.systemPackages = with pkgs; [
-    (writeTextDir "share/desktop-directories/roudix.directory" ''
-      [Desktop Entry]
-      Type=Directory
-      Name=Roudix
-      Icon=roudix-logo
-    '')
-    (lib.hiPrio roudixBranding)
-    papirus-icon-theme
-    capitaine-cursors
-  ];
+    # ── Menu: "Roudix" category ──────────────────────────────────────────────
+    # Dropped in both merge dirs, as in kde.nix, because the directory name
+    # depends on XDG_MENU_PREFIX.
+    environment.etc."xdg/menus/applications-merged/roudix.menu"          = roudixMenu;
+    environment.etc."xdg/menus/cinnamon-applications-merged/roudix.menu" = roudixMenu;
+
+    # Roudix provides its own terminal; warpinator opens LAN ports nobody
+    # asked for on a hands-off family machine.
+    environment.cinnamon.excludePackages = with pkgs; [
+      gnome-terminal
+      warpinator
+    ];
+
+    environment.systemPackages = with pkgs; [
+      (writeTextDir "share/desktop-directories/roudix.directory" ''
+        [Desktop Entry]
+        Type=Directory
+        Name=Roudix
+        Icon=roudix-logo
+      '')
+      (lib.hiPrio roudixBranding)
+      papirus-icon-theme
+      capitaine-cursors
+      roudixLightdmWallpaper
+    ];
+  };
 }

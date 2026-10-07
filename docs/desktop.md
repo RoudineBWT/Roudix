@@ -272,3 +272,20 @@ programs.plasma.panels = lib.mkForce [
 ```
 
 > `lib.mkForce` is only needed for `wallpaper` and `panels`, which are still defined in `home/desktop/kde/default.nix`.
+
+## Cinnamon defaults
+
+Cinnamon ships the Roudix Kitsune wallpaper by default, on the desktop and on the LightDM login screen, and pins the default browser (first of `roudix.browsers`), Roudix Store and Settings in the panel. These are defaults: the desktop wallpaper and the panel pins are applied once and never re-applied by a rebuild.
+
+The login screen (slick-greeter) has no settings app. Change its wallpaper with:
+
+```bash
+roudix-lightdm-wallpaper ~/Pictures/wallpaper.jpg   # no rebuild needed
+roudix-lightdm-wallpaper --reset                    # back to Kitsune
+```
+
+Override the pinned apps in `hosts/roudix/local.nix`:
+
+```nix
+roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.desktop" "cinnamon-settings.desktop" ];
+```
