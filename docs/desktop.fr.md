@@ -12,11 +12,12 @@ Changez de bureau à tout moment avec `roudix-switch <de>` ou via l'interface **
 | `umbriel` | Umbriel + Noctalia | Tiling scrollable — le compositeur natif propre à Noctalia, Noctalia uniquement (pas de changement de shell) |
 | `gnome` | GNOME 49.5 | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
+| `cinnamon` | Cinnamon | Session X11 + LightDM — bureau classique, adapté aux vieux PC (GNOME 49 est Wayland uniquement) |
 
 Pour changer de façon permanente, modifiez `hosts/roudix/local.nix` :
 
 ```nix
-roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome" ou "kde"
+roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde" ou "cinnamon"
 ```
 
 Ou utilisez la fonction fish — elle modifie la config et rebuild en une seule étape :

@@ -738,6 +738,7 @@ pick "Desktop environment:" DE \
   "niri|Niri" \
   "gnome|GNOME" \
   "kde|KDE Plasma" \
+  "cinnamon|Cinnamon (X11, older PCs)" \
   "hyprland|Hyprland" \
   "mangowc|MangoWC"
 
@@ -770,6 +771,9 @@ if [[ "$DE" == "gnome" ]]; then
 elif [[ "$DE" == "kde" ]]; then
   FILE_MANAGER="dolphin"
   info "Desktop = KDE Plasma → file manager: Dolphin."
+elif [[ "$DE" == "cinnamon" ]]; then
+  FILE_MANAGER="nemo"
+  info "Desktop = Cinnamon → file manager: Nemo."
 else
   pick "File manager:" FILE_MANAGER \
     "nautilus|Nautilus — GNOME Files (recommended)" \

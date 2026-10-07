@@ -66,8 +66,8 @@ in
     description = ''
       Keyring + xdg-desktop-portal stack used by "bare" compositors (niri,
       hyprland, mangowc, umbriel) that have no full DE providing their own
-      stack natively. Has no effect when roudix.desktop.type is "gnome" or
-      "kde": those DEs always keep their own native integration.
+      stack natively. Has no effect when roudix.desktop.type is "gnome",
+      "kde" or "cinnamon": those DEs always keep their own native integration.
 
       "gnome"  → gnome-keyring + xdg-desktop-portal-gtk/-gnome (default).
       "kde"    → KWallet + xdg-desktop-portal-kde + polkit-kde-agent, and

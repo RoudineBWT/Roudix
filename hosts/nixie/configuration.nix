@@ -36,7 +36,10 @@
   # the features are simply absent.
   roudix.boot.bootloader       = lib.mkDefault "systemd-boot"; # simplest/safest choice, no need for limine's extras here
   roudix.terminal               = lib.mkDefault "ghostty";
-  roudix.desktop.type           = lib.mkDefault "gnome"; # simplest DE to hand to a non-technical user
+  # Cinnamon: classic desktop layout for a non-technical user, and an X11
+  # session for older PCs (GNOME 49 is Wayland-only). Back to GNOME: set
+  # roudix.desktop.type = "gnome" in hosts/nixie/local.nix.
+  roudix.desktop.type           = lib.mkDefault "cinnamon";
   roudix.flatpak.enable         = lib.mkDefault true;   # easy manual app installs for him, outside of what you maintain
   roudix.fstrim.enable          = lib.mkDefault true;
 

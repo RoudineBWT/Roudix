@@ -101,6 +101,7 @@ def _desktops():
         ("niri", "Niri"),
         ("gnome", "GNOME"),
         ("kde", "KDE Plasma"),
+        ("cinnamon", L("Cinnamon (X11, vieux PC)", "Cinnamon (X11, older PCs)")),
         ("hyprland", "Hyprland"),
         ("mangowc", "MangoWC"),
         ("umbriel", "Umbriel"),
@@ -1563,6 +1564,9 @@ class OptionsPage(Adw.NavigationPage):
             self.file_manager_row.set_visible(False)
         elif desktop == "kde":
             self._set_combo_value(self.file_manager_row, "dolphin")
+            self.file_manager_row.set_visible(False)
+        elif desktop == "cinnamon":
+            self._set_combo_value(self.file_manager_row, "nemo")
             self.file_manager_row.set_visible(False)
         else:
             self.file_manager_row.set_visible(True)
