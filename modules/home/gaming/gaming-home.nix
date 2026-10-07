@@ -19,11 +19,13 @@ in
       ));
 
   # ── Gaming packages (user) ───────────────────────────────────────────────
-  # The base (wine/protontricks-like/proton frontend) always stays as
-  # long as roudix.gaming.enable is set; each launcher/tool can be
-  # individually disabled via roudix.gaming.apps.<name>.enable.
-  home.packages = with pkgs; (if isGaming then
-    [
+  # The base (wine/protontricks-like/proton frontend) only comes with
+  # roudix.gaming.enable. Each launcher/tool is controlled by
+  # roudix.gaming.apps.<name>.enable on its own (default: follows
+  # roudix.gaming.enable), so a host can have e.g. Heroic alone without the
+  # full gaming setup (see hosts/nixie).
+  home.packages = with pkgs; (
+    lib.optionals isGaming [
       winetricks
       wineWow64Packages.staging
       (if isKde then protonup-qt else protonplus)
@@ -37,5 +39,5 @@ in
     ++ lib.optional apps.lutris.enable lutris
     ++ lib.optional apps.vintagestory.enable vintagestory
     ++ lib.optional apps.mangohud.enable mangohud
-  else []);
+  );
 }
