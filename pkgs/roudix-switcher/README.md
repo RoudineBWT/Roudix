@@ -23,7 +23,7 @@ and system tweaks, hit apply, and it rebuilds the system for you.
 
 | Page | What you pick |
 |------|---------------|
-| Desktop | Compositor / DE (Niri, Hyprland, GNOME, KDE, MangoWC, Umbriel) and shell (Noctalia, DMS, Caelestia on Hyprland, Umbriel variants) |
+| Desktop | Compositor / DE (Niri, Hyprland, GNOME, KDE, Cinnamon, MangoWC, Umbriel) and shell (Noctalia, DMS, Caelestia on Hyprland, Umbriel variants) |
 | Gaming | Launchers and tools (Lutris, Heroic, Faugus, Prism, MangoHud...), Ananicy, Decky, gamescope session... |
 | Content Creation | OBS Studio, its plugins, virtual camera, video editor |
 | Editor / Terminal / Browser / Login Shell / File Manager | Default app of each kind |

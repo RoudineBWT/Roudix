@@ -63,7 +63,7 @@ pkgs.stdenv.mkDerivation {
     Terminal=false
     Type=Application
     Categories=System;Settings;X-Roudix;
-    Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;customize;browser;editor;terminal;gaming;
+    Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;cinnamon;customize;browser;editor;terminal;gaming;
     EOF
   '';
   meta = {

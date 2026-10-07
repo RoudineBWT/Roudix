@@ -125,6 +125,12 @@ ENVIRONMENTS = [
         "icon":     "kde.svg",
     },
     {
+        "id":       "cinnamon",
+        "name":     "Cinnamon",
+        "subtitle": L("Cinnamon — bureau classique sous X11, idéal pour les vieux PC", "Cinnamon — classic X11 desktop, ideal for older PCs"),
+        "icon":     "cinnamon.svg",
+    },
+    {
         "id":       "mangowc",
         "name":     "MangoWC",
         "subtitle": L("Compositeur Wayland en tuilage dynamique, léger", "Lightweight dynamic tiling Wayland compositor"),
@@ -682,15 +688,22 @@ def strip_ansi(text):
 
 
 def get_current_de():
-    try:
-        with open(CONFIG_FILE) as f:
-            for line in f:
-                if "roudix.desktop.type" in line:
-                    m = re.search(r'"(\w+)"', line)
-                    if m:
-                        return m.group(1)
-    except Exception:
-        pass
+    # local.nix first, then the host's own default (hosts/<host>/configuration.nix,
+    # e.g. `roudix.desktop.type = lib.mkDefault "cinnamon";` on nixie, which has
+    # no desktop line in its local.nix), then niri.
+    host_default = os.path.join(NH_FLAKE, "hosts", ROUDIX_HOST, "configuration.nix")
+    for path in (CONFIG_FILE, host_default):
+        try:
+            with open(path) as f:
+                for line in f:
+                    if line.lstrip().startswith("#"):
+                        continue
+                    if "roudix.desktop.type" in line:
+                        m = re.search(r'"(\w+)"', line)
+                        if m:
+                            return m.group(1)
+        except Exception:
+            pass
     return "niri"
 
 

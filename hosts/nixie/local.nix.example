@@ -25,7 +25,7 @@
   roudix.laptop.batteryChargeThresholds.stop  = 80; # roudix-installer: fixed
 
   # ── Desktop & apps ───────────────────────────────────────────────────────
-  roudix.desktop.type = "cinnamon";             # classic X11 desktop for a non-technical user / older PC ("gnome" is Wayland-only)
+  roudix.desktop.type = "cinnamon";             # classic X11 desktop for a non-technical user / older PC ("gnome" is Wayland-only) # roudix-installer: fixed
   roudix.browsers     = ["helium"];             # "brave", "helium", "firefox", "vivaldi"...
   roudix.terminal     = "ghostty";
   roudix.flatpak.enable = true;                 # easy manual app installs, outside of what you maintain
