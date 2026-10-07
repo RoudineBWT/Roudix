@@ -20,6 +20,13 @@ Nobara's [dnf-app-center](https://github.com/Nobara-Project/dnf-app-center)
   On an app's page, the **Source** chooser picks where it goes: *Nix · User (Home Manager)* or *Nix · System*.
   Each source already holding the app is marked "(installed)", and the button reads Install or Remove for the
   chosen source (so one app can be in both).
+- Flatpak support on demand (`flatpak_support.py`): when Flatpak is not installed on the system
+  (`roudix.flatpak.enable` off) the Flatpak tab is hidden and the sidebar shows an *Enable Flatpak support…*
+  button. It writes `roudix.flatpak.enable = true;` to the host `local.nix` (an existing hand-written line is
+  edited in place), runs one `nh os switch`, then `flatpak update --appstream`, and asks to restart the store.
+  A failed rebuild restores `local.nix`.
+- `flatpak update --appstream` also runs once, in the background, the first time the store starts with Flatpak
+  available (marker: `~/.local/state/roudix-store/flatpak-appstream-v1`), then the catalog is reloaded.
 - Flatpak tab (Nix | Flatpak switch in the sidebar): Flathub and Flathub Beta metadata come from what `flatpak`
   already downloaded (`flatpak update --appstream`), read remote by remote from the system and user installations.
   An app is listed once; on its page, a **Source** chooser (like GNOME Software) lets you pick where it comes from:

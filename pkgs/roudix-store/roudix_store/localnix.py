@@ -164,3 +164,44 @@ def restore_files(saved: dict[str, str | None]) -> None:
             shutil.copy2(bak, path)
         elif os.path.exists(path):
             os.remove(path)
+
+
+# ── Flatpak support switch (roudix.flatpak.enable) ───────────────────────────
+FP_BEGIN = "# >>> roudix-store flatpak (managed by Roudix Store) >>>"
+FP_END = "# <<< roudix-store flatpak <<<"
+FP_BLOCK_RE = re.compile(r"\n?[ \t]*" + re.escape(FP_BEGIN) + r".*?" + re.escape(FP_END) + r"[ \t]*\n?", re.S)
+# an uncommented `roudix.flatpak.enable = <bool>;` written by hand
+FP_LINE_RE = re.compile(r"^([ \t]*roudix\.flatpak\.enable[ \t]*=[ \t]*)(true|false)([ \t]*;)", re.M)
+
+
+def set_flatpak_enabled(enabled: bool = True) -> bool | str:
+    """Make hosts/<host>/local.nix say `roudix.flatpak.enable = <enabled>;` exactly once.
+
+    A hand-written (uncommented) line is edited in place — a second definition with another value
+    would make the rebuild fail. Otherwise a small managed block is added."""
+    path = HOST_FILE
+    value = "true" if enabled else "false"
+    try:
+        text = open(path, encoding="utf-8").read()
+    except FileNotFoundError:
+        text = "{ ... }:\n{\n}\n"
+    except OSError as exc:
+        return str(exc)
+    text = FP_BLOCK_RE.sub("\n", text)  # drop our own previous block
+    if FP_LINE_RE.search(text):
+        new = FP_LINE_RE.sub(lambda m: m.group(1) + value + m.group(3), text)
+    else:
+        i = text.rstrip().rfind("}")
+        if i < 0:
+            return "no closing '}' found in " + path
+        block = f"  {FP_BEGIN}\n  roudix.flatpak.enable = {value};\n  {FP_END}\n"
+        new = text[:i].rstrip("\n") + "\n\n" + block + text[i:]
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path), prefix=".store-")
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(new)
+        os.replace(tmp, path)
+    except OSError as exc:
+        return str(exc)
+    return True

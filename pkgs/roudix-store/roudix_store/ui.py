@@ -5,6 +5,7 @@ import html
 import os
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
+import shutil
 import subprocess
 import sys
 import threading
@@ -25,6 +26,7 @@ from .nix_backend import NixBackend, NixUnavailable
 from . import localnix
 from . import update_output
 from . import launcher
+from . import flatpak_support
 
 import json
 from pathlib import Path as _Path
@@ -1570,7 +1572,52 @@ class MainWindow(Adw.ApplicationWindow):
             self.sidebar_box.append(self._nav_button(key, title, "categories", icon, indent=True))
 
     def _build_source_switch(self) -> Gtk.Widget:
-        """Nix | Flatpak — each one is its own catalog (categories, search, Installed)."""
+        """Nix | Flatpak — each one is its own catalog (categories, search, Installed).
+
+        Without Flatpak support (roudix.flatpak.enable off) there is no Flatpak page: a button
+        offers to enable the support instead."""
+        if not flatpak_support.available():
+            self.source = "nix"
+            self.source_buttons = {}
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+            card.add_css_class("card")
+            card.set_margin_top(10)
+            card.set_margin_bottom(8)
+            card.set_margin_start(10)
+            card.set_margin_end(10)
+            head = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+            head.set_margin_top(12)
+            head.set_margin_start(12)
+            head.set_margin_end(12)
+            icon = Gtk.Image.new_from_icon_name("system-software-install-symbolic")
+            icon.set_pixel_size(24)
+            icon.set_valign(Gtk.Align.START)
+            head.append(icon)
+            texts = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            title = Gtk.Label(label=L("Flatpak n'est pas activé", "Flatpak is not enabled"), xalign=0)
+            title.add_css_class("heading")
+            title.set_wrap(True)
+            desc = Gtk.Label(label=L("Active-le pour installer des apps depuis Flathub.",
+                                     "Turn it on to install apps from Flathub."), xalign=0)
+            desc.add_css_class("dim-label")
+            desc.add_css_class("caption")
+            desc.set_wrap(True)
+            texts.append(title)
+            texts.append(desc)
+            texts.set_hexpand(True)
+            head.append(texts)
+            card.append(head)
+            button = Gtk.Button(label=L("Activer Flatpak", "Enable Flatpak"))
+            button.add_css_class("suggested-action")
+            button.add_css_class("pill")
+            button.set_margin_start(12)
+            button.set_margin_end(12)
+            button.set_margin_bottom(12)
+            button.set_tooltip_text(L("Active roudix.flatpak.enable puis reconstruit le système.",
+                                      "Turns on roudix.flatpak.enable, then rebuilds the system."))
+            button.connect("clicked", lambda _b: self._prompt_enable_flatpak())
+            card.append(button)
+            return card
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         box.add_css_class("linked")
         box.set_margin_top(8)
@@ -1591,6 +1638,110 @@ class MainWindow(Adw.ApplicationWindow):
             self.source_buttons[key] = button
             box.append(button)
         return box
+
+    # ── Flatpak support on demand ────────────────────────────────────────
+    def _prompt_enable_flatpak(self) -> None:
+        if self.queue_worker_running or not self.backend:
+            self._show_toast(L("Une opération est déjà en cours.", "An operation is already running."))
+            return
+        dialog = Adw.MessageDialog(
+            transient_for=self,
+            heading=L("Activer le support Flatpak ?", "Enable Flatpak support?"),
+            body=L("Cela écrit « roudix.flatpak.enable = true » dans ton local.nix puis reconstruit le système "
+                   "(quelques minutes). Ensuite, le catalogue Flathub sera récupéré et il faudra redémarrer "
+                   "Roudix Store pour que Flatpak soit pris en charge.",
+                   "This writes “roudix.flatpak.enable = true” to your local.nix, then rebuilds the system "
+                   "(a few minutes). The Flathub catalog is then fetched and Roudix Store has to be "
+                   "restarted for Flatpak to be picked up."),
+        )
+        dialog.add_response("cancel", L("Annuler", "Cancel"))
+        dialog.add_response("enable", L("Activer et reconstruire", "Enable and rebuild"))
+        try:
+            dialog.set_response_appearance("enable", Adw.ResponseAppearance.SUGGESTED)
+        except AttributeError:
+            pass
+        dialog.connect("response", lambda _d, r: self._start_enable_flatpak() if r == "enable" else None)
+        dialog.present()
+
+    def _start_enable_flatpak(self) -> None:
+        if self.queue_worker_running:
+            return
+        self.queue_worker_running = True  # blocks installs / reloads while the system is rebuilt
+        self._append_queue_log(L("Activation du support Flatpak…", "Enabling Flatpak support…"))
+        self.status_label.set_text(L("Activation de Flatpak : reconstruction du système en cours…",
+                                     "Enabling Flatpak: rebuilding the system…"))
+        self._show_toast(L("Reconstruction en cours — suis l'avancement dans la file d'attente.",
+                           "Rebuild in progress — follow it in the queue page."))
+
+        def worker() -> None:
+            ok, message = flatpak_support.enable_support(
+                lambda msg: GLib.idle_add(self._handle_batch_event, {"event": "log", "message": msg}))
+            GLib.idle_add(self._enable_flatpak_done, ok, message)
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _enable_flatpak_done(self, ok: bool, message: str) -> bool:
+        self.queue_worker_running = False
+        self._append_queue_log(message)
+        self.status_label.set_text(message)
+        self._refresh_queue_page()
+        if not ok:
+            self._show_toast(message)
+            return False
+        dialog = Adw.MessageDialog(
+            transient_for=self,
+            heading=L("Redémarre Roudix Store", "Restart Roudix Store"),
+            body=L("Le support Flatpak est activé. Redémarre Roudix Store pour que les Flatpaks soient pris en charge.",
+                   "Flatpak support is enabled. Restart Roudix Store so Flatpak apps are picked up."),
+        )
+        dialog.add_response("later", L("Plus tard", "Later"))
+        dialog.add_response("restart", L("Redémarrer maintenant", "Restart now"))
+        try:
+            dialog.set_response_appearance("restart", Adw.ResponseAppearance.SUGGESTED)
+        except AttributeError:
+            pass
+        dialog.connect("response", lambda _d, r: self._restart_store() if r == "restart" else None)
+        dialog.present()
+        return False
+
+    def _restart_store(self) -> None:
+        """Quit, then start a fresh instance (new environment, Flatpak on PATH).
+
+        The store is a single-instance Adw.Application: a second copy started while this one
+        is still alive would only re-activate it and exit. So a detached shell waits for this
+        process to be gone, then launches the store."""
+        exe = shutil.which("roudix-store") or "/run/current-system/sw/bin/roudix-store"
+        script = f'while kill -0 {os.getpid()} 2>/dev/null; do sleep 0.2; done; sleep 0.5; exec "$0"'
+        try:
+            subprocess.Popen(["/bin/sh", "-c", script, exe], start_new_session=True,
+                             stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError as exc:
+            self._show_toast(str(exc))
+            return
+        app = self.get_application()
+        if app is not None:
+            app.quit()
+
+    def _maybe_first_appstream_update(self) -> None:
+        """`flatpak update --appstream` once, so the Flathub catalog is there at first use."""
+        if getattr(self, "_appstream_checked", False):
+            return
+        self._appstream_checked = True
+        if not flatpak_support.needs_first_appstream():
+            return
+        self.status_label.set_text(L("Première utilisation : récupération du catalogue Flathub…",
+                                     "First use: fetching the Flathub catalog…"))
+
+        def worker() -> None:
+            if flatpak_support.update_appstream(lambda _m: None):
+                GLib.idle_add(self._first_appstream_done)
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _first_appstream_done(self) -> bool:
+        if not self.queue_worker_running:
+            self._load_async()  # re-read the freshly downloaded Flathub metadata
+        return False
 
     def _on_source_toggled(self, button: Gtk.ToggleButton, key: str) -> None:
         if not button.get_active() or key == self.source:
@@ -1947,6 +2098,7 @@ class MainWindow(Adw.ApplicationWindow):
         self._populate_repo_filter_dropdown()
         self._switch_page(self.current_group, self.current_page)
         self._refresh_queue_page()
+        self._maybe_first_appstream_update()
         return False
 
     def _fetch_news_text(self) -> str:
