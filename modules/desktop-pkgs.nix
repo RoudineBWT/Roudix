@@ -38,6 +38,8 @@ in
   # Flake side: the umbriel overlay (inputs.umbriel.overlays.default) provides
   # pkgs.umbriel and is only applied when roudix.desktop.latest.umbriel = true.
   umbriel = pkgs.umbriel;
-  umbrielPortal = pick "umbriel" pkgs.xdg-desktop-portal-umbriel
-    inputs.xdg-desktop-portal-umbriel.packages.${sys}.default;
+
+  # No `umbrielPortal` here anymore: xdg-desktop-portal-umbriel is an input of
+  # the umbriel flake itself, and its NixOS module sets
+  # programs.umbriel.portalPackage by default (see modules/system/desktop/umbriel.nix).
 }

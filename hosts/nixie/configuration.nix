@@ -11,10 +11,14 @@
     ../../modules/system/gpu
     ../../modules/system/power
     ../../modules/system/audio
-    # Deliberately NOT imported on this host (family laptop, not a gaming
-    # box, no RGB, no VMs — keeps the closure smaller and avoids modules
-    # that need attention no one on this machine will give them):
+    # Imported for its OPTIONS only (roudix.gaming.*, which the home-manager
+    # side and the installer's local.nix read) — roudix.gaming.enable is
+    # false below, so no Steam/Gamescope/Wine/scx lands on this machine.
+    # Only Heroic is installed (roudix.gaming.apps.heroic.enable below).
     ../../modules/system/gaming
+    # Deliberately NOT imported on this host (family laptop, no RGB, no VMs
+    # — keeps the closure smaller and avoids modules that need attention no
+    # one on this machine will give them):
     #   ../../modules/system/rgb
     #   ../../modules/system/virtualization
     inputs.brave-previews.nixosModules.default
@@ -56,6 +60,19 @@
 
   roudix.mesa.useGit             = lib.mkDefault false;
   roudix.matrixClient            = lib.mkDefault "none";
+
+  # ── Apps: nothing installed by default that nobody asked for ─────────────
+  # These two default to ON in their modules (Spotify + Spicetify, OBS +
+  # v4l2loopback), so they must be switched off explicitly here.
+  roudix.musicPlayer             = lib.mkDefault "none";
+  roudix.contentCreation.enable  = lib.mkDefault false;
+
+  # ── Gaming: Heroic only ──────────────────────────────────────────────────
+  # roudix.gaming.enable is the "full gaming" switch (Steam, Gamescope,
+  # Wine, Proton, scx...). Off here; the launchers are individually opt-in
+  # when it's off (their defaults follow roudix.gaming.enable).
+  roudix.gaming.enable           = lib.mkDefault false;
+  roudix.gaming.apps.heroic.enable = lib.mkDefault true;
 
   # ── Network ───────────────────────────────────────────────────────────────
   networking.hostName = "nixie";
