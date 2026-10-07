@@ -127,7 +127,7 @@ let
     "org/cinnamon/desktop/interface" = {
       gtk-theme    = "Mint-Y-Dark-Aqua";
       icon-theme   = "Papirus-Dark";
-      cursor-theme = "bibata-modern-ice";
+      cursor-theme = "capitaine-cursors-white";
       cursor-size  = lib.gvariant.mkInt32 24;
     };
     # Settings > General > "Disable compositing for full-screen windows"
