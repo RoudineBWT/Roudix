@@ -116,6 +116,9 @@ let
       # Roudix Store, Settings). The panel's window-list pinning and the menu
       # icon are NOT dconf keys but per-applet defaults, see modules/home/desktop/cinnamon.
       favorite-apps = favoriteApps;
+      # Logo of the "System Info" page in Cinnamon Settings (absolute path:
+      # the page scales it to 100px).
+      system-icon = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
     };
     "org/cinnamon/desktop/background" = {
       picture-uri     = wallpaper;
@@ -127,6 +130,9 @@ let
       cursor-theme = "capitaine-cursors-white";
       cursor-size  = lib.gvariant.mkInt32 24;
     };
+    # Settings > General > "Disable compositing for full-screen windows"
+    # (X11 session): on by default, for games/video at full speed.
+    "org/cinnamon/muffin".unredirect-fullscreen-windows = true;
     "org/cinnamon/theme".name = "Mint-Y-Dark-Aqua";
     "org/cinnamon/desktop/wm/preferences".theme = "Mint-Y-Dark-Aqua";
     # libadwaita / GTK4 apps follow the color-scheme, which they get from the

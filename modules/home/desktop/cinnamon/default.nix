@@ -5,6 +5,10 @@ let
 
   logo = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
 
+  # Text shown next to the logo in the panel menu button. "" = logo only,
+  # or e.g. "Roudix". Only a default: changeable in the applet's settings.
+  menuLabel = "";
+
   # ── Per-applet defaults without rebuilding Cinnamon ─────────────────────
   # An applet's settings file (~/.config/cinnamon/spices/<applet>/<id>.json)
   # is created on first load from the applet's settings-schema.json. So the
@@ -38,8 +42,9 @@ in
       '';
     "cinnamon/applets/menu@cinnamon.org".source =
       patchedApplet "menu@cinnamon.org" ''
-        patch menu-icon-custom true
+        patch menu-custom true
         patch menu-icon '${builtins.toJSON logo}'
+        patch menu-label '${builtins.toJSON menuLabel}'
       '';
   };
 
@@ -49,7 +54,7 @@ in
   # version to reset again.
   home.activation.cinnamonPanelDefaults = lib.mkIf isCinnamon (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      marker="''${XDG_STATE_HOME:-$HOME/.local/state}/roudix/cinnamon-panel-defaults-v3"
+      marker="''${XDG_STATE_HOME:-$HOME/.local/state}/roudix/cinnamon-panel-defaults-v4"
       if [ ! -e "$marker" ]; then
         rm -f "$HOME"/.config/cinnamon/spices/grouped-window-list@cinnamon.org/*.json \
               "$HOME"/.config/cinnamon/spices/menu@cinnamon.org/*.json
