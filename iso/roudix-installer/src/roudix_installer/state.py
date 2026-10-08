@@ -48,7 +48,7 @@ class InstallState:
     disk: DiskChoice = field(default_factory=DiskChoice)
 
     # ── Hardware ──────────────────────────────────────────────────────────
-    gpu: str = "amd"                 # amd | amd-legacy | nvidia | intel
+    gpu: str = "amd"                 # amd | amd-igpu | amd-legacy | nvidia | intel
     nvidia_laptop: bool = False
     laptop: bool = False             # roudix.laptop.enable — TLP, force-disables tuned
     laptop_thinkpad: bool = False    # roudix.laptop.thinkpad — 40/80% charge thresholds

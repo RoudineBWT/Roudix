@@ -30,7 +30,7 @@
   # ── Hardware — ThinkPad L380: Intel-only (i3/i5-8250U, UHD 620) ────────
   hardware.myGpu    = lib.mkDefault "intel";
   hardware.myCpu    = lib.mkDefault "intel";
-  hardware.myKernel = lib.mkDefault "cachyos-lts-lto-v3";
+  hardware.myKernel = lib.mkDefault "nixpkgs-lts";
 
   # ── Features ─────────────────────────────────────────────────────────────
   # NOTE: gaming/, rgb/ and virtualization/ modules are not imported above,

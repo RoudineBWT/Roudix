@@ -29,6 +29,12 @@ jobs:
 
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3
+        with:
+          # Évite de rester bloqué sur un cache en panne (ex: Attic qui time out)
+          extra-conf: |
+            connect-timeout = 3
+            stalled-download-timeout = 10
+            download-attempts = 2
 
       - name: Update flake inputs
         run: nix flake update --accept-flake-config

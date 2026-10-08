@@ -120,6 +120,19 @@ let
       # the page scales it to 100px).
       system-icon = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
     };
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    "org/gnome/libgnomekbd/keyboard" = {
+      layouts = [
+        (if kbVariant == "" then kbLayout else "${kbLayout}\t${kbVariant}")
+      ];
+    } // lib.optionalAttrs (kbOptions != [ ]) {
+      options = map (o: "${lib.head (lib.splitString ":" o)}\t${o}") kbOptions;
+    };
+>>>>>>> origin/dev
+>>>>>>> origin/testing
     "org/cinnamon/desktop/background" = {
       picture-uri     = wallpaper;
       picture-options = "zoom";
@@ -151,6 +164,23 @@ let
     };
   };
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+  # ── Keyboard layout as seen by Cinnamon ───────────────────────────────
+  # services.xserver.xkb only sets the X11 keymap at startup (LightDM and
+  # the first session). Once running, cinnamon-settings-daemon applies the
+  # layouts from dconf (libgnomekbd) and overrides it, so the Roudix layout
+  # must be mirrored there. Entries are "layout<TAB>variant"; options are
+  # "group<TAB>option".
+  kbLayout  = config.roudix.keyboardLayout;
+  kbVariant = config.roudix.keyboardVariant;
+  kbOptions = lib.filter (o: o != "")
+    (lib.splitString "," config.roudix.keyboardOptions);
+
+>>>>>>> origin/dev
+>>>>>>> origin/testing
   # Same "Roudix" application-menu category as kde.nix: Roudix apps carry
   # Categories=...;X-Roudix; and this merged menu groups them in one folder.
   roudixMenu = {
@@ -207,11 +237,28 @@ in
     services.displayManager.defaultSession = "cinnamon";
     services.xserver.desktopManager.cinnamon.enable = true;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/testing
     # X11 keyboard layout (greeter + session); other DEs get theirs through
     # their own compositor/greeter settings, see keyboard.nix.
     services.xserver.xkb = {
       layout  = config.roudix.keyboardLayout;
       variant = config.roudix.keyboardVariant;
+<<<<<<< HEAD
+=======
+=======
+    # X11 keyboard layout (greeter + initial session). Cinnamon itself then
+    # reads its layouts from dconf: mirrored in cinnamonDefaults above.
+    # Other DEs get theirs through their own compositor/greeter settings,
+    # see keyboard.nix.
+    services.xserver.xkb = {
+      layout  = config.roudix.keyboardLayout;
+      variant = config.roudix.keyboardVariant;
+      options = config.roudix.keyboardOptions;
+>>>>>>> origin/dev
+>>>>>>> origin/testing
     };
 
     # ── Dark GTK4 ─────────────────────────────────────────────────────────────

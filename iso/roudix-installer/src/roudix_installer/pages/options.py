@@ -593,11 +593,15 @@ class OptionsPage(Adw.NavigationPage):
                 [
                     ("amd", "AMD — RDNA / GCN 3+"),
                     (
+                        "amd-igpu",
+                        L("AMD intégré (APU Ryzen)", "AMD integrated (Ryzen APU)"),
+                    ),
+                    (
                         "amd-legacy",
                         L("AMD legacy — GCN 1.x/2.x", "AMD legacy — GCN 1.x/2.x"),
                     ),
                     ("nvidia", "NVIDIA"),
-                    ("intel", L("Intel intégré", "Intel integrated")),
+                    ("intel", L("Intel (intégré / Arc)", "Intel (integrated / Arc)")),
                 ],
                 gpu_detected,
             ),
@@ -1357,7 +1361,7 @@ class OptionsPage(Adw.NavigationPage):
         def vals(pairs):
             return [v for v, _ in pairs]
         return {
-            "gpu": ["amd", "amd-legacy", "nvidia", "intel"],
+            "gpu": ["amd", "amd-igpu", "amd-legacy", "nvidia", "intel"],
             "cpu": ["amd", "intel"],
             "kernel": vals(_kernels()),
             "kernel_chaotic": vals(_kernels_chaotic()),
