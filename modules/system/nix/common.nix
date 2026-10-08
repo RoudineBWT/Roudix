@@ -5,7 +5,7 @@
     trusted-users = [ "root" "${username}" ];
     experimental-features = [ "nix-command" "flakes" ];
     extra-substituters = [
-      "https://cache.xinux.uz?priority=30"
+      "https://cache.xinux.uz?priority=45"
       "https://attic.xuyh0120.win/lantian?priority=40"
       "https://noctalia.cachix.org"
       "https://prismlauncher.cachix.org"
