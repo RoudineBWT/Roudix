@@ -2,11 +2,7 @@
 {
   nix.settings = {
     extra-substituters = [
-<<<<<<< HEAD
-      "https://cache.xinux.uz?priority=30"
-=======
       "https://cache.xinux.uz?priority=45"
->>>>>>> origin/dev
       "https://attic.xuyh0120.win/lantian?priority=40"
       "https://noctalia.cachix.org"
       "https://prismlauncher.cachix.org"

@@ -120,8 +120,6 @@ let
       # the page scales it to 100px).
       system-icon = "/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png";
     };
-<<<<<<< HEAD
-=======
     "org/gnome/libgnomekbd/keyboard" = {
       layouts = [
         (if kbVariant == "" then kbLayout else "${kbLayout}\t${kbVariant}")
@@ -129,7 +127,6 @@ let
     } // lib.optionalAttrs (kbOptions != [ ]) {
       options = map (o: "${lib.head (lib.splitString ":" o)}\t${o}") kbOptions;
     };
->>>>>>> origin/dev
     "org/cinnamon/desktop/background" = {
       picture-uri     = wallpaper;
       picture-options = "zoom";
@@ -161,8 +158,6 @@ let
     };
   };
 
-<<<<<<< HEAD
-=======
   # ── Keyboard layout as seen by Cinnamon ───────────────────────────────
   # services.xserver.xkb only sets the X11 keymap at startup (LightDM and
   # the first session). Once running, cinnamon-settings-daemon applies the
@@ -174,7 +169,6 @@ let
   kbOptions = lib.filter (o: o != "")
     (lib.splitString "," config.roudix.keyboardOptions);
 
->>>>>>> origin/dev
   # Same "Roudix" application-menu category as kde.nix: Roudix apps carry
   # Categories=...;X-Roudix; and this merged menu groups them in one folder.
   roudixMenu = {
@@ -231,13 +225,6 @@ in
     services.displayManager.defaultSession = "cinnamon";
     services.xserver.desktopManager.cinnamon.enable = true;
 
-<<<<<<< HEAD
-    # X11 keyboard layout (greeter + session); other DEs get theirs through
-    # their own compositor/greeter settings, see keyboard.nix.
-    services.xserver.xkb = {
-      layout  = config.roudix.keyboardLayout;
-      variant = config.roudix.keyboardVariant;
-=======
     # X11 keyboard layout (greeter + initial session). Cinnamon itself then
     # reads its layouts from dconf: mirrored in cinnamonDefaults above.
     # Other DEs get theirs through their own compositor/greeter settings,
@@ -246,7 +233,6 @@ in
       layout  = config.roudix.keyboardLayout;
       variant = config.roudix.keyboardVariant;
       options = config.roudix.keyboardOptions;
->>>>>>> origin/dev
     };
 
     # ── Dark GTK4 ─────────────────────────────────────────────────────────────
