@@ -79,3 +79,27 @@ def detect_cpu():
     if "GenuineIntel" in text:
         return "intel"
     return None
+
+
+def detect_prime_bus_ids() -> dict:
+    """
+    PCI bus IDs for NixOS' hardware.nvidia.prime on an Optimus laptop:
+    {"nvidiaBusId": "PCI:1:0:0", "intelBusId": ..., "amdgpuBusId": ...}
+    (only the keys that were found). NixOS wants the IDs in DECIMAL, sysfs
+    addresses are hex: 0000:c1:00.0 -> PCI:193:0:0.
+    """
+    keys = {"0x10de": "nvidiaBusId", "0x8086": "intelBusId", "0x1002": "amdgpuBusId"}
+    found = {}
+    for dev in sorted(Path("/sys/bus/pci/devices").glob("*")):
+        try:
+            if not (dev / "class").read_text().startswith("0x03"):
+                continue
+            key = keys.get((dev / "vendor").read_text().strip())
+            if key is None or key in found:
+                continue
+            _domain, bus, rest = dev.name.split(":")
+            device, function = rest.split(".")
+            found[key] = f"PCI:{int(bus, 16)}:{int(device, 16)}:{int(function, 16)}"
+        except (OSError, ValueError):
+            continue
+    return found

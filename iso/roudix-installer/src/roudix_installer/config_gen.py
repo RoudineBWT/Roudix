@@ -8,6 +8,7 @@ import re
 import shutil
 from pathlib import Path
 
+from roudix_installer.hardware_detect import detect_prime_bus_ids
 from roudix_installer.host_profile import restore_fixed_lines
 from roudix_installer.state import InstallState
 
@@ -128,6 +129,11 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.rgb", state.rgb)
     t = _sub_string(t, "hardware.myGpu", state.gpu)
     t = _sub_bool(t, "hardware.nvidiaLaptop", state.nvidia_laptop)
+    # Optimus laptop: PRIME bus IDs, detected on the target machine (the
+    # installer runs on it). Written as `null` for everything else.
+    prime_ids = detect_prime_bus_ids() if (state.gpu == "nvidia" and state.nvidia_laptop) else {}
+    for key in ("nvidiaBusId", "intelBusId", "amdgpuBusId"):
+        t = _set_nullable_string_option(t, f"roudix.nvidia_config.{key}", prime_ids.get(key, ""))
     t = _sub_bool(t, "roudix.laptop.enable", state.laptop)
     t = _sub_bool(t, "roudix.laptop.thinkpad", state.laptop_thinkpad)
     t = _sub_bool(t, "roudix.undervolt.only-amd.enable", state.undervolt_enable)

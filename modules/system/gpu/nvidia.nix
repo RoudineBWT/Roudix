@@ -30,6 +30,12 @@ let
         };
       in
         drivers.${config.hardware.myKernelChaotic};
+  # PRIME needs the NVIDIA bus ID plus the iGPU one. Without them NixOS
+  # rejects the offload/sync options, so the laptop tuning below is only
+  # switched on when they are filled in (the installer detects them).
+  hybrid = cfg.laptop
+    && cfg.nvidiaBusId != null
+    && (cfg.intelBusId != null || cfg.amdgpuBusId != null);
 in
 {
   options.roudix.nvidia_config = {
@@ -55,11 +61,25 @@ in
       type = types.nullOr types.str;
       default = null;
     };
+    primeMode = mkOption {
+      type = types.enum [ "offload" "sync" ];
+      default = "offload";
+      description = ''
+        Hybrid laptop mode (only used when hardware.nvidiaLaptop = true and
+        the bus IDs are set). "offload": the iGPU drives the screen and the
+        NVIDIA GPU sleeps until an app is launched with `nvidia-offload`
+        (best battery, works on Wayland). "sync": the NVIDIA GPU renders
+        everything (X11 only in practice, more power draw).
+      '';
+    };
   };
 
   config = mkMerge [
     {
       warnings = lib.optional
+        (config.hardware.myGpu == "nvidia" && cfg.laptop && !hybrid)
+        "hardware.nvidiaLaptop = true but roudix.nvidia_config.nvidiaBusId and intelBusId/amdgpuBusId are not set: PRIME is NOT configured (the NVIDIA GPU stays powered and nothing is offloaded). Fill them in local.nix, format \"PCI:1:0:0\" in decimal (see `lspci`)."
+      ++ lib.optional
         (config.hardware.myGpu == "nvidia"
           && builtins.elem config.hardware.myKernelChaotic nixpkgsKernelVariants
           && !config.hardware.nvidiaOpen)
@@ -104,11 +124,19 @@ in
           intelBusId = optionalString (cfg.intelBusId != null) cfg.intelBusId;
           nvidiaBusId = optionalString (cfg.nvidiaBusId != null) cfg.nvidiaBusId;
           amdgpuBusId = optionalString (cfg.amdgpuBusId != null) cfg.amdgpuBusId;
+
+          offload.enable = hybrid && cfg.primeMode == "offload";
+          offload.enableOffloadCmd = hybrid && cfg.primeMode == "offload";
+          sync.enable = hybrid && cfg.primeMode == "sync";
         };
 
         dynamicBoost.enable = cfg.laptop;
         powerManagement.enable = true;
-        powerManagement.finegrained = false;
+        # Runtime D3 (dGPU fully off when idle): needs offload mode and
+        # Turing or newer. The open modules (hardware.nvidiaOpen) are
+        # Turing+ only, so they double as the generation check.
+        powerManagement.finegrained =
+          hybrid && cfg.primeMode == "offload" && config.hardware.nvidiaOpen;
       };
 
       # Fix Nvidia 3000 Dec 2025
