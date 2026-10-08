@@ -189,12 +189,15 @@
   environment.sessionVariables.TZ      = "Europe/Brussels";
   i18n.defaultLocale                   = "en_US.UTF-8";
   console.keyMap                       = "us-accentos";
-  # ── Graphical keyboard (Wayland — niri/hyprland/mangowc/umbriel) ──────────
+  # ── Graphical keyboard (niri/hyprland/mangowc/umbriel/Cinnamon) ───────────
   # Independent of console.keyMap above (that one is only for the TTY,
   # before the graphical session starts). No effect on GNOME/KDE,
-  # which manage their layout via their own settings daemon.
+  # which manage their layout via their own settings daemon. On Cinnamon the
+  # layout is also written as a dconf default, so Cinnamon Settings starts on it
+  # (a layout already chosen there wins: `dconf reset -f /org/gnome/libgnomekbd/keyboard/`).
   roudix.keyboardLayout                = "us";     # "us", "be", "fr", "de", "ch", "nl", "es", "it", "pt", "pl", "ru", "gb", "jp"...
   roudix.keyboardVariant                = "intl";  # "intl", "nodeadkeys", "bepo", "dvorak", "colemak", "" (none)
+  roudix.keyboardOptions                = "";       # Cinnamon only. AZERTY digits without Shift: "caps:digits_row" (Caps Lock = digits row)
 
   # ── Shell ─────────────────────────────────────────────────────────────────
   roudix.shell                         = "fish";        # "fish" or "bash"

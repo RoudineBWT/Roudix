@@ -28,4 +28,19 @@
       variant (base layout).
     '';
   };
+
+  options.roudix.keyboardOptions = lib.mkOption {
+    type = lib.types.str;
+    default = "";
+    example = "caps:digits_row";
+    description = ''
+      XKB options (comma-separated, as in `setxkbmap -option`). Currently
+      applied on Cinnamon only (LightDM + session).
+
+      Handy one for AZERTY ("fr"/"be") layouts: "caps:digits_row" makes
+      Caps Lock turn the top row into digits (no Shift needed), handy on
+      laptops without a numpad. Downside: capital É/À/Ç can't be typed
+      directly while it is on. Needs a recent xkeyboard-config.
+    '';
+  };
 }
