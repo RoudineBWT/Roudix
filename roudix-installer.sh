@@ -602,14 +602,16 @@ if [[ -n "$DETECTED_GPU" ]]; then
     if [[ "$GPU" == "amd" ]]; then
       pick "AMD generation:" GPU \
         "amd|Modern — RDNA / GCN 3+ (RX 400 series and newer)" \
+        "amd-igpu|Integrated — Ryzen APU (Radeon Graphics, no discrete card)" \
         "amd-legacy|Legacy — GCN 1.x / 2.x (HD 7xxx, R9 2xx)"
     fi
   else
     NVIDIA_LAPTOP="false"
     pick "GPU:" GPU \
       "amd|AMD GPU" \
+      "amd-igpu|AMD integrated GPU (Ryzen APU)" \
       "nvidia|NVIDIA GPU" \
-      "intel|Intel integrated GPU"
+      "intel|Intel GPU (integrated or Arc)"
     # If user manually picked nvidia, ask about laptop
     if [[ "$GPU" == "nvidia" ]]; then
       pick_bool "Laptop with NVIDIA dGPU (Optimus)?" NVIDIA_LAPTOP \
@@ -619,9 +621,10 @@ if [[ -n "$DETECTED_GPU" ]]; then
 else
   pick "GPU:" GPU \
     "amd|AMD GPU" \
+    "amd-igpu|AMD integrated GPU (Ryzen APU)" \
     "amd-legacy|AMD GPU legacy (GCN 1.x / 2.x — HD 7xxx, R9 2xx)" \
     "nvidia|NVIDIA GPU" \
-    "intel|Intel integrated GPU"
+    "intel|Intel GPU (integrated or Arc)"
   if [[ "$GPU" == "nvidia" ]]; then
     pick_bool "Laptop avec NVIDIA dGPU (Optimus) ?" NVIDIA_LAPTOP \
       "Oui — laptop Intel/AMD + NVIDIA" "Non — desktop ou NVIDIA seul"
@@ -1171,6 +1174,30 @@ info "Writing configuration to local.nix..."
 sed -i "s/roudix\.rgb[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.rgb        = \"${RGB}\"/"          hosts/${HOSTNAME}/local.nix
 sed -i "s/hardware\.myGpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myGpu     = \"${GPU}\"/"       hosts/${HOSTNAME}/local.nix
 sed -i -E "s/hardware\.nvidiaLaptop[[:space:]]*=[[:space:]]*(true|false)/hardware.nvidiaLaptop = ${NVIDIA_LAPTOP}/" hosts/${HOSTNAME}/local.nix
+
+# Optimus laptop: PRIME needs the PCI bus IDs (NixOS wants "PCI:bus:dev:fn" in
+# DECIMAL, sysfs gives hex). Detected here, on the target machine.
+if [[ "$GPU" == "nvidia" && "$NVIDIA_LAPTOP" == "true" ]]; then
+  declare -A PRIME_IDS=()
+  for dev in /sys/bus/pci/devices/*; do
+    class=$(cat "$dev/class" 2>/dev/null); [[ "$class" == 0x03* ]] || continue
+    case "$(cat "$dev/vendor" 2>/dev/null)" in
+      0x10de) key=nvidiaBusId ;;
+      0x8086) key=intelBusId  ;;
+      0x1002) key=amdgpuBusId ;;
+      *) continue ;;
+    esac
+    [[ -n "${PRIME_IDS[$key]:-}" ]] && continue
+    addr=$(basename "$dev")                      # 0000:c1:00.0
+    bus=${addr#*:}; bus=${bus%%:*}; rest=${addr##*:}
+    PRIME_IDS[$key]="PCI:$((16#$bus)):$((16#${rest%%.*})):$((16#${rest##*.}))"
+  done
+  for key in nvidiaBusId intelBusId amdgpuBusId; do
+    [[ -n "${PRIME_IDS[$key]:-}" ]] || continue
+    sed -i -E "s#(roudix\.nvidia_config\.${key}[[:space:]]*=[[:space:]]*)(null|\"[^\"]*\")#\1\"${PRIME_IDS[$key]}\"#" hosts/${HOSTNAME}/local.nix
+    info "PRIME ${key} = ${PRIME_IDS[$key]}"
+  done
+fi
 sed -i "s/hardware\.myCpu[[:space:]]*=[[:space:]]*\"[^\"]*\"/hardware.myCpu     = \"${CPU}\"/"       hosts/${HOSTNAME}/local.nix
 if [[ "$GPU" == "nvidia" ]]; then
   set_kernel_option hosts/${HOSTNAME}/local.nix "hardware.myKernel" "false" "${KERNEL}"

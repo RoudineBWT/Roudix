@@ -3,6 +3,7 @@
   imports = [
     ./amd.nix
     ./amd-legacy.nix
+    ./amd-igpu.nix
     ./nvidia.nix
     ./intel.nix
     ./vm.nix
@@ -11,9 +12,9 @@
 
   options = {
     hardware.myGpu = lib.mkOption {
-      type = lib.types.enum [ "amd" "nvidia" "amd-legacy" "intel" "vm" ];
+      type = lib.types.enum [ "amd" "amd-igpu" "nvidia" "amd-legacy" "intel" "vm" ];
       default = "amd";
-      description = "GPU type to configure. Use 'vm' for virtual machines (virtio-gpu, QXL, VMware SVGA).";
+      description = "GPU type to configure. 'amd' = discrete RDNA/GCN 3+, 'amd-igpu' = AMD APU (integrated), 'amd-legacy' = GCN 1.x/2.x, 'intel' = Intel iGPU/Arc (all generations, i915 or xe), 'vm' = virtual machines (virtio-gpu, QXL, VMware SVGA).";
     };
 
     hardware.nvidiaOpen = lib.mkOption {

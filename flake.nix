@@ -4,7 +4,11 @@
   # ── Binary caches ───────────────────────────────────────
   nixConfig = {
     extra-substituters = [
+<<<<<<< HEAD
       "https://cache.xinux.uz?priority=30"
+=======
+      "https://cache.xinux.uz?priority=45"
+>>>>>>> origin/dev
       "https://attic.xuyh0120.win/lantian?priority=60"
       "https://noctalia.cachix.org"
       "https://prismlauncher.cachix.org"
@@ -22,7 +26,7 @@
       "cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "prismlauncher.cachix.org-1:9/n/FGyABA2jLUVfY+DEp4hKds/rwO+SCOtbOkDzd+c="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCUSeBw="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
       "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
       "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="

@@ -72,6 +72,10 @@
   roudix.memory.sku    = "CMH64GX5M2B5200C40"; # found via: sudo dmidecode -t memory | grep 'Part Number'
   hardware.myGpu    = "amd";                  # "amd", "nvidia" or "intel"
   hardware.nvidiaLaptop = false;              # enable this only for Laptops with nvidia Dgpu
+  roudix.nvidia_config.nvidiaBusId = null;    # laptop only, e.g. "PCI:1:0:0" (decimal, from lspci) — filled by the installer
+  roudix.nvidia_config.intelBusId  = null;    # laptop with Intel iGPU, e.g. "PCI:0:2:0"
+  roudix.nvidia_config.amdgpuBusId = null;    # laptop with AMD iGPU, e.g. "PCI:5:0:0"
+  roudix.nvidia_config.primeMode   = "offload"; # "offload" (battery, Wayland) or "sync"
   hardware.myCpu    = "intel";               # "intel" or "amd"
 
   # ── Laptop power (TLP) ────────────────────────────────────────────────────
@@ -185,12 +189,15 @@
   environment.sessionVariables.TZ      = "Europe/Brussels";
   i18n.defaultLocale                   = "en_US.UTF-8";
   console.keyMap                       = "us-accentos";
-  # ── Graphical keyboard (Wayland — niri/hyprland/mangowc/umbriel) ──────────
+  # ── Graphical keyboard (niri/hyprland/mangowc/umbriel/Cinnamon) ───────────
   # Independent of console.keyMap above (that one is only for the TTY,
   # before the graphical session starts). No effect on GNOME/KDE,
-  # which manage their layout via their own settings daemon.
+  # which manage their layout via their own settings daemon. On Cinnamon the
+  # layout is also written as a dconf default, so Cinnamon Settings starts on it
+  # (a layout already chosen there wins: `dconf reset -f /org/gnome/libgnomekbd/keyboard/`).
   roudix.keyboardLayout                = "us";     # "us", "be", "fr", "de", "ch", "nl", "es", "it", "pt", "pl", "ru", "gb", "jp"...
   roudix.keyboardVariant                = "intl";  # "intl", "nodeadkeys", "bepo", "dvorak", "colemak", "" (none)
+  roudix.keyboardOptions                = "";       # Cinnamon only. AZERTY digits without Shift: "caps:digits_row" (Caps Lock = digits row)
 
   # ── Shell ─────────────────────────────────────────────────────────────────
   roudix.shell                         = "fish";        # "fish" or "bash"
