@@ -17,6 +17,19 @@ let
   # iGPU still drives the screen and needs its own media / compute stack.
   hybridIgpu = cfg.myGpu == "nvidia" && cfg.nvidiaLaptop
     && config.roudix.nvidia_config.intelBusId != null;
+  # i915 module parameters only: they are not xe parameters, so nothing is
+  # passed to xe (no risk of handing it a parameter it doesn't know).
+  quirkParams = {
+    # Panel Self Refresh off: fixes freezes, stutter and flicker on some
+    # eDP laptop panels. Slightly higher idle power draw.
+    psr = "i915.enable_psr=0";
+    # Frame Buffer Compression off: fixes flicker / screen corruption seen
+    # on some iGPUs. Slightly higher idle power draw.
+    fbc = "i915.enable_fbc=0";
+    # Display C-states off: works around random freezes / black screens
+    # on some laptops. Higher idle power draw.
+    dc-off = "i915.enable_dc=0";
+  };
 in
 {
   options.hardware.intelXeForceProbe = lib.mkOption {
@@ -29,6 +42,20 @@ in
       default in the running kernel yet, or to try xe on Tiger Lake and
       newer iGPUs. Leave empty on Lunar Lake, Battlemage and Panther
       Lake with a recent kernel: they work out of the box.
+    '';
+  };
+
+  options.hardware.intelIgpuQuirks = lib.mkOption {
+    type = lib.types.listOf (lib.types.enum (builtins.attrNames quirkParams));
+    default = [ ];
+    example = [ "psr" ];
+    description = ''
+      Opt-in workarounds for Intel iGPUs running on the i915 driver. Enable
+      one only if you hit the matching symptom: "psr" (laptop panel
+      freezes or flicker), "fbc" (flicker / screen corruption), "dc-off"
+      (random freezes or black screens). Applied wherever the Intel iGPU
+      module is active, including Optimus laptops. No effect on GPUs that
+      use the xe driver.
     '';
   };
 
@@ -56,10 +83,12 @@ in
     # never bound.
     boot.initrd.availableKernelModules = [ "i915" "xe" ];
 
-    boot.kernelParams = lib.optionals (ids != [ ]) [
-      "i915.force_probe=${lib.concatMapStringsSep "," (i: "!" + i) ids}"
-      "xe.force_probe=${lib.concatStringsSep "," ids}"
-    ];
+    boot.kernelParams =
+      map (q: quirkParams.${q}) cfg.intelIgpuQuirks
+      ++ lib.optionals (ids != [ ]) [
+        "i915.force_probe=${lib.concatMapStringsSep "," (i: "!" + i) ids}"
+        "xe.force_probe=${lib.concatStringsSep "," ids}"
+      ];
 
     assertions = [{
       assertion = ids == [ ]
