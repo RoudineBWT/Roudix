@@ -14,8 +14,8 @@ in
     zoom_end_ratio = 0.7;
     animation_fade_in = 1;
     animation_fade_out = 1;
-    fadein_begin_opacity = 0.5;
-    fadeout_begin_opacity = 0.8;
+    fade_in_begin_opacity = 0.5;
+    fade_out_begin_opacity = 0.8;
     animation_duration_open = 400;
     animation_duration_close = 800;
     animation_duration_move = 500;
@@ -26,8 +26,8 @@ in
     animation_curve_move = "0.46,1.0,0.29,1";
     animation_curve_tag = "0.46,1.0,0.29,1";
     animation_curve_focus = "0.46,1.0,0.29,1";
-    animation_curve_opafadeout = "0.58,0.98,0.58,0.98";
-    animation_curve_opafadein = "0.46,1.0,0.29,1";
+    animation_curve_opacity_fade_out = "0.58,0.98,0.58,0.98";
+    animation_curve_opacity_fade_in = "0.46,1.0,0.29,1";
     tag_animation_direction = 1;
   };
 }

@@ -1,6 +1,6 @@
 { config, ... }:
 {
   wayland.windowManager.mango.extraConfig = ''
-    source-optional=${config.home.homeDirectory}/.config/mango/noctalia.conf
+    source_optional=${config.home.homeDirectory}/.config/mango/noctalia.conf
   '';
 }

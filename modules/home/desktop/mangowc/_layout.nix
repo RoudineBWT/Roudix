@@ -18,18 +18,18 @@
     scroller_proportion_preset = "0.33333,0.5,0.66667,1.0";
     edge_scroller_pointer_focus = 1;
 
-    default_mfact = 0.55;
-    default_nmaster = 1;
+    default_master_factor = 0.55;
+    default_master_count = 1;
     new_is_master = 1;
-    smartgaps = 1;
+    smart_gaps = 1;
 
     enable_hotarea = 1;
     hotarea_size = 10;
     hotarea_disable_on_fullscreen = 1;
     hotarea_corner = 2;
-    ov_tab_mode = 0;
-    overviewgappi = 5;
-    overviewgappo = 30;
+    # ov_tab_mode removed in mango 0.16+ (moved to the `overcircle` dispatch): kept at default
+    overview_gap_inner = 5;
+    overview_gap_outer = 30;
 
     # Fullscreen-only tearing: games explicitly marked with force_tearing:1
     # may tear, while windowed applications remain synchronized.
