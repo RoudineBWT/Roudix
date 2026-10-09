@@ -1,7 +1,9 @@
 hosts/*/local.nix
+hosts/*/local.nix.bak
 hosts/*/hardware-configuration.nix
 hosts/*/username.nix
 modules/home/local.nix
+modules/home/local.nix.bak
 modules/system/boot/boot.local.nix
 dotfiles/perso/*
 !dotfiles/perso/README.md

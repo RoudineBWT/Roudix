@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Catppuccin Mocha (accent Peach): base #1e1e2e, chip #fab387, die #d9986c, sync #cba6f7 -->
+  <rect x="3" y="3" width="42" height="42" rx="11" fill="#1e1e2e"/>
+  <rect x="3" y="3" width="42" height="21" rx="11" fill="#cdd6f4" opacity="0.04"/>
+  <rect x="12" y="12" width="24" height="24" rx="5" fill="#fab387"/>
+  <rect x="16.5" y="16.5" width="15" height="15" rx="3" fill="#d9986c"/>
+  <rect x="14" y="5" width="2.4" height="5" rx="1.2" fill="#fab387"/>
+  <rect x="22.8" y="5" width="2.4" height="5" rx="1.2" fill="#fab387"/>
+  <rect x="31.6" y="5" width="2.4" height="5" rx="1.2" fill="#fab387"/>
+  <rect x="14" y="38" width="2.4" height="5" rx="1.2" fill="#fab387"/>
+  <rect x="22.8" y="38" width="2.4" height="5" rx="1.2" fill="#fab387"/>
+  <rect x="31.6" y="38" width="2.4" height="5" rx="1.2" fill="#fab387"/>
+  <!-- Sync arrows -->
+  <g fill="none" stroke="#cba6f7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M28 22.5a5 5 0 0 0-8.6-1.6"/><path d="M19.4 17.8v3.1h3.1"/>
+    <path d="M20 25.5a5 5 0 0 0 8.6 1.6"/><path d="M28.6 30.2v-3.1h-3.1"/>
+  </g>
+</svg>

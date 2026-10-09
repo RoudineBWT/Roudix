@@ -1,0 +1,159 @@
+#!/usr/bin/env bash
+# roudix-hw-sync — re-detect CPU/GPU and patch hosts/<host>/local.nix
+#
+# Usage: roudix-hw-sync [-n|--dry-run] [--detect]
+#                       [--gpu amd|amd-igpu|amd-legacy|nvidia|intel]
+#                       [--cpu amd|intel] [--laptop true|false]
+#                       [-f /path/to/local.nix]
+#
+# Touches only: hardware.myGpu, hardware.myCpu, hardware.nvidiaLaptop,
+# roudix.nvidia_config.*BusId, the hardware.myKernel / myKernelChaotic toggle
+# and roudix.undervolt.only-amd.enable (forced to false on a non-AMD GPU).
+# Never rebuilds. Writes <file>.bak before changing anything.
+set -uo pipefail
+
+dry=0; detect_only=0; force_gpu=""; force_cpu=""; force_laptop=""
+nh_flake="$(printenv NH_FLAKE)"; [ -n "$nh_flake" ] || nh_flake="$HOME/.config/roudix"
+host="$(printenv ROUDIX_HOST)"; [ -n "$host" ] || host="$(uname -n)"
+file="$nh_flake/hosts/$host/local.nix"
+pci_dir="$(printenv ROUDIX_PCI_DIR)"; [ -n "$pci_dir" ] || pci_dir=/sys/bus/pci/devices
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -n|--dry-run) dry=1 ;;
+    --detect)     detect_only=1 ;;
+    --gpu)        force_gpu="${2:-}"; shift ;;
+    --cpu)        force_cpu="${2:-}"; shift ;;
+    --laptop)     force_laptop="${2:-}"; shift ;;
+    -f)           file="${2:-}"; shift ;;
+    -h|--help)    sed -n 2,12p "$0"; exit 0 ;;
+    *) echo "Unknown option: $1" >&2; exit 1 ;;
+  esac
+  shift
+done
+
+case "$force_gpu" in ""|amd|amd-igpu|amd-legacy|nvidia|intel) ;; *) echo "Invalid --gpu: $force_gpu" >&2; exit 1 ;; esac
+case "$force_cpu" in ""|amd|intel) ;; *) echo "Invalid --cpu: $force_cpu" >&2; exit 1 ;; esac
+case "$force_laptop" in ""|true|false) ;; *) echo "Invalid --laptop: $force_laptop" >&2; exit 1 ;; esac
+
+[ -f "$file" ] || { echo "local.nix not found: $file" >&2; exit 1; }
+orig="$file"; file="$(mktemp)"; cp "$orig" "$file"   # work on a copy, write back at the end
+trap 'rm -f "$file"' EXIT
+
+esc() { printf %s "$1" | sed 's/\./\\./g'; }
+has() { grep -qE "^[[:space:]]*#?[[:space:]]*$(esc "$1")[[:space:]]*=" "$file"; }
+cur() { grep -oP "^[[:space:]]*$(esc "$1")\s*=\s*\"?\K[A-Za-z0-9_-]+" "$orig" 2>/dev/null | head -1; }
+
+# set_str <key> <value>: rewrite the quoted value (active line only)
+set_str() {
+  has "$1" || return 0
+  sed -i -E "s|^([[:space:]]*$(esc "$1")[[:space:]]*=[[:space:]]*)\"[^\"]*\"|\1\"$2\"|" "$file"
+}
+set_bool() {
+  has "$1" || return 0
+  sed -i -E "s@^([[:space:]]*$(esc "$1")[[:space:]]*=[[:space:]]*)(true|false)@\1$2@" "$file"
+}
+# set_active <key> <true|false>: (un)comment a line, keeping its value
+set_active() {
+  has "$1" || return 0
+  if [ "$2" = true ]; then
+    sed -i -E "s|^([[:space:]]*)#[[:space:]]*($(esc "$1")[[:space:]]*=)|\1\2|" "$file"
+  else
+    sed -i -E "s|^([[:space:]]*)($(esc "$1")[[:space:]]*=)|\1# \2|" "$file"
+  fi
+}
+
+# ── Detect (same logic as roudix-installer.sh) ───────────────────────────
+cpu="$force_cpu"
+if [ -z "$cpu" ]; then
+  if   grep -q AuthenticAMD /proc/cpuinfo 2>/dev/null; then cpu=amd
+  elif grep -q GenuineIntel /proc/cpuinfo 2>/dev/null; then cpu=intel
+  else echo "CPU vendor not detected, use --cpu amd|intel" >&2; exit 1; fi
+fi
+
+declare -A ids=()
+n_nv=0; n_amd=0; n_intel=0
+for dev in "$pci_dir"/*; do
+  [ "$(cut -c1-4 "$dev/class" 2>/dev/null)" = 0x03 ] || continue   # display controllers
+  case "$(cat "$dev/vendor" 2>/dev/null)" in
+    0x10de) k=nvidiaBusId; n_nv=1 ;;
+    0x1002) k=amdgpuBusId; n_amd=1 ;;
+    0x8086) k=intelBusId;  n_intel=1 ;;
+    *) continue ;;
+  esac
+  [ -z "${ids[$k]:-}" ] || continue
+  a="$(basename "$dev")"; b="${a#*:}"; b="${b%%:*}"; r="${a##*:}"
+  ids[$k]="PCI:$((16#$b)):$((16#${r%%.*})):$((16#${r##*.}))"   # sysfs is hex, PRIME wants decimal
+done
+
+gpu="$force_gpu"
+if [ -z "$gpu" ]; then
+  if   [ $n_nv = 1 ];    then gpu=nvidia
+  elif [ $n_amd = 1 ];   then gpu=amd
+  elif [ $n_intel = 1 ]; then gpu=intel
+  else echo "GPU not detected, use --gpu ..." >&2; exit 1; fi
+  # keep the AMD flavour already chosen (amd-igpu / amd-legacy)
+  case "$(cur hardware.myGpu)" in
+    amd-igpu)   [ "$gpu" = amd ] && gpu=amd-igpu ;;
+    amd-legacy) [ "$gpu" = amd ] && gpu=amd-legacy ;;
+  esac
+fi
+
+# Optimus = NVIDIA dGPU + an Intel/AMD iGPU
+laptop=false
+if [ "$gpu" = nvidia ]; then
+  if [ -n "$force_laptop" ]; then laptop="$force_laptop"
+  elif [ $n_amd = 1 ] || [ $n_intel = 1 ]; then laptop=true; fi
+fi
+
+if [ $detect_only -eq 1 ]; then
+  echo "cpu=$cpu"; echo "gpu=$gpu"; echo "laptop=$laptop"
+  echo "current_cpu=$(cur hardware.myCpu)"; echo "current_gpu=$(cur hardware.myGpu)"
+  echo "current_laptop=$(cur hardware.nvidiaLaptop)"
+  exit 0
+fi
+
+echo "Detected: CPU=$cpu  GPU=$gpu  nvidiaLaptop=$laptop"
+
+# ── Patch ────────────────────────────────────────────────────────────────
+set_str  hardware.myGpu "$gpu"
+set_str  hardware.myCpu "$cpu"
+set_bool hardware.nvidiaLaptop "$laptop"
+
+for k in nvidiaBusId intelBusId amdgpuBusId; do
+  has "roudix.nvidia_config.$k" || continue
+  val=null
+  if [ "$laptop" = true ] && [ -n "${ids[$k]:-}" ]; then val="\"${ids[$k]}\""; fi
+  sed -i -E "s#^([[:space:]]*roudix\.nvidia_config\.$k[[:space:]]*=[[:space:]]*)(null|\"[^\"]*\")#\1$val#" "$file"
+done
+
+# nvidia uses hardware.myKernelChaotic, everything else hardware.myKernel
+if [ "$gpu" = nvidia ]; then
+  if has hardware.myKernelChaotic; then
+    set_active hardware.myKernelChaotic true; set_active hardware.myKernel false
+  else
+    echo "warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), module default applies" >&2
+  fi
+elif has hardware.myKernel; then
+  set_active hardware.myKernel true; set_active hardware.myKernelChaotic false
+fi
+
+# AMD-only undervolting: off on any other GPU (left as-is on amd / amd-legacy)
+if [ "$gpu" != amd ] && [ "$gpu" != amd-legacy ]; then
+  set_bool roudix.undervolt.only-amd.enable false
+fi
+
+if diff -q "$orig" "$file" >/dev/null; then
+  echo "Nothing to change."; exit 0
+fi
+
+diff -u --label "$orig (before)" --label "$orig (after)" "$orig" "$file"
+
+if [ $dry -eq 1 ]; then
+  echo "(dry-run: file left untouched)"; exit 0
+fi
+
+cp "$orig" "$orig.bak"
+cat "$file" > "$orig"
+echo "Done. Backup: $orig.bak"
+echo "Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:\$NH_FLAKE)"
