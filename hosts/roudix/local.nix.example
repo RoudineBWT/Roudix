@@ -42,7 +42,7 @@
   #         send-back with a shortcut: Mod+Alt+D/M, Mod+Alt+Shift+D/M)
   # false — pinned to a fixed output/workspace/position (default)
   roudix.umbriel.scratchpadApps = false;
-  # roudix.umbriel.effects = "sakura-overdrive"; # "roudix" (default, subtle), "sakura-overdrive" (Ly-sec's suite, needs Noctalia) or "sakura-roudix" (same, Catppuccin Mocha Peach)
+  # roudix.umbriel.effects = "sakura-overdrive"; # "roudix" (default, subtle), "roudix-plus" / "roudix-plus-mocha", "roudix-wobbly" / "roudix-wobbly-mocha" (+ wobbly windows) (light accent border + cursor halo + transitions), "sakura-overdrive" (Ly-sec's suite, needs Noctalia) or "sakura-roudix" (same, Catppuccin Mocha Peach)
 
   # ── MangoWC : scratchpads ───────────────────────────────────────────────
   # Only used when roudix.desktop.type = "mangowc"
