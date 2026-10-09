@@ -18,7 +18,7 @@
     "Mod+D" = { hotkey-overlay.title = "Open App Launcher: noctalia launcher"; action.spawn-sh = [ "noctalia msg panel-toggle launcher" ]; };
     "Mod+Shift+B" = { hotkey-overlay.title = "Open Browser: Zen"; action.spawn = [ "zen-twilight" ]; };
     "Mod+B" = { hotkey-overlay.title = "Open Browser: brave"; action.spawn = [ "brave-origin-beta" ]; };
-    "Mod+Alt+L" = { hotkey-overlay.title = "Lock Screen: noctalia lock"; action.spawn-sh = [ "noctalia msg screen-lock" ]; };
+    "Mod+Alt+L" = { hotkey-overlay.title = "Lock Screen: noctalia lock"; action.spawn-sh = [ "noctalia msg session lock" ]; };
     "Mod+E" = { hotkey-overlay.title = "File Manager: Nautilus"; action.spawn = [ "nautilus" ]; };
     "Mod+Shift+Q".action.spawn-sh = [ "noctalia msg panel-toggle session" ];
 
@@ -105,7 +105,7 @@
     "Mod+Ctrl+9".action.move-column-to-workspace = [ 9 ];
 
     "Mod+Tab".action.focus-workspace-previous = { };
-    "Alt+Tab".action.spawn-sh = [ "noctalia msg window-switcher" ];
+    "Alt+Tab".action.spawn-sh = [ "noctalia msg window-switcher hold" ];
 
     # ─── Layout ───
     "Mod+Ctrl+F".action.expand-column-to-available-width = { };

@@ -16,7 +16,7 @@ in
     "Mod+D" = "spawn:noctalia msg panel-toggle launcher";
     "Mod+Shift+B" = "spawn:zen-twilight";
     "Mod+B" = "spawn:brave-origin-beta";
-    "Mod+Alt+L" = "spawn:noctalia msg screen-lock";
+    "Mod+Alt+L" = "spawn:noctalia msg session lock";
     "Mod+E" = "spawn:nautilus";
     "Mod+Shift+Q" = "spawn:noctalia msg panel-toggle session";
     "Mod+Shift+Escape" = "cheatsheet-toggle";
@@ -143,7 +143,9 @@ in
     # ⚠ workspace-previous is positional (no wrap, no "last active" like
     # niri's MRU) — always an approximation.
     "Mod+Tab" = "workspace-previous";
-    "Alt+Tab" = "spawn:noctalia msg window-switcher";
+    # `hold`: a quick Alt+Tab tap switches to the previous window and no longer
+    # leaves the switcher overlay stuck open (noctalia 5.2.1).
+    "Alt+Tab" = "spawn:noctalia msg window-switcher hold";
 
     # ─── Layout ───
     "Mod+Ctrl+F" = "window-toggle-maximize";
@@ -192,6 +194,10 @@ in
     # ─── Screenshots ───
     "Ctrl+Shift+1" = "spawn:noctalia msg screenshot-region";
     "Ctrl+Shift+2" = "spawn:noctalia msg screenshot-fullscreen";
+    # Noctalia annotation editor: freeze the screen and draw on it / live
+    # transparent drawing overlay for presentations (noctalia 5.1+).
+    "Mod+Shift+A" = "spawn:noctalia msg screenshot-annotate";
+    "Mod+Ctrl+A" = "spawn:noctalia msg annotate";
     # Active-window capture via grim+slurp with manual targeting (click on
     # the window) — Umbriel has no native "focused window" action.
     "Ctrl+Shift+3" = ''spawn:sh -c "grim -g \"$(slurp -w)\" - | wl-copy"'';

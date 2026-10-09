@@ -5,8 +5,8 @@
       "SUPER,SHIFT,Escape,show_hotkey_overlay"
       "SUPER+SHIFT,Q,spawn,noctalia msg panel-toggle session"
       "SUPER,D,spawn,noctalia msg panel-toggle launcher"
-      "SUPER+ALT,L,spawn,noctalia msg screen-lock"
-      "ALT,Tab,spawn,noctalia msg window-switcher"
+      "SUPER+ALT,L,spawn,noctalia msg session lock"
+      "ALT,Tab,spawn,noctalia msg window-switcher hold"
 
       "CTRL+SHIFT,1,spawn,noctalia msg screenshot-region"
       "CTRL+SHIFT,2,spawn,noctalia msg screenshot-fullscreen"

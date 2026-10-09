@@ -317,6 +317,13 @@ in
     #   corner_radius = 0;
     #   shadow = false;
     # }
+    # Keep the pointer inside a game window so menus/edges don't leak to
+    # another monitor; a focus or workspace keybind releases it
+    # (umbriel #399). Uncomment for Steam games:
+    # {
+    #   match.app_id = "^steam_app_.*$";
+    #   confine_pointer = true;
+    # }
     # Global blur (niri equivalent: window-rule global { background-effect
     # { blur true; xray false } }) — blur_ignore_alpha=0.0 approximates
     # "xray false" (no unblurred transparent area); verify visually.

@@ -190,7 +190,8 @@ let
 in
 {
   programs.umbriel.settings = {
-    # Merges with the include list in _include-noctalia.nix.
+    # Required includes (effect presets). Noctalia's generated file is in
+    # include.optional (see _include-noctalia.nix).
     include.files = selected.files;
     animation = lib.recursiveUpdate baseAnimation selected.animation;
   }

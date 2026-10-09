@@ -78,7 +78,10 @@ in
     # ── Packages ─────────────────────────────────────────────────────────
     home.packages = integrationApps.desktopApps ++ (with pkgs; [
       awww
-      xwayland-satellite
+      # Umbriel now uses wlroots' native Xwayland (needs `Xwayland` on PATH).
+      # xwayland-satellite is only kept for a nixpkgs umbriel that predates
+      # that switch.
+      xwayland
       playerctl
       wl-clipboard
       pwvucontrol
@@ -102,6 +105,9 @@ in
       gvfs
       cava
     ])
+    # Only a nixpkgs umbriel that predates the native-Xwayland switch still
+    # spawns xwayland-satellite; the flake (latest) build never does.
+    ++ lib.optional (dp.useNixpkgs "umbriel") pkgs.xwayland-satellite
     ++ lib.optionals isNoctalia [
       dp.noctalia
     ];
