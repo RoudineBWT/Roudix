@@ -27,7 +27,7 @@
     hotarea_size = 10;
     hotarea_disable_on_fullscreen = 1;
     hotarea_corner = 2;
-    ov_tab_mode = 0;
+    # ov_tab_mode is gone (Tab in overview is now the `overcircle` dispatch, see binds)
     overview_gap_inner = 5;
     overview_gap_outer = 30;
 

@@ -13,7 +13,7 @@
     tap_and_drag = 1;
     drag_lock = 1;
     trackpad_natural_scrolling = 1;
-    disable_while_typing = 1;
+    trackpad_disable_while_typing = 1;
 
     xwayland_persistence = 1;
     sync_obj_enable = 1;
