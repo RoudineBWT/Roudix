@@ -1,0 +1,37 @@
+# Roudix — "roudix-plus" Umbriel effect presets.
+# Loaded in addition to ../roudix/effect.toml (window in/out + scratchpad),
+# see _animation.nix. Shader paths are relative to THIS file. Presets only
+# register effects; the setups in _animation.nix select them.
+# All original work (no third-party shader code).
+
+[effects.preset.roudix-edge]
+kind = "border"
+shader = "edge.glsl"
+palette = true
+padding = 6
+speed = 0.6
+# animated = false   # static gradient, no per-frame cost
+
+[effects.preset.roudix-halo]
+kind = "cursor"
+shader = "halo.glsl"
+palette = true
+radius = 28
+
+[effects.preset.roudix-workspace]
+kind = "animation"
+shader = "workspace.glsl"
+
+[effects.preset.roudix-layer]
+kind = "animation"
+shader = "layer.glsl"
+
+[effects.preset.roudix-focus]
+kind = "animation"
+shader = "focus.glsl"
+
+# Opt-in only: select with `effects.screen = "roudix-vignette"` in
+# umbriel-custom.nix. Disables direct scanout on that output.
+[effects.preset.roudix-vignette]
+kind = "screen"
+shader = "vignette.glsl"
