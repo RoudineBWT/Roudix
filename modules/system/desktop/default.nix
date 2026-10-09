@@ -59,11 +59,22 @@ in
   # ── nixpkgs (default) or latest (flake) version, per component ───────────
   # Set in local.nix or from roudix-switcher / the installer. The greeters
   # follow their shell: noctalia -> noctalia-greeter, dms/caelestia ->
-  # dms-greeter. Hyprland has no flake input (always nixpkgs).
-  options.roudix.desktop.latest = {
-    niri      = mkLatest "niri";
-    mangowc   = mkLatest "MangoWC";
-    umbriel   = mkLatest "Umbriel";
+  # dms-greeter. niri/MangoWC/Umbriel: always flake. Hyprland: always nixpkgs.
+  options.roudix.desktop.latest = let
+    # niri, MangoWC and Umbriel are always built from their flake now. The
+    # options stay (hidden, no effect) so an existing local.nix that still
+    # sets them keeps evaluating.
+    deprecated = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      internal = true;
+      visible = false;
+      description = "Deprecated: no effect (always the flake version).";
+    };
+  in {
+    niri      = deprecated;
+    mangowc   = deprecated;
+    umbriel   = deprecated;
     noctalia  = mkLatest "Noctalia (and its greeter)";
     dms       = mkLatest "DankMaterialShell (and its greeter)";
     caelestia = mkLatest "Caelestia (and the DMS greeter it uses)";

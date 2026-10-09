@@ -5,14 +5,16 @@
 #     inherit pkgs inputs;
 #     latest = config.roudix.desktop.latest;      # osConfig.… in home-manager
 #   };
-#   dp.useNixpkgs "niri"   -> true unless roudix.desktop.latest.niri = true
+#   dp.useNixpkgs "dms"    -> true unless roudix.desktop.latest.dms = true
 #   dp.niri                -> the package to use
 #
 # Only the selected branch is evaluated (Nix is lazy), so a wrong nixpkgs
 # attribute name only breaks the people who actually use that branch.
 # Every nixpkgs attribute name lives in this file: fix them here.
 #
-# Keys of `latest`: niri, mangowc, umbriel, noctalia, dms, caelestia.
+# Keys of `latest`: noctalia, dms, caelestia.
+# niri, MangoWC and Umbriel are always taken from their flake (their NixOS /
+# home-manager modules come from the flake too and must match the package);
 # Hyprland has no flake input in Roudix (always nixpkgs): no toggle.
 { pkgs, inputs, latest ? { } }:
 let
@@ -25,9 +27,9 @@ in
 {
   inherit wantsLatest useNixpkgs;
 
-  # niri-unstable comes from the niri-flake overlay, which is only applied
-  # when roudix.desktop.latest.niri = true (see modules/system/desktop/niri.nix).
-  niri = pick "niri" pkgs.niri pkgs.niri-unstable;
+  # niri-unstable comes from the niri-flake overlay, always applied
+  # (see modules/system/desktop/niri.nix).
+  niri = pkgs.niri-unstable;
 
   noctalia = pick "noctalia" pkgs.noctalia
     inputs.noctalia.packages.${sys}.default;
@@ -38,8 +40,8 @@ in
   # Module and package must come from the same source.
   mango = inputs.mango.packages.${sys}.mango;
 
-  # Flake side: the umbriel overlay (inputs.umbriel.overlays.default) provides
-  # pkgs.umbriel and is only applied when roudix.desktop.latest.umbriel = true.
+  # The umbriel overlay (inputs.umbriel.overlays.default) provides pkgs.umbriel
+  # and is always applied (see modules/system/desktop/umbriel.nix).
   umbriel = pkgs.umbriel;
 
   # No `umbrielPortal` here anymore: xdg-desktop-portal-umbriel is an input of

@@ -47,12 +47,10 @@ in
   config = lib.mkIf isUmbriel {
     # ── Compositor ────────────────────────────────────────────────────
     # inputs.umbriel = { url = "github:noctalia-dev/umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
-    # Default: umbriel from nixpkgs. roudix.desktop.latest.umbriel = true:
-    # the flake overlay + the module's own default package (flake, latest).
-    nixpkgs.overlays = lib.optional (dp.wantsLatest "umbriel") inputs.umbriel.overlays.default;
+    # The flake overlay + the module's own default package (flake build).
+    nixpkgs.overlays = [ inputs.umbriel.overlays.default ];
 
     programs.umbriel.enable = true;
-    programs.umbriel.package = lib.mkIf (dp.useNixpkgs "umbriel") dp.umbriel;
     #
     # The portal (xdg-desktop-portal-umbriel) now ships with Umbriel's own
     # NixOS module: programs.umbriel.portalPackage defaults to the portal

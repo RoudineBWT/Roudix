@@ -32,9 +32,6 @@
   # Only the compositor you use and the shell you picked matter. Hyprland is
   # always taken from nixpkgs (no flake version). The greeter follows its
   # shell (Noctalia -> noctalia-greeter, DMS/Caelestia -> dms-greeter).
-  roudix.desktop.latest.niri      = false;
-  roudix.desktop.latest.mangowc   = false;
-  roudix.desktop.latest.umbriel   = false;
   roudix.desktop.latest.noctalia  = false;
   roudix.desktop.latest.dms       = false;
   roudix.desktop.latest.caelestia = false;

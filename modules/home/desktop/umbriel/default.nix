@@ -55,9 +55,7 @@ in
     programs.umbriel = {
       enable = true;
     };
-    # Default: nixpkgs. With roudix.desktop.latest.umbriel the HM module's
-    # own default (the flake package) applies.
-    programs.umbriel.package = lib.mkIf (dp.useNixpkgs "umbriel") dp.umbriel;
+    # The HM module's own default (the flake package) applies.
 
     # ── Terminal / browser / files resolved from roudix.* ──────────
     # Same key ("Mod+Return" etc.) as in _binds.nix: attrsOf merges per
@@ -105,9 +103,6 @@ in
       gvfs
       cava
     ])
-    # Only a nixpkgs umbriel that predates the native-Xwayland switch still
-    # spawns xwayland-satellite; the flake (latest) build never does.
-    ++ lib.optional (dp.useNixpkgs "umbriel") pkgs.xwayland-satellite
     ++ lib.optionals isNoctalia [
       dp.noctalia
     ];

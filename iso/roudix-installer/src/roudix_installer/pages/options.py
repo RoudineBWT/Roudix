@@ -141,7 +141,7 @@ def _shells(desktop=None):
 
 # Compositors / shells that have a flake ("latest") version next to the
 # nixpkgs one. Hyprland has no flake version in Roudix: no switch for it.
-LATEST_DESKTOPS = {"niri": "Niri", "mangowc": "MangoWC", "umbriel": "Umbriel"}
+LATEST_DESKTOPS = {}  # niri / MangoWC / Umbriel: always the flake version
 LATEST_SHELLS = {"noctalia": "Noctalia", "dms": "DMS", "caelestia": "Caelestia"}
 
 
@@ -1304,9 +1304,9 @@ class OptionsPage(Adw.NavigationPage):
         "zen_mods_row": ["roudix.zen.mods"], "zen_sine_row": ["roudix.zen.sine.enable"],
         "zen_sine_mods_row": ["roudix.zen.sine.mods"],
         "desktop_row": ["roudix.desktop.type"], "shell_row": ["roudix.desktop.shell"],
-        "latest_de_row": ["roudix.desktop.latest.niri", "roudix.desktop.latest.mangowc", "roudix.desktop.latest.umbriel"],
+        "latest_de_row": [],
         "latest_shell_row": ["roudix.desktop.latest.noctalia", "roudix.desktop.latest.dms", "roudix.desktop.latest.caelestia"],
-        "latest_note": ["roudix.desktop.latest.niri", "roudix.desktop.latest.mangowc", "roudix.desktop.latest.umbriel", "roudix.desktop.latest.noctalia", "roudix.desktop.latest.dms", "roudix.desktop.latest.caelestia"],
+        "latest_note": ["roudix.desktop.latest.noctalia", "roudix.desktop.latest.dms", "roudix.desktop.latest.caelestia"],
         "default_shell_row": ["roudix.shell"], "terminal_row": ["roudix.terminal"],
         "file_manager_row": ["roudix.fileManager"], "editor_row": ["roudix.editor"],
         "desktop_integration_row": ["roudix.desktopIntegration"],
