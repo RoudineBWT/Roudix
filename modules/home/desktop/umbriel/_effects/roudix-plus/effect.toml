@@ -35,3 +35,7 @@ shader = "focus.glsl"
 [effects.preset.roudix-vignette]
 kind = "screen"
 shader = "vignette.glsl"
+
+[effects.preset.roudix-wobble]
+kind = "animation"
+shader = "wobble.glsl"

@@ -11,6 +11,9 @@
 ##                        (_effects/roudix-plus/). Follows the Noctalia palette.
 ##   "roudix-plus-mocha" — the same, in Catppuccin Mocha + Peach (fixed colors,
 ##                        independent of the wallpaper; see `mocha` below).
+##   "roudix-wobbly"    — "roudix-plus" + a light jelly wobble when windows
+##                        move/re-tile and real drag physics (windows_drag).
+##   "roudix-wobbly-mocha" — the same, in Catppuccin Mocha + Peach.
 ##   "sakura-overdrive" — Ly-sec's full shader suite: animated border, screen
 ##                        and cursor effects + per-event animations
 ##                        (_effects/sakura-overdrive/, from Ly-sec/nixos).
@@ -128,6 +131,25 @@ let
     };
 
     roudix-plus-mocha = setups.roudix-plus // {
+      colors = mocha;
+    };
+
+    # "roudix-plus" + wobbly windows: a damped jelly shader on windows_move
+    # (_effects/roudix-plus/wobble.glsl) and the compositor's own spring
+    # physics while dragging a window. Wobble strength: STRENGTH in wobble.glsl.
+    roudix-wobbly = setups.roudix-plus // {
+      animation = setups.roudix-plus.animation // {
+        windows_move = {
+          enabled = true;
+          duration_ms = 350;
+          curve = "snappy";
+          effect = "roudix-wobble";
+        };
+        windows_drag.physics = true;
+      };
+    };
+
+    roudix-wobbly-mocha = setups.roudix-wobbly // {
       colors = mocha;
     };
 
