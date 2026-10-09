@@ -46,7 +46,13 @@
   # ── Network ─────────────────────────────────────────────────────────────
   networking.networkmanager.enable = true;
   networking.useDHCP = false;
-  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+  # DNS comes from DHCP / VPN / the local resolver (Pi-hole...) through
+  # systemd-resolved, like CachyOS. The public servers are only a fallback.
+  networking.networkmanager.dns = "systemd-resolved";
+  services.resolved = {
+    enable = true;
+    settings.Resolve.FallbackDNS = [ "1.1.1.1" "9.9.9.9" ];
+  };
 
   # ── Locale / timezone ───────────────────────────────────────────────────
   time.timeZone = lib.mkDefault "Europe/Brussels";

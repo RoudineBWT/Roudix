@@ -57,6 +57,9 @@ in
         USB_AUTOSUSPEND = 1;
         RUNTIME_PM_ON_AC = "on";
         RUNTIME_PM_ON_BAT = "auto";
+        # No HDA codec power saving on AC (crackle after idle); same idea as
+        # CachyOS's audio-pm-ctl, which pipewire.nix only applies on desktops.
+        SOUND_POWER_SAVE_ON_AC = 0;
       } // lib.optionalAttrs cfg.thinkpad {
         START_CHARGE_THRESH_BAT0 = cfg.batteryChargeThresholds.start;
         STOP_CHARGE_THRESH_BAT0 = cfg.batteryChargeThresholds.stop;
