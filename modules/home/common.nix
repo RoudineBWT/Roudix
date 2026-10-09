@@ -1,4 +1,4 @@
-{ pkgs, lib, username, osConfig, roudixSwitcher, roudixBranding, roudix-kernel-switcher, roudixStore, ... }:
+{ pkgs, lib, username, osConfig, roudixSwitcher, roudixBranding, roudix-kernel-switcher, roudix-hw-sync, roudixStore, ... }:
 let
   desktopType = osConfig.roudix.desktop.type;
   shellType = osConfig.roudix.desktop.shell or "noctalia";
@@ -61,6 +61,7 @@ in
     # Common apps
     roudixSwitcher
     roudix-kernel-switcher
+    roudix-hw-sync
     roudixStore
     btop
     ffmpeg

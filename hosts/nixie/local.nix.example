@@ -16,6 +16,7 @@
   # ── Hardware — ThinkPad L380 (Intel i3/i5-8250U, UHD 620) ────────────────
   hardware.myGpu    = "intel";                  # "amd", "nvidia" or "intel"
   hardware.myCpu    = "intel";                  # "intel" or "amd"
+  # hardware.intelIgpuQuirks = [ ];           # Intel iGPU only, if you hit flicker/freezes: "psr", "fbc" and/or "dc-off"
   hardware.myKernel = "nixpkgs-lts";     # see README for all variants
 
   # ── Laptop (TLP + thinkpad_acpi) — fixed for this machine ────────────────

@@ -77,6 +77,7 @@
   roudix.nvidia_config.amdgpuBusId = null;    # laptop with AMD iGPU, e.g. "PCI:5:0:0"
   roudix.nvidia_config.primeMode   = "offload"; # "offload" (battery, Wayland) or "sync"
   hardware.myCpu    = "intel";               # "intel" or "amd"
+  # hardware.intelIgpuQuirks = [ ];           # Intel iGPU only, if you hit flicker/freezes: "psr", "fbc" and/or "dc-off"
 
   # ── Laptop power (TLP) ────────────────────────────────────────────────────
   # Force-disables tuned (see modules/system/power/laptop.nix) — if
