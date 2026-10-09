@@ -32,8 +32,11 @@ in
   noctalia = pick "noctalia" pkgs.noctalia
     inputs.noctalia.packages.${sys}.default;
 
-  mango = pick "mangowc" pkgs.mango
-    inputs.mango.packages.${sys}.mango;
+  # Always from the flake input: the home-manager module (inputs.mango.hmModules)
+  # generates config keywords (exec_once, disable_while_typing, ov_tab_mode…)
+  # that the older nixpkgs mango rejects when it validates the config at build.
+  # Module and package must come from the same source.
+  mango = inputs.mango.packages.${sys}.mango;
 
   # Flake side: the umbriel overlay (inputs.umbriel.overlays.default) provides
   # pkgs.umbriel and is only applied when roudix.desktop.latest.umbriel = true.

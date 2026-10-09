@@ -82,9 +82,6 @@ in
     (lib.mkIf (dp.useNixpkgs "dms" && has [ "programs" "dank-material-shell" "package" ]) {
       programs.dank-material-shell.package = pkgs.dms-shell;
     })
-    (lib.mkIf (dp.useNixpkgs "mangowc" && has [ "programs" "mango" "package" ]) {
-      programs.mango.package = dp.mango;
-    })
 
     # Caelestia is driven by Hyprland global shortcuts only: on the other
     # compositors no shell would start at all.
@@ -101,9 +98,6 @@ in
         lib.optional (usesShell && cfg.shell == "dms" && dp.useNixpkgs "dms"
                       && !has [ "programs" "dank-material-shell" "package" ])
           "roudix: DMS from nixpkgs is not available with the flake module (no `package` option): the flake version is used. Set roudix.desktop.latest.dms = true to silence this."
-        ++ lib.optional (cfg.type == "mangowc" && dp.useNixpkgs "mangowc"
-                         && !has [ "programs" "mango" "package" ])
-          "roudix: MangoWC from nixpkgs is not available with the flake module (no `package` option): the flake version is used. Set roudix.desktop.latest.mangowc = true to silence this."
         ++ lib.optional (usesShell && cfg.shell != "noctalia" && dp.useNixpkgs dmsGreeterKey
                          && !has [ "programs" "dms-greeter" "package" ])
           "roudix: dms-greeter from nixpkgs is not available with the flake module (no `package` option): the flake version is used.";
