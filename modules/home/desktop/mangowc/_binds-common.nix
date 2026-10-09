@@ -93,7 +93,7 @@ in
     # câblé sur zen-twilight ci-dessus, indépendamment de cette liste.
     ++ (lib.imap1 (i: b: "SUPER+CTRL+ALT,${toString i},spawn,${b.command}") extraBrowsers);
 
-    mouse_bind = [
+    mousebind = [
       "SUPER,btn_left,moveresize,curmove"
       "SUPER,btn_right,moveresize,curresize"
     ];
