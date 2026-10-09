@@ -6,6 +6,11 @@
 ## Two selectable effect setups (roudix.umbriel.effects, declared in
 ## modules/system/desktop/umbriel.nix):
 ##   "roudix"           — subtle default (_effects/roudix/)
+##   "roudix-plus"      — "roudix" + original shaders: accent border, cursor
+##                        halo, workspace/layer/focus transitions
+##                        (_effects/roudix-plus/). Follows the Noctalia palette.
+##   "roudix-plus-mocha" — the same, in Catppuccin Mocha + Peach (fixed colors,
+##                        independent of the wallpaper; see `mocha` below).
 ##   "sakura-overdrive" — Ly-sec's full shader suite: animated border, screen
 ##                        and cursor effects + per-event animations
 ##                        (_effects/sakura-overdrive/, from Ly-sec/nixos).
@@ -100,6 +105,30 @@ let
     roudix = {
       files = [ "${./_effects/roudix}/effect.toml" ];
       animation = { };
+    };
+
+    # "roudix" + the roudix-plus presets. Light on purpose: one border, one
+    # static cursor halo, three short post-process transitions. No screen
+    # effect (it would disable direct scanout); roudix-vignette is opt-in.
+    roudix-plus = {
+      files = [
+        "${./_effects/roudix}/effect.toml"
+        "${./_effects/roudix-plus}/effect.toml"
+      ];
+      effects = {
+        border = "roudix-edge";
+        cursor = "roudix-halo";
+        max_fps = 60;
+      };
+      animation = {
+        workspaces.effect = "roudix-workspace";
+        layers.effect = "roudix-layer";
+        border.effect = "roudix-focus";
+      };
+    };
+
+    roudix-plus-mocha = setups.roudix-plus // {
+      colors = mocha;
     };
 
     sakura-overdrive = sakuraCommon // {

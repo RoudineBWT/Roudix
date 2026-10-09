@@ -29,11 +29,17 @@ in
     };
 
     effects = lib.mkOption {
-      type = lib.types.enum [ "roudix" "sakura-overdrive" "sakura-roudix" ];
+      type = lib.types.enum [ "roudix" "roudix-plus" "roudix-plus-mocha" "sakura-overdrive" "sakura-roudix" ];
       default = "roudix";
       description = ''
         Umbriel only. Shader/animation setup:
           "roudix"           : subtle window in/out + scratchpad shaders (default).
+          "roudix-plus"      : "roudix" + accent border, cursor halo and subtle
+                               workspace/layer/focus transitions (original
+                               shaders, light on the GPU). Follows the
+                               Noctalia palette.
+          "roudix-plus-mocha": same as "roudix-plus" with Catppuccin Mocha +
+                               Peach colors (fixed, independent of Noctalia).
           "sakura-overdrive" : Ly-sec's full sakura/magical-girl suite — animated
                                border, screen and cursor effects and shader
                                animations on every event. Colors come from the
