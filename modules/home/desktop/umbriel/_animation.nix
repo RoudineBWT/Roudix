@@ -18,6 +18,14 @@
 ##                        logo shape (_effects/roudix-plus/logo.glsl). Fixed
 ##                        Catppuccin Mocha colors = the logo's own Peach/Maroon.
 ##   "roudix-logo-wobbly" — the same + the jelly wobble of "roudix-wobbly".
+##   "roudix-orbit"     — "roudix-plus" with a different border: breathing accent
+##                        line + a slow comet of light circling the window, and
+##                        a short sweep on focus change (orbit.glsl,
+##                        focus-sweep.glsl). Follows the Noctalia palette.
+##   "roudix-orbit-mocha" — the same, in Catppuccin Mocha + Peach.
+##   "roudix-full"      — everything: logo open/close + jelly wobble + orbit
+##                        border with focus sweep. Fixed Catppuccin Mocha colors
+##                        (the logo needs them).
 ##   "sakura-overdrive" — Ly-sec's full shader suite: animated border, screen
 ##                        and cursor effects + per-event animations
 ##                        (_effects/sakura-overdrive/, from Ly-sec/nixos).
@@ -183,6 +191,33 @@ let
       colors = mocha;
       animation = setups.roudix-wobbly.animation // {
         inherit (setups.roudix-logo.animation) windows_in windows_out;
+      };
+    };
+
+    # Same as roudix-plus, but the border is the "orbit" one (comet + breathing)
+    # and focus changes trigger a short sweep around it.
+    roudix-orbit = setups.roudix-plus // {
+      effects = setups.roudix-plus.effects // { border = "roudix-orbit"; };
+      animation = setups.roudix-plus.animation // {
+        border = {
+          enabled = true;
+          duration_ms = 450;
+          curve = "easeout";
+          effect = "roudix-focus-sweep";
+        };
+      };
+    };
+
+    roudix-orbit-mocha = setups.roudix-orbit // {
+      colors = mocha;
+    };
+
+    # Logo open/close + wobble (roudix-logo-wobbly) + the orbit border and its
+    # focus sweep (roudix-orbit). Colors stay Mocha, inherited from the logo.
+    roudix-full = setups.roudix-logo-wobbly // {
+      effects = setups.roudix-logo-wobbly.effects // { border = "roudix-orbit"; };
+      animation = setups.roudix-logo-wobbly.animation // {
+        inherit (setups.roudix-orbit.animation) border;
       };
     };
 

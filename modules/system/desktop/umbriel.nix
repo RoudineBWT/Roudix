@@ -29,7 +29,7 @@ in
     };
 
     effects = lib.mkOption {
-      type = lib.types.enum [ "roudix" "roudix-plus" "roudix-plus-mocha" "roudix-wobbly" "roudix-wobbly-mocha" "roudix-logo" "roudix-logo-wobbly" "sakura-overdrive" "sakura-roudix" ];
+      type = lib.types.enum [ "roudix" "roudix-plus" "roudix-plus-mocha" "roudix-wobbly" "roudix-wobbly-mocha" "roudix-logo" "roudix-logo-wobbly" "roudix-orbit" "roudix-orbit-mocha" "roudix-full" "sakura-overdrive" "sakura-roudix" ];
       default = "roudix";
       description = ''
         Umbriel only. Shader/animation setup:
@@ -46,6 +46,11 @@ in
           "roudix-logo"      : "roudix-plus" + windows open/close through the
                                Roudix logo shape (Mocha Peach/Maroon, fixed).
           "roudix-logo-wobbly": same + jelly wobble on move + drag physics.
+          "roudix-orbit"     : "roudix-plus" with a breathing accent border and a
+                               slow comet of light around it + focus sweep.
+          "roudix-orbit-mocha": same with Catppuccin Mocha + Peach colors.
+          "roudix-full"      : everything — logo open/close, jelly wobble, orbit
+                               border + focus sweep (Mocha Peach/Maroon, fixed).
           "sakura-overdrive" : Ly-sec's full sakura/magical-girl suite — animated
                                border, screen and cursor effects and shader
                                animations on every event. Colors come from the
