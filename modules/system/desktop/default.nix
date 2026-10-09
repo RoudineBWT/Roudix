@@ -86,6 +86,15 @@ in
       programs.mango.package = dp.mango;
     })
 
+    # Caelestia is driven by Hyprland global shortcuts only: on the other
+    # compositors no shell would start at all.
+    {
+      assertions = [{
+        assertion = !(usesShell && cfg.shell == "caelestia" && cfg.type != "hyprland");
+        message = "roudix: roudix.desktop.shell = \"caelestia\" only works with roudix.desktop.type = \"hyprland\" (use noctalia or dms with niri, mangowc or umbriel).";
+      }];
+    }
+
     # Tell the user when a nixpkgs version could not be applied.
     {
       warnings =

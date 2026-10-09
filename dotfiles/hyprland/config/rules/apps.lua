@@ -42,7 +42,7 @@ local floatApps = {
     { class = "^(kvantummanager|qt[56]ct|nwg-look)$" },
     { class = "^(org\\.pulseaudio\\.pavucontrol|blueman-manager|nm-applet|nm-connection-editor)$" },
     { class = "^(.*[Cc]alculator.*)$" },
-    { class = "^(dev\\.)?(noctalia\\.Noctalia\\.Settings)$" },
+    { class = "^dev\\.noctalia\\.Noctalia$" },
     { class = "^(.*satty.*)$", title = "^(Satty)$" },
 }
 for _, m in ipairs(floatApps) do hl.window_rule({ match = m, float = true }) end

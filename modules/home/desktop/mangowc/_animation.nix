@@ -1,8 +1,11 @@
-{ ... }:
+{ osConfig, ... }:
+let
+  isNoctalia = (osConfig.roudix.desktop.shell or "noctalia") == "noctalia";
+in
 {
   wayland.windowManager.mango.settings = {
     animations = 1;
-    layer_animations = 1;
+    layer_animations = if isNoctalia then 0 else 1;
     animation_type_open = "zoom";
     animation_type_close = "slide";
     layer_animation_type_open = "slide";

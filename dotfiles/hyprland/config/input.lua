@@ -2,8 +2,8 @@
 
 hl.config({
     input = {
-        kb_layout  = "us",
-        kb_variant = "intl", -- clavier US International (dead-keys), comme sur ton niri
+        kb_layout  = KB_LAYOUT or "us", -- from roudix.keyboardLayout (config/nix-apps.lua)
+        kb_variant = KB_VARIANT or "intl",
         numlock_by_default = true,
         accel_profile = "flat",
         follow_mouse = 1, -- focus-follows-mouse, comme dans ton niri

@@ -83,7 +83,7 @@ in
     {
       match.app_id = "^youtube-music-desktop-app";
       default_output = "DP-3";
-      default_workspace = "2";
+      default_workspace = 2;
     }
     {
       match.app_id = "^com\\.mitchellh\\.ghostty$";

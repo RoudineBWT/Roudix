@@ -8,7 +8,6 @@ let
   };
   hyprFiles = [
     "hyprland.lua"
-    "README.md"
     "config/animations.lua"
     "config/autostart.lua"
     "config/colors.lua"
@@ -30,7 +29,6 @@ let
     "config/shells/caelestia.lua"
     "config/shells/dms.lua"
     "config/shells/noctalia.lua"
-    "scripts/gamemode.sh"
   ];
 
   # ── Terminal / browser / files resolved from roudix.* ──────────────────
@@ -156,6 +154,8 @@ in
           -- BROWSER_ALT hardcodé) ; les suivants passent par la boucle
           -- Mod+Ctrl+Alt+N dans binds/common.lua.
           BROWSER_ALT = EXTRA_BROWSERS[1] and EXTRA_BROWSERS[1].command or nil
+          KB_LAYOUT = "${osConfig.roudix.keyboardLayout}"
+          KB_VARIANT = "${osConfig.roudix.keyboardVariant}"
         '';
       }
       {

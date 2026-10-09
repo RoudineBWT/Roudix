@@ -77,13 +77,14 @@ in
       "SUPER+CTRL,9,tag,9"
 
       "SUPER,Tab,view,-1"
+      "SUPER,O,toggleoverview"
       "SUPER+SHIFT,G,togglegaps"
-      "SUPER+SHIFT,minus,incgaps,-5"
-      "SUPER+SHIFT,equal,incgaps,5"
+      "SUPER+ALT,minus,incgaps,-5"
+      "SUPER+ALT,equal,incgaps,5"
       "SUPER+ALT,Space,switch_layout"
       "SUPER+ALT,P,switch_proportion_preset"
       "SUPER+SHIFT,R,reload_config"
-      "SUPER+SHIFT,P,toggle_monitor,current"
+      "SUPER+SHIFT,P,sleep_toggle_monitor,current"
       "CTRL+ALT,Delete,quit"
     ]
     ++ lib.optional (browserCmd != null) "SUPER,B,spawn,${browserCmd}"

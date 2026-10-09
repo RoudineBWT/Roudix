@@ -1,4 +1,10 @@
-{ ... }:
+{ osConfig, ... }:
+let
+  # Mango's layer blur/shadows ignore surface opacity, so transparent Noctalia
+  # surfaces get blurred (docs.noctalia.dev compositor-settings/mango).
+  isNoctalia = (osConfig.roudix.desktop.shell or "noctalia") == "noctalia";
+  layerFx = if isNoctalia then 0 else 1;
+in
 {
   wayland.windowManager.mango.settings = {
     gappih = 4;
@@ -26,7 +32,7 @@
     unfocused_opacity = 0.85;
 
     blur = 1;
-    blur_layer = 1;
+    blur_layer = layerFx;
     blur_optimized = 1;
     blur_params_radius = 5;
     blur_params_num_passes = 2;
@@ -36,7 +42,7 @@
     blur_params_saturation = 1.2;
 
     shadows = 1;
-    layer_shadows = 1;
+    layer_shadows = layerFx;
     shadow_only_floating = 1;
     shadows_size = 6;
     shadows_blur = 24;

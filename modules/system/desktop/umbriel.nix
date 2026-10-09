@@ -61,23 +61,21 @@ in
     # no separate flake input) — it always matches the umbriel revision in
     # flake.lock. Override programs.umbriel.portalPackage only to pin another.
 
-    # ── DMS greeter (when shell != noctalia) ───────────────────────────────
-    programs.dms-greeter = lib.mkIf (!isNoctalia) {
-      enable = true;
-      compositor.name = "umbriel";
-      configHome = "/home/${username}";
-    };
-
     # ── DMS (shell) ─────────────────────────────────────────────────────
     programs.dank-material-shell = lib.mkIf isDms {
       enable = true;
       systemd.enable = true;
     };
 
-    # ── Noctalia greeter (when shell == noctalia) ──────────────────────────
-    services.displayManager.noctalia-greeter = lib.mkIf isNoctalia {
+    # ── Greeter ──────────────────────────────────────────────────────────
+    # dms-greeter's compositor.name enum (niri, hyprland, sway, labwc, mango,
+    # scroll, miracle, aqueous) has no "umbriel", so the DMS greeter can't be
+    # used here. noctalia-greeter is a generic greetd greeter: use it for every
+    # shell. It only understands `--session NAME` (.desktop Name= or filename);
+    # check the exact name with `noctalia-greeter sessions`.
+    services.displayManager.noctalia-greeter = {
       enable = true;
-      greeter-args = "start-umbriel";
+      greeter-args = "--session Umbriel";
       settings = {
         keyboard = {
           layout  = config.roudix.keyboardLayout;
