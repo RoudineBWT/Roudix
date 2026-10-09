@@ -46,3 +46,15 @@ shader = "wobble.glsl"
 kind = "animation"
 shader = "logo.glsl"
 palette = true
+
+[effects.preset.roudix-orbit]
+kind = "border"
+shader = "orbit.glsl"
+palette = true
+padding = 6
+speed = 1.0
+# animated = false   # static line, no per-frame cost
+
+[effects.preset.roudix-focus-sweep]
+kind = "animation"
+shader = "focus-sweep.glsl"
