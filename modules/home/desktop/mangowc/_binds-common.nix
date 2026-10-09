@@ -98,7 +98,7 @@ in
       "SUPER,btn_right,moveresize,curresize"
     ];
 
-    axis_bind = [
+    axisbind = [
       "SUPER,UP,viewtoleft"
       "SUPER,DOWN,viewtoright"
     ];

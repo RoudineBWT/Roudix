@@ -27,7 +27,7 @@
     hotarea_size = 10;
     hotarea_disable_on_fullscreen = 1;
     hotarea_corner = 2;
-    # ov_tab_mode removed in mango 0.16+ (moved to the `overcircle` dispatch): kept at default
+    ov_tab_mode = 0;
     overview_gap_inner = 5;
     overview_gap_outer = 30;
 
