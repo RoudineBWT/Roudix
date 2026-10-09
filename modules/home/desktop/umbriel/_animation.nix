@@ -14,6 +14,10 @@
 ##   "roudix-wobbly"    — "roudix-plus" + a light jelly wobble when windows
 ##                        move/re-tile and real drag physics (windows_drag).
 ##   "roudix-wobbly-mocha" — the same, in Catppuccin Mocha + Peach.
+##   "roudix-logo"      — "roudix-plus" + windows open/close through the Roudix
+##                        logo shape (_effects/roudix-plus/logo.glsl). Fixed
+##                        Catppuccin Mocha colors = the logo's own Peach/Maroon.
+##   "roudix-logo-wobbly" — the same + the jelly wobble of "roudix-wobbly".
 ##   "sakura-overdrive" — Ly-sec's full shader suite: animated border, screen
 ##                        and cursor effects + per-event animations
 ##                        (_effects/sakura-overdrive/, from Ly-sec/nixos).
@@ -151,6 +155,35 @@ let
 
     roudix-wobbly-mocha = setups.roudix-wobbly // {
       colors = mocha;
+    };
+
+    # Windows open/close through the Roudix logo (logo.glsl, one shared
+    # direction-aware shader). Colors are forced to Catppuccin Mocha because
+    # the logo IS Peach (#fab387) + Maroon (#eba0ac); wallpaper colors would
+    # make the outline stop matching it.
+    roudix-logo = setups.roudix-plus // {
+      colors = mocha;
+      animation = setups.roudix-plus.animation // {
+        windows_in = {
+          enabled = true;
+          duration_ms = 520;
+          curve = "easeout";
+          effect = "roudix-logo";
+        };
+        windows_out = {
+          enabled = true;
+          duration_ms = 400;
+          curve = "easeout";
+          effect = "roudix-logo";
+        };
+      };
+    };
+
+    roudix-logo-wobbly = setups.roudix-wobbly // {
+      colors = mocha;
+      animation = setups.roudix-wobbly.animation // {
+        inherit (setups.roudix-logo.animation) windows_in windows_out;
+      };
     };
 
     sakura-overdrive = sakuraCommon // {

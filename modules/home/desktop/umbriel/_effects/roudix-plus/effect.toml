@@ -39,3 +39,10 @@ shader = "vignette.glsl"
 [effects.preset.roudix-wobble]
 kind = "animation"
 shader = "wobble.glsl"
+
+# Shared by windows_in and windows_out (direction-aware). Palette = Peach/Maroon
+# of the logo when [colors] is Catppuccin Mocha.
+[effects.preset.roudix-logo]
+kind = "animation"
+shader = "logo.glsl"
+palette = true
