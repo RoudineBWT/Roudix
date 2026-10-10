@@ -42,8 +42,7 @@
   #         send-back with a shortcut: Mod+Alt+D/M, Mod+Alt+Shift+D/M)
   # false — pinned to a fixed output/workspace/position (default)
   roudix.umbriel.scratchpadApps = false;
-  # roudix.umbriel.effects = "sakura-overdrive"; # "roudix" (default, subtle), "roudix-plus" / "roudix-plus-mocha", "roudix-wobbly" / "roudix-wobbly-mocha" (+ wobbly windows), "roudix-logo" / "roudix-logo-wobbly" (open/close shaped like the Roudix logo), "roudix-orbit" / "roudix-orbit-mocha" (comet of light around the border), "roudix-vine" / "roudix-vine-mocha" (Sakura-style vine with the logo), "roudix-full" (logo + wobble + vine) (light accent border + cursor halo + transitions), "sakura-overdrive" (Ly-sec's suite, needs Noctalia) or "sakura-roudix" (same, Catppuccin Mocha Peach)
-
+  # roudix.umbriel.effects = "sakura-overdrive"; # "roudix" (default, subtle), "roudix-plus" / "roudix-plus-mocha", "roudix-wobbly" / "roudix-wobbly-mocha" (+ wobbly windows), "roudix-logo" / "roudix-logo-wobbly" (open/close shaped like the Roudix logo), "roudix-orbit" / "roudix-orbit-mocha" (comet of light around the border), "roudix-aurora" / "roudix-aurora-mocha" (flowing light border), "roudix-full" (logo + wobble + aurora) (light accent border + cursor halo + transitions), "sakura-overdrive" (Ly-sec's suite, needs Noctalia) or "sakura-roudix" (same, Catppuccin Mocha Peach)
   # ── MangoWC : scratchpads ───────────────────────────────────────────────
   # Only used when roudix.desktop.type = "mangowc"
   # true  — Discord/Element/Telegram/Spotify live in named scratchpads
