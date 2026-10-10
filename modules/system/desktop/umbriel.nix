@@ -3,12 +3,7 @@ let
   isUmbriel  = config.roudix.desktop.type == "umbriel";
   shellType  = config.roudix.desktop.shell or "noctalia";
   isDms      = shellType == "dms";
-  isNoctalia = shellType == "noctalia";
   isKdeIntegration = config.roudix.desktopIntegration == "kde";
-  dp = import ../../desktop-pkgs.nix {
-    inherit pkgs inputs;
-    latest = config.roudix.desktop.latest;
-  };
 in
 {
   imports = [ inputs.umbriel.nixosModules.default ];
