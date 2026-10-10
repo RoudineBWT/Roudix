@@ -75,3 +75,23 @@ palette = true
 [effects.preset.roudix-focus-sweep]
 kind = "animation"
 shader = "focus-sweep.glsl"
+
+# "Roudix vine": Sakura's woven vine with the Roudix logo instead of flowers and
+# its chevron instead of leaves. Derivative of Barrulus' MIT-licensed
+# flowering-vine (see LICENSE-Barrulus-MIT.txt in this directory). `padding` MUST
+# stay 3 (it matches ring_padding in the shader). The overlay draws the part of
+# the vine that grows INTO the window; drop the `overlay` line to keep only the
+# outside strip (cheaper, but the logos live mostly inside).
+[effects.preset.roudix-vine]
+kind = "border"
+shader = "roudix-vine.glsl"
+palette = true
+padding = 3
+speed = 1.0
+overlay = "roudix-vine-inner"
+
+# Companion window preset of roudix-vine: do not also select it in [effects].
+[effects.preset.roudix-vine-inner]
+kind = "window"
+shader = "roudix-vine-inner.glsl"
+palette = true

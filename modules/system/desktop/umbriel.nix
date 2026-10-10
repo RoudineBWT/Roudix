@@ -29,7 +29,7 @@ in
     };
 
     effects = lib.mkOption {
-      type = lib.types.enum [ "roudix" "roudix-plus" "roudix-plus-mocha" "roudix-wobbly" "roudix-wobbly-mocha" "roudix-logo" "roudix-logo-wobbly" "roudix-orbit" "roudix-orbit-mocha" "roudix-full" "sakura-overdrive" "sakura-roudix" ];
+      type = lib.types.enum [ "roudix" "roudix-plus" "roudix-plus-mocha" "roudix-vine" "roudix-vine-mocha" "roudix-wobbly" "roudix-wobbly-mocha" "roudix-logo" "roudix-logo-wobbly" "roudix-orbit" "roudix-orbit-mocha" "roudix-full" "sakura-overdrive" "sakura-roudix" ];
       default = "roudix";
       description = ''
         Umbriel only. Shader/animation setup:
@@ -40,6 +40,10 @@ in
                                Noctalia palette.
           "roudix-plus-mocha": same as "roudix-plus" with Catppuccin Mocha +
                                Peach colors (fixed, independent of Noctalia).
+          "roudix-vine"      : "roudix-plus" + Sakura-style woven vine border where
+                               flowers are the Roudix logo and leaves its chevron.
+                               Follows the Noctalia palette.
+          "roudix-vine-mocha": same with Catppuccin Mocha + Peach colors.
           "roudix-wobbly"    : "roudix-plus" + light jelly wobble on window
                                move/re-tile + spring physics while dragging.
           "roudix-wobbly-mocha": same with Catppuccin Mocha + Peach colors.
@@ -50,8 +54,8 @@ in
                                interlaced strands, glints, comet + flare, inner
                                glow, light spill) + focus sweep.
           "roudix-orbit-mocha": same with Catppuccin Mocha + Peach colors.
-          "roudix-full"      : everything — logo open/close, jelly wobble, orbit
-                               border + focus sweep (Mocha Peach/Maroon, fixed).
+          "roudix-full"      : everything — logo open/close, jelly wobble, logo
+                               vine border (Mocha Peach/Maroon, fixed).
           "sakura-overdrive" : Ly-sec's full sakura/magical-girl suite — animated
                                border, screen and cursor effects and shader
                                animations on every event. Colors come from the
