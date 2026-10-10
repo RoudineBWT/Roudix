@@ -14,13 +14,13 @@
 ##   "roudix-wobbly"    — "roudix-plus" + a light jelly wobble when windows
 ##                        move/re-tile and real drag physics (windows_drag).
 ##   "roudix-wobbly-mocha" — the same, in Catppuccin Mocha + Peach.
-##   "roudix-vine"      — "roudix-plus" with a Sakura-style woven vine on the
-##                        border where the flowers are the Roudix logo and the
-##                        leaves its chevron (roudix-vine.glsl, derived from
-##                        Barrulus' MIT flowering-vine). Follows the Noctalia
-##                        palette.
-##   "roudix-vine-mocha" — the same, in Catppuccin Mocha + Peach (the logo's
-##                        own colors).
+##   "roudix-aurora"    — "roudix-plus" with a different border: a flowing
+##                        Peach/Maroon light drifting around the window (no
+##                        comet), a fine braid, light-driven snowflake glints,
+##                        an inner-edge glow, and a "zip" of light around the
+##                        border on focus (aurora.glsl, aurora-inner.glsl,
+##                        focus-zip.glsl). Follows the Noctalia palette.
+##   "roudix-aurora-mocha" — the same, in Catppuccin Mocha + Peach.
 ##   "roudix-logo"      — "roudix-plus" + windows open/close through the Roudix
 ##                        logo shape (_effects/roudix-plus/logo.glsl). Fixed
 ##                        Catppuccin Mocha colors = the logo's own Peach/Maroon.
@@ -33,8 +33,8 @@
 ##                        orbit-inner.glsl, focus-sweep.glsl). Follows the
 ##                        Noctalia palette.
 ##   "roudix-orbit-mocha" — the same, in Catppuccin Mocha + Peach.
-##   "roudix-full"      — everything: logo open/close + jelly wobble + the logo
-##                        vine border. Fixed Catppuccin Mocha colors
+##   "roudix-full"      — everything: logo open/close + jelly wobble + the
+##                        aurora border with its focus zip. Fixed Catppuccin Mocha colors
 ##                        (the logo needs them).
 ##   "sakura-overdrive" — Ly-sec's full shader suite: animated border, screen
 ##                        and cursor effects + per-event animations
@@ -222,19 +222,31 @@ let
       colors = mocha;
     };
 
-    # Logo open/close + wobble (roudix-logo-wobbly) + the logo vine border
-    # (roudix-vine). Colors stay Mocha, inherited from the logo. The braid/comet
-    # border is still available as "roudix-orbit" / "roudix-orbit-mocha".
+    # Logo open/close + wobble (roudix-logo-wobbly) + the aurora border and its
+    # focus zip (roudix-aurora). Colors stay Mocha, inherited from the logo. The
+    # braid/comet border is still available as "roudix-orbit" / "roudix-orbit-mocha".
     roudix-full = setups.roudix-logo-wobbly // {
-      effects = setups.roudix-logo-wobbly.effects // { border = "roudix-vine"; };
+      effects = setups.roudix-logo-wobbly.effects // { border = "roudix-aurora"; };
+      animation = setups.roudix-logo-wobbly.animation // {
+        inherit (setups.roudix-aurora.animation) border;
+      };
     };
 
-    # Sakura-style vine border carrying the Roudix logo (see roudix-vine.glsl).
-    roudix-vine = setups.roudix-plus // {
-      effects = setups.roudix-plus.effects // { border = "roudix-vine"; };
+    # roudix-plus with the "aurora" border: flowing light + braid + glints, and
+    # a short zip of light around the border when a window gets focus.
+    roudix-aurora = setups.roudix-plus // {
+      effects = setups.roudix-plus.effects // { border = "roudix-aurora"; };
+      animation = setups.roudix-plus.animation // {
+        border = {
+          enabled = true;
+          duration_ms = 600;
+          curve = "easeout";
+          effect = "roudix-focus-zip";
+        };
+      };
     };
 
-    roudix-vine-mocha = setups.roudix-vine // {
+    roudix-aurora-mocha = setups.roudix-aurora // {
       colors = mocha;
     };
 

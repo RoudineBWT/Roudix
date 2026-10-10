@@ -76,22 +76,33 @@ palette = true
 kind = "animation"
 shader = "focus-sweep.glsl"
 
-# "Roudix vine": Sakura's woven vine with the Roudix logo instead of flowers and
-# its chevron instead of leaves. Derivative of Barrulus' MIT-licensed
-# flowering-vine (see LICENSE-Barrulus-MIT.txt in this directory). `padding` MUST
-# stay 3 (it matches ring_padding in the shader). The overlay draws the part of
-# the vine that grows INTO the window; drop the `overlay` line to keep only the
-# outside strip (cheaper, but the logos live mostly inside).
-[effects.preset.roudix-vine]
+# "Aurora": flowing Peach/Maroon light around the window (field, not a comet),
+# a fine braid, light-driven snowflake glints, and an inner-edge glow overlay.
+# `padding` MUST equal PAD in aurora.glsl. Windows are 9 px apart, so keep
+# ring + padding below ~8. Cheaper: drop the `overlay` line.
+[effects.preset.roudix-aurora]
 kind = "border"
-shader = "roudix-vine.glsl"
+shader = "aurora.glsl"
 palette = true
-padding = 3
+padding = 6
 speed = 1.0
-overlay = "roudix-vine-inner"
+overlay = "roudix-aurora-inner"
+# animated = false   # frozen light, no per-frame cost
 
-# Companion window preset of roudix-vine: do not also select it in [effects].
-[effects.preset.roudix-vine-inner]
+# Optional: light cast onto the surroundings (adds rendering cost; brightness
+# varies with output scale). Uncomment to try.
+# [effects.preset.roudix-aurora.light]
+# spread = 40
+# intensity = 0.5
+# threshold = 0.5
+
+# Companion window preset of roudix-aurora: do not also select it in [effects].
+[effects.preset.roudix-aurora-inner]
 kind = "window"
-shader = "roudix-vine-inner.glsl"
+shader = "aurora-inner.glsl"
 palette = true
+
+# Focus transition for the aurora border: two fronts zip around the window.
+[effects.preset.roudix-focus-zip]
+kind = "animation"
+shader = "focus-zip.glsl"
