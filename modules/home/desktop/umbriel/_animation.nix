@@ -14,12 +14,13 @@
 ##   "roudix-wobbly"    — "roudix-plus" + a light jelly wobble when windows
 ##                        move/re-tile and real drag physics (windows_drag).
 ##   "roudix-wobbly-mocha" — the same, in Catppuccin Mocha + Peach.
-##   "roudix-aurora"    — "roudix-plus" with a different border: a flowing
-##                        Peach/Maroon light drifting around the window (no
-##                        comet), a fine braid, light-driven snowflake glints,
-##                        an inner-edge glow, and a "zip" of light around the
-##                        border on focus (aurora.glsl, aurora-inner.glsl,
-##                        focus-zip.glsl). Follows the Noctalia palette.
+##   "roudix-aurora"    — "roudix-plus" with a different border: one thin,
+##                        slightly irregular stem (Sakura-like line, no leaves)
+##                        through which a Peach/Maroon light flows (no comet),
+##                        tiny light-driven snowflake glints, a faint inner
+##                        glow, and a "zip" of light around the border on focus
+##                        (aurora.glsl, aurora-inner.glsl, focus-zip.glsl).
+##                        Follows the Noctalia palette.
 ##   "roudix-aurora-mocha" — the same, in Catppuccin Mocha + Peach.
 ##   "roudix-logo"      — "roudix-plus" + windows open/close through the Roudix
 ##                        logo shape (_effects/roudix-plus/logo.glsl). Fixed
@@ -232,7 +233,7 @@ let
       };
     };
 
-    # roudix-plus with the "aurora" border: flowing light + braid + glints, and
+    # roudix-plus with the "aurora" border: thin stem + flowing light + glints, and
     # a short zip of light around the border when a window gets focus.
     roudix-aurora = setups.roudix-plus // {
       effects = setups.roudix-plus.effects // { border = "roudix-aurora"; };

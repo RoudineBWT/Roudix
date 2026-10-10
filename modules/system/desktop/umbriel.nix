@@ -41,8 +41,9 @@ in
           "roudix-plus-mocha": same as "roudix-plus" with Catppuccin Mocha +
                                Peach colors (fixed, independent of Noctalia).
           "roudix-aurora"    : "roudix-plus" + flowing Peach/Maroon light around the
-                               border (no comet), fine braid, glints, inner glow
-                               and a zip of light on focus. Follows Noctalia.
+                               border through one thin Sakura-like stem (no comet),
+                               tiny glints, faint inner glow and a zip of light
+                               on focus. Follows Noctalia.
           "roudix-aurora-mocha": same with Catppuccin Mocha + Peach colors.
           "roudix-wobbly"    : "roudix-plus" + light jelly wobble on window
                                move/re-tile + spring physics while dragging.

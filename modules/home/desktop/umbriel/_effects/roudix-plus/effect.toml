@@ -76,15 +76,16 @@ palette = true
 kind = "animation"
 shader = "focus-sweep.glsl"
 
-# "Aurora": flowing Peach/Maroon light around the window (field, not a comet),
-# a fine braid, light-driven snowflake glints, and an inner-edge glow overlay.
+# "Aurora": one thin, slightly irregular stem around the window with a soft
+# light flowing through it (a field, not a comet), tiny light-driven snowflake
+# glints, and a faint inner-edge glow overlay.
 # `padding` MUST equal PAD in aurora.glsl. Windows are 9 px apart, so keep
 # ring + padding below ~8. Cheaper: drop the `overlay` line.
 [effects.preset.roudix-aurora]
 kind = "border"
 shader = "aurora.glsl"
 palette = true
-padding = 6
+padding = 5
 speed = 1.0
 overlay = "roudix-aurora-inner"
 # animated = false   # frozen light, no per-frame cost

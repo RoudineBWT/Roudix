@@ -1,6 +1,6 @@
 // aurora-inner.glsl — window overlay of the "roudix-aurora" border. Carries the
-// same flowing light onto the INSIDE edge of the focused window, as a soft rim
-// glow. Original work for Roudix. Only touches pixels within DEPTH px of the
+// same flowing light onto the INSIDE edge of the focused window, as a very faint
+// rim glow. Original work for Roudix. Only touches pixels within DEPTH px of the
 // edge; everything else returns the input unchanged.
 //
 // lightField / hueField and FLOW MUST stay identical to aurora.glsl, so the
@@ -9,9 +9,9 @@
 
 const float TAU   = 6.28318530718;
 const float FLOW  = 1.0;
-const float DEPTH = 14.0;
-const float RIM   = 0.03;
-const float LIGHT = 0.30;
+const float DEPTH = 10.0;
+const float RIM   = 0.015;
+const float LIGHT = 0.16;
 
 // ---- identical to aurora.glsl ----------------------------------------------
 float lightField(float u, float t) {
