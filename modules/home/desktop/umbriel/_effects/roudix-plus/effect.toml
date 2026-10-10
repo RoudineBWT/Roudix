@@ -47,13 +47,30 @@ kind = "animation"
 shader = "logo.glsl"
 palette = true
 
+# "Snowflake braid" border + its inner-glow overlay. `padding` MUST equal PAD
+# in orbit.glsl. Windows are 9 px apart, so keep ring + padding below ~8.
+# Cheaper: delete the `overlay` line and/or the [light] table below.
 [effects.preset.roudix-orbit]
 kind = "border"
 shader = "orbit.glsl"
 palette = true
 padding = 6
 speed = 1.0
-# animated = false   # static line, no per-frame cost
+overlay = "roudix-orbit-inner"
+# animated = false   # frozen braid, no per-frame cost
+
+# Light the border casts onto its surroundings (adds rendering cost; the
+# brightness varies with output scale). Remove this table to disable.
+[effects.preset.roudix-orbit.light]
+spread = 40
+intensity = 0.6
+threshold = 0.5
+
+# Window overlay used by roudix-orbit (companion: do not also select it).
+[effects.preset.roudix-orbit-inner]
+kind = "window"
+shader = "orbit-inner.glsl"
+palette = true
 
 [effects.preset.roudix-focus-sweep]
 kind = "animation"

@@ -18,10 +18,13 @@
 ##                        logo shape (_effects/roudix-plus/logo.glsl). Fixed
 ##                        Catppuccin Mocha colors = the logo's own Peach/Maroon.
 ##   "roudix-logo-wobbly" — the same + the jelly wobble of "roudix-wobbly".
-##   "roudix-orbit"     — "roudix-plus" with a different border: breathing accent
-##                        line + a slow comet of light circling the window, and
-##                        a short sweep on focus change (orbit.glsl,
-##                        focus-sweep.glsl). Follows the Noctalia palette.
+##   "roudix-orbit"     — "roudix-plus" with a different border: a "snowflake
+##                        braid" (two interlaced Peach/Maroon strands, logo-
+##                        shaped glints, a comet with a snowflake flare), its
+##                        inner glow on the window edge and light spill, plus a
+##                        short sweep on focus change (orbit.glsl,
+##                        orbit-inner.glsl, focus-sweep.glsl). Follows the
+##                        Noctalia palette.
 ##   "roudix-orbit-mocha" — the same, in Catppuccin Mocha + Peach.
 ##   "roudix-full"      — everything: logo open/close + jelly wobble + orbit
 ##                        border with focus sweep. Fixed Catppuccin Mocha colors
@@ -194,7 +197,7 @@ let
       };
     };
 
-    # Same as roudix-plus, but the border is the "orbit" one (comet + breathing)
+    # Same as roudix-plus, but the border is the "orbit" one (snowflake braid + comet)
     # and focus changes trigger a short sweep around it.
     roudix-orbit = setups.roudix-plus // {
       effects = setups.roudix-plus.effects // { border = "roudix-orbit"; };

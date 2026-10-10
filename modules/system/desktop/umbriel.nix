@@ -46,8 +46,9 @@ in
           "roudix-logo"      : "roudix-plus" + windows open/close through the
                                Roudix logo shape (Mocha Peach/Maroon, fixed).
           "roudix-logo-wobbly": same + jelly wobble on move + drag physics.
-          "roudix-orbit"     : "roudix-plus" with a breathing accent border and a
-                               slow comet of light around it + focus sweep.
+          "roudix-orbit"     : "roudix-plus" with a "snowflake braid" border (two
+                               interlaced strands, glints, comet + flare, inner
+                               glow, light spill) + focus sweep.
           "roudix-orbit-mocha": same with Catppuccin Mocha + Peach colors.
           "roudix-full"      : everything — logo open/close, jelly wobble, orbit
                                border + focus sweep (Mocha Peach/Maroon, fixed).
