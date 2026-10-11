@@ -9,7 +9,31 @@
 # flake.lock in the user's checkout, which made roudix-autoupdate's
 # `git merge --ff-only` refuse to run as soon as CI had bumped the lock.)
 
-usage() {
+# ── Language ────────────────────────────────────────────────────────────────
+# Same rule as the other Roudix apps (L(fr, en)): French when the first
+# non-empty of LC_ALL / LC_MESSAGES / LANG / LANGUAGE starts with "fr",
+# English otherwise. (Not called LANG here: that would clobber the env var.)
+UI_LANG=en
+for _lang_var in "${LC_ALL:-}" "${LC_MESSAGES:-}" "${LANG:-}" "${LANGUAGE:-}"; do
+  if [ -n "$_lang_var" ]; then
+    case "$_lang_var" in
+      fr* | FR*) UI_LANG=fr ;;
+      *) ;;
+    esac
+    break
+  fi
+done
+
+# L <french> <english> — prints the one matching the detected language.
+L() {
+  if [ "$UI_LANG" = fr ]; then
+    printf '%s' "$1"
+  else
+    printf '%s' "$2"
+  fi
+}
+
+usage_en() {
   cat <<'EOF'
 Usage: update [options]
 
@@ -41,6 +65,42 @@ Examples:
 EOF
 }
 
+usage_fr() {
+  cat <<'EOF'
+Usage : update [options]
+
+Récupère la config Roudix, met à jour les Flatpaks et reconstruit le système.
+Le flake.lock obtenu via git est celui que la CI a déjà construit et validé.
+
+Options :
+  -i, --inputs [NOM...]   Met aussi à jour les inputs du flake en local (tous, ou
+                          seulement ceux nommés) avant de construire. Contourne la
+                          validation de la CI : flake.lock devient une modification locale.
+      --no-inputs         Ne met pas à jour les inputs (si roudix.update.bumpInputs est activé).
+  -b, --boot              Applique au prochain démarrage au lieu de basculer tout de suite.
+      --no-pull           Ne fait pas de git pull de la config.
+      --no-flatpak        Ne met pas à jour les Flatpaks.
+  -c, --check             Indique seulement si de nouveaux commits sont disponibles.
+  -n, --dry               Demande un essai à blanc à nh : rien n'est récupéré, mis à jour,
+                          activé ni installé (Flatpaks compris).
+      --changes           Montre ce que le système du prochain démarrage change par rapport
+                          à celui en cours (utile après une mise à jour automatique).
+      --log               Affiche le log de la dernière exécution (la sortie de chaque
+                          exécution est conservée dans ~/.local/state/roudix/update.log).
+  -h, --help              Affiche cette aide.
+
+Exemples :
+  update                       pull + rebuild + switch
+  update --boot                pull + rebuild, appliqué après le prochain redémarrage
+  update --inputs              met à jour tous les inputs du flake, puis rebuild
+  update --inputs nixpkgs      met à jour seulement nixpkgs, puis rebuild
+EOF
+}
+
+usage() {
+  if [ "$UI_LANG" = fr ]; then usage_fr; else usage_en; fi
+}
+
 # ── Output helpers ──────────────────────────────────────────────────────────
 if [ -t 1 ]; then
   BOLD=$'\e[1m'
@@ -54,7 +114,7 @@ fi
 
 step() { printf '%s==>%s %s%s%s\n' "$BLUE" "$RESET" "$BOLD" "$*" "$RESET"; }
 info() { printf '    %s\n' "$*"; }
-warn() { printf '%swarning:%s %s\n' "$YELLOW" "$RESET" "$*" >&2; }
+warn() { printf '%s%s%s %s\n' "$YELLOW" "$(L 'attention :' 'warning:')" "$RESET" "$*" >&2; }
 
 # notify <icon> <summary> <body> — best effort (no session bus over SSH, etc.)
 notify() {
@@ -62,11 +122,11 @@ notify() {
 }
 
 die() {
-  printf '%serror:%s %s\n' "$RED" "$RESET" "$*" >&2
+  printf '%s%s%s %s\n' "$RED" "$(L 'erreur :' 'error:')" "$RESET" "$*" >&2
   if [ -n "${ROUDIX_UPDATE_LOGGING:-}" ]; then
-    printf '    log of this run: update --log\n' >&2
+    printf '    %s update --log\n' "$(L 'log de cette exécution :' 'log of this run:')" >&2
   fi
-  notify dialog-error "Roudix — Échec de la mise à jour" "$*"
+  notify dialog-error "$(L 'Roudix — Échec de la mise à jour' 'Roudix — Update failed')" "$*"
   exit 1
 }
 
@@ -104,7 +164,7 @@ while [ $# -gt 0 ]; do
     --log) SHOW_LOG=1; shift ;;
     -h | --help) usage; exit 0 ;;
     *)
-      printf 'update: unknown option: %s\n\n' "$1" >&2
+      printf 'update: %s: %s\n\n' "$(L 'option inconnue' 'unknown option')" "$1" >&2
       usage >&2
       exit 2
       ;;
@@ -112,12 +172,12 @@ while [ $# -gt 0 ]; do
 done
 
 # ── Preflight ───────────────────────────────────────────────────────────────
-[ "$(id -u)" -ne 0 ] || die "run this as your normal user, not root (sudo is used where needed)."
-[ -d "$CONFIG_PATH" ] || die "config directory $CONFIG_PATH is missing."
+[ "$(id -u)" -ne 0 ] || die "$(L "lance ça avec ton utilisateur normal, pas en root (sudo est utilisé quand il faut)." "run this as your normal user, not root (sudo is used where needed).")"
+[ -d "$CONFIG_PATH" ] || die "$(L "le dossier de config $CONFIG_PATH est introuvable." "config directory $CONFIG_PATH is missing.")"
 
 if [ "$SHOW_LOG" -eq 1 ]; then
   if [ ! -f "$LOG_FILE" ]; then
-    printf 'update: no log yet (%s)\n' "$LOG_FILE" >&2
+    printf 'update: %s (%s)\n' "$(L 'pas encore de log' 'no log yet')" "$LOG_FILE" >&2
     exit 1
   fi
   # script(1) records raw terminal output: strip colours and carriage returns.
@@ -127,9 +187,9 @@ fi
 
 if [ "$SHOW_CHANGES" -eq 1 ]; then
   if [ "$(readlink -f /run/current-system)" = "$(readlink -f /nix/var/nix/profiles/system)" ]; then
-    info "the next-boot system is the one already running — nothing pending."
+    info "$(L "le système du prochain démarrage est celui déjà en cours — rien en attente." "the next-boot system is the one already running — nothing pending.")"
   else
-    step "Next boot vs running system"
+    step "$(L "Prochain démarrage vs système en cours" "Next boot vs running system")"
     nix store diff-closures /run/current-system /nix/var/nix/profiles/system
   fi
   exit 0
@@ -153,7 +213,7 @@ inspect_remote() {
 
   PULL_STATE=skipped
   if [ "$IS_GIT" -ne 1 ]; then
-    info "$CONFIG_PATH is not a git checkout — nothing to pull."
+    info "$(L "$CONFIG_PATH n'est pas un dépôt git — rien à récupérer." "$CONFIG_PATH is not a git checkout — nothing to pull.")"
     return 0
   fi
 
@@ -161,12 +221,12 @@ inspect_remote() {
   # branch you are working on would be a nasty surprise.
   current=$(git -C "$CONFIG_PATH" symbolic-ref --quiet --short HEAD || true)
   if [ "$current" != "$BRANCH" ]; then
-    info "checked out: ${current:-detached HEAD}, tracked branch: $BRANCH — not pulling."
+    info "$(L "branche actuelle : ${current:-HEAD détaché}, branche suivie : $BRANCH — pas de pull." "checked out: ${current:-detached HEAD}, tracked branch: $BRANCH — not pulling.")"
     return 0
   fi
 
   git -C "$CONFIG_PATH" fetch --quiet origin "$BRANCH" ||
-    die "git fetch failed — offline? (use --no-pull to skip the pull)"
+    die "$(L "git fetch a échoué — hors ligne ? (utilise --no-pull pour ignorer le pull)" "git fetch failed — offline? (use --no-pull to skip the pull)")"
 
   local_rev=$(git -C "$CONFIG_PATH" rev-parse HEAD)
   remote_rev=$(git -C "$CONFIG_PATH" rev-parse "origin/$BRANCH")
@@ -184,16 +244,19 @@ inspect_remote() {
 
 report_pull_state() {
   case "$PULL_STATE" in
-    uptodate) info "config already up to date with origin/$BRANCH." ;;
-    ahead) info "you have local commits not pushed to origin/$BRANCH — nothing to pull." ;;
-    diverged) warn "local history has diverged from origin/$BRANCH — not pulling, building what is on disk." ;;
-    behind) info "$(git -C "$CONFIG_PATH" rev-list --count "HEAD..origin/$BRANCH") new commit(s) available on origin/$BRANCH." ;;
+    uptodate) info "$(L "config déjà à jour avec origin/$BRANCH." "config already up to date with origin/$BRANCH.")" ;;
+    ahead) info "$(L "tu as des commits locaux non poussés sur origin/$BRANCH — rien à récupérer." "you have local commits not pushed to origin/$BRANCH — nothing to pull.")" ;;
+    diverged) warn "$(L "l'historique local a divergé de origin/$BRANCH — pas de pull, build de ce qui est sur le disque." "local history has diverged from origin/$BRANCH — not pulling, building what is on disk.")" ;;
+    behind)
+      n_new=$(git -C "$CONFIG_PATH" rev-list --count "HEAD..origin/$BRANCH")
+      info "$(L "$n_new nouveau(x) commit(s) disponible(s) sur origin/$BRANCH." "$n_new new commit(s) available on origin/$BRANCH.")"
+      ;;
     *) ;;
   esac
 }
 
 if [ "$CHECK_ONLY" -eq 1 ]; then
-  step "Checking origin/$BRANCH"
+  step "$(L "Vérification de origin/$BRANCH" "Checking origin/$BRANCH")"
   inspect_remote
   report_pull_state
   exit 0
@@ -210,25 +273,25 @@ if [ -z "${ROUDIX_UPDATE_LOGGING:-}" ] && command -v script >/dev/null 2>&1 && m
 fi
 
 if [ "$BUMP_INPUTS" -eq 1 ] && [ -e "$CONFIG_PATH/flake.lock" ] && [ ! -w "$CONFIG_PATH/flake.lock" ]; then
-  die "flake.lock is not writable (probably root-owned by the old 'sudo nix flake update'). Fix: sudo chown \"$USER\" \"$CONFIG_PATH/flake.lock\""
+  die "$(L "flake.lock n'est pas modifiable (probablement à root à cause de l'ancien 'sudo nix flake update'). Correction : sudo chown \"$USER\" \"$CONFIG_PATH/flake.lock\"" "flake.lock is not writable (probably root-owned by the old 'sudo nix flake update'). Fix: sudo chown \"$USER\" \"$CONFIG_PATH/flake.lock\"")"
 fi
 
 # One run at a time, shared with roudix-autoupdate: the lock is held on the
 # config directory itself (a normal user cannot create files in /run/lock).
 exec 9<"$CONFIG_PATH"
 if ! flock --nonblock 9; then
-  warn "another update (roudix-autoupdate or update) is already running."
+  warn "$(L "une autre mise à jour (roudix-autoupdate ou update) est déjà en cours." "another update (roudix-autoupdate or update) is already running.")"
   exit 75
 fi
 
 avail_gb=$(($(df --output=avail -k /nix/store | tail -n 1) / 1024 / 1024))
 if [ "$avail_gb" -lt "$MIN_FREE_GB" ]; then
-  die "only ${avail_gb}GB free on /nix/store, need ${MIN_FREE_GB}GB."
+  die "$(L "seulement ${avail_gb} Go libres sur /nix/store, il en faut ${MIN_FREE_GB} Go." "only ${avail_gb}GB free on /nix/store, need ${MIN_FREE_GB}GB.")"
 fi
 
 # Ask for the sudo password once, up front (system Flatpaks, activation).
 if [ "$DRY" -eq 0 ]; then
-  sudo -v || die "sudo authentication failed."
+  sudo -v || die "$(L "l'authentification sudo a échoué." "sudo authentication failed.")"
 fi
 
 # ── Restore flake.lock if a bumped lock does not build ──────────────────────
@@ -239,7 +302,7 @@ cleanup() {
   if [ -n "$LOCK_BACKUP" ] && [ -f "$LOCK_BACKUP" ]; then
     if [ "$BUILD_OK" -ne 1 ]; then
       if cp -p -- "$LOCK_BACKUP" "$CONFIG_PATH/flake.lock"; then
-        warn "flake.lock restored to its state before this run."
+        warn "$(L "flake.lock restauré dans son état d'avant cette exécution." "flake.lock restored to its state before this run.")"
       fi
     fi
     rm -f -- "$LOCK_BACKUP"
@@ -251,18 +314,18 @@ trap 'exit 143' TERM
 
 # ── 1. Pull the config ──────────────────────────────────────────────────────
 if [ "$DO_PULL" -eq 1 ]; then
-  step "Pulling the config (origin/$BRANCH)"
+  step "$(L "Récupération de la config (origin/$BRANCH)" "Pulling the config (origin/$BRANCH)")"
   inspect_remote
   if [ "$PULL_STATE" = behind ] && [ "$DRY" -eq 0 ]; then
     old_rev=$(git -C "$CONFIG_PATH" rev-parse HEAD)
     report_pull_state
     git -C "$CONFIG_PATH" merge --quiet --ff-only "origin/$BRANCH" ||
-      die "git merge --ff-only failed — local modifications in the way? Check: git -C $CONFIG_PATH status (an old locally-bumped flake.lock: git -C $CONFIG_PATH checkout flake.lock)"
+      die "$(L "git merge --ff-only a échoué — des modifications locales gênent ? Vérifie : git -C $CONFIG_PATH status (ancien flake.lock mis à jour en local : git -C $CONFIG_PATH checkout flake.lock)" "git merge --ff-only failed — local modifications in the way? Check: git -C $CONFIG_PATH status (an old locally-bumped flake.lock: git -C $CONFIG_PATH checkout flake.lock)")"
     git -C "$CONFIG_PATH" log --oneline --no-decorate -n 15 "$old_rev..HEAD" | sed 's/^/      /'
   else
     report_pull_state
     if [ "$PULL_STATE" = behind ]; then
-      info "(dry run: not pulling — building what is on disk)"
+      info "$(L "(essai à blanc : pas de pull — build de ce qui est sur le disque)" "(dry run: not pulling — building what is on disk)")"
     fi
   fi
 fi
@@ -274,12 +337,12 @@ if [ "$BUMP_INPUTS" -eq 1 ]; then
     cp -p -- "$CONFIG_PATH/flake.lock" "$LOCK_BACKUP"
   fi
   if [ "${#INPUT_NAMES[@]}" -gt 0 ]; then
-    step "Updating flake inputs: ${INPUT_NAMES[*]}"
+    step "$(L "Mise à jour des inputs du flake : ${INPUT_NAMES[*]}" "Updating flake inputs: ${INPUT_NAMES[*]}")"
   else
-    step "Updating all flake inputs"
+    step "$(L "Mise à jour de tous les inputs du flake" "Updating all flake inputs")"
   fi
   nix flake update "${INPUT_NAMES[@]}" --flake "path:$CONFIG_PATH" ||
-    die "nix flake update failed."
+    die "$(L "nix flake update a échoué." "nix flake update failed.")"
 fi
 
 # ── 3. Rebuild ──────────────────────────────────────────────────────────────
@@ -288,34 +351,34 @@ fi
 DRY_FLAG=()
 if [ "$DRY" -eq 1 ]; then
   DRY_FLAG=(--dry)
-  step "Dry run (nh os $ACTION --dry)"
+  step "$(L "Essai à blanc (nh os $ACTION --dry)" "Dry run (nh os $ACTION --dry)")"
 else
-  step "Building the system (nh os $ACTION)"
+  step "$(L "Construction du système (nh os $ACTION)" "Building the system (nh os $ACTION)")"
 fi
 nh os "$ACTION" "${DRY_FLAG[@]}" --accept-flake-config "path:$CONFIG_PATH" ||
-  die "build failed — the running system is untouched."
+  die "$(L "le build a échoué — le système en cours n'est pas modifié." "build failed — the running system is untouched.")"
 BUILD_OK=1
 
 if [ "$DRY" -eq 1 ]; then
   echo
-  step "Dry run complete — nothing was pulled, bumped, activated or updated"
+  step "$(L "Essai à blanc terminé — rien n'a été récupéré, mis à jour, activé ni installé" "Dry run complete — nothing was pulled, bumped, activated or updated")"
   exit 0
 fi
 
 # ── 4. Flatpaks (never fatal) ───────────────────────────────────────────────
 if [ "$DO_FLATPAK" -eq 1 ]; then
   if command -v flatpak >/dev/null 2>&1; then
-    step "Updating Flatpaks (and removing unused runtimes)"
+    step "$(L "Mise à jour des Flatpaks (et suppression des runtimes inutilisés)" "Updating Flatpaks (and removing unused runtimes)")"
     flatpak update --user --noninteractive -y ||
-      warn "user Flatpak update failed — continuing."
+      warn "$(L "la mise à jour des Flatpaks utilisateur a échoué — on continue." "user Flatpak update failed — continuing.")"
     sudo "$(command -v flatpak)" update --system --noninteractive -y ||
-      warn "system Flatpak update failed — continuing."
+      warn "$(L "la mise à jour des Flatpaks système a échoué — on continue." "system Flatpak update failed — continuing.")"
     flatpak uninstall --user --unused --noninteractive -y ||
-      warn "could not remove unused user Flatpak runtimes — continuing."
+      warn "$(L "impossible de supprimer les runtimes Flatpak utilisateur inutilisés — on continue." "could not remove unused user Flatpak runtimes — continuing.")"
     sudo "$(command -v flatpak)" uninstall --system --unused --noninteractive -y ||
-      warn "could not remove unused system Flatpak runtimes — continuing."
+      warn "$(L "impossible de supprimer les runtimes Flatpak système inutilisés — on continue." "could not remove unused system Flatpak runtimes — continuing.")"
   else
-    info "flatpak is not installed — skipping."
+    info "$(L "flatpak n'est pas installé — ignoré." "flatpak is not installed — skipping.")"
   fi
 fi
 
@@ -332,15 +395,15 @@ reboot_needed() {
 }
 
 echo
-step "Update complete"
+step "$(L "Mise à jour terminée" "Update complete")"
 if reboot_needed; then
-  info "Reboot to finish applying the update."
-  notify system-reboot "Roudix — Mise à jour terminée" "Redémarre pour appliquer la mise à jour."
+  info "$(L "Redémarre pour finir d'appliquer la mise à jour." "Reboot to finish applying the update.")"
+  notify system-reboot "$(L 'Roudix — Mise à jour terminée' 'Roudix — Update complete')" "$(L 'Redémarre pour appliquer la mise à jour.' 'Reboot to apply the update.')"
 else
-  notify software-update-available "Roudix — Mise à jour terminée" "Le système est à jour."
+  notify software-update-available "$(L 'Roudix — Mise à jour terminée' 'Roudix — Update complete')" "$(L 'Le système est à jour.' 'The system is up to date.')"
 fi
 
 if [ "$IS_GIT" -eq 1 ] && ! git -C "$CONFIG_PATH" diff --quiet -- flake.lock; then
-  warn "flake.lock differs from git. Commit and push it, or run: git -C $CONFIG_PATH checkout flake.lock"
-  warn "(otherwise the next roudix-autoupdate pull may refuse to run if CI touched flake.lock in the meantime)"
+  warn "$(L "flake.lock diffère de git. Commit et push-le, ou lance : git -C $CONFIG_PATH checkout flake.lock" "flake.lock differs from git. Commit and push it, or run: git -C $CONFIG_PATH checkout flake.lock")"
+  warn "$(L "(sinon le prochain pull de roudix-autoupdate peut refuser de tourner si la CI a touché flake.lock entre-temps)" "(otherwise the next roudix-autoupdate pull may refuse to run if CI touched flake.lock in the meantime)")"
 fi
