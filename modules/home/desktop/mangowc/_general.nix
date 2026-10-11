@@ -3,7 +3,7 @@
   wayland.windowManager.mango.settings = {
     xkb_rules_layout = osConfig.roudix.keyboardLayout;
     xkb_rules_variant = osConfig.roudix.keyboardVariant;
-    numlockon = 1;
+    numlock_on = 1;
     repeat_rate = 25;
     repeat_delay = 600;
 
@@ -13,13 +13,13 @@
     tap_and_drag = 1;
     drag_lock = 1;
     trackpad_natural_scrolling = 1;
-    disable_while_typing = 1;
+    trackpad_disable_while_typing = 1;
 
     xwayland_persistence = 1;
-    syncobj_enable = 1;
+    sync_obj_enable = 1;
     focus_on_activate = 1;
-    sloppyfocus = 1;
-    warpcursor = 1;
+    sloppy_focus = 1;
+    warp_cursor = 1;
     focus_cross_monitor = 0;
     focus_cross_tag = 0;
     enable_floating_snap = 1;

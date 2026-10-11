@@ -443,13 +443,13 @@
       "locked": {
         "lastModified": 1791681141,
         "narHash": "sha256-W/5JRaCnNxYbUiKU3tkUsJ0hNwpm+oe9vFJsYRVbkgw=",
-        "owner": "DreamMaoMao",
+        "owner": "mangowm",
         "repo": "mango",
         "rev": "f914909c1e0157f72c48d65841f1a5e80faace86",
         "type": "github"
       },
       "original": {
-        "owner": "DreamMaoMao",
+        "owner": "mangowm",
         "repo": "mango",
         "type": "github"
       }
@@ -713,11 +713,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1791698951,
-        "narHash": "sha256-mWfykArnIiJzR9d6yOTsCLOCJsL9l2m40G3vAUjcOIY=",
+        "lastModified": 1791697843,
+        "narHash": "sha256-3Jpzywyib74sSYXDwvYJZ9tMMhZVCkTD2gl88n/3yyk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "169d7449a025471f3111a4ecc50450800e2df605",
+        "rev": "95bf40d33ec761566b23a2365907553b42979bac",
         "type": "github"
       },
       "original": {

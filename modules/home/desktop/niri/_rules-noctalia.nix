@@ -49,6 +49,13 @@ in
       matches = [ { app-id = "com.kde.easyeffects"; } ];
       open-on-workspace = ws.music;
     }
+    # Floating Noctalia settings window (same rule as the Umbriel side).
+    {
+      matches = [ { app-id = "^dev\\.noctalia\\.Noctalia$"; } ];
+      open-floating = true;
+      default-column-width.fixed = 1080;
+      default-window-height.fixed = 920;
+    }
     # Global blur (all windows) without xray, for a realistic look.
     {
       matches = [ { } ];
@@ -58,7 +65,7 @@ in
 
   layer-rules = [
     {
-      matches = [ { namespace = "^noctalia-wallpaper*"; } ];
+      matches = [ { namespace = "^noctalia-wallpaper"; } ];
       place-within-backdrop = true;
     }
     {

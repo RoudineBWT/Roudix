@@ -12,9 +12,8 @@ let
 in
 {
   config = lib.mkIf isNiri {
-    # Default: niri from nixpkgs. roudix.desktop.latest.niri = true:
     # niri-unstable (latest main commit) through the niri-flake overlay.
-    nixpkgs.overlays = lib.optional (dp.wantsLatest "niri") inputs.niri.overlays.niri;
+    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
     programs.niri.package = dp.niri;
     programs.niri.enable = true;
 

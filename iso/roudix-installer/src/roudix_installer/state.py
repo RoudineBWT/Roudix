@@ -79,9 +79,6 @@ class InstallState:
     # roudix.desktop.latest.<id> — False (default) = nixpkgs version,
     # True = latest version built from the project's flake. Only the
     # compositor / shell actually chosen matter (see options.py).
-    latest_niri: bool = False
-    latest_mangowc: bool = False
-    latest_umbriel: bool = False
     latest_noctalia: bool = False
     latest_dms: bool = False
     latest_caelestia: bool = False

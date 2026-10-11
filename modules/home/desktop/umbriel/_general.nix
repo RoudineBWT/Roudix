@@ -8,10 +8,16 @@
   programs.umbriel.settings = {
   general = {
     autostart = [ "noctalia" "discord" ];
-    # ⚠ "xwayland-satellite" isn't in autostart: Umbriel spawns it itself
-    # via `xwayland = true` (built into the compositor).
+    # Xwayland is native now (wlroots' Xwayland, started lazily on the first
+    # X11 client; umbriel 16d50317 replaced xwayland-satellite) and needs the
+    # `Xwayland` binary on PATH: the flake package wraps it, and `xwayland`
+    # is in home.packages (default.nix) for the nixpkgs build.
     mod_key = "Super";
     xwayland = true;
+    # true = X11 apps see outputs at their physical resolution (sharp on
+    # scaled outputs, games benefit most) but X11 apps that don't scale their
+    # own UI look smaller. Needs a restart.
+    # xwayland_native_resolution = true;
     show_cheatsheet = false; # niri: hotkey-overlay { skip-at-startup }
     focus_on_activate = false;
     # Apps like Steam/PrismLauncher that reopen already maximized stay

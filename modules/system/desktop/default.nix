@@ -59,11 +59,22 @@ in
   # ── nixpkgs (default) or latest (flake) version, per component ───────────
   # Set in local.nix or from roudix-switcher / the installer. The greeters
   # follow their shell: noctalia -> noctalia-greeter, dms/caelestia ->
-  # dms-greeter. Hyprland has no flake input (always nixpkgs).
-  options.roudix.desktop.latest = {
-    niri      = mkLatest "niri";
-    mangowc   = mkLatest "MangoWC";
-    umbriel   = mkLatest "Umbriel";
+  # dms-greeter. niri/MangoWC/Umbriel: always flake. Hyprland: always nixpkgs.
+  options.roudix.desktop.latest = let
+    # niri, MangoWC and Umbriel are always built from their flake now. The
+    # options stay (hidden, no effect) so an existing local.nix that still
+    # sets them keeps evaluating.
+    deprecated = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      internal = true;
+      visible = false;
+      description = "Deprecated: no effect (always the flake version).";
+    };
+  in {
+    niri      = deprecated;
+    mangowc   = deprecated;
+    umbriel   = deprecated;
     noctalia  = mkLatest "Noctalia (and its greeter)";
     dms       = mkLatest "DankMaterialShell (and its greeter)";
     caelestia = mkLatest "Caelestia (and the DMS greeter it uses)";
@@ -82,9 +93,15 @@ in
     (lib.mkIf (dp.useNixpkgs "dms" && has [ "programs" "dank-material-shell" "package" ]) {
       programs.dank-material-shell.package = pkgs.dms-shell;
     })
-    (lib.mkIf (dp.useNixpkgs "mangowc" && has [ "programs" "mango" "package" ]) {
-      programs.mango.package = dp.mango;
-    })
+
+    # Caelestia is driven by Hyprland global shortcuts only: on the other
+    # compositors no shell would start at all.
+    {
+      assertions = [{
+        assertion = !(usesShell && cfg.shell == "caelestia" && cfg.type != "hyprland");
+        message = "roudix: roudix.desktop.shell = \"caelestia\" only works with roudix.desktop.type = \"hyprland\" (use noctalia or dms with niri, mangowc or umbriel).";
+      }];
+    }
 
     # Tell the user when a nixpkgs version could not be applied.
     {
@@ -92,9 +109,6 @@ in
         lib.optional (usesShell && cfg.shell == "dms" && dp.useNixpkgs "dms"
                       && !has [ "programs" "dank-material-shell" "package" ])
           "roudix: DMS from nixpkgs is not available with the flake module (no `package` option): the flake version is used. Set roudix.desktop.latest.dms = true to silence this."
-        ++ lib.optional (cfg.type == "mangowc" && dp.useNixpkgs "mangowc"
-                         && !has [ "programs" "mango" "package" ])
-          "roudix: MangoWC from nixpkgs is not available with the flake module (no `package` option): the flake version is used. Set roudix.desktop.latest.mangowc = true to silence this."
         ++ lib.optional (usesShell && cfg.shell != "noctalia" && dp.useNixpkgs dmsGreeterKey
                          && !has [ "programs" "dms-greeter" "package" ])
           "roudix: dms-greeter from nixpkgs is not available with the flake module (no `package` option): the flake version is used.";

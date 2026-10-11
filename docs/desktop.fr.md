@@ -79,12 +79,9 @@ roudix-shell-switch dms
 
 ## Version nixpkgs ou dernière version (flake)
 
-Par défaut, Roudix utilise la version **nixpkgs** du compositeur et du shell (et du greeter qui va avec). Pour avoir la toute dernière version, construite depuis le flake du projet, activez-la composant par composant dans `local.nix` — ou depuis `roudix-switcher` / l'installateur, où l'interrupteur n'apparaît que pour le compositeur et le shell sélectionnés :
+Niri, MangoWC et Umbriel viennent toujours de leur propre flake. Pour le shell (et le greeter qui va avec), Roudix utilise par défaut la version **nixpkgs**. Pour avoir la toute dernière version, construite depuis le flake du projet, activez-la composant par composant dans `local.nix` — ou depuis `roudix-switcher` / l'installateur, où l'interrupteur n'apparaît que pour le shell sélectionné :
 
 ```nix
-roudix.desktop.latest.niri      = true;  # Niri
-roudix.desktop.latest.mangowc   = true;  # MangoWC
-roudix.desktop.latest.umbriel   = true;  # Umbriel
 roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
 roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
 roudix.desktop.latest.caelestia = true;  # Caelestia (le greeter DMS le suit)

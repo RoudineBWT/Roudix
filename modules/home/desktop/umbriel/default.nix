@@ -55,9 +55,7 @@ in
     programs.umbriel = {
       enable = true;
     };
-    # Default: nixpkgs. With roudix.desktop.latest.umbriel the HM module's
-    # own default (the flake package) applies.
-    programs.umbriel.package = lib.mkIf (dp.useNixpkgs "umbriel") dp.umbriel;
+    # The HM module's own default (the flake package) applies.
 
     # ── Terminal / browser / files resolved from roudix.* ──────────
     # Same key ("Mod+Return" etc.) as in _binds.nix: attrsOf merges per
@@ -78,7 +76,10 @@ in
     # ── Packages ─────────────────────────────────────────────────────────
     home.packages = integrationApps.desktopApps ++ (with pkgs; [
       awww
-      xwayland-satellite
+      # Umbriel now uses wlroots' native Xwayland (needs `Xwayland` on PATH).
+      # xwayland-satellite is only kept for a nixpkgs umbriel that predates
+      # that switch.
+      xwayland
       playerctl
       wl-clipboard
       pwvucontrol

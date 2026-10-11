@@ -12,6 +12,11 @@ in
     screenshot-path = "~/Pictures/niri-screenshots/ from %Y-%m-%d %H-%M-%S.png";
     hotkey-overlay.skip-at-startup = true;
 
+    # Lets Noctalia notification actions / window activation work
+    # (docs.noctalia.dev compositor-settings/niri). Check the exact option
+    # shape against the niri-flake schema.
+    debug.honor-xdg-activation-with-invalid-serial = [ ];
+
     # Hot corner (top-left toggles the overview) — niri's equivalent of
     # Umbriel's hot corner. ⚠ niri itself supports choosing a specific
     # corner since 25.11 (gestures.hot-corners { top-right; }), but

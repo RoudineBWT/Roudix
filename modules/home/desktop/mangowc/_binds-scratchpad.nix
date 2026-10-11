@@ -12,8 +12,8 @@
 ##   ONE appid/title per bind, unlike Umbriel where several apps can share
 ##   a single named scratchpad (and a single toggle key). So there is no
 ##   "communication" group here — Discord, Element and Telegram each get
-##   their own key. See _rules-apps.nix for the matching `isnamedscratchpad`
-##   windowrule (marks the window; sets its floating size).
+##   their own key. See _rules-apps.nix for the matching `is_named_scratchpad`
+##   window_rule (marks the window; sets its floating size).
 ##
 ## Docs: https://github.com/mangowm/mango/wiki/scratchpad
 { osConfig, lib, ... }:
@@ -32,13 +32,13 @@ in
     ]
     ++ lib.optionals scratchpadApps [
       # ─── Named scratchpads ("communication" apps + "music") ───
-      # Format: bind=MOD,KEY,toggle_named_scratchpad,appid,title,command
+      # Format: bind=MOD,KEY,toggle_named_scratchpad,app_id,title,command
       # `command` is only used to launch the app when it isn't running yet.
       "SUPER+ALT,D,toggle_named_scratchpad,discord,none,discord"
       "SUPER+ALT,E,toggle_named_scratchpad,Element,none,element-desktop"
-      # ⚠ appid match here is a plain string, not the regex used in
-      # _rules-apps.nix's windowrule — verify it also catches the Xwayland
-      # fallback class "TelegramDesktop" (native Wayland appid used below).
+      # ⚠ app_id match here is a plain string, not the regex used in
+      # _rules-apps.nix's window_rule — verify it also catches the Xwayland
+      # fallback class "TelegramDesktop" (native Wayland app_id used below).
       "SUPER+ALT,T,toggle_named_scratchpad,org.telegram.desktop,none,telegram-desktop"
       "SUPER+ALT,M,toggle_named_scratchpad,spotify,none,spotify"
     ];

@@ -3,12 +3,7 @@ let
   isUmbriel  = config.roudix.desktop.type == "umbriel";
   shellType  = config.roudix.desktop.shell or "noctalia";
   isDms      = shellType == "dms";
-  isNoctalia = shellType == "noctalia";
   isKdeIntegration = config.roudix.desktopIntegration == "kde";
-  dp = import ../../desktop-pkgs.nix {
-    inherit pkgs inputs;
-    latest = config.roudix.desktop.latest;
-  };
 in
 {
   imports = [ inputs.umbriel.nixosModules.default ];
@@ -29,11 +24,34 @@ in
     };
 
     effects = lib.mkOption {
-      type = lib.types.enum [ "roudix" "sakura-overdrive" "sakura-roudix" ];
+      type = lib.types.enum [ "roudix" "roudix-plus" "roudix-plus-mocha" "roudix-aurora" "roudix-aurora-mocha" "roudix-wobbly" "roudix-wobbly-mocha" "roudix-logo" "roudix-logo-wobbly" "roudix-orbit" "roudix-orbit-mocha" "roudix-full" "sakura-overdrive" "sakura-roudix" ];
       default = "roudix";
       description = ''
         Umbriel only. Shader/animation setup:
           "roudix"           : subtle window in/out + scratchpad shaders (default).
+          "roudix-plus"      : "roudix" + accent border, cursor halo and subtle
+                               workspace/layer/focus transitions (original
+                               shaders, light on the GPU). Follows the
+                               Noctalia palette.
+          "roudix-plus-mocha": same as "roudix-plus" with Catppuccin Mocha +
+                               Peach colors (fixed, independent of Noctalia).
+          "roudix-aurora"    : "roudix-plus" + flowing Peach/Maroon light around the
+                               border through one thin Sakura-like stem (no comet),
+                               tiny glints, faint inner glow and a zip of light
+                               on focus. Follows Noctalia.
+          "roudix-aurora-mocha": same with Catppuccin Mocha + Peach colors.
+          "roudix-wobbly"    : "roudix-plus" + light jelly wobble on window
+                               move/re-tile + spring physics while dragging.
+          "roudix-wobbly-mocha": same with Catppuccin Mocha + Peach colors.
+          "roudix-logo"      : "roudix-plus" + windows open/close through the
+                               Roudix logo shape (Mocha Peach/Maroon, fixed).
+          "roudix-logo-wobbly": same + jelly wobble on move + drag physics.
+          "roudix-orbit"     : "roudix-plus" with a "snowflake braid" border (two
+                               interlaced strands, glints, comet + flare, inner
+                               glow, light spill) + focus sweep.
+          "roudix-orbit-mocha": same with Catppuccin Mocha + Peach colors.
+          "roudix-full"      : everything — logo open/close, jelly wobble, aurora
+                               border + focus zip (Mocha Peach/Maroon, fixed).
           "sakura-overdrive" : Ly-sec's full sakura/magical-girl suite — animated
                                border, screen and cursor effects and shader
                                animations on every event. Colors come from the
@@ -47,12 +65,10 @@ in
   config = lib.mkIf isUmbriel {
     # ── Compositor ────────────────────────────────────────────────────
     # inputs.umbriel = { url = "github:noctalia-dev/umbriel"; inputs.nixpkgs.follows = "nixpkgs"; };
-    # Default: umbriel from nixpkgs. roudix.desktop.latest.umbriel = true:
-    # the flake overlay + the module's own default package (flake, latest).
-    nixpkgs.overlays = lib.optional (dp.wantsLatest "umbriel") inputs.umbriel.overlays.default;
+    # The flake overlay + the module's own default package (flake build).
+    nixpkgs.overlays = [ inputs.umbriel.overlays.default ];
 
     programs.umbriel.enable = true;
-    programs.umbriel.package = lib.mkIf (dp.useNixpkgs "umbriel") dp.umbriel;
     #
     # The portal (xdg-desktop-portal-umbriel) now ships with Umbriel's own
     # NixOS module: programs.umbriel.portalPackage defaults to the portal
@@ -61,23 +77,21 @@ in
     # no separate flake input) — it always matches the umbriel revision in
     # flake.lock. Override programs.umbriel.portalPackage only to pin another.
 
-    # ── DMS greeter (when shell != noctalia) ───────────────────────────────
-    programs.dms-greeter = lib.mkIf (!isNoctalia) {
-      enable = true;
-      compositor.name = "umbriel";
-      configHome = "/home/${username}";
-    };
-
     # ── DMS (shell) ─────────────────────────────────────────────────────
     programs.dank-material-shell = lib.mkIf isDms {
       enable = true;
       systemd.enable = true;
     };
 
-    # ── Noctalia greeter (when shell == noctalia) ──────────────────────────
-    services.displayManager.noctalia-greeter = lib.mkIf isNoctalia {
+    # ── Greeter ──────────────────────────────────────────────────────────
+    # dms-greeter's compositor.name enum (niri, hyprland, sway, labwc, mango,
+    # scroll, miracle, aqueous) has no "umbriel", so the DMS greeter can't be
+    # used here. noctalia-greeter is a generic greetd greeter: use it for every
+    # shell. It only understands `--session NAME` (.desktop Name= or filename);
+    # check the exact name with `noctalia-greeter sessions`.
+    services.displayManager.noctalia-greeter = {
       enable = true;
-      greeter-args = "start-umbriel";
+      greeter-args = "--session Umbriel";
       settings = {
         keyboard = {
           layout  = config.roudix.keyboardLayout;

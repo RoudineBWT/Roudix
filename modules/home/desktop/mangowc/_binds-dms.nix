@@ -11,6 +11,9 @@
       "CTRL+SHIFT,2,spawn,dms screenshot full"
       "CTRL+SHIFT,3,spawn,dms screenshot window"
 
+    ];
+
+    bindl = [
       "NONE,XF86AudioRaiseVolume,spawn,dms ipc call audio increment 3"
       "NONE,XF86AudioLowerVolume,spawn,dms ipc call audio decrement 3"
       "NONE,XF86AudioMute,spawn,dms ipc call audio mute"

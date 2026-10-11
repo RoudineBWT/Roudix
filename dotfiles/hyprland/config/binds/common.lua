@@ -46,15 +46,15 @@ for _, pair in ipairs({{"Left","l"},{"H","l"},{"Right","r"},{"L","r"},{"Up","u"}
     hl.bind(mainMod .. " + CONTROL + " .. pair[1], hl.dsp.window.move({ direction = pair[2] }), { description = "Move window " .. pair[2] })
 end
 
-hl.bind(mainMod .. " + SHIFT + Left", hl.dsp.exec_cmd("hyprctl dispatch focusmonitor l"), { description = "Focus monitor left" })
-hl.bind(mainMod .. " + SHIFT + Right", hl.dsp.exec_cmd("hyprctl dispatch focusmonitor r"), { description = "Focus monitor right" })
-hl.bind(mainMod .. " + SHIFT + Up", hl.dsp.exec_cmd("hyprctl dispatch focusmonitor u"), { description = "Focus monitor up" })
-hl.bind(mainMod .. " + SHIFT + Down", hl.dsp.exec_cmd("hyprctl dispatch focusmonitor d"), { description = "Focus monitor down" })
+hl.bind(mainMod .. " + SHIFT + Left", hl.dsp.focus({ monitor = "l" }), { description = "Focus monitor left" })
+hl.bind(mainMod .. " + SHIFT + Right", hl.dsp.focus({ monitor = "r" }), { description = "Focus monitor right" })
+hl.bind(mainMod .. " + SHIFT + Up", hl.dsp.focus({ monitor = "u" }), { description = "Focus monitor up" })
+hl.bind(mainMod .. " + SHIFT + Down", hl.dsp.focus({ monitor = "d" }), { description = "Focus monitor down" })
 for _, pair in ipairs({{"Left","l"},{"Right","r"},{"Up","u"},{"Down","d"}}) do
-    hl.bind(mainMod .. " + SHIFT + CONTROL + " .. pair[1], hl.dsp.exec_cmd("hyprctl dispatch movewindow mon:" .. pair[2]), { description = "Move window to monitor " .. pair[2] })
+    hl.bind(mainMod .. " + SHIFT + CONTROL + " .. pair[1], hl.dsp.window.move({ monitor = pair[2] }), { description = "Move window to monitor " .. pair[2] })
 end
-hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { description = "Drag window" })
-hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { description = "Resize window" })
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Drag window" })
+hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "Resize window" })
 
 -- 4. Workspaces
 
@@ -71,28 +71,32 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }), { descr
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }), { description = "Previous workspace" })
 hl.bind(mainMod .. " + CONTROL + mouse_down", hl.dsp.window.move({ workspace = "r+1" }), { description = "Move window to next workspace" })
 hl.bind(mainMod .. " + CONTROL + mouse_up", hl.dsp.window.move({ workspace = "r-1" }), { description = "Move window to previous workspace" })
-hl.bind(mainMod .. " + Tab", hl.dsp.exec_cmd("hyprctl dispatch workspace previous"), { description = "Previous workspace" })
+hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }), { description = "Previous workspace" })
 
 -- 5. Window management
 
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special" }), { description = "Move window to special workspace" })
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special(), { description = "Toggle special workspace" })
 hl.bind(mainMod .. " + CONTROL + F", hl.dsp.window.fullscreen({ mode = 1 }), { description = "Fullscreen (mode 1)" })
-hl.bind(mainMod .. " + CONTROL + C", hl.dsp.exec_cmd("hyprctl dispatch centerwindow"), { description = "Center window" })
+hl.bind(mainMod .. " + CONTROL + C", hl.dsp.window.center(), { description = "Center window" })
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen(), { description = "Toggle fullscreen" })
-hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("hyprctl dispatch togglegroup"), { description = "Toggle window group" })
+hl.bind(mainMod .. " + W", hl.dsp.group.toggle(), { description = "Toggle window group" })
 hl.bind(mainMod .. " + ALT + J", hl.dsp.layout("togglesplit"), { description = "Toggle split direction" })
 
 local layoutCycle = { "dwindle", "master", "scrolling" }
 local layoutIndex = 1
+-- The Lua dispatch API only takes pixels (no "10%"), so steps are in px.
 local function resizeWidth(direction)
-    if layoutCycle[layoutIndex] == "scrolling" then hl.exec_cmd('hyprctl dispatch layoutmsg "colresize ' .. direction .. 'conf"')
-    else hl.exec_cmd("hyprctl dispatch resizeactive " .. direction .. "10% 0") end
+    if layoutCycle[layoutIndex] == "scrolling" then
+        hl.dispatch(hl.dsp.layout("colresize " .. direction .. "conf"))
+    else
+        hl.dispatch(hl.dsp.window.resize({ x = (direction == "+") and 100 or -100, y = 0, relative = true }))
+    end
 end
 hl.bind(mainMod .. " + minus", function() resizeWidth("-") end, { description = "Decrease width" })
 hl.bind(mainMod .. " + equal", function() resizeWidth("+") end, { description = "Increase width" })
-hl.bind(mainMod .. " + SHIFT + minus", hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 -10%"), { description = "Decrease height" })
-hl.bind(mainMod .. " + SHIFT + equal", hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 10%"), { description = "Increase height" })
+hl.bind(mainMod .. " + SHIFT + minus", hl.dsp.window.resize({ x = 0, y = -100, relative = true }), { description = "Decrease height" })
+hl.bind(mainMod .. " + SHIFT + equal", hl.dsp.window.resize({ x = 0, y = 100, relative = true }), { description = "Increase height" })
 local function cycleLayout()
     layoutIndex = (layoutIndex % #layoutCycle) + 1
     local nextLayout = layoutCycle[layoutIndex]
@@ -111,8 +115,8 @@ hl.bind(mainMod .. " + I", hl.dsp.layout("inhibit_scroll"), { description = "Tog
 
 -- 6. Hyprland
 
-hl.bind("CONTROL + ALT + Delete", hl.dsp.exec_cmd("hyprctl dispatch exit"), { description = "Exit Hyprland" })
-hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("hyprctl dispatch dpms off"), { description = "Turn monitors off" })
+hl.bind("CONTROL + ALT + Delete", hl.dsp.exit(), { description = "Exit Hyprland" })
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.dpms({ action = "disable" }), { description = "Turn monitors off" })
 hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("hyprctl kill"), { description = "Kill active window" })
 
 local gameModeOn = false

@@ -83,7 +83,7 @@ in
     {
       match.app_id = "^youtube-music-desktop-app";
       default_output = "DP-3";
-      default_workspace = "2";
+      default_workspace = 2;
     }
     {
       match.app_id = "^com\\.mitchellh\\.ghostty$";
@@ -316,6 +316,13 @@ in
     #   border_width = 0;
     #   corner_radius = 0;
     #   shadow = false;
+    # }
+    # Keep the pointer inside a game window so menus/edges don't leak to
+    # another monitor; a focus or workspace keybind releases it
+    # (umbriel #399). Uncomment for Steam games:
+    # {
+    #   match.app_id = "^steam_app_.*$";
+    #   confine_pointer = true;
     # }
     # Global blur (niri equivalent: window-rule global { background-effect
     # { blur true; xray false } }) — blur_ignore_alpha=0.0 approximates

@@ -149,7 +149,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_list(t, "roudix.zen.sine.mods", state.zen_sine_mods)
     t = _sub_string(t, "roudix.desktop.type", state.desktop)
     t = _sub_string(t, "roudix.desktop.shell", state.desktop_shell)
-    for component in ("niri", "mangowc", "umbriel", "noctalia", "dms", "caelestia"):
+    for component in ("noctalia", "dms", "caelestia"):
         t = _set_bool_option(t, f"roudix.desktop.latest.{component}", getattr(state, f"latest_{component}"))
     t = _sub_string(t, "roudix.editor", state.editor)
     t = _sub_string(t, "roudix.desktopIntegration", state.desktop_integration)

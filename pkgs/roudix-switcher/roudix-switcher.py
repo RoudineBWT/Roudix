@@ -220,7 +220,7 @@ SCRATCHPAD_DE_LABEL = {"mangowc": "MangoWC", "umbriel": "Umbriel"}
 # project's own flake. One switch for the chosen compositor and one for the
 # chosen shell, each shown only while that compositor / shell is selected.
 # Hyprland has no flake version in Roudix (always nixpkgs): no switch.
-LATEST_DE_IDS    = {"niri", "mangowc", "umbriel"}
+LATEST_DE_IDS    = set()  # niri / MangoWC / Umbriel: always the flake version
 LATEST_SHELL_IDS = {"noctalia", "dms", "caelestia"}
 LATEST_LABEL = {
     "niri": "Niri", "mangowc": "MangoWC", "umbriel": "Umbriel",

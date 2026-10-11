@@ -33,7 +33,7 @@ class SummaryPage(Adw.NavigationPage):
         """nixpkgs (default) or latest (flake) version of the chosen
         compositor and shell — omitted when neither has a flake version."""
         parts = []
-        names = {"niri": "Niri", "mangowc": "MangoWC", "umbriel": "Umbriel"}
+        names = {}  # niri / MangoWC / Umbriel: always the flake version
         shells = {"noctalia": "Noctalia", "dms": "DMS", "caelestia": "Caelestia"}
         latest = L("dernière (flake)", "latest (flake)")
         nixpkgs = "nixpkgs"

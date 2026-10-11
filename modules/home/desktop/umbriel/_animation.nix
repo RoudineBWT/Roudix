@@ -6,6 +6,37 @@
 ## Two selectable effect setups (roudix.umbriel.effects, declared in
 ## modules/system/desktop/umbriel.nix):
 ##   "roudix"           — subtle default (_effects/roudix/)
+##   "roudix-plus"      — "roudix" + original shaders: accent border, cursor
+##                        halo, workspace/layer/focus transitions
+##                        (_effects/roudix-plus/). Follows the Noctalia palette.
+##   "roudix-plus-mocha" — the same, in Catppuccin Mocha + Peach (fixed colors,
+##                        independent of the wallpaper; see `mocha` below).
+##   "roudix-wobbly"    — "roudix-plus" + a light jelly wobble when windows
+##                        move/re-tile and real drag physics (windows_drag).
+##   "roudix-wobbly-mocha" — the same, in Catppuccin Mocha + Peach.
+##   "roudix-aurora"    — "roudix-plus" with a different border: one thin,
+##                        slightly irregular stem (Sakura-like line, no leaves)
+##                        through which a Peach/Maroon light flows (no comet),
+##                        tiny light-driven snowflake glints, a faint inner
+##                        glow, and a "zip" of light around the border on focus
+##                        (aurora.glsl, aurora-inner.glsl, focus-zip.glsl).
+##                        Follows the Noctalia palette.
+##   "roudix-aurora-mocha" — the same, in Catppuccin Mocha + Peach.
+##   "roudix-logo"      — "roudix-plus" + windows open/close through the Roudix
+##                        logo shape (_effects/roudix-plus/logo.glsl). Fixed
+##                        Catppuccin Mocha colors = the logo's own Peach/Maroon.
+##   "roudix-logo-wobbly" — the same + the jelly wobble of "roudix-wobbly".
+##   "roudix-orbit"     — "roudix-plus" with a different border: a "snowflake
+##                        braid" (two interlaced Peach/Maroon strands, logo-
+##                        shaped glints, a comet with a snowflake flare), its
+##                        inner glow on the window edge and light spill, plus a
+##                        short sweep on focus change (orbit.glsl,
+##                        orbit-inner.glsl, focus-sweep.glsl). Follows the
+##                        Noctalia palette.
+##   "roudix-orbit-mocha" — the same, in Catppuccin Mocha + Peach.
+##   "roudix-full"      — everything: logo open/close + jelly wobble + the
+##                        aurora border with its focus zip. Fixed Catppuccin Mocha colors
+##                        (the logo needs them).
 ##   "sakura-overdrive" — Ly-sec's full shader suite: animated border, screen
 ##                        and cursor effects + per-event animations
 ##                        (_effects/sakura-overdrive/, from Ly-sec/nixos).
@@ -102,6 +133,124 @@ let
       animation = { };
     };
 
+    # "roudix" + the roudix-plus presets. Light on purpose: one border, one
+    # static cursor halo, three short post-process transitions. No screen
+    # effect (it would disable direct scanout); roudix-vignette is opt-in.
+    roudix-plus = {
+      files = [
+        "${./_effects/roudix}/effect.toml"
+        "${./_effects/roudix-plus}/effect.toml"
+      ];
+      effects = {
+        border = "roudix-edge";
+        cursor = "roudix-halo";
+        max_fps = 60;
+      };
+      animation = {
+        workspaces.effect = "roudix-workspace";
+        layers.effect = "roudix-layer";
+        border.effect = "roudix-focus";
+      };
+    };
+
+    roudix-plus-mocha = setups.roudix-plus // {
+      colors = mocha;
+    };
+
+    # "roudix-plus" + wobbly windows: a damped jelly shader on windows_move
+    # (_effects/roudix-plus/wobble.glsl) and the compositor's own spring
+    # physics while dragging a window. Wobble strength: STRENGTH in wobble.glsl.
+    roudix-wobbly = setups.roudix-plus // {
+      animation = setups.roudix-plus.animation // {
+        windows_move = {
+          enabled = true;
+          duration_ms = 350;
+          curve = "snappy";
+          effect = "roudix-wobble";
+        };
+        windows_drag.physics = true;
+      };
+    };
+
+    roudix-wobbly-mocha = setups.roudix-wobbly // {
+      colors = mocha;
+    };
+
+    # Windows open/close through the Roudix logo (logo.glsl, one shared
+    # direction-aware shader). Colors are forced to Catppuccin Mocha because
+    # the logo IS Peach (#fab387) + Maroon (#eba0ac); wallpaper colors would
+    # make the outline stop matching it.
+    roudix-logo = setups.roudix-plus // {
+      colors = mocha;
+      animation = setups.roudix-plus.animation // {
+        windows_in = {
+          enabled = true;
+          duration_ms = 520;
+          curve = "easeout";
+          effect = "roudix-logo";
+        };
+        windows_out = {
+          enabled = true;
+          duration_ms = 400;
+          curve = "easeout";
+          effect = "roudix-logo";
+        };
+      };
+    };
+
+    roudix-logo-wobbly = setups.roudix-wobbly // {
+      colors = mocha;
+      animation = setups.roudix-wobbly.animation // {
+        inherit (setups.roudix-logo.animation) windows_in windows_out;
+      };
+    };
+
+    # Same as roudix-plus, but the border is the "orbit" one (snowflake braid + comet)
+    # and focus changes trigger a short sweep around it.
+    roudix-orbit = setups.roudix-plus // {
+      effects = setups.roudix-plus.effects // { border = "roudix-orbit"; };
+      animation = setups.roudix-plus.animation // {
+        border = {
+          enabled = true;
+          duration_ms = 450;
+          curve = "easeout";
+          effect = "roudix-focus-sweep";
+        };
+      };
+    };
+
+    roudix-orbit-mocha = setups.roudix-orbit // {
+      colors = mocha;
+    };
+
+    # Logo open/close + wobble (roudix-logo-wobbly) + the aurora border and its
+    # focus zip (roudix-aurora). Colors stay Mocha, inherited from the logo. The
+    # braid/comet border is still available as "roudix-orbit" / "roudix-orbit-mocha".
+    roudix-full = setups.roudix-logo-wobbly // {
+      effects = setups.roudix-logo-wobbly.effects // { border = "roudix-aurora"; };
+      animation = setups.roudix-logo-wobbly.animation // {
+        inherit (setups.roudix-aurora.animation) border;
+      };
+    };
+
+    # roudix-plus with the "aurora" border: thin stem + flowing light + glints, and
+    # a short zip of light around the border when a window gets focus.
+    roudix-aurora = setups.roudix-plus // {
+      effects = setups.roudix-plus.effects // { border = "roudix-aurora"; };
+      animation = setups.roudix-plus.animation // {
+        border = {
+          enabled = true;
+          duration_ms = 600;
+          curve = "easeout";
+          effect = "roudix-focus-zip";
+        };
+      };
+    };
+
+    roudix-aurora-mocha = setups.roudix-aurora // {
+      colors = mocha;
+    };
+
     sakura-overdrive = sakuraCommon // {
       files = [ "${sakuraSrc}/effect.toml" ];
     };
@@ -190,7 +339,8 @@ let
 in
 {
   programs.umbriel.settings = {
-    # Merges with the include list in _include-noctalia.nix.
+    # Required includes (effect presets). Noctalia's generated file is in
+    # include.optional (see _include-noctalia.nix).
     include.files = selected.files;
     animation = lib.recursiveUpdate baseAnimation selected.animation;
   }

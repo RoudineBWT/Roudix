@@ -56,8 +56,8 @@ in
   config = lib.mkIf (osConfig.roudix.desktop.type == "niri") {
 
     # The home-side niri package is what _include-*.nix validates the
-    # generated config against: keep it identical to the system one.
-    programs.niri.package = lib.mkIf (dp.useNixpkgs "niri") dp.niri;
+    # generated config against: the niri-flake module's own default (the
+    # flake build) applies, same as the system one.
 
     # ── Noctalia (shell) ─────────────────────────────────────────────────
     programs.noctalia = lib.mkIf isNoctalia {
