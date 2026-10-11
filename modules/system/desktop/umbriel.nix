@@ -60,6 +60,32 @@ in
                                (fixed, independent of the wallpaper/Noctalia).
       '';
     };
+
+    disabledEffects = lib.mkOption {
+      type = lib.types.listOf (lib.types.enum [
+        "border" "window" "screen" "cursor"
+        "transitions" "window-motion" "scratchpad"
+      ]);
+      default = [ ];
+      example = [ "cursor" ];
+      description = ''
+        Umbriel only. Switch off parts of the selected `effects` setup without
+        changing the setup itself (applied on top of it, whatever it is):
+          "border"        : the animated border effect ([effects] border).
+          "window"        : the per-window overlay effect ([effects] window).
+          "screen"        : the full-screen effect ([effects] screen).
+          "cursor"        : the cursor effect, e.g. the roudix-halo around the
+                            pointer ([effects] cursor).
+          "transitions"   : the workspace, layer and focus-border animation
+                            effects (back to Umbriel's built-in animation).
+          "window-motion" : window open/close/move shaders (logo, wobble) and
+                            drag physics (back to the built-in fade).
+          "scratchpad"    : the scratchpad show/hide shader.
+        Note: Umbriel disables direct scanout on an output while a screen or
+        cursor effect is shown on it, so "cursor" and "screen" are the ones to
+        turn off if a game switches between composition and direct scanout.
+      '';
+    };
   };
 
   config = lib.mkIf isUmbriel {
