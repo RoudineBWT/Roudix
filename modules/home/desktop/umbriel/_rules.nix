@@ -186,10 +186,15 @@ in
     # `tearing = true` by hand). Output DP-1 still needs tearing=true set
     # globally in _output.nix for async presentation to be allowed at all;
     # this just requests it whenever content_type says "game".
+    # ⚠ `vrr = "always"` removed while debugging frame-pacing hitches that
+    # only happen on Umbriel, not mangowc. mangowc keeps VRR off except for
+    # fullscreen games (vrr_only_fullscreen:1); the output-level
+    # `vrr = "fullscreen"` in _output.nix does the same here. Untested guess:
+    # `vrr = "always"` may flip the output's VRR policy when a window's
+    # content type changes.
     {
       match.content_type = "game";
       tearing = true;
-      vrr = "always";
     }
     {
       match.app_id = "^firefox$";
