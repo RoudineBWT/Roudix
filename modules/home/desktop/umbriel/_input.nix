@@ -42,7 +42,7 @@
       # composited into the render instead of using the GPU's hardware
       # plane. Slight extra GPU cost (negligible outside demanding games),
       # no more stuck/ghost cursor.
-      hardware_cursor = false;
+      hardware_cursor = true;
     };
   };
   };
