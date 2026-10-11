@@ -179,6 +179,15 @@ in
       default_workspace = 4;
       default_fullscreen = true;
     }
+    # Pointer confinement for Steam/Proton games (umbriel docs "Pointer
+    # confinement"): keeps the pointer inside the focused game window and
+    # re-grabs it when the game releases its lock. Test for the "mouse dead
+    # until Esc" problem. Escape hatch: any focus/workspace keybind.
+    # Client-requested pointer locks still work.
+    {
+      match.app_id = "^steam_app_.*$";
+      confine_pointer = true;
+    }
     # match.content_type = "game" (new selector, docs.noctalia.dev/umbriel/
     # window-rules/): catches any window Umbriel/the content-type protocol
     # identifies as a game, so tearing/VRR no longer need to be repeated
