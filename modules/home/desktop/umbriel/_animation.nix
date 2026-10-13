@@ -263,6 +263,29 @@ let
 
   selected = setups.${setup} or (throw "unknown roudix.umbriel.effects: ${setup}");
 
+  # roudix.umbriel.disabledEffects: switch parts of the selected setup off.
+  # [effects] slots: "" = no effect (the default). Animation events: drop the
+  # `effect` key so the event falls back to Umbriel's built-in animation.
+  disabled = osConfig.roudix.umbriel.disabledEffects or [ ];
+  off = name: builtins.elem name disabled;
+
+  offSlots = lib.genAttrs (lib.filter off [ "border" "window" "screen" "cursor" ]) (_: "");
+
+  stripEffect = events: anim:
+    anim // lib.genAttrs (lib.filter (e: anim ? ${e}) events)
+      (e: builtins.removeAttrs anim.${e} [ "effect" ]);
+
+  applyDisabled = anim:
+    let
+      a2 = if off "transitions" then stripEffect [ "workspaces" "layers" "border" ] anim else anim;
+      a3 = if off "window-motion" then stripEffect [ "windows_in" "windows_out" "windows_move" ] a2 else a2;
+      a4 = if off "window-motion" && a3 ? windows_drag
+           then a3 // { windows_drag = a3.windows_drag // { physics = false; }; }
+           else a3;
+    in if off "scratchpad" then stripEffect [ "scratchpad" ] a4 else a4;
+
+  finalEffects = (selected.effects or { }) // offSlots;
+
   baseAnimation = {
     enabled = true;
     duration_ms = 250;
@@ -342,9 +365,9 @@ in
     # Required includes (effect presets). Noctalia's generated file is in
     # include.optional (see _include-noctalia.nix).
     include.files = selected.files;
-    animation = lib.recursiveUpdate baseAnimation selected.animation;
+    animation = applyDisabled (lib.recursiveUpdate baseAnimation selected.animation);
   }
   // lib.optionalAttrs (selected ? appearance) { inherit (selected) appearance; }
-  // lib.optionalAttrs (selected ? effects) { inherit (selected) effects; }
+  // lib.optionalAttrs (finalEffects != { }) { effects = finalEffects; }
   // lib.optionalAttrs (selected ? colors) { inherit (selected) colors; };
 }

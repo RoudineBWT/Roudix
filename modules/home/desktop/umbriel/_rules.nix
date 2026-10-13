@@ -179,6 +179,15 @@ in
       default_workspace = 4;
       default_fullscreen = true;
     }
+    # Pointer confinement for Steam/Proton games (umbriel docs "Pointer
+    # confinement"): keeps the pointer inside the focused game window and
+    # re-grabs it when the game releases its lock. Test for the "mouse dead
+    # until Esc" problem. Escape hatch: any focus/workspace keybind.
+    # Client-requested pointer locks still work.
+    {
+      match.app_id = "^steam_app_.*$";
+      confine_pointer = true;
+    }
     # match.content_type = "game" (new selector, docs.noctalia.dev/umbriel/
     # window-rules/): catches any window Umbriel/the content-type protocol
     # identifies as a game, so tearing/VRR no longer need to be repeated
@@ -186,10 +195,15 @@ in
     # `tearing = true` by hand). Output DP-1 still needs tearing=true set
     # globally in _output.nix for async presentation to be allowed at all;
     # this just requests it whenever content_type says "game".
+    # ⚠ `vrr = "always"` removed while debugging frame-pacing hitches that
+    # only happen on Umbriel, not mangowc. mangowc keeps VRR off except for
+    # fullscreen games (vrr_only_fullscreen:1); the output-level
+    # `vrr = "fullscreen"` in _output.nix does the same here. Untested guess:
+    # `vrr = "always"` may flip the output's VRR policy when a window's
+    # content type changes.
     {
       match.content_type = "game";
       tearing = true;
-      vrr = "always";
     }
     {
       match.app_id = "^firefox$";
@@ -316,13 +330,6 @@ in
     #   border_width = 0;
     #   corner_radius = 0;
     #   shadow = false;
-    # }
-    # Keep the pointer inside a game window so menus/edges don't leak to
-    # another monitor; a focus or workspace keybind releases it
-    # (umbriel #399). Uncomment for Steam games:
-    # {
-    #   match.app_id = "^steam_app_.*$";
-    #   confine_pointer = true;
     # }
     # Global blur (niri equivalent: window-rule global { background-effect
     # { blur true; xray false } }) — blur_ignore_alpha=0.0 approximates
