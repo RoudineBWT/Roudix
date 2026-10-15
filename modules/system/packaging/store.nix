@@ -133,8 +133,8 @@ in
       roudix.store.flakeSources = lib.mapAttrs (_: spec: lib.mapAttrs (_: lib.mkDefault) spec) {
         roudix-caches = {
           label = "Roudix-caches";
-          exclude = [ "scxctl" "prismlauncher-wrapped-custom" ];  # scxctl backs roudix-scheduler; the wrapper backs the custom launcher
-          aliases = { heroic-custom = "heroic"; prismlauncher-custom = "prismlauncher"; faugus = "faugus-launcher"; };
+          exclude = [ "scxctl" ];  # scxctl backs roudix-scheduler
+          aliases = { faugus = "faugus-launcher"; };
         };
         brave-previews = {
           label = "Brave Previews";

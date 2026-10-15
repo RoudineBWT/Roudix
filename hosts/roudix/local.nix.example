@@ -85,7 +85,7 @@
   roudix.laptop.thinkpad = false;             # true on ThinkPads — enables charge thresholds below
   roudix.laptop.batteryChargeThresholds.start = 40; # %
   roudix.laptop.batteryChargeThresholds.stop  = 80; # %
-  hardware.myKernel = "cachyos-latest-v3"; # see README for all variants — used when hardware.myGpu != "nvidia"
+  hardware.myKernel = "zen"; # see README for all variants — used when hardware.myGpu != "nvidia"
   # hardware.myKernelChaotic = "cachyos"; # Chaotic-Nyx variant (cachyos, cachyos-lts, cachyos-server, cachyos-hardened) — used when hardware.myGpu == "nvidia", ships nvidia_cachyos precompiled
   # ↑ Only one of the two should be active (uncommented) at a time — comment
   #   out hardware.myKernel and uncomment hardware.myKernelChaotic if you're
