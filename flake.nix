@@ -5,7 +5,7 @@
   nixConfig = {
     extra-substituters = [
       "https://cache.xinux.uz?priority=45"
-      "https://attic.xuyh0120.win/lantian?priority=60"
+      #"https://attic.xuyh0120.win/lantian?priority=60"
       "https://noctalia.cachix.org"
       "https://prismlauncher.cachix.org"
       "https://nix-community.cachix.org"
@@ -18,7 +18,7 @@
     ];
     extra-trusted-public-keys = [
       "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
-      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+      #"lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "prismlauncher.cachix.org-1:9/n/FGyABA2jLUVfY+DEp4hKds/rwO+SCOtbOkDzd+c="
@@ -82,9 +82,9 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-    nix-cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel/release";
-    };
+   # nix-cachyos-kernel = {
+   #   url = "github:xddxdd/nix-cachyos-kernel/release";
+   # };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -169,7 +169,7 @@
     chaotic,
     niri,
     home-manager,
-    nix-cachyos-kernel,
+   # nix-cachyos-kernel,
     zen-browser,
     noctalia,
     noctalia-greeter,
