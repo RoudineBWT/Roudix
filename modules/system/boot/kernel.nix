@@ -48,7 +48,7 @@
       "cachyos-server-lto"
     ];
     default = "cachyos-latest-v3";
-    description = "CachyOS kernel variant (xddxdd) — used when hardware.myGpu != \"nvidia\". \"zen\" maps to pkgs.linuxPackages_zen, \"nixpkgs-lts\" to pkgs.linuxPackages (nixpkgs default LTS), \"nixpkgs-latest\" to pkgs.linuxPackages_latest, \"nixpkgs-testing\" to pkgs.linuxPackages_testing (linux_testing — RC/mainline candidate kernel) — all outside the xddxdd overlay.";
+    description = "CachyOS kernel variant — used when hardware.myGpu != \"nvidia\". TEMPORARY: xddxdd is disabled, cachyos-* values are served by Chaotic-Nyx (closest family: default/lts/server/hardened). \"zen\" maps to pkgs.linuxPackages_zen, \"nixpkgs-lts\" to pkgs.linuxPackages (nixpkgs default LTS), \"nixpkgs-latest\" to pkgs.linuxPackages_latest, \"nixpkgs-testing\" to pkgs.linuxPackages_testing (linux_testing — RC/mainline candidate kernel) — all outside the xddxdd overlay.";
   };
 
   # Chaotic-Nyx's variant set is much smaller (no x86_64-v2/v3/v4/zen4,
@@ -121,72 +121,59 @@
       };
     }
 
-    # AMD / Intel / VM branch: xddxdd kernel, no cache concern (no nvidia module to build)
-    (lib.mkIf (config.hardware.myGpu != "nvidia") {
-      #nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+    # AMD / Intel / VM branch.
+    #
+    # TEMPORARY: the xddxdd overlay (nix-cachyos-kernel) and its attic cache
+    # (attic.xuyh0120.win/lantian) are disabled — cache reported compromised.
+    # Until it is trusted again, every "cachyos-*" value of hardware.myKernel
+    # is served by Chaotic-Nyx (already imported globally in flake.nix), using
+    # the closest family: lts / server / hardened / default. The finer xddxdd
+    # variants (x86_64-vN, zen4, LTO, BORE/BMQ/EEVDF, rc, rt, deckify) do not
+    # exist on Chaotic-Nyx, so they collapse onto that family and a build
+    # warning says so.
+    # To restore xddxdd: uncomment the input in flake.nix, the overlay + the
+    # "lantian" substituter/key (flake.nix, common.nix, binary-caches.nix),
+    # and bring back the `pkgs.cachyosKernels.*` table from git history.
+    (lib.mkIf (config.hardware.myGpu != "nvidia") (
+      let
+        variant = config.hardware.myKernel;
+        isCachy = lib.hasPrefix "cachyos" variant;
+        chaoticFamily =
+          if lib.hasPrefix "cachyos-lts" variant then "cachyos-lts"
+          else if lib.hasPrefix "cachyos-server" variant then "cachyos-server"
+          else if lib.hasPrefix "cachyos-hardened" variant then "cachyos-hardened"
+          else "cachyos";
+        chaoticKernels = {
+          "cachyos"          = pkgs.linuxPackages_cachyos;
+          "cachyos-lts"      = pkgs.linuxPackages_cachyos-lts;
+          "cachyos-server"   = pkgs.linuxPackages_cachyos-server;
+          "cachyos-hardened" = pkgs.linuxPackages_cachyos-hardened;
+        };
+      in
+      {
+        warnings = lib.optional (isCachy && variant != chaoticFamily) ''
+          hardware.myKernel = "${variant}": the xddxdd CachyOS kernels are
+          temporarily disabled, using Chaotic-Nyx "${chaoticFamily}" instead
+          (no x86_64-vN / zen4 / LTO / scheduler-specific variant available).
+        '';
 
-      #nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
-      #nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
-
-      boot.kernelPackages =
-        if config.hardware.myKernel == "zen" then
-          # nixpkgs linux-zen, independent of the xddxdd overlay
-          pkgs.linuxPackages_zen
-        else if config.hardware.myKernel == "nixpkgs-lts" then
-          # nixpkgs default LTS, independent of the xddxdd overlay
-          pkgs.linuxPackages
-        else if config.hardware.myKernel == "nixpkgs-latest" then
-          # Latest stable mainline from nixpkgs, independent of the xddxdd overlay
-          pkgs.linuxPackages_latest
-        else if config.hardware.myKernel == "nixpkgs-testing" then
-          # linux_testing — nixpkgs RC/mainline candidate kernel, independent of the xddxdd overlay
-          pkgs.linuxPackages_testing
-        else
-        let
-          kernels = {
-            # Latest
-            "cachyos-latest"         = pkgs.cachyosKernels.linux-cachyos-latest;
-            "cachyos-latest-v2"      = pkgs.cachyosKernels.linux-cachyos-latest-x86_64-v2;
-            "cachyos-latest-v3"      = pkgs.cachyosKernels.linux-cachyos-latest-x86_64-v3;
-            "cachyos-latest-v4"      = pkgs.cachyosKernels.linux-cachyos-latest-x86_64-v4;
-            "cachyos-latest-zen4"    = pkgs.cachyosKernels.linux-cachyos-latest-zen4;
-            "cachyos-latest-lto"     = pkgs.cachyosKernels.linux-cachyos-latest-lto;
-            "cachyos-latest-lto-v2"  = pkgs.cachyosKernels.linux-cachyos-latest-lto-x86_64-v2;
-            "cachyos-latest-lto-v3"  = pkgs.cachyosKernels.linux-cachyos-latest-lto-x86_64-v3;
-            "cachyos-latest-lto-v4"  = pkgs.cachyosKernels.linux-cachyos-latest-lto-x86_64-v4;
-            "cachyos-latest-lto-zen4"= pkgs.cachyosKernels.linux-cachyos-latest-lto-zen4;
-            # LTS
-            "cachyos-lts"            = pkgs.cachyosKernels.linux-cachyos-lts;
-            "cachyos-lts-v2"         = pkgs.cachyosKernels.linux-cachyos-lts-x86_64-v2;
-            "cachyos-lts-v3"         = pkgs.cachyosKernels.linux-cachyos-lts-x86_64-v3;
-            "cachyos-lts-v4"         = pkgs.cachyosKernels.linux-cachyos-lts-x86_64-v4;
-            "cachyos-lts-zen4"       = pkgs.cachyosKernels.linux-cachyos-lts-zen4;
-            "cachyos-lts-lto"        = pkgs.cachyosKernels.linux-cachyos-lts-lto;
-            "cachyos-lts-lto-v2"     = pkgs.cachyosKernels.linux-cachyos-lts-lto-x86_64-v2;
-            "cachyos-lts-lto-v3"     = pkgs.cachyosKernels.linux-cachyos-lts-lto-x86_64-v3;
-            "cachyos-lts-lto-v4"     = pkgs.cachyosKernels.linux-cachyos-lts-lto-x86_64-v4;
-            "cachyos-lts-lto-zen4"   = pkgs.cachyosKernels.linux-cachyos-lts-lto-zen4;
-            # Variants
-            "cachyos-bmq"            = pkgs.cachyosKernels.linux-cachyos-bmq;
-            "cachyos-bmq-lto"        = pkgs.cachyosKernels.linux-cachyos-bmq-lto;
-            "cachyos-bore"           = pkgs.cachyosKernels.linux-cachyos-bore;
-            "cachyos-bore-lto"       = pkgs.cachyosKernels.linux-cachyos-bore-lto;
-            "cachyos-deckify"        = pkgs.cachyosKernels.linux-cachyos-deckify;
-            "cachyos-deckify-lto"    = pkgs.cachyosKernels.linux-cachyos-deckify-lto;
-            "cachyos-eevdf"          = pkgs.cachyosKernels.linux-cachyos-eevdf;
-            "cachyos-eevdf-lto"      = pkgs.cachyosKernels.linux-cachyos-eevdf-lto;
-            "cachyos-hardened"       = pkgs.cachyosKernels.linux-cachyos-hardened;
-            "cachyos-hardened-lto"   = pkgs.cachyosKernels.linux-cachyos-hardened-lto;
-            "cachyos-rc"             = pkgs.cachyosKernels.linux-cachyos-rc;
-            "cachyos-rc-lto"         = pkgs.cachyosKernels.linux-cachyos-rc-lto;
-            "cachyos-rt-bore"        = pkgs.cachyosKernels.linux-cachyos-rt-bore;
-            "cachyos-rt-bore-lto"    = pkgs.cachyosKernels.linux-cachyos-rt-bore-lto;
-            "cachyos-server"         = pkgs.cachyosKernels.linux-cachyos-server;
-            "cachyos-server-lto"     = pkgs.cachyosKernels.linux-cachyos-server-lto;
-          };
-        in
-          pkgs.linuxKernel.packagesFor kernels.${config.hardware.myKernel};
-    })
+        boot.kernelPackages =
+          if variant == "zen" then
+            # nixpkgs linux-zen
+            pkgs.linuxPackages_zen
+          else if variant == "nixpkgs-lts" then
+            # nixpkgs default LTS
+            pkgs.linuxPackages
+          else if variant == "nixpkgs-latest" then
+            # Latest stable mainline from nixpkgs
+            pkgs.linuxPackages_latest
+          else if variant == "nixpkgs-testing" then
+            # linux_testing — nixpkgs RC/mainline candidate kernel
+            pkgs.linuxPackages_testing
+          else
+            chaoticKernels.${chaoticFamily};
+      }
+    ))
 
     # Nvidia branch: Chaotic-Nyx kernel, to get the precompiled
     # nvidia_cachyos (chaotic.nixosModules.default is already imported
