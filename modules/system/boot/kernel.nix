@@ -123,10 +123,10 @@
 
     # AMD / Intel / VM branch: xddxdd kernel, no cache concern (no nvidia module to build)
     (lib.mkIf (config.hardware.myGpu != "nvidia") {
-      nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+      #nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
 
-      nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
-      nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
+      #nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
+      #nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
 
       boot.kernelPackages =
         if config.hardware.myKernel == "zen" then
