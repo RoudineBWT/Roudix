@@ -30,11 +30,9 @@ in
       wineWow64Packages.staging
       (if isKde then protonup-qt else protonplus)
     ]
-    ++ lib.optional apps.heroic.enable (callPackage "${roudixPkgs}/heroic" {})
+    ++ lib.optional apps.heroic.enable heroic
     ++ lib.optional apps.faugus.enable (callPackage "${roudixPkgs}/faugus" {})
-    ++ lib.optional apps.prismlauncher.enable (callPackage "${roudixPkgs}/prismlauncher/wrapped.nix" {
-        prismlauncher-unwrapped = callPackage "${roudixPkgs}/prismlauncher" {};
-      })
+    ++ lib.optional apps.prismlauncher.enable prismlauncher
     ++ lib.optional apps.modrinth.enable modrinth-app
     ++ lib.optional apps.lutris.enable lutris
     ++ lib.optional apps.vintagestory.enable vintagestory
