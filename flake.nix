@@ -82,9 +82,9 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  nix-cachyos-kernel = {
-     url = "github:xddxdd/nix-cachyos-kernel/release";
-   };
+  # nix-cachyos-kernel = {
+  #    url = "github:xddxdd/nix-cachyos-kernel/release";
+  #  };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -169,7 +169,7 @@
     chaotic,
     niri,
     home-manager,
-    nix-cachyos-kernel,
+    #nix-cachyos-kernel,
     zen-browser,
     noctalia,
     noctalia-greeter,
