@@ -28,11 +28,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792054482,
-        "narHash": "sha256-MTTRjeKSppnKxD0Vvu93Kwx1MSLgFRaMyOnTGku9Nps=",
+        "lastModified": 1792034370,
+        "narHash": "sha256-oLAzBpONxZtnfW0FgL5c+PoWzuAtfs+YhHgaoi8GoEE=",
         "owner": "roudinebwt",
         "repo": "brave-preview",
-        "rev": "f9b2b2c0d5854fb051c2cac9ee5ce35613993261",
+        "rev": "d862d549c973054c79bbcfc5304bfcb71d21a049",
         "type": "github"
       },
       "original": {
@@ -713,11 +713,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1792054885,
-        "narHash": "sha256-jVHYhSgxrOXH6PwRP7RIhns3OQKgK5+NJRPWXID03h4=",
+        "lastModified": 1792047910,
+        "narHash": "sha256-gzhwiSo6aPQ0M/p1JnVWcRkeBbA7FEvXtwIK3nBSMLU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "fce8f3d9f8ee1bc0ea1c4b9cf5ff86539379b0ae",
+        "rev": "2c684bd063472b7c1a566516b4ba501bdc2205bc",
         "type": "github"
       },
       "original": {
@@ -729,11 +729,11 @@
     },
     "nixpkgs-scx": {
       "locked": {
-        "lastModified": 1792044944,
-        "narHash": "sha256-0eiLlx4jYAiucGTZo7Uk6qNXwUZELtJSIGe15E1CJ6E=",
+        "lastModified": 1791961751,
+        "narHash": "sha256-EVGNay1beKcCZbKH93dwRT/rqAmnlDd1Irt1CSG/ds4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "bdf2d07fa2cffa70113b4b3a8b722a81c6b43025",
+        "rev": "5374276b6bd7eb9320029d5f679f8bfc4b6d488f",
         "type": "github"
       },
       "original": {
@@ -793,11 +793,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1791956154,
-        "narHash": "sha256-jBYGPi4udQ9uo4KQp9m2J0546nJVQitG15gvZSaVVAs=",
+        "lastModified": 1791734076,
+        "narHash": "sha256-i5qk1kLiit98rRbh1AXmWBNT9QXC/y4l5Wk/u5EdpDQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "55bfb4d7437bd4e09ab7cba58a43bd68eb310044",
+        "rev": "7fd4004d0511991fff3a0524856a9be09e28c5f0",
         "type": "github"
       },
       "original": {
@@ -956,11 +956,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1792051369,
-        "narHash": "sha256-92ajK7tyEFPvmgO/vRitK4uP/gLE3mraKkU1CuwTc/E=",
+        "lastModified": 1791966481,
+        "narHash": "sha256-wQbxTvBg6NxnJwaccowHrmtyf++HvLRZFYW0tUU5oc4=",
         "owner": "RoudineBWT",
         "repo": "Roudix-caches",
-        "rev": "7e3b3ab2503184873bc9ec7d6269a028813fa9db",
+        "rev": "3223de144144c3ac2a54a2658ce3076f8c345369",
         "type": "github"
       },
       "original": {
@@ -977,11 +977,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792048409,
-        "narHash": "sha256-ZcwtnGWuY65NQ75W1LZ99gIaFBgC0Sm+TCs1ZEabw0U=",
+        "lastModified": 1791962566,
+        "narHash": "sha256-rEB0dvSZw1niBVJvt0AiWygNS/OMdA81lquTzLIWuvo=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "e9d12b9d8266ed9afdc5add5537ec8b5f789645c",
+        "rev": "8111d2b45adcbaeaff037f996643f1ac43f944e6",
         "type": "github"
       },
       "original": {
@@ -1127,11 +1127,11 @@
         "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel"
       },
       "locked": {
-        "lastModified": 1792053684,
-        "narHash": "sha256-qdZ9S8fkinPWAnW2TyaO5nlNC0xeQ43kDRdXlT26f2w=",
+        "lastModified": 1792036005,
+        "narHash": "sha256-63PGoHBlVVROCf6PKDTQCnNtVvwGvCUHqJu4a4WDRzw=",
         "owner": "noctalia-dev",
         "repo": "umbriel",
-        "rev": "ea40c808b15c772c9fa8184d724e960d93e78fd9",
+        "rev": "8d9806f59f4f0332f520538a2c6cd575a72143ec",
         "type": "github"
       },
       "original": {
