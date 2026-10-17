@@ -21,6 +21,13 @@
       # window_rule tearing=true in _rules.nix). Remove if tearing shows up
       # outside games.
       tearing = true;
+      # Main monitor: the cursor starts here at login (umbriel #390).
+      focus_at_startup = true;
+      # HDR only (neither monitor is HDR today, so unused): untagged SDR
+      # windows use gamma 2.2 on HDR outputs; "srgb" gives lighter darks
+      # (umbriel #472). `umbriel color` shows the active choice.
+      # hdr = "on";
+      # sdr_transfer = "srgb";
       # ⚠ A workspace name that's a plain number ("4", "5"...) and exists
       # ONLY on this output becomes a globally unique name. Per the docs
       # (docs.noctalia.dev/umbriel/actions/), workspace selectors resolve

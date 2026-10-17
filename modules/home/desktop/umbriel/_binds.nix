@@ -12,6 +12,10 @@ in
   keybinds = {
     # ─── Applications ───
     "Mod+Q" = "window-close";
+    # window-kill (umbriel fb6aa4c): kills the PROCESS owning the focused
+    # window, for frozen apps/games that ignore window-close. Deliberately
+    # a 3-key chord + no repeat so it can't be hit by accident.
+    "Mod+Ctrl+Shift+Q" = { action = "window-kill"; repeat = false; };
     "Mod+Return" = "spawn:ghostty";
     "Mod+D" = "spawn:noctalia msg panel-toggle launcher";
     "Mod+Shift+B" = "spawn:zen-twilight";
@@ -185,6 +189,11 @@ in
     # No-op outside master layout (see Actions → Layout differences).
     "Mod+Ctrl+Equal" = "layout-master-count-increase";
     "Mod+Ctrl+Minus" = "layout-master-count-decrease";
+
+    # Dwindle: flips the split (side by side <-> stacked) holding the focused
+    # tile (umbriel #444). No-op in scrolling/master. Zed, Term, Files, Chat
+    # and Music workspaces are dwindle.
+    "Mod+Shift+S" = { action = "layout-toggle-split"; repeat = false; };
 
     # ─── Modes ───
     "Mod+T" = "window-toggle-floating";

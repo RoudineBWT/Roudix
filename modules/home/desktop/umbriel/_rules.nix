@@ -8,6 +8,10 @@
 ## area instead (better if you change resolution often). It expects a
 ## TABLE — `{ width = <int>; height = <int>; }` — not an array.
 ##
+## `match.app_id` / `match.title` accept an ARRAY of patterns (any one
+## matching is enough, umbriel #353): rules with identical settings are merged
+## below instead of being repeated.
+##
 ## Docs: https://docs.noctalia.dev/umbriel/window-rules/
 { lib, osConfig, ... }:
 let
@@ -80,25 +84,35 @@ in
           then { default_scratchpad = "communication"; default_pinned = true; }
           else { default_floating = false; })
     )
+    (
     {
+      # Same placement as Spotify/Sonora below. In scratchpad mode it now
+      # joins the "music" scratchpad like them (roudix.musicPlayer =
+      # "ytmdesktop" is spawned by that scratchpad's spawn_when_empty);
+      # tiled mode keeps its previous behavior (no forced maximize).
       match.app_id = "^youtube-music-desktop-app";
       default_output = "DP-3";
       default_workspace = 2;
+    } // lib.optionalAttrs scratchpadApps {
+      default_scratchpad = "music";
+      default_floating_size = { width = 0.8; height = 0.85; };
+      default_pinned = true;
     }
+    )
     {
       match.app_id = "^com\\.mitchellh\\.ghostty$";
       default_floating = true;
       default_floating_size_px = { width = 1505; height = 755; };
-      blur = true;
     }
+    # Main browsers (Firefox / Zen / Brave Origin Beta): web workspace, maximized.
     {
-      match.app_id = "^firefox$";
+      match.app_id = [ "^firefox$" "^zen-twilight$" "^brave-origin-beta$" ];
       default_output = "DP-1";
       default_workspace = 1;
       default_maximize = true;
     }
     {
-      match.title = "^About Mozilla Firefox$";
+      match.title = [ "^About Mozilla Firefox$" "^About Zen Twilight$" ];
       default_output = "DP-1";
       default_workspace = 1;
       default_floating = true;
@@ -107,24 +121,6 @@ in
       match.app_id = "^dev\\.zed\\.Zed$";
       default_output = "DP-1";
       default_workspace = 2;
-      default_maximize = true;
-    }
-    {
-      match.app_id = "^zen-twilight$";
-      default_output = "DP-1";
-      default_workspace = 1;
-      default_maximize = true;
-    }
-    {
-      match.title = "^About Zen Twilight$";
-      default_output = "DP-1";
-      default_workspace = 1;
-      default_floating = true;
-    }
-    {
-      match.app_id = "^brave-origin-beta$";
-      default_output = "DP-1";
-      default_workspace = 1;
       default_maximize = true;
     }
     {
@@ -155,14 +151,9 @@ in
       default_workspace = 3;
       default_maximize = true;
     }
+    # Games (Steam/Proton, Heroic, Minecraft): games workspace, fullscreen.
     {
-      match.app_id = "^steam_app_.*$";
-      default_output = "DP-1";
-      default_workspace = 4;
-      default_fullscreen = true;
-    }
-    {
-      match.app_id = "^heroic$";
+      match.app_id = [ "^steam_app_.*$" "^heroic$" "^Minecraft$" ];
       default_output = "DP-1";
       default_workspace = 4;
       default_fullscreen = true;
@@ -172,12 +163,6 @@ in
       default_output = "DP-1";
       default_workspace = 4;
       default_maximize = true;
-    }
-    {
-      match.app_id = "^Minecraft$";
-      default_output = "DP-1";
-      default_workspace = 4;
-      default_fullscreen = true;
     }
     # Pointer confinement for Steam/Proton games (umbriel docs "Pointer
     # confinement"): keeps the pointer inside the focused game window and
@@ -206,17 +191,7 @@ in
       tearing = true;
     }
     {
-      match.app_id = "^firefox$";
-      match.title = "^Picture-in-Picture$";
-      default_floating = true;
-    }
-    {
-      match.app_id = "^zen$";
-      match.title = "^Picture-in-Picture$";
-      default_floating = true;
-    }
-    {
-      match.app_id = "^brave$";
+      match.app_id = [ "^firefox$" "^zen$" "^brave$" ];
       match.title = "^Picture-in-Picture$";
       default_floating = true;
     }
@@ -263,23 +238,14 @@ in
     }
     (
     {
+      # Spotify + Sonora (roudix.musicPlayer = "sonora"): same placement.
       # default_maximize (tiled) and default_scratchpad+default_floating_size
       # (scratchpad, sized as a fraction to stay correct across resolution
       # changes) are mutually exclusive, hence the conditional //.
-      match.app_id = "^Spotify$";
-      default_output = "DP-3";
-      default_workspace = 2;
-    } // (if scratchpadApps
-          then { default_scratchpad = "music"; default_floating_size = { width = 0.8; height = 0.85; }; default_pinned = true; }
-          else { default_maximize = true; })
-    )
-    (
-    {
-      # Sonora (roudix.musicPlayer = "sonora"): same placement as Spotify.
-      # app_id not verified against a running Sonora yet — unanchored
-      # [Ss]onora on purpose so "sonora" / "Sonora" / "org.*.Sonora" all
-      # match; tighten it once the real app_id is known.
-      match.app_id = "[Ss]onora";
+      # Sonora's app_id is not verified against a running Sonora yet —
+      # unanchored [Ss]onora on purpose so "sonora" / "Sonora" /
+      # "org.*.Sonora" all match; tighten it once the real app_id is known.
+      match.app_id = [ "^Spotify$" "[Ss]onora" ];
       default_output = "DP-3";
       default_workspace = 2;
     } // (if scratchpadApps
@@ -287,7 +253,8 @@ in
           else { default_maximize = true; })
     )
     {
-      match.app_id = "^(com\\.kde\\.easyeffects|com\\.github\\.wwmm\\.easyeffects)$";
+      # "easyeffects" = the class it exposes under Xwayland (seen in `umbriel windows`).
+      match.app_id = "^(easyeffects|com\\.kde\\.easyeffects|com\\.github\\.wwmm\\.easyeffects)$";
       default_output = "DP-3";
       default_workspace = 2;
     }
@@ -303,12 +270,23 @@ in
       default_floating_size_px = { width = 800; height = 600; };
       default_position = { x = 32; y = 32; anchor = "bottom_right"; };
     }
+    # background_render (umbriel a08a0011): a window on another workspace / in
+    # a hidden tab or scratchpad is normally told it is suspended and gets no
+    # frame callbacks. OBS ties capture/encoding to its drawing loop, so it
+    # would stall while you play on another workspace. This keeps it running
+    # as if shown (Umbriel still doesn't draw it). Costs CPU/GPU while hidden.
+    {
+      match.app_id = "^(obs|com\\.obsproject\\.Studio)$";
+      background_render = true;
+    }
     # ── New per-window decoration / border-color overrides (umbriel #266,
     # #268, outer_border_width) ───────────────────────────────────────────
     # Refreshed live while the window is open. Layout spacing keeps using the
     # GLOBAL border widths, so a rule never moves other windows. Uncomment to
     # use. Keys: border_color_focused / _unfocused / _outer, border_width,
     # outer_border_width, corner_radius (0..100), shadow.
+    # Also per window: opacity, hdr, vrr, window_effect / border_effect
+    # (GLSL effects), focus_on_activate, blur_optimized.
     #
     # No border at all on a lone window (floats included), niri-style:
     # {
