@@ -37,6 +37,12 @@
 ##   "roudix-full"      — everything: logo open/close + jelly wobble + the
 ##                        aurora border with its focus zip. Fixed Catppuccin Mocha colors
 ##                        (the logo needs them).
+##   "roudix-full-noctalia" — same as "roudix-full" (logo + wobble + aurora border
+##                        + focus zip) but WITHOUT the forced Mocha colors: every
+##                        shader reads [colors] from Noctalia's included
+##                        noctalia.toml, so it follows the active Noctalia
+##                        scheme/wallpaper. The logo outline then takes
+##                        accent_primary / accent_secondary instead of Peach/Maroon.
 ##   "sakura-overdrive" — Ly-sec's full shader suite: animated border, screen
 ##                        and cursor effects + per-event animations
 ##                        (_effects/sakura-overdrive/, from Ly-sec/nixos).
@@ -232,6 +238,13 @@ let
         inherit (setups.roudix-aurora.animation) border;
       };
     };
+
+    # roudix-full, but the colors are NOT forced to Mocha: `colors` is dropped so
+    # Umbriel keeps the [colors] provided by the included noctalia.toml. All the
+    # shaders involved (logo, aurora, aurora-inner, halo) already read
+    # umbriel_palette_at(), so they follow Noctalia as-is. Only needs Noctalia
+    # as the shell (the include is only loaded when isNoctalia).
+    roudix-full-noctalia = removeAttrs setups.roudix-full [ "colors" ];
 
     # roudix-plus with the "aurora" border: thin stem + flowing light + glints, and
     # a short zip of light around the border when a window gets focus.

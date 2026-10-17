@@ -24,7 +24,7 @@ in
     };
 
     effects = lib.mkOption {
-      type = lib.types.enum [ "roudix" "roudix-plus" "roudix-plus-mocha" "roudix-aurora" "roudix-aurora-mocha" "roudix-wobbly" "roudix-wobbly-mocha" "roudix-logo" "roudix-logo-wobbly" "roudix-orbit" "roudix-orbit-mocha" "roudix-full" "sakura-overdrive" "sakura-roudix" ];
+      type = lib.types.enum [ "roudix" "roudix-plus" "roudix-plus-mocha" "roudix-aurora" "roudix-aurora-mocha" "roudix-wobbly" "roudix-wobbly-mocha" "roudix-logo" "roudix-logo-wobbly" "roudix-orbit" "roudix-orbit-mocha" "roudix-full" "roudix-full-noctalia" "sakura-overdrive" "sakura-roudix" ];
       default = "roudix";
       description = ''
         Umbriel only. Shader/animation setup:
@@ -52,6 +52,9 @@ in
           "roudix-orbit-mocha": same with Catppuccin Mocha + Peach colors.
           "roudix-full"      : everything — logo open/close, jelly wobble, aurora
                                border + focus zip (Mocha Peach/Maroon, fixed).
+          "roudix-full-noctalia": same as "roudix-full" but the colors follow the
+                               Noctalia palette (logo outline, aurora border,
+                               cursor halo). Use it with the Noctalia shell.
           "sakura-overdrive" : Ly-sec's full sakura/magical-girl suite — animated
                                border, screen and cursor effects and shader
                                animations on every event. Colors come from the
