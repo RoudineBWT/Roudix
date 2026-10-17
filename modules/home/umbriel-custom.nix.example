@@ -1,5 +1,6 @@
 { lib, ... }:
 {
+  imports = [ ./umbriel-managed.nix ]; # rules created by scripts/roudix-config.py
   # ── Personal Umbriel overrides ──────────────────────────────────────────
   # Copy this file to umbriel-custom.nix (without .example) next to
   # local.nix — auto-imported (see `imports` in local.nix), gitignored.
