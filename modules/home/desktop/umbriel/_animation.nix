@@ -5,6 +5,8 @@
 ##
 ## Two selectable effect setups (roudix.umbriel.effects, declared in
 ## modules/system/desktop/umbriel.nix):
+##   "none"             — clean: no shader, no [effects]; every animation falls
+##                        back to Umbriel's built-in one (see `noEffects` below)
 ##   "roudix"           — subtle default (_effects/roudix/)
 ##   "roudix-plus"      — "roudix" + original shaders: accent border, cursor
 ##                        halo, workspace/layer/focus transitions
@@ -134,6 +136,11 @@ let
   # Every effect.toml is copied to the store with its directory, so the
   # relative `shader = "x.glsl"` paths inside it resolve.
   setups = {
+    none = {
+      files = [ ];
+      animation = { };
+    };
+
     roudix = {
       files = [ "${./_effects/roudix}/effect.toml" ];
       animation = { };
@@ -299,6 +306,12 @@ let
 
   finalEffects = (selected.effects or { }) // offSlots;
 
+  # "none": keep the timings/curves but drop every `effect` key, so each event
+  # uses Umbriel's built-in animation and no shader file has to be loaded.
+  noEffects = setup == "none";
+  stripAllEffects = anim:
+    lib.mapAttrs (_: v: if builtins.isAttrs v then builtins.removeAttrs v [ "effect" ] else v) anim;
+
   baseAnimation = {
     enabled = true;
     duration_ms = 250;
@@ -378,7 +391,7 @@ in
     # Required includes (effect presets). Noctalia's generated file is in
     # include.optional (see _include-noctalia.nix).
     include.files = selected.files;
-    animation = applyDisabled (lib.recursiveUpdate baseAnimation selected.animation);
+    animation = applyDisabled (lib.recursiveUpdate (if noEffects then stripAllEffects baseAnimation else baseAnimation) selected.animation);
   }
   // lib.optionalAttrs (selected ? appearance) { inherit (selected) appearance; }
   // lib.optionalAttrs (finalEffects != { }) { effects = finalEffects; }

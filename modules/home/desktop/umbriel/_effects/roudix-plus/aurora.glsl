@@ -89,6 +89,14 @@ void outline(vec2 uv, out float s, out float d, out float P) {
         s = q.y < 0.0 ? t : W + H + (W - t);
         d = e.y;
     }
+    // Follow the compositor's corner radius: on rounded windows, measure the
+    // distance to the ROUNDED client rect (umbriel_border_radius holds the
+    // per-corner radii). With every radius at 0 the original square offset
+    // contours are kept untouched.
+    vec4 cr = umbriel_border_radius;
+    if (max(max(cr.x, cr.y), max(cr.z, cr.w)) > 0.5) {
+        d = umbriel_border_distance(uv);
+    }
 }
 
 vec4 border(vec2 uv) {

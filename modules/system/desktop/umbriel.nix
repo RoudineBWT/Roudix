@@ -24,10 +24,12 @@ in
     };
 
     effects = lib.mkOption {
-      type = lib.types.enum [ "roudix" "roudix-plus" "roudix-plus-mocha" "roudix-aurora" "roudix-aurora-mocha" "roudix-wobbly" "roudix-wobbly-mocha" "roudix-logo" "roudix-logo-wobbly" "roudix-orbit" "roudix-orbit-mocha" "roudix-full" "roudix-full-noctalia" "sakura-overdrive" "sakura-roudix" ];
+      type = lib.types.enum [ "none" "roudix" "roudix-plus" "roudix-plus-mocha" "roudix-aurora" "roudix-aurora-mocha" "roudix-wobbly" "roudix-wobbly-mocha" "roudix-logo" "roudix-logo-wobbly" "roudix-orbit" "roudix-orbit-mocha" "roudix-full" "roudix-full-noctalia" "sakura-overdrive" "sakura-roudix" ];
       default = "roudix";
       description = ''
         Umbriel only. Shader/animation setup:
+          "none"             : clean — no shaders and no animated effects at all.
+                               Umbriel's built-in animations are used as they are.
           "roudix"           : subtle window in/out + scratchpad shaders (default).
           "roudix-plus"      : "roudix" + accent border, cursor halo and subtle
                                workspace/layer/focus transitions (original
