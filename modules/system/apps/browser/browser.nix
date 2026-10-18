@@ -98,6 +98,78 @@ in {
       };
     };
 
+    zen.tweaks = {
+      enable = lib.mkOption {
+        type    = lib.types.bool;
+        default = false;
+        description = ''
+          Apply Roudix's Zen Browser tweaks: a set of prefs written to the
+          profile's user.js (programs.zen-browser.profiles.default.settings)
+          AND a policies.json (programs.zen-browser.policies, built from
+          modules/home/apps/browser/zen-policies.json). Only used when
+          `roudix.zen.enable = true`.
+
+          Prefs live in modules/home/apps/browser/zen-prefs.nix. Prefs that
+          were `locked` in the original snippet are additionally enforced
+          through the `Preferences` policy (user.js alone can't lock a pref).
+          Anything can still be overridden from modules/home/local.nix with
+          `programs.zen-browser.profiles.default.settings.<pref> = …;`
+          (our values are set with lib.mkDefault).
+        '';
+      };
+
+      performance = lib.mkOption {
+        type    = lib.types.bool;
+        default = true;
+        description = ''
+          Hardware video decoding, WebRender / GPU process, JIT thresholds,
+          bigger memory caches (media cache up to 1 GB / 3 GB combined),
+          disk cache off, network connection tuning.
+        '';
+      };
+
+      privacy = lib.mkOption {
+        type    = lib.types.bool;
+        default = true;
+        description = ''
+          Removes Mozilla extras (sponsored tiles, Pocket, VPN promo, ML /
+          AI chat, Normandy, UITour…), telemetry, and applies hardening
+          (strict tracking protection, HTTPS-only, no prefetch/predictor,
+          query-string stripping, no form autofill, CRLite).
+          Note: `browser.newtabpage.enabled = false` is part of this.
+        '';
+      };
+
+      disableSafeBrowsing = lib.mkOption {
+        type    = lib.types.bool;
+        default = true;
+        description = ''
+          Turns Google Safe Browsing (malware / phishing / downloads
+          checks) off and blanks its provider URLs. This removes a
+          protection layer — the uBlock Origin lists in the policies
+          (urlhaus, curben-phishing, ublock-badware) partly make up for it.
+          Set to false to keep Safe Browsing.
+        '';
+      };
+
+      ui = lib.mkOption {
+        type    = lib.types.bool;
+        default = true;
+        description = "Physics-based smooth scrolling, faster mouse wheel, CSS masonry.";
+      };
+
+      policies = lib.mkOption {
+        type    = lib.types.bool;
+        default = true;
+        description = ''
+          Also install the policies.json (tracking protection, DoH,
+          uBlock Origin + filter lists, no Pocket/studies/feedback, locked
+          Firefox Home & messaging…) plus the `Preferences` policy for
+          locked prefs. false = user.js only.
+        '';
+      };
+    };
+
     browser = {
       default = lib.mkOption {
         type = lib.types.nullOr (lib.types.enum (lib.attrNames browserDefs));

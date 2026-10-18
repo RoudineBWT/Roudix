@@ -60,6 +60,13 @@
   roudix.zen.sine.enable = false;      # true on the machine where you want Sine
   roudix.zen.mods        = [];
   roudix.zen.sine.mods   = [];         # e.g. [ "Arc-2.0" "unloaded-tabs" ] — only used when Sine is enabled
+  roudix.zen.tweaks.enable = false;    # user.js prefs + policies.json (performance, privacy, debloat) — only used when Zen is enabled
+  #   Fine-grained (all default true once tweaks.enable = true):
+  #   roudix.zen.tweaks.performance         = true;   # HW decoding, GPU process, caches, network tuning
+  #   roudix.zen.tweaks.privacy             = true;   # remove Mozilla extras + telemetry, hardening
+  #   roudix.zen.tweaks.disableSafeBrowsing = true;   # false = keep Google Safe Browsing
+  #   roudix.zen.tweaks.ui                  = true;   # smooth scrolling, masonry
+  #   roudix.zen.tweaks.policies            = true;   # false = user.js only, no policies.json
 
   # ── Hardware ──────────────────────────────────────────────────────────────
   roudix.rgb        = "none";                  # "openlinkhub" (full Corsair), "openrgb" (mixed/other brands) or "none"
