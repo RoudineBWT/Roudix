@@ -1,5 +1,9 @@
-{ ... }:
+{ osConfig, ... }:
 {
+  # Read by scripts/roudix-config.py to know which compositor to configure
+  # (and to stay unavailable on GNOME / KDE / Cinnamon).
+  xdg.configFile."roudix/desktop-type".text = osConfig.roudix.desktop.type;
+
   # Home-Manager side of each desktop environment. Mirrors
   # modules/system/desktop/default.nix — one subfolder per DE, each
   # guarded internally by `lib.mkIf (osConfig.roudix.desktop.type == "...")`,
