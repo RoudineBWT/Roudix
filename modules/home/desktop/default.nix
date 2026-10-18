@@ -1,8 +1,10 @@
 { osConfig, ... }:
 {
-  # Read by scripts/roudix-config.py to know which compositor to configure
-  # (and to stay unavailable on GNOME / KDE / Cinnamon).
-  xdg.configFile."roudix/desktop-type".text = osConfig.roudix.desktop.type;
+  # Read by scripts/roudix-config*.py to know which compositor to configure
+  # (and to stay unavailable on GNOME / KDE / Cinnamon). Written under
+  # ~/.local/share, NOT ~/.config/roudix: the repo itself usually lives in
+  # ~/.config/roudix and this generated symlink would show up in `git status`.
+  xdg.dataFile."roudix/desktop-type".text = osConfig.roudix.desktop.type;
 
   # Home-Manager side of each desktop environment. Mirrors
   # modules/system/desktop/default.nix — one subfolder per DE, each
