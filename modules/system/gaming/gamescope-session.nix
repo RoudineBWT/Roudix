@@ -139,7 +139,7 @@ let
 
   # Fetched via the `jovian` flake input (flake.nix), not vendored: see the
   # comment on that input for why following our own nixpkgs is safe here.
-  deckyPkg      = pkgs.callPackage "${inputs.jovian}/pkgs/decky-loader" { };
+  deckyPkg = pkgs.callPackage (inputs.jovian + "/pkgs/decky-loader/stable.nix") { };
   deckyStateDir = "/var/lib/decky-loader";
   userCfg       = config.users.users.${username};
 in
