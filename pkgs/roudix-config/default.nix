@@ -28,7 +28,8 @@ pkgs.stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/bin $out/lib/roudix-config $out/share/applications
+    mkdir -p $out/bin $out/lib/roudix-config $out/share/applications \
+             $out/share/icons/hicolor/scalable/apps
     cp roudix_config_core.py $out/lib/roudix-config/
 
     # The sources start with a 2-line `nix-shell` shebang so they also run
@@ -43,14 +44,16 @@ pkgs.stdenv.mkDerivation {
       chmod +x "$out/bin/$to"
     done
 
-    # Icon: reuse roudix-logo (roudix-branding, already in hicolor), like
-    # roudix-welcome does, instead of shipping a duplicate.
+    # Own icon, same convention as roudix-store / roudix-switcher: dark badge
+    # by default + a -light variant, in hicolor so any icon theme falls back to it.
+    cp io.roudix.config.svg io.roudix.config-light.svg $out/share/icons/hicolor/scalable/apps/
+
     cat > $out/share/applications/io.roudix.config.desktop << EOF2
     [Desktop Entry]
     Name=Roudix Config
     Comment=Configure Umbriel — règles de fenêtres, écrans, workspaces, raccourcis
     Exec=roudix-config
-    Icon=roudix-logo
+    Icon=io.roudix.config
     Terminal=false
     Type=Application
     StartupNotify=true

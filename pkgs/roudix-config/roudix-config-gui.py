@@ -679,6 +679,10 @@ class App(Adw.Application):
         super().__init__(application_id=APP_ID)
         self.win = None
 
+    def do_startup(self) -> None:
+        Adw.Application.do_startup(self)
+        Gtk.Window.set_default_icon_name(APP_ID)  # io.roudix.config, from hicolor
+
     def do_activate(self) -> None:
         if self.win:
             self.win.present()
