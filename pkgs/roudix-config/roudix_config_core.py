@@ -25,8 +25,17 @@ COMPOSITOR = "umbriel"  # niri / mango later
 # touched (the "Mon -custom.nix" tab lets you edit all of it).
 
 def repo_root() -> Path:
+    """The roudix checkout holding modules/home/<comp>-custom.nix.
+    ROUDIX_DIR wins; else walk up from this file to the folder with flake.nix
+    (running from a checkout); else ~/.config/roudix (installed package, where
+    this file lives in the Nix store — same default as NH_FLAKE)."""
     env = os.environ.get("ROUDIX_DIR")
-    return Path(env).expanduser() if env else Path(__file__).resolve().parent.parent
+    if env:
+        return Path(env).expanduser()
+    for p in Path(__file__).resolve().parents:
+        if (p / "flake.nix").exists():
+            return p
+    return Path.home() / ".config" / "roudix"
 
 
 def home_dir() -> Path:
@@ -46,7 +55,7 @@ BEGIN = "# >>> roudix-config >>>"
 END = "# <<< roudix-config <<<"
 
 BLOCK_TEMPLATE = """\
-    {begin} généré par scripts/roudix-config.py — modifie-le via l'app
+    {begin} généré par Roudix Config — modifie-le via l'app
     ({{ lib, ... }}:
       let
         data = builtins.fromJSON ''

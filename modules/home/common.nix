@@ -23,6 +23,7 @@ in
     # roudix-welcome: écran de bienvenue au premier démarrage de session
     # (roudix.welcome.enable, default true — voir roudix-welcome.nix).
     ./roudix-welcome.nix
+    ./roudix-config.nix
   ] ++ lib.optional (builtins.pathExists ./dev/ssh.nix) ./dev/ssh.nix
     ++ lib.optional (builtins.pathExists ./dev/gitwatch.nix) ./dev/gitwatch.nix
     ++ lib.optional (builtins.pathExists ./dev/git.nix) ./dev/git.nix

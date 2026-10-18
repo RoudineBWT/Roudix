@@ -18,9 +18,9 @@ Tabs
 Only available when roudix.desktop.type is a compositor it supports (not on
 GNOME / KDE / Cinnamon).
 
-    scripts/roudix-config.py            # TUI (run it inside your session)
-    scripts/roudix-config.py --list     # print the managed rules
-    scripts/roudix-config.py --bootstrap-only
+    roudix-config-tui            # TUI (run it inside your session)
+    roudix-config-tui --list     # print the managed rules
+    roudix-config-tui --bootstrap-only
 
 Then rebuild (`rebuild`) and reload the config (Mod+Shift+R).
 """
@@ -30,7 +30,9 @@ import argparse
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+_here = Path(__file__).resolve().parent
+for _p in (_here.parent / "lib" / "roudix-config", _here):  # package layout, then checkout
+    sys.path.insert(0, str(_p))
 from roudix_config_core import *  # noqa: F401,F403  (shared logic)
 from roudix_config_core import _collect, _run_json  # noqa: F401
 

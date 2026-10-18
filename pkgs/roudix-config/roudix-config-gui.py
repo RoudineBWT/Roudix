@@ -8,7 +8,7 @@ the block is yours and never touched. Pages: window rules, screens &
 workspaces, keybinds, and the -custom.nix file itself.
 
 Launch it inside your session (so open windows and outputs are live):
-    scripts/roudix-config-gui.py
+    roudix-config   (or pkgs/roudix-config/roudix-config-gui.py from a checkout)
 Then rebuild and reload the config (Mod+Shift+R).
 """
 from __future__ import annotations
@@ -16,7 +16,9 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+_here = Path(__file__).resolve().parent
+for _p in (_here.parent / "lib" / "roudix-config", _here):  # package layout, then checkout
+    sys.path.insert(0, str(_p))
 
 import gi
 
@@ -32,7 +34,7 @@ from roudix_config_core import (  # noqa: E402
     save_output_override, set_bind,
 )
 
-APP_ID = "dev.roudix.Config"
+APP_ID = "io.roudix.config"
 UNSET = "(inchangé)"
 MODIFIERS = ["Mod", "Super", "Ctrl", "Alt", "Shift"]
 MOD_ALIASES = {"control": "Ctrl", "logo": "Super", "win": "Super"}
@@ -372,13 +374,15 @@ class ConfigWindow(Adw.ApplicationWindow):
         self.nix_text = ""
         self.overlay = Adw.ToastOverlay()
 
-        self.stack = Adw.ViewStack()
+        self.stack = Gtk.Stack(transition_type=Gtk.StackTransitionType.CROSSFADE)
         self.rules_list = self.make_list_page("rules", "Règles", "view-list-symbolic")
         self.screens_list = self.make_list_page("screens", "Écrans", "video-display-symbolic")
         self.binds_list = self.make_list_page("binds", "Raccourcis", "input-keyboard-symbolic", searchable=True)
         self.make_nix_page()
 
-        switcher = Adw.ViewSwitcher(stack=self.stack, policy=Adw.ViewSwitcherPolicy.WIDE)
+        # Text-only tabs: AdwViewSwitcher always draws an icon (a "missing image"
+        # placeholder when the page has none), so use a plain StackSwitcher.
+        switcher = Gtk.StackSwitcher(stack=self.stack)
         header = Adw.HeaderBar(title_widget=switcher)
         self.add_btn = Gtk.Button(icon_name="list-add-symbolic", tooltip_text="Ajouter")
         self.add_btn.connect("clicked", lambda *_: self.on_add())
@@ -418,7 +422,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         scroll = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
         scroll.set_child(Adw.Clamp(maximum_size=760, child=lb, valign=Gtk.Align.START))
         box.append(scroll)
-        self.stack.add_titled(box, name, title)  # no tab icon: theme-independent
+        self.stack.add_titled(box, name, title)
         return lb
 
     def make_nix_page(self) -> None:
