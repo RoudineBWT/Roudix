@@ -59,6 +59,8 @@ KERNELS = {
         ("nixpkgs-lts",     "linux LTS — nixpkgs default kernel, cached on cache.nixos.org"),
         ("nixpkgs-latest",  "linux latest — newest mainline stable, cached on cache.nixos.org"),
         ("nixpkgs-testing", "linux_testing — mainline RC/testing kernel, cached on cache.nixos.org"),
+        ("xanmod-lts",      "XanMod LTS — nixpkgs, performance governor + lazy preemption + BBRv3"),
+        ("xanmod-latest",   "XanMod main branch — nixpkgs, newest XanMod"),
     ],
     "Latest": [
         ("cachyos-latest",          "Standard latest"),
@@ -110,6 +112,8 @@ KERNELS_CHAOTIC = {
         ("nixpkgs-lts",     "linux LTS — same nvidia module caveat as zen"),
         ("nixpkgs-latest",  "linux latest — same nvidia module caveat as zen"),
         ("nixpkgs-testing", "linux_testing — mainline RC/testing kernel, same nvidia module caveat as zen"),
+        ("xanmod-lts",      "XanMod LTS — same nvidia module caveat as zen"),
+        ("xanmod-latest",   "XanMod main branch — same nvidia module caveat as zen"),
     ],
     "Chaotic-Nyx": [
         ("cachyos",          "Default  —  LTO + BORE, ships nvidia_cachyos"),

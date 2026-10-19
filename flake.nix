@@ -39,7 +39,12 @@
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Fresher nixpkgs, used ONLY for the nixpkgs-sourced kernels (zen,
+    # nixpkgs-*, xanmod-*) when hardware.myKernelSource is set to "master"
+    # or "staging-next" (see modules/system/boot/kernel.nix). The rest of the
+    # system keeps following `nixpkgs` above — no `follows` here on purpose.
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
 
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 

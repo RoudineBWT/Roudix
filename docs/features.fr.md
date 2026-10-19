@@ -8,7 +8,8 @@
 - Deux fournisseurs de kernel, choisis automatiquement selon `hardware.myGpu` :
   - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 32 variantes (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 variantes (`hardware.myKernelChaotic`) — fournit `nvidia_cachyos`, un driver précompilé assorti à leur kernel, donc pas de recompilation locale du module Nvidia à chaque mise à jour du kernel
-- Kernels nixpkgs "bruts" aussi sélectionnables sur les deux fournisseurs, complètement en dehors de l'overlay CachyOS — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline). Sur Nvidia, ceux-ci retombent sur un module Nvidia recompilé localement (pas de cache `nvidia_cachyos`)
+- Kernels nixpkgs "bruts" aussi sélectionnables sur les deux fournisseurs, complètement en dehors de l'overlay CachyOS — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod). Sur Nvidia, ceux-ci retombent sur un module Nvidia recompilé localement (pas de cache `nvidia_cachyos`)
+- `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) prend uniquement ces kernels nixpkgs depuis un nixpkgs plus récent pour des mises à jour du kernel plus rapides, sans toucher au reste du système
 - ZRAM activé (100% de la RAM, zstd, swappiness 150)
 - zswap désactivé
 - Microcode CPU auto-configuré (Intel ou AMD)

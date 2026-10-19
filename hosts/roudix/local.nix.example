@@ -97,6 +97,10 @@
   # ↑ Only one of the two should be active (uncommented) at a time — comment
   #   out hardware.myKernel and uncomment hardware.myKernelChaotic if you're
   #   on nvidia, and vice versa. The installer does this toggle for you.
+  # Kernels coming from nixpkgs (zen, nixpkgs-*, xanmod-*) can be taken from a
+  # fresher nixpkgs than the rest of the system. "nixpkgs" (default, same as
+  # the system), "master" or "staging-next". No effect on cachyos-* kernels.
+  # hardware.myKernelSource = "nixpkgs";
 
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
