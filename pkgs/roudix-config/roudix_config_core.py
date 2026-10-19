@@ -97,6 +97,50 @@ _BLOCK_RE = re.compile(r"^[ \t]*" + re.escape(BEGIN) + r".*?^[ \t]*" + re.escape
 _JSON_RE = re.compile(r"fromJSON ''\n(.*?)\n[ \t]*'';", re.S)
 
 
+def _strip_trailing_commas(raw: str) -> str:
+    """Drop `,` directly before a `]` or `}` (outside strings). A hand edit of the
+    JSON in the Nix tab often leaves one behind; it is unambiguous to repair."""
+    out: list[str] = []
+    in_str = esc = False
+    for i, ch in enumerate(raw):
+        if in_str:
+            out.append(ch)
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == ",":
+            rest = raw[i + 1:].lstrip()
+            if rest[:1] in ("]", "}"):
+                continue
+        out.append(ch)
+    return "".join(out)
+
+
+def block_json_error(text: str) -> str | None:
+    """None if the managed block's embedded JSON is valid *for Nix* (builtins.fromJSON
+    is strict: no trailing commas), else a short message with line/column.
+    The Nix syntax check cannot see this: to it the JSON is just a string."""
+    m = _BLOCK_RE.search(text)
+    j = _JSON_RE.search(m.group(0)) if m else None
+    if not j:
+        return None
+    try:
+        json.loads(nix_unescape(j.group(1)))
+    except json.JSONDecodeError as e:
+        line = text[: m.start() + j.start(1)].count("\n") + e.lineno
+        return L(f"JSON invalide dans le bloc roudix-config (ligne {line}, colonne {e.colno}) : {e.msg}"
+                 " — virgule en trop avant ] ou } ?",
+                 f"Invalid JSON in the roudix-config block (line {line}, column {e.colno}): {e.msg}"
+                 " — trailing comma before ] or } ?")
+    return None
+
+
 def parse_block(text: str) -> dict | None:
     m = _BLOCK_RE.search(text)
     if not m:
@@ -104,11 +148,14 @@ def parse_block(text: str) -> dict | None:
     j = _JSON_RE.search(m.group(0))
     if not j:
         return None
-    try:
-        data = json.loads(nix_unescape(j.group(1)))
+    raw = nix_unescape(j.group(1))
+    for candidate in (raw, _strip_trailing_commas(raw)):     # 2nd pass self-heals trailing commas
+        try:
+            data = json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
         return data if isinstance(data, dict) else None
-    except json.JSONDecodeError:
-        return None
+    return None
 
 
 def splice_block(text: str, block: str | None) -> str:
@@ -187,6 +234,9 @@ def save_data(data: dict) -> None:
     data = {k: v for k, v in data.items() if v}
     custom = custom_path()
     text = custom.read_text()
+    if _BLOCK_RE.search(text) and parse_block(text) is None:
+        # Unreadable block (JSON broken beyond repair): keep a copy before regenerating it.
+        shutil.copyfile(custom, custom.with_name(custom.name + ".broken.bak"))
     new = splice_block(text, render_block(data) if data else None)
     if new != text:
         tmp = custom.with_name(custom.name + ".tmp")
@@ -570,7 +620,11 @@ def list_outputs_full() -> dict[str, dict]:
 
 
 def nix_parse_check(text: str) -> tuple[bool, str]:
-    """(ok, message). Uses `nix-instantiate --parse`; unchecked if nix is absent."""
+    """(ok, message). Checks the managed block's JSON, then `nix-instantiate --parse`
+    (unchecked if nix is absent)."""
+    jerr = block_json_error(text)
+    if jerr:
+        return False, jerr
     exe = shutil.which("nix-instantiate")
     if not exe:
         return True, L("syntaxe non vérifiée, nix-instantiate introuvable", "syntax not checked, nix-instantiate not found")
