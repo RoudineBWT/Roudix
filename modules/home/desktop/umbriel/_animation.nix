@@ -5,6 +5,8 @@
 ##
 ## Two selectable effect setups (roudix.umbriel.effects, declared in
 ## modules/system/desktop/umbriel.nix):
+##   "none"             — clean: no shader, no [effects]; every animation falls
+##                        back to Umbriel's built-in one (see `noEffects` below)
 ##   "roudix"           — subtle default (_effects/roudix/)
 ##   "roudix-plus"      — "roudix" + original shaders: accent border, cursor
 ##                        halo, workspace/layer/focus transitions
@@ -37,6 +39,12 @@
 ##   "roudix-full"      — everything: logo open/close + jelly wobble + the
 ##                        aurora border with its focus zip. Fixed Catppuccin Mocha colors
 ##                        (the logo needs them).
+##   "roudix-full-noctalia" — same as "roudix-full" (logo + wobble + aurora border
+##                        + focus zip) but WITHOUT the forced Mocha colors: every
+##                        shader reads [colors] from Noctalia's included
+##                        noctalia.toml, so it follows the active Noctalia
+##                        scheme/wallpaper. The logo outline then takes
+##                        accent_primary / accent_secondary instead of Peach/Maroon.
 ##   "sakura-overdrive" — Ly-sec's full shader suite: animated border, screen
 ##                        and cursor effects + per-event animations
 ##                        (_effects/sakura-overdrive/, from Ly-sec/nixos).
@@ -128,6 +136,11 @@ let
   # Every effect.toml is copied to the store with its directory, so the
   # relative `shader = "x.glsl"` paths inside it resolve.
   setups = {
+    none = {
+      files = [ ];
+      animation = { };
+    };
+
     roudix = {
       files = [ "${./_effects/roudix}/effect.toml" ];
       animation = { };
@@ -233,6 +246,13 @@ let
       };
     };
 
+    # roudix-full, but the colors are NOT forced to Mocha: `colors` is dropped so
+    # Umbriel keeps the [colors] provided by the included noctalia.toml. All the
+    # shaders involved (logo, aurora, aurora-inner, halo) already read
+    # umbriel_palette_at(), so they follow Noctalia as-is. Only needs Noctalia
+    # as the shell (the include is only loaded when isNoctalia).
+    roudix-full-noctalia = removeAttrs setups.roudix-full [ "colors" ];
+
     # roudix-plus with the "aurora" border: thin stem + flowing light + glints, and
     # a short zip of light around the border when a window gets focus.
     roudix-aurora = setups.roudix-plus // {
@@ -285,6 +305,12 @@ let
     in if off "scratchpad" then stripEffect [ "scratchpad" ] a4 else a4;
 
   finalEffects = (selected.effects or { }) // offSlots;
+
+  # "none": keep the timings/curves but drop every `effect` key, so each event
+  # uses Umbriel's built-in animation and no shader file has to be loaded.
+  noEffects = setup == "none";
+  stripAllEffects = anim:
+    lib.mapAttrs (_: v: if builtins.isAttrs v then builtins.removeAttrs v [ "effect" ] else v) anim;
 
   baseAnimation = {
     enabled = true;
@@ -365,7 +391,7 @@ in
     # Required includes (effect presets). Noctalia's generated file is in
     # include.optional (see _include-noctalia.nix).
     include.files = selected.files;
-    animation = applyDisabled (lib.recursiveUpdate baseAnimation selected.animation);
+    animation = applyDisabled (lib.recursiveUpdate (if noEffects then stripAllEffects baseAnimation else baseAnimation) selected.animation);
   }
   // lib.optionalAttrs (selected ? appearance) { inherit (selected) appearance; }
   // lib.optionalAttrs (finalEffects != { }) { effects = finalEffects; }

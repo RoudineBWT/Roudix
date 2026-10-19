@@ -27,6 +27,17 @@
 
     focus.follows_mouse = true; # niri: focus-follows-mouse
 
+    # Edge scroll while dragging (umbriel #401): holding a window (Mod+drag
+    # or tab bar) or a drag-and-drop near either end of a scrolling workspace
+    # scrolls the strip so off-screen columns can be reached. Web / games /
+    # DP-3 web workspaces are scrolling. Values below are the documented ones.
+    drag_edge_scroll = {
+      enabled = true;
+      trigger_zone = 30;  # px at each end of the layout
+      delay_ms = 100;     # time in the zone before scrolling starts
+      max_speed = 1500.0; # px/s at the outer edge
+    };
+
     cursor = {
       theme = "Bibata-Modern-Ice"; # misc.kdl: cursor { xcursor-theme ... }
       size = 24;
