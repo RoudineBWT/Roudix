@@ -8,7 +8,7 @@ let
 in
 pkgs.stdenv.mkDerivation {
   pname = "roudix-config";
-  version = "0.1.0";
+  version = "0.2.0";
   src = ./.;
 
   nativeBuildInputs = with pkgs; [
@@ -30,7 +30,7 @@ pkgs.stdenv.mkDerivation {
 
     mkdir -p $out/bin $out/lib/roudix-config $out/share/applications \
              $out/share/icons/hicolor/scalable/apps
-    cp roudix_config_core.py $out/lib/roudix-config/
+    cp roudix_config_core.py roudix_config_backends.py $out/lib/roudix-config/
 
     # The sources start with a 2-line `nix-shell` shebang so they also run
     # straight from a checkout. Packaged copies use the env python instead
@@ -51,21 +51,22 @@ pkgs.stdenv.mkDerivation {
     cat > $out/share/applications/io.roudix.config.desktop << EOF2
     [Desktop Entry]
     Name=Roudix Config
-    Comment=Configure Umbriel — règles de fenêtres, écrans, workspaces, raccourcis
+    Comment=Configure Umbriel, Niri ou MangoWC — règles de fenêtres, écrans, raccourcis
+    Comment[en]=Configure Umbriel, Niri or MangoWC — window rules, screens, shortcuts
     Exec=roudix-config
     Icon=io.roudix.config
     Terminal=false
     Type=Application
     StartupNotify=true
     Categories=System;Settings;X-Roudix;
-    Keywords=umbriel;config;raccourcis;écrans;workspaces;règles;fenêtres;
+    Keywords=umbriel;niri;mango;mangowc;config;raccourcis;shortcuts;écrans;screens;workspaces;règles;rules;fenêtres;windows;
     EOF2
 
     runHook postInstall
   '';
 
   meta = {
-    description = "Roudix Config : configure Umbriel (règles de fenêtres, écrans, workspaces, raccourcis) sans écrire de Nix";
+    description = "Roudix Config : configure Umbriel, Niri ou MangoWC (règles de fenêtres, écrans, raccourcis) sans écrire de Nix";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
     mainProgram = "roudix-config";

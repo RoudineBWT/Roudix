@@ -1,28 +1,22 @@
 #!/usr/bin/env nix-shell
 #! nix-shell -i python3 -p "python3.withPackages (ps: [ ps.textual ])"
-"""roudix-config — configure Umbriel from a menu instead of writing Nix.
+"""roudix-config (terminal) — configure Umbriel, Niri or MangoWC from a menu instead of writing Nix.
 
 Everything it manages lives in ONE marked block inside your own
-modules/home/umbriel-custom.nix (gitignored; copied from the .example if it
+modules/home/<compositor>-custom.nix (gitignored; copied from the .example if it
 doesn't exist yet). The block is readable and the tool reads it back, so you can
 add, edit or remove what it wrote earlier; everything outside the block is
-yours and is never touched (the "Mon -custom.nix" tab edits the whole file).
+yours and is never touched (the File tab edits the whole file).
 
-Tabs
-  * Règles de fenêtres : pick an app (open now / seen before / installed) and
-    set output, workspace, placement, blur, opacity.
-  * Écrans & workspaces : resolution, scale, rotation, workspace names.
-  * Raccourcis : change, add, remove keybinds (starts from your live config).
-  * Mon -custom.nix : the file itself, with a syntax check on save.
-
-Only available when roudix.desktop.type is a compositor it supports (not on
-GNOME / KDE / Cinnamon).
+Tabs: window rules · screens (& workspaces where supported) · shortcuts · file.
+It configures the compositor selected by roudix.desktop.type (not on
+GNOME / KDE / Cinnamon, where it stays unavailable).
 
     roudix-config-tui            # TUI (run it inside your session)
     roudix-config-tui --list     # print the managed rules
     roudix-config-tui --bootstrap-only
 
-Then rebuild (`rebuild`) and reload the config (Mod+Shift+R).
+Then rebuild (`rebuild`) and reload the config.
 """
 from __future__ import annotations
 
@@ -51,6 +45,7 @@ def make_app():
                  "or: nix-shell -p 'python3.withPackages (ps: [ps.textual])'")
 
     BLANK = getattr(Select, "NULL", None) or getattr(Select, "BLANK")
+    UNSET = L("(inchangé)", "(unchanged)")
 
     def chosen(sel):
         v = sel.value
@@ -76,7 +71,7 @@ def make_app():
     class Modal(ModalScreen):
         """Shared save/cancel plumbing. Subclasses implement result() -> value."""
         CSS = "Modal { align: center middle; }\n" + MODAL_CSS
-        BINDINGS = [("ctrl+s", "save", "Enregistrer"), ("escape", "cancel", "Annuler")]
+        BINDINGS = [("ctrl+s", "save", L("Enregistrer", "Save")), ("escape", "cancel", L("Annuler", "Cancel"))]
 
         def result(self):
             raise NotImplementedError
@@ -96,36 +91,43 @@ def make_app():
         def footer_widgets(self):
             yield Static("", id="error")
             with Horizontal(id="buttons"):
-                yield Button("Enregistrer", variant="success", id="save")
-                yield Button("Annuler", id="cancel")
+                yield Button(L("Enregistrer", "Save"), variant="success", id="save")
+                yield Button(L("Annuler", "Cancel"), id="cancel")
 
     # ── window rules ──
     class RuleForm(Modal):
         def __init__(self, sources, outputs, initial: dict | None = None):
             super().__init__()
+            B = backend()
             self.sources, self.outputs, self.initial = sources, outputs, initial
             self.shown = list(sources)
+            self.place_keys = [k for k in PLACEMENTS if k in B.placements]
+            self.blur_values = list(B.blur_choices)
+            self.ws_choices = B.workspace_choices()
 
         def compose(self) -> ComposeResult:
             with Vertical(id="box"):
-                yield Label("Règle de fenêtre — Ctrl+S enregistrer · Échap annuler")
+                yield Label(L("Règle de fenêtre — Ctrl+S enregistrer · Échap annuler",
+                              "Window rule — Ctrl+S save · Esc cancel"))
                 with VerticalScroll(id="form"):
-                    yield Label("App — ● ouverte maintenant · ○ déjà vue ouverte · sans symbole = installée")
-                    yield Input(id="search", placeholder="Rechercher une app…")
+                    yield Label(L("App — ● ouverte maintenant · ○ déjà vue ouverte · sans symbole = installée",
+                                  "App — ● open now · ○ seen open before · no symbol = installed"))
+                    yield Input(id="search", placeholder=L("Rechercher une app…", "Search an app…"))
                     yield OptionList(*[Option(i["label"]) for i in self.sources], id="sources")
-                    yield Label("app_id (regex — rempli en ^…$ quand tu choisis une app)")
+                    yield Label(L("app_id (regex — rempli en ^…$ quand tu choisis une app)",
+                                  "app_id (regex — filled as ^…$ when you pick an app)"))
                     yield Input(id="app_id", placeholder="ex. ^obs$")
-                    yield Label("Titre (regex, optionnel)")
+                    yield Label(L("Titre (regex, optionnel)", "Title (regex, optional)"))
                     yield Input(id="title_re", placeholder="ex. Picture-in-Picture")
-                    yield Label("Écran")
-                    yield Select([(o, o) for o in self.outputs], id="output", prompt="(inchangé)", allow_blank=True)
-                    yield Label("Workspace")
-                    yield Select([(str(i), i) for i in range(1, 11)], id="ws", prompt="(inchangé)", allow_blank=True)
-                    yield Label("Placement")
-                    yield Select([(k, k) for k in PLACEMENTS], id="place", prompt="(inchangé)", allow_blank=True)
-                    yield Label("Blur")
-                    yield Select([("Activé", True), ("Désactivé", False)], id="blur", prompt="(inchangé)", allow_blank=True)
-                    yield Label("Opacité (0 à 1, optionnel)")
+                    yield Label(L("Écran", "Screen"))
+                    yield Select([(o, o) for o in self.outputs], id="output", prompt=UNSET, allow_blank=True)
+                    yield Label(L("Workspace", "Workspace"))
+                    yield Select([(lab, val) for lab, val in self.ws_choices], id="ws", prompt=UNSET, allow_blank=True)
+                    yield Label(L("Placement", "Placement"))
+                    yield Select([(placement_label(k), k) for k in self.place_keys], id="place", prompt=UNSET, allow_blank=True)
+                    yield Label(L("Flou", "Blur"))
+                    yield Select([(blur_label(v), v) for v in self.blur_values], id="blur", prompt=UNSET, allow_blank=True)
+                    yield Label(L("Opacité (0 à 1, optionnel)", "Opacity (0 to 1, optional)"))
                     yield Input(id="opacity", placeholder="ex. 0.9")
                 yield Static("", id="preview")
                 yield from self.footer_widgets()
@@ -138,9 +140,9 @@ def make_app():
             self.query_one("#title_re", Input).value = r["match"].get("title", "")
             put(self.query_one("#output", Select), r.get("default_output", BLANK))
             put(self.query_one("#ws", Select), r.get("default_workspace", BLANK))
-            for label, key in PLACEMENTS.items():
-                if r.get(key):
-                    put(self.query_one("#place", Select), label)
+            for k in self.place_keys:
+                if r.get(PLACEMENTS[k]):
+                    put(self.query_one("#place", Select), k)
             if "blur" in r:
                 put(self.query_one("#blur", Select), r["blur"])
             if "opacity" in r:
@@ -170,8 +172,8 @@ def make_app():
             try:
                 opacity = float(op) if op else None
             except ValueError:
-                raise ValueError("opacité : nombre entre 0 et 1")
-            rule = build_rule(
+                raise ValueError(L("opacité : nombre entre 0 et 1", "opacity: a number between 0 and 1"))
+            return build_rule(
                 self.query_one("#app_id", Input).value.strip(),
                 self.query_one("#title_re", Input).value.strip(),
                 chosen(self.query_one("#output", Select)),
@@ -180,12 +182,11 @@ def make_app():
                 chosen(self.query_one("#blur", Select)),
                 opacity,
             )
-            return rule
 
         def refresh_preview(self) -> None:
             prev, err = self.query_one("#preview", Static), self.query_one("#error", Static)
             try:
-                prev.update(rule_to_toml(self.result()))
+                prev.update(rule_preview(self.result()))
                 err.update("")
             except ValueError as e:
                 prev.update("")
@@ -196,25 +197,32 @@ def make_app():
         def __init__(self, name: str | None, names: list[str], cfg: dict, live: dict[str, dict]):
             super().__init__()
             self.name0, self.names, self.cfg, self.live = name, names, cfg, live
+            self.has_ws = backend().workspace_names
 
         def compose(self) -> ComposeResult:
             with Vertical(id="box"):
-                yield Label("Écran — Ctrl+S enregistrer · Échap annuler")
+                yield Label(L("Écran — Ctrl+S enregistrer · Échap annuler", "Screen — Ctrl+S save · Esc cancel"))
                 with VerticalScroll(id="form"):
-                    yield Label("Sortie")
+                    yield Label(L("Sortie", "Output"))
                     yield Select([(n, n) for n in self.names], id="name", allow_blank=False,
                                  value=self.name0 or (self.names[0] if self.names else BLANK))
-                    yield Label("Résolution / fréquence (modes détectés si Umbriel tourne)")
-                    yield Select([], id="modes", prompt="(choisir un mode)", allow_blank=True)
+                    yield Label(L("Résolution / fréquence (modes détectés si le compositeur tourne)",
+                                  "Resolution / refresh rate (detected modes when the compositor runs)"))
+                    yield Select([], id="modes", prompt=L("(choisir un mode)", "(pick a mode)"), allow_blank=True)
                     yield Input(id="mode", placeholder='ex. 2560x1440@240.000')
-                    yield Label("Échelle (0.25 à 4)")
+                    yield Label(L("Échelle (0.25 à 4)", "Scale (0.25 to 4)"))
                     yield Input(id="scale", placeholder="ex. 1 ou 1.25")
-                    yield Label("Rotation")
-                    yield Select([(t, t) for t in TRANSFORMS], id="transform", prompt="(inchangé)", allow_blank=True)
-                    yield Label("Noms des workspaces de cet écran, séparés par des espaces")
-                    yield Input(id="workspaces", placeholder="ex.  web code chat   (ou des icônes)")
-                    yield Static("Évite un nom purement numérique présent sur un seul écran : "
-                                 "Umbriel le traite comme unique et Mod+N sauterait toujours vers cet écran.")
+                    yield Label(L("Rotation", "Rotation"))
+                    yield Select([(t, t) for t in TRANSFORMS], id="transform", prompt=UNSET, allow_blank=True)
+                    if self.has_ws:
+                        yield Label(L("Noms des workspaces de cet écran, séparés par des espaces",
+                                      "This screen's workspace names, separated by spaces"))
+                        yield Input(id="workspaces", placeholder=L("ex.  web code chat   (ou des icônes)",
+                                                                   "e.g.  web code chat   (or icons)"))
+                        yield Static(L("Évite un nom purement numérique présent sur un seul écran : le compositeur le "
+                                       "traite comme unique et Mod+N sauterait toujours vers cet écran.",
+                                       "Avoid a purely numeric name that exists on one screen only: the compositor "
+                                       "treats it as unique and Mod+N would always jump to that screen."))
                 yield from self.footer_widgets()
 
         def on_mount(self) -> None:
@@ -224,13 +232,14 @@ def make_app():
             cfg = self.cfg.get(name, {}) if name else {}
             info = self.live.get(name, {}) if name else {}
             modes = self.query_one("#modes", Select)
-            modes.set_options([(m + (" (actuel)" if m == info.get("current") else ""), m)
-                               for m in info.get("modes", [])])
+            cur = L(" (actuel)", " (current)")
+            modes.set_options([(m + (cur if m == info.get("current") else ""), m) for m in info.get("modes", [])])
             self.query_one("#mode", Input).value = str(cfg.get("mode", ""))
             self.query_one("#scale", Input).value = "" if "scale" not in cfg else str(cfg["scale"])
             put(self.query_one("#transform", Select), cfg.get("transform", BLANK))
-            ws = cfg.get("workspaces")
-            self.query_one("#workspaces", Input).value = " ".join(ws) if isinstance(ws, list) else ""
+            if self.has_ws:
+                ws = cfg.get("workspaces")
+                self.query_one("#workspaces", Input).value = " ".join(ws) if isinstance(ws, list) else ""
 
         def on_select_changed(self, event) -> None:
             if event.select.id == "name":
@@ -241,30 +250,31 @@ def make_app():
         def result(self):
             name = chosen(self.query_one("#name", Select))
             if not name:
-                raise ValueError("choisis une sortie")
+                raise ValueError(L("choisis une sortie", "pick an output"))
             ch: dict = {}
             mode = self.query_one("#mode", Input).value.strip()
             if mode:
                 if not re.fullmatch(r"\d+x\d+(@\d+(\.\d+)?)?", mode):
-                    raise ValueError("mode : format 2560x1440 ou 2560x1440@240")
+                    raise ValueError(L("mode : format 2560x1440 ou 2560x1440@240", "mode: use 2560x1440 or 2560x1440@240"))
                 ch["mode"] = mode
             sc = self.query_one("#scale", Input).value.strip()
             if sc:
                 try:
-                    v = float(sc)
+                    v = float(sc.replace(",", "."))
                 except ValueError:
-                    raise ValueError("échelle : nombre")
+                    raise ValueError(L("échelle : nombre", "scale: a number"))
                 if not 0.25 <= v <= 4.0:
-                    raise ValueError("échelle entre 0.25 et 4")
+                    raise ValueError(L("échelle entre 0.25 et 4", "scale between 0.25 and 4"))
                 ch["scale"] = int(v) if v == int(v) else v
             tr = chosen(self.query_one("#transform", Select))
             if tr:
                 ch["transform"] = tr
-            ws = self.query_one("#workspaces", Input).value.split()
-            if ws:
-                ch["workspaces"] = ws
+            if self.has_ws:
+                ws = self.query_one("#workspaces", Input).value.split()
+                if ws:
+                    ch["workspaces"] = ws
             if not ch:
-                raise ValueError("rien à enregistrer")
+                raise ValueError(L("rien à enregistrer", "nothing to save"))
             return name, ch
 
     # ── keybinds ──
@@ -272,17 +282,23 @@ def make_app():
         def __init__(self, key: str, action: str, known_actions: list[str]):
             super().__init__()
             self.key0, self.action0, self.known = key, action, known_actions
+            B = backend()
+            self.frozen = bool(key) and not B.can_move_binds
 
         def compose(self) -> ComposeResult:
+            B = backend()
             with Vertical(id="box"):
-                yield Label("Raccourci — Ctrl+S enregistrer · Échap annuler")
+                yield Label(L("Raccourci — Ctrl+S enregistrer · Échap annuler", "Shortcut — Ctrl+S save · Esc cancel"))
                 with VerticalScroll(id="form"):
-                    yield Label("Raccourci (ex. Mod+Q, Mod+Shift+Return, XF86AudioMute)")
-                    yield Input(id="key", value=self.key0)
-                    yield Label("Action (ex. window-close, spawn:ghostty, spawn:noctalia msg panel-toggle launcher)")
+                    yield Label(L("Raccourci. ", "Shortcut. ") + B.key_help())
+                    yield Input(id="key", value=self.key0, disabled=self.frozen)
+                    if self.frozen:
+                        yield Static(L("La touche d'un raccourci existant n'est pas modifiable ici.",
+                                       "An existing shortcut's key can't be changed here."))
+                    yield Label(L("Action. ", "Action. ") + B.action_help())
                     yield Input(id="action", value=self.action0)
-                    yield Label("Actions déjà utilisées (choisir pour remplir)")
-                    yield Select([(a[:70], a) for a in self.known], id="known", prompt="(aucune)", allow_blank=True)
+                    yield Label(L("Actions déjà utilisées (choisir pour remplir)", "Actions already in use (pick to fill in)"))
+                    yield Select([(a[:70], a) for a in self.known], id="known", prompt=L("(aucune)", "(none)"), allow_blank=True)
                 yield from self.footer_widgets()
 
         def on_select_changed(self, event) -> None:
@@ -290,20 +306,22 @@ def make_app():
                 self.query_one("#action", Input).value = chosen(event.select)
 
         def result(self):
-            return (self.query_one("#key", Input).value.strip(),
-                    self.query_one("#action", Input).value.strip())
+            key = self.query_one("#key", Input).value.strip()
+            action = self.query_one("#action", Input).value.strip()
+            backend().validate_bind(key, action)       # keep the form open on a bad shortcut/action
+            return key, action
 
     # ── main app ──
     class ConfigApp(App):
         TITLE = "roudix-config"
-        SUB_TITLE = "Umbriel"
-        BINDINGS = [("a", "add", "Ajouter"), ("e", "edit", "Modifier"), ("d", "delete", "Supprimer"),
-                    ("r", "reset", "Réinitialiser"), ("ctrl+s", "save_nix", "Sauver le .nix"),
-                    ("q", "quit", "Quitter")]
+        BINDINGS = [("a", "add", L("Ajouter", "Add")), ("e", "edit", L("Modifier", "Edit")),
+                    ("d", "delete", L("Supprimer", "Delete")), ("r", "reset", L("Réinitialiser", "Reset")),
+                    ("ctrl+s", "save_nix", L("Sauver le .nix", "Save the .nix")), ("q", "quit", L("Quitter", "Quit"))]
         CSS = "#status { margin: 0 2; } .hint { margin: 0 2; color: $text-muted; } TextArea { height: 1fr; }"
 
         def __init__(self, messages: list[str]):
             super().__init__()
+            self.sub_title = backend().label
             self.messages = messages
             self.data = load_data()
             self.nix_text = ""
@@ -329,15 +347,17 @@ def make_app():
             if ta.text != self.nix_text:
                 return
             nix = custom_path()
-            txt = nix.read_text() if nix.exists() else ""
+            txt = nix.read_text(encoding="utf-8") if nix.exists() else ""
             if txt != ta.text:
                 ta.load_text(txt)
             self.nix_text = ta.text
 
         def blocked(self) -> bool:
             if self.tab() != "t-nix" and self.nix_dirty():
-                self.status("Modifications non sauvegardées dans l'onglet -custom.nix : "
-                            "Ctrl+S pour les garder (ou ferme sans sauver) avant de continuer.")
+                self.status(L("Modifications non sauvegardées dans l'onglet Fichier : Ctrl+S pour les garder "
+                              "(ou ferme sans sauver) avant de continuer.",
+                              "Unsaved changes in the File tab: Ctrl+S to keep them "
+                              "(or leave without saving) before continuing."))
                 return True
             return False
 
@@ -352,33 +372,49 @@ def make_app():
             self.query_one("#status", Static).update(text)
 
         def compose(self) -> ComposeResult:
+            B = backend()
             yield Header()
             with TabbedContent(id="tabs"):
-                with TabPane("Règles de fenêtres", id="t-rules"):
+                with TabPane(L("Règles", "Rules"), id="t-rules"):
                     yield DataTable(id="rules", cursor_type="row")
-                    yield Static("a ajouter · e modifier · d supprimer", classes="hint")
-                with TabPane("Écrans & workspaces", id="t-screens"):
+                    yield Static(L("a ajouter · e modifier · d supprimer", "a add · e edit · d delete"), classes="hint")
+                with TabPane(L("Écrans", "Screens"), id="t-screens"):
                     yield DataTable(id="screens", cursor_type="row")
-                    yield Static("e modifier (résolution, échelle, rotation, noms des workspaces) · "
-                                 "r revenir aux valeurs par défaut de la sortie", classes="hint")
-                with TabPane("Raccourcis", id="t-binds"):
+                    yield Static(L("e modifier (résolution, échelle, rotation" + (", noms des workspaces" if B.workspace_names else "")
+                                   + ") · r revenir aux valeurs par défaut de la sortie",
+                                   "e edit (resolution, scale, rotation" + (", workspace names" if B.workspace_names else "")
+                                   + ") · r back to the output's defaults"), classes="hint")
+                with TabPane(L("Raccourcis", "Shortcuts"), id="t-binds"):
                     yield DataTable(id="binds", cursor_type="row")
-                    yield Static("a ajouter · e modifier · d supprimer · r tout remettre par défaut\n"
+                    if B.binds_mode == "keys":
+                        hint = L(f"a ajouter · e changer l'action · r tout remettre par défaut\n{B.label} : déplacer ou supprimer "
+                                 "un raccourci par défaut se fait dans l'onglet Fichier. ✎ = modifié par toi.",
+                                 f"a add · e change the action · r reset everything\n{B.label}: moving or deleting a default "
+                                 "shortcut is done in the File tab. ✎ = changed by you.")
+                    else:
+                        hint = L("a ajouter · e modifier · d supprimer · r tout remettre par défaut\n"
                                  "Une fois modifiée, la table est figée : les nouveaux raccourcis par défaut du repo "
-                                 "n'arriveront plus (r pour revenir).", classes="hint")
-                with TabPane("Mon -custom.nix", id="t-nix"):
+                                 "n'arriveront plus (r pour revenir).",
+                                 "a add · e edit · d delete · r reset everything\n"
+                                 "Once changed, the table is frozen: new default shortcuts added to the repo "
+                                 "won't reach you any more (r to go back).")
+                    yield Static(hint, classes="hint")
+                with TabPane(L("Fichier", "File"), id="t-nix"):
                     yield TextArea("", id="nixedit", show_line_numbers=True)
-                    yield Static("Ctrl+S sauvegarde (copie .bak + vérification de syntaxe).", classes="hint")
+                    yield Static(L(f"Ton fichier {B.custom_name}. Ctrl+S sauvegarde (copie .bak + vérification de syntaxe).",
+                                   f"Your {B.custom_name} file. Ctrl+S saves (.bak copy + syntax check)."), classes="hint")
             yield Static("", id="status")
             yield Footer()
 
         def on_mount(self) -> None:
-            self.query_one("#rules", DataTable).add_columns("app_id", "titre", "réglages")
-            self.query_one("#screens", DataTable).add_columns("sortie", "mode", "échelle", "rotation", "workspaces")
-            self.query_one("#binds", DataTable).add_columns("raccourci", "action")
+            self.query_one("#rules", DataTable).add_columns("app_id", L("titre", "title"), L("réglages", "settings"))
+            self.query_one("#screens", DataTable).add_columns(
+                L("sortie", "output"), "mode", L("échelle", "scale"), L("rotation", "rotation"),
+                *(["workspaces"] if backend().workspace_names else []))
+            self.query_one("#binds", DataTable).add_columns(L("raccourci", "shortcut"), "action")
             nix = custom_path()
             ta = self.query_one("#nixedit", TextArea)
-            ta.load_text(nix.read_text() if nix.exists() else "")
+            ta.load_text(nix.read_text(encoding="utf-8") if nix.exists() else "")
             self.nix_text = ta.text
             self.render_all()
             self.status("\n".join(self.messages))
@@ -403,19 +439,24 @@ def make_app():
         def render_screens(self) -> None:
             t = self.query_one("#screens", DataTable); t.clear()
             eff = effective_outputs(self.live(), get_overrides(self.data))
+            B = backend()
             for n in self.screen_names():
                 c = eff.get(n, {})
-                ws = c.get("workspaces")
-                t.add_row(n, str(c.get("mode", "auto")), str(c.get("scale", 1)), str(c.get("transform", "normal")),
-                          " ".join(ws) if isinstance(ws, list) else str(ws or "dynamic"), key=n)
+                row = [n, str(c.get("mode", "auto")), str(c.get("scale", 1)), str(c.get("transform", "normal"))]
+                if B.workspace_names:
+                    ws = c.get("workspaces")
+                    row.append(" ".join(ws) if isinstance(ws, list) else str(ws or L("dynamiques", "dynamic")))
+                t.add_row(*row, key=n)
 
         def binds(self) -> dict:
             return effective_binds(self.live(), get_overrides(self.data))
 
         def render_binds(self) -> None:
             t = self.query_one("#binds", DataTable); t.clear()
+            B = backend()
+            mine = get_overrides(self.data).get("keybinds") or {}
             for k, v in self.binds().items():
-                t.add_row(k, bind_action(v), key=k)
+                t.add_row(k + ("  ✎" if B.binds_mode == "keys" and k in mine else ""), bind_action(v), key=k)
 
         def cursor_key(self, table_id: str):
             t = self.query_one(table_id, DataTable)
@@ -459,13 +500,19 @@ def make_app():
                 t = self.query_one("#rules", DataTable)
                 if t.row_count and 0 <= t.cursor_row < len(self.rules()):
                     del self.rules()[t.cursor_row]
-                    self.persist(); self.render_rules(); self.status("Règle supprimée — rebuild requis.")
+                    self.persist(); self.render_rules()
+                    self.status(L("Règle supprimée — rebuild requis.", "Rule deleted — rebuild required."))
             elif tab == "t-binds":
+                if not backend().can_delete_binds:
+                    self.status(L(f"{backend().label} : supprimer un raccourci par défaut se fait dans l'onglet Fichier.",
+                                  f"{backend().label}: deleting a default shortcut is done in the File tab."))
+                    return
                 k = self.cursor_key("#binds")
                 if k:
                     table = self.binds(); table.pop(k, None)
                     save_binds_override(table); self.reload()
-                    self.render_binds(); self.status(f"{k} supprimé — rebuild requis.")
+                    self.render_binds()
+                    self.status(L(f"{k} supprimé — rebuild requis.", f"{k} deleted — rebuild required."))
 
         def action_reset(self) -> None:
             if self.blocked():
@@ -473,12 +520,12 @@ def make_app():
             tab = self.tab()
             if tab == "t-binds":
                 reset_override("keybinds"); self.reload(); self.render_binds()
-                self.status("Raccourcis remis par défaut — rebuild requis.")
+                self.status(L("Raccourcis remis par défaut — rebuild requis.", "Shortcuts reset — rebuild required."))
             elif tab == "t-screens":
                 k = self.cursor_key("#screens")
                 if k:
                     reset_override("output", k); self.reload(); self.render_screens()
-                    self.status(f"{k} remis par défaut — rebuild requis.")
+                    self.status(L(f"{k} remis par défaut — rebuild requis.", f"{k} reset — rebuild required."))
 
         def action_save_nix(self) -> None:
             if self.tab() != "t-nix":
@@ -486,16 +533,17 @@ def make_app():
             ta = self.query_one("#nixedit", TextArea)
             ok, msg = nix_parse_check(ta.text)
             if not ok:
-                self.status(f"NON sauvegardé — erreur Nix : {msg}")
+                self.status(L(f"NON sauvegardé — erreur Nix : {msg}", f"NOT saved — Nix error: {msg}"))
                 return
             nix = custom_path()
             if nix.exists():
                 shutil.copyfile(nix, nix.with_name(nix.name + ".bak"))
-            nix.write_text(ta.text)
+            nix.write_text(ta.text, encoding="utf-8")
             self.nix_text = ta.text
             self.data = load_data()
             self.render_all()
-            self.status(f"{nix.name} sauvegardé ({msg}). Ancienne version : {nix.name}.bak — rebuild requis.")
+            self.status(L(f"{nix.name} sauvegardé ({msg}). Ancienne version : {nix.name}.bak — rebuild requis.",
+                          f"{nix.name} saved ({msg}). Previous version: {nix.name}.bak — rebuild required."))
 
         # modal launchers
         def open_rule(self, index) -> None:
@@ -510,7 +558,8 @@ def make_app():
                         self.rules().append(rule)
                     else:
                         self.rules()[index] = rule
-                    self.persist(); self.render_rules(); self.status("Règle enregistrée — rebuild requis.")
+                    self.persist(); self.render_rules()
+                    self.status(L("Règle enregistrée — rebuild requis.", "Rule saved — rebuild required."))
             self.push_screen(RuleForm(sources, list_outputs(), initial), done)
 
         def open_output(self, name) -> None:
@@ -521,13 +570,14 @@ def make_app():
                 if res:
                     n, ch = res
                     save_output_override(n, ch); self.reload(); self.render_screens()
-                    self.status(f"{n} enregistré — rebuild requis.")
+                    self.status(L(f"{n} enregistré — rebuild requis.", f"{n} saved — rebuild required."))
             self.push_screen(OutputForm(name, names, eff, list_outputs_full()), done)
 
         def open_bind(self, key) -> None:
             table = self.binds()
             known = sorted({bind_action(v) for v in table.values()})
             action = bind_action(table[key]) if key in table else ""
+            B = backend()
 
             def done(res):
                 if res:
@@ -536,8 +586,11 @@ def make_app():
                         new = set_bind(table, k, a, old_key=key)
                     except ValueError as e:
                         self.status(str(e)); return
+                    if B.binds_mode == "keys":           # only what differs from the live config is kept
+                        live = effective_binds(self.live(), {})
+                        new = {kk: vv for kk, vv in new.items() if live.get(kk) != vv}
                     save_binds_override(new); self.reload(); self.render_binds()
-                    self.status(f"{k} → {a} enregistré — rebuild requis.")
+                    self.status(L(f"{k} → {a} enregistré — rebuild requis.", f"{k} → {a} saved — rebuild required."))
             self.push_screen(BindForm(key or "", action, known), done)
 
     return ConfigApp(bootstrap())
@@ -550,10 +603,10 @@ def run_tui() -> None:
 # ───────────────────────── entry point ─────────────────────────
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Add Umbriel window rules without writing Nix.")
-    ap.add_argument("--list", action="store_true", help="print the managed rules and exit")
+    ap = argparse.ArgumentParser(description=L("Configure Umbriel, Niri ou MangoWC sans écrire de Nix.", "Configure Umbriel, Niri or MangoWC without writing Nix."))
+    ap.add_argument("--list", action="store_true", help=L("affiche les règles gérées et quitte", "print the managed rules and exit"))
     ap.add_argument("--bootstrap-only", action="store_true",
-                    help="only create umbriel-custom.nix / wire the import, then exit")
+                    help=L("crée seulement le fichier -custom.nix, puis quitte", "only create the -custom.nix file, then exit"))
     args = ap.parse_args()
 
     reason = availability()
@@ -562,10 +615,10 @@ def main() -> None:
 
     if args.list:
         for r in load_rules():
-            print(rule_to_toml(r), end="\n\n")
+            print(rule_preview(r), end="\n\n")
         return
     if args.bootstrap_only:
-        for m in bootstrap() or ["Nothing to do."]:
+        for m in bootstrap() or [L("Rien à faire.", "Nothing to do.")]:
             print(m)
         return
     run_tui()
