@@ -18,3 +18,4 @@ modules/home/dev/git.nix
 modules/home/dev/ssh.nix
 modules/home/dev/gitwatch.nix
 __pycache__/
+*.bak

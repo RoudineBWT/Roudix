@@ -1,0 +1,21 @@
+name: Feature request
+description: Suggest an improvement or a new option (French is welcome)
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to see?
+      description: If it's a new `roudix.*` option or app choice, say which values you'd expect.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered

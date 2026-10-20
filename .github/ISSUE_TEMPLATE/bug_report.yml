@@ -1,0 +1,54 @@
+name: Bug report
+description: Something doesn't work as expected (French is welcome)
+labels: [bug]
+body:
+  - type: dropdown
+    id: branch
+    attributes:
+      label: Branch
+      description: The branch you track (set in the installer / Roudix Switcher → System → Update branch).
+      options: [main, testing, dev]
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Installer (ISO or script)
+        - Desktop / compositor / graphical shell
+        - Roudix Store
+        - Roudix Switcher / Config / other GUI tool
+        - Kernel / boot / GPU / gaming
+        - Auto-update / build
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. …\n2. …"
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `nixos-version`, and `git -C ~/.config/roudix rev-parse --short HEAD`
+  - type: textarea
+    id: config
+    attributes:
+      label: Relevant options from your local.nix
+      description: Desktop type / shell / kernel / GPU, and anything else you think matters. Remove personal data.
+      render: nix
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / error output
+      render: shell

@@ -1,0 +1,68 @@
+name: Check (eval + Python)
+
+# Fast gate on every push / PR: every host must still evaluate, and the Python
+# tools must have no real errors. This does NOT build (sync-dev-to-testing and
+# sync-main still do the full build gate before anything is pushed) — it only
+# catches a broken evaluation minutes after the push instead of at sync time.
+
+on:
+  push:
+    branches: [dev, testing, main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+        with:
+          # Don't hang on a dead binary cache.
+          extra-conf: |
+            connect-timeout = 3
+            stalled-download-timeout = 10
+            download-attempts = 2
+
+      # hardware-configuration.nix / username.nix are gitignored but required
+      # by the flake: write throw-away stubs (see the script's header).
+      - name: Create CI-only stubs
+        run: scripts/ci-stubs.sh create
+
+      - name: Evaluate every host (no build)
+        run: |
+          for dir in hosts/*/; do
+            host="$(basename "$dir")"
+            [ -f "hosts/$host/configuration.nix" ] || continue
+            echo "::group::eval $host"
+            nix eval --raw --accept-flake-config \
+              ".#nixosConfigurations.$host.config.system.build.toplevel.drvPath"
+            echo
+            echo "::endgroup::"
+          done
+
+      - name: Remove CI-only stubs
+        if: always()
+        run: scripts/ci-stubs.sh remove
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      # Only rules that flag real bugs (syntax errors, undefined names,
+      # invalid comparisons) — not style, so it doesn't drown in noise.
+      - name: ruff (errors only)
+        run: |
+          pip install ruff
+          ruff check --select E9,F63,F7,F82 --no-cache pkgs iso scripts
