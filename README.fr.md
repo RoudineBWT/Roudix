@@ -237,3 +237,8 @@ Les fichiers de config personnels vivent dans `dotfiles/perso/` — ils sont ign
 Voir [`dotfiles/perso/README.md`](dotfiles/perso/README.md) pour la structure et l'usage.
 
 Pour les surcharges au niveau du compositeur (écrans, raccourcis, espacements…), utilisez plutôt les fichiers de surcharge utilisateur générés — ils sont gérés par home-manager et à l'abri de `git pull`. Voir [Bureau & shells](docs/desktop.fr.md#surcharges-personnelles-du-compositeur) pour plus de détails.
+
+
+## Licence
+   MIT — Voir [LICENSE](LICENSE). Le Roudix Store est soumis exclusivement à la licence GPL-2.0, et certains
+   fichiers provenant de tiers conservent leurs propres licences : voir [THIRD_PARTY.md](THIRD_PARTY.md).

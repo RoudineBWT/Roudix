@@ -237,3 +237,7 @@ Personal config files live in `dotfiles/perso/` — they are gitignored (except 
 See [`dotfiles/perso/README.md`](dotfiles/perso/README.md) for structure and usage.
 
 For compositor-level overrides (monitors, keybinds, gaps…), use the generated user override files instead — they are managed by home-manager and safe from `git pull`. See [Desktop & shells](docs/desktop.md#personal-compositor-overrides) for details.
+
+## License
+   MIT — see [LICENSE](LICENSE). The Roudix Store is GPL-2.0-only and some
+   third-party files keep their own licenses: see [THIRD_PARTY.md](THIRD_PARTY.md).
