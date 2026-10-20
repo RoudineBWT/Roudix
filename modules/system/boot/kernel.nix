@@ -157,6 +157,28 @@
       '';
     }
 
+    # Workaround for a nixpkgs regression (kernel build changes of 2026-10-11):
+    # nixpkgs now keeps System.map in kernel.dev, so the kernel's depmod.sh no
+    # longer skips depmod when an out-of-tree module is installed. Each such
+    # package (seen with v4l2loopback) then ships its own
+    # lib/modules/<ver>/modules.alias, ... and pkgs.aggregateModules (a
+    # buildEnv) aborts with "two given paths contain a conflicting subpath".
+    # The aggregator deletes and regenerates every modules.* file in its
+    # postBuild, so letting buildEnv ignore the collision is harmless.
+    # Affects every kernel (nixos-unstable included), not just master /
+    # staging-next. Drop this once nixpkgs fixes it upstream.
+    {
+      nixpkgs.overlays = [
+        (_final: prev: {
+          aggregateModules =
+            modules:
+            (prev.aggregateModules modules).override {
+              buildEnv = args: prev.buildEnv (args // { ignoreCollisions = true; });
+            };
+        })
+      ];
+    }
+
     # Common sysctl, independent of the chosen GPU/kernel
     {
       # Sysctl values from 70-cachyos-settings.conf (cachyos-settings package)
