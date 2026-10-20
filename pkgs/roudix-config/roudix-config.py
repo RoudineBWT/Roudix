@@ -16,7 +16,7 @@ GNOME / KDE / Cinnamon, where it stays unavailable).
     roudix-config-tui --list     # print the managed rules
     roudix-config-tui --bootstrap-only
 
-Then rebuild (`rebuild`) and reload the config.
+Then rebuild (F5 runs `nh os switch` right here, or the `rebuild` alias) and reload the config.
 """
 from __future__ import annotations
 
@@ -29,6 +29,7 @@ for _p in (_here.parent / "lib" / "roudix-config", _here):  # package layout, th
     sys.path.insert(0, str(_p))
 from roudix_config_core import *  # noqa: F401,F403  (shared logic)
 from roudix_config_core import _collect, _run_json  # noqa: F401
+from roudix_config_backends import GROUPS, _coerce_setting  # noqa: E402
 
 # ───────────────────────── TUI ─────────────────────────
 
@@ -311,11 +312,44 @@ def make_app():
             backend().validate_bind(key, action)       # keep the form open on a bad shortcut/action
             return key, action
 
+    # ── curated settings ──
+    class SettingForm(Modal):
+        def __init__(self, spec, value):
+            super().__init__()
+            self.spec, self.value0 = spec, value
+
+        def compose(self) -> ComposeResult:
+            sp = self.spec
+            with Vertical(id="box"):
+                yield Label(f"{sp.title} — " + L("Ctrl+S enregistrer · Échap annuler", "Ctrl+S save · Esc cancel"))
+                with VerticalScroll(id="form"):
+                    if sp.kind == "bool":
+                        yield Select([(L("activé", "on"), True), (L("désactivé", "off"), False)], id="val",
+                                     value=bool(self.value0), allow_blank=False)
+                    elif sp.kind == "choice":
+                        yield Select([(c, c) for c in sp.choices], id="val",
+                                     value=self.value0 if self.value0 in sp.choices else sp.choices[0], allow_blank=False)
+                    else:
+                        if sp.kind in ("int", "float"):
+                            yield Label(L(f"Valeur entre {sp.lo} et {sp.hi}", f"Value between {sp.lo} and {sp.hi}"))
+                        yield Input(id="val", value="" if self.value0 is None else str(self.value0))
+                yield from self.footer_widgets()
+
+        def result(self):
+            sp = self.spec
+            w = self.query_one("#val")
+            raw = w.value if isinstance(w, Input) else chosen(w)
+            try:
+                return (_coerce_setting(sp, raw),)
+            except (TypeError, ValueError) as e:
+                raise ValueError(str(e) or L("valeur invalide", "invalid value"))
+
     # ── main app ──
     class ConfigApp(App):
         TITLE = "roudix-config"
         BINDINGS = [("a", "add", L("Ajouter", "Add")), ("e", "edit", L("Modifier", "Edit")),
                     ("d", "delete", L("Supprimer", "Delete")), ("r", "reset", L("Réinitialiser", "Reset")),
+                    ("f5", "rebuild", L("Rebuild", "Rebuild")),
                     ("ctrl+s", "save_nix", L("Sauver le .nix", "Save the .nix")), ("q", "quit", L("Quitter", "Quit"))]
         CSS = "#status { margin: 0 2; } .hint { margin: 0 2; color: $text-muted; } TextArea { height: 1fr; }"
 
@@ -399,6 +433,12 @@ def make_app():
                                  "Once changed, the table is frozen: new default shortcuts added to the repo "
                                  "won't reach you any more (r to go back).")
                     yield Static(hint, classes="hint")
+                with TabPane(L("Réglages", "Settings"), id="t-settings"):
+                    yield DataTable(id="settings", cursor_type="row")
+                    yield Static(L("e modifier · r remettre ce réglage par défaut · F5 rebuild\n"
+                                   "✎ = modifié par toi ; les autres suivent les valeurs par défaut du dépôt.",
+                                   "e edit · r restore this setting's default · F5 rebuild\n"
+                                   "✎ = changed by you; the others follow the repo's defaults."), classes="hint")
                 with TabPane(L("Fichier", "File"), id="t-nix"):
                     yield TextArea("", id="nixedit", show_line_numbers=True)
                     yield Static(L(f"Ton fichier {B.custom_name}. Ctrl+S sauvegarde (copie .bak + vérification de syntaxe).",
@@ -412,6 +452,7 @@ def make_app():
                 L("sortie", "output"), "mode", L("échelle", "scale"), L("rotation", "rotation"),
                 *(["workspaces"] if backend().workspace_names else []))
             self.query_one("#binds", DataTable).add_columns(L("raccourci", "shortcut"), "action")
+            self.query_one("#settings", DataTable).add_columns(L("groupe", "group"), L("réglage", "setting"), L("valeur", "value"))
             nix = custom_path()
             ta = self.query_one("#nixedit", TextArea)
             ta.load_text(nix.read_text(encoding="utf-8") if nix.exists() else "")
@@ -421,7 +462,7 @@ def make_app():
 
         # rendering
         def render_all(self) -> None:
-            self.render_rules(); self.render_screens(); self.render_binds()
+            self.render_rules(); self.render_screens(); self.render_binds(); self.render_settings()
 
         def render_rules(self) -> None:
             t = self.query_one("#rules", DataTable); t.clear()
@@ -458,6 +499,23 @@ def make_app():
             for k, v in self.binds().items():
                 t.add_row(k + ("  ✎" if B.binds_mode == "keys" and k in mine else ""), bind_action(v), key=k)
 
+        @staticmethod
+        def show_value(sp, v, changed: bool) -> str:
+            txt = "—" if v is None else (L("activé", "on") if v is True else L("désactivé", "off") if v is False else str(v))
+            return txt + ("  ✎" if changed else "")
+
+        def render_settings(self) -> None:
+            t = self.query_one("#settings", DataTable)
+            keep = t.cursor_row
+            t.clear()
+            ov = get_overrides(self.data)
+            mine = ov.get("settings") or {}
+            eff = effective_settings(self.live(), ov)
+            for sp in settings_catalog():
+                t.add_row(GROUPS.get(sp.group, sp.group), sp.title, self.show_value(sp, eff.get(sp.id), sp.id in mine), key=sp.id)
+            if t.row_count:
+                t.move_cursor(row=min(keep, t.row_count - 1))
+
         def cursor_key(self, table_id: str):
             t = self.query_one(table_id, DataTable)
             if t.row_count == 0:
@@ -491,6 +549,8 @@ def make_app():
                 self.open_bind(self.cursor_key("#binds"))
             elif tab == "t-screens":
                 self.open_output(self.cursor_key("#screens"))
+            elif tab == "t-settings":
+                self.open_setting(self.cursor_key("#settings"))
 
         def action_delete(self) -> None:
             if self.blocked():
@@ -521,6 +581,11 @@ def make_app():
             if tab == "t-binds":
                 reset_override("keybinds"); self.reload(); self.render_binds()
                 self.status(L("Raccourcis remis par défaut — rebuild requis.", "Shortcuts reset — rebuild required."))
+            elif tab == "t-settings":
+                k = self.cursor_key("#settings")
+                if k:
+                    reset_setting(k); self.reload(); self.render_settings()
+                    self.status(L("Réglage remis par défaut — rebuild requis (F5).", "Setting restored — rebuild required (F5)."))
             elif tab == "t-screens":
                 k = self.cursor_key("#screens")
                 if k:
@@ -572,6 +637,47 @@ def make_app():
                     save_output_override(n, ch); self.reload(); self.render_screens()
                     self.status(L(f"{n} enregistré — rebuild requis.", f"{n} saved — rebuild required."))
             self.push_screen(OutputForm(name, names, eff, list_outputs_full()), done)
+
+        def open_setting(self, sid) -> None:
+            sp = next((x for x in settings_catalog() if x.id == sid), None)
+            if sp is None:
+                return
+            ov = get_overrides(self.data)
+            cur = effective_settings(self.live(), ov).get(sid)
+
+            def done(res):
+                if res is None:
+                    return
+                try:
+                    set_setting_override(sid, res[0])
+                except ValueError as e:
+                    self.status(str(e)); return
+                self.reload(); self.render_settings()
+                self.status(L(f"{sp.title} enregistré — rebuild requis (F5).", f"{sp.title} saved — rebuild required (F5)."))
+            self.push_screen(SettingForm(sp, cur), done)
+
+        def action_rebuild(self) -> None:
+            if self.blocked():
+                return
+            try:
+                argv = rebuild_argv()
+            except ValueError as e:
+                self.status(str(e)); return
+            import subprocess
+            try:
+                with self.suspend():
+                    print("\n$ " + " ".join(argv) + "\n")
+                    rc = subprocess.run(argv).returncode
+                    print("\n" + (L("Rebuild terminé ✔", "Rebuild done ✔") if rc == 0
+                                   else L(f"Rebuild en échec ✘ (code {rc})", f"Rebuild failed ✘ (code {rc})")))
+                    input(L("Entrée pour revenir à roudix-config… ", "Press Enter to return to roudix-config… "))
+            except Exception as e:  # noqa: BLE001 - suspend() unsupported (old textual) or no tty
+                self.status(L(f"Rebuild impossible depuis le TUI ({e}) : lance l'alias `rebuild`.",
+                              f"Can't rebuild from the TUI ({e}): run the `rebuild` alias."))
+                return
+            self.reload(); self.render_all()
+            self.status(L("Rebuild terminé (voir le terminal) — recharge la config du compositeur si besoin.",
+                          "Rebuild finished (see the terminal) — reload the compositor config if needed."))
 
         def open_bind(self, key) -> None:
             table = self.binds()

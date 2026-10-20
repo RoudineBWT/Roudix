@@ -29,6 +29,129 @@ from roudix_config_core import (
 )
 
 
+# ───────────────────────── curated settings ─────────────────────────
+#
+# "Settings" tab: a short, curated list of the knobs most people want to change
+# (gaps, corners, blur, animations, touchpad, cursor, focus...). Each one is
+# stored by id in overrides.settings and turned into a per-key lib.mkForce in
+# the -custom.nix block, so it wins over the repo's default without touching
+# the repo. Only values that differ from the live config are kept.
+
+class Setting:
+    def __init__(self, id, group, fr, en, kind, path="", lo=None, hi=None, step=1,
+                 choices=(), keys=(), kdl=(), invert=False, as_int=False):
+        self.id, self.group, self.kind, self.path = id, group, kind, path
+        self.title = L(fr, en)
+        self.lo, self.hi, self.step, self.choices = lo, hi, step, tuple(choices)
+        self.keys, self.kdl, self.invert, self.as_int = tuple(keys), tuple(kdl), invert, as_int
+
+
+GROUPS = {
+    "look": L("Apparence", "Appearance"),
+    "layout": L("Disposition", "Layout"),
+    "anim": L("Animations", "Animations"),
+    "input": L("Souris, clavier, curseur", "Mouse, keyboard, cursor"),
+    "behavior": L("Comportement", "Behavior"),
+}
+
+
+def _nest(out: dict, parts: list[str], value) -> None:
+    for p in parts[:-1]:
+        out = out.setdefault(p, {})
+    out[parts[-1]] = value
+
+
+def _coerce_setting(s: "Setting", value):
+    if s.kind == "bool":
+        return bool(value)
+    if s.kind == "int":
+        return max(s.lo, min(s.hi, int(round(float(value))))) if s.lo is not None else int(round(float(value)))
+    if s.kind == "float":
+        v = round(float(value), 4)
+        return max(s.lo, min(s.hi, v)) if s.lo is not None else v
+    if s.kind == "choice":
+        if value not in s.choices:
+            raise ValueError(L(f"valeur inconnue : {value}", f"unknown value: {value}"))
+        return value
+    value = str(value).strip()
+    if not value or any(c in value for c in "\"\n$"):
+        raise ValueError(L("texte vide ou caractères interdits", "empty text or forbidden characters"))
+    return value
+
+
+def _S(*a, **k) -> "Setting":
+    return Setting(*a, **k)
+
+
+UMBRIEL_SETTINGS = [
+    _S("gap", "look", "Espacement entre fenêtres (px)", "Gap between windows (px)", "int", "layout.gap", 0, 60),
+    _S("corner", "look", "Arrondi des coins (px)", "Corner radius (px)", "int", "appearance.corner_radius", 0, 40),
+    _S("blur", "look", "Flou (blur)", "Blur", "bool", "appearance.blur.enabled"),
+    _S("blur_passes", "look", "Flou : nombre de passes", "Blur: passes", "int", "appearance.blur.passes", 1, 8),
+    _S("shadow", "look", "Ombres des fenêtres", "Window shadows", "bool", "appearance.shadow.enabled"),
+    _S("no_csd", "look", "Forcer les décorations côté serveur", "Prefer server-side decorations", "bool", "appearance.prefer_no_csd"),
+    _S("layout", "layout", "Disposition par défaut", "Default layout", "choice", "layout.mode", choices=("scrolling", "dwindle", "master")),
+    _S("center", "layout", "Centrer la colonne focalisée", "Center the focused column", "choice", "layout.scrolling.center_focused", choices=("never", "always", "on_overflow")),
+    _S("col_width", "layout", "Largeur par défaut des colonnes", "Default column width", "float", "layout.scrolling.default_extent_fraction", 0.2, 1.0, 0.05),
+    _S("master_width", "layout", "Largeur de la zone principale (master)", "Master area width", "float", "layout.master.default_width_fraction", 0.2, 0.8, 0.05),
+    _S("anim", "anim", "Animations", "Animations", "bool", "animation.enabled"),
+    _S("tap", "input", "Toucher pour cliquer (touchpad)", "Tap to click (touchpad)", "bool", "input.touchpad.tap"),
+    _S("natural", "input", "Défilement naturel (touchpad)", "Natural scrolling (touchpad)", "bool", "input.touchpad.natural_scroll"),
+    _S("accel", "input", "Accélération de la souris", "Mouse acceleration", "choice", "input.mouse.accel_profile", choices=("flat", "adaptive")),
+    _S("follow", "input", "Le focus suit la souris", "Focus follows mouse", "bool", "input.focus.follows_mouse"),
+    _S("hide_typing", "input", "Cacher le curseur en tapant", "Hide the cursor while typing", "bool", "input.cursor.hide_when_typing"),
+    _S("cursor_size", "input", "Taille du curseur", "Cursor size", "int", "input.cursor.size", 16, 64),
+    _S("cursor_theme", "input", "Thème du curseur", "Cursor theme", "text", "input.cursor.theme"),
+    _S("activate", "behavior", "Donner le focus à une fenêtre qui le demande", "Focus windows that ask for attention", "bool", "general.focus_on_activate"),
+    _S("back_forth", "behavior", "Revenir au workspace précédent (même touche)", "Workspace back-and-forth", "bool", "workspaces.back_and_forth"),
+    _S("cheatsheet", "behavior", "Aide des raccourcis au démarrage", "Shortcut cheatsheet at startup", "bool", "general.show_cheatsheet"),
+]
+
+MANGO_SETTINGS = [
+    _S("gap_inner", "look", "Espacement entre fenêtres (px)", "Gap between windows (px)", "int", "", 0, 40, keys=("gap_inner_horizontal", "gap_inner_vertical")),
+    _S("gap_outer", "look", "Marge autour de l'écran (px)", "Outer margin (px)", "int", "", 0, 60, keys=("gap_outer_horizontal", "gap_outer_vertical")),
+    _S("border", "look", "Épaisseur de la bordure (px)", "Border width (px)", "int", "", 0, 10, keys=("border_px",)),
+    _S("corner", "look", "Arrondi des coins (px)", "Corner radius (px)", "int", "", 0, 40, keys=("border_radius",)),
+    _S("blur", "look", "Flou (blur)", "Blur", "bool", "", keys=("blur",), as_int=True),
+    _S("blur_radius", "look", "Flou : rayon", "Blur: radius", "int", "", 1, 30, keys=("blur_params_radius",)),
+    _S("shadows", "look", "Ombres des fenêtres", "Window shadows", "bool", "", keys=("shadows",), as_int=True),
+    _S("unfocused", "look", "Opacité des fenêtres non focalisées", "Unfocused window opacity", "float", "", 0.3, 1.0, 0.05, keys=("unfocused_opacity",)),
+    _S("focused", "look", "Opacité de la fenêtre focalisée", "Focused window opacity", "float", "", 0.3, 1.0, 0.05, keys=("focused_opacity",)),
+    _S("smart_gaps", "layout", "Pas d'espacement quand une seule fenêtre", "No gaps with a single window", "bool", "", keys=("smart_gaps",), as_int=True),
+    _S("no_border_single", "layout", "Pas de bordure quand une seule fenêtre", "No border with a single window", "bool", "", keys=("no_border_when_single",), as_int=True),
+    _S("master_factor", "layout", "Largeur de la zone principale (master)", "Master area width", "float", "", 0.2, 0.8, 0.05, keys=("default_master_factor",)),
+    _S("scroller_width", "layout", "Largeur par défaut en mode scroller", "Default scroller width", "float", "", 0.2, 1.0, 0.05, keys=("scroller_default_proportion",)),
+    _S("anim", "anim", "Animations", "Animations", "bool", "", keys=("animations",), as_int=True),
+    _S("tap", "input", "Toucher pour cliquer (touchpad)", "Tap to click (touchpad)", "bool", "", keys=("tap_to_click",), as_int=True),
+    _S("natural", "input", "Défilement naturel (touchpad)", "Natural scrolling (touchpad)", "bool", "", keys=("trackpad_natural_scrolling",), as_int=True),
+    _S("follow", "input", "Le focus suit la souris", "Focus follows mouse", "bool", "", keys=("sloppy_focus",), as_int=True),
+    _S("warp", "input", "Le curseur suit le focus", "Cursor follows focus", "bool", "", keys=("warp_cursor",), as_int=True),
+    _S("numlock", "input", "Verrouillage numérique au démarrage", "Num Lock on at startup", "bool", "", keys=("numlock_on",), as_int=True),
+    _S("repeat_rate", "input", "Répétition des touches (par seconde)", "Key repeat rate (per second)", "int", "", 10, 80, keys=("repeat_rate",)),
+    _S("repeat_delay", "input", "Délai avant répétition (ms)", "Key repeat delay (ms)", "int", "", 150, 1000, 50, keys=("repeat_delay",)),
+    _S("cursor_size", "input", "Taille du curseur", "Cursor size", "int", "", 16, 64, keys=("cursor_size",)),
+    _S("cursor_theme", "input", "Thème du curseur", "Cursor theme", "text", "", keys=("cursor_theme",)),
+]
+
+NIRI_SETTINGS = [
+    _S("gaps", "look", "Espacement entre fenêtres (px)", "Gap between windows (px)", "int", "layout.gaps", 0, 60, kdl=("layout", "gaps")),
+    _S("no_csd", "look", "Forcer les décorations côté serveur", "Prefer server-side decorations", "bool", "prefer-no-csd", kdl=("prefer-no-csd",)),
+    _S("center", "layout", "Centrer la colonne focalisée", "Center the focused column", "choice", "layout.center-focused-column", choices=("never", "always", "on-overflow"), kdl=("layout", "center-focused-column")),
+    _S("anim", "anim", "Animations", "Animations", "bool", "animations.enable", kdl=("animations", "off"), invert=True),
+    _S("slowdown", "anim", "Ralentir les animations (×)", "Animation slowdown (×)", "float", "animations.slowdown", 0.1, 5.0, 0.1, kdl=("animations", "slowdown")),
+    _S("tap", "input", "Toucher pour cliquer (touchpad)", "Tap to click (touchpad)", "bool", "input.touchpad.tap", kdl=("input", "touchpad", "tap")),
+    _S("natural", "input", "Défilement naturel (touchpad)", "Natural scrolling (touchpad)", "bool", "input.touchpad.natural-scroll", kdl=("input", "touchpad", "natural-scroll")),
+    _S("accel", "input", "Accélération de la souris", "Mouse acceleration", "choice", "input.mouse.accel-profile", choices=("flat", "adaptive"), kdl=("input", "mouse", "accel-profile")),
+    _S("follow", "input", "Le focus suit la souris", "Focus follows mouse", "bool", "input.focus-follows-mouse.enable", kdl=("input", "focus-follows-mouse")),
+    _S("numlock", "input", "Verrouillage numérique au démarrage", "Num Lock on at startup", "bool", "input.keyboard.numlock", kdl=("input", "keyboard", "numlock")),
+    _S("cursor_size", "input", "Taille du curseur", "Cursor size", "int", "cursor.size", 16, 64, kdl=("cursor", "xcursor-size")),
+    _S("cursor_theme", "input", "Thème du curseur", "Cursor theme", "text", "cursor.theme", kdl=("cursor", "xcursor-theme")),
+    _S("back_forth", "behavior", "Revenir au workspace précédent (même touche)", "Workspace back-and-forth", "bool", "input.workspace-auto-back-and-forth", kdl=("input", "workspace-auto-back-and-forth")),
+    _S("hot_corner", "behavior", "Coin actif (overview)", "Hot corner (overview)", "bool", "gestures.hot-corners.enable", kdl=("gestures", "hot-corners", "off"), invert=True),
+    _S("hotkey_overlay", "behavior", "Masquer l'aide des raccourcis au démarrage", "Hide the shortcut overlay at startup", "bool", "hotkey-overlay.skip-at-startup", kdl=("hotkey-overlay", "skip-at-startup")),
+]
+
+
 # ───────────────────────── KDL (just what niri configs use) ─────────────────────────
 
 class KdlError(ValueError):
@@ -335,6 +458,20 @@ class Backend:
     def render_block(self, data: dict) -> str:
         raise NotImplementedError
 
+    # ── curated settings (see UMBRIEL_SETTINGS & co) ──
+    def settings_catalog(self) -> list:
+        return []
+
+    def live_setting(self, live: dict, s):
+        """Value the compositor runs with right now, or None when unknown."""
+        return None
+
+    def native_settings(self, values: dict) -> dict:
+        return {}
+
+    def _chosen(self, values: dict):
+        return [s for s in self.settings_catalog() if s.id in values]
+
 
 # ───────────────────────── Umbriel ─────────────────────────
 
@@ -347,13 +484,16 @@ class Umbriel(Backend):
 
     TEMPLATE = _HEAD + """\
         ov = data.overrides or {{ }};
+        n = data.native or {{ }};
       in
       {{
         # window_rule: appended AFTER the repo's rules (Umbriel applies the last match).
         # overrides.output: per-output keys replacing the repo's (mkForce per leaf).
         # overrides.keybinds: the COMPLETE table replacing the repo's one.
+        # native.settings: the Settings tab (one mkForce per changed key).
         programs.umbriel.settings = lib.mkMerge [
           (lib.mkAfter {{ window_rule = data.window_rule or [ ]; }})
+          (lib.optionalAttrs (n ? settings) (lib.mapAttrsRecursive (_: lib.mkForce) n.settings))
           (lib.optionalAttrs (ov ? output) {{
             output = lib.mapAttrsRecursive (_: lib.mkForce) ov.output;
           }})
@@ -431,9 +571,28 @@ class Umbriel(Backend):
                 lines.append(f"{k} = {val(v)}")
         return "\n".join(lines)
 
+    def settings_catalog(self) -> list:
+        return UMBRIEL_SETTINGS
+
+    def live_setting(self, live: dict, s):
+        cur = live
+        for part in s.path.split("."):
+            if not isinstance(cur, dict) or part not in cur:
+                return None
+            cur = cur[part]
+        return cur if not isinstance(cur, (dict, list)) else None
+
+    def native_settings(self, values: dict) -> dict:
+        out: dict = {}
+        for s in self._chosen(values):
+            _nest(out, s.path.split("."), values[s.id])
+        return out
+
     def render_block(self, data: dict) -> str:
+        nat = self.native_settings((data.get("overrides") or {}).get("settings") or {})
+        full = dict(data, native={"settings": nat}) if nat else data
         return _render(self.TEMPLATE, L("généré par Roudix Config — modifie-le via l'app",
-                                        "generated by Roudix Config — edit it through the app"), data)
+                                        "generated by Roudix Config — edit it through the app"), full)
 
 
 # ───────────────────────── MangoWC ─────────────────────────
@@ -487,6 +646,7 @@ class Mango(Backend):
         # them it replaces the whole list (taken from your live config.conf).
         wayland.windowManager.mango.settings = lib.mkMerge [
           (lib.mkAfter {{ window_rule = n.window_rule or [ ]; }})
+          (lib.optionalAttrs (n ? settings) (lib.mapAttrs (_: lib.mkForce) n.settings))
           (lib.optionalAttrs (n ? monitor_rule) {{ monitor_rule = lib.mkForce n.monitor_rule; }})
           (lib.optionalAttrs (n ? bind) {{ bind = lib.mkForce n.bind; }})
         ];
@@ -528,8 +688,9 @@ class Mango(Backend):
     def list_windows(self) -> list[dict]:
         data = _run_json(["mmsg", "get", "all-clients"])
         seen: dict[str, dict] = {}
-        for w in _collect(data, "appid") if data is not None else []:
-            a = w.get("appid", "")
+        key = "app_id" if data is not None and _collect(data, "app_id") else "appid"   # 0.18 renamed it
+        for w in _collect(data, key) if data is not None else []:
+            a = w.get(key, "")
             if a and a not in seen:
                 seen[a] = {"app_id": a, "title": w.get("title", "")}
         return list(seen.values())
@@ -557,6 +718,34 @@ class Mango(Backend):
 
     def load_live(self) -> dict:
         return self._conf()
+
+    def settings_catalog(self) -> list:
+        return MANGO_SETTINGS
+
+    def live_setting(self, live: dict, s):
+        vals = live.get(s.keys[0]) if s.keys else None
+        if not vals:
+            return None
+        raw = vals[-1].strip()
+        try:
+            if s.kind == "bool":
+                return raw.lower() in ("1", "true", "yes", "on")
+            if s.kind == "int":
+                return int(float(raw))
+            if s.kind == "float":
+                return float(raw)
+        except ValueError:
+            return None
+        return raw.strip('"')
+
+    def native_settings(self, values: dict) -> dict:
+        out: dict = {}
+        for s in self._chosen(values):
+            v = values[s.id]
+            v = int(v) if s.as_int and isinstance(v, bool) else v
+            for k in s.keys:
+                out[k] = v
+        return out
 
     def _monitor_rules(self, live: dict) -> list[dict[str, str]]:
         return [parse_mango_props(r) for r in live.get("monitor_rule", [])]
@@ -659,6 +848,9 @@ class Mango(Backend):
         mon = self.native_monitor_rules(live, ov.get("output", {}))
         if mon:
             nat["monitor_rule"] = mon
+        st = self.native_settings(ov.get("settings") or {})
+        if st:
+            nat["settings"] = st
         if isinstance(ov.get("keybinds"), dict):
             nat["bind"] = [f"{k},{v}" for k, v in ov["keybinds"].items()]
         return nat
@@ -739,6 +931,7 @@ class Niri(Backend):
         # submodule type doesn't accept a wrapped value there.)
         programs.niri.settings =
           {{ window-rules = lib.mkAfter (n.window-rules or [ ]); }}
+          // lib.optionalAttrs (n ? settings) (force n.settings)
           // lib.optionalAttrs (n ? outputs) {{ outputs = force n.outputs; }}
           // lib.optionalAttrs (n ? binds) {{
             binds = lib.mapAttrs (_: b: {{ action = lib.mkForce b.action; }}) n.binds;
@@ -806,7 +999,39 @@ class Niri(Backend):
                     act = b.children[0] if b.children else None
                     if act is not None:
                         live["binds"][b.name] = niri_action_text(act)
+        live["nodes"] = nodes          # for the Settings tab (live_setting)
         return live
+
+    def settings_catalog(self) -> list:
+        return NIRI_SETTINGS
+
+    def live_setting(self, live: dict, s):
+        nodes = live.get("nodes") or []
+        if not nodes:
+            return None                # no config.kdl read: absence would be meaningless
+        cur = None
+        level = nodes
+        for name in s.kdl:
+            cur = next((n for n in level if n.name == name), None)
+            if cur is None:
+                break
+            level = cur.children
+        if s.kind == "bool":
+            return (cur is None) if s.invert else (cur is not None)
+        if cur is None or not cur.args:
+            return None
+        v = cur.args[0]
+        if s.kind == "int":
+            return int(float(v))
+        if s.kind == "float":
+            return float(v)
+        return str(v)
+
+    def native_settings(self, values: dict) -> dict:
+        out: dict = {}
+        for s in self._chosen(values):
+            _nest(out, s.path.split("."), values[s.id])
+        return out
 
     def effective_outputs(self, live: dict, ov: dict) -> dict[str, dict]:
         out = {n: dict(c) for n, c in (live.get("output") or {}).items()}
@@ -901,6 +1126,9 @@ class Niri(Backend):
             binds[key] = {"action": {name: args if args else {}}}
         if binds:
             nat["binds"] = binds
+        st = self.native_settings(ov.get("settings") or {})
+        if st:
+            nat["settings"] = st
         return nat
 
     def render_block(self, data: dict) -> str:

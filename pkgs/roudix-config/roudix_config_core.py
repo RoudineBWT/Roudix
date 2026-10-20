@@ -9,6 +9,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -612,6 +613,93 @@ def save_binds_override(table: dict) -> None:
     data = load_data()
     data.setdefault("overrides", {})["keybinds"] = table
     save_data(data)
+
+
+# ── Settings tab (curated knobs, see roudix_config_backends.*_SETTINGS) ──
+
+def settings_catalog() -> list:
+    return backend().settings_catalog()
+
+
+def effective_settings(live: dict, ov: dict) -> dict:
+    """id -> value shown: the user's override if any, else what the compositor runs with
+    (None when unknown, e.g. no live config yet)."""
+    B = backend()
+    mine = ov.get("settings") or {}
+    return {s.id: (mine[s.id] if s.id in mine else B.live_setting(live, s)) for s in B.settings_catalog()}
+
+
+def set_setting_override(sid: str, value) -> None:
+    """Store `value` for setting `sid`; if it equals what the compositor already runs
+    with, the override is dropped so the setting keeps following the repo's default."""
+    from roudix_config_backends import _coerce_setting
+    B = backend()
+    spec = next((s for s in B.settings_catalog() if s.id == sid), None)
+    if spec is None:
+        raise ValueError(L(f"réglage inconnu : {sid}", f"unknown setting: {sid}"))
+    value = _coerce_setting(spec, value)
+    base = B.live_setting(B.load_live(), spec)
+    data = load_data()
+    ov = data.setdefault("overrides", {})
+    st = ov.setdefault("settings", {})
+    if base is not None and _same(base, value):
+        st.pop(sid, None)
+    else:
+        st[sid] = value
+    if not st:
+        ov.pop("settings", None)
+    if not ov:
+        data.pop("overrides", None)
+    save_data(data)
+
+
+def reset_setting(sid: str) -> None:
+    data = load_data()
+    ov = data.get("overrides", {})
+    ov.get("settings", {}).pop(sid, None)
+    if not ov.get("settings"):
+        ov.pop("settings", None)
+    if not ov:
+        data.pop("overrides", None)
+    save_data(data)
+
+
+# ── rebuild (same command as the `rebuild` alias of the shell modules) ──
+
+def rebuild_argv() -> list[str]:
+    nh = shutil.which("nh")
+    if not nh:
+        raise ValueError(L("`nh` est introuvable : lance le rebuild à la main (alias `rebuild`).",
+                           "`nh` not found: run the rebuild by hand (the `rebuild` alias)."))
+    flake = os.environ.get("NH_FLAKE") or str(repo_root())
+    if not flake.startswith(("path:", "github:", "git+")):
+        flake = "path:" + flake          # `path:` so the gitignored -custom.nix is part of the build
+    return [nh, "os", "switch", "--accept-flake-config", flake]
+
+
+_TERMINALS = ("ghostty", "kitty", "foot", "alacritty", "wezterm", "konsole",
+              "gnome-terminal", "ptyxis", "xfce4-terminal", "xterm")
+_EXEC_FLAG = {"gnome-terminal": ["--"], "ptyxis": ["--"], "xfce4-terminal": ["-x"], "wezterm": ["start", "--"]}
+
+
+def spawn_rebuild() -> str:
+    """Run the rebuild in a terminal window (live output, sudo password prompt works) and
+    return the terminal's name. The window stays open until Enter so the result can be read."""
+    argv = rebuild_argv()
+    script = (f'{shlex.join(argv)}; rc=$?; echo; '
+              f'if [ $rc -eq 0 ]; then echo "{L("Rebuild terminé ✔ — recharge la config du compositeur si besoin.", "Rebuild done ✔ — reload the compositor config if needed.")}"; '
+              f'else echo "{L("Rebuild en échec ✘ (code $rc) — lis les messages ci-dessus.", "Rebuild failed ✘ (code $rc) — read the messages above.")}"; fi; '
+              f'printf "%s" "{L("Entrée pour fermer… ", "Press Enter to close… ")}"; read _')
+    for t in ([os.environ["TERMINAL"]] if os.environ.get("TERMINAL") else []) + list(_TERMINALS):
+        exe = shutil.which(t)
+        if not exe:
+            continue
+        flag = _EXEC_FLAG.get(Path(exe).name, ["-e"])
+        subprocess.Popen([exe, *flag, "sh", "-c", script], start_new_session=True,
+                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return Path(exe).name
+    raise ValueError(L("Aucun terminal trouvé : lance le rebuild à la main (alias `rebuild`).",
+                       "No terminal found: run the rebuild by hand (the `rebuild` alias)."))
 
 
 def list_outputs_full() -> dict[str, dict]:

@@ -5,7 +5,9 @@
 Same engine as the TUI (roudix_config_core.py): everything it manages lives in
 one marked block of your own modules/home/<compositor>-custom.nix; what is outside
 the block is yours and never touched. Pages: window rules, screens &
-workspaces, keybinds, and the -custom.nix file itself.
+workspaces, keybinds, curated settings (gaps, corners, blur, animations, touchpad,
+cursor...), and the -custom.nix file itself. A Rebuild button runs `nh os switch`
+in a terminal window.
 
 Launch it inside your session (so open windows and outputs are live):
     roudix-config   (or pkgs/roudix-config/roudix-config-gui.py from a checkout)
@@ -33,6 +35,10 @@ from roudix_config_core import (  # noqa: E402
     placement_label, remember_windows, reset_override, rule_preview, rule_summary, save_binds_override,
     save_data, save_output_override, set_bind,
 )
+from roudix_config_core import (  # noqa: E402
+    effective_settings, reset_setting, set_setting_override, settings_catalog, spawn_rebuild,
+)
+from roudix_config_backends import GROUPS  # noqa: E402
 
 APP_ID = "io.roudix.config"
 UNSET = L("(inchangé)", "(unchanged)")
@@ -400,6 +406,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         self.screens_list = self.make_list_page("screens", L("Écrans", "Screens"))
         self.binds_list = self.make_list_page("binds", L("Raccourcis", "Shortcuts"), searchable=True,
                                               hint=self.binds_hint())
+        self.make_settings_page()
         self.make_nix_page()
 
         # Text-only tabs: AdwViewSwitcher always draws an icon (a "missing image"
@@ -409,13 +416,19 @@ class ConfigWindow(Adw.ApplicationWindow):
         self.add_btn = Gtk.Button(icon_name="list-add-symbolic", tooltip_text=L("Ajouter", "Add"))
         self.add_btn.connect("clicked", lambda *_: self.on_add())
         self.reset_btn = Gtk.Button(label=L("Tout remettre par défaut", "Reset everything"),
-                                    tooltip_text=L("Abandonne tes changements de raccourcis", "Discards your shortcut changes"))
+                                    tooltip_text=L("Abandonne tes changements de cette page", "Discards your changes on this page"))
         self.reset_btn.connect("clicked", lambda *_: self.on_reset())
         self.save_btn = Gtk.Button(label=L("Sauvegarder", "Save"))
         self.save_btn.add_css_class("suggested-action")
         self.save_btn.connect("clicked", lambda *_: self.save_nix())
+        self.rebuild_btn = Gtk.Button(child=Adw.ButtonContent(icon_name="system-software-update-symbolic",
+                                                              label=L("Rebuild", "Rebuild")),
+                                      tooltip_text=L("Lance `nh os switch` dans un terminal (applique tes changements)",
+                                                     "Runs `nh os switch` in a terminal (applies your changes)"))
+        self.rebuild_btn.connect("clicked", lambda *_: self.on_rebuild())
         header.pack_start(self.add_btn)
         header.pack_start(self.reset_btn)
+        header.pack_end(self.rebuild_btn)
         header.pack_end(self.save_btn)
 
         view = Adw.ToolbarView(content=self.stack)
@@ -490,7 +503,7 @@ class ConfigWindow(Adw.ApplicationWindow):
     def on_page(self, *_) -> None:
         p = self.page_name()
         self.add_btn.set_visible(p in ("rules", "binds", "screens"))
-        self.reset_btn.set_visible(p == "binds")
+        self.reset_btn.set_visible(p in ("binds", "settings"))
         self.save_btn.set_visible(p == "nix")
         if p == "nix":
             self.refresh_nix()
@@ -557,11 +570,118 @@ class ConfigWindow(Adw.ApplicationWindow):
         self.render_all()
         self.toast(L(f"Sauvegardé ({msg}). Rebuild requis.", f"Saved ({msg}). Rebuild required."))
 
+    # ── settings page ──
+    def make_settings_page(self) -> None:
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12,
+                      margin_top=12, margin_bottom=12, margin_start=12, margin_end=12)
+        hint = Gtk.Label(xalign=0, wrap=True, label=L(
+            "Les réglages les plus courants. Une valeur modifiée par toi est marquée ✎ (↶ pour la remettre par défaut) ; "
+            "les autres suivent les valeurs par défaut du dépôt. Rebuild requis pour appliquer.",
+            "The most common settings. A value you changed is marked ✎ (↶ to restore the default); "
+            "the others follow the repo's defaults. Rebuild required to apply."))
+        hint.add_css_class("dim-label")
+        box.append(hint)
+        self.settings_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
+        self.settings_scroll = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        self.settings_scroll.set_child(Adw.Clamp(maximum_size=760, child=self.settings_box, valign=Gtk.Align.START))
+        box.append(self.settings_scroll)
+        self._set_rows: dict = {}
+        self._building = False
+        self.stack.add_titled(box, "settings", L("Réglages", "Settings"))
+
+    def render_settings(self) -> None:
+        vadj = self.settings_scroll.get_vadjustment()
+        pos = vadj.get_value()
+        while (child := self.settings_box.get_first_child()) is not None:
+            self.settings_box.remove(child)
+        self._set_rows = {}
+        cat = settings_catalog()
+        if not cat:
+            self.settings_box.append(Gtk.Label(label=L("Aucun réglage disponible pour ce bureau.",
+                                                       "No settings available for this desktop."), xalign=0))
+            return
+        ov = get_overrides(self.data)
+        mine = ov.get("settings") or {}
+        eff = effective_settings(self.live(), ov)
+        self._building = True
+        try:
+            groups: dict[str, list] = {}
+            for sp in cat:
+                groups.setdefault(sp.group, []).append(sp)
+            for gid, specs in groups.items():
+                grp = Adw.PreferencesGroup(title=GROUPS.get(gid, gid))
+                for sp in specs:
+                    grp.add(self.setting_row(sp, eff.get(sp.id), sp.id in mine))
+                self.settings_box.append(grp)
+        finally:
+            self._building = False
+        GLib.idle_add(lambda: vadj.set_value(pos) and False)
+
+    def setting_row(self, sp, value, changed: bool):
+        unknown = L("valeur actuelle inconnue (config du compositeur non lue)",
+                    "current value unknown (compositor config not read)")
+        if sp.kind == "bool":
+            row = Adw.SwitchRow(title=sp.title)
+            row.set_active(bool(value))
+            row.connect("notify::active", lambda r, *_: self.on_setting(sp, r.get_active()))
+        elif sp.kind in ("int", "float"):
+            start = value if value is not None else sp.lo
+            adj = Gtk.Adjustment(value=start, lower=sp.lo, upper=sp.hi, step_increment=sp.step,
+                                 page_increment=sp.step * 5)
+            row = Adw.SpinRow(title=sp.title, adjustment=adj, digits=2 if sp.kind == "float" else 0)
+            row.connect("notify::value", lambda r, *_: self.on_setting(sp, r.get_value()))
+        elif sp.kind == "choice":
+            row = combo(sp.title, list(sp.choices))
+            if value in sp.choices:
+                row.set_selected(sp.choices.index(value))
+            row.connect("notify::selected", lambda r, *_: self.on_setting(sp, sp.choices[r.get_selected()]))
+        else:
+            row = Adw.EntryRow(title=sp.title)
+            row.set_text(str(value or ""))
+            row.set_show_apply_button(True)
+            row.connect("apply", lambda r, *_: self.on_setting(sp, r.get_text()))
+        if value is None and sp.kind != "bool":
+            row.set_subtitle(unknown) if hasattr(row, "set_subtitle") else None
+        undo = icon_button("edit-undo-symbolic", L("Remettre la valeur par défaut", "Restore the default value"),
+                           lambda: self.on_setting_reset(sp))
+        undo.set_visible(changed)
+        row.add_suffix(undo)
+        self._set_rows[sp.id] = (row, undo, sp.title)
+        row.set_title(sp.title + ("  ✎" if changed else ""))
+        return row
+
+    def on_setting(self, sp, value) -> None:
+        if self._building:
+            return
+        if self.blocked():
+            self.render_settings()
+            return
+        try:
+            set_setting_override(sp.id, value)
+        except ValueError as e:
+            self.toast(str(e))
+            self.render_settings()
+            return
+        self.reload()
+        changed = sp.id in (get_overrides(self.data).get("settings") or {})
+        row, undo, base = self._set_rows[sp.id]
+        row.set_title(base + ("  ✎" if changed else ""))
+        undo.set_visible(changed)
+
+    def on_setting_reset(self, sp) -> None:
+        if self.blocked():
+            return
+        reset_setting(sp.id)
+        self.reload()
+        self.render_settings()
+        self.toast(L(f"{sp.title} remis par défaut — rebuild requis.", f"{sp.title} restored — rebuild required."))
+
     # ── rendering ──
     def render_all(self) -> None:
         self.render_rules()
         self.render_screens()
         self.render_binds()
+        self.render_settings()
 
     def row(self, title: str, subtitle: str, on_edit, on_delete=None) -> Adw.ActionRow:
         r = Adw.ActionRow(title=title, subtitle=subtitle, activatable=True,
@@ -646,6 +766,21 @@ class ConfigWindow(Adw.ApplicationWindow):
             self.reload()
             self.render_binds()
             self.toast(L("Raccourcis remis par défaut — rebuild requis.", "Shortcuts reset — rebuild required."))
+        elif self.page_name() == "settings":
+            reset_override("settings")
+            self.reload()
+            self.render_settings()
+            self.toast(L("Réglages remis par défaut — rebuild requis.", "Settings reset — rebuild required."))
+
+    def on_rebuild(self) -> None:
+        if self.blocked():
+            return
+        try:
+            term = spawn_rebuild()
+        except (ValueError, OSError) as e:
+            self.toast(str(e))
+            return
+        self.toast(L(f"Rebuild lancé dans {term}.", f"Rebuild started in {term}."))
 
     def edit_rule(self, index) -> None:
         if self.blocked():
