@@ -352,6 +352,12 @@ let
     # Applies to the 3 named scratchpads (misc/communication/music, see
     # _binds.nix and _rules.nix): a small fade + background dim, without
     # forcing size/state.
+    # Umbriel 7b9ad2ed: animation.scratchpad only accepts the show/hide
+    # transition + dim/blur now. The old `scale` / `maximize` / `fullscreen`
+    # keys were removed (config warning "unknown key"); a scratchpad window's
+    # size/position/fullscreen/maximize now come from its window rule
+    # (default_floating_size[_px], default_position, default_fullscreen,
+    # default_maximize_to_edges — see _rules.nix).
     scratchpad = {
       enabled = true;
       duration_ms = 200;
@@ -359,9 +365,6 @@ let
       effect = "roudix-scratchpad"; # _effects/roudix/scratchpad.glsl (slide+fade)
       dim = 0.5;
       blur = true;
-      scale = 0.0;        # 0 = keep the window's remembered geometry
-      maximize = false;
-      fullscreen = false;
     };
 
     border = {

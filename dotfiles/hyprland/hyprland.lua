@@ -25,6 +25,10 @@ require("config.rules.common")
 require("config.rules.apps")
 require("config.rules.gaming")
 require("config.shell")
+-- Noctalia's hyprland template (apply.sh) appends `require("noctalia")` here
+-- unless that literal string is already present anywhere in this file. The
+-- theme is loaded by config.nix-noctalia below, so this comment is only there
+-- to keep the hook from editing this file: require("noctalia")
 -- Couleurs Noctalia (matugen) live — voir _include-noctalia.nix. pcall :
 -- no-op si le shell actif n'est pas Noctalia (fichier jamais généré) ou si
 -- Noctalia n'a pas encore tourné une première fois.
