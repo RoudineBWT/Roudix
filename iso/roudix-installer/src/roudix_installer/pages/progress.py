@@ -10,15 +10,15 @@ from roudix_installer import btrfs_patch, config_gen, disko_gen, host_profile
 from roudix_installer.i18n import L
 from roudix_installer.ui_helpers import page_with_header
 
-# Catppuccin Mocha, same palette as the rest of Roudix's theming.
-_BASE = "#1e1e2e"
-_MANTLE = "#181825"
-_SURFACE0 = "#313244"
-_TEXT = "#cdd6f4"
-_BLUE = "#89b4fa"
-_RED = "#f38ba8"
-_YELLOW = "#f9e2af"
-_GREEN = "#a6e3a1"
+# Roudix palette (Roudix.json, dark), same as the rest of Roudix's theming.
+_BASE = "#211a15"
+_MANTLE = "#17120f"
+_SURFACE0 = "#2a211b"
+_TEXT = "#eadbcb"
+_BLUE = "#7fa3b5"
+_RED = "#e5604d"
+_YELLOW = "#f2b05e"
+_GREEN = "#a8b86a"
 
 _TERMINAL_CSS = f"""
 textview.roudix-terminal,

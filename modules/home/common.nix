@@ -10,6 +10,8 @@ in
   home.stateVersion = "26.11";
 
   imports = [
+    # Roudix.json palette -> config.roudix.palette / roudixPalette (see theming/palette.nix)
+    ./theming/palette.nix
     ./shell
     ./gaming
     # GTK theme/icons/cursor + dconf for GSettings-reading apps (GTK3/4,

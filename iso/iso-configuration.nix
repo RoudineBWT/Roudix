@@ -26,7 +26,7 @@
     cp ${pkgs.grub2}/share/grub/unicode.pf2 $out/unicode.pf2
 
     cat > $out/theme.txt <<'THEMEEOF'
-    desktop-color: "#1e1e2e"
+    desktop-color: "#14100d"
     title-text: ""
 
     + image {
@@ -42,8 +42,8 @@
         top = 42%
         width = 70%
         height = 48%
-        item_color = "#cdd6f4"
-        selected_item_color = "#fab387"
+        item_color = "#eadbcb"
+        selected_item_color = "#ff8c42"
         item_height = 32
         item_padding = 4
         item_spacing = 6

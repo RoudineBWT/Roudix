@@ -358,8 +358,8 @@ JSONEOF
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#231820</pcolor>
-    <scolor>#231820</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix</name>
@@ -367,24 +367,24 @@ JSONEOF
     <filename-dark>/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png</filename-dark>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#eff1f5</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#FBF5EE</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Cosmos</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#1e1e2e</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Moonrise</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/Roudix_Moonrise.jpg</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#1e1e2e</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Logo</name>
@@ -392,24 +392,24 @@ JSONEOF
     <filename-dark>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_dark_logo.png</filename-dark>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#eff1f5</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#FBF5EE</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Orbit</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_orbit.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#1e1e2e</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Drift</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_drift.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#1e1e2e</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
 </wallpapers>
 XMLEOF

@@ -1,10 +1,10 @@
 <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-  <!-- Roudix Installer app icon — squircle base Catppuccin Mocha + flocon
+  <!-- Roudix Installer app icon — squircle base Roudix + flocon
        Roudix (peach/flamingo/maroon/rosewater) + badge de progression. -->
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1e1e2e"/>
-      <stop offset="100%" stop-color="#11111b"/>
+      <stop offset="0%" stop-color="#211a15"/>
+      <stop offset="100%" stop-color="#14100d"/>
     </linearGradient>
     <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="0.06"/>
@@ -23,15 +23,15 @@
 
   <g transform="translate(64,58) scale(0.33)" filter="url(#soft)">
     <g id="arm-group">
-      <rect x="-14" y="-155" width="28" height="110" rx="14" fill="#fab387"/>
-      <polygon points="0,-170 12,-148 0,-130 -12,-148" fill="#f2cdcd"/>
+      <rect x="-14" y="-155" width="28" height="110" rx="14" fill="#ff8c42"/>
+      <polygon points="0,-170 12,-148 0,-130 -12,-148" fill="#ffc878"/>
       <g transform="rotate(-30) translate(0,-100)">
-        <rect x="-10" y="-50" width="20" height="52" rx="10" transform="rotate(30)" fill="#eba0ac"/>
-        <polygon points="0,-60 8,-42 0,-26 -8,-42" transform="rotate(30)" fill="#f2cdcd"/>
+        <rect x="-10" y="-50" width="20" height="52" rx="10" transform="rotate(30)" fill="#f2b05e"/>
+        <polygon points="0,-60 8,-42 0,-26 -8,-42" transform="rotate(30)" fill="#ffc878"/>
       </g>
       <g transform="rotate(30) translate(0,-100)">
-        <rect x="-10" y="-50" width="20" height="52" rx="10" transform="rotate(-30)" fill="#eba0ac"/>
-        <polygon points="0,-60 8,-42 0,-26 -8,-42" transform="rotate(-30)" fill="#f2cdcd"/>
+        <rect x="-10" y="-50" width="20" height="52" rx="10" transform="rotate(-30)" fill="#f2b05e"/>
+        <polygon points="0,-60 8,-42 0,-26 -8,-42" transform="rotate(-30)" fill="#ffc878"/>
       </g>
     </g>
     <use href="#arm-group" transform="rotate(60)"/>
@@ -39,14 +39,14 @@
     <use href="#arm-group" transform="rotate(180)"/>
     <use href="#arm-group" transform="rotate(240)"/>
     <use href="#arm-group" transform="rotate(300)"/>
-    <circle cx="0" cy="0" r="42" fill="none" stroke="#f5e0dc" stroke-width="18"/>
-    <circle cx="0" cy="0" r="24" fill="none" stroke="#eba0ac" stroke-width="10"/>
-    <circle cx="0" cy="0" r="10" fill="#fab387"/>
+    <circle cx="0" cy="0" r="42" fill="none" stroke="#f5ebdd" stroke-width="18"/>
+    <circle cx="0" cy="0" r="24" fill="none" stroke="#f2b05e" stroke-width="10"/>
+    <circle cx="0" cy="0" r="10" fill="#ff8c42"/>
   </g>
 
   <g filter="url(#soft)">
-    <circle cx="92" cy="92" r="19" fill="#a6e3a1" stroke="#1e1e2e" stroke-width="3"/>
-    <path d="M92 84 v12 M86 92 l6 7 l6 -7" fill="none" stroke="#1e1e2e" stroke-width="3.4"
+    <circle cx="92" cy="92" r="19" fill="#a8b86a" stroke="#211a15" stroke-width="3"/>
+    <path d="M92 84 v12 M86 92 l6 7 l6 -7" fill="none" stroke="#211a15" stroke-width="3.4"
           stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

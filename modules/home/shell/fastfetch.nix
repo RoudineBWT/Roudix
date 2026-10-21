@@ -23,13 +23,13 @@
           source = "${dotfiles}/fastfetch/roudix-ascii.txt";
           width = 38;
           color = {
-            "1" = "#fab387";
+            "1" = config.roudix.palette.dark.primary;
           };
         };
 
         display = {
           separator = "  ";
-          color = "#fab387";
+          color = config.roudix.palette.dark.primary;
         };
 
         modules = [
@@ -42,22 +42,22 @@
           {
             type = "os";
             key = "󱄅 OS";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
           {
             type = "kernel";
             key = " Kernel";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
           {
             type = "uptime";
             key = "󰔟 Uptime";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
           {
             type = "command";
             key = "󱎫 OS Age";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
             text = "b=$(stat -c %W /); n=$(date +%s); echo $(( (n - b) / 86400 )) days";
           }
 
@@ -69,17 +69,17 @@
             type = "cpu";
             key = " CPU";
             showPeCoreCount = true;
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
           {
             type = "gpu";
             key = "󰍛 GPU";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
           {
             type = "memory";
             key = " Memory";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
 
           {
@@ -89,22 +89,22 @@
           {
             type = "wm";
             key = "󰇄 Compositor";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
           {
             type = "terminal";
             key = " Terminal";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
           {
             type = "shell";
             key = " Shell";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
           {
             type = "packages";
             key = " Packages";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
           }
 
           {
@@ -114,7 +114,7 @@
           {
             type = "command";
             key = "󰔸 Challenge";
-            keyColor = "#fab387";
+            keyColor = config.roudix.palette.dark.primary;
             text = ''
               start=$(stat -c %W /)
               end=$((start + 63072000))
@@ -138,7 +138,7 @@
           {
             type = "custom";
             key = "  ";
-            format = "  {##fab387}Romeo, Oscar, Uniform, Delta, India, X-ray!{#}";
+            format = "  {#${config.roudix.palette.dark.primary}}Romeo, Oscar, Uniform, Delta, India, X-ray!{#}";
             newline = true;
           }
 
