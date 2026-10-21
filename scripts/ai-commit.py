@@ -357,10 +357,16 @@ def cmd_commit(args) -> int:
     return commit_with(msg, edit=not args.yes)
 
 
-def auto_run() -> list[str]:
-    """Hashes (newest first) of the trailing run of single-parent auto commits."""
+def auto_run(include_pushed: bool) -> list[str]:
+    """Hashes (newest first) of the trailing run of single-parent auto commits.
+
+    By default only commits that are NOT on any remote: what is already pushed
+    is never rewritten, the run simply stops there."""
+    cmd = ["log", "--first-parent", "-n", "500", "--format=%H%x09%P%x09%s", "HEAD"]
+    if not include_pushed:
+        cmd += ["--not", "--remotes"]
     run = []
-    for line in git("log", "--first-parent", "-n", "500", "--format=%H%x09%P%x09%s").splitlines():
+    for line in git(*cmd).splitlines():
         h, parents, subject = line.split("\t", 2)
         if len(parents.split()) != 1 or not AUTO_RE.match(subject):
             break
@@ -369,18 +375,19 @@ def auto_run() -> list[str]:
 
 
 def cmd_squash(args) -> int:
-    run = auto_run()
+    run = auto_run(args.allow_pushed)
     if not run:
-        die("no trailing 'auto:' commits to squash (HEAD is not a gitwatch commit)", 0)
+        die("no unpushed 'auto:' commits at the tip of the branch, nothing to squash "
+            "(already-pushed commits are left alone; --allow-pushed overrides)", 0)
     oldest = run[-1]
     base = git("rev-parse", f"{oldest}^").strip()
 
-    remotes = git("for-each-ref", "--contains", oldest, "--format=%(refname:short)",
-                  "refs/remotes").split()
-    if remotes and not args.allow_pushed:
-        die(f"{len(run)} auto commit(s) already exist on {', '.join(remotes)}: squashing them "
-            "would rewrite pushed history (you would have to force-push). Stop gitwatch pushing "
-            "(no remote) and re-run once new commits stay local, or pass --allow-pushed.")
+    if args.allow_pushed:
+        remotes = git("for-each-ref", "--contains", oldest, "--format=%(refname:short)",
+                      "refs/remotes").split()
+        if remotes:
+            log(f"warning: some of these commits are on {', '.join(remotes)}; "
+                "you will have to `git push --force-with-lease` afterwards")
 
     spec = [base, "HEAD"]
     files = collect(spec)

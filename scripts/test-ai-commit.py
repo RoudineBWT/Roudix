@@ -109,13 +109,31 @@ print("7. modèle absent (404) -> indice ollama pull")
 d=mkrepo(); r=run(d,"squash","--dry-run",mode="404")
 check("hint pull", "ollama pull" in r.stderr, r.stderr); check("repli", "chore(" in r.stdout)
 
-print("8. commits déjà poussés -> refus; --allow-pushed accepte")
-d=mkrepo(); bare=tempfile.mkdtemp(prefix="bare-"); sh(f"git init -q --bare {bare}",d)
-sh(f"git remote add origin {bare} && git push -q origin dev",d); before=log(d)
+print("8. commits déjà poussés: jamais réécrits, seuls les nouveaux (locaux) sont regroupés")
+def push_remote(d):
+    bare=tempfile.mkdtemp(prefix="bare-"); sh(f"git init -q --bare {bare}",d)
+    sh(f"git remote add origin {bare} && git push -q origin dev",d)
+def add_autos(d, n):
+    for i in range(n):
+        open(f"{d}/modules/home/desktop/niri/_binds.nix","a").write(f'  local{i} = "x";\n')
+        sh(f"git add -A && git commit -qm 'auto: 1 file changed, local {i}'",d)
+# 8a. tout est poussé, rien de nouveau
+d=mkrepo(); push_remote(d); before=log(d)
 r=run(d,"squash","--yes",mode="good")
-check("refus (rc!=0) + historique intact", r.returncode!=0 and log(d)==before and "rewrite pushed history" in r.stderr, r.stderr)
+check("8a rien à regrouper, historique intact", r.returncode==0 and log(d)==before and "no unpushed" in r.stderr, r.stderr)
+# 8b. ta situation: 3 anciens poussés + 2 nouveaux locaux
+d=mkrepo(); push_remote(d); add_autos(d,2); pushed=sh("git rev-parse origin/dev",d).stdout.strip()
+State.prompts=[]; r=run(d,"squash","--yes",mode="good"); L=log(d)
+check("8b seuls les 2 nouveaux regroupés (base + 3 poussés + 1)", r.returncode==0 and len(L)==5 and L[0].startswith("feat(niri)") and sum(1 for x in L if x.startswith("auto:"))==3, L)
+check("8b l'historique poussé est un ancêtre: push normal, sans force", sh(f"git merge-base --is-ancestor {pushed} HEAD",d).returncode==0)
+# 8c. --allow-pushed regroupe tout, et prévient
+d=mkrepo(); push_remote(d); add_autos(d,2)
 r=run(d,"squash","--yes","--allow-pushed",mode="good")
-check("--allow-pushed squashe", r.returncode==0 and len(log(d))==2, (r.returncode,r.stderr))
+check("8c --allow-pushed regroupe les 5 et avertit du force-push", r.returncode==0 and len(log(d))==2 and "force-with-lease" in r.stderr, (r.returncode,r.stderr,log(d)))
+# 8d. dry-run montre le message pour les nouveaux seulement
+d=mkrepo(); push_remote(d); add_autos(d,2); before=log(d); State.prompts=[]
+r=run(d,"squash","--dry-run",mode="good")
+check("8d dry-run: message affiché, 2 commits seulement, rien modifié", r.returncode==0 and "2 commit(s) -> 1" in r.stderr and log(d)==before, r.stderr)
 
 print("9. arbre sale -> refus, rien ne bouge")
 d=mkrepo(); open(f"{d}/modules/home/desktop/niri/_binds.nix","a").write("# dirty\n"); before=log(d)
@@ -124,7 +142,7 @@ check("refus + intact + backup non créé", r.returncode!=0 and log(d)==before a
 
 print("10. HEAD n'est pas un commit auto -> rien à faire")
 d=mkrepo(autos=0); r=run(d,"squash","--yes",mode="good")
-check("rc 0 + message clair", r.returncode==0 and "no trailing" in r.stderr, r.stderr)
+check("rc 0 + message clair", r.returncode==0 and "no unpushed" in r.stderr, r.stderr)
 
 print("11. un vrai commit avant les auto est préservé")
 d=mkrepo(autos=2,nonauto_before=True); r=run(d,"squash","--yes",mode="good"); L=log(d)
