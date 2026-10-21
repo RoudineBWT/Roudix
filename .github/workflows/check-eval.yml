@@ -31,7 +31,8 @@ jobs:
             download-attempts = 2
 
       # hardware-configuration.nix / username.nix are gitignored but required
-      # by the flake: write throw-away stubs (see the script's header).
+      # by the flake: write throw-away stubs (see the script's header). The
+      # `path:` flake reference below is what lets Nix see them.
       - name: Create CI-only stubs
         run: scripts/ci-stubs.sh create
 
@@ -42,7 +43,7 @@ jobs:
             [ -f "hosts/$host/configuration.nix" ] || continue
             echo "::group::eval $host"
             nix eval --raw --accept-flake-config \
-              ".#nixosConfigurations.$host.config.system.build.toplevel.drvPath"
+              "path:.#nixosConfigurations.$host.config.system.build.toplevel.drvPath"
             echo
             echo "::endgroup::"
           done

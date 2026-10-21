@@ -3,13 +3,17 @@
 # the flake needs in order to evaluate (they are gitignored, so a fresh
 # checkout — CI, or a clone you never installed — doesn't have them).
 #
-#   scripts/ci-stubs.sh create    # write the missing stubs and make them visible to Nix
+#   scripts/ci-stubs.sh create    # write the MISSING stubs (files only)
 #   scripts/ci-stubs.sh remove    # delete exactly the stubs `create` wrote
 #
+# Use it with a `path:` flake reference (`nix eval path:.#...`), exactly like
+# `nh os switch path:$NH_FLAKE`: unlike `.#`, `path:` also sees gitignored /
+# untracked files, so real local files work as they are and stubs are seen
+# without touching the git index. (Touching the index would be a trap here:
+# gitwatch runs `git add --all`, and would commit an intent-to-add file.)
+#
 # Safe on a real machine: a file that already exists is NEVER touched, and
-# `remove` only deletes what `create` recorded. Nix flakes only see files
-# tracked by Git, hence `git add -N -f` (intent-to-add, forced past
-# .gitignore); `remove` undoes that before anything can be committed.
+# `remove` only deletes what `create` recorded.
 set -euo pipefail
 
 cd "$(git rev-parse --show-toplevel)"
@@ -44,7 +48,6 @@ create() {
 
     if [ ! -f "hosts/$host/hardware-configuration.nix" ]; then
       printf '%s\n' "$HW_STUB" > "hosts/$host/hardware-configuration.nix"
-      git add -N -f "hosts/$host/hardware-configuration.nix"
       echo "hosts/$host/hardware-configuration.nix" >> "$LIST"
       echo "stub: hosts/$host/hardware-configuration.nix"
     fi
@@ -52,7 +55,6 @@ create() {
     # flake.nix does `import ./hosts/<host>/username.nix` (a plain string).
     if [ ! -f "hosts/$host/username.nix" ]; then
       echo '"ci-runner"' > "hosts/$host/username.nix"
-      git add -N -f "hosts/$host/username.nix"
       echo "hosts/$host/username.nix" >> "$LIST"
       echo "stub: hosts/$host/username.nix"
     fi
@@ -63,7 +65,6 @@ remove() {
   [ -f "$LIST" ] || { echo "no stubs recorded, nothing to remove"; return 0; }
   while IFS= read -r f; do
     [ -n "$f" ] || continue
-    git reset -q -- "$f" 2>/dev/null || true
     rm -f -- "$f"
     echo "removed: $f"
   done < "$LIST"
