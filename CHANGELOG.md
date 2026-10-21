@@ -11,7 +11,8 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 - Roudix identity moved from Catppuccin Mocha Peach to the Roudix palette: logo
   (SVG + PNG), all app icons (switcher, store, config, hw-sync, kernel/scheduler
   switchers, installer), wallpapers SVG, installer CSS, ISO GRUB theme, fastfetch,
-  Hyprland `colors.lua` and GTK (adw-gtk3) accent/surfaces now follow
+  `roudix-kitsune.png` (hue-remapped), the `*-mocha` / `sakura-roudix` Umbriel
+  presets (names kept, colours now Roudix), Hyprland `colors.lua` and GTK (adw-gtk3) accent/surfaces now follow
   `assets/palette/Roudix.json`.
 
 ### Added

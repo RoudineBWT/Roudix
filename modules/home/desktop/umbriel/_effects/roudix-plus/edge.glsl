@@ -20,8 +20,8 @@ const float WAVES         = 2.0;
 const float DRIFT         = 0.5;
 
 vec3 edgeColor(float t) {
-    vec3 a = vec3(0.980, 0.702, 0.529); // Peach (fallback)
-    vec3 b = vec3(0.922, 0.627, 0.675); // Maroon (fallback)
+    vec3 a = vec3(1.000, 0.549, 0.259); // Roudix primary #FF8C42 (fallback)
+    vec3 b = vec3(0.949, 0.690, 0.369); // Roudix secondary #F2B05E (fallback)
     if (umbriel_palette_count > 0) {
         a = umbriel_palette_at(0.0).rgb;
         b = umbriel_palette_at(0.25).rgb;

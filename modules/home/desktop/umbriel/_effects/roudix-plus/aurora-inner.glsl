@@ -49,8 +49,8 @@ vec4 window(vec2 uv) {
         s = q.y < 0.0 ? t : W + H + (W - t);
     }
 
-    vec3 peach  = vec3(0.980, 0.702, 0.529);
-    vec3 maroon = vec3(0.922, 0.627, 0.675);
+    vec3 peach  = vec3(1.000, 0.549, 0.259);
+    vec3 maroon = vec3(0.949, 0.690, 0.369);
     if (umbriel_palette_count > 0) {
         peach  = umbriel_palette_at(0.0).rgb;
         maroon = umbriel_palette_at(0.25).rgb;

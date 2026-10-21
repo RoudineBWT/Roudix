@@ -35,23 +35,23 @@ in
                                workspace/layer/focus transitions (original
                                shaders, light on the GPU). Follows the
                                Noctalia palette.
-          "roudix-plus-mocha": same as "roudix-plus" with Catppuccin Mocha +
+          "roudix-plus-mocha": same as "roudix-plus" with Roudix palette +
                                Peach colors (fixed, independent of Noctalia).
           "roudix-aurora"    : "roudix-plus" + flowing Peach/Maroon light around the
                                border through one thin Sakura-like stem (no comet),
                                tiny glints, faint inner glow and a zip of light
                                on focus. Follows Noctalia.
-          "roudix-aurora-mocha": same with Catppuccin Mocha + Peach colors.
+          "roudix-aurora-mocha": same with the Roudix palette colors.
           "roudix-wobbly"    : "roudix-plus" + light jelly wobble on window
                                move/re-tile + spring physics while dragging.
-          "roudix-wobbly-mocha": same with Catppuccin Mocha + Peach colors.
+          "roudix-wobbly-mocha": same with the Roudix palette colors.
           "roudix-logo"      : "roudix-plus" + windows open/close through the
                                Roudix logo shape (Mocha Peach/Maroon, fixed).
           "roudix-logo-wobbly": same + jelly wobble on move + drag physics.
           "roudix-orbit"     : "roudix-plus" with a "snowflake braid" border (two
                                interlaced strands, glints, comet + flare, inner
                                glow, light spill) + focus sweep.
-          "roudix-orbit-mocha": same with Catppuccin Mocha + Peach colors.
+          "roudix-orbit-mocha": same with the Roudix palette colors.
           "roudix-full"      : everything — logo open/close, jelly wobble, aurora
                                border + focus zip (Mocha Peach/Maroon, fixed).
           "roudix-full-noctalia": same as "roudix-full" but the colors follow the
@@ -61,7 +61,7 @@ in
                                border, screen and cursor effects and shader
                                animations on every event. Colors come from the
                                Noctalia palette, so use it with the Noctalia shell.
-          "sakura-roudix"    : the same suite with Catppuccin Mocha + Peach colors
+          "sakura-roudix"    : the same suite with the Roudix palette colors
                                (fixed, independent of the wallpaper/Noctalia).
       '';
     };
