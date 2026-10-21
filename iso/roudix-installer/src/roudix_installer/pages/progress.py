@@ -7,7 +7,7 @@ from typing import Optional
 from gi.repository import Adw, Gdk, GLib, Gtk, Pango
 
 from roudix_installer import btrfs_patch, config_gen, disko_gen, host_profile
-from roudix_installer.i18n import L
+from roudix_installer.i18n import tr
 from roudix_installer.ui_helpers import page_with_header
 
 # Roudix palette (Roudix.json, dark), same as the rest of Roudix's theming.
@@ -71,7 +71,7 @@ def _ensure_terminal_css():
 
 class ProgressPage(Adw.NavigationPage):
     def __init__(self, state):
-        super().__init__(title=L("Installation", "Installation"), can_pop=False)
+        super().__init__(title=tr("Installation"), can_pop=False)
         self.state = state
         _ensure_terminal_css()
 
@@ -79,7 +79,7 @@ class ProgressPage(Adw.NavigationPage):
                        margin_top=32, margin_bottom=32, margin_start=32, margin_end=32,
                        vexpand=True)
 
-        self.status_label = Gtk.Label(label=L("Préparation…", "Preparing…"), css_classes=["title-3"],
+        self.status_label = Gtk.Label(label=tr("Preparing…"), css_classes=["title-3"],
                                        halign=Gtk.Align.START)
         self.progress = Gtk.ProgressBar(show_text=False)
         box.append(self.status_label)
@@ -95,12 +95,12 @@ class ProgressPage(Adw.NavigationPage):
         for dot_class in ("dot-red", "dot-yellow", "dot-green"):
             dots.append(Gtk.Box(css_classes=["roudix-term-dot", dot_class]))
         titlebar.append(dots)
-        titlebar.append(Gtk.Label(label=L("Journal d'installation", "Installation log"),
+        titlebar.append(Gtk.Label(label=tr("Installation log"),
                                    css_classes=["dim-label"], valign=Gtk.Align.CENTER))
         titlebar.append(Gtk.Box(hexpand=True))  # spacer, pushes the copy button to the right
         copy_btn = Gtk.Button(icon_name="edit-copy-symbolic", css_classes=["flat"],
                                valign=Gtk.Align.CENTER,
-                               tooltip_text=L("Copier le journal", "Copy log"))
+                               tooltip_text=tr("Copy log"))
         copy_btn.connect("clicked", self._on_copy_log_clicked)
         titlebar.append(copy_btn)
         term_frame.append(titlebar)
@@ -126,18 +126,18 @@ class ProgressPage(Adw.NavigationPage):
         box.append(term_frame)
 
         bottom_row = Gtk.Box(spacing=12, halign=Gtk.Align.CENTER, margin_top=4)
-        self.reboot_check = Gtk.CheckButton(label=L("Redémarrer maintenant", "Reboot now"), active=True)
+        self.reboot_check = Gtk.CheckButton(label=tr("Reboot now"), active=True)
         self.reboot_check.set_visible(False)
         bottom_row.append(self.reboot_check)
 
-        self.finish_btn = Gtk.Button(label=L("Terminer", "Finish"),
+        self.finish_btn = Gtk.Button(label=tr("Finish"),
                                       css_classes=["suggested-action", "pill"])
         self.finish_btn.connect("clicked", self._on_finish_clicked)
         self.finish_btn.set_visible(False)
         bottom_row.append(self.finish_btn)
         box.append(bottom_row)
 
-        self.set_child(page_with_header(L("Installation", "Installation"), box))
+        self.set_child(page_with_header(tr("Installation"), box))
         self.connect("shown", lambda *_: self._start())
 
     def _init_log_tags(self):
@@ -156,7 +156,7 @@ class ProgressPage(Adw.NavigationPage):
 
     def _on_finish_clicked(self, _btn):
         if self.reboot_check.get_active():
-            GLib.idle_add(self._log, L("Redémarrage…", "Rebooting…"))
+            GLib.idle_add(self._log, tr("Rebooting…"))
             subprocess.Popen(self._priv(["systemctl", "reboot"]))
         else:
             self.get_root().get_application().quit()
@@ -224,13 +224,10 @@ class ProgressPage(Adw.NavigationPage):
         import tempfile
 
         host = self.state.hostname
-        GLib.idle_add(self._set_status, L("Simulation — rien n'est écrit sur les disques", "Dry run — nothing is written to disk"), 0.5)
+        GLib.idle_add(self._set_status, tr("Dry run — nothing is written to disk"), 0.5)
         src = host_profile.find_config_root(host)
         if src is None:
-            raise RuntimeError(L(
-                f"hosts/{host}/local.nix.example introuvable (essaie ROUDIX_CFG_ROOT=<chemin du repo>)",
-                f"hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the repo>)",
-            ))
+            raise RuntimeError(tr("hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the repo>)").format(host=host))
         GLib.idle_add(self._log, f"[dry-run] host={host}  branch={self.state.branch}  config from {src}")
         with tempfile.TemporaryDirectory(prefix="roudix-dry-run-") as tmp:
             tmp = Path(tmp)
@@ -252,7 +249,7 @@ class ProgressPage(Adw.NavigationPage):
         GLib.idle_add(self._log, f"[dry-run] hosts/{host}/local.nix — full result:")
         for line in result:
             GLib.idle_add(self._log, line)
-        GLib.idle_add(self._set_status, L("Simulation terminée — ferme la fenêtre", "Dry run finished — close the window"), 1.0)
+        GLib.idle_add(self._set_status, tr("Dry run finished — close the window"), 1.0)
 
     def _run(self):
         try:
@@ -262,12 +259,12 @@ class ProgressPage(Adw.NavigationPage):
             self._step_partition()
             self._step_config()
             self._step_install()
-            GLib.idle_add(self._set_status, L("Installation terminée 🎉", "Installation complete 🎉"), 1.0)
+            GLib.idle_add(self._set_status, tr("Installation complete 🎉"), 1.0)
             GLib.idle_add(self.reboot_check.set_visible, True)
             GLib.idle_add(self.finish_btn.set_visible, True)
         except Exception as exc:  # noqa: BLE001
-            GLib.idle_add(self._log, f"{L('Erreur', 'Error')}: {exc}")
-            GLib.idle_add(self._set_status, L("Échec de l'installation", "Installation failed"), 0.0)
+            GLib.idle_add(self._log, tr("Error") + f": {exc}")
+            GLib.idle_add(self._set_status, tr("Installation failed"), 0.0)
             GLib.idle_add(self.reboot_check.set_active, False)
             GLib.idle_add(self.finish_btn.set_visible, True)
 
@@ -297,7 +294,7 @@ class ProgressPage(Adw.NavigationPage):
             GLib.idle_add(self._log, line.rstrip())
         proc.wait()
         if proc.returncode != 0:
-            raise RuntimeError(f"{cmd[0]} {L('a échoué', 'failed')} (code {proc.returncode})")
+            raise RuntimeError(f"{cmd[0]} " + tr("failed") + f" (code {proc.returncode})")
 
     def _run_cmd_with_input(self, cmd: list[str], input_text: str):
         """Like _run_cmd, but actually feeds stdin — for chpasswd."""
@@ -307,7 +304,7 @@ class ProgressPage(Adw.NavigationPage):
         if proc.stdout:
             GLib.idle_add(self._log, proc.stdout.rstrip())
         if proc.returncode != 0:
-            raise RuntimeError(f"{cmd[0]} {L('a échoué', 'failed')} (code {proc.returncode}): {proc.stderr.strip()}")
+            raise RuntimeError(f"{cmd[0]} " + tr("failed") + f" (code {proc.returncode}): {proc.stderr.strip()}")
 
     # ── Partitioning ──────────────────────────────────────────────────────
 
@@ -318,10 +315,10 @@ class ProgressPage(Adw.NavigationPage):
         elif mode == "manual":
             self._partition_manual()
         else:
-            raise ValueError(f"{L('Mode de partitionnement inconnu', 'Unknown partitioning mode')}: {mode}")
+            raise ValueError(tr("Unknown partitioning mode") + f": {mode}")
 
     def _partition_disko(self):
-        GLib.idle_add(self._set_status, L("Partitionnement du disque…", "Partitioning the disk…"), 0.15)
+        GLib.idle_add(self._set_status, tr("Partitioning the disk…"), 0.15)
         disko_nix = disko_gen.generate(self.state.disk)
         Path("/tmp/roudix-disko.nix").write_text(disko_nix)
         self._run_cmd(["disko", "--mode", "disko", "/tmp/roudix-disko.nix"])
@@ -332,11 +329,11 @@ class ProgressPage(Adw.NavigationPage):
         in the right order — root first, then boot, then swap — same result
         as Calamares' manual partitioning, but via plain mount(8).
         """
-        GLib.idle_add(self._set_status, L("Montage des partitions…", "Mounting partitions…"), 0.2)
+        GLib.idle_add(self._set_status, tr("Mounting partitions…"), 0.2)
         mapping = self.state.disk.manual_partitions
         root = next((dev for dev, mp in mapping.items() if mp == "/"), None)
         if not root:
-            raise ValueError(L("Aucune partition assignée à / — impossible de continuer", "No partition assigned to / — cannot continue"))
+            raise ValueError(tr("No partition assigned to / — cannot continue"))
 
         self._run_cmd(["mount", root, "/mnt"])
 
@@ -360,7 +357,7 @@ class ProgressPage(Adw.NavigationPage):
         early), we just proceed with the branch as chosen and let the real
         clone/checkout below report any actual failure.
         """
-        GLib.idle_add(self._log, L(f"Vérification de la branche « {branch} »…", f"Checking branch '{branch}'…"))
+        GLib.idle_add(self._log, tr("Checking branch '{branch}'…").format(branch=branch))
         try:
             proc = subprocess.run(
                 self._priv(["git", "ls-remote", "--exit-code", "--heads", repo_url, branch]),
@@ -375,10 +372,7 @@ class ProgressPage(Adw.NavigationPage):
         if branch != "main":
             GLib.idle_add(
                 self._log,
-                L(
-                    f"Branche « {branch} » introuvable sur {repo_url} — retour sur « main ».",
-                    f"Branch '{branch}' not found on {repo_url} — falling back to 'main'.",
-                ),
+                tr("Branch '{branch}' not found on {repo_url} — falling back to 'main'.").format(branch=branch, repo_url=repo_url),
             )
             return "main"
         # main itself didn't answer (likely no network at all): let the
@@ -411,16 +405,11 @@ class ProgressPage(Adw.NavigationPage):
         if not example.is_file():
             GLib.idle_add(
                 self._log,
-                L(
-                    f"Avertissement: hosts/{host}/local.nix.example introuvable sur la branche « {branch} » — "
-                    "la génération de local.nix pourrait échouer.",
-                    f"Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
-                    "local.nix generation may fail.",
-                ),
+                tr("Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — local.nix generation may fail.").format(host=host, branch=branch),
             )
 
     def _step_config(self):
-        GLib.idle_add(self._set_status, L("Copie de la configuration…", "Copying the configuration…"), 0.4)
+        GLib.idle_add(self._set_status, tr("Copying the configuration…"), 0.4)
         self._run_cmd(["mkdir", "-p", "/mnt/etc/nixos"])
 
         repo_url = "https://github.com/RoudineBWT/Roudix"
@@ -437,10 +426,7 @@ class ProgressPage(Adw.NavigationPage):
             if Path("/iso-cfg").is_dir():
                 GLib.idle_add(
                     self._log,
-                    L(
-                        f"Branche « {branch} » choisie — clone depuis GitHub (l'ISO embarque uniquement main).",
-                        f"Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main).",
-                    ),
+                    tr("Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main).").format(branch=branch),
                 )
             else:
                 # /iso-cfg only exists inside an ISO actually built with the
@@ -450,18 +436,14 @@ class ProgressPage(Adw.NavigationPage):
                 # before there was an ISO pipeline at all.
                 GLib.idle_add(
                     self._log,
-                    L(
-                        "/iso-cfg introuvable (ISO pas (encore) reconstruite avec "
-                        "isoImage.contents, ou test hors ISO) — clone direct depuis GitHub à la place.",
-                        "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, "
-                        "or testing outside an ISO) — cloning straight from GitHub instead.",
-                    ),
+                    tr("/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, "
+                        "or testing outside an ISO) — cloning straight from GitHub instead."),
                 )
             self._clone_and_checkout(repo_url, branch)
 
         self._verify_config_layout(branch)
 
-        GLib.idle_add(self._set_status, L("Détection du matériel…", "Detecting hardware…"), 0.5)
+        GLib.idle_add(self._set_status, tr("Detecting hardware…"), 0.5)
         # Generate into the default location then copy — same as
         # roudix-installer.sh, which does this specifically to avoid
         # stdout-capture truncation on btrfs. Manual mode already mounted
@@ -476,15 +458,12 @@ class ProgressPage(Adw.NavigationPage):
         if patched:
             GLib.idle_add(
                 self._log,
-                L(
-                    f"btrfs détecté — options de montage auto-patchées pour: {', '.join(patched)}",
-                    f"btrfs detected — mount options auto-patched for: {', '.join(patched)}",
-                ),
+                tr("btrfs detected — mount options auto-patched for: {patched}").format(patched=', '.join(patched)),
             )
 
-        GLib.idle_add(self._set_status, L("Génération de local.nix / username.nix…", "Generating local.nix / username.nix…"), 0.6)
+        GLib.idle_add(self._set_status, tr("Generating local.nix / username.nix…"), 0.6)
         config_gen.write_config(self.state, Path("/mnt/etc/nixos"))
-        GLib.idle_add(self._log, L(f"hosts/{self.state.hostname}/local.nix, username.nix, home/local.nix écrits.", f"hosts/{self.state.hostname}/local.nix, username.nix, home/local.nix written."))
+        GLib.idle_add(self._log, tr("hosts/{hostname}/local.nix, username.nix, home/local.nix written.").format(hostname=self.state.hostname))
 
         # nixos-install --flake resolves /mnt/etc/nixos through Nix's
         # git+file fetcher whenever that directory is a git repo (always
@@ -508,7 +487,7 @@ class ProgressPage(Adw.NavigationPage):
     # ── Install ───────────────────────────────────────────────────────────
 
     def _step_install(self):
-        GLib.idle_add(self._set_status, L("Installation du système…", "Installing the system…"), 0.75)
+        GLib.idle_add(self._set_status, tr("Installing the system…"), 0.75)
         self._run_cmd([
             "nixos-install",
             "--flake", f"/mnt/etc/nixos#{self.state.hostname}",
@@ -517,7 +496,7 @@ class ProgressPage(Adw.NavigationPage):
         ])
 
         if self.state.password:
-            GLib.idle_add(self._set_status, L("Configuration du mot de passe…", "Setting the password…"), 0.9)
+            GLib.idle_add(self._set_status, tr("Setting the password…"), 0.9)
             # Sets it directly in the installed system's /etc/shadow via
             # chroot — same place any other distro's installer would put
             # it — rather than baking a password hash into the declarative
@@ -527,7 +506,7 @@ class ProgressPage(Adw.NavigationPage):
                 f"{self.state.username}:{self.state.password}\n",
             )
 
-        GLib.idle_add(self._set_status, L("Copie de la config pour nh os switch…", "Copying config for nh os switch…"), 0.95)
+        GLib.idle_add(self._set_status, tr("Copying config for nh os switch…"), 0.95)
         config_dir = f"/mnt/home/{self.state.username}/.config/roudix"
         self._run_cmd(["mkdir", "-p", config_dir])
         self._run_cmd(["cp", "-r", "/mnt/etc/nixos/.", config_dir])

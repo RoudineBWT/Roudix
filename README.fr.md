@@ -93,10 +93,19 @@ roudix/
 │   │   └── roudix.txt               # Logo ASCII Roudix par défaut pour fastfetch
 │   # niri/, niri-dms/ supprimés — la config niri est désormais
 │   # entièrement native Nix (voir modules/home/desktop/niri/ ci-dessous).
-│   ├── hyprland/                    # Dotfiles Hyprland + Noctalia
-│   │   └── cfg/                     # Config Hyprland découpée (gérée par l'utilisateur — .conf, .lua, etc.)
-│   ├── hyprland-dms/                # Dotfiles Hyprland + DankMaterialShell
-│   ├── hyprland-caelestia/          # Dotfiles Hyprland + Caelestia
+│   ├── hyprland/                    # Config Hyprland (Lua) — un seul arbre pour tous les shells graphiques
+│   │   ├── hyprland.lua             # Point d'entrée : charge les modules de config/
+│   │   └── config/
+│   │       ├── shell.lua            # Choisit le shell (noctalia / dms / caelestia) via ROUDIX_HYPR_SHELL
+│   │       ├── shells/              # Raccourcis & intégration propres à chaque shell (noctalia.lua, dms.lua, caelestia.lua)
+│   │       ├── binds/common.lua     # Raccourcis communs à tous les shells
+│   │       ├── rules/               # Règles de fenêtres (common.lua, apps.lua, gaming.lua)
+│   │       ├── ws.lua               # Table de workspaces partagée (workspaces, raccourcis et règles)
+│   │       ├── workspaces.lua       # Règles de workspaces
+│   │       ├── monitors.lua / input.lua / layout.lua / decorations.lua / animations.lua
+│   │       ├── defaults.lua / colors.lua / environment.lua / autostart.lua / misc.lua
+│   │       └── nix-noctalia.lua     # Charge le thème Noctalia en direct (généré par matugen)
+│   │   # config/nix-plugins.lua et config/nix-apps.lua sont générés par Nix (absents du dépôt)
 │   └── perso/                       # Config personnelle (ignorée par git)
 │
 ├── pkgs/
@@ -238,6 +247,16 @@ Voir [`dotfiles/perso/README.md`](dotfiles/perso/README.md) pour la structure et
 
 Pour les surcharges au niveau du compositeur (écrans, raccourcis, espacements…), utilisez plutôt les fichiers de surcharge utilisateur générés — ils sont gérés par home-manager et à l'abri de `git pull`. Voir [Bureau & shells](docs/desktop.fr.md#surcharges-personnelles-du-compositeur) pour plus de détails.
 
+
+## Développement
+
+```bash
+nix develop     # shell de dev : just, ruff, statix, deadnix, shellcheck, gettext
+just            # liste les tâches
+just ci         # tout ce que vérifie la CI (évalue chaque hôte, lint, Python, traductions)
+```
+
+L'installeur est traduit avec gettext — voir [Installeur › Traductions](iso/roudix-installer/README.md#traductions).
 
 ## Licence
    MIT — Voir [LICENSE](LICENSE). Le Roudix Store est soumis exclusivement à la licence GPL-2.0, et certains

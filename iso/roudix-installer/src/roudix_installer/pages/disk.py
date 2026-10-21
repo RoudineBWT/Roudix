@@ -4,7 +4,7 @@ import threading
 
 from gi.repository import Adw, GLib, Gtk
 
-from roudix_installer.i18n import L
+from roudix_installer.i18n import tr
 from roudix_installer.ui_helpers import page_with_header
 
 # index-based, not string-based, so the mapping doesn't depend on language
@@ -19,7 +19,7 @@ def list_disks() -> list[dict]:
     data = json.loads(out)
     return [
         {"path": f"/dev/{d['name']}", "size": d.get("size", "?"),
-         "model": d.get("model") or L("Disque inconnu", "Unknown disk")}
+         "model": d.get("model") or tr("Unknown disk")}
         for d in data.get("blockdevices", []) if d.get("type") == "disk"
     ]
 
@@ -45,14 +45,14 @@ def list_partitions(disk_path: str) -> list[dict]:
 
 class DiskPage(Adw.NavigationPage):
     def __init__(self, state, on_next):
-        super().__init__(title=L("Disque", "Disk"))
+        super().__init__(title=tr("Disk"))
         self.state = state
         self.on_next = on_next
         self.selected_disk = None
         self.partition_dropdowns: dict[str, Gtk.DropDown] = {}
         self._partition_rows: list[Adw.ActionRow] = []
         self.mountpoint_choices = [
-            L("Ignorer", "Skip"), "/", L("/boot (EFI)", "/boot (EFI)"), L("swap", "swap"),
+            tr("Skip"), "/", tr("/boot (EFI)"), tr("swap"),
         ]
 
         scroller = Gtk.ScrolledWindow(vexpand=True)
@@ -61,17 +61,16 @@ class DiskPage(Adw.NavigationPage):
         scroller.set_child(box)
 
         self.warn_banner = Adw.Banner(
-            title=L("⚠ Le disque sélectionné sera entièrement effacé (mode simple)",
-                     "⚠ The selected disk will be completely wiped (simple mode)"),
+            title=tr("⚠ The selected disk will be completely wiped (simple mode)"),
             revealed=True,
         )
         box.append(self.warn_banner)
 
-        self.mode_group = Adw.PreferencesGroup(title=L("Mode de partitionnement", "Partitioning mode"))
+        self.mode_group = Adw.PreferencesGroup(title=tr("Partitioning mode"))
         mode_options = [
-            (L("Simple (EFI + swap + root, efface tout)", "Simple (EFI + swap + root, wipes everything)"), "simple"),
-            (L("Avancé (fichier disko.nix custom)", "Advanced (custom disko.nix file)"), "advanced"),
-            (L("Manuel (partitionner soi-même)", "Manual (partition it yourself)"), "manual"),
+            (tr("Simple (EFI + swap + root, wipes everything)"), "simple"),
+            (tr("Advanced (custom disko.nix file)"), "advanced"),
+            (tr("Manual (partition it yourself)"), "manual"),
         ]
         self.mode_checks = {}
         first_check = None
@@ -91,37 +90,31 @@ class DiskPage(Adw.NavigationPage):
         box.append(self.mode_group)
 
         # ── options du mode simple : filesystem, taille /boot, swap ──
-        self.simple_options_group = Adw.PreferencesGroup(title=L("Options", "Options"))
+        self.simple_options_group = Adw.PreferencesGroup(title=tr("Options"))
 
         self.filesystem_row = Adw.ComboRow(
-            title=L("Système de fichiers", "Filesystem"),
+            title=tr("Filesystem"),
             model=Gtk.StringList.new([
-                L("ext4 (simple)", "ext4 (simple)"),
-                L("btrfs (subvolumes @, @home, @nix, @log + zstd)", "btrfs (@, @home, @nix, @log subvolumes + zstd)"),
+                tr("ext4 (simple)"),
+                tr("btrfs (@, @home, @nix, @log subvolumes + zstd)"),
             ]),
         )
         self.simple_options_group.add(self.filesystem_row)
 
         self.boot_size_row = Adw.SpinRow.new_with_range(2, 16, 1)
-        self.boot_size_row.set_title(L("Taille de /boot (Go)", "/boot size (GB)"))
-        self.boot_size_row.set_subtitle(L(
-            "4G recommandé avec CachyOS + plusieurs générations Limine — 2G minimum",
-            "4G recommended with CachyOS + multiple Limine generations — 2G minimum",
-        ))
+        self.boot_size_row.set_title(tr("/boot size (GB)"))
+        self.boot_size_row.set_subtitle(tr("4G recommended with CachyOS + multiple Limine generations — 2G minimum"))
         self.boot_size_row.set_value(4)
         self.simple_options_group.add(self.boot_size_row)
 
-        self.swap_row = Adw.SwitchRow(title=L("Ajouter une partition swap", "Add a swap partition"))
-        self.swap_row.set_subtitle(L(
-            "Désactivé par défaut — zram fait déjà ce travail",
-            "Off by default — zram already covers this",
-        ))
+        self.swap_row = Adw.SwitchRow(title=tr("Add a swap partition"))
+        self.swap_row.set_subtitle(tr("Off by default — zram already covers this"))
         self.swap_row.set_active(False)
         self.swap_row.connect("notify::active", lambda *_: self._sync_swap_size_row())
         self.simple_options_group.add(self.swap_row)
 
         self.swap_size_row = Adw.SpinRow.new_with_range(1, 64, 1)
-        self.swap_size_row.set_title(L("Taille du swap (Go)", "Swap size (GB)"))
+        self.swap_size_row.set_title(tr("Swap size (GB)"))
         self.swap_size_row.set_value(8)
         self.swap_size_row.set_visible(False)
         self.simple_options_group.add(self.swap_size_row)
@@ -129,13 +122,13 @@ class DiskPage(Adw.NavigationPage):
         box.append(self.simple_options_group)
 
         # ── simple mode ──
-        self.disk_group = Adw.PreferencesGroup(title=L("Choisis un disque", "Choose a disk"))
+        self.disk_group = Adw.PreferencesGroup(title=tr("Choose a disk"))
         box.append(self.disk_group)
 
         # ── advanced mode ──
-        self.advanced_group = Adw.PreferencesGroup(title=L("Fichier disko.nix", "disko.nix file"))
-        self.advanced_row = Adw.ActionRow(title=L("Aucun fichier sélectionné", "No file selected"))
-        pick_btn = Gtk.Button(label=L("Parcourir…", "Browse…"), valign=Gtk.Align.CENTER)
+        self.advanced_group = Adw.PreferencesGroup(title=tr("disko.nix file"))
+        self.advanced_row = Adw.ActionRow(title=tr("No file selected"))
+        pick_btn = Gtk.Button(label=tr("Browse…"), valign=Gtk.Align.CENTER)
         pick_btn.connect("clicked", self._pick_disko_file)
         self.advanced_row.add_suffix(pick_btn)
         self.advanced_group.add(self.advanced_row)
@@ -143,20 +136,17 @@ class DiskPage(Adw.NavigationPage):
         box.append(self.advanced_group)
 
         # ── mode manuel ──
-        self.manual_group = Adw.PreferencesGroup(title=L("Partitionnement manuel", "Manual partitioning"))
-        self.manual_disk_row = Adw.ComboRow(title=L("Disque à partitionner", "Disk to partition"))
+        self.manual_group = Adw.PreferencesGroup(title=tr("Manual partitioning"))
+        self.manual_disk_row = Adw.ComboRow(title=tr("Disk to partition"))
         self.manual_disk_row.connect("notify::selected", self._on_manual_disk_selected)
         self.manual_group.add(self.manual_disk_row)
 
-        gparted_row = Adw.ActionRow(title=L("Partitionner", "Partition it"))
-        gparted_btn = Gtk.Button(label=L("Ouvrir GParted", "Open GParted"), valign=Gtk.Align.CENTER)
+        gparted_row = Adw.ActionRow(title=tr("Partition it"))
+        gparted_btn = Gtk.Button(label=tr("Open GParted"), valign=Gtk.Align.CENTER)
         gparted_btn.connect("clicked", self._launch_gparted)
         refresh_btn = Gtk.Button(
-            label=L("Rafraîchir", "Refresh"), valign=Gtk.Align.CENTER,
-            tooltip_text=L(
-                "Si tu as déjà partitionné toi-même (fdisk, cfdisk…) dans un terminal",
-                "If you already partitioned it yourself (fdisk, cfdisk…) in a terminal",
-            ),
+            label=tr("Refresh"), valign=Gtk.Align.CENTER,
+            tooltip_text=tr("If you already partitioned it yourself (fdisk, cfdisk…) in a terminal"),
         )
         refresh_btn.connect("clicked", self._on_refresh_clicked)
         button_box = Gtk.Box(spacing=6)
@@ -166,11 +156,8 @@ class DiskPage(Adw.NavigationPage):
         self.manual_group.add(gparted_row)
 
         self.partitions_group = Adw.PreferencesGroup(
-            title=L("Assigner les points de montage", "Assign mountpoints"),
-            description=L(
-                "Une fois le partitionnement fait, associe chaque partition à un point de montage.",
-                "Once partitioning is done, assign each partition to a mountpoint.",
-            ),
+            title=tr("Assign mountpoints"),
+            description=tr("Once partitioning is done, assign each partition to a mountpoint."),
         )
         self.manual_group.add(self.partitions_group)
         self.manual_group.set_visible(False)
@@ -180,12 +167,12 @@ class DiskPage(Adw.NavigationPage):
         # manual_disk_row (dropdown) — both must already exist.
         self._populate_disk_group()
 
-        next_btn = Gtk.Button(label=L("Continuer", "Continue"), css_classes=["suggested-action", "pill"],
+        next_btn = Gtk.Button(label=tr("Continue"), css_classes=["suggested-action", "pill"],
                                halign=Gtk.Align.END, margin_top=12)
         next_btn.connect("clicked", self._validate)
         box.append(next_btn)
 
-        self.set_child(page_with_header(L("Disque", "Disk"), scroller))
+        self.set_child(page_with_header(tr("Disk"), scroller))
 
     def _populate_disk_group(self):
         try:
@@ -230,8 +217,8 @@ class DiskPage(Adw.NavigationPage):
 
     def _pick_disko_file(self, _btn):
         dialog = Gtk.FileChooserNative.new(
-            L("Sélectionner un disko.nix", "Select a disko.nix"), self.get_root(),
-            Gtk.FileChooserAction.OPEN, L("Choisir", "Choose"), L("Annuler", "Cancel"),
+            tr("Select a disko.nix"), self.get_root(),
+            Gtk.FileChooserAction.OPEN, tr("Choose"), tr("Cancel"),
         )
 
         def on_response(dlg, response):

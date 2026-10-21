@@ -1,7 +1,7 @@
-name: Check (eval + Python)
+name: Check (eval, Python, i18n)
 
-# Fast gate on every push / PR: every host must still evaluate, and the Python
-# tools must have no real errors. This does NOT build (sync-dev-to-testing and
+# Fast gate on every push / PR: every host must still evaluate, the Python
+# tools must have no real errors, and the installer translations must be complete. This does NOT build (sync-dev-to-testing and
 # sync-main still do the full build gate before anything is pushed) — it only
 # catches a broken evaluation minutes after the push instead of at sync time.
 
@@ -67,3 +67,16 @@ jobs:
         run: |
           pip install ruff
           ruff check --select E9,F63,F7,F82 --no-cache pkgs iso scripts
+
+  i18n:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install gettext
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq gettext
+
+      # po/roudix-installer.pot and po/*.po must match the tr("…") calls in the
+      # sources, with nothing untranslated or fuzzy (scripts/i18n.sh check).
+      - name: Installer translations are complete and up to date
+        run: scripts/i18n.sh check

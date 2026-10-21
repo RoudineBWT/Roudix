@@ -27,11 +27,24 @@
           pkgs.wrapGAppsHook4
           pkgs.gobject-introspection
           pkgs.hicolor-icon-theme
+          pkgs.gettext          # msgfmt: po/*.po -> .mo (see preBuild)
         ];
         buildInputs = [ pkgs.gtk4 pkgs.libadwaita ];
         propagatedBuildInputs = [
           pkgs.python3Packages.pygobject3
         ];
+
+        # Compile the translations (po/*.po) to .mo files *before* the wheel is
+        # built, so setuptools packages them (pyproject.toml: package-data).
+        # Wiping locale/ first drops any stale catalog from a local build.
+        preBuild = ''
+          rm -rf src/roudix_installer/locale
+          for po in po/*.po; do
+            lang=$(basename "$po" .po)
+            mkdir -p "src/roudix_installer/locale/$lang/LC_MESSAGES"
+            msgfmt --check -o "src/roudix_installer/locale/$lang/LC_MESSAGES/roudix-installer.mo" "$po"
+          done
+        '';
 
         # PEP 517 backend declared in pyproject.toml — required explicitly,
         # pypaBuildPhase otherwise can't import setuptools.build_meta.

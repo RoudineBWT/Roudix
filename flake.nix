@@ -267,5 +267,25 @@
         hostNames = builtins.attrNames (nixpkgs.lib.filterAttrs (_: type: type == "directory") hostDirs);
       in
       nixpkgs.lib.genAttrs hostNames mkHost;
+
+    # `nix develop` — the tools behind `just ci` (and the installer's gettext
+    # workflow), pinned by this flake, so contributors install nothing by hand.
+    devShells.x86_64-linux.default =
+      let pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      in pkgs.mkShell {
+        packages = with pkgs; [
+          just          # task runner: `just` lists the tasks
+          git
+          python3
+          ruff          # `just py`
+          statix        # `just lint`
+          deadnix       # `just lint`
+          shellcheck    # installer + scripts
+          gettext       # xgettext / msgmerge / msgfmt: `just i18n-*`
+        ];
+        shellHook = ''
+          echo "Roudix dev shell — type 'just' to list the tasks"
+        '';
+      };
   };
 }
