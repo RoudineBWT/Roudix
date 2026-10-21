@@ -1,4 +1,4 @@
-{ lib, pkgs, config, osConfig, ... }:
+{ lib, pkgs, osConfig, ... }:
 
 let
   desktopType = osConfig.roudix.desktop.type;
@@ -40,32 +40,6 @@ let
   # this way: worst case it silently falls back to hicolor at runtime.
   chosenIcon = iconThemes.${iconThemeChoice} or { name = iconThemeChoice; package = null; };
 
-  # adw-gtk3 / libadwaita named colours <- assets/palette/Roudix.json (dark)
-  p = config.roudix.palette.dark;
-  paletteCss = ''
-    @define-color accent_color ${p.primary};
-    @define-color accent_bg_color ${p.primary};
-    @define-color accent_fg_color ${p.onPrimary};
-    @define-color destructive_color ${p.error};
-    @define-color destructive_bg_color ${p.error};
-    @define-color destructive_fg_color ${p.onError};
-    @define-color window_bg_color ${p.surface};
-    @define-color window_fg_color ${p.onSurface};
-    @define-color view_bg_color ${p.surface};
-    @define-color view_fg_color ${p.onSurface};
-    @define-color headerbar_bg_color ${p.surfaceVariant};
-    @define-color headerbar_fg_color ${p.onSurface};
-    @define-color headerbar_border_color ${p.outline};
-    @define-color card_bg_color ${p.surfaceVariant};
-    @define-color card_fg_color ${p.onSurface};
-    @define-color dialog_bg_color ${p.surfaceVariant};
-    @define-color dialog_fg_color ${p.onSurface};
-    @define-color popover_bg_color ${p.surfaceVariant};
-    @define-color popover_fg_color ${p.onSurface};
-    @define-color sidebar_bg_color ${p.surfaceVariant};
-    @define-color sidebar_fg_color ${p.onSurface};
-  '';
-
   themeName  = "adw-gtk3-dark";
   cursorName = "capitaine-cursors-white";
   cursorSize = 24;
@@ -89,8 +63,6 @@ in
         package = pkgs.capitaine-cursors;
         size    = cursorSize;
       };
-      gtk3.extraCss = paletteCss;
-      gtk4.extraCss = paletteCss;
     };
 
     home.pointerCursor = {
