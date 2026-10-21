@@ -254,7 +254,7 @@ in
     )
     {
       # "easyeffects" = the class it exposes under Xwayland (seen in `umbriel windows`).
-      match.app_id = "^(easyeffects|com\\.kde\\.easyeffects|com\\.github\\.wwmm\\.easyeffects)$";
+      match.app_id = "^com\\.github\\.wwmm\\.easyeffects$";
       default_output = "DP-3";
       default_workspace = 2;
     }

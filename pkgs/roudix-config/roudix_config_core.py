@@ -1,19 +1,45 @@
 """roudix_config_core — logic shared by the TUI (roudix-config.py) and the GUI
-(roudix-config-gui.py): the managed block in umbriel-custom.nix, live config,
-overrides, open windows / installed apps / outputs, availability check.
-No UI code here."""
+(roudix-config-gui.py): the managed block in <compositor>-custom.nix, live
+config, overrides, open windows / installed apps / outputs, availability check.
+Everything compositor-specific lives in roudix_config_backends.py; the functions
+below delegate to the active backend. No UI code here."""
 from __future__ import annotations
 
 import argparse
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
-COMPOSITOR = "umbriel"  # niri / mango later
+
+
+# ───────────────────────── language (same idiom as the other Roudix apps) ─────────────────────────
+
+def _detect_lang() -> str:
+    for var in ("LC_ALL", "LC_MESSAGES", "LANG", "LANGUAGE"):
+        val = os.environ.get(var, "")
+        if val:
+            return "fr" if val.lower().startswith("fr") else "en"
+    return "en"
+
+
+LANG = _detect_lang()
+
+
+def L(fr: str, en: str) -> str:
+    return fr if LANG == "fr" else en
+
+
+def backend():
+    """The backend of the active compositor (roudix.desktop.type). Falls back to
+    Umbriel when the type is unknown so read-only helpers never crash; the UIs
+    check availability() first. ROUDIX_BACKEND forces one (tests)."""
+    from roudix_config_backends import BACKENDS
+    return BACKENDS.get(os.environ.get("ROUDIX_BACKEND") or desktop_type() or "") or BACKENDS["umbriel"]
 
 
 # ───────────────────────── paths & -custom.nix block ─────────────────────────
@@ -43,7 +69,7 @@ def home_dir() -> Path:
 
 
 def custom_path() -> Path:
-    return home_dir() / f"{COMPOSITOR}-custom.nix"
+    return home_dir() / backend().custom_name
 
 
 def state_dir() -> Path:
@@ -53,31 +79,6 @@ def state_dir() -> Path:
 
 BEGIN = "# >>> roudix-config >>>"
 END = "# <<< roudix-config <<<"
-
-BLOCK_TEMPLATE = """\
-    {begin} généré par Roudix Config — modifie-le via l'app
-    ({{ lib, ... }}:
-      let
-        data = builtins.fromJSON ''
-{json}
-        '';
-        ov = data.overrides or {{ }};
-      in
-      {{
-        # window_rule: appended AFTER the repo's rules (Umbriel applies the last match).
-        # overrides.output: per-output keys replacing the repo's (mkForce per leaf).
-        # overrides.keybinds: the COMPLETE table replacing the repo's one.
-        programs.umbriel.settings = lib.mkMerge [
-          (lib.mkAfter {{ window_rule = data.window_rule or [ ]; }})
-          (lib.optionalAttrs (ov ? output) {{
-            output = lib.mapAttrsRecursive (_: lib.mkForce) ov.output;
-          }})
-          (lib.optionalAttrs (ov ? keybinds) {{ keybinds = lib.mkForce ov.keybinds; }})
-        ];
-      }})
-    {end}
-"""
-
 
 def nix_escape(s: str) -> str:
     """Escape text for a Nix indented string ('' ... '')."""
@@ -89,13 +90,56 @@ def nix_unescape(s: str) -> str:
 
 
 def render_block(data: dict) -> str:
-    js = nix_escape(json.dumps(data, indent=2, ensure_ascii=False))
-    return BLOCK_TEMPLATE.format(begin=BEGIN, end=END, json=js)
+    return backend().render_block(data)
 
 
 _BLOCK_RE = re.compile(r"^[ \t]*" + re.escape(BEGIN) + r".*?^[ \t]*" + re.escape(END) + r"[^\n]*\n?",
                        re.S | re.M)
 _JSON_RE = re.compile(r"fromJSON ''\n(.*?)\n[ \t]*'';", re.S)
+
+
+def _strip_trailing_commas(raw: str) -> str:
+    """Drop `,` directly before a `]` or `}` (outside strings). A hand edit of the
+    JSON in the Nix tab often leaves one behind; it is unambiguous to repair."""
+    out: list[str] = []
+    in_str = esc = False
+    for i, ch in enumerate(raw):
+        if in_str:
+            out.append(ch)
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == ",":
+            rest = raw[i + 1:].lstrip()
+            if rest[:1] in ("]", "}"):
+                continue
+        out.append(ch)
+    return "".join(out)
+
+
+def block_json_error(text: str) -> str | None:
+    """None if the managed block's embedded JSON is valid *for Nix* (builtins.fromJSON
+    is strict: no trailing commas), else a short message with line/column.
+    The Nix syntax check cannot see this: to it the JSON is just a string."""
+    m = _BLOCK_RE.search(text)
+    j = _JSON_RE.search(m.group(0)) if m else None
+    if not j:
+        return None
+    try:
+        json.loads(nix_unescape(j.group(1)))
+    except json.JSONDecodeError as e:
+        line = text[: m.start() + j.start(1)].count("\n") + e.lineno
+        return L(f"JSON invalide dans le bloc roudix-config (ligne {line}, colonne {e.colno}) : {e.msg}"
+                 " — virgule en trop avant ] ou } ?",
+                 f"Invalid JSON in the roudix-config block (line {line}, column {e.colno}): {e.msg}"
+                 " — trailing comma before ] or } ?")
+    return None
 
 
 def parse_block(text: str) -> dict | None:
@@ -105,11 +149,14 @@ def parse_block(text: str) -> dict | None:
     j = _JSON_RE.search(m.group(0))
     if not j:
         return None
-    try:
-        data = json.loads(nix_unescape(j.group(1)))
+    raw = nix_unescape(j.group(1))
+    for candidate in (raw, _strip_trailing_commas(raw)):     # 2nd pass self-heals trailing commas
+        try:
+            data = json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
         return data if isinstance(data, dict) else None
-    except json.JSONDecodeError:
-        return None
+    return None
 
 
 def splice_block(text: str, block: str | None) -> str:
@@ -124,7 +171,7 @@ def splice_block(text: str, block: str | None) -> str:
         return text[: m.end()] + "\n" + block.rstrip("\n") + "\n" + text[m.end():]
     m = re.search(r"^\{[ \t]*\n", text, re.M)
     if not m:
-        raise ValueError(f"module body not found in {custom_path().name}")
+        raise ValueError(L(f"corps du module introuvable dans {custom_path().name}", f"module body not found in {custom_path().name}"))
     return text[: m.end()] + "  imports = [\n" + block + "  ];\n" + text[m.end():]
 
 
@@ -137,9 +184,9 @@ def bootstrap() -> list[str]:
 
     if not custom.exists():
         if not example.exists():
-            raise FileNotFoundError(f"missing {example}")
+            raise FileNotFoundError(L(f"fichier manquant : {example}", f"missing file: {example}"))
         shutil.copyfile(example, custom)
-        msgs.append(f"{custom.name} créé à partir de {example.name}")
+        msgs.append(L(f"{custom.name} créé à partir de {example.name}", f"{custom.name} created from {example.name}"))
 
     text = custom.read_text()
     # v2 imported a separate umbriel-managed.nix from the custom file: drop that.
@@ -147,13 +194,13 @@ def bootstrap() -> list[str]:
     if cleaned != text:
         text = cleaned
         custom.write_text(text)
-        msgs.append("Ancien import umbriel-managed.nix retiré (obsolète)")
+        msgs.append(L("Ancien import umbriel-managed.nix retiré (obsolète)", "Removed the old umbriel-managed.nix import (obsolete)"))
     elif "umbriel-managed.nix" in text:
-        msgs.append("NOTE : umbriel-custom.nix mentionne encore umbriel-managed.nix — "
-                    "retire-le à la main, ce fichier est obsolète.")
+        msgs.append(L("NOTE : umbriel-custom.nix mentionne encore umbriel-managed.nix — retire-le à la main, ce fichier est obsolète.",
+                      "NOTE: umbriel-custom.nix still mentions umbriel-managed.nix — remove it by hand, that file is obsolete."))
 
-    old = home_dir() / f"{COMPOSITOR}-managed.json"
-    if old.exists():
+    old = home_dir() / "umbriel-managed.json"       # only ever written by the Umbriel-only v2
+    if backend().id == "umbriel" and old.exists():
         try:
             legacy = json.loads(old.read_text())
         except json.JSONDecodeError:
@@ -162,7 +209,7 @@ def bootstrap() -> list[str]:
             data = {k: legacy[k] for k in ("window_rule", "overrides") if legacy.get(k)}
             if data:
                 save_data(data)
-                msgs.append(f"Règles et réglages déplacés de {old.name} vers {custom.name}")
+                msgs.append(L(f"Règles et réglages déplacés de {old.name} vers {custom.name}", f"Rules and settings moved from {old.name} to {custom.name}"))
         seen = legacy.get("seen")
         if isinstance(seen, dict) and seen:
             merged = {**load_seen(), **seen}
@@ -174,16 +221,23 @@ def bootstrap() -> list[str]:
 # ───────────────────────── managed data ─────────────────────────
 
 def load_data() -> dict:
+    """What the app manages, read back from the block. `native` is derived from
+    the rest on every save (and is what Nix consumes), so it is never kept."""
     try:
-        return parse_block(custom_path().read_text()) or {}
+        data = dict(parse_block(custom_path().read_text()) or {})
     except OSError:
         return {}
+    data.pop("native", None)
+    return data
 
 
 def save_data(data: dict) -> None:
     data = {k: v for k, v in data.items() if v}
     custom = custom_path()
     text = custom.read_text()
+    if _BLOCK_RE.search(text) and parse_block(text) is None:
+        # Unreadable block (JSON broken beyond repair): keep a copy before regenerating it.
+        shutil.copyfile(custom, custom.with_name(custom.name + ".broken.bak"))
     new = splice_block(text, render_block(data) if data else None)
     if new != text:
         tmp = custom.with_name(custom.name + ".tmp")
@@ -260,23 +314,12 @@ def _collect(node, key: str) -> list[dict]:
 
 
 def list_windows() -> list[dict]:
-    """Open windows: [{app_id, title}], one per app_id."""
-    data = _run_json([COMPOSITOR, "windows", "--json"])
-    seen: dict[str, dict] = {}
-    for w in _collect(data, "app_id") if data is not None else []:
-        app_id = w.get("app_id", "")
-        if app_id and app_id not in seen:
-            seen[app_id] = {"app_id": app_id, "title": w.get("title", "")}
-    return list(seen.values())
+    """Open windows: [{app_id, title}], one per app_id (via the active compositor's CLI)."""
+    return backend().list_windows()
 
 
 def list_outputs() -> list[str]:
-    data = _run_json([COMPOSITOR, "outputs", "--json"])
-    names: list[str] = []
-    for o in _collect(data, "name") if data is not None else []:
-        if o["name"] not in names:
-            names.append(o["name"])
-    return names
+    return list(backend().outputs_runtime())
 
 
 def _desktop_dirs() -> list[Path]:
@@ -362,12 +405,12 @@ def build_sources(windows: list[dict], seen: dict[str, str], apps: list[dict]) -
         known.add(w["app_id"])
     for app_id, title in sorted(seen.items()):
         if app_id not in known:
-            items.append({"kind": "seen", "label": f"○ {app_id} — {title[:50]} (vu ouvert avant)",
+            items.append({"kind": "seen", "label": f"○ {app_id} — {title[:50]} " + L("(vu ouvert avant)", "(seen open before)"),
                           "pattern": exact_pattern(app_id)})
             known.add(app_id)
     for a in apps:
         if known.isdisjoint(a["candidates"]):
-            items.append({"kind": "installed", "label": f"  {a['name']} (installée, app_id deviné)",
+            items.append({"kind": "installed", "label": f"  {a['name']} " + L("(installée, app_id deviné)", "(installed, app_id guessed)"),
                           "pattern": pattern_for(a["candidates"])})
     return items
 
@@ -377,15 +420,25 @@ def filter_sources(items: list[dict], query: str) -> list[dict]:
     return [i for i in items if q in i["label"].lower()] if q else items
 
 
+# Internal keys are stable English ids; labels are translated for display.
 PLACEMENTS = {
-    "Flottante": "default_floating",
-    "Maximisée": "default_maximize",
-    "Plein écran": "default_fullscreen",
+    "floating": "default_floating",
+    "maximize": "default_maximize",
+    "fullscreen": "default_fullscreen",
 }
 
 
+def placement_label(key: str) -> str:
+    return {"floating": L("Flottante", "Floating"), "maximize": L("Maximisée", "Maximized"),
+            "fullscreen": L("Plein écran", "Fullscreen")}[key]
+
+
+def blur_label(value) -> str:
+    return {True: L("Activé", "On"), False: L("Désactivé", "Off")}[value]
+
+
 def build_rule(app_id: str, title: str = "", output: str | None = None,
-               workspace: int | None = None, placement: str | None = None,
+               workspace=None, placement: str | None = None,
                blur: bool | None = None, opacity: float | None = None) -> dict:
     match: dict = {}
     if app_id:
@@ -393,7 +446,7 @@ def build_rule(app_id: str, title: str = "", output: str | None = None,
     if title:
         match["title"] = title
     if not match:
-        raise ValueError("app_id or title required")
+        raise ValueError(L("app_id ou titre requis", "app_id or title required"))
     rule: dict = {"match": match}
     if output:
         rule["default_output"] = output
@@ -405,24 +458,16 @@ def build_rule(app_id: str, title: str = "", output: str | None = None,
         rule["blur"] = blur
     if opacity is not None:
         if not 0.0 <= opacity <= 1.0:
-            raise ValueError("opacity must be between 0 and 1")
+            raise ValueError(L("opacité entre 0 et 1", "opacity must be between 0 and 1"))
         rule["opacity"] = opacity
     if len(rule) == 1:
-        raise ValueError("choose at least one setting")
+        raise ValueError(L("choisis au moins un réglage", "choose at least one setting"))
     return rule
 
 
-def rule_to_toml(rule: dict) -> str:
-    """Preview of what ends up in umbriel's TOML."""
-    def val(v):
-        return "true" if v is True else "false" if v is False else json.dumps(v, ensure_ascii=False)
-    lines = ["[[window_rule]]"]
-    for k, v in rule["match"].items():
-        lines.append(f"match.{k} = {val(v)}")
-    for k, v in rule.items():
-        if k != "match":
-            lines.append(f"{k} = {val(v)}")
-    return "\n".join(lines)
+def rule_preview(rule: dict) -> str:
+    """What the rule becomes in the active compositor's own syntax."""
+    return backend().preview_rule(rule)
 
 
 def rule_summary(rule: dict) -> str:
@@ -431,7 +476,7 @@ def rule_summary(rule: dict) -> str:
 
 # ───────────────────────── availability (which compositor?) ─────────────────────────
 
-SUPPORTED = {"umbriel"}
+SUPPORTED = {"umbriel", "niri", "mangowc"}
 NATIVE_DE = {"gnome", "kde", "cinnamon"}
 TRANSFORMS = ["normal", "90", "180", "270", "flipped", "flipped-90", "flipped-180", "flipped-270"]
 
@@ -469,23 +514,22 @@ def availability() -> str | None:
     if t in SUPPORTED:
         return None
     if t in NATIVE_DE:
-        return (f"roudix-config n'est pas disponible sur {t} : utilise ses réglages natifs "
-                "(Paramètres système).")
+        return L(f"Roudix Config n'est pas disponible sur {t} : utilise ses réglages natifs (Paramètres système).",
+                 f"Roudix Config isn't available on {t}: use its native settings (System Settings).")
     if t:
-        return f"roudix-config ne gère pas encore {t} (pour l'instant : {', '.join(sorted(SUPPORTED))})."
-    return ("Impossible de déterminer le bureau (roudix.desktop.type). Fais un rebuild pour que "
-            "~/.local/share/roudix/desktop-type soit créé.")
+        return L(f"Roudix Config ne gère pas encore {t} (pour l'instant : {', '.join(sorted(SUPPORTED))}).",
+                 f"Roudix Config doesn't support {t} yet (for now: {', '.join(sorted(SUPPORTED))}).")
+    return L("Impossible de déterminer le bureau (roudix.desktop.type). Fais un rebuild pour que "
+             "~/.local/share/roudix/desktop-type soit créé.",
+             "Can't determine the desktop (roudix.desktop.type). Rebuild so that "
+             "~/.local/share/roudix/desktop-type gets created.")
 
 
 # ───────────────────────── live config & overrides ─────────────────────────
 
 def load_live() -> dict:
-    """The config Umbriel actually runs with (generated by Home-Manager)."""
-    try:
-        import tomllib
-        return tomllib.loads((config_home() / "umbriel" / "config.toml").read_text())
-    except (OSError, ValueError, ImportError):
-        return {}
+    """The config the compositor actually runs with (generated by Home-Manager)."""
+    return backend().load_live()
 
 
 def get_overrides(data: dict | None = None) -> dict:
@@ -494,47 +538,57 @@ def get_overrides(data: dict | None = None) -> dict:
 
 
 def effective_outputs(live: dict, ov: dict) -> dict[str, dict]:
-    out = {n: dict(c) for n, c in (live.get("output") or {}).items() if isinstance(c, dict)}
-    for n, c in (ov.get("output") or {}).items():
-        out.setdefault(n, {}).update(c)
-    return out
+    """name -> {mode:'WxH@R', scale, transform[, workspaces]}: live config + pending overrides."""
+    return backend().effective_outputs(live, ov)
 
 
 def effective_binds(live: dict, ov: dict) -> dict:
-    if isinstance(ov.get("keybinds"), dict):
-        return json.loads(json.dumps(ov["keybinds"]))
-    return json.loads(json.dumps(live.get("keybinds") or {}))
+    return backend().effective_binds(live, ov)
 
 
 def bind_action(v) -> str:
-    return v if isinstance(v, str) else str(v.get("action", "")) if isinstance(v, dict) else str(v)
+    return backend().bind_action(v)
 
 
 def set_bind(table: dict, key: str, action: str, old_key: str | None = None) -> dict:
-    """Return a new table with `key` bound to `action` (moving it from old_key)."""
-    key, action = key.strip(), action.strip()
-    if not key or not action:
-        raise ValueError("raccourci et action requis")
-    new = dict(table)
-    prev = new.pop(old_key, None) if old_key else None
-    if prev is None:
-        prev = table.get(key)
-    if isinstance(prev, dict):
-        value = dict(prev)
-        value["action"] = action
-    else:
-        value = action
-    new[key] = value
-    return new
+    """Return the new table with `key` bound to `action` (backend rules decide moves/limits)."""
+    return backend().set_bind(table, key, action, old_key)
 
 
-def save_output_override(name: str, changes: dict) -> None:
+_MODE_RE = re.compile(r"(\d+)x(\d+)(?:@(\d+(?:\.\d+)?))?")
+
+
+def _same(a, b) -> bool:
+    """Equal as config values: 1 == 1.0, '2560x1440@240' == '2560x1440@240.000'."""
+    if a is None or b is None:
+        return a is b
+    ma, mb = (_MODE_RE.fullmatch(str(x)) for x in (a, b))
+    if ma and mb:
+        key = lambda m: (int(m[1]), int(m[2]), None if m[3] is None else round(float(m[3]), 3))  # noqa: E731
+        return key(ma) == key(mb)
+    if all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in (a, b)):
+        return abs(a - b) < 1e-9
+    return a == b
+
+
+def save_output_override(name: str, desired: dict) -> None:
+    """`desired` is the full state the form shows for this output. Only what differs
+    from the live config is stored (so the rest keeps following the repo's defaults),
+    and it REPLACES any previous override of that output: clearing or restoring a
+    field drops its override."""
+    base = backend().effective_outputs(backend().load_live(), {}).get(name, {})
+    keep = {k: v for k, v in desired.items() if not _same(base.get(k), v)}
     data = load_data()
     ov = data.setdefault("overrides", {})
-    cur = ov.setdefault("output", {}).setdefault(name, {})
-    cur.update(changes)
-    if not cur:
-        ov["output"].pop(name, None)
+    outs = ov.setdefault("output", {})
+    if keep:
+        outs[name] = keep
+    else:
+        outs.pop(name, None)
+    if not outs:
+        ov.pop("output", None)
+    if not ov:
+        data.pop("overrides", None)
     save_data(data)
 
 
@@ -553,34 +607,115 @@ def reset_override(section: str, name: str | None = None) -> None:
 
 
 def save_binds_override(table: dict) -> None:
+    if not table and backend().binds_mode == "keys":     # nothing left that differs from the defaults
+        reset_override("keybinds")
+        return
     data = load_data()
     data.setdefault("overrides", {})["keybinds"] = table
     save_data(data)
 
 
+# ── Settings tab (curated knobs, see roudix_config_backends.*_SETTINGS) ──
+
+def settings_catalog() -> list:
+    return backend().settings_catalog()
+
+
+def effective_settings(live: dict, ov: dict) -> dict:
+    """id -> value shown: the user's override if any, else what the compositor runs with
+    (None when unknown, e.g. no live config yet)."""
+    B = backend()
+    mine = ov.get("settings") or {}
+    return {s.id: (mine[s.id] if s.id in mine else B.live_setting(live, s)) for s in B.settings_catalog()}
+
+
+def set_setting_override(sid: str, value) -> None:
+    """Store `value` for setting `sid`; if it equals what the compositor already runs
+    with, the override is dropped so the setting keeps following the repo's default."""
+    from roudix_config_backends import _coerce_setting
+    B = backend()
+    spec = next((s for s in B.settings_catalog() if s.id == sid), None)
+    if spec is None:
+        raise ValueError(L(f"réglage inconnu : {sid}", f"unknown setting: {sid}"))
+    value = _coerce_setting(spec, value)
+    base = B.live_setting(B.load_live(), spec)
+    data = load_data()
+    ov = data.setdefault("overrides", {})
+    st = ov.setdefault("settings", {})
+    if base is not None and _same(base, value):
+        st.pop(sid, None)
+    else:
+        st[sid] = value
+    if not st:
+        ov.pop("settings", None)
+    if not ov:
+        data.pop("overrides", None)
+    save_data(data)
+
+
+def reset_setting(sid: str) -> None:
+    data = load_data()
+    ov = data.get("overrides", {})
+    ov.get("settings", {}).pop(sid, None)
+    if not ov.get("settings"):
+        ov.pop("settings", None)
+    if not ov:
+        data.pop("overrides", None)
+    save_data(data)
+
+
+# ── rebuild (same command as the `rebuild` alias of the shell modules) ──
+
+def rebuild_argv() -> list[str]:
+    nh = shutil.which("nh")
+    if not nh:
+        raise ValueError(L("`nh` est introuvable : lance le rebuild à la main (alias `rebuild`).",
+                           "`nh` not found: run the rebuild by hand (the `rebuild` alias)."))
+    flake = os.environ.get("NH_FLAKE") or str(repo_root())
+    if not flake.startswith(("path:", "github:", "git+")):
+        flake = "path:" + flake          # `path:` so the gitignored -custom.nix is part of the build
+    return [nh, "os", "switch", "--accept-flake-config", flake]
+
+
+_TERMINALS = ("ghostty", "kitty", "foot", "alacritty", "wezterm", "konsole",
+              "gnome-terminal", "ptyxis", "xfce4-terminal", "xterm")
+_EXEC_FLAG = {"gnome-terminal": ["--"], "ptyxis": ["--"], "xfce4-terminal": ["-x"], "wezterm": ["start", "--"]}
+
+
+def spawn_rebuild() -> str:
+    """Run the rebuild in a terminal window (live output, sudo password prompt works) and
+    return the terminal's name. The window stays open until Enter so the result can be read."""
+    argv = rebuild_argv()
+    script = (f'{shlex.join(argv)}; rc=$?; echo; '
+              f'if [ $rc -eq 0 ]; then echo "{L("Rebuild terminé ✔ — recharge la config du compositeur si besoin.", "Rebuild done ✔ — reload the compositor config if needed.")}"; '
+              f'else echo "{L("Rebuild en échec ✘ (code $rc) — lis les messages ci-dessus.", "Rebuild failed ✘ (code $rc) — read the messages above.")}"; fi; '
+              f'printf "%s" "{L("Entrée pour fermer… ", "Press Enter to close… ")}"; read _')
+    for t in ([os.environ["TERMINAL"]] if os.environ.get("TERMINAL") else []) + list(_TERMINALS):
+        exe = shutil.which(t)
+        if not exe:
+            continue
+        flag = _EXEC_FLAG.get(Path(exe).name, ["-e"])
+        subprocess.Popen([exe, *flag, "sh", "-c", script], start_new_session=True,
+                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return Path(exe).name
+    raise ValueError(L("Aucun terminal trouvé : lance le rebuild à la main (alias `rebuild`).",
+                       "No terminal found: run the rebuild by hand (the `rebuild` alias)."))
+
+
 def list_outputs_full() -> dict[str, dict]:
     """name -> {modes: ["2560x1440@240.000", ...], current: str|None}"""
-    data = _run_json([COMPOSITOR, "outputs", "--json"])
-    res: dict[str, dict] = {}
-    for o in _collect(data, "name") if data is not None else []:
-        modes, current = [], None
-        for m in o.get("modes", []) or []:
-            if not isinstance(m, dict) or "width" not in m:
-                continue
-            s = f"{m['width']}x{m['height']}@{m.get('refresh_mhz', 0) / 1000:.3f}"
-            if s not in modes:
-                modes.append(s)
-            if m.get("current"):
-                current = s
-        res[o["name"]] = {"modes": modes, "current": current}
-    return res
+    return backend().outputs_runtime()
 
 
 def nix_parse_check(text: str) -> tuple[bool, str]:
-    """(ok, message). Uses `nix-instantiate --parse`; unchecked if nix is absent."""
+    """(ok, message). Checks the managed block's JSON, then `nix-instantiate --parse`
+    (unchecked if nix is absent)."""
+    jerr = block_json_error(text)
+    if jerr:
+        return False, jerr
     exe = shutil.which("nix-instantiate")
     if not exe:
-        return True, "syntaxe non vérifiée, nix-instantiate introuvable"
+        return True, L("syntaxe non vérifiée, nix-instantiate introuvable", "syntax not checked, nix-instantiate not found")
     import tempfile
     with tempfile.NamedTemporaryFile("w", suffix=".nix", delete=False) as f:
         f.write(text)
@@ -590,7 +725,7 @@ def nix_parse_check(text: str) -> tuple[bool, str]:
     finally:
         os.unlink(path)
     if r.returncode == 0:
-        return True, "syntaxe Nix valide"
-    return False, (r.stderr.strip().splitlines() or ["erreur de syntaxe"])[-1]
+        return True, L("syntaxe Nix valide", "valid Nix syntax")
+    return False, (r.stderr.strip().splitlines() or [L("erreur de syntaxe", "syntax error")])[-1]
 
 

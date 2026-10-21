@@ -239,7 +239,9 @@ Roudix utilise **deux fournisseurs de kernel différents** selon votre GPU :
 - **`hardware.myGpu != "nvidia"`** (AMD ou Intel) → kernel de [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), choisi via `hardware.myKernel`. Pas de module Nvidia à gérer, donc les 32 variantes sont toutes disponibles.
 - **`hardware.myGpu == "nvidia"`** → kernel de **Chaotic-Nyx**, choisi via `hardware.myKernelChaotic`. C'est nécessaire pour obtenir **`nvidia_cachyos`**, un pilote Nvidia précompilé assorti à leur kernel — sinon le module kernel Nvidia se recompile localement à chaque bump de kernel. Le jeu de variantes est volontairement plus restreint ici (Chaotic-Nyx ne publie pas autant de saveurs, et les variantes `-lto` sont plus sujettes à casser des modules hors arbre comme celui de Nvidia).
 
-Les deux options acceptent aussi quelques **kernels nixpkgs bruts**, entièrement en dehors de leur overlay CachyOS respectif — utile si vous voulez juste un kernel stock sans aucun patch CachyOS : `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`. Sur le chemin Nvidia, ceux-ci évitent le cache `nvidia_cachyos` et recompilent le module Nvidia localement à la place (voir `nvidia.nix`).
+Les deux options acceptent aussi quelques **kernels nixpkgs bruts**, entièrement en dehors de leur overlay CachyOS respectif — utile si vous voulez juste un kernel stock sans aucun patch CachyOS : `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`, `xanmod-lts`, `xanmod-latest`. Sur le chemin Nvidia, ceux-ci évitent le cache `nvidia_cachyos` et recompilent le module Nvidia localement à la place (voir `nvidia.nix`).
+
+**Kernels nixpkgs plus récents — `hardware.myKernelSource` :** ces kernels nixpkgs suivent par défaut l'input `nixpkgs` principal (nixos-unstable). Mettez `hardware.myKernelSource` à `"master"` ou `"staging-next"` pour prendre **uniquement le kernel** (et les modules hors arbre compilés contre lui, ex. Nvidia) depuis cette branche de NixOS/nixpkgs et recevoir les mises à jour du kernel plus tôt — le reste du système n'est pas touché. Valeurs : `"nixpkgs"` (défaut), `"master"`, `"staging-next"`. À savoir : un tel kernel n'est peut-être pas encore dans un cache binaire, donc prévoyez une longue compilation locale ; `staging-next` embarque aussi des changements de toolchain en cours, c'est donc le plus risqué des trois. Sans effet sur les kernels `cachyos-*` (un avertissement s'affiche). Après l'avoir défini, lancez une fois `nix flake lock` pour verrouiller le nouvel input.
 
 **Variantes de `hardware.myKernel` (xddxdd — AMD/Intel uniquement) :**
 
@@ -249,6 +251,8 @@ Les deux options acceptent aussi quelques **kernels nixpkgs bruts**, entièremen
 | `nixpkgs-lts` | Kernel LTS par défaut de nixpkgs brut — en dehors de l'overlay xddxdd |
 | `nixpkgs-latest` | Dernier kernel mainline de nixpkgs brut — en dehors de l'overlay xddxdd |
 | `nixpkgs-testing` | `linux_testing` de nixpkgs brut (candidat RC/mainline) — en dehors de l'overlay xddxdd |
+| `xanmod-lts` | XanMod branche LTS (`linuxPackages_xanmod`, nixpkgs) — governor performance, préemption lazy, BBRv3 |
+| `xanmod-latest` | XanMod branche main (`linuxPackages_xanmod_latest`, nixpkgs) |
 | `cachyos-latest` | Dernier kernel CachyOS standard |
 | `cachyos-latest-v2` | Optimisé x86_64-v2 |
 | `cachyos-latest-v3` | Optimisé x86_64-v3 (recommandé pour les CPU modernes) |
@@ -298,6 +302,8 @@ Les deux options acceptent aussi quelques **kernels nixpkgs bruts**, entièremen
 | `nixpkgs-lts` | LTS nixpkgs brut — module Nvidia recompilé localement |
 | `nixpkgs-latest` | Dernier mainline nixpkgs brut — module Nvidia recompilé localement |
 | `nixpkgs-testing` | `linux_testing` nixpkgs brut (RC) — module Nvidia recompilé localement |
+| `xanmod-lts` | XanMod LTS (nixpkgs) — module Nvidia recompilé localement |
+| `xanmod-latest` | XanMod branche main (nixpkgs) — module Nvidia recompilé localement |
 
 > **Note NVIDIA :** Seules les séries GTX 20xx / RTX et plus récentes sont supportées. Les pilotes open sont activés par défaut pour les RTX 20xx+ (Turing+). Les GTX 10xx/16xx ne sont pas supportées.
 

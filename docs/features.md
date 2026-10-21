@@ -8,7 +8,8 @@
 - Two kernel providers, selected automatically by `hardware.myGpu`:
   - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 32 variants (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 variants (`hardware.myKernelChaotic`) — ships `nvidia_cachyos`, a precompiled driver matched to their kernel, so no local Nvidia module rebuild on kernel bumps
-- Plain nixpkgs kernels also selectable on both providers, outside the CachyOS overlay entirely — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline). On Nvidia these fall back to a locally-rebuilt Nvidia module (no `nvidia_cachyos` cache)
+- Plain nixpkgs kernels also selectable on both providers, outside the CachyOS overlay entirely — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod). On Nvidia these fall back to a locally-rebuilt Nvidia module (no `nvidia_cachyos` cache)
+- `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) takes only those nixpkgs kernels from a fresher nixpkgs for earlier kernel bumps, without touching the rest of the system
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)

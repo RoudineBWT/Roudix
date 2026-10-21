@@ -4,8 +4,7 @@
   # ── Binary caches ───────────────────────────────────────
   nixConfig = {
     extra-substituters = [
-      "https://cache.xinux.uz?priority=45"
-      #"https://attic.xuyh0120.win/lantian?priority=60"
+      #"https://attic.xuyh0120.win/lantian"
       "https://noctalia.cachix.org"
       "https://prismlauncher.cachix.org"
       "https://nix-community.cachix.org"
@@ -19,7 +18,6 @@
     extra-trusted-public-keys = [
       "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
       #"lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
-      "cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "prismlauncher.cachix.org-1:9/n/FGyABA2jLUVfY+DEp4hKds/rwO+SCOtbOkDzd+c="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -41,7 +39,12 @@
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Fresher nixpkgs, used ONLY for the nixpkgs-sourced kernels (zen,
+    # nixpkgs-*, xanmod-*) when hardware.myKernelSource is set to "master"
+    # or "staging-next" (see modules/system/boot/kernel.nix). The rest of the
+    # system keeps following `nixpkgs` above — no `follows` here on purpose.
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
 
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 

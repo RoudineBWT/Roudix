@@ -77,6 +77,8 @@ roudix-kernel-switch zen
 roudix-kernel-switch nixpkgs-lts
 roudix-kernel-switch nixpkgs-latest
 roudix-kernel-switch nixpkgs-testing
+roudix-kernel-switch xanmod-lts
+roudix-kernel-switch xanmod-latest
 
 # Changer de shell graphique (Niri, Hyprland & MangoWC uniquement)
 roudix-shell-switch noctalia

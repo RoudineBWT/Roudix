@@ -678,7 +678,9 @@ if [[ "$GPU" == "nvidia" ]]; then
     "zen|linux-zen (nixpkgs) — module nvidia rebuild local" \
     "nixpkgs-lts|nixpkgs LTS par défaut — module nvidia rebuild local" \
     "nixpkgs-latest|nixpkgs dernier stable mainline — module nvidia rebuild local" \
-    "nixpkgs-testing|nixpkgs testing (RC/mainline candidate) — module nvidia rebuild local"
+    "nixpkgs-testing|nixpkgs testing (RC/mainline candidate) — module nvidia rebuild local" \
+    "xanmod-lts|XanMod LTS (nixpkgs) — module nvidia rebuild local" \
+    "xanmod-latest|XanMod main branch (nixpkgs) — module nvidia rebuild local"
 else
   pick "Kernel (xddxdd):" KERNEL \
     "cachyos-latest|Standard latest CachyOS kernel" \
@@ -692,7 +694,9 @@ else
     "zen|linux-zen (nixpkgs) — outside the xddxdd overlay" \
     "nixpkgs-lts|nixpkgs default LTS kernel — outside the xddxdd overlay" \
     "nixpkgs-latest|nixpkgs latest mainline kernel — outside the xddxdd overlay" \
-    "nixpkgs-testing|nixpkgs testing (RC/mainline candidate) — outside the xddxdd overlay"
+    "nixpkgs-testing|nixpkgs testing (RC/mainline candidate) — outside the xddxdd overlay" \
+    "xanmod-lts|XanMod LTS (nixpkgs) — outside the xddxdd overlay" \
+    "xanmod-latest|XanMod main branch (nixpkgs) — outside the xddxdd overlay"
 fi
 
 pick "Browser:" BROWSER \

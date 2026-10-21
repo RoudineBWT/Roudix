@@ -2,11 +2,13 @@
 {
   options.hardware.myKernel = lib.mkOption {
     type = lib.types.enum [
-      # Zen + LTS/latest/testing (nixpkgs, not CachyOS)
+      # Zen + XanMod + LTS/latest/testing (nixpkgs, not CachyOS)
       "zen"
       "nixpkgs-lts"
       "nixpkgs-latest"
       "nixpkgs-testing"
+      "xanmod-lts"
+      "xanmod-latest"
       # Latest
       "cachyos-latest"
       "cachyos-latest-v2"
@@ -48,29 +50,135 @@
       "cachyos-server-lto"
     ];
     default = "cachyos-latest-v3";
-    description = "CachyOS kernel variant — used when hardware.myGpu != \"nvidia\". TEMPORARY: xddxdd is disabled, cachyos-* values are served by Chaotic-Nyx (closest family: default/lts/server/hardened). \"zen\" maps to pkgs.linuxPackages_zen, \"nixpkgs-lts\" to pkgs.linuxPackages (nixpkgs default LTS), \"nixpkgs-latest\" to pkgs.linuxPackages_latest, \"nixpkgs-testing\" to pkgs.linuxPackages_testing (linux_testing — RC/mainline candidate kernel) — all outside the xddxdd overlay.";
+    description = "CachyOS kernel variant — used when hardware.myGpu != \"nvidia\". TEMPORARY: xddxdd is disabled, cachyos-* values are served by Chaotic-Nyx (closest family: default/lts/server/hardened). \"zen\" maps to pkgs.linuxPackages_zen, \"nixpkgs-lts\" to pkgs.linuxPackages (nixpkgs default LTS), \"nixpkgs-latest\" to pkgs.linuxPackages_latest, \"nixpkgs-testing\" to pkgs.linuxPackages_testing (linux_testing — RC/mainline candidate kernel), \"xanmod-lts\" to pkgs.linuxPackages_xanmod (XanMod LTS branch) and \"xanmod-latest\" to pkgs.linuxPackages_xanmod_latest (XanMod main branch) — all outside the xddxdd overlay. These nixpkgs-sourced kernels can be taken from a fresher nixpkgs, see hardware.myKernelSource.";
   };
 
   # Chaotic-Nyx's variant set is much smaller (no x86_64-v2/v3/v4/zen4,
   # no separate LTO per family like xddxdd).
   options.hardware.myKernelChaotic = lib.mkOption {
     type = lib.types.enum [
-      # Zen + LTS/latest/testing (nixpkgs): nixpkgs kernel + nvidia module
-      # built locally via nvidiaPackages.stable (no Chaotic cache for these)
+      # Zen + XanMod + LTS/latest/testing (nixpkgs): nixpkgs kernel + nvidia
+      # module built locally via nvidiaPackages.stable (no Chaotic cache for
+      # these)
       "zen"
       "nixpkgs-lts"
       "nixpkgs-latest"
       "nixpkgs-testing"
+      "xanmod-lts"
+      "xanmod-latest"
       "cachyos"        # Chaotic-Nyx default, LTO+BORE
       "cachyos-lts"
       "cachyos-server"
       "cachyos-hardened"
     ];
     default = "cachyos";
-    description = "Chaotic-Nyx kernel variant — used only when hardware.myGpu == \"nvidia\", to benefit from the precompiled nvidia_cachyos cache. \"zen\", \"nixpkgs-lts\", \"nixpkgs-latest\" and \"nixpkgs-testing\" fall outside this cache: nixpkgs kernel (linuxPackages_zen / linuxPackages / linuxPackages_latest / linuxPackages_testing) + nvidia module recompiled locally (see nvidia.nix)";
+    description = "Chaotic-Nyx kernel variant — used only when hardware.myGpu == \"nvidia\", to benefit from the precompiled nvidia_cachyos cache. \"zen\", \"nixpkgs-lts\", \"nixpkgs-latest\", \"nixpkgs-testing\", \"xanmod-lts\" and \"xanmod-latest\" fall outside this cache: nixpkgs kernel (linuxPackages_zen / linuxPackages / linuxPackages_latest / linuxPackages_testing / linuxPackages_xanmod / linuxPackages_xanmod_latest) + nvidia module recompiled locally (see nvidia.nix)";
   };
 
-  config = lib.mkMerge [
+  options.hardware.myKernelSource = lib.mkOption {
+    type = lib.types.enum [ "nixpkgs" "master" "staging-next" ];
+    default = "nixpkgs";
+    description = ''
+      Which nixpkgs the nixpkgs-sourced kernels come from: "zen",
+      "nixpkgs-lts", "nixpkgs-latest", "nixpkgs-testing", "xanmod-lts" and
+      "xanmod-latest" (hardware.myKernel, or hardware.myKernelChaotic on
+      nvidia hosts). Only the kernel (and the out-of-tree modules built
+      against it, e.g. the nvidia module) uses this nixpkgs — the rest of the
+      system stays on the main `nixpkgs` input.
+
+      "nixpkgs"      the main input (nixos-unstable): kernels are cached on
+                     cache.nixos.org once a channel has passed, but land a
+                     few days after the upstream bump. Default.
+      "master"       NixOS/nixpkgs master: gets kernel bumps as soon as they
+                     are merged, without the channel delay.
+      "staging-next" NixOS/nixpkgs staging-next: same idea, but this branch
+                     also carries toolchain/stdenv changes in flight, so the
+                     kernel is more likely to be rebuilt locally (long) and
+                     to break.
+
+      A kernel taken from "master" / "staging-next" is not guaranteed to be
+      in a binary cache yet: expect a local kernel (and nvidia module) build
+      when the exact commit hasn't been built by Hydra. Has no effect on the
+      cachyos-* kernels (served by Chaotic-Nyx / xddxdd, which bring their own
+      nixpkgs) — a warning is emitted in that case.
+    '';
+  };
+
+  config =
+    let
+      source = config.hardware.myKernelSource;
+      activeVariant =
+        if config.hardware.myGpu == "nvidia"
+        then config.hardware.myKernelChaotic
+        else config.hardware.myKernel;
+
+      # nixpkgs the nixpkgs-sourced kernels are taken from. For anything but
+      # the main input, a second, separate instance of nixpkgs is imported
+      # with the same `nixpkgs.config` (allowUnfree is needed by the nvidia
+      # module built against the kernel). Selecting inside the attrset keeps
+      # the unselected inputs unevaluated.
+      kernelPkgs =
+        if source == "nixpkgs" then pkgs
+        else
+          import
+            ({
+              master = inputs.nixpkgs-master;
+              staging-next = inputs.nixpkgs-staging-next;
+            }.${source})
+            {
+              system = pkgs.stdenv.hostPlatform.system;
+              config = config.nixpkgs.config;
+            };
+
+      # Every kernel that comes from nixpkgs (as opposed to the cachyos-*
+      # ones). Single source of truth for both the AMD/Intel and the nvidia
+      # branches below. Lazy: only the selected entry is evaluated.
+      nixpkgsKernels = {
+        "zen"             = kernelPkgs.linuxPackages_zen;
+        # default LTS
+        "nixpkgs-lts"     = kernelPkgs.linuxPackages;
+        # latest stable mainline
+        "nixpkgs-latest"  = kernelPkgs.linuxPackages_latest;
+        # linux_testing — RC/mainline candidate kernel
+        "nixpkgs-testing" = kernelPkgs.linuxPackages_testing;
+        # XanMod, LTS branch (linux_xanmod)
+        "xanmod-lts"      = kernelPkgs.linuxPackages_xanmod;
+        # XanMod, main branch (linux_xanmod_latest)
+        "xanmod-latest"   = kernelPkgs.linuxPackages_xanmod_latest;
+      };
+    in
+    lib.mkMerge [
+    # hardware.myKernelSource only applies to nixpkgs kernels
+    {
+      warnings = lib.optional (source != "nixpkgs" && lib.hasPrefix "cachyos" activeVariant) ''
+        hardware.myKernelSource = "${source}" has no effect with the
+        "${activeVariant}" kernel: only zen, nixpkgs-* and xanmod-* kernels
+        are taken from it.
+      '';
+    }
+
+    # Workaround for a nixpkgs regression (kernel build changes of 2026-10-11):
+    # nixpkgs now keeps System.map in kernel.dev, so the kernel's depmod.sh no
+    # longer skips depmod when an out-of-tree module is installed. Each such
+    # package (seen with v4l2loopback) then ships its own
+    # lib/modules/<ver>/modules.alias, ... and pkgs.aggregateModules (a
+    # buildEnv) aborts with "two given paths contain a conflicting subpath".
+    # The aggregator deletes and regenerates every modules.* file in its
+    # postBuild, so letting buildEnv ignore the collision is harmless.
+    # Affects every kernel (nixos-unstable included), not just master /
+    # staging-next. Drop this once nixpkgs fixes it upstream.
+    {
+      nixpkgs.overlays = [
+        (_final: prev: {
+          aggregateModules =
+            modules:
+            (prev.aggregateModules modules).override {
+              buildEnv = args: prev.buildEnv (args // { ignoreCollisions = true; });
+            };
+        })
+      ];
+    }
+
     # Common sysctl, independent of the chosen GPU/kernel
     {
       # Sysctl values from 70-cachyos-settings.conf (cachyos-settings package)
@@ -158,20 +266,7 @@
         '';
 
         boot.kernelPackages =
-          if variant == "zen" then
-            # nixpkgs linux-zen
-            pkgs.linuxPackages_zen
-          else if variant == "nixpkgs-lts" then
-            # nixpkgs default LTS
-            pkgs.linuxPackages
-          else if variant == "nixpkgs-latest" then
-            # Latest stable mainline from nixpkgs
-            pkgs.linuxPackages_latest
-          else if variant == "nixpkgs-testing" then
-            # linux_testing — nixpkgs RC/mainline candidate kernel
-            pkgs.linuxPackages_testing
-          else
-            chaoticKernels.${chaoticFamily};
+          nixpkgsKernels.${variant} or chaoticKernels.${chaoticFamily};
       }
     ))
 
@@ -180,21 +275,11 @@
     # globally in flake.nix, no need to re-import here — its binary cache
     # is therefore active whether or not the GPU is nvidia)
     (lib.mkIf (config.hardware.myGpu == "nvidia") {
+      # zen / nixpkgs-* / xanmod-* come from nixpkgs (see nixpkgsKernels);
+      # the associated nvidia module (nvidiaPackages.stable, built locally)
+      # is selected in nvidia.nix. Everything else is a Chaotic-Nyx kernel
+      # shipping the precompiled nvidia_cachyos.
       boot.kernelPackages =
-        if config.hardware.myKernelChaotic == "zen" then
-          # nixpkgs linux-zen; the associated nvidia module
-          # (nvidiaPackages.stable, built locally) is selected in nvidia.nix
-          pkgs.linuxPackages_zen
-        else if config.hardware.myKernelChaotic == "nixpkgs-lts" then
-          # nixpkgs default LTS; nvidia module built locally (nvidia.nix)
-          pkgs.linuxPackages
-        else if config.hardware.myKernelChaotic == "nixpkgs-latest" then
-          # Latest stable mainline from nixpkgs; nvidia module built locally (nvidia.nix)
-          pkgs.linuxPackages_latest
-        else if config.hardware.myKernelChaotic == "nixpkgs-testing" then
-          # linux_testing — RC/mainline candidate kernel; nvidia module built locally (nvidia.nix)
-          pkgs.linuxPackages_testing
-        else
         let
           kernels = {
             "cachyos"          = pkgs.linuxPackages_cachyos;
@@ -202,8 +287,9 @@
             "cachyos-server"   = pkgs.linuxPackages_cachyos-server;
             "cachyos-hardened" = pkgs.linuxPackages_cachyos-hardened;
           };
+          variant = config.hardware.myKernelChaotic;
         in
-          kernels.${config.hardware.myKernelChaotic};
+        nixpkgsKernels.${variant} or kernels.${variant};
     })
   ];
 }

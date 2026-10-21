@@ -51,6 +51,8 @@ def _kernels():
         ("nixpkgs-lts", L("nixpkgs LTS par défaut — hors overlay xddxdd", "nixpkgs default LTS — outside the xddxdd overlay")),
         ("nixpkgs-latest", L("nixpkgs dernier stable mainline — hors overlay xddxdd", "nixpkgs latest mainline — outside the xddxdd overlay")),
         ("nixpkgs-testing", L("nixpkgs testing (RC/mainline) — hors overlay xddxdd", "nixpkgs testing (RC/mainline) — outside the xddxdd overlay")),
+        ("xanmod-lts", L("XanMod LTS (nixpkgs) — hors overlay xddxdd", "XanMod LTS (nixpkgs) — outside the xddxdd overlay")),
+        ("xanmod-latest", L("XanMod branche main (nixpkgs) — hors overlay xddxdd", "XanMod main branch (nixpkgs) — outside the xddxdd overlay")),
     ]
 
 
@@ -67,6 +69,8 @@ def _kernels_chaotic():
         ("nixpkgs-lts", L("nixpkgs LTS par défaut — module nvidia rebuild local", "nixpkgs default LTS — locally-rebuilt nvidia module")),
         ("nixpkgs-latest", L("nixpkgs dernier stable mainline — module nvidia rebuild local", "nixpkgs latest mainline — locally-rebuilt nvidia module")),
         ("nixpkgs-testing", L("nixpkgs testing (RC/mainline) — module nvidia rebuild local", "nixpkgs testing (RC/mainline) — locally-rebuilt nvidia module")),
+        ("xanmod-lts", L("XanMod LTS (nixpkgs) — module nvidia rebuild local", "XanMod LTS (nixpkgs) — locally-rebuilt nvidia module")),
+        ("xanmod-latest", L("XanMod branche main (nixpkgs) — module nvidia rebuild local", "XanMod main branch (nixpkgs) — locally-rebuilt nvidia module")),
     ]
 
 

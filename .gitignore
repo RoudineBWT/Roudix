@@ -10,8 +10,12 @@ dotfiles/perso/*
 modules/home/niri-custom.nix
 modules/home/mango-custom.nix
 modules/home/umbriel-custom.nix
+modules/home/niri-custom.nix.bak
+modules/home/mango-custom.nix.bak
+modules/home/umbriel-custom.nix.bak
 modules/home/umbriel-managed.json
 modules/home/dev/git.nix
 modules/home/dev/ssh.nix
 modules/home/dev/gitwatch.nix
 __pycache__/
+*.bak

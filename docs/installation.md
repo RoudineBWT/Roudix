@@ -239,7 +239,9 @@ Roudix uses **two different kernel providers** depending on your GPU:
 - **`hardware.myGpu != "nvidia"`** (AMD or Intel) → kernel from [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), selected via `hardware.myKernel`. No Nvidia module to worry about, so the full 32-variant set is available.
 - **`hardware.myGpu == "nvidia"`** → kernel from **Chaotic-Nyx**, selected via `hardware.myKernelChaotic`. This is required to get **`nvidia_cachyos`**, a precompiled Nvidia driver matched to their kernel — otherwise the Nvidia kernel module rebuilds locally on every kernel bump. The variant set is smaller here on purpose (Chaotic-Nyx doesn't publish as many flavors, and `-lto` variants are more prone to breaking out-of-tree modules like Nvidia's).
 
-Both options also accept a handful of **plain nixpkgs kernels**, entirely outside their respective CachyOS overlay — useful if you just want a stock kernel without any CachyOS patching: `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`. On the Nvidia path these skip the `nvidia_cachyos` cache and rebuild the Nvidia module locally instead (see `nvidia.nix`).
+Both options also accept a handful of **plain nixpkgs kernels**, entirely outside their respective CachyOS overlay — useful if you just want a stock kernel without any CachyOS patching: `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`, `xanmod-lts`, `xanmod-latest`. On the Nvidia path these skip the `nvidia_cachyos` cache and rebuild the Nvidia module locally instead (see `nvidia.nix`).
+
+**Fresher nixpkgs kernels — `hardware.myKernelSource`:** these nixpkgs kernels follow the main `nixpkgs` input (nixos-unstable) by default. Set `hardware.myKernelSource` to `"master"` or `"staging-next"` to take **only the kernel** (and the out-of-tree modules built against it, e.g. Nvidia) from that branch of NixOS/nixpkgs and get kernel bumps sooner — the rest of the system is untouched. Values: `"nixpkgs"` (default), `"master"`, `"staging-next"`. Caveats: such a kernel may not be in a binary cache yet, so expect a long local build; `staging-next` also carries toolchain changes in flight, so it is the riskiest of the three. Has no effect on `cachyos-*` kernels (a warning is shown). After setting it, run `nix flake lock` once so the new input is locked.
 
 **`hardware.myKernel` variants (xddxdd — AMD/Intel only):**
 
@@ -249,6 +251,8 @@ Both options also accept a handful of **plain nixpkgs kernels**, entirely outsid
 | `nixpkgs-lts` | Plain nixpkgs default LTS kernel — outside the xddxdd overlay |
 | `nixpkgs-latest` | Plain nixpkgs latest mainline kernel — outside the xddxdd overlay |
 | `nixpkgs-testing` | Plain nixpkgs `linux_testing` (RC/mainline candidate) — outside the xddxdd overlay |
+| `xanmod-lts` | XanMod LTS branch (`linuxPackages_xanmod`, nixpkgs) — performance governor, lazy preemption, BBRv3 |
+| `xanmod-latest` | XanMod main branch (`linuxPackages_xanmod_latest`, nixpkgs) |
 | `cachyos-latest` | Standard latest CachyOS kernel |
 | `cachyos-latest-v2` | x86_64-v2 optimized |
 | `cachyos-latest-v3` | x86_64-v3 optimized (recommended for modern CPUs) |
@@ -298,6 +302,8 @@ Both options also accept a handful of **plain nixpkgs kernels**, entirely outsid
 | `nixpkgs-lts` | Plain nixpkgs LTS — Nvidia module rebuilt locally |
 | `nixpkgs-latest` | Plain nixpkgs latest mainline — Nvidia module rebuilt locally |
 | `nixpkgs-testing` | Plain nixpkgs `linux_testing` (RC) — Nvidia module rebuilt locally |
+| `xanmod-lts` | XanMod LTS (nixpkgs) — Nvidia module rebuilt locally |
+| `xanmod-latest` | XanMod main branch (nixpkgs) — Nvidia module rebuilt locally |
 
 > **NVIDIA note:** Only GTX 20xx / RTX series and newer are supported. Open drivers enabled by default for RTX 20xx+ (Turing+). GTX 10xx/16xx are not supported.
 
