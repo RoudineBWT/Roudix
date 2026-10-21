@@ -5,8 +5,8 @@ local ws = require("config.ws")
 local gamingWorkspace = tostring(ws.games.id)
 
 -- File manager / editor / development.
-hl.window_rule({ match = { class = "^(org\\.gnome\\.Nautilus|org\\.kde\\.dolphin)$", title = "negative:^(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$" }, workspace = tostring(ws.files.id) })
-hl.window_rule({ match = { class = "^(org\\.gnome\\.Nautilus|org\\.kde\\.dolphin)$", title = "^(Save As|Enregistrer Sous)$" }, float = true })
+hl.window_rule({ match = { class = "^(org\\.gnome\\.Nautilus|org\\.kde\\.dolphin|nemo)$", title = "negative:^(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$" }, workspace = tostring(ws.files.id) })
+hl.window_rule({ match = { class = "^(org\\.gnome\\.Nautilus|org\\.kde\\.dolphin|nemo)$", title = "^(Save As|Enregistrer Sous)$" }, float = true })
 hl.window_rule({ match = { class = "^(org\\.gnome\\.TextEditor|org\\.kde\\.kate)$" }, workspace = tostring(ws.files.id) })
 hl.window_rule({ match = { class = "^(dev\\.zed\\.Zed)$" }, workspace = tostring(ws.code.id) })
 hl.window_rule({ match = { class = "^(kitty)$" }, workspace = tostring(ws.term.id), float = true })

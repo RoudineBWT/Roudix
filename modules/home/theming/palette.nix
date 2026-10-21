@@ -58,7 +58,7 @@ in
 
     _module.args.roudixPalette = cfg.active;
 
-    xdg.configFile."roudix/palette.json".source = paletteFile;
+    #xdg.configFile."roudix/palette.json".source = paletteFile;
     xdg.configFile."noctalia/palettes/Roudix.json".source = paletteFile;
   };
 }
