@@ -38,6 +38,14 @@ paths:
 # Everything CI checks, in one go
 ci: paths py lint check
 
+# Regroupe les commits "auto:" de gitwatch en UN commit au vrai message (IA locale), à relire. Ajoute -n pour juste voir le message.
+ship *args:
+    python3 scripts/ai-commit.py squash {{args}}
+
+# Commit de ce qui est stagé, avec un message généré (ouvre l'éditeur pour relire)
+commit *args:
+    python3 scripts/ai-commit.py commit {{args}}
+
 # Update flake.lock
 update:
     nix flake update
