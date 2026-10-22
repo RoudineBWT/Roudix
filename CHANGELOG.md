@@ -14,6 +14,10 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
   `roudix-kitsune.png` (hue-remapped), the `*-mocha` / `sakura-roudix` Umbriel
   presets (names kept, colours now Roudix), Hyprland `colors.lua` and GTK (adw-gtk3) accent/surfaces now follow
   `assets/palette/Roudix.json`.
+- README preview is now a slideshow (animated WebP: Umbriel, GNOME, KDE Plasma)
+  built by `scripts/gen-preview-slideshow.py`; `assets/screenshot/preview.png` is
+  now the Umbriel screenshot. The READMEs also state that compositor customization
+  is left to the user (Roudix only ships the default Noctalia / DMS / Caelestia configs).
 
 ### Added
 - GNOME Shell themes `Roudix-Dark` / `Roudix-Light`, generated from

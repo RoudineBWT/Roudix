@@ -14,9 +14,10 @@
 
 | Preview |
 |:---:|
-| ![Preview](assets/screenshot/preview.png)
+| <img src="assets/screenshot/preview-slideshow.webp" alt="Roudix preview slideshow: Umbriel, GNOME and KDE Plasma" width="900"/> |
 
-<sub>Personal customization — yours will look different depending on your setup 👀</sub>
+<sub>Personal customization — yours will look different depending on your setup 👀</sub><br/>
+<sub>The Wayland compositors are left for you to customize: Roudix only ships the default config of Noctalia, DankMaterialShell and (Hyprland only) Caelestia.</sub>
 
 </div>
 
