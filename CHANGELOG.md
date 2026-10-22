@@ -16,6 +16,11 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
   `assets/palette/Roudix.json`.
 
 ### Added
+- KDE Plasma colour schemes `RoudixDark` / `RoudixLight`, generated from
+  `assets/palette/Roudix.json` by `scripts/gen-kde-colorscheme.py` and shipped by
+  `roudix-branding` (`share/color-schemes/`). `RoudixDark` is now the default
+  colour scheme on KDE (first login, and once for existing users still on the stock
+  BreezeDark); `RoudixLight` is selectable in System Settings.
 - Definitive colour palette `assets/palette/Roudix.json` (dark + light), exposed to
   every Home Manager module through `modules/home/theming/palette.nix`
   (`config.roudix.palette.{dark,light,active,lib}` / `roudixPalette`), also

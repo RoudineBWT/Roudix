@@ -53,6 +53,13 @@ stdenvNoCC.mkDerivation {
     cp $src/logo/roudix-logo.svg \
       $out/share/icons/hicolor/symbolic/apps/start-here-kde-symbolic.svg
 
+    # ── KDE colour schemes (Roudix Dark / Light) ──────────────────────────────
+    # Generated from assets/palette/Roudix.json by
+    # scripts/gen-kde-colorscheme.py — re-run it after touching the palette.
+    mkdir -p $out/share/color-schemes
+    cp $src/kde/color-schemes/RoudixDark.colors  $out/share/color-schemes/RoudixDark.colors
+    cp $src/kde/color-schemes/RoudixLight.colors $out/share/color-schemes/RoudixLight.colors
+
     # ── Wallpapers SVG (fallback) ─────────────────────────────────────────────
     mkdir -p $out/share/backgrounds/roudix
     cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
