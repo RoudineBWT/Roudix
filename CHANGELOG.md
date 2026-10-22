@@ -21,6 +21,13 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
   `roudix-branding` (`share/color-schemes/`). `RoudixDark` is now the default
   colour scheme on KDE (first login, and once for existing users still on the stock
   BreezeDark); `RoudixLight` is selectable in System Settings.
+- Terminal colour schemes from the same palette: Konsole (`RoudixDark` /
+  `RoudixLight` + default `Roudix` profile, always on KDE or when
+  `roudix.terminal = "konsole"`), Ptyxis (`Roudix` palette, light + dark), and
+  ghostty / kitty / alacritty / foot / wezterm through
+  `modules/home/theming/terminal-theme.nix`. Theme files are managed by
+  Roudix; the terminal's own config file is only created if absent, so existing
+  configs are never overwritten.
 - Definitive colour palette `assets/palette/Roudix.json` (dark + light), exposed to
   every Home Manager module through `modules/home/theming/palette.nix`
   (`config.roudix.palette.{dark,light,active,lib}` / `roudixPalette`), also

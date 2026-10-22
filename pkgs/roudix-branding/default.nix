@@ -60,6 +60,16 @@ stdenvNoCC.mkDerivation {
     cp $src/kde/color-schemes/RoudixDark.colors  $out/share/color-schemes/RoudixDark.colors
     cp $src/kde/color-schemes/RoudixLight.colors $out/share/color-schemes/RoudixLight.colors
 
+    # ── Terminal colour schemes (palette-generated, see gen-kde-colorscheme.py) ─
+    # Konsole: colour schemes + default "Roudix" profile.
+    mkdir -p $out/share/konsole
+    cp $src/konsole/RoudixDark.colorscheme  $out/share/konsole/RoudixDark.colorscheme
+    cp $src/konsole/RoudixLight.colorscheme $out/share/konsole/RoudixLight.colorscheme
+    cp $src/konsole/Roudix.profile          $out/share/konsole/Roudix.profile
+    # Ptyxis: one palette file with light + dark variants.
+    mkdir -p $out/share/org.gnome.Ptyxis/palettes
+    cp $src/ptyxis/Roudix.palette $out/share/org.gnome.Ptyxis/palettes/Roudix.palette
+
     # ── Wallpapers SVG (fallback) ─────────────────────────────────────────────
     mkdir -p $out/share/backgrounds/roudix
     cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg

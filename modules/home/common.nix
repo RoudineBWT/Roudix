@@ -12,6 +12,8 @@ in
   imports = [
     # Roudix.json palette -> config.roudix.palette / roudixPalette (see theming/palette.nix)
     ./theming/palette.nix
+    # Roudix colours for the chosen terminal (ghostty/kitty/alacritty/foot/wezterm)
+    ./theming/terminal-theme.nix
     ./shell
     ./gaming
     # GTK theme/icons/cursor + dconf for GSettings-reading apps (GTK3/4,

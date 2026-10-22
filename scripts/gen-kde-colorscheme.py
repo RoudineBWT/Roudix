@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Generate the Plasma colour schemes (RoudixDark.colors / RoudixLight.colors)
-from assets/palette/Roudix.json — the single source of truth for Roudix colours.
+"""Generate, from assets/palette/Roudix.json (the single source of truth for
+Roudix colours):
+
+  assets/kde/color-schemes/Roudix{Dark,Light}.colors      Plasma colour schemes
+  assets/konsole/Roudix{Dark,Light}.colorscheme           Konsole colour schemes
+  assets/konsole/Roudix.profile                           Konsole default profile
+  assets/ptyxis/Roudix.palette                            Ptyxis palette (light + dark)
 
 Usage: python3 scripts/gen-kde-colorscheme.py
-Output: assets/kde/color-schemes/Roudix{Dark,Light}.colors
 """
 import json
 from pathlib import Path
@@ -11,6 +15,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PALETTE = ROOT / "assets/palette/Roudix.json"
 OUT = ROOT / "assets/kde/color-schemes"
+OUT_KONSOLE = ROOT / "assets/konsole"
+OUT_PTYXIS = ROOT / "assets/ptyxis"
+ANSI = ["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"]
 
 
 def rgb(h):
@@ -143,12 +150,61 @@ def build(name, p, dark):
     return "\n".join(out)
 
 
+def build_konsole(title, p):
+    """Konsole .colorscheme: ColorN = normal, ColorNIntense = bright,
+    ColorNFaint = normal blended towards the background."""
+    t = p["terminal"]
+    bg, fg = t["background"], t["foreground"]
+    out = []
+
+    def sec(name, colour):
+        out.extend(["[%s]" % name, "Color=%s" % fmt(colour), ""])
+
+    sec("Background", bg)
+    sec("BackgroundFaint", bg)
+    sec("BackgroundIntense", bg)
+    for i, n in enumerate(ANSI):
+        sec("Color%d" % i, t["normal"][n])
+        sec("Color%dFaint" % i, mix(t["normal"][n], bg, 0.35))
+        sec("Color%dIntense" % i, t["bright"][n])
+    sec("Foreground", fg)
+    sec("ForegroundFaint", mix(fg, bg, 0.35))
+    sec("ForegroundIntense", t["bright"]["white"])
+    out += ["[General]", "Anchor=0.5,0.5", "Blur=false", "ColorRandomization=false",
+            "Description=%s" % title, "FillStyle=Tile", "Opacity=1", "Wallpaper=",
+            "WallpaperFlipType=NoFlip", "WallpaperOpacity=1", ""]
+    return "\n".join(out)
+
+
+def build_ptyxis(raw):
+    """Ptyxis palette: one file, [Light] and [Dark] variants (follows the system)."""
+    out = ["[Palette]", "Name=Roudix", ""]
+    for sec, key in (("Light", "light"), ("Dark", "dark")):
+        t = raw[key]["terminal"]
+        out += ["[%s]" % sec, "Foreground=%s" % t["foreground"],
+                "Background=%s" % t["background"]]
+        colours = [t["normal"][n] for n in ANSI] + [t["bright"][n] for n in ANSI]
+        out += ["Color%d=%s" % (i, c) for i, c in enumerate(colours)]
+        out.append("")
+    return "\n".join(out)
+
+
 def main():
     raw = json.loads(PALETTE.read_text())
     OUT.mkdir(parents=True, exist_ok=True)
+    OUT_KONSOLE.mkdir(parents=True, exist_ok=True)
+    OUT_PTYXIS.mkdir(parents=True, exist_ok=True)
     for key, name in (("dark", "RoudixDark"), ("light", "RoudixLight")):
         (OUT / f"{name}.colors").write_text(build(name, raw[key], key == "dark"))
         print("wrote", OUT / f"{name}.colors")
+        title = "Roudix Dark" if key == "dark" else "Roudix Light"
+        (OUT_KONSOLE / f"{name}.colorscheme").write_text(build_konsole(title, raw[key]))
+        print("wrote", OUT_KONSOLE / f"{name}.colorscheme")
+    (OUT_KONSOLE / "Roudix.profile").write_text(
+        "[Appearance]\nColorScheme=RoudixDark\n\n[General]\nName=Roudix\nParent=FALLBACK/\n")
+    print("wrote", OUT_KONSOLE / "Roudix.profile")
+    (OUT_PTYXIS / "Roudix.palette").write_text(build_ptyxis(raw))
+    print("wrote", OUT_PTYXIS / "Roudix.palette")
 
 
 if __name__ == "__main__":
