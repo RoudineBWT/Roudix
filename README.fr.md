@@ -1,4 +1,4 @@
-*[English version](README.md)*
+[English](README.md) · **Français** · [Español](README.es.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru.md) · [简体中文](README.zh_CN.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
 <div align="center">
 <img src="assets/logo/roudix-logo.png" width="250"/>

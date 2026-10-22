@@ -556,31 +556,31 @@ PASSWORD_MANAGERS = [
 # animation setup, Umbriel only. "*-mocha" = fixed Roudix palette, the others
 # follow the Noctalia palette.
 UMBRIEL_EFFECTS = [
-    {"id": "none",                "name": L("Aucun", "None"),       "subtitle": L("Propre : aucun shader ni effet animé", "Clean: no shaders, no animated effects"), "icon": "none.svg"},
-    {"id": "roudix",              "name": "roudix",                 "subtitle": L("Ouverture/fermeture discrètes + scratchpad (défaut)", "Subtle window in/out + scratchpad shaders (default)"), "icon": "none.svg"},
-    {"id": "roudix-plus",         "name": "roudix-plus",            "subtitle": L("+ bordure d'accent, halo de curseur, transitions (palette Noctalia)", "+ accent border, cursor halo, transitions (Noctalia palette)"), "icon": "none.svg"},
-    {"id": "roudix-plus-mocha",   "name": "roudix-plus-mocha",      "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette"), "icon": "none.svg"},
-    {"id": "roudix-aurora",       "name": "roudix-aurora",          "subtitle": L("+ lumière qui coule autour de la bordure (palette Noctalia)", "+ flowing light around the border (Noctalia palette)"), "icon": "none.svg"},
-    {"id": "roudix-aurora-mocha", "name": "roudix-aurora-mocha",    "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette"), "icon": "none.svg"},
-    {"id": "roudix-wobbly",       "name": "roudix-wobbly",          "subtitle": L("+ fenêtres gélatineuses au déplacement (palette Noctalia)", "+ jelly wobble on window move (Noctalia palette)"), "icon": "none.svg"},
-    {"id": "roudix-wobbly-mocha", "name": "roudix-wobbly-mocha",    "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette"), "icon": "none.svg"},
-    {"id": "roudix-logo",         "name": "roudix-logo",            "subtitle": L("Ouverture/fermeture en forme de logo Roudix", "Windows open/close through the Roudix logo shape"), "icon": "none.svg"},
-    {"id": "roudix-logo-wobbly",  "name": "roudix-logo-wobbly",     "subtitle": L("Idem + effet gélatine et physique du glisser", "Same + jelly wobble and drag physics"), "icon": "none.svg"},
-    {"id": "roudix-orbit",        "name": "roudix-orbit",           "subtitle": L("Bordure « tresse de flocon » + comète (palette Noctalia)", "\"Snowflake braid\" border + comet (Noctalia palette)"), "icon": "none.svg"},
-    {"id": "roudix-orbit-mocha",  "name": "roudix-orbit-mocha",     "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette"), "icon": "none.svg"},
-    {"id": "roudix-full",         "name": "roudix-full",            "subtitle": L("Tout : logo, gélatine, aurora (palette Roudix fixe)", "Everything: logo, wobble, aurora (fixed Roudix palette)"), "icon": "none.svg"},
-    {"id": "roudix-full-noctalia","name": "roudix-full-noctalia",   "subtitle": L("Comme roudix-full, couleurs de Noctalia", "Like roudix-full, Noctalia colors"), "icon": "none.svg"},
-    {"id": "sakura-overdrive",    "name": "sakura-overdrive",       "subtitle": L("Suite sakura de Ly-sec — couleurs Noctalia", "Ly-sec's sakura suite — Noctalia colors"), "icon": "none.svg"},
-    {"id": "sakura-roudix",       "name": "sakura-roudix",          "subtitle": L("Suite sakura, palette Roudix fixe", "Sakura suite, fixed Roudix palette"), "icon": "none.svg"},
+    {"id": "none",                "name": L("Aucun", "None"),       "subtitle": L("Propre : aucun shader ni effet animé", "Clean: no shaders, no animated effects")},
+    {"id": "roudix",              "name": "roudix",                 "subtitle": L("Ouverture/fermeture discrètes + scratchpad (défaut)", "Subtle window in/out + scratchpad shaders (default)")},
+    {"id": "roudix-plus",         "name": "roudix-plus",            "subtitle": L("+ bordure d'accent, halo de curseur, transitions (palette Noctalia)", "+ accent border, cursor halo, transitions (Noctalia palette)")},
+    {"id": "roudix-plus-mocha",   "name": "roudix-plus-mocha",      "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette")},
+    {"id": "roudix-aurora",       "name": "roudix-aurora",          "subtitle": L("+ lumière qui coule autour de la bordure (palette Noctalia)", "+ flowing light around the border (Noctalia palette)")},
+    {"id": "roudix-aurora-mocha", "name": "roudix-aurora-mocha",    "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette")},
+    {"id": "roudix-wobbly",       "name": "roudix-wobbly",          "subtitle": L("+ fenêtres gélatineuses au déplacement (palette Noctalia)", "+ jelly wobble on window move (Noctalia palette)")},
+    {"id": "roudix-wobbly-mocha", "name": "roudix-wobbly-mocha",    "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette")},
+    {"id": "roudix-logo",         "name": "roudix-logo",            "subtitle": L("Ouverture/fermeture en forme de logo Roudix", "Windows open/close through the Roudix logo shape")},
+    {"id": "roudix-logo-wobbly",  "name": "roudix-logo-wobbly",     "subtitle": L("Idem + effet gélatine et physique du glisser", "Same + jelly wobble and drag physics")},
+    {"id": "roudix-orbit",        "name": "roudix-orbit",           "subtitle": L("Bordure « tresse de flocon » + comète (palette Noctalia)", "\"Snowflake braid\" border + comet (Noctalia palette)")},
+    {"id": "roudix-orbit-mocha",  "name": "roudix-orbit-mocha",     "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette")},
+    {"id": "roudix-full",         "name": "roudix-full",            "subtitle": L("Tout : logo, gélatine, aurora (palette Roudix fixe)", "Everything: logo, wobble, aurora (fixed Roudix palette)")},
+    {"id": "roudix-full-noctalia","name": "roudix-full-noctalia",   "subtitle": L("Comme roudix-full, couleurs de Noctalia", "Like roudix-full, Noctalia colors")},
+    {"id": "sakura-overdrive",    "name": "sakura-overdrive",       "subtitle": L("Suite sakura de Ly-sec — couleurs Noctalia", "Ly-sec's sakura suite — Noctalia colors")},
+    {"id": "sakura-roudix",       "name": "sakura-roudix",          "subtitle": L("Suite sakura, palette Roudix fixe", "Sakura suite, fixed Roudix palette")},
 ]
 
 # roudix.autoupdate.interval (modules/system/nix/autoupdate.nix) — free
 # string on the Nix side (systemd OnUnitActiveSec), offered as a few presets.
 AUTOUPDATE_INTERVALS = [
-    {"id": "1h",  "name": L("Toutes les heures", "Every hour"),  "subtitle": L("Défaut", "Default"), "icon": "none.svg"},
-    {"id": "6h",  "name": L("Toutes les 6 heures", "Every 6 hours"),  "subtitle": "", "icon": "none.svg"},
-    {"id": "12h", "name": L("Toutes les 12 heures", "Every 12 hours"), "subtitle": "", "icon": "none.svg"},
-    {"id": "24h", "name": L("Tous les jours", "Every day"),     "subtitle": "", "icon": "none.svg"},
+    {"id": "1h",  "name": L("Toutes les heures", "Every hour"),  "subtitle": L("Défaut", "Default")},
+    {"id": "6h",  "name": L("Toutes les 6 heures", "Every 6 hours"),  "subtitle": ""},
+    {"id": "12h", "name": L("Toutes les 12 heures", "Every 12 hours"), "subtitle": ""},
+    {"id": "24h", "name": L("Tous les jours", "Every day"),     "subtitle": ""},
 ]
 
 # roudix.zen.tweaks.* (modules/system/apps/browser/browser.nix) — only used
@@ -593,6 +593,78 @@ ZEN_TWEAKS = [
     {"id": "disableSafeBrowsing", "name": L("Désactiver Google Safe Browsing", "Disable Google Safe Browsing"),                           "key": "roudix.zen.tweaks.disableSafeBrowsing", "default": True},
     {"id": "ui",                  "name": L("Interface (défilement fluide, masonry)", "UI (smooth scrolling, masonry)"),                  "key": "roudix.zen.tweaks.ui",                  "default": True},
     {"id": "policies",            "name": L("Installer policies.json (uBlock, DoH...)", "Install policies.json (uBlock, DoH...)"),         "key": "roudix.zen.tweaks.policies",            "default": True},
+]
+
+# ── Browser profiles (Zen / Firefox) ──────────────────────────────────────
+# Both browsers keep their profiles in a directory listed by a profiles.ini.
+# The location depends on the version/packaging, so every known one is read
+# (paths are relative to $HOME).
+ZEN_PROFILE_BASES     = [".zen", ".config/zen"]
+FIREFOX_PROFILE_BASES = [".mozilla/firefox", ".config/mozilla/firefox"]
+
+# Sentinel id = "no profile chosen" (Nix side: `profile = null;`).
+PROFILE_AUTO = "auto"
+
+
+def scan_browser_profiles(bases: list) -> list:
+    """Profiles found in the profiles.ini of each base dir, as selector items.
+    id = profile directory relative to $HOME (what roudix.*.tweaks.profile
+    stores). Missing/unreadable files and unsafe paths are skipped."""
+    home = os.path.expanduser("~")
+    items, seen = [], set()
+    for base in bases:
+        ini = os.path.join(home, base, "profiles.ini")
+        if not os.path.isfile(ini):
+            continue
+        cp = configparser.ConfigParser(interpolation=None)
+        try:
+            cp.read(ini, encoding="utf-8")
+        except Exception as e:
+            log.warning("Could not read %s: %s", ini, e)
+            continue
+        for section in cp.sections():
+            if not section.startswith("Profile"):
+                continue
+            path = cp.get(section, "path", fallback="").strip()
+            if not path:
+                continue
+            if cp.get(section, "isrelative", fallback="1").strip() == "1":
+                full = os.path.join(home, base, path)
+            else:
+                full = path
+            rel = os.path.relpath(full, home)
+            if rel.startswith("..") or any(c in rel for c in '"\\$\n') or not os.path.isdir(full):
+                continue
+            if rel in seen:
+                continue
+            seen.add(rel)
+            items.append({
+                "id": rel,
+                "name": cp.get(section, "name", fallback=os.path.basename(rel)),
+                "subtitle": f"~/{rel}",
+            })
+    return items
+
+
+def profile_selector_items(bases: list, current: str, auto_subtitle: str) -> list:
+    """[auto] + the profiles found on disk (+ the configured one if it is gone)."""
+    items = [{"id": PROFILE_AUTO, "name": L("Aucun profil choisi (défaut)", "No profile chosen (default)"), "subtitle": auto_subtitle}]
+    items += scan_browser_profiles(bases)
+    if current != PROFILE_AUTO and current not in {i["id"] for i in items}:
+        items.append({"id": current, "name": os.path.basename(current),
+                      "subtitle": L(f"~/{current} — introuvable sur le disque", f"~/{current} — not found on disk")})
+    return items
+
+
+# roudix.firefox.tweaks.* — same categories as the Zen tweaks, written as a
+# user.js in the chosen Firefox profile (no policies.json: Firefox's is
+# install-wide, not per profile).
+FIREFOX_TWEAKS = [
+    {"id": "ff_tweaks",              "name": L("Firefox — Tweaks Roudix (user.js du profil choisi)", "Firefox — Roudix tweaks (user.js of the chosen profile)"), "key": "roudix.firefox.tweaks.enable",              "default": False},
+    {"id": "ff_performance",         "name": L("Firefox — Performance", "Firefox — Performance"),                                                                   "key": "roudix.firefox.tweaks.performance",         "default": True},
+    {"id": "ff_privacy",             "name": L("Firefox — Vie privée", "Firefox — Privacy"),                                                                        "key": "roudix.firefox.tweaks.privacy",             "default": True},
+    {"id": "ff_disableSafeBrowsing", "name": L("Firefox — Désactiver Google Safe Browsing", "Firefox — Disable Google Safe Browsing"),                              "key": "roudix.firefox.tweaks.disableSafeBrowsing", "default": True},
+    {"id": "ff_ui",                  "name": L("Firefox — Interface (défilement fluide)", "Firefox — UI (smooth scrolling)"),                                       "key": "roudix.firefox.tweaks.ui",                  "default": True},
 ]
 
 RGB_BACKENDS = [
@@ -837,21 +909,23 @@ def get_active_string_option(key: str, default: str) -> str:
     return default
 
 
-def set_active_string_option(key: str, value: str):
+def set_active_string_option(key: str, value):
     """Like set_string_option(), but anchored to an ACTIVE line: a
     commented-out `# key = "..."` example is left alone and a real line is
-    added instead (updating the comment in place would silently do nothing)."""
+    added instead (updating the comment in place would silently do nothing).
+    value=None writes `key = null;` (nullOr options such as the browser profile)."""
     try:
         with open(CONFIG_FILE) as f:
             content = f.read()
-        pattern = re.compile(r'^([ \t]*)' + re.escape(key) + r'\s*=\s*"[^"]*"', re.MULTILINE)
+        literal = "null" if value is None else f'"{value}"'
+        pattern = re.compile(r'^([ \t]*)' + re.escape(key) + r'\s*=\s*(?:null|"[^"]*")', re.MULTILINE)
         if pattern.search(content):
-            new = pattern.sub(lambda m: f'{m.group(1)}{key} = "{value}"', content)
+            new = pattern.sub(lambda m: f'{m.group(1)}{key} = {literal}', content)
         else:
-            new = _insert_before_closing_brace(content, f'{key} = "{value}";')
+            new = _insert_before_closing_brace(content, f'{key} = {literal};')
         with open(CONFIG_FILE, "w") as f:
             f.write(new)
-        log.info("Configuration updated: %s set to '%s'.", key, value)
+        log.info("Configuration updated: %s set to %s.", key, literal)
         return True
     except Exception as e:
         log.error("Failed to write configuration: %s", e)
@@ -1344,9 +1418,12 @@ class SelectorGroup(Gtk.Box):
         row.set_title(item["name"])
         row.set_subtitle(item["subtitle"])
 
-        icon = load_icon(item["icon"], self._dark, APP_ICON_THEME_NAMES.get(item["id"]))
-        self.icon_widgets[item["id"]] = (icon, item["icon"])
-        row.add_prefix(icon)
+        # "icon" is optional: rows without one (Umbriel effects, profiles...)
+        # are plain text rows.
+        if item.get("icon"):
+            icon = load_icon(item["icon"], self._dark, APP_ICON_THEME_NAMES.get(item["id"]))
+            self.icon_widgets[item["id"]] = (icon, item["icon"])
+            row.add_prefix(icon)
 
         if item.get("disabled"):
             row.set_sensitive(False)
@@ -1964,12 +2041,44 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.zen_tweaks_group = ToggleListGroup(L("Tweaks Zen", "Zen tweaks"), self.zen_tweaks, zen_tweaks_current)
         browser_page.append(self.zen_tweaks_group)
 
+        # roudix.zen.tweaks.profile — which Zen profile receives the tweaks.
+        current_zen_profile = get_active_string_option("roudix.zen.tweaks.profile", PROFILE_AUTO)
+        self.zen_profile_selector = SelectorGroup(
+            L("Profil Zen pour les tweaks", "Zen profile for the tweaks"),
+            profile_selector_items(
+                ZEN_PROFILE_BASES, current_zen_profile,
+                L("Le profil géré par Roudix", "The profile Roudix manages"),
+            ),
+            current_zen_profile,
+            dark,
+        )
+        browser_page.append(self.zen_profile_selector)
+
+        # Firefox: tweaks + profile, only shown while Firefox is ticked above.
+        self.firefox_tweaks = host_filter_items(FIREFOX_TWEAKS)
+        firefox_tweaks_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.firefox_tweaks}
+        self.firefox_tweaks_group = ToggleListGroup(L("Tweaks Firefox", "Firefox tweaks"), self.firefox_tweaks, firefox_tweaks_current)
+        browser_page.append(self.firefox_tweaks_group)
+
+        current_firefox_profile = get_active_string_option("roudix.firefox.tweaks.profile", PROFILE_AUTO)
+        self.firefox_profile_selector = SelectorGroup(
+            L("Profil Firefox pour les tweaks", "Firefox profile for the tweaks"),
+            profile_selector_items(
+                FIREFOX_PROFILE_BASES, current_firefox_profile,
+                L("Aucun : les tweaks Firefox ne sont écrits nulle part", "None: the Firefox tweaks are written nowhere"),
+            ),
+            current_firefox_profile,
+            dark,
+        )
+        browser_page.append(self.firefox_profile_selector)
+
         def _update_zen_cascade(*_):
             zen_on = self.zen_switch.get_active()
             sine_on = self.sine_switch.get_active()
             self.zen_variant_selector.set_visible(zen_on)
             self.sine_row.set_visible(zen_on)
             self.zen_tweaks_group.set_visible(zen_on)
+            self.zen_profile_selector.set_visible(zen_on)
             show_mods = zen_on and sine_on
             self.sine_note.set_visible(show_mods)
             self.zen_mods_group.set_visible(show_mods)
@@ -1985,6 +2094,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.zen_switch.connect("notify::active", _update_zen_cascade)
         self.sine_switch.connect("notify::active", _on_sine_toggled)
         _update_zen_cascade()
+
+        def _update_firefox_cascade(*_):
+            ff_on = self.browser_group.switches["firefox"].get_active()
+            self.firefox_tweaks_group.set_visible(ff_on)
+            self.firefox_profile_selector.set_visible(ff_on)
+
+        self.browser_group.switches["firefox"].connect("notify::active", _update_firefox_cascade)
+        _update_firefox_cascade()
 
         self.content_stack.add_named(browser_page, "browser")
 
@@ -2248,6 +2365,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
              "label": L("Gestionnaire de mots de passe", "Password manager"), "relevant": lambda de: True},
             {"widget": self.autoupdate_interval_selector,    "key": "roudix.autoupdate.interval",    "default": "1h",
              "label": L("Fréquence de mise à jour", "Update interval"), "relevant": lambda de: True},
+            {"widget": self.zen_profile_selector,              "key": "roudix.zen.tweaks.profile",      "default": PROFILE_AUTO,
+             "label": L("Profil Zen (tweaks)", "Zen profile (tweaks)"), "relevant": lambda de: True, "null_value": PROFILE_AUTO},
+            {"widget": self.firefox_profile_selector,          "key": "roudix.firefox.tweaks.profile",  "default": PROFILE_AUTO,
+             "label": L("Profil Firefox (tweaks)", "Firefox profile (tweaks)"), "relevant": lambda de: True, "null_value": PROFILE_AUTO},
         ]
 
         self._apply_host_filter()
@@ -2457,6 +2578,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.zen_mods_group,        host_lists(*zen_mod_keys)),
                 (self.zen_mods_placeholder,  host_lists(*zen_mod_keys)),
                 (self.zen_tweaks_group,      bool(self.zen_tweaks)),
+                (self.zen_profile_selector,  host_lists("roudix.zen.tweaks.profile")),
+                (self.firefox_tweaks_group,  bool(self.firefox_tweaks)),
+                (self.firefox_profile_selector, host_lists("roudix.firefox.tweaks.profile")),
             ],
             "login_shell": [(self.login_shell_selector, host_lists("roudix.shell"))],
             "filemanager": [(self.filemanager_selector, host_lists("roudix.fileManager"))],
@@ -2814,7 +2938,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         icon_theme_changed = new_icon_theme != cur_icon_theme
 
         # Zen tweaks (independent booleans)
-        zen_tweaks_changes = _diff_bool_items(self.zen_tweaks, self.zen_tweaks_group.get_states())
+        # (Firefox tweak ids are prefixed "ff_" so both groups merge into one dict)
+        zen_tweaks_changes = {
+            **_diff_bool_items(self.zen_tweaks, self.zen_tweaks_group.get_states()),
+            **_diff_bool_items(self.firefox_tweaks, self.firefox_tweaks_group.get_states()),
+        }
 
         # Umbriel effects / password manager / update interval
         extra_sel_changes = {}
@@ -2824,7 +2952,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             cur_val = get_active_string_option(ex["key"], ex["default"])
             new_val = ex["widget"].selected_id
             if new_val != cur_val:
-                extra_sel_changes[ex["key"]] = (new_val, ex["label"], cur_val)
+                extra_sel_changes[ex["key"]] = (new_val, ex["label"], cur_val, ex.get("null_value"))
 
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
                     terminal_changed, browsers_changed, zen_changed, zen_variant_changed, sine_changed,
@@ -2926,7 +3054,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
         for _key, new_val, name, _file in zen_tweaks_changes.values():
             changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
-        for _new, _label, _cur in extra_sel_changes.values():
+        for _new, _label, _cur, _null in extra_sel_changes.values():
             changes.append(f"{_label}: <b>{_cur}</b> → <b>{_new}</b>")
         body_changes = "\n".join(changes)
 
@@ -3271,8 +3399,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 )
                 return
 
-        for key, (new_val, label, _cur) in pending["extra_sel_changes"].items():
-            result = set_active_string_option(key, new_val)
+        for key, (new_val, label, _cur, null_value) in pending["extra_sel_changes"].items():
+            result = set_active_string_option(key, None if new_val == null_value else new_val)
             if result is not True:
                 self.status.set_markup(
                     L(f"<span color='red'>Erreur d'écriture — config {label} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {label} config: {GLib.markup_escape_text(result)}</span>")

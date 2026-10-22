@@ -1,4 +1,4 @@
-*[Version française](aliases.fr.md)*
+**English** · [Français](aliases.fr.md) · [Español](aliases.es.md) · [Português (Brasil)](aliases.pt_BR.md) · [Русский](aliases.ru.md) · [简体中文](aliases.zh_CN.md) · [हिन्दी](aliases.hi.md) · [العربية](aliases.ar.md)
 
 # Aliases & functions
 

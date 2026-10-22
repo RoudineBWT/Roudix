@@ -67,6 +67,10 @@
   #   roudix.zen.tweaks.disableSafeBrowsing = true;   # false = keep Google Safe Browsing
   #   roudix.zen.tweaks.ui                  = true;   # smooth scrolling, masonry
   #   roudix.zen.tweaks.policies            = true;   # false = user.js only, no policies.json
+  #   roudix.zen.tweaks.profile = ".zen/abcd1234.Default (release)"; # null (default) = profile managed by Roudix; or a profile dir relative to $HOME (~/.zen or ~/.config/zen) — roudix-switcher lists them
+  # roudix.firefox.tweaks.enable  = false;  # same prefs as the Zen tweaks, as a user.js in ONE Firefox profile (no policies.json)
+  # roudix.firefox.tweaks.profile = ".mozilla/firefox/abcd1234.default-release"; # needed for the line above to do anything; also ~/.config/mozilla/firefox/...
+  #   roudix.firefox.tweaks.{performance,privacy,disableSafeBrowsing,ui} = true;   # fine-grained, like the Zen ones
 
   # ── Hardware ──────────────────────────────────────────────────────────────
   roudix.rgb        = "none";                  # "openlinkhub" (full Corsair), "openrgb" (mixed/other brands) or "none"

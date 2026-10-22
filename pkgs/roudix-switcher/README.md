@@ -26,7 +26,7 @@ and system tweaks, hit apply, and it rebuilds the system for you.
 | Desktop | Compositor / DE (Niri, Hyprland, GNOME, KDE, Cinnamon, MangoWC, Umbriel) and shell (Noctalia, DMS, Caelestia on Hyprland, Umbriel variants), plus the Umbriel shader/animation setup (`roudix.umbriel.effects`) |
 | Gaming | Launchers and tools (Lutris, Heroic, Faugus, Prism, MangoHud...), Ananicy, Decky, gamescope session (and its HDR switch)... |
 | Content Creation | OBS Studio, its plugins, virtual camera, video editor |
-| Editor / Terminal / Browser / Login Shell / File Manager | Default app of each kind (Browser also has the Zen tweaks) |
+| Editor / Terminal / Browser / Login Shell / File Manager | Default app of each kind (Browser also has the Zen and Firefox tweaks, each applied to a profile you pick) |
 | Chat Client | Matrix, Discord, Telegram clients |
 | Apps | Optional apps (GIMP, Inkscape, EasyEffects, Signal, ZapZap, Fluxer...), media players, mail, torrent, password manager |
 | System | Flatpak, virtualization, Waydroid, auto-update (and its check interval), laptop/TLP, Podman, Distrobox... |
