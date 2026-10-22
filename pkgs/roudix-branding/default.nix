@@ -60,6 +60,16 @@ stdenvNoCC.mkDerivation {
     cp $src/kde/color-schemes/RoudixDark.colors  $out/share/color-schemes/RoudixDark.colors
     cp $src/kde/color-schemes/RoudixLight.colors $out/share/color-schemes/RoudixLight.colors
 
+    # ── GNOME Shell themes (Roudix Dark / Light) ──────────────────────────────
+    # Generated from assets/palette/Roudix.json by
+    # scripts/gen-gnome-shell-theme.py — re-run it after touching the palette.
+    # Picked up by the User Themes extension (gnome.nix sets Roudix-Dark).
+    for THEME in Roudix-Dark Roudix-Light; do
+      mkdir -p $out/share/themes/$THEME/gnome-shell
+      cp $src/gnome-shell/$THEME/gnome-shell/gnome-shell.css \
+        $out/share/themes/$THEME/gnome-shell/gnome-shell.css
+    done
+
     # ── Terminal colour schemes (palette-generated, see gen-kde-colorscheme.py) ─
     # Konsole: colour schemes + default "Roudix" profile.
     mkdir -p $out/share/konsole

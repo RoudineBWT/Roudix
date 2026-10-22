@@ -16,6 +16,12 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
   `assets/palette/Roudix.json`.
 
 ### Added
+- GNOME Shell themes `Roudix-Dark` / `Roudix-Light`, generated from
+  `assets/palette/Roudix.json` by `scripts/gen-gnome-shell-theme.py` (gnome-shell's
+  own stylesheet recoloured, so layout tracks upstream) and shipped by
+  `roudix-branding` (`share/themes/`). `Roudix-Dark` is the default shell theme on
+  GNOME through the User Themes extension (now enabled by default); the shell keeps
+  the Roudix orange whatever accent colour is picked in Settings.
 - KDE Plasma colour schemes `RoudixDark` / `RoudixLight`, generated from
   `assets/palette/Roudix.json` by `scripts/gen-kde-colorscheme.py` and shipped by
   `roudix-branding` (`share/color-schemes/`). `RoudixDark` is now the default
