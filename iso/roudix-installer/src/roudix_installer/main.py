@@ -8,7 +8,9 @@ Nix config generation) but drives it from a GUI instead of a bash
 prompt loop, and delegates partitioning to disko instead of KPMCore.
 
 Flow:
-    Welcome -> Disk -> Options -> Summary -> Progress
+    Welcome -> Disk -> Options -> Summary -> Progress      (live ISO)
+    Welcome -> Options -> Summary -> Progress               (already on NixOS:
+                                                              no disk page, see existing_nixos.py)
 """
 import sys
 
@@ -18,6 +20,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Adw, Gio, Gtk  # noqa: E402
 
+from roudix_installer import existing_nixos
 from roudix_installer.pages.disk import DiskPage
 from roudix_installer.pages.options import OptionsPage
 from roudix_installer.pages.progress import ProgressPage
@@ -32,6 +35,11 @@ class RoudixInstallerWindow(Adw.ApplicationWindow):
         self.set_default_size(880, 620)
 
         self.state = InstallState()
+        self.state.mode = existing_nixos.detect_mode()
+        if self.state.mode == existing_nixos.MODE_EXISTING:
+            # The wizard converts the account that is running it: the user
+            # must already exist, and keeps its own password.
+            self.state.username = existing_nixos.current_user()
 
         # NavigationView *is* the window content — each page brings its own
         # Adw.ToolbarView/HeaderBar (see ui_helpers.page_with_header), which
@@ -48,7 +56,9 @@ class RoudixInstallerWindow(Adw.ApplicationWindow):
             "progress": lambda: ProgressPage(self.state),
         }
 
-        welcome = WelcomePage(self.state, on_next=lambda: self.goto("disk"))
+        # Already-installed NixOS: nothing to partition, go straight to Options.
+        first = "options" if self.state.mode == existing_nixos.MODE_EXISTING else "disk"
+        welcome = WelcomePage(self.state, on_next=lambda: self.goto(first))
         self.stack.push(welcome)
 
     def goto(self, name: str):
@@ -57,6 +67,10 @@ class RoudixInstallerWindow(Adw.ApplicationWindow):
         # Options and Summary depend on the profile picked on Welcome: if the
         # user went back and chose another one, build them again.
         if name in ("options", "summary") and self._built_for.get(name) != self.state.hostname:
+            self.pages.pop(name, None)
+        # Progress is rebuilt on every visit: "Simulate" runs it once, then
+        # comes back to Summary, and the real run must start from a clean log.
+        if name == "progress":
             self.pages.pop(name, None)
         if name not in self.pages:
             self.pages[name] = self.page_factories[name]()
@@ -80,6 +94,11 @@ def main():
     import importlib.resources
 
     from gi.repository import Gdk
+
+    if existing_nixos.detect_mode() == existing_nixos.MODE_EXISTING:
+        # hosts/<n>/local.nix.example must be readable before the first page
+        # (profile list, per-profile questions); on the ISO it is embedded.
+        existing_nixos.prepare_catalog(log=lambda m: print(m, file=sys.stderr))
 
     app = RoudixInstallerApp()
 

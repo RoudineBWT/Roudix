@@ -7,6 +7,26 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 
 ## [Unreleased]
 
+### Added
+- `roudix-installer` (Python / GTK) can now convert an already installed NixOS: no
+  disk page, config cloned to `~/.config/roudix`, applied with `nixos-rebuild boot`
+  (the previous generation stays in the boot menu), privileged steps through
+  polkit. `/etc/nixos` is copied to `/var/backups/roudix/nixos-<date>/` with a
+  `RESTORE.txt`, `hardware-configuration.nix` is reused instead of regenerated over
+  `/etc/nixos`, and a pre-flight warns about a small `/boot`, a bootloader change
+  or an older `stateVersion`. `roudix-installer.sh` stays as the TTY fallback.
+- *Simulate* button on the installer's summary page (the dry run, no longer an
+  environment variable): generates the config in a temp dir, verifies every written
+  option (as `roudix-installer.sh` did, the Python installer did not) and, on an
+  installed NixOS, makes Nix evaluate the whole system.
+- Releases: `scripts/release.sh` promotes `[Unreleased]` to a dated release
+  (`v<YYYY.MM.DD>`) when `sync-main.yml` merges testing into main, then tags it and
+  publishes a GitHub Release with those notes (feat/fix commit subjects as fallback
+  if `[Unreleased]` is empty).
+- `roudix-autoupdate` remembers the feat/fix commits each update brings: the
+  "Rebuild scheduled" notification lists the first ones and `update --changes`
+  shows them all, after the package diff.
+
 ### Changed
 - Roudix identity moved from Catppuccin Mocha Peach to the Roudix palette: logo
   (SVG + PNG), all app icons (switcher, store, config, hw-sync, kernel/scheduler

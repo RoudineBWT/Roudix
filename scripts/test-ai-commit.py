@@ -8,13 +8,13 @@ def check(name, cond, detail=""):
     else: FAIL += 1; print(f"  FAIL {name}  {detail}")
 
 # ---------- fake Ollama ----------
-class State: mode="good"; prompts=[]; calls=0
+class State: mode="good"; prompts=[]; calls=0; bodies=[]
 GOOD = "feat(niri): add screenshot binds and tune the layout\n\n- bind Print to screenshot\n- reduce gaps"
 class H(http.server.BaseHTTPRequestHandler):
     def log_message(self,*a): pass
     def do_POST(self):
         n=int(self.headers["Content-Length"]); body=json.loads(self.rfile.read(n))
-        State.calls+=1; State.prompts.append(body["messages"][1]["content"])
+        State.calls+=1; State.prompts.append(body["messages"][1]["content"]); State.bodies.append(body)
         m=State.mode
         if m=="404": self.send_response(404); self.end_headers(); return
         if m=="good": out=GOOD
@@ -173,5 +173,14 @@ d=mkrepo(autos=0); os.makedirs(f"{d}/dotfiles",exist_ok=True)
 open(f"{d}/dotfiles/mon fichier é.txt","w").write("a\n"); sh("git add -A && git commit -qm 'auto: x'",d)
 State.calls=0; r=run(d,"squash","--dry-run","--offline")
 check("pas d'appel, nom lisible", State.calls==0 and "mon fichier é.txt" in r.stdout+r.stderr or "update mon fichier" in r.stdout, r.stdout)
+
+print("17. VRAM: le modèle est déchargé tout de suite par défaut (keep_alive = 0)")
+d=mkrepo(); State.bodies=[]; r=run(d,"squash","--dry-run",mode="good")
+check("requête avec keep_alive == 0", State.bodies and State.bodies[0].get("keep_alive")==0, State.bodies[:1])
+check("0 est un entier (pas la chaîne '0')", isinstance(State.bodies[0].get("keep_alive"), int))
+d=mkrepo(); State.bodies=[]; r=run(d,"squash","--dry-run",mode="good",extra={"ROUDIX_AI_KEEP_ALIVE":"5m"})
+check("ROUDIX_AI_KEEP_ALIVE=5m -> '5m'", State.bodies and State.bodies[0].get("keep_alive")=="5m", State.bodies[:1])
+d=mkrepo(); State.bodies=[]; r=run(d,"squash","--dry-run",mode="good",extra={"ROUDIX_AI_KEEP_ALIVE":"300"})
+check("ROUDIX_AI_KEEP_ALIVE=300 -> 300 (entier)", State.bodies and State.bodies[0].get("keep_alive")==300, State.bodies[:1])
 
 print(f"\n{PASS} ok, {FAIL} échecs"); sys.exit(1 if FAIL else 0)

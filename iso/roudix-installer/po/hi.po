@@ -1,0 +1,1726 @@
+# Hindi translation of the Roudix installer.
+# Source strings are English (see src/roudix_installer/i18n.py).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-installer\n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Hindi\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Unknown disk"
+msgstr "अज्ञात डिस्क"
+
+#: src/roudix_installer/pages/disk.py src/roudix_installer/pages/summary.py
+msgid "Disk"
+msgstr "डिस्क"
+
+#: src/roudix_installer/pages/disk.py
+msgid "/boot (EFI)"
+msgstr "/boot (EFI)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Skip"
+msgstr "छोड़ें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "swap"
+msgstr "swap"
+
+#: src/roudix_installer/pages/disk.py
+msgid "⚠ The selected disk will be completely wiped (simple mode)"
+msgstr "⚠ चुनी गई डिस्क पूरी तरह मिटा दी जाएगी (सरल मोड)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Partitioning mode"
+msgstr "पार्टिशनिंग मोड"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Simple (EFI + swap + root, wipes everything)"
+msgstr "सरल (EFI + swap + root, सब कुछ मिटा देता है)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Advanced (custom disko.nix file)"
+msgstr "उन्नत (कस्टम disko.nix फ़ाइल)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Manual (partition it yourself)"
+msgstr "मैनुअल (पार्टिशन खुद बनाएँ)"
+
+#: src/roudix_installer/pages/disk.py src/roudix_installer/pages/options.py
+msgid "Options"
+msgstr "विकल्प"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Filesystem"
+msgstr "फ़ाइल सिस्टम"
+
+#: src/roudix_installer/pages/disk.py
+msgid "ext4 (simple)"
+msgstr "ext4 (simple)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "btrfs (@, @home, @nix, @log subvolumes + zstd)"
+msgstr "btrfs (सबवॉल्यूम @, @home, @nix, @log + zstd)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "/boot size (GB)"
+msgstr "/boot का आकार (GB)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "4G recommended with CachyOS + multiple Limine generations — 2G minimum"
+msgstr "CachyOS + कई Limine जनरेशन के लिए 4G अनुशंसित — न्यूनतम 2G"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Add a swap partition"
+msgstr "swap पार्टिशन जोड़ें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Off by default — zram already covers this"
+msgstr "डिफ़ॉल्ट रूप से बंद — zram पहले से यह काम करता है"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Swap size (GB)"
+msgstr "swap का आकार (GB)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Choose a disk"
+msgstr "एक डिस्क चुनें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "disko.nix file"
+msgstr "disko.nix फ़ाइल"
+
+#: src/roudix_installer/pages/disk.py
+msgid "No file selected"
+msgstr "कोई फ़ाइल नहीं चुनी गई"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Browse…"
+msgstr "ब्राउज़ करें…"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Manual partitioning"
+msgstr "मैनुअल पार्टिशनिंग"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Disk to partition"
+msgstr "पार्टिशन करने वाली डिस्क"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Partition it"
+msgstr "पार्टिशन करें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Open GParted"
+msgstr "GParted खोलें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Refresh"
+msgstr "रीफ़्रेश करें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "If you already partitioned it yourself (fdisk, cfdisk…) in a terminal"
+msgstr "यदि आप टर्मिनल में (fdisk, cfdisk…) खुद पार्टिशन कर चुके हैं"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Assign mountpoints"
+msgstr "माउंट पॉइंट असाइन करें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Once partitioning is done, assign each partition to a mountpoint."
+msgstr "पार्टिशनिंग पूरी होने के बाद, हर पार्टिशन को एक माउंट पॉइंट असाइन करें।"
+
+#: src/roudix_installer/pages/disk.py src/roudix_installer/pages/options.py
+msgid "Continue"
+msgstr "आगे बढ़ें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Select a disko.nix"
+msgstr "एक disko.nix चुनें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Choose"
+msgstr "चुनें"
+
+#: src/roudix_installer/pages/options.py
+msgid "Standard latest CachyOS kernel"
+msgstr "Standard latest CachyOS kernel"
+
+#: src/roudix_installer/pages/options.py
+msgid "x86_64-v3 optimized (recommended, recent CPUs)"
+msgstr "x86_64-v3 ऑप्टिमाइज़्ड (अनुशंसित, नए CPU)"
+
+#: src/roudix_installer/pages/options.py
+msgid "LTO build — better performance"
+msgstr "LTO बिल्ड — बेहतर प्रदर्शन"
+
+#: src/roudix_installer/pages/options.py
+msgid "LTO + x86_64-v3 (best performance, recent CPUs)"
+msgstr "LTO + x86_64-v3 (सर्वश्रेष्ठ प्रदर्शन, नए CPU)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Long-term support"
+msgstr "दीर्घकालिक सपोर्ट"
+
+#: src/roudix_installer/pages/options.py
+msgid "LTS + LTO + x86_64-v3 (stable + fast)"
+msgstr "LTS + LTO + x86_64-v3 (स्थिर + तेज़)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Release candidate — bleeding edge"
+msgstr "रिलीज़ कैंडिडेट — सबसे नया"
+
+#: src/roudix_installer/pages/options.py
+msgid "linux-zen (nixpkgs) — outside the xddxdd overlay"
+msgstr "linux-zen (nixpkgs) — xddxdd ओवरले के बाहर"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs default LTS — outside the xddxdd overlay"
+msgstr "nixpkgs का डिफ़ॉल्ट LTS — xddxdd ओवरले के बाहर"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs latest mainline — outside the xddxdd overlay"
+msgstr "nixpkgs का नवीनतम mainline — xddxdd ओवरले के बाहर"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs testing (RC/mainline) — outside the xddxdd overlay"
+msgstr "nixpkgs testing (RC/mainline) — xddxdd ओवरले के बाहर"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod LTS (nixpkgs) — outside the xddxdd overlay"
+msgstr "XanMod LTS (nixpkgs) — xddxdd ओवरले के बाहर"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod main branch (nixpkgs) — outside the xddxdd overlay"
+msgstr "XanMod मुख्य ब्रांच (nixpkgs) — xddxdd ओवरले के बाहर"
+
+#: src/roudix_installer/pages/options.py
+msgid "Default — LTO + BORE"
+msgstr "डिफ़ॉल्ट — LTO + BORE"
+
+#: src/roudix_installer/pages/options.py
+msgid "Server optimized (no desktop tuning)"
+msgstr "सर्वर के लिए ऑप्टिमाइज़्ड (डेस्कटॉप ट्यूनिंग के बिना)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Security hardened"
+msgstr "सुरक्षा के लिए मज़बूत किया गया"
+
+#: src/roudix_installer/pages/options.py
+msgid "linux-zen (nixpkgs) — locally-rebuilt nvidia module"
+msgstr "linux-zen (nixpkgs) — लोकल रूप से दोबारा बनाया गया nvidia मॉड्यूल"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs default LTS — locally-rebuilt nvidia module"
+msgstr "nixpkgs का डिफ़ॉल्ट LTS — लोकल रूप से दोबारा बनाया गया nvidia मॉड्यूल"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs latest mainline — locally-rebuilt nvidia module"
+msgstr "nixpkgs का नवीनतम mainline — लोकल रूप से दोबारा बनाया गया nvidia मॉड्यूल"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs testing (RC/mainline) — locally-rebuilt nvidia module"
+msgstr "nixpkgs testing (RC/mainline) — लोकल रूप से दोबारा बनाया गया nvidia मॉड्यूल"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod LTS (nixpkgs) — locally-rebuilt nvidia module"
+msgstr "XanMod LTS (nixpkgs) — लोकल रूप से दोबारा बनाया गया nvidia मॉड्यूल"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod main branch (nixpkgs) — locally-rebuilt nvidia module"
+msgstr "XanMod मुख्य ब्रांच (nixpkgs) — लोकल रूप से दोबारा बनाया गया nvidia मॉड्यूल"
+
+#: src/roudix_installer/pages/options.py
+msgid "None"
+msgstr "कोई नहीं"
+
+#: src/roudix_installer/pages/options.py
+msgid "Stable (recommended)"
+msgstr "स्थिर (अनुशंसित)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Cinnamon (X11, older PCs)"
+msgstr "Cinnamon (X11, पुराने पीसी)"
+
+#: src/roudix_installer/pages/options.py
+msgid "(detected)"
+msgstr "(पता चला)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Noctalia — default shell"
+msgstr "Noctalia — डिफ़ॉल्ट शेल"
+
+#: src/roudix_installer/pages/options.py
+msgid "Caelestia — Quickshell setup"
+msgstr "Caelestia — Quickshell सेटअप"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "{name} — latest version (flake)"
+msgstr "{name} — नवीनतम संस्करण (flake)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fish (recommended)"
+msgstr "Fish (अनुशंसित)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Ghostty (recommended)"
+msgstr "Ghostty (अनुशंसित)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Foot (native Wayland, lightweight)"
+msgstr "Foot (नेटिव Wayland, हल्का)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nautilus — GNOME Files (recommended)"
+msgstr "Nautilus — GNOME फ़ाइलें (अनुशंसित)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dolphin — KDE"
+msgstr "Dolphin — KDE"
+
+#: src/roudix_installer/pages/options.py
+msgid "Thunar — XFCE, lightweight"
+msgstr "Thunar — XFCE, हल्का"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nemo — Cinnamon"
+msgstr "Nemo — Cinnamon"
+
+#: src/roudix_installer/pages/options.py
+msgid "Zed — fast, modern (recommended)"
+msgstr "Zed — तेज़, आधुनिक (अनुशंसित)"
+
+#: src/roudix_installer/pages/options.py
+msgid "None — I'll manage my own editor (AppImage, Flatpak...)"
+msgstr "कोई नहीं — मैं अपना एडिटर खुद संभालूँगा (AppImage, Flatpak...)"
+
+#: src/roudix_installer/pages/options.py
+msgid "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommended)"
+msgstr "GNOME keyring + xdg-desktop-portal-gtk/-gnome (अनुशंसित)"
+
+#: src/roudix_installer/pages/options.py
+msgid "KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)"
+msgstr "KWallet + xdg-desktop-portal-kde (उपयोगी यदि आप ज़्यादातर Qt/KDE ऐप चलाते हैं)"
+
+#: src/roudix_installer/pages/options.py
+msgid "OpenRGB — mixed brands (Razer, ASUS, MSI...)"
+msgstr "OpenRGB — कई ब्रांड (Razer, ASUS, MSI...)"
+
+#: src/roudix_installer/pages/options.py
+msgid "No RGB control"
+msgstr "RGB नियंत्रण नहीं"
+
+#: src/roudix_installer/pages/options.py
+msgid "Limine (recommended)"
+msgstr "Limine (अनुशंसित)"
+
+#: src/roudix_installer/pages/options.py
+msgid "main — stable, ~every 2 weeks (recommended)"
+msgstr "main — स्थिर, लगभग हर 2 हफ़्ते में (अनुशंसित)"
+
+#: src/roudix_installer/pages/options.py
+msgid "testing — ~every 2 days, may occasionally break"
+msgstr "testing — लगभग हर 2 दिन में, कभी-कभी टूट सकता है"
+
+#: src/roudix_installer/pages/options.py
+msgid "dev — latest changes, least stable"
+msgstr "dev — नवीनतम बदलाव, सबसे कम स्थिर"
+
+#: src/roudix_installer/pages/options.py
+msgid "Cinny (lightweight, web)"
+msgstr "Cinny (हल्का, वेब)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Vencord (pre-installed)"
+msgstr "Vencord (पहले से इंस्टॉल)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Vanilla (no patch)"
+msgstr "Vanilla (बिना पैच)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Telegram (official client)"
+msgstr "Telegram (आधिकारिक क्लाइंट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "AyuGram (fork: ghost mode, anti-recall...)"
+msgstr "AyuGram (फ़ोर्क: घोस्ट मोड, एंटी-रिकॉल...)"
+
+#: src/roudix_installer/pages/options.py
+msgid "VLC (widest format support)"
+msgstr "VLC (सबसे ज़्यादा फ़ॉर्मैट सपोर्ट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Clapper (modern GTK4)"
+msgstr "Clapper (आधुनिक GTK4)"
+
+#: src/roudix_installer/pages/options.py
+msgid "mpv (+ yt-dlp)"
+msgstr "mpv (+ yt-dlp)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Celluloid (GTK front-end for mpv)"
+msgstr "Celluloid (mpv के लिए GTK फ़्रंट-एंड)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fragments (minimal GNOME client)"
+msgstr "Fragments (न्यूनतम GNOME क्लाइंट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spotify + Spicetify"
+msgstr "Spotify + Spicetify"
+
+#: src/roudix_installer/pages/options.py
+msgid "Thunderbird (full-featured)"
+msgstr "Thunderbird (पूर्ण-सुविधा)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Betterbird (Thunderbird fork)"
+msgstr "Betterbird (Thunderbird का फ़ोर्क)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Geary (lightweight, GNOME)"
+msgstr "Geary (हल्का, GNOME)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bitwarden (cloud-synced vault)"
+msgstr "Bitwarden (क्लाउड-सिंक वॉल्ट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "KeePassXC (local, offline vault)"
+msgstr "KeePassXC (लोकल, ऑफ़लाइन वॉल्ट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Proton Pass (cloud-synced vault)"
+msgstr "Proton Pass (क्लाउड-सिंक वॉल्ट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Colorful (default)"
+msgstr "Colorful (डिफ़ॉल्ट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Belgium"
+msgstr "बेल्जियम"
+
+#: src/roudix_installer/pages/options.py
+msgid "United Kingdom"
+msgstr "यूनाइटेड किंगडम"
+
+#: src/roudix_installer/pages/options.py
+msgid "Netherlands"
+msgstr "नीदरलैंड"
+
+#: src/roudix_installer/pages/options.py
+msgid "Germany"
+msgstr "जर्मनी"
+
+#: src/roudix_installer/pages/options.py
+msgid "Austria"
+msgstr "ऑस्ट्रिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Switzerland"
+msgstr "स्विट्ज़रलैंड"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spain"
+msgstr "स्पेन"
+
+#: src/roudix_installer/pages/options.py
+msgid "Italy"
+msgstr "इटली"
+
+#: src/roudix_installer/pages/options.py
+msgid "Poland"
+msgstr "पोलैंड"
+
+#: src/roudix_installer/pages/options.py
+msgid "Czech Republic"
+msgstr "चेक गणराज्य"
+
+#: src/roudix_installer/pages/options.py
+msgid "Slovakia"
+msgstr "स्लोवाकिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hungary"
+msgstr "हंगरी"
+
+#: src/roudix_installer/pages/options.py
+msgid "Romania"
+msgstr "रोमानिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bulgaria"
+msgstr "बुल्गारिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Greece"
+msgstr "ग्रीस"
+
+#: src/roudix_installer/pages/options.py
+msgid "Finland"
+msgstr "फ़िनलैंड"
+
+#: src/roudix_installer/pages/options.py
+msgid "Sweden"
+msgstr "स्वीडन"
+
+#: src/roudix_installer/pages/options.py
+msgid "Norway"
+msgstr "नॉर्वे"
+
+#: src/roudix_installer/pages/options.py
+msgid "Denmark"
+msgstr "डेनमार्क"
+
+#: src/roudix_installer/pages/options.py
+msgid "Estonia"
+msgstr "एस्टोनिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Latvia"
+msgstr "लातविया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Lithuania"
+msgstr "लिथुआनिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Russia (Moscow)"
+msgstr "रूस (मॉस्को)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turkey"
+msgstr "तुर्किये"
+
+#: src/roudix_installer/pages/options.py
+msgid "Iceland"
+msgstr "आइसलैंड"
+
+#: src/roudix_installer/pages/options.py
+msgid "Morocco"
+msgstr "मोरक्को"
+
+#: src/roudix_installer/pages/options.py
+msgid "Algeria"
+msgstr "अल्जीरिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Tunisia"
+msgstr "ट्यूनीशिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Egypt"
+msgstr "मिस्र"
+
+#: src/roudix_installer/pages/options.py
+msgid "South Africa"
+msgstr "दक्षिण अफ़्रीका"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nigeria"
+msgstr "नाइजीरिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (East)"
+msgstr "संयुक्त राज्य (पूर्व)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Central)"
+msgstr "संयुक्त राज्य (मध्य)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Mountain)"
+msgstr "संयुक्त राज्य (पर्वतीय)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (West)"
+msgstr "संयुक्त राज्य (पश्चिम)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Alaska)"
+msgstr "संयुक्त राज्य (अलास्का)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Hawaii)"
+msgstr "संयुक्त राज्य (हवाई)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canada (East)"
+msgstr "कनाडा (पूर्व)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canada (West)"
+msgstr "कनाडा (पश्चिम)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mexico"
+msgstr "मेक्सिको"
+
+#: src/roudix_installer/pages/options.py
+msgid "Colombia"
+msgstr "कोलंबिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Peru"
+msgstr "पेरू"
+
+#: src/roudix_installer/pages/options.py
+msgid "Chile"
+msgstr "चिली"
+
+#: src/roudix_installer/pages/options.py
+msgid "Argentina"
+msgstr "अर्जेंटीना"
+
+#: src/roudix_installer/pages/options.py
+msgid "Brazil (São Paulo)"
+msgstr "ब्राज़ील (साओ पाउलो)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United Arab Emirates"
+msgstr "संयुक्त अरब अमीरात"
+
+#: src/roudix_installer/pages/options.py
+msgid "Saudi Arabia"
+msgstr "सऊदी अरब"
+
+#: src/roudix_installer/pages/options.py
+msgid "Israel"
+msgstr "इज़राइल"
+
+#: src/roudix_installer/pages/options.py
+msgid "Lebanon"
+msgstr "लेबनान"
+
+#: src/roudix_installer/pages/options.py
+msgid "Iraq"
+msgstr "इराक़"
+
+#: src/roudix_installer/pages/options.py
+msgid "India"
+msgstr "भारत"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nepal"
+msgstr "नेपाल"
+
+#: src/roudix_installer/pages/options.py
+msgid "Uzbekistan"
+msgstr "उज़्बेकिस्तान"
+
+#: src/roudix_installer/pages/options.py
+msgid "Thailand"
+msgstr "थाईलैंड"
+
+#: src/roudix_installer/pages/options.py
+msgid "Indonesia (West)"
+msgstr "इंडोनेशिया (पश्चिम)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Singapore"
+msgstr "सिंगापुर"
+
+#: src/roudix_installer/pages/options.py
+msgid "Malaysia"
+msgstr "मलेशिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "China"
+msgstr "चीन"
+
+#: src/roudix_installer/pages/options.py
+msgid "Taiwan"
+msgstr "ताइवान"
+
+#: src/roudix_installer/pages/options.py
+msgid "South Korea"
+msgstr "दक्षिण कोरिया"
+
+#: src/roudix_installer/pages/options.py
+msgid "Japan"
+msgstr "जापान"
+
+#: src/roudix_installer/pages/options.py
+msgid "Australia (West)"
+msgstr "ऑस्ट्रेलिया (पश्चिम)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Australia (Central)"
+msgstr "ऑस्ट्रेलिया (मध्य)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Australia (East)"
+msgstr "ऑस्ट्रेलिया (पूर्व)"
+
+#: src/roudix_installer/pages/options.py
+msgid "New Zealand"
+msgstr "न्यूज़ीलैंड"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fiji"
+msgstr "फ़िजी"
+
+#: src/roudix_installer/pages/options.py
+msgid "C (minimal POSIX)"
+msgstr "C (न्यूनतम POSIX)"
+
+#: src/roudix_installer/pages/options.py
+msgid "English (US) International (dead keys)"
+msgstr "अंग्रेज़ी (US) इंटरनेशनल (डेड कीज़)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Belgian AZERTY"
+msgstr "बेल्जियन AZERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "French AZERTY"
+msgstr "फ़्रेंच AZERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "French AZERTY (latin9)"
+msgstr "फ़्रेंच AZERTY (latin9)"
+
+#: src/roudix_installer/pages/options.py
+msgctxt "console keymap list"
+msgid "Swiss French QWERTZ"
+msgstr "स्विस फ़्रेंच QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "German QWERTZ"
+msgstr "जर्मन QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "German QWERTZ (latin1)"
+msgstr "जर्मन QWERTZ (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Austrian QWERTZ"
+msgstr "ऑस्ट्रियन QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Swiss QWERTZ"
+msgstr "स्विस QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dutch QWERTY"
+msgstr "डच QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spanish QWERTY"
+msgstr "स्पेनिश QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spanish QWERTY (cp850)"
+msgstr "स्पेनिश QWERTY (cp850)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Portuguese QWERTY (latin1)"
+msgstr "पुर्तगाली QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Brazilian Portuguese ABNT2"
+msgstr "ब्राज़ीलियाई पुर्तगाली ABNT2"
+
+#: src/roudix_installer/pages/options.py
+msgid "Italian QWERTY"
+msgstr "इतालवी QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Italian QWERTY (latin1)"
+msgstr "इतालवी QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Polish QWERTY"
+msgstr "पोलिश QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Russian"
+msgstr "रूसी"
+
+#: src/roudix_installer/pages/options.py
+msgid "Ukrainian"
+msgstr "यूक्रेनी"
+
+#: src/roudix_installer/pages/options.py
+msgid "Czech QWERTY (latin2)"
+msgstr "चेक QWERTY (latin2)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Slovak QWERTY"
+msgstr "स्लोवाक QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hungarian QWERTY"
+msgstr "हंगेरियन QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Romanian QWERTY"
+msgstr "रोमानियाई QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turkish Q"
+msgstr "तुर्की Q"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turkish F"
+msgstr "तुर्की F"
+
+#: src/roudix_installer/pages/options.py
+msgid "Japanese 106-key"
+msgstr "जापानी 106-की"
+
+#: src/roudix_installer/pages/options.py
+msgid "Swedish QWERTY (latin1)"
+msgstr "स्वीडिश QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Norwegian QWERTY (latin1)"
+msgstr "नॉर्वेजियन QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Danish QWERTY (latin1)"
+msgstr "डेनिश QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Finnish QWERTY (latin1)"
+msgstr "फ़िनिश QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Greek"
+msgstr "यूनानी"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hebrew"
+msgstr "हिब्रू"
+
+#: src/roudix_installer/pages/options.py
+msgid "Arabic"
+msgstr "अरबी"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dvorak left"
+msgstr "Dvorak बायाँ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dvorak right"
+msgstr "Dvorak दायाँ"
+
+#: src/roudix_installer/pages/options.py
+msgid "US International (dead keys, recommended)"
+msgstr "US इंटरनेशनल (डेड कीज़, अनुशंसित)"
+
+#: src/roudix_installer/pages/options.py
+msgid "US Basic QWERTY (no variant)"
+msgstr "US बेसिक QWERTY (बिना वैरिएंट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "British QWERTY"
+msgstr "ब्रिटिश QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "French BÉPO"
+msgstr "फ़्रेंच BÉPO"
+
+#: src/roudix_installer/pages/options.py
+msgctxt "graphical keyboard layout list"
+msgid "Swiss French QWERTZ"
+msgstr "स्विस फ़्रेंच QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Swiss German QWERTZ"
+msgstr "स्विस जर्मन QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Portuguese QWERTY"
+msgstr "पुर्तगाली QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Japanese"
+msgstr "जापानी"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dvorak (US)"
+msgstr "Dvorak (US)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Colemak (US)"
+msgstr "Colemak (US)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "User"
+msgstr "उपयोगकर्ता"
+
+#: src/roudix_installer/pages/options.py
+msgid "Username"
+msgstr "उपयोगकर्ता नाम"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Password"
+msgstr "पासवर्ड"
+
+#: src/roudix_installer/pages/options.py
+msgid "Confirm password"
+msgstr "पासवर्ड की पुष्टि करें"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Answers pre-filled with the “{hostname}” profile's values."
+msgstr "उत्तर “{hostname}” प्रोफ़ाइल के मानों से पहले से भरे गए हैं।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hardware"
+msgstr "हार्डवेयर"
+
+#: src/roudix_installer/pages/options.py
+msgid "GPU"
+msgstr "GPU"
+
+#: src/roudix_installer/pages/options.py
+msgid "AMD integrated (Ryzen APU)"
+msgstr "AMD इंटीग्रेटेड (Ryzen APU)"
+
+#: src/roudix_installer/pages/options.py
+msgid "AMD legacy — GCN 1.x/2.x"
+msgstr "AMD पुराना — GCN 1.x/2.x"
+
+#: src/roudix_installer/pages/options.py
+msgid "Intel (integrated / Arc)"
+msgstr "Intel (इंटीग्रेटेड / Arc)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Optimus laptop (Intel/AMD + NVIDIA dGPU)"
+msgstr "Optimus लैपटॉप (Intel/AMD + NVIDIA dGPU)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Laptop (TLP)"
+msgstr "लैपटॉप (TLP)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
+"will still launch games normally but without the roudix-gaming CPU profile."
+msgstr "tuned को बंद करके TLP इस्तेमाल करता है: अगर गेमिंग भी चालू है, तो game-performance खेल सामान्य रूप से चलाएगा, लेकिन roudix-gaming CPU प्रोफ़ाइल के बिना।"
+
+#: src/roudix_installer/pages/options.py
+msgid "ThinkPad (40/80% battery charge thresholds)"
+msgstr "ThinkPad (बैटरी चार्ज सीमा 40/80%)"
+
+#: src/roudix_installer/pages/options.py
+msgid "AMD GPU undervolting (lact, amdgpu.ppfeaturemask)"
+msgstr "AMD GPU अंडरवोल्टिंग (lact, amdgpu.ppfeaturemask)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel"
+msgstr "कर्नेल"
+
+#: src/roudix_installer/pages/options.py
+msgid "GPU / CPU auto-detected — change them above if needed."
+msgstr "GPU / CPU अपने-आप पहचाने गए — ज़रूरत हो तो ऊपर बदलें।"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Browser"
+msgstr "ब्राउज़र"
+
+#: src/roudix_installer/pages/options.py
+msgid "Brave variant"
+msgstr "Brave वैरिएंट"
+
+#: src/roudix_installer/pages/options.py
+msgid "Also install Zen Browser"
+msgstr "Zen Browser भी इंस्टॉल करें"
+
+#: src/roudix_installer/pages/options.py
+msgid "Zen channel"
+msgstr "Zen चैनल"
+
+#: src/roudix_installer/pages/options.py
+msgid "Twilight (default)"
+msgstr "Twilight (डिफ़ॉल्ट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Zen mods (comma-separated)"
+msgstr "Zen मॉड (कॉमा से अलग करें)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Enable Sine (Zen mod engine)"
+msgstr "Sine चालू करें (Zen मॉड इंजन)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Sine mods (comma-separated)"
+msgstr "Sine मॉड (कॉमा से अलग करें)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Desktop"
+msgstr "डेस्कटॉप"
+
+#: src/roudix_installer/pages/options.py
+msgid "Compositor / desktop"
+msgstr "कंपोज़िटर / डेस्कटॉप"
+
+#: src/roudix_installer/pages/options.py
+msgid "Graphical shell (bar/UI)"
+msgstr "ग्राफ़िकल शेल (बार/UI)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Off: nixpkgs version"
+msgstr "बंद: nixpkgs संस्करण"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"⚠ Roudix configurations are written for the flake (latest) versions first. "
+"On the nixpkgs version, a configuration error saying that an option, a "
+"setting or a key \"does not exist\" is normal: it was added after the "
+"nixpkgs version. Wait for nixpkgs to catch up, or turn the latest version on."
+msgstr "⚠ Roudix कॉन्फ़िगरेशन पहले flake (नवीनतम) संस्करणों के लिए लिखे जाते हैं। nixpkgs संस्करण पर, यह कहने वाली कॉन्फ़िगरेशन त्रुटि कि कोई विकल्प, सेटिंग या कुंजी \"मौजूद नहीं है\", सामान्य है: उसे nixpkgs संस्करण के बाद जोड़ा गया था। nixpkgs के अपडेट होने तक रुकें, या नवीनतम संस्करण चालू करें।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Default shell"
+msgstr "डिफ़ॉल्ट शेल"
+
+#: src/roudix_installer/pages/options.py
+msgid "Terminal"
+msgstr "टर्मिनल"
+
+#: src/roudix_installer/pages/options.py
+msgid "File manager"
+msgstr "फ़ाइल मैनेजर"
+
+#: src/roudix_installer/pages/options.py
+msgid "Code editor"
+msgstr "कोड एडिटर"
+
+#: src/roudix_installer/pages/options.py
+msgid "Keyring / xdg-desktop-portal"
+msgstr "कीरिंग / xdg-desktop-portal"
+
+#: src/roudix_installer/pages/options.py
+msgid "System"
+msgstr "सिस्टम"
+
+#: src/roudix_installer/pages/options.py
+msgid "Installing inside a VM"
+msgstr "VM के अंदर इंस्टॉल करना"
+
+#: src/roudix_installer/pages/options.py
+msgid "Gaming packages (Steam, Wine, Lutris…)"
+msgstr "गेमिंग पैकेज (Steam, Wine, Lutris…)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Ananicy (automatic gaming scheduling)"
+msgstr "Ananicy (गेमिंग के लिए स्वचालित शेड्यूलिंग)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Millennium (modded Steam client: themes and plugins)"
+msgstr "Millennium (मॉडिफ़ाइड Steam क्लाइंट: थीम और प्लगइन)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Unofficial mod — off = stock Steam"
+msgstr "अनाधिकारिक मॉड — बंद = सामान्य Steam"
+
+#: src/roudix_installer/pages/options.py
+msgid "Lutris"
+msgstr "Lutris"
+
+#: src/roudix_installer/pages/options.py
+msgid "Heroic Games Launcher (Epic/GOG/Amazon)"
+msgstr "Heroic Games Launcher (Epic/GOG/Amazon)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Faugus Launcher"
+msgstr "Faugus Launcher"
+
+#: src/roudix_installer/pages/options.py
+msgid "Prism Launcher (Minecraft)"
+msgstr "Prism Launcher (Minecraft)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Modrinth App (alternative to Prism)"
+msgstr "Modrinth App (Prism का विकल्प)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Vintage Story"
+msgstr "Vintage Story"
+
+#: src/roudix_installer/pages/options.py
+msgid "MangoHud (in-game perf overlay)"
+msgstr "MangoHud (गेम के अंदर प्रदर्शन ओवरले)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git (bleeding-edge graphics drivers)"
+msgstr "Mesa git (सबसे नए ग्राफ़िक्स ड्राइवर)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Timezone"
+msgstr "समय क्षेत्र"
+
+#: src/roudix_installer/pages/options.py
+msgid "System language"
+msgstr "सिस्टम की भाषा"
+
+#: src/roudix_installer/pages/options.py
+msgid "Keyboard layout (console)"
+msgstr "कीबोर्ड लेआउट (कंसोल)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Graphical keyboard layout (Wayland)"
+msgstr "ग्राफ़िकल कीबोर्ड लेआउट (Wayland)"
+
+#: src/roudix_installer/pages/options.py
+msgid "RGB controller"
+msgstr "RGB कंट्रोलर"
+
+#: src/roudix_installer/pages/options.py
+msgid "RAM RGB (Corsair DDR4/DDR5)"
+msgstr "RAM RGB (Corsair DDR4/DDR5)"
+
+#: src/roudix_installer/pages/options.py
+msgid "RAM type"
+msgstr "RAM का प्रकार"
+
+#: src/roudix_installer/pages/options.py
+msgid "SMBus (e.g. i2c-1)"
+msgstr "SMBus (जैसे i2c-1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "RAM SKU (part number)"
+msgstr "RAM SKU (पार्ट नंबर)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
+"\"sudo dmidecode -t memory | grep 'Part Number'\"."
+msgstr "SMBus / RAM SKU अपने-आप नहीं पहचाने जाते — इन्हें \"i2cdetect -l\" और \"sudo dmidecode -t memory | grep 'Part Number'\" से खोजें।"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Extras"
+msgstr "अतिरिक्त"
+
+#: src/roudix_installer/pages/options.py
+msgid "GTA Online fix (blocks the Linux anti-cheat IP)"
+msgstr "GTA Online फ़िक्स (Linux एंटी-चीट का IP ब्लॉक करता है)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Virtualization (libvirt, virt-manager)"
+msgstr "वर्चुअलाइज़ेशन (libvirt, virt-manager)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Automatic updates"
+msgstr "स्वचालित अपडेट"
+
+#: src/roudix_installer/pages/options.py
+msgid "Interval (e.g. 1h, 6h, 24h)"
+msgstr "अंतराल (जैसे 1h, 6h, 24h)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Branch (install + updates)"
+msgstr "ब्रांच (इंस्टॉल + अपडेट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bootloader"
+msgstr "बूटलोडर"
+
+#: src/roudix_installer/pages/options.py
+msgid "Matrix client"
+msgstr "Matrix क्लाइंट"
+
+#: src/roudix_installer/pages/options.py
+msgid "Discord"
+msgstr "Discord"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Video player"
+msgstr "वीडियो प्लेयर"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Torrent client"
+msgstr "टोरेंट क्लाइंट"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Music player"
+msgstr "म्यूज़िक प्लेयर"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Mail client"
+msgstr "ईमेल क्लाइंट"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Password manager"
+msgstr "पासवर्ड मैनेजर"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turn on the ones you want preinstalled."
+msgstr "जिन्हें पहले से इंस्टॉल चाहते हैं, उन्हें चालू करें।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spicetify theme"
+msgstr "Spicetify थीम"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spicetify color scheme (empty = theme default)"
+msgstr "Spicetify रंग योजना (खाली = थीम का डिफ़ॉल्ट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Adblock extension (Spicetify)"
+msgstr "विज्ञापन-ब्लॉक एक्सटेंशन (Spicetify)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hide podcasts (Spicetify)"
+msgstr "पॉडकास्ट छिपाएँ (Spicetify)"
+
+#: src/roudix_installer/pages/options.py
+msgid "End-to-end encrypted messenger"
+msgstr "एंड-टू-एंड एन्क्रिप्टेड मैसेंजर"
+
+#: src/roudix_installer/pages/options.py
+msgid "Unofficial WhatsApp client"
+msgstr "WhatsApp का अनाधिकारिक क्लाइंट"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Self-hostable Discord alternative (independent of the Discord choice above)"
+msgstr "खुद होस्ट किया जा सकने वाला Discord का विकल्प (ऊपर के Discord चुनाव से स्वतंत्र)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Content Creation"
+msgstr "कंटेंट क्रिएशन"
+
+#: src/roudix_installer/pages/options.py
+msgid "Enable content-creation tooling"
+msgstr "कंटेंट-क्रिएशन टूल चालू करें"
+
+#: src/roudix_installer/pages/options.py
+msgid "VKCapture (Vulkan/OpenGL game capture)"
+msgstr "VKCapture (Vulkan/OpenGL गेम कैप्चर)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pipewire Audio Capture (per-app audio)"
+msgstr "Pipewire Audio Capture (हर ऐप का अलग ऑडियो)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Background Removal (AI virtual background)"
+msgstr "Background Removal (AI वर्चुअल बैकग्राउंड)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Move Transition (source animations)"
+msgstr "Move Transition (सोर्स एनिमेशन)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Aitum Multistream (multi-platform streaming)"
+msgstr "Aitum Multistream (कई प्लेटफ़ॉर्म पर स्ट्रीमिंग)"
+
+#: src/roudix_installer/pages/options.py
+msgid "GStreamer (extra sources/outputs)"
+msgstr "GStreamer (अतिरिक्त सोर्स/आउटपुट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Composite Blur (blur/glass filters)"
+msgstr "Composite Blur (ब्लर/ग्लास फ़िल्टर)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Advanced Scene Switcher (automated scene switching)"
+msgstr "Advanced Scene Switcher (दृश्यों का स्वचालित बदलाव)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Input Overlay (on-screen keyboard/mouse/gamepad)"
+msgstr "Input Overlay (स्क्रीन पर कीबोर्ड/माउस/गेमपैड)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Waveform (audio waveform/spectrum)"
+msgstr "Waveform (ऑडियो वेवफ़ॉर्म/स्पेक्ट्रम)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Video editor"
+msgstr "वीडियो एडिटर"
+
+#: src/roudix_installer/pages/options.py
+msgid "DaVinci Resolve (free)"
+msgstr "DaVinci Resolve (मुफ़्त)"
+
+#: src/roudix_installer/pages/options.py
+msgid "DaVinci Resolve Studio (paid)"
+msgstr "DaVinci Resolve Studio (पेड)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Virtual camera (v4l2loopback)"
+msgstr "वर्चुअल कैमरा (v4l2loopback)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Chatterino2 (third-party Twitch chat)"
+msgstr "Chatterino2 (थर्ड-पार्टी Twitch चैट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel (Chaotic-Nyx)"
+msgstr "Kernel (Chaotic-Nyx)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel (xddxdd)"
+msgstr "Kernel (xddxdd)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"This user doesn't exist on this system — run the installer from the account "
+"you want to keep."
+msgstr "यह उपयोगकर्ता इस सिस्टम पर मौजूद नहीं है — इंस्टॉलर को उस खाते से चलाएँ जिसे आप रखना चाहते हैं।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Password can't be empty."
+msgstr "पासवर्ड खाली नहीं हो सकता।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Passwords don't match."
+msgstr "पासवर्ड मेल नहीं खाते।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation"
+msgstr "इंस्टॉलेशन"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Preparing…"
+msgstr "तैयारी हो रही है…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation log"
+msgstr "इंस्टॉलेशन लॉग"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Copy log"
+msgstr "लॉग कॉपी करें"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Reboot now"
+msgstr "अभी रीबूट करें"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Finish"
+msgstr "समाप्त करें"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Back to summary"
+msgstr "सारांश पर वापस जाएँ"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Rebooting…"
+msgstr "रीबूट हो रहा है…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: these options were NOT confirmed in local.nix — review the file "
+"before rebooting: {keys}"
+msgstr "चेतावनी: ये विकल्प local.nix में पुष्ट नहीं हुए — रीबूट करने से पहले फ़ाइल जाँच लें: {keys}"
+
+#: src/roudix_installer/pages/progress.py
+msgid "✓ every chosen option was written to local.nix."
+msgstr "✓ चुने गए सभी विकल्प local.nix में लिख दिए गए हैं।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Dry run — nothing is written to disk"
+msgstr "ड्राई रन — डिस्क पर कुछ नहीं लिखा जाता"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the "
+"repo>)"
+msgstr "hosts/{host}/local.nix.example नहीं मिला (ROUDIX_CFG_ROOT=<रिपॉज़िटरी का पाथ> आज़माएँ)"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Dry run finished — nothing was changed"
+msgstr "ड्राई रन पूरा हुआ — कुछ भी नहीं बदला गया"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation — nothing is written"
+msgstr "सिमुलेशन — कुछ भी नहीं लिखा जाता"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Fetching the Roudix configuration…"
+msgstr "Roudix कॉन्फ़िगरेशन लाया जा रहा है…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Clone failed — simulating with the local copy of the profiles."
+msgstr "क्लोन विफल रहा — प्रोफ़ाइलों की लोकल कॉपी से सिमुलेशन हो रहा है।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Detecting hardware…"
+msgstr "हार्डवेयर की पहचान हो रही है…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Generating local.nix / username.nix…"
+msgstr "local.nix / username.nix बन रहे हैं…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Evaluating the whole system with Nix…"
+msgstr "Nix से पूरे सिस्टम का मूल्यांकन हो रहा है…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "✓ the configuration evaluates: Nix can build this system."
+msgstr "✓ कॉन्फ़िगरेशन का मूल्यांकन सफल रहा: Nix यह सिस्टम बना सकता है।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation finished — nothing was changed"
+msgstr "सिमुलेशन पूरा हुआ — कुछ भी नहीं बदला गया"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation complete 🎉"
+msgstr "इंस्टॉलेशन पूरा हुआ 🎉"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Error"
+msgstr "त्रुटि"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation failed"
+msgstr "इंस्टॉलेशन विफल रहा"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation failed"
+msgstr "सिमुलेशन विफल रहा"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Authentication was cancelled or refused."
+msgstr "ऑथेंटिकेशन रद्द कर दिया गया या अस्वीकार कर दिया गया।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "failed"
+msgstr "विफल"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Unknown partitioning mode"
+msgstr "अज्ञात पार्टिशनिंग मोड"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Partitioning the disk…"
+msgstr "डिस्क का पार्टिशन हो रहा है…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Mounting partitions…"
+msgstr "पार्टिशन माउंट हो रहे हैं…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "No partition assigned to / — cannot continue"
+msgstr "/ को कोई पार्टिशन असाइन नहीं किया गया — आगे नहीं बढ़ सकते"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "Checking branch '{branch}'…"
+msgstr "ब्रांच '{branch}' जाँची जा रही है…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "Branch '{branch}' not found on {repo_url} — falling back to 'main'."
+msgstr "ब्रांच '{branch}' {repo_url} पर नहीं मिली — 'main' पर वापस जा रहे हैं।"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
+"local.nix generation may fail."
+msgstr "चेतावनी: ब्रांच '{branch}' पर hosts/{host}/local.nix.example नहीं मिला — local.nix बनाना विफल हो सकता है।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Copying the configuration…"
+msgstr "कॉन्फ़िगरेशन कॉपी हो रहा है…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main)."
+msgstr "ब्रांच '{branch}' चुनी गई — GitHub से क्लोन हो रहा है (ISO में केवल main शामिल है)।"
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing "
+"outside an ISO) — cloning straight from GitHub instead."
+msgstr "/iso-cfg नहीं मिला (ISO अभी isoImage.contents के साथ दोबारा नहीं बनी, या ISO के बाहर टेस्ट हो रहा है) — सीधे GitHub से क्लोन हो रहा है।"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "btrfs detected — mount options auto-patched for: {patched}"
+msgstr "btrfs मिला — माउंट विकल्प अपने-आप ठीक किए गए: {patched}"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "hosts/{hostname}/local.nix, username.nix, home/local.nix written."
+msgstr "hosts/{hostname}/local.nix, username.nix और home/local.nix लिख दिए गए।"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: only {free} MiB free in /boot ({need} MiB recommended) — nixos-"
+"rebuild may fail on a small EFI partition."
+msgstr "चेतावनी: /boot में केवल {free} MiB खाली हैं ({need} MiB अनुशंसित) — छोटे EFI पार्टिशन पर nixos-rebuild विफल हो सकता है।"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: only {free} GiB free for the Nix store ({need} GiB recommended)."
+msgstr "चेतावनी: Nix स्टोर के लिए केवल {free} GiB खाली हैं ({need} GiB अनुशंसित)।"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: your configuration uses system.stateVersion {old}, Roudix sets "
+"{new}. Services that keep data (databases…) deserve a look before booting it."
+msgstr "चेतावनी: आपका कॉन्फ़िगरेशन system.stateVersion {old} इस्तेमाल करता है, जबकि Roudix {new} सेट करता है। डेटा रखने वाली सेवाओं (डेटाबेस…) को बूट करने से पहले एक बार देख लेना चाहिए।"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Note: Roudix will use the {new} bootloader (yours: {old}). If it ever fails "
+"to start, RESTORE.txt in the backup explains how to put your old "
+"configuration back."
+msgstr "सूचना: Roudix {new} बूटलोडर इस्तेमाल करेगा (आपका: {old})। यदि यह कभी शुरू न हो, तो बैकअप में मौजूद RESTORE.txt बताती है कि अपना पुराना कॉन्फ़िगरेशन कैसे वापस लाएँ।"
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"Reusing /etc/nixos/hardware-configuration.nix (the one that boots this "
+"machine)."
+msgstr "/etc/nixos/hardware-configuration.nix दोबारा इस्तेमाल हो रहा है (वही जिससे यह मशीन बूट होती है)।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Checking this system…"
+msgstr "इस सिस्टम की जाँच हो रही है…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "{cfg} already exists — moving it to {aside}."
+msgstr "{cfg} पहले से मौजूद है — इसे {aside} में ले जाया जा रहा है।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Backing up /etc/nixos…"
+msgstr "/etc/nixos का बैकअप लिया जा रहा है…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "✓ backup done: {dest} (see RESTORE.txt in it)."
+msgstr "✓ बैकअप हो गया: {dest} (अंदर RESTORE.txt देखें)।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Building Roudix — this can take a while…"
+msgstr "Roudix बनाया जा रहा है — इसमें समय लग सकता है…"
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"✓ Roudix is built. Reboot to start it; your previous system stays in the "
+"boot menu."
+msgstr "✓ Roudix बन गया है। इसे शुरू करने के लिए रीबूट करें; आपका पिछला सिस्टम बूट मेनू में बना रहेगा।"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installing the system…"
+msgstr "सिस्टम इंस्टॉल हो रहा है…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Setting the password…"
+msgstr "पासवर्ड सेट हो रहा है…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Copying config for nh os switch…"
+msgstr "nh os switch के लिए कॉन्फ़िगरेशन कॉपी हो रहा है…"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Summary"
+msgstr "सारांश"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Check before starting the install"
+msgstr "इंस्टॉलेशन शुरू करने से पहले जाँच लें"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Simulate (nothing is written)"
+msgstr "सिमुलेट करें (कुछ नहीं लिखा जाएगा)"
+
+#: src/roudix_installer/pages/summary.py
+msgid ""
+"Generates the configuration in a temporary folder and checks that it "
+"evaluates. Nothing is partitioned, installed or modified."
+msgstr "एक अस्थायी फ़ोल्डर में कॉन्फ़िगरेशन बनाता है और जाँचता है कि उसका मूल्यांकन होता है। कुछ भी पार्टिशन, इंस्टॉल या संशोधित नहीं किया जाता।"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Convert this NixOS to Roudix"
+msgstr "इस NixOS को Roudix में बदलें"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Install Roudix"
+msgstr "Roudix इंस्टॉल करें"
+
+#: src/roudix_installer/pages/summary.py
+msgid "latest (flake)"
+msgstr "नवीनतम (flake)"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Versions"
+msgstr "संस्करण"
+
+#: src/roudix_installer/pages/summary.py
+msgid ", no swap (zram)"
+msgstr ", बिना swap (zram)"
+
+#: src/roudix_installer/pages/summary.py
+msgid "wiped"
+msgstr "मिटाई जाएगी"
+
+#: src/roudix_installer/pages/summary.py
+msgid "custom disko"
+msgstr "कस्टम disko"
+
+#: src/roudix_installer/pages/summary.py
+msgid "no partition assigned"
+msgstr "कोई पार्टिशन असाइन नहीं"
+
+#: src/roudix_installer/pages/summary.py
+msgid "bare metal"
+msgstr "असली मशीन"
+
+#: src/roudix_installer/pages/summary.py
+msgid "disabled"
+msgstr "बंद"
+
+#: src/roudix_installer/pages/summary.py
+msgid "enabled"
+msgstr "चालू"
+
+#: src/roudix_installer/pages/summary.py
+msgid "no plugins"
+msgstr "कोई प्लगइन नहीं"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Existing NixOS — nothing is wiped"
+msgstr "मौजूदा NixOS — कुछ भी नहीं मिटाया जाएगा"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Mode"
+msgstr "मोड"
+
+#: src/roudix_installer/pages/summary.py src/roudix_installer/pages/welcome.py
+msgid "Profile / host"
+msgstr "प्रोफ़ाइल / होस्ट"
+
+#: src/roudix_installer/pages/summary.py
+#, python-brace-format
+msgid ""
+"/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current system "
+"stays in the boot menu."
+msgstr "/etc/nixos को {dir} में कॉपी किया जाता है (RESTORE.txt के साथ), और आपका मौजूदा सिस्टम बूट मेनू में बना रहता है।"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Safety net"
+msgstr "सुरक्षा कवच"
+
+#: src/roudix_installer/pages/summary.py
+msgid "set ✓"
+msgstr "सेट ✓"
+
+#: src/roudix_installer/pages/summary.py
+msgid "⚠ not set"
+msgstr "⚠ सेट नहीं"
+
+#: src/roudix_installer/pages/summary.py
+msgid " (Optimus laptop)"
+msgstr " (Optimus लैपटॉप)"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Editor"
+msgstr "एडिटर"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Keyring / portal"
+msgstr "कीरिंग / पोर्टल"
+
+#: src/roudix_installer/pages/summary.py
+msgid "n/a (managed by the desktop)"
+msgstr "लागू नहीं (डेस्कटॉप द्वारा प्रबंधित)"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Shell"
+msgstr "शेल"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Locale"
+msgstr "लोकेल"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Graphical keyboard"
+msgstr "ग्राफ़िकल कीबोर्ड"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Branch"
+msgstr "ब्रांच"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Virtualization"
+msgstr "वर्चुअलाइज़ेशन"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Extras row: nothing selected"
+msgid "none"
+msgstr "कोई नहीं"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Apps row: nothing selected"
+msgid "none"
+msgstr "कोई नहीं"
+
+#: src/roudix_installer/pages/summary.py
+msgid "hide podcasts"
+msgstr "पॉडकास्ट छिपाएँ"
+
+#: src/roudix_installer/pages/summary.py
+msgid "no extensions"
+msgstr "कोई एक्सटेंशन नहीं"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "roudix — full desktop, every option"
+msgstr "roudix — पूरा डेस्कटॉप, सभी विकल्प"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "nixie — light laptop, few questions"
+msgstr "nixie — हल्का लैपटॉप, कम सवाल"
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"This machine already runs NixOS. Roudix is built next to your current "
+"system: nothing is wiped, /etc/nixos is backed up first, and your previous "
+"system stays in the boot menu. Two steps: options, then off we go."
+msgstr "यह मशीन पहले से NixOS चला रही है। Roudix आपके मौजूदा सिस्टम के बगल में बनाया जाता है: कुछ भी नहीं मिटाया जाता, पहले /etc/nixos का बैकअप लिया जाता है, और आपका पिछला सिस्टम बूट मेनू में बना रहता है। दो चरण: विकल्प, फिर शुरू।"
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"We're about to install Roudix on this machine. Three steps: disk, options, "
+"then off we go."
+msgstr "हम इस मशीन पर Roudix इंस्टॉल करने जा रहे हैं। तीन चरण: डिस्क, विकल्प, फिर शुरू।"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Profile to install"
+msgstr "इंस्टॉल करने के लिए प्रोफ़ाइल"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Get started"
+msgstr "शुरू करें"
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"Warning: this profile can't be found in this ISO — every question will be "
+"asked."
+msgstr "चेतावनी: यह प्रोफ़ाइल इस ISO में नहीं मिली — सभी सवाल पूछे जाएँगे।"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Every question will be asked."
+msgstr "सभी सवाल पूछे जाएँगे।"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Only the questions relevant to this profile will be asked."
+msgstr "केवल इस प्रोफ़ाइल से जुड़े सवाल पूछे जाएँगे।"

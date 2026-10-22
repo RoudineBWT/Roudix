@@ -185,5 +185,32 @@ jobs:
             git commit -m "chore: nix flake update (auto, post-merge)"
           fi
 
+      # Release: turn CHANGELOG.md's curated [Unreleased] section into a dated
+      # release (v<YYYY.MM.DD>). Done after the build gate, so only a main that
+      # builds ever gets a tag. Nothing is pushed here — see scripts/release.sh.
+      - name: Prepare release (CHANGELOG + notes)
+        id: release
+        env:
+          RELEASE_NOTES: ${{ runner.temp }}/release-notes.md
+        run: |
+          bash scripts/release.sh
+          # A step cannot read its own outputs through `steps.*`: read the file.
+          TAG=$(sed -n 's/^tag=//p' "$GITHUB_OUTPUT" | tail -n1)
+          if [ -n "$TAG" ]; then
+            git add CHANGELOG.md
+            git commit -m "docs(changelog): release $TAG"
+          fi
+
       - name: Push
         run: git push origin main
+
+      - name: Tag and publish the release
+        if: steps.release.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          NOTES: ${{ steps.release.outputs.notes }}
+        run: |
+          git tag "$TAG"
+          git push origin "$TAG"
+          gh release create "$TAG" --title "Roudix $TAG" --notes-file "$NOTES"

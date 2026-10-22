@@ -1274,6 +1274,12 @@ msgid "Kernel (xddxdd)"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py
+msgid ""
+"This user doesn't exist on this system — run the installer from the account "
+"you want to keep."
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
 msgid "Password can't be empty."
 msgstr ""
 
@@ -1306,7 +1312,22 @@ msgid "Finish"
 msgstr ""
 
 #: src/roudix_installer/pages/progress.py
+msgid "Back to summary"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
 msgid "Rebooting…"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: these options were NOT confirmed in local.nix — review the file "
+"before rebooting: {keys}"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "✓ every chosen option was written to local.nix."
 msgstr ""
 
 #: src/roudix_installer/pages/progress.py
@@ -1321,7 +1342,39 @@ msgid ""
 msgstr ""
 
 #: src/roudix_installer/pages/progress.py
-msgid "Dry run finished — close the window"
+msgid "Dry run finished — nothing was changed"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation — nothing is written"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Fetching the Roudix configuration…"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Clone failed — simulating with the local copy of the profiles."
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Detecting hardware…"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Generating local.nix / username.nix…"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Evaluating the whole system with Nix…"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "✓ the configuration evaluates: Nix can build this system."
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation finished — nothing was changed"
 msgstr ""
 
 #: src/roudix_installer/pages/progress.py
@@ -1334,6 +1387,14 @@ msgstr ""
 
 #: src/roudix_installer/pages/progress.py
 msgid "Installation failed"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation failed"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Authentication was cancelled or refused."
 msgstr ""
 
 #: src/roudix_installer/pages/progress.py
@@ -1390,21 +1451,75 @@ msgid ""
 msgstr ""
 
 #: src/roudix_installer/pages/progress.py
-msgid "Detecting hardware…"
-msgstr ""
-
-#: src/roudix_installer/pages/progress.py
 #, python-brace-format
 msgid "btrfs detected — mount options auto-patched for: {patched}"
 msgstr ""
 
 #: src/roudix_installer/pages/progress.py
-msgid "Generating local.nix / username.nix…"
+#, python-brace-format
+msgid "hosts/{hostname}/local.nix, username.nix, home/local.nix written."
 msgstr ""
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
-msgid "hosts/{hostname}/local.nix, username.nix, home/local.nix written."
+msgid ""
+"Warning: only {free} MiB free in /boot ({need} MiB recommended) — nixos-"
+"rebuild may fail on a small EFI partition."
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: only {free} GiB free for the Nix store ({need} GiB recommended)."
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: your configuration uses system.stateVersion {old}, Roudix sets "
+"{new}. Services that keep data (databases…) deserve a look before booting it."
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Note: Roudix will use the {new} bootloader (yours: {old}). If it ever fails "
+"to start, RESTORE.txt in the backup explains how to put your old "
+"configuration back."
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"Reusing /etc/nixos/hardware-configuration.nix (the one that boots this "
+"machine)."
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Checking this system…"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "{cfg} already exists — moving it to {aside}."
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Backing up /etc/nixos…"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "✓ backup done: {dest} (see RESTORE.txt in it)."
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid "Building Roudix — this can take a while…"
+msgstr ""
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"✓ Roudix is built. Reboot to start it; your previous system stays in the "
+"boot menu."
 msgstr ""
 
 #: src/roudix_installer/pages/progress.py
@@ -1425,6 +1540,20 @@ msgstr ""
 
 #: src/roudix_installer/pages/summary.py
 msgid "Check before starting the install"
+msgstr ""
+
+#: src/roudix_installer/pages/summary.py
+msgid "Simulate (nothing is written)"
+msgstr ""
+
+#: src/roudix_installer/pages/summary.py
+msgid ""
+"Generates the configuration in a temporary folder and checks that it "
+"evaluates. Nothing is partitioned, installed or modified."
+msgstr ""
+
+#: src/roudix_installer/pages/summary.py
+msgid "Convert this NixOS to Roudix"
 msgstr ""
 
 #: src/roudix_installer/pages/summary.py
@@ -1471,8 +1600,27 @@ msgstr ""
 msgid "no plugins"
 msgstr ""
 
+#: src/roudix_installer/pages/summary.py
+msgid "Existing NixOS — nothing is wiped"
+msgstr ""
+
+#: src/roudix_installer/pages/summary.py
+msgid "Mode"
+msgstr ""
+
 #: src/roudix_installer/pages/summary.py src/roudix_installer/pages/welcome.py
 msgid "Profile / host"
+msgstr ""
+
+#: src/roudix_installer/pages/summary.py
+#, python-brace-format
+msgid ""
+"/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current system "
+"stays in the boot menu."
+msgstr ""
+
+#: src/roudix_installer/pages/summary.py
+msgid "Safety net"
 msgstr ""
 
 #: src/roudix_installer/pages/summary.py
@@ -1543,6 +1691,13 @@ msgstr ""
 
 #: src/roudix_installer/pages/welcome.py
 msgid "nixie — light laptop, few questions"
+msgstr ""
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"This machine already runs NixOS. Roudix is built next to your current "
+"system: nothing is wiped, /etc/nixos is backed up first, and your previous "
+"system stays in the boot menu. Two steps: options, then off we go."
 msgstr ""
 
 #: src/roudix_installer/pages/welcome.py

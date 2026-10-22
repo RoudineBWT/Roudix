@@ -9,7 +9,7 @@ import shutil
 from pathlib import Path
 
 from roudix_installer.hardware_detect import detect_prime_bus_ids
-from roudix_installer.host_profile import restore_fixed_lines
+from roudix_installer.host_profile import FIXED, restore_fixed_lines
 from roudix_installer.state import InstallState
 
 
@@ -235,6 +235,65 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
             t = _sub_string(t, "roudix.memory.sku", state.memory_sku)
 
     return t
+
+
+def _expected_values(state: InstallState) -> list:
+    """(key, kind, value) for the options patch_local_nix() always writes —
+    the same set roudix-installer.sh re-checks with check_opt()."""
+    strings = {
+        "roudix.rgb": state.rgb, "hardware.myGpu": state.gpu, "hardware.myCpu": state.cpu,
+        "roudix.desktop.type": state.desktop, "roudix.desktop.shell": state.desktop_shell,
+        "roudix.editor": state.editor, "roudix.desktopIntegration": state.desktop_integration,
+        "roudix.terminal": state.terminal, "roudix.fileManager": state.file_manager,
+        "roudix.shell": state.default_shell, "time.timeZone": state.timezone,
+        "i18n.defaultLocale": state.locale, "console.keyMap": state.keymap,
+        "roudix.keyboardLayout": state.keyboard_layout, "roudix.keyboardVariant": state.keyboard_variant,
+        "roudix.autoupdate.interval": state.autoupdate_interval, "roudix.autoupdate.branch": state.branch,
+        "roudix.boot.bootloader": state.bootloader, "roudix.matrixClient": state.matrix_client,
+        "roudix.discord": state.discord, "roudix.telegram": state.telegram,
+        "roudix.videoPlayer": state.video_player, "roudix.torrentClient": state.torrent_client,
+        "roudix.musicPlayer": state.music_player, "roudix.mailClient": state.mail_client,
+        "roudix.passwordManager": state.password_manager,
+    }
+    bools = {
+        "hardware.nvidiaLaptop": state.nvidia_laptop, "roudix.laptop.enable": state.laptop,
+        "roudix.laptop.thinkpad": state.laptop_thinkpad,
+        "roudix.undervolt.only-amd.enable": state.undervolt_enable,
+        "roudix.vmGuest.enable": state.vm_guest, "roudix.gaming.enable": state.gaming,
+        "roudix.mesa.useGit": state.mesa_use_git, "roudix.hosts.gtaFix.enable": state.gta_fix,
+        "roudix.flatpak.enable": state.flatpak, "roudix.virtualization.enable": state.virtualization,
+        "roudix.autoupdate.enable": state.autoupdate, "roudix.waydroid.enable": state.waydroid_enable,
+        "roudix.zen.enable": state.zen_browser, "roudix.contentCreation.enable": state.content_creation_enable,
+    }
+    out = [(k, "str", v) for k, v in strings.items()]
+    out += [(k, "bool", v) for k, v in bools.items()]
+    out.append(("roudix.browsers", "list1", state.browser))
+    return out
+
+
+def verify_local_nix(state: InstallState, example_text: str, result_text: str) -> list:
+    """Keys whose value did NOT land in local.nix. Every substitution above is a
+    silent no-op when its pattern stops matching (e.g. local.nix.example's
+    format drifts), so check the result — what roudix-installer.sh does with
+    check_opt(). Keys absent from the example (hidden for this host) and lines
+    marked `roudix-installer: fixed` are legitimately left alone."""
+    missing = []
+    for key, kind, value in _expected_values(state):
+        in_example = re.search(rf"^[ \t]*#?[ \t]*{re.escape(key)}[ \t]*=", example_text, re.M)
+        if not in_example:
+            continue
+        if any(FIXED in line and re.match(rf"^\s*#?\s*{re.escape(key)}\s*=", line)
+               for line in example_text.splitlines()):
+            continue
+        if kind == "str":
+            rhs = f'"{re.escape(value)}"'
+        elif kind == "bool":
+            rhs = "true" if value else "false"
+        else:  # list1 — "none" / "" -> []
+            rhs = r"\[\]" if value in ("", "none") else rf'\["{re.escape(value)}"\]'
+        if not re.search(rf"^[ \t]*#?[ \t]*{re.escape(key)}[ \t]*=[ \t]*{rhs}", result_text, re.M):
+            missing.append(key)
+    return missing
 
 
 def write_config(state: InstallState, config_root: Path):

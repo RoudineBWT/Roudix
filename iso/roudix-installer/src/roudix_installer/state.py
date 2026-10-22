@@ -33,6 +33,13 @@ class DiskChoice:
 
 @dataclass
 class InstallState:
+    # "fresh" (live ISO: partition + nixos-install) or "existing" (already
+    # installed NixOS: no partitioning, ~/.config/roudix + nixos-rebuild boot).
+    # Set once at startup from existing_nixos.detect_mode().
+    mode: str = "fresh"
+    # True = the "Simulate" button on the Summary page: go through every step
+    # that can be checked, write nothing to the real system.
+    dry_run: bool = False
     username: str = "roudine"
     password: str = ""  # plaintext, in-memory only — only the hash is ever written to disk
     hostname: str = "roudix"  # matches hosts/<hostname>/ in the repo AND becomes

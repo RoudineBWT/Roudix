@@ -1,0 +1,1726 @@
+# Simplified Chinese translation of the Roudix installer.
+# Source strings are English (see src/roudix_installer/i18n.py).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-installer\n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Simplified Chinese\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Unknown disk"
+msgstr "未知磁盘"
+
+#: src/roudix_installer/pages/disk.py src/roudix_installer/pages/summary.py
+msgid "Disk"
+msgstr "磁盘"
+
+#: src/roudix_installer/pages/disk.py
+msgid "/boot (EFI)"
+msgstr "/boot (EFI)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Skip"
+msgstr "跳过"
+
+#: src/roudix_installer/pages/disk.py
+msgid "swap"
+msgstr "swap"
+
+#: src/roudix_installer/pages/disk.py
+msgid "⚠ The selected disk will be completely wiped (simple mode)"
+msgstr "⚠ 所选磁盘将被完全清除（简单模式）"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Partitioning mode"
+msgstr "分区模式"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Simple (EFI + swap + root, wipes everything)"
+msgstr "简单（EFI + swap + root，清除所有数据）"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Advanced (custom disko.nix file)"
+msgstr "高级（自定义 disko.nix 文件）"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Manual (partition it yourself)"
+msgstr "手动（自行分区）"
+
+#: src/roudix_installer/pages/disk.py src/roudix_installer/pages/options.py
+msgid "Options"
+msgstr "选项"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Filesystem"
+msgstr "文件系统"
+
+#: src/roudix_installer/pages/disk.py
+msgid "ext4 (simple)"
+msgstr "ext4 (simple)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "btrfs (@, @home, @nix, @log subvolumes + zstd)"
+msgstr "btrfs（子卷 @、@home、@nix、@log + zstd）"
+
+#: src/roudix_installer/pages/disk.py
+msgid "/boot size (GB)"
+msgstr "/boot 大小（GB）"
+
+#: src/roudix_installer/pages/disk.py
+msgid "4G recommended with CachyOS + multiple Limine generations — 2G minimum"
+msgstr "搭配 CachyOS + 多个 Limine 世代时推荐 4G — 最少 2G"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Add a swap partition"
+msgstr "添加 swap 分区"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Off by default — zram already covers this"
+msgstr "默认关闭 — zram 已经够用"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Swap size (GB)"
+msgstr "swap 大小（GB）"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Choose a disk"
+msgstr "选择磁盘"
+
+#: src/roudix_installer/pages/disk.py
+msgid "disko.nix file"
+msgstr "disko.nix 文件"
+
+#: src/roudix_installer/pages/disk.py
+msgid "No file selected"
+msgstr "未选择文件"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Browse…"
+msgstr "浏览…"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Manual partitioning"
+msgstr "手动分区"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Disk to partition"
+msgstr "要分区的磁盘"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Partition it"
+msgstr "分区"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Open GParted"
+msgstr "打开 GParted"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Refresh"
+msgstr "刷新"
+
+#: src/roudix_installer/pages/disk.py
+msgid "If you already partitioned it yourself (fdisk, cfdisk…) in a terminal"
+msgstr "如果你已经在终端中自行分好区（fdisk、cfdisk…）"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Assign mountpoints"
+msgstr "分配挂载点"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Once partitioning is done, assign each partition to a mountpoint."
+msgstr "分区完成后，请为每个分区分配挂载点。"
+
+#: src/roudix_installer/pages/disk.py src/roudix_installer/pages/options.py
+msgid "Continue"
+msgstr "继续"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Select a disko.nix"
+msgstr "选择 disko.nix"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Cancel"
+msgstr "取消"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Choose"
+msgstr "选择"
+
+#: src/roudix_installer/pages/options.py
+msgid "Standard latest CachyOS kernel"
+msgstr "Standard latest CachyOS kernel"
+
+#: src/roudix_installer/pages/options.py
+msgid "x86_64-v3 optimized (recommended, recent CPUs)"
+msgstr "x86_64-v3 优化（推荐，较新的 CPU）"
+
+#: src/roudix_installer/pages/options.py
+msgid "LTO build — better performance"
+msgstr "LTO 构建 — 性能更好"
+
+#: src/roudix_installer/pages/options.py
+msgid "LTO + x86_64-v3 (best performance, recent CPUs)"
+msgstr "LTO + x86_64-v3（性能最佳，较新的 CPU）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Long-term support"
+msgstr "长期支持"
+
+#: src/roudix_installer/pages/options.py
+msgid "LTS + LTO + x86_64-v3 (stable + fast)"
+msgstr "LTS + LTO + x86_64-v3（稳定 + 快速）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Release candidate — bleeding edge"
+msgstr "候选发布版 — 最前沿"
+
+#: src/roudix_installer/pages/options.py
+msgid "linux-zen (nixpkgs) — outside the xddxdd overlay"
+msgstr "linux-zen (nixpkgs) — 不使用 xddxdd overlay"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs default LTS — outside the xddxdd overlay"
+msgstr "nixpkgs 默认 LTS — 不使用 xddxdd overlay"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs latest mainline — outside the xddxdd overlay"
+msgstr "nixpkgs 最新 mainline — 不使用 xddxdd overlay"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs testing (RC/mainline) — outside the xddxdd overlay"
+msgstr "nixpkgs testing（RC/mainline）— 不使用 xddxdd overlay"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod LTS (nixpkgs) — outside the xddxdd overlay"
+msgstr "XanMod LTS (nixpkgs) — 不使用 xddxdd overlay"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod main branch (nixpkgs) — outside the xddxdd overlay"
+msgstr "XanMod 主分支 (nixpkgs) — 不使用 xddxdd overlay"
+
+#: src/roudix_installer/pages/options.py
+msgid "Default — LTO + BORE"
+msgstr "默认 — LTO + BORE"
+
+#: src/roudix_installer/pages/options.py
+msgid "Server optimized (no desktop tuning)"
+msgstr "服务器优化（无桌面调优）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Security hardened"
+msgstr "安全加固"
+
+#: src/roudix_installer/pages/options.py
+msgid "linux-zen (nixpkgs) — locally-rebuilt nvidia module"
+msgstr "linux-zen (nixpkgs) — 本地重新编译的 nvidia 模块"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs default LTS — locally-rebuilt nvidia module"
+msgstr "nixpkgs 默认 LTS — 本地重新编译的 nvidia 模块"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs latest mainline — locally-rebuilt nvidia module"
+msgstr "nixpkgs 最新 mainline — 本地重新编译的 nvidia 模块"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs testing (RC/mainline) — locally-rebuilt nvidia module"
+msgstr "nixpkgs testing（RC/mainline）— 本地重新编译的 nvidia 模块"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod LTS (nixpkgs) — locally-rebuilt nvidia module"
+msgstr "XanMod LTS (nixpkgs) — 本地重新编译的 nvidia 模块"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod main branch (nixpkgs) — locally-rebuilt nvidia module"
+msgstr "XanMod 主分支 (nixpkgs) — 本地重新编译的 nvidia 模块"
+
+#: src/roudix_installer/pages/options.py
+msgid "None"
+msgstr "无"
+
+#: src/roudix_installer/pages/options.py
+msgid "Stable (recommended)"
+msgstr "稳定版（推荐）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Cinnamon (X11, older PCs)"
+msgstr "Cinnamon（X11，旧电脑）"
+
+#: src/roudix_installer/pages/options.py
+msgid "(detected)"
+msgstr "（已检测到）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Noctalia — default shell"
+msgstr "Noctalia — 默认 shell"
+
+#: src/roudix_installer/pages/options.py
+msgid "Caelestia — Quickshell setup"
+msgstr "Caelestia — Quickshell 配置"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "{name} — latest version (flake)"
+msgstr "{name} — 最新版本（flake）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fish (recommended)"
+msgstr "Fish（推荐）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Ghostty (recommended)"
+msgstr "Ghostty（推荐）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Foot (native Wayland, lightweight)"
+msgstr "Foot（原生 Wayland，轻量）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nautilus — GNOME Files (recommended)"
+msgstr "Nautilus — GNOME 文件（推荐）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dolphin — KDE"
+msgstr "Dolphin — KDE"
+
+#: src/roudix_installer/pages/options.py
+msgid "Thunar — XFCE, lightweight"
+msgstr "Thunar — XFCE，轻量"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nemo — Cinnamon"
+msgstr "Nemo — Cinnamon"
+
+#: src/roudix_installer/pages/options.py
+msgid "Zed — fast, modern (recommended)"
+msgstr "Zed — 快速、现代（推荐）"
+
+#: src/roudix_installer/pages/options.py
+msgid "None — I'll manage my own editor (AppImage, Flatpak...)"
+msgstr "无 — 我自己管理编辑器（AppImage、Flatpak…）"
+
+#: src/roudix_installer/pages/options.py
+msgid "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommended)"
+msgstr "GNOME keyring + xdg-desktop-portal-gtk/-gnome（推荐）"
+
+#: src/roudix_installer/pages/options.py
+msgid "KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)"
+msgstr "KWallet + xdg-desktop-portal-kde（主要使用 Qt/KDE 应用时有用）"
+
+#: src/roudix_installer/pages/options.py
+msgid "OpenRGB — mixed brands (Razer, ASUS, MSI...)"
+msgstr "OpenRGB — 多品牌（Razer、ASUS、MSI…）"
+
+#: src/roudix_installer/pages/options.py
+msgid "No RGB control"
+msgstr "不控制 RGB"
+
+#: src/roudix_installer/pages/options.py
+msgid "Limine (recommended)"
+msgstr "Limine（推荐）"
+
+#: src/roudix_installer/pages/options.py
+msgid "main — stable, ~every 2 weeks (recommended)"
+msgstr "main — 稳定，约每 2 周更新（推荐）"
+
+#: src/roudix_installer/pages/options.py
+msgid "testing — ~every 2 days, may occasionally break"
+msgstr "testing — 约每 2 天更新，偶尔可能出问题"
+
+#: src/roudix_installer/pages/options.py
+msgid "dev — latest changes, least stable"
+msgstr "dev — 最新改动，稳定性最低"
+
+#: src/roudix_installer/pages/options.py
+msgid "Cinny (lightweight, web)"
+msgstr "Cinny（轻量，网页版）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Vencord (pre-installed)"
+msgstr "Vencord（预装）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Vanilla (no patch)"
+msgstr "Vanilla（无补丁）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Telegram (official client)"
+msgstr "Telegram（官方客户端）"
+
+#: src/roudix_installer/pages/options.py
+msgid "AyuGram (fork: ghost mode, anti-recall...)"
+msgstr "AyuGram（分支：幽灵模式、防撤回…）"
+
+#: src/roudix_installer/pages/options.py
+msgid "VLC (widest format support)"
+msgstr "VLC（支持的格式最全）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Clapper (modern GTK4)"
+msgstr "Clapper（现代 GTK4）"
+
+#: src/roudix_installer/pages/options.py
+msgid "mpv (+ yt-dlp)"
+msgstr "mpv（+ yt-dlp）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Celluloid (GTK front-end for mpv)"
+msgstr "Celluloid（mpv 的 GTK 前端）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fragments (minimal GNOME client)"
+msgstr "Fragments（极简 GNOME 客户端）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spotify + Spicetify"
+msgstr "Spotify + Spicetify"
+
+#: src/roudix_installer/pages/options.py
+msgid "Thunderbird (full-featured)"
+msgstr "Thunderbird（功能齐全）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Betterbird (Thunderbird fork)"
+msgstr "Betterbird（Thunderbird 分支）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Geary (lightweight, GNOME)"
+msgstr "Geary（轻量，GNOME）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bitwarden (cloud-synced vault)"
+msgstr "Bitwarden（云同步密码库）"
+
+#: src/roudix_installer/pages/options.py
+msgid "KeePassXC (local, offline vault)"
+msgstr "KeePassXC（本地离线密码库）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Proton Pass (cloud-synced vault)"
+msgstr "Proton Pass（云同步密码库）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Colorful (default)"
+msgstr "Colorful（默认）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Belgium"
+msgstr "比利时"
+
+#: src/roudix_installer/pages/options.py
+msgid "United Kingdom"
+msgstr "英国"
+
+#: src/roudix_installer/pages/options.py
+msgid "Netherlands"
+msgstr "荷兰"
+
+#: src/roudix_installer/pages/options.py
+msgid "Germany"
+msgstr "德国"
+
+#: src/roudix_installer/pages/options.py
+msgid "Austria"
+msgstr "奥地利"
+
+#: src/roudix_installer/pages/options.py
+msgid "Switzerland"
+msgstr "瑞士"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spain"
+msgstr "西班牙"
+
+#: src/roudix_installer/pages/options.py
+msgid "Italy"
+msgstr "意大利"
+
+#: src/roudix_installer/pages/options.py
+msgid "Poland"
+msgstr "波兰"
+
+#: src/roudix_installer/pages/options.py
+msgid "Czech Republic"
+msgstr "捷克"
+
+#: src/roudix_installer/pages/options.py
+msgid "Slovakia"
+msgstr "斯洛伐克"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hungary"
+msgstr "匈牙利"
+
+#: src/roudix_installer/pages/options.py
+msgid "Romania"
+msgstr "罗马尼亚"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bulgaria"
+msgstr "保加利亚"
+
+#: src/roudix_installer/pages/options.py
+msgid "Greece"
+msgstr "希腊"
+
+#: src/roudix_installer/pages/options.py
+msgid "Finland"
+msgstr "芬兰"
+
+#: src/roudix_installer/pages/options.py
+msgid "Sweden"
+msgstr "瑞典"
+
+#: src/roudix_installer/pages/options.py
+msgid "Norway"
+msgstr "挪威"
+
+#: src/roudix_installer/pages/options.py
+msgid "Denmark"
+msgstr "丹麦"
+
+#: src/roudix_installer/pages/options.py
+msgid "Estonia"
+msgstr "爱沙尼亚"
+
+#: src/roudix_installer/pages/options.py
+msgid "Latvia"
+msgstr "拉脱维亚"
+
+#: src/roudix_installer/pages/options.py
+msgid "Lithuania"
+msgstr "立陶宛"
+
+#: src/roudix_installer/pages/options.py
+msgid "Russia (Moscow)"
+msgstr "俄罗斯（莫斯科）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turkey"
+msgstr "土耳其"
+
+#: src/roudix_installer/pages/options.py
+msgid "Iceland"
+msgstr "冰岛"
+
+#: src/roudix_installer/pages/options.py
+msgid "Morocco"
+msgstr "摩洛哥"
+
+#: src/roudix_installer/pages/options.py
+msgid "Algeria"
+msgstr "阿尔及利亚"
+
+#: src/roudix_installer/pages/options.py
+msgid "Tunisia"
+msgstr "突尼斯"
+
+#: src/roudix_installer/pages/options.py
+msgid "Egypt"
+msgstr "埃及"
+
+#: src/roudix_installer/pages/options.py
+msgid "South Africa"
+msgstr "南非"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nigeria"
+msgstr "尼日利亚"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (East)"
+msgstr "美国（东部）"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Central)"
+msgstr "美国（中部）"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Mountain)"
+msgstr "美国（山地）"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (West)"
+msgstr "美国（西部）"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Alaska)"
+msgstr "美国（阿拉斯加）"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Hawaii)"
+msgstr "美国（夏威夷）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canada (East)"
+msgstr "加拿大（东部）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canada (West)"
+msgstr "加拿大（西部）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mexico"
+msgstr "墨西哥"
+
+#: src/roudix_installer/pages/options.py
+msgid "Colombia"
+msgstr "哥伦比亚"
+
+#: src/roudix_installer/pages/options.py
+msgid "Peru"
+msgstr "秘鲁"
+
+#: src/roudix_installer/pages/options.py
+msgid "Chile"
+msgstr "智利"
+
+#: src/roudix_installer/pages/options.py
+msgid "Argentina"
+msgstr "阿根廷"
+
+#: src/roudix_installer/pages/options.py
+msgid "Brazil (São Paulo)"
+msgstr "巴西（圣保罗）"
+
+#: src/roudix_installer/pages/options.py
+msgid "United Arab Emirates"
+msgstr "阿拉伯联合酋长国"
+
+#: src/roudix_installer/pages/options.py
+msgid "Saudi Arabia"
+msgstr "沙特阿拉伯"
+
+#: src/roudix_installer/pages/options.py
+msgid "Israel"
+msgstr "以色列"
+
+#: src/roudix_installer/pages/options.py
+msgid "Lebanon"
+msgstr "黎巴嫩"
+
+#: src/roudix_installer/pages/options.py
+msgid "Iraq"
+msgstr "伊拉克"
+
+#: src/roudix_installer/pages/options.py
+msgid "India"
+msgstr "印度"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nepal"
+msgstr "尼泊尔"
+
+#: src/roudix_installer/pages/options.py
+msgid "Uzbekistan"
+msgstr "乌兹别克斯坦"
+
+#: src/roudix_installer/pages/options.py
+msgid "Thailand"
+msgstr "泰国"
+
+#: src/roudix_installer/pages/options.py
+msgid "Indonesia (West)"
+msgstr "印度尼西亚（西部）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Singapore"
+msgstr "新加坡"
+
+#: src/roudix_installer/pages/options.py
+msgid "Malaysia"
+msgstr "马来西亚"
+
+#: src/roudix_installer/pages/options.py
+msgid "China"
+msgstr "中国"
+
+#: src/roudix_installer/pages/options.py
+msgid "Taiwan"
+msgstr "台湾"
+
+#: src/roudix_installer/pages/options.py
+msgid "South Korea"
+msgstr "韩国"
+
+#: src/roudix_installer/pages/options.py
+msgid "Japan"
+msgstr "日本"
+
+#: src/roudix_installer/pages/options.py
+msgid "Australia (West)"
+msgstr "澳大利亚（西部）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Australia (Central)"
+msgstr "澳大利亚（中部）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Australia (East)"
+msgstr "澳大利亚（东部）"
+
+#: src/roudix_installer/pages/options.py
+msgid "New Zealand"
+msgstr "新西兰"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fiji"
+msgstr "斐济"
+
+#: src/roudix_installer/pages/options.py
+msgid "C (minimal POSIX)"
+msgstr "C（最小 POSIX）"
+
+#: src/roudix_installer/pages/options.py
+msgid "English (US) International (dead keys)"
+msgstr "英语（美国）国际键盘（死键）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Belgian AZERTY"
+msgstr "比利时 AZERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "French AZERTY"
+msgstr "法语 AZERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "French AZERTY (latin9)"
+msgstr "法语 AZERTY（latin9）"
+
+#: src/roudix_installer/pages/options.py
+msgctxt "console keymap list"
+msgid "Swiss French QWERTZ"
+msgstr "瑞士法语 QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "German QWERTZ"
+msgstr "德语 QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "German QWERTZ (latin1)"
+msgstr "德语 QWERTZ（latin1）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Austrian QWERTZ"
+msgstr "奥地利 QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Swiss QWERTZ"
+msgstr "瑞士 QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dutch QWERTY"
+msgstr "荷兰语 QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spanish QWERTY"
+msgstr "西班牙语 QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spanish QWERTY (cp850)"
+msgstr "西班牙语 QWERTY（cp850）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Portuguese QWERTY (latin1)"
+msgstr "葡萄牙语 QWERTY（latin1）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Brazilian Portuguese ABNT2"
+msgstr "巴西葡萄牙语 ABNT2"
+
+#: src/roudix_installer/pages/options.py
+msgid "Italian QWERTY"
+msgstr "意大利语 QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Italian QWERTY (latin1)"
+msgstr "意大利语 QWERTY（latin1）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Polish QWERTY"
+msgstr "波兰语 QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Russian"
+msgstr "俄语"
+
+#: src/roudix_installer/pages/options.py
+msgid "Ukrainian"
+msgstr "乌克兰语"
+
+#: src/roudix_installer/pages/options.py
+msgid "Czech QWERTY (latin2)"
+msgstr "捷克语 QWERTY（latin2）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Slovak QWERTY"
+msgstr "斯洛伐克语 QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hungarian QWERTY"
+msgstr "匈牙利语 QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Romanian QWERTY"
+msgstr "罗马尼亚语 QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turkish Q"
+msgstr "土耳其语 Q"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turkish F"
+msgstr "土耳其语 F"
+
+#: src/roudix_installer/pages/options.py
+msgid "Japanese 106-key"
+msgstr "日语 106 键"
+
+#: src/roudix_installer/pages/options.py
+msgid "Swedish QWERTY (latin1)"
+msgstr "瑞典语 QWERTY（latin1）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Norwegian QWERTY (latin1)"
+msgstr "挪威语 QWERTY（latin1）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Danish QWERTY (latin1)"
+msgstr "丹麦语 QWERTY（latin1）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Finnish QWERTY (latin1)"
+msgstr "芬兰语 QWERTY（latin1）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Greek"
+msgstr "希腊语"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hebrew"
+msgstr "希伯来语"
+
+#: src/roudix_installer/pages/options.py
+msgid "Arabic"
+msgstr "阿拉伯语"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dvorak left"
+msgstr "Dvorak 左手"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dvorak right"
+msgstr "Dvorak 右手"
+
+#: src/roudix_installer/pages/options.py
+msgid "US International (dead keys, recommended)"
+msgstr "美式国际键盘（死键，推荐）"
+
+#: src/roudix_installer/pages/options.py
+msgid "US Basic QWERTY (no variant)"
+msgstr "美式基础 QWERTY（无变体）"
+
+#: src/roudix_installer/pages/options.py
+msgid "British QWERTY"
+msgstr "英式 QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "French BÉPO"
+msgstr "法语 BÉPO"
+
+#: src/roudix_installer/pages/options.py
+msgctxt "graphical keyboard layout list"
+msgid "Swiss French QWERTZ"
+msgstr "瑞士法语 QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Swiss German QWERTZ"
+msgstr "瑞士德语 QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Portuguese QWERTY"
+msgstr "葡萄牙语 QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Japanese"
+msgstr "日语"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dvorak (US)"
+msgstr "Dvorak（美式）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Colemak (US)"
+msgstr "Colemak（美式）"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "User"
+msgstr "用户"
+
+#: src/roudix_installer/pages/options.py
+msgid "Username"
+msgstr "用户名"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Password"
+msgstr "密码"
+
+#: src/roudix_installer/pages/options.py
+msgid "Confirm password"
+msgstr "确认密码"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Answers pre-filled with the “{hostname}” profile's values."
+msgstr "已用“{hostname}”配置文件的值预先填写答案。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hardware"
+msgstr "硬件"
+
+#: src/roudix_installer/pages/options.py
+msgid "GPU"
+msgstr "GPU"
+
+#: src/roudix_installer/pages/options.py
+msgid "AMD integrated (Ryzen APU)"
+msgstr "AMD 集成显卡（Ryzen APU）"
+
+#: src/roudix_installer/pages/options.py
+msgid "AMD legacy — GCN 1.x/2.x"
+msgstr "AMD 旧款 — GCN 1.x/2.x"
+
+#: src/roudix_installer/pages/options.py
+msgid "Intel (integrated / Arc)"
+msgstr "Intel（集成 / Arc）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Optimus laptop (Intel/AMD + NVIDIA dGPU)"
+msgstr "Optimus 笔记本（Intel/AMD + NVIDIA 独显）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Laptop (TLP)"
+msgstr "笔记本（TLP）"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
+"will still launch games normally but without the roudix-gaming CPU profile."
+msgstr "用 TLP 取代 tuned：如果同时启用了游戏功能，game-performance 仍会正常启动游戏，但不会使用 roudix-gaming 的 CPU 配置。"
+
+#: src/roudix_installer/pages/options.py
+msgid "ThinkPad (40/80% battery charge thresholds)"
+msgstr "ThinkPad（电池充电阈值 40/80%）"
+
+#: src/roudix_installer/pages/options.py
+msgid "AMD GPU undervolting (lact, amdgpu.ppfeaturemask)"
+msgstr "AMD GPU 降压（lact、amdgpu.ppfeaturemask）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel"
+msgstr "内核"
+
+#: src/roudix_installer/pages/options.py
+msgid "GPU / CPU auto-detected — change them above if needed."
+msgstr "GPU / CPU 已自动检测 — 如有需要请在上方修改。"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Browser"
+msgstr "浏览器"
+
+#: src/roudix_installer/pages/options.py
+msgid "Brave variant"
+msgstr "Brave 版本"
+
+#: src/roudix_installer/pages/options.py
+msgid "Also install Zen Browser"
+msgstr "同时安装 Zen Browser"
+
+#: src/roudix_installer/pages/options.py
+msgid "Zen channel"
+msgstr "Zen 通道"
+
+#: src/roudix_installer/pages/options.py
+msgid "Twilight (default)"
+msgstr "Twilight（默认）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Zen mods (comma-separated)"
+msgstr "Zen 模组（以逗号分隔）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Enable Sine (Zen mod engine)"
+msgstr "启用 Sine（Zen 模组引擎）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Sine mods (comma-separated)"
+msgstr "Sine 模组（以逗号分隔）"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Desktop"
+msgstr "桌面"
+
+#: src/roudix_installer/pages/options.py
+msgid "Compositor / desktop"
+msgstr "合成器 / 桌面"
+
+#: src/roudix_installer/pages/options.py
+msgid "Graphical shell (bar/UI)"
+msgstr "图形 shell（状态栏/界面）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Off: nixpkgs version"
+msgstr "关闭：使用 nixpkgs 版本"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"⚠ Roudix configurations are written for the flake (latest) versions first. "
+"On the nixpkgs version, a configuration error saying that an option, a "
+"setting or a key \"does not exist\" is normal: it was added after the "
+"nixpkgs version. Wait for nixpkgs to catch up, or turn the latest version on."
+msgstr "⚠ Roudix 的配置优先针对 flake（最新）版本编写。使用 nixpkgs 版本时，出现提示某个选项、设置或键“不存在”的配置错误是正常的：它是在该 nixpkgs 版本之后才加入的。请等待 nixpkgs 更新，或开启最新版本。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Default shell"
+msgstr "默认 shell"
+
+#: src/roudix_installer/pages/options.py
+msgid "Terminal"
+msgstr "终端"
+
+#: src/roudix_installer/pages/options.py
+msgid "File manager"
+msgstr "文件管理器"
+
+#: src/roudix_installer/pages/options.py
+msgid "Code editor"
+msgstr "代码编辑器"
+
+#: src/roudix_installer/pages/options.py
+msgid "Keyring / xdg-desktop-portal"
+msgstr "密钥环 / xdg-desktop-portal"
+
+#: src/roudix_installer/pages/options.py
+msgid "System"
+msgstr "系统"
+
+#: src/roudix_installer/pages/options.py
+msgid "Installing inside a VM"
+msgstr "在虚拟机中安装"
+
+#: src/roudix_installer/pages/options.py
+msgid "Gaming packages (Steam, Wine, Lutris…)"
+msgstr "游戏软件包（Steam、Wine、Lutris…）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Ananicy (automatic gaming scheduling)"
+msgstr "Ananicy（游戏自动调度）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Millennium (modded Steam client: themes and plugins)"
+msgstr "Millennium（改版 Steam 客户端：主题和插件）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Unofficial mod — off = stock Steam"
+msgstr "非官方模组 — 关闭 = 原版 Steam"
+
+#: src/roudix_installer/pages/options.py
+msgid "Lutris"
+msgstr "Lutris"
+
+#: src/roudix_installer/pages/options.py
+msgid "Heroic Games Launcher (Epic/GOG/Amazon)"
+msgstr "Heroic Games Launcher（Epic/GOG/Amazon）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Faugus Launcher"
+msgstr "Faugus Launcher"
+
+#: src/roudix_installer/pages/options.py
+msgid "Prism Launcher (Minecraft)"
+msgstr "Prism Launcher（Minecraft）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Modrinth App (alternative to Prism)"
+msgstr "Modrinth App（Prism 的替代品）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Vintage Story"
+msgstr "Vintage Story"
+
+#: src/roudix_installer/pages/options.py
+msgid "MangoHud (in-game perf overlay)"
+msgstr "MangoHud（游戏内性能显示）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git (bleeding-edge graphics drivers)"
+msgstr "Mesa git（最新的显卡驱动）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Timezone"
+msgstr "时区"
+
+#: src/roudix_installer/pages/options.py
+msgid "System language"
+msgstr "系统语言"
+
+#: src/roudix_installer/pages/options.py
+msgid "Keyboard layout (console)"
+msgstr "键盘布局（控制台）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Graphical keyboard layout (Wayland)"
+msgstr "图形键盘布局（Wayland）"
+
+#: src/roudix_installer/pages/options.py
+msgid "RGB controller"
+msgstr "RGB 控制器"
+
+#: src/roudix_installer/pages/options.py
+msgid "RAM RGB (Corsair DDR4/DDR5)"
+msgstr "内存 RGB（Corsair DDR4/DDR5）"
+
+#: src/roudix_installer/pages/options.py
+msgid "RAM type"
+msgstr "内存类型"
+
+#: src/roudix_installer/pages/options.py
+msgid "SMBus (e.g. i2c-1)"
+msgstr "SMBus（例如 i2c-1）"
+
+#: src/roudix_installer/pages/options.py
+msgid "RAM SKU (part number)"
+msgstr "内存 SKU（部件编号）"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
+"\"sudo dmidecode -t memory | grep 'Part Number'\"."
+msgstr "SMBus / 内存 SKU 不会自动检测 — 请通过 \"i2cdetect -l\" 和 \"sudo dmidecode -t memory | grep 'Part Number'\" 查找。"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Extras"
+msgstr "附加项"
+
+#: src/roudix_installer/pages/options.py
+msgid "GTA Online fix (blocks the Linux anti-cheat IP)"
+msgstr "GTA Online 修复（屏蔽 Linux 反作弊 IP）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Virtualization (libvirt, virt-manager)"
+msgstr "虚拟化（libvirt、virt-manager）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Automatic updates"
+msgstr "自动更新"
+
+#: src/roudix_installer/pages/options.py
+msgid "Interval (e.g. 1h, 6h, 24h)"
+msgstr "间隔（例如 1h、6h、24h）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Branch (install + updates)"
+msgstr "分支（安装 + 更新）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bootloader"
+msgstr "引导程序"
+
+#: src/roudix_installer/pages/options.py
+msgid "Matrix client"
+msgstr "Matrix 客户端"
+
+#: src/roudix_installer/pages/options.py
+msgid "Discord"
+msgstr "Discord"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Video player"
+msgstr "视频播放器"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Torrent client"
+msgstr "BT 下载客户端"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Music player"
+msgstr "音乐播放器"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Mail client"
+msgstr "邮件客户端"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Password manager"
+msgstr "密码管理器"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turn on the ones you want preinstalled."
+msgstr "打开你想预装的项目。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spicetify theme"
+msgstr "Spicetify 主题"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spicetify color scheme (empty = theme default)"
+msgstr "Spicetify 配色方案（留空 = 主题默认）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Adblock extension (Spicetify)"
+msgstr "广告拦截扩展（Spicetify）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hide podcasts (Spicetify)"
+msgstr "隐藏播客（Spicetify）"
+
+#: src/roudix_installer/pages/options.py
+msgid "End-to-end encrypted messenger"
+msgstr "端到端加密通讯软件"
+
+#: src/roudix_installer/pages/options.py
+msgid "Unofficial WhatsApp client"
+msgstr "非官方 WhatsApp 客户端"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Self-hostable Discord alternative (independent of the Discord choice above)"
+msgstr "可自托管的 Discord 替代品（与上面的 Discord 选择无关）"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Content Creation"
+msgstr "内容创作"
+
+#: src/roudix_installer/pages/options.py
+msgid "Enable content-creation tooling"
+msgstr "启用内容创作工具"
+
+#: src/roudix_installer/pages/options.py
+msgid "VKCapture (Vulkan/OpenGL game capture)"
+msgstr "VKCapture（Vulkan/OpenGL 游戏捕获）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pipewire Audio Capture (per-app audio)"
+msgstr "Pipewire Audio Capture（按应用捕获音频）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Background Removal (AI virtual background)"
+msgstr "Background Removal（AI 虚拟背景）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Move Transition (source animations)"
+msgstr "Move Transition（来源动画）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Aitum Multistream (multi-platform streaming)"
+msgstr "Aitum Multistream（多平台直播）"
+
+#: src/roudix_installer/pages/options.py
+msgid "GStreamer (extra sources/outputs)"
+msgstr "GStreamer（额外的来源/输出）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Composite Blur (blur/glass filters)"
+msgstr "Composite Blur（模糊/玻璃滤镜）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Advanced Scene Switcher (automated scene switching)"
+msgstr "Advanced Scene Switcher（自动切换场景）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Input Overlay (on-screen keyboard/mouse/gamepad)"
+msgstr "Input Overlay（屏幕上显示键盘/鼠标/手柄）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Waveform (audio waveform/spectrum)"
+msgstr "Waveform（音频波形/频谱）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Video editor"
+msgstr "视频编辑器"
+
+#: src/roudix_installer/pages/options.py
+msgid "DaVinci Resolve (free)"
+msgstr "DaVinci Resolve（免费版）"
+
+#: src/roudix_installer/pages/options.py
+msgid "DaVinci Resolve Studio (paid)"
+msgstr "DaVinci Resolve Studio（付费版）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Virtual camera (v4l2loopback)"
+msgstr "虚拟摄像头（v4l2loopback）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Chatterino2 (third-party Twitch chat)"
+msgstr "Chatterino2（第三方 Twitch 聊天）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel (Chaotic-Nyx)"
+msgstr "Kernel (Chaotic-Nyx)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel (xddxdd)"
+msgstr "Kernel (xddxdd)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"This user doesn't exist on this system — run the installer from the account "
+"you want to keep."
+msgstr "此系统上不存在该用户 — 请从你想保留的账户运行安装程序。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Password can't be empty."
+msgstr "密码不能为空。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Passwords don't match."
+msgstr "两次输入的密码不一致。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation"
+msgstr "安装"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Preparing…"
+msgstr "准备中…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation log"
+msgstr "安装日志"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Copy log"
+msgstr "复制日志"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Reboot now"
+msgstr "立即重启"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Finish"
+msgstr "完成"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Back to summary"
+msgstr "返回摘要"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Rebooting…"
+msgstr "正在重启…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: these options were NOT confirmed in local.nix — review the file "
+"before rebooting: {keys}"
+msgstr "警告：这些选项未在 local.nix 中得到确认 — 重启前请检查该文件：{keys}"
+
+#: src/roudix_installer/pages/progress.py
+msgid "✓ every chosen option was written to local.nix."
+msgstr "✓ 所有选择的选项都已写入 local.nix。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Dry run — nothing is written to disk"
+msgstr "试运行 — 不会向磁盘写入任何内容"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the "
+"repo>)"
+msgstr "未找到 hosts/{host}/local.nix.example（请尝试 ROUDIX_CFG_ROOT=<仓库路径>）"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Dry run finished — nothing was changed"
+msgstr "试运行已完成 — 未作任何更改"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation — nothing is written"
+msgstr "模拟 — 不会写入任何内容"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Fetching the Roudix configuration…"
+msgstr "正在获取 Roudix 配置…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Clone failed — simulating with the local copy of the profiles."
+msgstr "克隆失败 — 改用配置文件的本地副本进行模拟。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Detecting hardware…"
+msgstr "正在检测硬件…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Generating local.nix / username.nix…"
+msgstr "正在生成 local.nix / username.nix…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Evaluating the whole system with Nix…"
+msgstr "正在用 Nix 评估整个系统…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "✓ the configuration evaluates: Nix can build this system."
+msgstr "✓ 配置可以通过评估：Nix 能够构建此系统。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation finished — nothing was changed"
+msgstr "模拟已完成 — 未作任何更改"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation complete 🎉"
+msgstr "安装完成 🎉"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Error"
+msgstr "错误"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation failed"
+msgstr "安装失败"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation failed"
+msgstr "模拟失败"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Authentication was cancelled or refused."
+msgstr "认证已被取消或拒绝。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "failed"
+msgstr "失败"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Unknown partitioning mode"
+msgstr "未知的分区模式"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Partitioning the disk…"
+msgstr "正在为磁盘分区…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Mounting partitions…"
+msgstr "正在挂载分区…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "No partition assigned to / — cannot continue"
+msgstr "没有分区被分配到 / — 无法继续"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "Checking branch '{branch}'…"
+msgstr "正在检查分支“{branch}”…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "Branch '{branch}' not found on {repo_url} — falling back to 'main'."
+msgstr "在 {repo_url} 上未找到分支“{branch}” — 回退到“main”。"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
+"local.nix generation may fail."
+msgstr "警告：在分支“{branch}”上未找到 hosts/{host}/local.nix.example — 生成 local.nix 可能会失败。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Copying the configuration…"
+msgstr "正在复制配置…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main)."
+msgstr "已选择分支“{branch}” — 从 GitHub 克隆（ISO 只内置 main）。"
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing "
+"outside an ISO) — cloning straight from GitHub instead."
+msgstr "未找到 /iso-cfg（ISO 尚未用 isoImage.contents 重新构建，或正在 ISO 之外测试）— 直接从 GitHub 克隆。"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "btrfs detected — mount options auto-patched for: {patched}"
+msgstr "检测到 btrfs — 已自动修补以下挂载选项：{patched}"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "hosts/{hostname}/local.nix, username.nix, home/local.nix written."
+msgstr "已写入 hosts/{hostname}/local.nix、username.nix 和 home/local.nix。"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: only {free} MiB free in /boot ({need} MiB recommended) — nixos-"
+"rebuild may fail on a small EFI partition."
+msgstr "警告：/boot 仅剩 {free} MiB 可用空间（建议 {need} MiB）— 在较小的 EFI 分区上 nixos-rebuild 可能会失败。"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: only {free} GiB free for the Nix store ({need} GiB recommended)."
+msgstr "警告：Nix store 仅剩 {free} GiB 可用空间（建议 {need} GiB）。"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: your configuration uses system.stateVersion {old}, Roudix sets "
+"{new}. Services that keep data (databases…) deserve a look before booting it."
+msgstr "警告：你的配置使用 system.stateVersion {old}，而 Roudix 设置为 {new}。保存数据的服务（数据库等）在启动前值得检查一下。"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Note: Roudix will use the {new} bootloader (yours: {old}). If it ever fails "
+"to start, RESTORE.txt in the backup explains how to put your old "
+"configuration back."
+msgstr "注意：Roudix 将使用 {new} 引导程序（你当前的是 {old}）。如果无法启动，备份中的 RESTORE.txt 说明了如何恢复旧配置。"
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"Reusing /etc/nixos/hardware-configuration.nix (the one that boots this "
+"machine)."
+msgstr "重用 /etc/nixos/hardware-configuration.nix（即让这台机器能够启动的那个文件）。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Checking this system…"
+msgstr "正在检查此系统…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "{cfg} already exists — moving it to {aside}."
+msgstr "{cfg} 已存在 — 正在移动到 {aside}。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Backing up /etc/nixos…"
+msgstr "正在备份 /etc/nixos…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "✓ backup done: {dest} (see RESTORE.txt in it)."
+msgstr "✓ 备份完成：{dest}（其中有 RESTORE.txt 说明）。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Building Roudix — this can take a while…"
+msgstr "正在构建 Roudix — 可能需要一段时间…"
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"✓ Roudix is built. Reboot to start it; your previous system stays in the "
+"boot menu."
+msgstr "✓ Roudix 已构建完成。重启即可启动；你之前的系统仍保留在启动菜单中。"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installing the system…"
+msgstr "正在安装系统…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Setting the password…"
+msgstr "正在设置密码…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Copying config for nh os switch…"
+msgstr "正在为 nh os switch 复制配置…"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Summary"
+msgstr "摘要"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Check before starting the install"
+msgstr "开始安装前请检查"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Simulate (nothing is written)"
+msgstr "模拟（不写入任何内容）"
+
+#: src/roudix_installer/pages/summary.py
+msgid ""
+"Generates the configuration in a temporary folder and checks that it "
+"evaluates. Nothing is partitioned, installed or modified."
+msgstr "在临时文件夹中生成配置并检查其能否通过评估。不会进行分区、安装或修改任何内容。"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Convert this NixOS to Roudix"
+msgstr "将此 NixOS 转换为 Roudix"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Install Roudix"
+msgstr "安装 Roudix"
+
+#: src/roudix_installer/pages/summary.py
+msgid "latest (flake)"
+msgstr "最新（flake）"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Versions"
+msgstr "版本"
+
+#: src/roudix_installer/pages/summary.py
+msgid ", no swap (zram)"
+msgstr "，无 swap（zram）"
+
+#: src/roudix_installer/pages/summary.py
+msgid "wiped"
+msgstr "将被清除"
+
+#: src/roudix_installer/pages/summary.py
+msgid "custom disko"
+msgstr "自定义 disko"
+
+#: src/roudix_installer/pages/summary.py
+msgid "no partition assigned"
+msgstr "未分配分区"
+
+#: src/roudix_installer/pages/summary.py
+msgid "bare metal"
+msgstr "物理机"
+
+#: src/roudix_installer/pages/summary.py
+msgid "disabled"
+msgstr "已禁用"
+
+#: src/roudix_installer/pages/summary.py
+msgid "enabled"
+msgstr "已启用"
+
+#: src/roudix_installer/pages/summary.py
+msgid "no plugins"
+msgstr "无插件"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Existing NixOS — nothing is wiped"
+msgstr "现有 NixOS — 不清除任何内容"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Mode"
+msgstr "模式"
+
+#: src/roudix_installer/pages/summary.py src/roudix_installer/pages/welcome.py
+msgid "Profile / host"
+msgstr "配置文件 / 主机"
+
+#: src/roudix_installer/pages/summary.py
+#, python-brace-format
+msgid ""
+"/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current system "
+"stays in the boot menu."
+msgstr "/etc/nixos 会被复制到 {dir}（附带 RESTORE.txt），你当前的系统仍保留在启动菜单中。"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Safety net"
+msgstr "安全保障"
+
+#: src/roudix_installer/pages/summary.py
+msgid "set ✓"
+msgstr "已设置 ✓"
+
+#: src/roudix_installer/pages/summary.py
+msgid "⚠ not set"
+msgstr "⚠ 未设置"
+
+#: src/roudix_installer/pages/summary.py
+msgid " (Optimus laptop)"
+msgstr " （Optimus 笔记本）"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Editor"
+msgstr "编辑器"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Keyring / portal"
+msgstr "密钥环 / portal"
+
+#: src/roudix_installer/pages/summary.py
+msgid "n/a (managed by the desktop)"
+msgstr "不适用（由桌面管理）"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Shell"
+msgstr "Shell"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Locale"
+msgstr "区域设置"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Graphical keyboard"
+msgstr "图形键盘"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Branch"
+msgstr "分支"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Virtualization"
+msgstr "虚拟化"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Extras row: nothing selected"
+msgid "none"
+msgstr "无"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Apps row: nothing selected"
+msgid "none"
+msgstr "无"
+
+#: src/roudix_installer/pages/summary.py
+msgid "hide podcasts"
+msgstr "隐藏播客"
+
+#: src/roudix_installer/pages/summary.py
+msgid "no extensions"
+msgstr "无扩展"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "roudix — full desktop, every option"
+msgstr "roudix — 完整桌面，所有选项"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "nixie — light laptop, few questions"
+msgstr "nixie — 轻量笔记本，问题很少"
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"This machine already runs NixOS. Roudix is built next to your current "
+"system: nothing is wiped, /etc/nixos is backed up first, and your previous "
+"system stays in the boot menu. Two steps: options, then off we go."
+msgstr "这台机器已在运行 NixOS。Roudix 会在你当前系统旁边构建：不会清除任何内容，会先备份 /etc/nixos，你之前的系统仍保留在启动菜单中。两个步骤：选项，然后开始。"
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"We're about to install Roudix on this machine. Three steps: disk, options, "
+"then off we go."
+msgstr "我们即将在这台电脑上安装 Roudix。三个步骤：磁盘、选项，然后开始。"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Profile to install"
+msgstr "要安装的配置文件"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Get started"
+msgstr "开始"
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"Warning: this profile can't be found in this ISO — every question will be "
+"asked."
+msgstr "警告：此 ISO 中找不到该配置文件 — 将询问所有问题。"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Every question will be asked."
+msgstr "将询问所有问题。"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Only the questions relevant to this profile will be asked."
+msgstr "只会询问与此配置文件相关的问题。"

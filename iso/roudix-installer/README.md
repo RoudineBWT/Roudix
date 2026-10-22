@@ -76,8 +76,10 @@ Attention : `progress.py` appelle réellement `disko` et `nixos-install` —
 
 ## Traductions
 
-Les textes sont écrits **en anglais** dans le code : `tr("Some text")`. Le français
-vit dans `po/fr.po`. L'anglais n'a pas de catalogue (c'est la langue source).
+Les textes sont écrits **en anglais** dans le code : `tr("Some text")`. Les traductions
+vivent dans `po/<langue>.po` : `fr` (langue de référence, 100 % obligatoire en CI), `es`, `pt_BR`,
+`ru`, `zh_CN`, `hi` et `ar`. L'anglais n'a pas de catalogue (c'est la langue source).
+La liste proposée sur la page d'accueil est `LANGUAGES` dans `src/roudix_installer/i18n.py`.
 
 | Fonction | Usage |
 |----------|-------|
@@ -92,10 +94,12 @@ N'utilise pas de f-string pour le texte à traduire (`xgettext` ne lit pas dedan
 ```bash
 nix develop                       # fournit gettext, just…
 scripts/i18n.sh update            # après avoir ajouté/modifié des tr(...) : met à jour .pot et .po
-# → traduis les entrées vides ou « fuzzy » de po/fr.po
+# → traduis les entrées vides ou « fuzzy » de po/fr.po (les autres langues peuvent rester
+#   en retard : l'anglais s'affiche pour les entrées manquantes, la CI ne l'exige que pour fr)
 scripts/i18n.sh check             # vérifie que tout est complet (lancé aussi par la CI)
 scripts/i18n.sh compile           # nécessaire pour lancer l'installeur depuis les sources
-scripts/i18n.sh new de            # nouvelle langue (ajoute-la ensuite à la page d'accueil)
+scripts/i18n.sh new de            # nouvelle langue : ajoute-la ensuite à LANGUAGES (i18n.py) ;
+                                  # écriture de droite à gauche (ar, he…) : aussi à RTL_LANGS
 ```
 
 Nix compile les `.po` en `.mo` à la construction du paquet (`preBuild` dans `flake.nix`).

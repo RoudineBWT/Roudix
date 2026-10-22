@@ -1,5 +1,6 @@
 from gi.repository import Adw, Gtk
 
+from roudix_installer import existing_nixos
 from roudix_installer.i18n import tr, trc
 from roudix_installer.ui_helpers import page_with_header
 
@@ -19,14 +20,29 @@ class SummaryPage(Adw.NavigationPage):
         self._rows: list[Adw.ActionRow] = []
         box.append(self.group)
 
-        install_btn = Gtk.Button(label=tr("Install Roudix"),
-                                  css_classes=["destructive-action", "pill"],
-                                  halign=Gtk.Align.END, margin_top=12)
-        install_btn.connect("clicked", lambda *_: self.on_next())
-        box.append(install_btn)
+        existing = state.mode == existing_nixos.MODE_EXISTING
+        buttons = Gtk.Box(spacing=12, halign=Gtk.Align.END, margin_top=12)
+        # "Simulate" = the dry run: every check that can run without touching
+        # the system (config generation, option verification, Nix evaluation).
+        sim_btn = Gtk.Button(label=tr("Simulate (nothing is written)"), css_classes=["pill"],
+                              tooltip_text=tr("Generates the configuration in a temporary folder and checks that "
+                                              "it evaluates. Nothing is partitioned, installed or modified."))
+        sim_btn.connect("clicked", lambda *_: self._go(dry_run=True))
+        buttons.append(sim_btn)
+        # Fresh install wipes a disk (red button); converting a NixOS does not.
+        install_btn = Gtk.Button(
+            label=tr("Convert this NixOS to Roudix") if existing else tr("Install Roudix"),
+            css_classes=["suggested-action" if existing else "destructive-action", "pill"])
+        install_btn.connect("clicked", lambda *_: self._go(dry_run=False))
+        buttons.append(install_btn)
+        box.append(buttons)
 
         self.set_child(page_with_header(tr("Summary"), scroller))
         self.connect("shown", lambda *_: self._refresh())
+
+    def _go(self, dry_run: bool):
+        self.state.dry_run = dry_run
+        self.on_next()
 
     @staticmethod
     def _versions_rows(s):
@@ -80,11 +96,23 @@ class SummaryPage(Adw.NavigationPage):
                         'input-overlay' if s.obs_plugin_input_overlay else '',
                         'waveform' if s.obs_plugin_waveform else '',
                     ])) or tr("no plugins")
+        if s.mode == existing_nixos.MODE_EXISTING:
+            head_rows = [
+                (tr("Mode"), tr("Existing NixOS — nothing is wiped")),
+                (tr("User"), s.username),
+                (tr("Profile / host"), s.hostname),
+                (tr("Safety net"), tr("/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current "
+                                       "system stays in the boot menu.").format(dir=existing_nixos.BACKUP_ROOT)),
+            ]
+        else:
+            head_rows = [
+                (tr("Disk"), disk_label),
+                (tr("User"), s.username),
+                (tr("Profile / host"), s.hostname),
+                (tr("Password"), tr("set ✓") if s.password else tr("⚠ not set")),
+            ]
         rows = [
-            (tr("Disk"), disk_label),
-            (tr("User"), s.username),
-            (tr("Profile / host"), s.hostname),
-            (tr("Password"), tr("set ✓") if s.password else tr("⚠ not set")),
+            *head_rows,
             ("GPU", f"{s.gpu}" + (tr(" (Optimus laptop)") if s.nvidia_laptop else "")),
             ("CPU", s.cpu),
             ("Kernel", f"{kernel_display} ({kernel_source})"),

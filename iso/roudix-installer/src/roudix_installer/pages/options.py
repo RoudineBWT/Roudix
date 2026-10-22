@@ -1,6 +1,6 @@
 from gi.repository import Adw, Gtk
 
-from roudix_installer import host_defaults, host_profile
+from roudix_installer import existing_nixos, host_defaults, host_profile
 from roudix_installer.hardware_detect import detect_cpu, detect_gpu
 from roudix_installer.i18n import tr, trc, tr_noop
 from roudix_installer.ui_helpers import page_with_header
@@ -526,11 +526,18 @@ class OptionsPage(Adw.NavigationPage):
 
         self.password_row = Adw.PasswordEntryRow(title=tr("Password"))
         user_group.add(self.password_row)
+        # Already-installed NixOS: the account exists and keeps its password,
+        # so the password rows are not asked at all.
+        self._existing = state.mode == existing_nixos.MODE_EXISTING
 
         self.password_confirm_row = Adw.PasswordEntryRow(
             title=tr("Confirm password")
         )
         user_group.add(self.password_confirm_row)
+        if self._existing:
+            self.password_row.set_visible(False)
+            self.password_confirm_row.set_visible(False)
+            self.username_row.set_editable(False)
 
         self.password_warning = Gtk.Label(
             css_classes=["error", "caption"],
@@ -1525,13 +1532,20 @@ class OptionsPage(Adw.NavigationPage):
     def _validate(self, _btn):
         password = self.password_row.get_text()
         confirm = self.password_confirm_row.get_text()
-        if not password:
+        if self._existing:
+            if not existing_nixos.user_exists(self.username_row.get_text()):
+                self.password_warning.set_label(
+                    tr("This user doesn't exist on this system — run the installer from the account you want to keep."))
+                self.password_warning.set_visible(True)
+                return
+            password = confirm = ""  # nothing to set: the account keeps its password
+        elif not password:
             self.password_warning.set_label(
                 tr("Password can't be empty.")
             )
             self.password_warning.set_visible(True)
             return
-        if password != confirm:
+        if not self._existing and password != confirm:
             self.password_warning.set_label(
                 tr("Passwords don't match.")
             )

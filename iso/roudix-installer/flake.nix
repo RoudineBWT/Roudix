@@ -57,6 +57,7 @@
             pkgs.parted
             pkgs.util-linux   # lsblk
             pkgs.nixos-install-tools
+            pkgs.git          # "existing NixOS" mode clones the config (a minimal install may not ship git)
           ]}"
         ];
 

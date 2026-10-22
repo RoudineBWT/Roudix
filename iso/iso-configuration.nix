@@ -101,6 +101,16 @@
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";
 
+  # ── Fonts for the installer languages ─────────────────────────────────
+  # The installer is translated (iso/roudix-installer/po): the live GNOME fonts do
+  # not cover Chinese, Hindi or Arabic, which would show up as empty boxes.
+  # noto-fonts = Cyrillic, Devanagari, Arabic…; noto-fonts-cjk-sans = Chinese/Japanese/Korean.
+  # (They add a few hundred MB to the ISO before compression: drop the ones you don't ship.)
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+  ];
+
   # ── Nix settings ─────────────────────────────────────────────────────────
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];

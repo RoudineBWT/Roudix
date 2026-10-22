@@ -200,6 +200,12 @@ in {
           # hardware-configuration.nix...) are left exactly as they are.
           $GIT merge --ff-only "origin/${cfg.branch}" \
             || _fail "git merge --ff-only failed (local modifications in the way?)"
+
+          # What this update brings: the user-facing commits (feat/fix, Conventional
+          # Commits — `just ship` enforces them) between the old and new revision.
+          # Kept for `update --changes` and summarised in the final notification.
+          $GIT log --no-merges --pretty='%s' "$LOCAL..$REMOTE" \
+            | grep -E '^(feat|fix)(\(|:|!)' > /var/lib/roudix-autoupdate/last-changes.txt || true
         fi
 
         echo "[roudix-autoupdate] Scheduling rebuild for next reboot..."
@@ -227,10 +233,16 @@ in {
         rm -f "$PENDING"
         echo "[roudix-autoupdate] Done — reboot to apply the new config."
 
-        # Notify: rebuild scheduled
+        # Notify: rebuild scheduled (+ the first few changes, if we know them)
+        BODY="Configuration updated successfully. Reboot to apply the new config."
+        CHANGES=/var/lib/roudix-autoupdate/last-changes.txt
+        if [ -s "$CHANGES" ]; then
+          BODY="$BODY"$'\n'"$(head -n 3 "$CHANGES" | sed 's/^/• /')"
+          [ "$(wc -l < "$CHANGES")" -gt 3 ] && BODY="$BODY"$'\n'"… update --changes"
+        fi
         ${notify} \
           "Roudix — Rebuild scheduled" \
-          "Configuration updated successfully. Reboot to apply the new config." \
+          "$BODY" \
           "system-reboot"
       '';
     };

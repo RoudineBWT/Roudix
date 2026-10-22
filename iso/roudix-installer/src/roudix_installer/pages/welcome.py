@@ -3,7 +3,7 @@ from pathlib import Path
 
 from gi.repository import Adw, Gtk
 
-from roudix_installer import host_profile, i18n
+from roudix_installer import existing_nixos, host_profile, i18n
 from roudix_installer.i18n import tr
 from roudix_installer.ui_helpers import page_with_header
 
@@ -56,34 +56,43 @@ class WelcomePage(Adw.NavigationPage):
     def _show_language_step(self):
         self._clear_below_title()
 
+        # One line, every language: nobody has chosen theirs yet.
         subtitle = Gtk.Label(
-            label="Choose your language / Choisis ta langue",
-            css_classes=["dim-label"],
+            label=" · ".join(prompt for _code, _name, prompt in i18n.LANGUAGES),
+            css_classes=["dim-label"], wrap=True, justify=Gtk.Justification.CENTER,
         )
         self.box.append(subtitle)
 
-        button_row = Gtk.Box(spacing=12, halign=Gtk.Align.CENTER)
-        # Order matches the subtitle above ("Choose your language / Choisis ta
-        # langue" — English first): English button first, then French.
-        en_btn = Gtk.Button(label="English", css_classes=["pill"])
-        en_btn.connect("clicked", lambda *_: self._choose_lang("en"))
-        fr_btn = Gtk.Button(label="Français", css_classes=["pill"])
-        fr_btn.connect("clicked", lambda *_: self._choose_lang("fr"))
-        button_row.append(en_btn)
-        button_row.append(fr_btn)
-        self.box.append(button_row)
+        flow = Gtk.FlowBox(
+            selection_mode=Gtk.SelectionMode.NONE, homogeneous=True,
+            min_children_per_line=2, max_children_per_line=4,
+            column_spacing=12, row_spacing=12, halign=Gtk.Align.CENTER,
+        )
+        for code, name, _prompt in i18n.LANGUAGES:
+            btn = Gtk.Button(label=name, css_classes=["pill"])
+            btn.connect("clicked", lambda _b, c=code: self._choose_lang(c))
+            flow.append(btn)
+        self.box.append(flow)
 
     def _choose_lang(self, lang: str):
         i18n.set_lang(lang)
+        # Mirror the whole UI for right-to-left languages (Arabic…); GTK re-lays out
+        # the widgets that already exist and the ones built later.
+        Gtk.Widget.set_default_direction(
+            Gtk.TextDirection.RTL if i18n.is_rtl(lang) else Gtk.TextDirection.LTR
+        )
         self._show_welcome_step()
 
     def _show_welcome_step(self):
         self._clear_below_title()
 
-        subtitle = Gtk.Label(
-            label=tr("We're about to install Roudix on this machine. Three steps: disk, options, then off we go."),
-            css_classes=["dim-label"], wrap=True,
-        )
+        if self.state.mode == existing_nixos.MODE_EXISTING:
+            text = tr("This machine already runs NixOS. Roudix is built next to your current system: "
+                      "nothing is wiped, /etc/nixos is backed up first, and your previous system stays "
+                      "in the boot menu. Two steps: options, then off we go.")
+        else:
+            text = tr("We're about to install Roudix on this machine. Three steps: disk, options, then off we go.")
+        subtitle = Gtk.Label(label=text, css_classes=["dim-label"], wrap=True)
         self.box.append(subtitle)
 
         # Which hosts/<name>/ profile to install. Asked here, before the
