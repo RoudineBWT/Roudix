@@ -26,6 +26,7 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 - `roudix-autoupdate` remembers the feat/fix commits each update brings: the
   "Rebuild scheduled" notification lists the first ones and `update --changes`
   shows them all, after the package diff.
+- `roudix-switcher` now exposes options it was missing: password manager (`roudix.passwordManager`), Signal / ZapZap / Fluxer, the Umbriel effects (`roudix.umbriel.effects`), the Zen tweaks (`roudix.zen.tweaks.*`), the Gaming Mode HDR switch (`roudix.gaming.gamescopeSession.hdr.enable`) and the auto-update check interval (`roudix.autoupdate.interval`).
 
 ### Changed
 - Roudix identity moved from Catppuccin Mocha Peach to the Roudix palette: logo

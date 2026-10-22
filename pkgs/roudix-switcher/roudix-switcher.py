@@ -541,6 +541,60 @@ MAIL_CLIENTS = [
     {"id": "none",        "name": L("Aucun", "None"), "subtitle": L("N'installer aucun client mail", "Don't install a mail client"), "icon": "none.svg"},
 ]
 
+# roudix.passwordManager (modules/system/apps/utilities/password-manager.nix)
+# — enum, exposed as a SelectorGroup. No bundled art for these yet: the
+# theme's own icon is used when it ships one (APP_ICON_THEME_NAMES), else
+# the generic "password" icon.
+PASSWORD_MANAGERS = [
+    {"id": "bitwarden",  "name": "Bitwarden",  "subtitle": L("Coffre synchronisé dans le cloud", "Cloud-synced vault"),                        "icon": "dialog-password-symbolic"},
+    {"id": "keepassxc",  "name": "KeePassXC",  "subtitle": L("Fichier de coffre local, hors ligne, sans compte", "Local, offline vault file, no account"), "icon": "dialog-password-symbolic"},
+    {"id": "protonpass", "name": "Proton Pass","subtitle": L("Coffre cloud lié à un compte Proton", "Cloud vault tied to a Proton account"),   "icon": "dialog-password-symbolic"},
+    {"id": "none",       "name": L("Aucun", "None"), "subtitle": L("N'installer aucun gestionnaire de mots de passe", "Don't install a password manager"), "icon": "none.svg"},
+]
+
+# roudix.umbriel.effects (modules/system/desktop/umbriel.nix) — shader /
+# animation setup, Umbriel only. "*-mocha" = fixed Roudix palette, the others
+# follow the Noctalia palette.
+UMBRIEL_EFFECTS = [
+    {"id": "none",                "name": L("Aucun", "None"),       "subtitle": L("Propre : aucun shader ni effet animé", "Clean: no shaders, no animated effects"), "icon": "none.svg"},
+    {"id": "roudix",              "name": "roudix",                 "subtitle": L("Ouverture/fermeture discrètes + scratchpad (défaut)", "Subtle window in/out + scratchpad shaders (default)"), "icon": "none.svg"},
+    {"id": "roudix-plus",         "name": "roudix-plus",            "subtitle": L("+ bordure d'accent, halo de curseur, transitions (palette Noctalia)", "+ accent border, cursor halo, transitions (Noctalia palette)"), "icon": "none.svg"},
+    {"id": "roudix-plus-mocha",   "name": "roudix-plus-mocha",      "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette"), "icon": "none.svg"},
+    {"id": "roudix-aurora",       "name": "roudix-aurora",          "subtitle": L("+ lumière qui coule autour de la bordure (palette Noctalia)", "+ flowing light around the border (Noctalia palette)"), "icon": "none.svg"},
+    {"id": "roudix-aurora-mocha", "name": "roudix-aurora-mocha",    "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette"), "icon": "none.svg"},
+    {"id": "roudix-wobbly",       "name": "roudix-wobbly",          "subtitle": L("+ fenêtres gélatineuses au déplacement (palette Noctalia)", "+ jelly wobble on window move (Noctalia palette)"), "icon": "none.svg"},
+    {"id": "roudix-wobbly-mocha", "name": "roudix-wobbly-mocha",    "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette"), "icon": "none.svg"},
+    {"id": "roudix-logo",         "name": "roudix-logo",            "subtitle": L("Ouverture/fermeture en forme de logo Roudix", "Windows open/close through the Roudix logo shape"), "icon": "none.svg"},
+    {"id": "roudix-logo-wobbly",  "name": "roudix-logo-wobbly",     "subtitle": L("Idem + effet gélatine et physique du glisser", "Same + jelly wobble and drag physics"), "icon": "none.svg"},
+    {"id": "roudix-orbit",        "name": "roudix-orbit",           "subtitle": L("Bordure « tresse de flocon » + comète (palette Noctalia)", "\"Snowflake braid\" border + comet (Noctalia palette)"), "icon": "none.svg"},
+    {"id": "roudix-orbit-mocha",  "name": "roudix-orbit-mocha",     "subtitle": L("Idem, palette Roudix fixe", "Same, fixed Roudix palette"), "icon": "none.svg"},
+    {"id": "roudix-full",         "name": "roudix-full",            "subtitle": L("Tout : logo, gélatine, aurora (palette Roudix fixe)", "Everything: logo, wobble, aurora (fixed Roudix palette)"), "icon": "none.svg"},
+    {"id": "roudix-full-noctalia","name": "roudix-full-noctalia",   "subtitle": L("Comme roudix-full, couleurs de Noctalia", "Like roudix-full, Noctalia colors"), "icon": "none.svg"},
+    {"id": "sakura-overdrive",    "name": "sakura-overdrive",       "subtitle": L("Suite sakura de Ly-sec — couleurs Noctalia", "Ly-sec's sakura suite — Noctalia colors"), "icon": "none.svg"},
+    {"id": "sakura-roudix",       "name": "sakura-roudix",          "subtitle": L("Suite sakura, palette Roudix fixe", "Sakura suite, fixed Roudix palette"), "icon": "none.svg"},
+]
+
+# roudix.autoupdate.interval (modules/system/nix/autoupdate.nix) — free
+# string on the Nix side (systemd OnUnitActiveSec), offered as a few presets.
+AUTOUPDATE_INTERVALS = [
+    {"id": "1h",  "name": L("Toutes les heures", "Every hour"),  "subtitle": L("Défaut", "Default"), "icon": "none.svg"},
+    {"id": "6h",  "name": L("Toutes les 6 heures", "Every 6 hours"),  "subtitle": "", "icon": "none.svg"},
+    {"id": "12h", "name": L("Toutes les 12 heures", "Every 12 hours"), "subtitle": "", "icon": "none.svg"},
+    {"id": "24h", "name": L("Tous les jours", "Every day"),     "subtitle": "", "icon": "none.svg"},
+]
+
+# roudix.zen.tweaks.* (modules/system/apps/browser/browser.nix) — only used
+# when Zen is enabled. "tweaks" is the master switch, the others only matter
+# once it is on (all default true on the Nix side).
+ZEN_TWEAKS = [
+    {"id": "tweaks",              "name": L("Tweaks Zen Roudix (user.js + policies.json)", "Roudix Zen tweaks (user.js + policies.json)"), "key": "roudix.zen.tweaks.enable",              "default": False},
+    {"id": "performance",         "name": L("Performance (décodage matériel, GPU, caches)", "Performance (HW decoding, GPU, caches)"),     "key": "roudix.zen.tweaks.performance",         "default": True},
+    {"id": "privacy",             "name": L("Vie privée (sans télémétrie ni extras Mozilla)", "Privacy (no telemetry or Mozilla extras)"), "key": "roudix.zen.tweaks.privacy",             "default": True},
+    {"id": "disableSafeBrowsing", "name": L("Désactiver Google Safe Browsing", "Disable Google Safe Browsing"),                           "key": "roudix.zen.tweaks.disableSafeBrowsing", "default": True},
+    {"id": "ui",                  "name": L("Interface (défilement fluide, masonry)", "UI (smooth scrolling, masonry)"),                  "key": "roudix.zen.tweaks.ui",                  "default": True},
+    {"id": "policies",            "name": L("Installer policies.json (uBlock, DoH...)", "Install policies.json (uBlock, DoH...)"),         "key": "roudix.zen.tweaks.policies",            "default": True},
+]
+
 RGB_BACKENDS = [
     {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": L("Pour périphériques compatibles Corsair iCUE", "For Corsair iCUE-compatible devices"), "icon": "openlinkhub.svg"},
     {"id": "openrgb",     "name": "OpenRGB",      "subtitle": L("Support RGB multi-marques", "Multi-brand RGB support"),                   "icon": "openrgb.svg"},
@@ -576,6 +630,7 @@ GAMING_EXTRAS = [
     {"id": "millennium", "name": L("Millennium (client Steam modifié : thèmes et plugins)", "Millennium (modded Steam client: themes and plugins)"), "key": "roudix.gaming.steam.millennium.enable", "default": False},
     {"id": "gamescopeSession", "name": L("Session « Steam (Gaming Mode) » (gamescope, niri/umbriel/gnome/kde)", "“Steam (Gaming Mode)” session (gamescope, niri/umbriel/gnome/kde)"), "key": "roudix.gaming.gamescopeSession.enable", "default": False},
     {"id": "decky", "name": L("Decky Loader (plugins Steam, compilé au 1er rebuild)", "Decky Loader (Steam plugins, compiled on first rebuild)"), "key": "roudix.gaming.gamescopeSession.decky.enable", "default": False},
+    {"id": "gamescopeHdr", "name": L("HDR dans la session Gaming Mode (désactiver si écran sans HDR ou jeux qui plantent)", "HDR in the Gaming Mode session (turn off without an HDR display, or if games misbehave)"), "key": "roudix.gaming.gamescopeSession.hdr.enable", "default": True},
 ]
 
 # roudix.zen.variant — enum, exposed as a SelectorGroup (like EDITORS).
@@ -630,6 +685,9 @@ APPS_TOGGLES = [
     {"id": "inkscape",    "name": "Inkscape",                         "key": "roudix.apps.inkscape.enable",   "default": False},
     {"id": "songrec",     "name": "SongRec",                          "key": "roudix.apps.songrec.enable",    "default": False},
     {"id": "easyeffects", "name": "EasyEffects",                      "key": "roudix.apps.easyeffects.enable","default": False},
+    {"id": "signal",      "name": "Signal",                           "key": "roudix.apps.signal.enable",     "default": False},
+    {"id": "zapzap",      "name": L("ZapZap (client WhatsApp non officiel)", "ZapZap (unofficial WhatsApp client)"), "key": "roudix.apps.zapzap.enable", "default": False},
+    {"id": "fluxer",      "name": L("Fluxer (alternative Discord auto-hébergeable)", "Fluxer (self-hostable Discord alternative)"), "key": "roudix.apps.fluxer.enable", "default": False},
 ]
 
 
@@ -750,6 +808,45 @@ def set_string_option(key: str, value: str):
         pattern = re.escape(key) + r'\s*=\s*"[^"]*"'
         if re.search(pattern, content):
             new = re.sub(pattern, f'{key} = "{value}"', content)
+        else:
+            new = _insert_before_closing_brace(content, f'{key} = "{value}";')
+        with open(CONFIG_FILE, "w") as f:
+            f.write(new)
+        log.info("Configuration updated: %s set to '%s'.", key, value)
+        return True
+    except Exception as e:
+        log.error("Failed to write configuration: %s", e)
+        return str(e)
+
+
+def get_active_string_option(key: str, default: str) -> str:
+    """Like get_string_option(), but ignores commented-out lines. Needed for
+    options that local.nix.example ships as a `# key = "value";` example
+    (roudix.umbriel.effects...): reading the comment would show a value the
+    machine doesn't actually use."""
+    try:
+        with open(CONFIG_FILE) as f:
+            for line in f:
+                if line.lstrip().startswith("#"):
+                    continue
+                m = re.search(r"(?<![\w.\-])" + re.escape(key) + r'\s*=\s*"([^"]*)"', line)
+                if m:
+                    return m.group(1)
+    except Exception:
+        pass
+    return default
+
+
+def set_active_string_option(key: str, value: str):
+    """Like set_string_option(), but anchored to an ACTIVE line: a
+    commented-out `# key = "..."` example is left alone and a real line is
+    added instead (updating the comment in place would silently do nothing)."""
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+        pattern = re.compile(r'^([ \t]*)' + re.escape(key) + r'\s*=\s*"[^"]*"', re.MULTILINE)
+        if pattern.search(content):
+            new = pattern.sub(lambda m: f'{m.group(1)}{key} = "{value}"', content)
         else:
             new = _insert_before_closing_brace(content, f'{key} = "{value}";')
         with open(CONFIG_FILE, "w") as f:
@@ -960,6 +1057,10 @@ APP_ICON_THEME_NAMES = {
     "geary":       "org.gnome.Geary",
     # "betterbird" deliberately excluded: same situation as ytmdesktop —
     # not in any mainstream icon theme, needs real art of its own.
+    # Password managers (generic "password" icon when the theme lacks them)
+    "bitwarden":   "bitwarden",
+    "keepassxc":   "keepassxc",
+    "protonpass":  "proton-pass",
 }
 
 
@@ -1599,6 +1700,16 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.scratchpad_note.set_visible(current_de in SCRATCHPAD_SUPPORTED_DE)
         desktop_page.append(self.scratchpad_note)
 
+        # roudix.umbriel.effects — shader/animation setup, Umbriel only.
+        self.umbriel_effects_selector = SelectorGroup(
+            L("Effets Umbriel", "Umbriel effects"),
+            UMBRIEL_EFFECTS,
+            get_active_string_option("roudix.umbriel.effects", "roudix"),
+            dark,
+        )
+        self.umbriel_effects_selector.set_visible(current_de == "umbriel")
+        desktop_page.append(self.umbriel_effects_selector)
+
         # roudix.desktop.latest.<id> — nixpkgs (default) or latest (flake)
         # version of the selected compositor and of the selected shell.
         self.latest_group = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
@@ -1847,11 +1958,18 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             self.zen_mods_placeholder.set_halign(Gtk.Align.START)
             browser_page.append(self.zen_mods_placeholder)
 
+        # roudix.zen.tweaks.* — only meaningful while Zen is enabled.
+        self.zen_tweaks = host_filter_items(ZEN_TWEAKS)
+        zen_tweaks_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.zen_tweaks}
+        self.zen_tweaks_group = ToggleListGroup(L("Tweaks Zen", "Zen tweaks"), self.zen_tweaks, zen_tweaks_current)
+        browser_page.append(self.zen_tweaks_group)
+
         def _update_zen_cascade(*_):
             zen_on = self.zen_switch.get_active()
             sine_on = self.sine_switch.get_active()
             self.zen_variant_selector.set_visible(zen_on)
             self.sine_row.set_visible(zen_on)
+            self.zen_tweaks_group.set_visible(zen_on)
             show_mods = zen_on and sine_on
             self.sine_note.set_visible(show_mods)
             self.zen_mods_group.set_visible(show_mods)
@@ -1962,6 +2080,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.mail_client_selector = SelectorGroup(L("Client mail", "Mail client"), MAIL_CLIENTS, current_mail_client, dark)
         apps_page.append(self.mail_client_selector)
 
+        self.password_manager_selector = SelectorGroup(
+            L("Gestionnaire de mots de passe", "Password manager"),
+            PASSWORD_MANAGERS,
+            get_active_string_option("roudix.passwordManager", "none"),
+            dark,
+        )
+        apps_page.append(self.password_manager_selector)
+
         self.content_stack.add_named(apps_page, "apps")
 
         # ── "System" page: independent toggles + RGB backend ───────────────
@@ -1994,6 +2120,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         current_branch = current_repo_branch()
         self.branch_selector = SelectorGroup(L("Branche de mise à jour", "Update branch"), BRANCHES, current_branch, dark)
         system_page.append(self.branch_selector)
+
+        self.autoupdate_interval_selector = SelectorGroup(
+            L("Fréquence de vérification des mises à jour", "Update check interval"),
+            AUTOUPDATE_INTERVALS,
+            get_active_string_option("roudix.autoupdate.interval", "1h"),
+            dark,
+        )
+        system_page.append(self.autoupdate_interval_selector)
 
         self.content_stack.add_named(system_page, "system")
 
@@ -2102,6 +2236,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._update_integration_visibility(current_de)
         self._update_filemanager_visibility(current_de)
         self._update_icon_theme_visibility(current_de)
+
+        # String-valued options added after the original pages: handled by one
+        # generic loop in on_apply()/on_confirm_response() instead of one
+        # hand-written block each. `relevant(de)` = only compared/written for
+        # the desktop being applied (Umbriel effects mean nothing elsewhere).
+        self.extra_selectors = [
+            {"widget": self.umbriel_effects_selector,        "key": "roudix.umbriel.effects",        "default": "roudix",
+             "label": L("Effets Umbriel", "Umbriel effects"), "relevant": lambda de: de == "umbriel"},
+            {"widget": self.password_manager_selector,       "key": "roudix.passwordManager",        "default": "none",
+             "label": L("Gestionnaire de mots de passe", "Password manager"), "relevant": lambda de: True},
+            {"widget": self.autoupdate_interval_selector,    "key": "roudix.autoupdate.interval",    "default": "1h",
+             "label": L("Fréquence de mise à jour", "Update interval"), "relevant": lambda de: True},
+        ]
+
         self._apply_host_filter()
 
         # ── Integrated terminal ───────────────────────────────────────────
@@ -2283,6 +2431,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.scratchpad_row,  host_lists(*scratchpad_keys)),
                 (self.scratchpad_note, host_lists(*scratchpad_keys)),
                 (self.latest_group,    host_lists(*latest_keys)),
+                (self.umbriel_effects_selector, host_lists("roudix.umbriel.effects")),
             ],
             "gaming": [
                 (self.gaming_header,       host_lists("roudix.gaming.enable")),
@@ -2307,6 +2456,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.sine_note,             host_lists(*zen_mod_keys)),
                 (self.zen_mods_group,        host_lists(*zen_mod_keys)),
                 (self.zen_mods_placeholder,  host_lists(*zen_mod_keys)),
+                (self.zen_tweaks_group,      bool(self.zen_tweaks)),
             ],
             "login_shell": [(self.login_shell_selector, host_lists("roudix.shell"))],
             "filemanager": [(self.filemanager_selector, host_lists("roudix.fileManager"))],
@@ -2321,11 +2471,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.torrent_client_selector, host_lists("roudix.torrentClient")),
                 (self.music_player_selector,  host_lists("roudix.musicPlayer")),
                 (self.mail_client_selector,   host_lists("roudix.mailClient")),
+                (self.password_manager_selector, host_lists("roudix.passwordManager")),
             ],
             "system": [
                 (self.system_group,     bool(self.system_toggles)),
                 (self.rgb_selector,     host_lists("roudix.rgb")),
                 (self.branch_selector,  host_lists("roudix.autoupdate.branch")),
+                (self.autoupdate_interval_selector, host_lists("roudix.autoupdate.interval")),
             ],
             "integration": [(self.integration_selector, host_lists("roudix.desktopIntegration"))],
             "icon_theme":  [(self.icon_theme_selector,  host_lists("roudix.iconTheme"))],
@@ -2447,6 +2599,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             self.scratchpad_note.set_label(SCRATCHPAD_NOTE[new_de])
             self.scratchpad_switch.set_active(get_bool_option(scratchpad_option_key(new_de), False))
 
+        self.umbriel_effects_selector.set_visible(new_de == "umbriel")
+
         self._update_latest_de_row()
 
         if not visible:
@@ -2484,6 +2638,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.torrent_client_selector.update_icons(dark)
         self.music_player_selector.update_icons(dark)
         self.mail_client_selector.update_icons(dark)
+        self.umbriel_effects_selector.update_icons(dark)
+        self.password_manager_selector.update_icons(dark)
+        self.autoupdate_interval_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 
@@ -2656,6 +2813,19 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_icon_theme = self.icon_theme_selector.selected_id
         icon_theme_changed = new_icon_theme != cur_icon_theme
 
+        # Zen tweaks (independent booleans)
+        zen_tweaks_changes = _diff_bool_items(self.zen_tweaks, self.zen_tweaks_group.get_states())
+
+        # Umbriel effects / password manager / update interval
+        extra_sel_changes = {}
+        for ex in self.extra_selectors:
+            if not ex["relevant"](new_de):
+                continue
+            cur_val = get_active_string_option(ex["key"], ex["default"])
+            new_val = ex["widget"].selected_id
+            if new_val != cur_val:
+                extra_sel_changes[ex["key"]] = (new_val, ex["label"], cur_val)
+
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
                     terminal_changed, browsers_changed, zen_changed, zen_variant_changed, sine_changed,
                     zen_mods_changed, scratchpad_changed,
@@ -2668,7 +2838,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     mail_client_changed,
                     icon_theme_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed,
-                    cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed]):
+                    cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed,
+                    zen_tweaks_changes, extra_sel_changes]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
                 L(
@@ -2753,6 +2924,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
         for _key, new_val, name, _file in system_changes.values():
             changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
+        for _key, new_val, name, _file in zen_tweaks_changes.values():
+            changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
+        for _new, _label, _cur in extra_sel_changes.values():
+            changes.append(f"{_label}: <b>{_cur}</b> → <b>{_new}</b>")
         body_changes = "\n".join(changes)
 
         pending = {
@@ -2790,6 +2965,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "cc_changes": cc_changes,
             "obs_plugins_changes": obs_plugins_changes,
             "video_editor_changed": video_editor_changed, "new_video_editor": new_video_editor,
+            "zen_tweaks_changes": zen_tweaks_changes,
+            "extra_sel_changes": extra_sel_changes,
         }
 
         dialog = Adw.AlertDialog()
@@ -3083,6 +3260,22 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             if result is not True:
                 self.status.set_markup(
                     L(f"<span color='red'>Erreur d'écriture — config {name} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        for key, new_val, name, file in pending["zen_tweaks_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config {name} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {name} config: {GLib.markup_escape_text(result)}</span>")
+                )
+                return
+
+        for key, (new_val, label, _cur) in pending["extra_sel_changes"].items():
+            result = set_active_string_option(key, new_val)
+            if result is not True:
+                self.status.set_markup(
+                    L(f"<span color='red'>Erreur d'écriture — config {label} : {GLib.markup_escape_text(result)}</span>", f"<span color='red'>Error writing {label} config: {GLib.markup_escape_text(result)}</span>")
                 )
                 return
 
