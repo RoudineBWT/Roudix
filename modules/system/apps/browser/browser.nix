@@ -168,6 +168,52 @@ in {
           locked prefs. false = user.js only.
         '';
       };
+
+      profile = lib.mkOption {
+        type    = lib.types.nullOr lib.types.str;
+        default = null;
+        example = ".zen/abcd1234.Default (release)";
+        description = ''
+          Zen profile that receives the tweaks' user.js, as a path relative to
+          the home directory (Zen keeps its profiles in ~/.zen or ~/.config/zen,
+          see the profiles.ini there). null (default) = the profile Roudix
+          manages itself (`programs.zen-browser.profiles.default`).
+          Set from roudix-switcher, which lists the profiles it finds.
+          The policies.json is not per profile: it covers the whole install.
+        '';
+      };
+    };
+
+    # ── Firefox tweaks ───────────────────────────────────────────────────
+    # Same categories as zen.tweaks, written as a user.js in ONE existing
+    # Firefox profile (~/.mozilla/firefox or ~/.config/mozilla/firefox).
+    firefox.tweaks = {
+      enable = lib.mkOption {
+        type    = lib.types.bool;
+        default = false;
+        description = ''
+          Apply Roudix's tweaks (the same prefs as `roudix.zen.tweaks`, minus
+          the Zen-only ones) to the Firefox profile in `profile`. Nothing is
+          written while `profile` is null. No policies.json: Firefox's is
+          install-wide, not per profile.
+        '';
+      };
+
+      profile = lib.mkOption {
+        type    = lib.types.nullOr lib.types.str;
+        default = null;
+        example = ".mozilla/firefox/abcd1234.default-release";
+        description = ''
+          Firefox profile that receives the user.js, as a path relative to the
+          home directory (see the profiles.ini in ~/.mozilla/firefox or
+          ~/.config/mozilla/firefox). Set from roudix-switcher.
+        '';
+      };
+
+      performance         = lib.mkOption { type = lib.types.bool; default = true; description = "Same as `roudix.zen.tweaks.performance`."; };
+      privacy             = lib.mkOption { type = lib.types.bool; default = true; description = "Same as `roudix.zen.tweaks.privacy`."; };
+      disableSafeBrowsing = lib.mkOption { type = lib.types.bool; default = true; description = "Same as `roudix.zen.tweaks.disableSafeBrowsing` (removes a protection layer)."; };
+      ui                  = lib.mkOption { type = lib.types.bool; default = true; description = "Same as `roudix.zen.tweaks.ui` (smooth scrolling, masonry)."; };
     };
 
     browser = {

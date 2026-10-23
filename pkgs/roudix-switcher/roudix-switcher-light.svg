@@ -4,25 +4,25 @@
   <desc>Trois sliders aux couleurs du logo Roudix (peach, flamingo, maroon) sur fond Catppuccin Latte.</desc>
 
   <rect opacity="0.15" width="46" height="46" x="1" y="2" rx="11"/>
-  <rect fill="#eff1f5" width="46" height="46" x="1" y="1" rx="11"/>
+  <rect fill="#fbf5ee" width="46" height="46" x="1" y="1" rx="11"/>
   <path fill="#fff" opacity="0.5"
     d="M12,1 C6,1 1,6 1,12 v1 C1,7 6,2 12,2 h24 c6,0 11,5 11,11 v-1 C47,6 42,1 36,1 Z"/>
 
   <!-- Slider 1 : peach -->
-  <rect fill="#ccd0da" width="30" height="4" x="9" y="12" rx="2"/>
-  <rect fill="#fe640b" width="16" height="4" x="9" y="12" rx="2"/>
-  <circle fill="#4c4f69" cx="25" cy="14" r="5.5"/>
-  <circle fill="#fe640b" cx="25" cy="14" r="4.5"/>
+  <rect fill="#d2c0ad" width="30" height="4" x="9" y="12" rx="2"/>
+  <rect fill="#e0661a" width="16" height="4" x="9" y="12" rx="2"/>
+  <circle fill="#3b2f27" cx="25" cy="14" r="5.5"/>
+  <circle fill="#e0661a" cx="25" cy="14" r="4.5"/>
 
   <!-- Slider 2 : flamingo -->
-  <rect fill="#ccd0da" width="30" height="4" x="9" y="22" rx="2"/>
-  <rect fill="#dd7878" width="22" height="4" x="9" y="22" rx="2"/>
-  <circle fill="#4c4f69" cx="31" cy="24" r="5.5"/>
-  <circle fill="#dd7878" cx="31" cy="24" r="4.5"/>
+  <rect fill="#d2c0ad" width="30" height="4" x="9" y="22" rx="2"/>
+  <rect fill="#e0a030" width="22" height="4" x="9" y="22" rx="2"/>
+  <circle fill="#3b2f27" cx="31" cy="24" r="5.5"/>
+  <circle fill="#e0a030" cx="31" cy="24" r="4.5"/>
 
   <!-- Slider 3 : maroon -->
-  <rect fill="#ccd0da" width="30" height="4" x="9" y="32" rx="2"/>
-  <rect fill="#e64553" width="9" height="4" x="9" y="32" rx="2"/>
-  <circle fill="#4c4f69" cx="18" cy="34" r="5.5"/>
-  <circle fill="#e64553" cx="18" cy="34" r="4.5"/>
+  <rect fill="#d2c0ad" width="30" height="4" x="9" y="32" rx="2"/>
+  <rect fill="#c98a1e" width="9" height="4" x="9" y="32" rx="2"/>
+  <circle fill="#3b2f27" cx="18" cy="34" r="5.5"/>
+  <circle fill="#c98a1e" cx="18" cy="34" r="4.5"/>
 </svg>

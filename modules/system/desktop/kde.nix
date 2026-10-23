@@ -80,7 +80,7 @@ lib.mkIf isKde {
   # merged menu turns that tag into a "Roudix" submenu and removes those apps
   # from System/Settings so they aren't listed twice. Dropped in both merge
   # dirs because the file name depends on XDG_MENU_PREFIX (plasma- or none).
-  environment.pathsToLink = [ "/share/desktop-directories" ];
+  environment.pathsToLink = [ "/share/desktop-directories" "/share/color-schemes" ];
   environment.etc."xdg/menus/applications-merged/roudix.menu" = roudixMenu;
   environment.etc."xdg/menus/plasma-applications-merged/roudix.menu" = roudixMenu;
 

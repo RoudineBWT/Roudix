@@ -1,0 +1,1231 @@
+# Simplified Chinese translation of roudix-store (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-store\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Simplified Chinese\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: roudix-store.py
+msgid "Search apps…"
+msgstr "搜索应用…"
+
+#: roudix-store.py
+msgid "Loading nixpkgs index…"
+msgstr "正在加载 nixpkgs 索引…"
+
+#: roudix-store.py
+msgid "Refresh index"
+msgstr "刷新索引"
+
+#: roudix-store.py
+msgid "Install for"
+msgstr "安装到"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "System"
+msgstr "系统"
+
+#: roudix-store.py
+msgid "User (home)"
+msgstr "用户（home）"
+
+#: roudix-store.py
+msgid "Pick an application"
+msgstr "选择一个应用"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Apply"
+msgstr "应用"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Clear"
+msgstr "清空"
+
+#: roudix-store.py
+msgid "Index unavailable: "
+msgstr "索引不可用："
+
+#: roudix-store.py
+#, python-brace-format
+msgid "{len} packages — type at least 2 letters."
+msgstr "共 {len} 个软件包 — 请至少输入 2 个字符。"
+
+#: roudix-store.py
+msgid "Version"
+msgstr "版本"
+
+#: roudix-store.py
+msgid "License"
+msgstr "许可证"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Remove from queue"
+msgstr "从队列中移除"
+
+#: roudix-store.py
+msgid "Uninstall"
+msgstr "卸载"
+
+#: roudix-store.py
+msgid "Add to queue"
+msgstr "添加到队列"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Queue empty"
+msgstr "队列为空"
+
+#: roudix-store.py
+msgid "Write failed: "
+msgstr "写入失败："
+
+#: roudix-store.py
+msgid "✓ Applied."
+msgstr "✓ 已应用。"
+
+#: roudix-store.py
+msgid "✗ Failed — local.nix restored."
+msgstr "✗ 失败 — 已还原 local.nix。"
+
+#: roudix_store/flatpak_support.py
+msgid ""
+"No Flatpak remote yet — the metadata will be fetched at the next start."
+msgstr "尚无 Flatpak 软件源 — 元数据将在下次启动时获取。"
+
+#: roudix_store/flatpak_support.py roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Could not write local.nix: {res}"
+msgstr "无法写入 local.nix：{res}"
+
+#: roudix_store/flatpak_support.py
+msgid "local.nix updated: roudix.flatpak.enable = true"
+msgstr "local.nix 已更新：roudix.flatpak.enable = true"
+
+#: roudix_store/flatpak_support.py roudix_store/nix_backend.py
+msgid "Rebuild failed — local.nix restored."
+msgstr "重新构建失败 — 已还原 local.nix。"
+
+#: roudix_store/flatpak_support.py
+msgid "Fetching the Flathub catalog…"
+msgstr "正在获取 Flathub 目录…"
+
+#: roudix_store/flatpak_support.py
+msgid "Flatpak support enabled."
+msgstr "已启用 Flatpak 支持。"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Install"
+msgstr "安装"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "install"
+msgstr "安装"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Remove"
+msgstr "移除"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "remove"
+msgstr "移除"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Update"
+msgstr "更新"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "update"
+msgstr "更新"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "System-update"
+msgstr "系统更新"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "system-update"
+msgstr "系统更新"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Install-rpms"
+msgstr "安装 RPM"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "install-rpms"
+msgstr "安装 RPM"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "queued"
+msgstr "排队中"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "running"
+msgstr "进行中"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "done"
+msgstr "已完成"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "failed"
+msgstr "失败"
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
+msgstr "软件源由 Roudix flake 管理。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "'{action}' is not supported on Roudix (updates come from the flake)."
+msgstr "Roudix 不支持“{action}”（更新来自 flake）。"
+
+#: roudix_store/nix_backend.py
+msgid "Nothing to change."
+msgstr "无需更改。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "local.nix updated ({scope}): {changed}"
+msgstr "local.nix 已更新（{scope}）：{changed}"
+
+#: roudix_store/nix_backend.py
+msgid ""
+"Flatpak apps are installed/removed by nix-flatpak during the switch — this "
+"can take a while."
+msgstr "Flatpak 应用将在 switch 期间由 nix-flatpak 安装/移除 — 这可能需要一些时间。"
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr "已应用。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Unknown Flatpak remote '{remote}'."
+msgstr "未知的 Flatpak 软件源“{remote}”。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Adding the {remote} remote to the {scope} installation…"
+msgstr "正在将 {remote} 软件源添加到{scope}安装…"
+
+#: roudix_store/nix_backend.py
+msgid "flatpak was not found in PATH."
+msgstr "在 PATH 中找不到 flatpak。"
+
+#: roudix_store/nix_backend.py
+msgid "Flatpak only — applying with flatpak directly, no rebuild."
+msgstr "仅 Flatpak — 直接通过 flatpak 应用，无需重新构建。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already installed ({where}) — only recording it."
+msgstr "{pkg} 已安装（{where}）— 仅记录。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: remote {remote} unavailable"
+msgstr "{pkg}：软件源 {remote} 不可用"
+
+#: roudix_store/nix_backend.py
+msgid " (system installs ask for authorization through polkit)"
+msgstr "（系统级安装需要通过 polkit 授权）"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: flatpak install failed{hint}"
+msgstr "{pkg}：flatpak install 失败{hint}"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: flatpak uninstall failed"
+msgstr "{pkg}：flatpak uninstall 失败"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not installed ({where}) — only dropping it from local.nix."
+msgstr "{pkg} 未安装（{where}）— 仅从 local.nix 中移除。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Cleaning unused runtimes ({scope})…"
+msgstr "正在清理未使用的运行时（{scope}）…"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Flatpak changes were applied but local.nix could not be written: {res}"
+msgstr "Flatpak 更改已应用，但无法写入 local.nix：{res}"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "local.nix updated ({key}): {changed}"
+msgstr "local.nix 已更新（{key}）：{changed}"
+
+#: roudix_store/ui.py
+msgid "No news available."
+msgstr "暂无新闻。"
+
+#: roudix_store/ui.py
+msgid "Waiting"
+msgstr "等待中"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} RPM files"
+msgstr "{len} 个 RPM 文件"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} packages"
+msgstr "{len} 个软件包"
+
+#: roudix_store/ui.py
+msgid "Installed"
+msgstr "已安装"
+
+#: roudix_store/ui.py
+msgid "Queue"
+msgstr "队列"
+
+#: roudix_store/ui.py
+msgid "Productivity"
+msgstr "办公"
+
+#: roudix_store/ui.py
+msgid "Graphics & Photography"
+msgstr "图形与摄影"
+
+#: roudix_store/ui.py
+msgid "Audio & Video"
+msgstr "音频与视频"
+
+#: roudix_store/ui.py
+msgid "Education"
+msgstr "教育"
+
+#: roudix_store/ui.py
+msgid "Networking"
+msgstr "网络"
+
+#: roudix_store/ui.py
+msgid "Games"
+msgstr "游戏"
+
+#: roudix_store/ui.py
+msgid "Developer Tools"
+msgstr "开发工具"
+
+#: roudix_store/ui.py
+msgid "Science"
+msgstr "科学"
+
+#: roudix_store/ui.py
+msgid "Utilities"
+msgstr "实用工具"
+
+#: roudix_store/ui.py
+msgid "Audio & Video Editing"
+msgstr "音视频编辑"
+
+#: roudix_store/ui.py
+msgid "Disc Burning"
+msgstr "光盘刻录"
+
+#: roudix_store/ui.py
+msgid "Midi"
+msgstr "MIDI"
+
+#: roudix_store/ui.py
+msgid "Mixer"
+msgstr "混音器"
+
+#: roudix_store/ui.py
+msgid "Player"
+msgstr "播放器"
+
+#: roudix_store/ui.py
+msgid "Recorder"
+msgstr "录音/录制"
+
+#: roudix_store/ui.py
+msgid "Sequencer"
+msgstr "音序器"
+
+#: roudix_store/ui.py
+msgid "Tuner"
+msgstr "调音器"
+
+#: roudix_store/ui.py
+msgid "TV"
+msgstr "电视"
+
+#: roudix_store/ui.py
+msgid "Building"
+msgstr "构建"
+
+#: roudix_store/ui.py
+msgid "Database"
+msgstr "数据库"
+
+#: roudix_store/ui.py
+msgid "Debugger"
+msgstr "调试"
+
+#: roudix_store/ui.py
+msgid "GUI Designer"
+msgstr "界面设计器"
+
+#: roudix_store/ui.py
+msgid "IDE"
+msgstr "IDE"
+
+#: roudix_store/ui.py
+msgid "Profiling"
+msgstr "性能分析"
+
+#: roudix_store/ui.py
+msgid "Revision Control"
+msgstr "版本控制"
+
+#: roudix_store/ui.py
+msgid "Translation"
+msgstr "翻译"
+
+#: roudix_store/ui.py
+msgid "Web Development"
+msgstr "Web 开发"
+
+#: roudix_store/ui.py
+msgid "Action Games"
+msgstr "动作游戏"
+
+#: roudix_store/ui.py
+msgid "Adventure Games"
+msgstr "冒险游戏"
+
+#: roudix_store/ui.py
+msgid "Arcade Games"
+msgstr "街机游戏"
+
+#: roudix_store/ui.py
+msgid "Blocks Games"
+msgstr "方块游戏"
+
+#: roudix_store/ui.py
+msgid "Board Games"
+msgstr "棋盘游戏"
+
+#: roudix_store/ui.py
+msgid "Card Games"
+msgstr "卡牌游戏"
+
+#: roudix_store/ui.py
+msgid "Emulators"
+msgstr "模拟器"
+
+#: roudix_store/ui.py
+msgid "Kids' Games"
+msgstr "儿童游戏"
+
+#: roudix_store/ui.py
+msgid "Logic Games"
+msgstr "益智游戏"
+
+#: roudix_store/ui.py
+msgid "Role Playing"
+msgstr "角色扮演"
+
+#: roudix_store/ui.py
+msgid "Shooter"
+msgstr "射击游戏"
+
+#: roudix_store/ui.py
+msgid "Simulation"
+msgstr "模拟经营"
+
+#: roudix_store/ui.py
+msgid "Sports Games"
+msgstr "体育游戏"
+
+#: roudix_store/ui.py
+msgid "Strategy Games"
+msgstr "策略游戏"
+
+#: roudix_store/ui.py
+msgid "2D Graphics"
+msgstr "2D 图形"
+
+#: roudix_store/ui.py
+msgid "3D Graphics"
+msgstr "3D 图形"
+
+#: roudix_store/ui.py
+msgid "OCR"
+msgstr "OCR"
+
+#: roudix_store/ui.py
+msgid "Photography"
+msgstr "摄影"
+
+#: roudix_store/ui.py
+msgid "Publishing"
+msgstr "出版排版"
+
+#: roudix_store/ui.py
+msgid "Raster Graphics"
+msgstr "位图图形"
+
+#: roudix_store/ui.py
+msgid "Scanning"
+msgstr "扫描"
+
+#: roudix_store/ui.py
+msgid "Vector Graphics"
+msgstr "矢量图形"
+
+#: roudix_store/ui.py
+msgid "Viewer"
+msgstr "查看器"
+
+#: roudix_store/ui.py
+msgid "Chat"
+msgstr "聊天"
+
+#: roudix_store/ui.py
+msgid "Email"
+msgstr "电子邮件"
+
+#: roudix_store/ui.py
+msgid "Feed"
+msgstr "订阅源"
+
+#: roudix_store/ui.py
+msgid "File Transfer"
+msgstr "文件传输"
+
+#: roudix_store/ui.py
+msgid "Ham Radio"
+msgstr "业余无线电"
+
+#: roudix_store/ui.py
+msgid "Instant Messaging"
+msgstr "即时通讯"
+
+#: roudix_store/ui.py
+msgid "IRC Client"
+msgstr "IRC 客户端"
+
+#: roudix_store/ui.py
+msgid "Monitor"
+msgstr "监控"
+
+#: roudix_store/ui.py
+msgid "News"
+msgstr "新闻"
+
+#: roudix_store/ui.py
+msgid "P2P"
+msgstr "P2P"
+
+#: roudix_store/ui.py
+msgid "Remote Access"
+msgstr "远程访问"
+
+#: roudix_store/ui.py
+msgid "Telephony"
+msgstr "电话"
+
+#: roudix_store/ui.py
+msgid "Video Conference"
+msgstr "视频会议"
+
+#: roudix_store/ui.py
+msgid "Web Browser"
+msgstr "网页浏览器"
+
+#: roudix_store/ui.py
+msgid "Calendar"
+msgstr "日历"
+
+#: roudix_store/ui.py
+msgid "Chart"
+msgstr "图表"
+
+#: roudix_store/ui.py
+msgid "Contact Management"
+msgstr "联系人"
+
+#: roudix_store/ui.py
+msgid "Dictionary"
+msgstr "词典"
+
+#: roudix_store/ui.py
+msgid "Finance"
+msgstr "财务"
+
+#: roudix_store/ui.py
+msgid "Presentation"
+msgstr "演示文稿"
+
+#: roudix_store/ui.py
+msgid "Project Management"
+msgstr "项目管理"
+
+#: roudix_store/ui.py
+msgid "Spreadsheet"
+msgstr "电子表格"
+
+#: roudix_store/ui.py
+msgid "Word Processor"
+msgstr "文字处理"
+
+#: roudix_store/ui.py
+msgid "File Manager"
+msgstr "文件管理器"
+
+#: roudix_store/ui.py
+msgid "Filesystem"
+msgstr "文件系统"
+
+#: roudix_store/ui.py
+msgid "File Tools"
+msgstr "文件工具"
+
+#: roudix_store/ui.py
+msgid "Security"
+msgstr "安全"
+
+#: roudix_store/ui.py
+msgid "Terminal Emulator"
+msgstr "终端模拟器"
+
+#: roudix_store/ui.py
+msgid "Accessibility"
+msgstr "无障碍"
+
+#: roudix_store/ui.py
+msgid "Archiving"
+msgstr "归档"
+
+#: roudix_store/ui.py
+msgid "Calculator"
+msgstr "计算器"
+
+#: roudix_store/ui.py
+msgid "Clock"
+msgstr "时钟"
+
+#: roudix_store/ui.py
+msgid "Compression"
+msgstr "压缩"
+
+#: roudix_store/ui.py
+msgid "Telephony Tools"
+msgstr "电话工具"
+
+#: roudix_store/ui.py
+msgid "Text Editor"
+msgstr "文本编辑器"
+
+#: roudix_store/ui.py
+msgid "Text Tools"
+msgstr "文本工具"
+
+#: roudix_store/ui.py
+msgid "Update"
+msgstr "更新"
+
+#: roudix_store/ui.py
+msgid "Remove"
+msgstr "移除"
+
+#: roudix_store/ui.py
+msgid "Install"
+msgstr "安装"
+
+#: roudix_store/ui.py
+msgid "Loading news…"
+msgstr "正在加载新闻…"
+
+#: roudix_store/ui.py
+msgid "Search filter…"
+msgstr "筛选…"
+
+#: roudix_store/ui.py
+msgid "Grid View"
+msgstr "网格视图"
+
+#: roudix_store/ui.py
+msgid "List View"
+msgstr "列表视图"
+
+#: roudix_store/ui.py
+msgid "Clear Selection"
+msgstr "清除选择"
+
+#: roudix_store/ui.py
+msgid "Update Selected"
+msgstr "更新所选项"
+
+#: roudix_store/ui.py
+msgid "Select All and Update"
+msgstr "全选并更新"
+
+#: roudix_store/ui.py
+msgid "Also update flatpaks"
+msgstr "同时更新 flatpak"
+
+#: roudix_store/ui.py
+msgid "Append --all to nobara-sync for this system update."
+msgstr "本次系统更新时为 nobara-sync 附加 --all。"
+
+#: roudix_store/ui.py
+msgid "Toggle News Panel"
+msgstr "显示/隐藏新闻面板"
+
+#: roudix_store/ui.py
+msgid "View Queue"
+msgstr "查看队列"
+
+#: roudix_store/ui.py
+msgid "Loading AppStream metadata and the nixpkgs index…"
+msgstr "正在加载 AppStream 元数据和 nixpkgs 索引…"
+
+#: roudix_store/ui.py
+msgid "Drop one or more .rpm files to install them."
+msgstr "拖放一个或多个 .rpm 文件即可安装。"
+
+#: roudix_store/ui.py
+msgid "No RPM files were found in the drop."
+msgstr "拖放的内容中没有找到 RPM 文件。"
+
+#: roudix_store/ui.py
+msgid "Those RPM files are already queued."
+msgstr "这些 RPM 文件已在队列中。"
+
+#: roudix_store/ui.py
+msgid "Local RPM Install"
+msgstr "本地 RPM 安装"
+
+#: roudix_store/ui.py
+msgid "Install local RPM files"
+msgstr "安装本地 RPM 文件"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to install {len} RPM file(s)"
+msgstr "已将 {len} 个 RPM 文件的安装加入队列"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued RPM install for {names}"
+msgstr "已将 RPM 安装加入队列：{names}"
+
+#: roudix_store/ui.py
+msgid "Search applications…"
+msgstr "搜索应用…"
+
+#: roudix_store/ui.py
+msgid "All repositories"
+msgstr "所有软件源"
+
+#: roudix_store/ui.py
+msgid "Updater settings"
+msgstr "更新程序设置"
+
+#: roudix_store/ui.py
+msgid "Update checker"
+msgstr "更新检查"
+
+#: roudix_store/ui.py
+msgid "Enable update checker"
+msgstr "启用更新检查"
+
+#: roudix_store/ui.py
+msgid "Enable notifications"
+msgstr "启用通知"
+
+#: roudix_store/ui.py
+msgid "Check every"
+msgstr "检查间隔"
+
+#: roudix_store/ui.py
+msgid "These settings affect the tray updater service."
+msgstr "这些设置会影响托盘更新服务。"
+
+#: roudix_store/ui.py
+msgid "Categories"
+msgstr "分类"
+
+#: roudix_store/ui.py
+msgid "Flatpak is not enabled"
+msgstr "未启用 Flatpak"
+
+#: roudix_store/ui.py
+msgid "Turn it on to install apps from Flathub."
+msgstr "启用后即可从 Flathub 安装应用。"
+
+#: roudix_store/ui.py
+msgid "Enable Flatpak"
+msgstr "启用 Flatpak"
+
+#: roudix_store/ui.py
+msgid "Turns on roudix.flatpak.enable, then rebuilds the system."
+msgstr "启用 roudix.flatpak.enable，然后重新构建系统。"
+
+#: roudix_store/ui.py
+msgid "An operation is already running."
+msgstr "已有操作正在运行。"
+
+#: roudix_store/ui.py
+msgid "Enable Flatpak support?"
+msgstr "启用 Flatpak 支持？"
+
+#: roudix_store/ui.py
+msgid ""
+"This writes “roudix.flatpak.enable = true” to your local.nix, then rebuilds "
+"the system (a few minutes). The Flathub catalog is then fetched and Roudix "
+"Store has to be restarted for Flatpak to be picked up."
+msgstr ""
+"这将把“roudix.flatpak.enable = true”写入你的 local.nix，然后重新构建系统（需要几分钟）。之后会获取 "
+"Flathub 目录，并且需要重启 Roudix Store 才能识别 Flatpak。"
+
+#: roudix_store/ui.py
+msgid "Cancel"
+msgstr "取消"
+
+#: roudix_store/ui.py
+msgid "Enable and rebuild"
+msgstr "启用并重新构建"
+
+#: roudix_store/ui.py
+msgid "Enabling Flatpak support…"
+msgstr "正在启用 Flatpak 支持…"
+
+#: roudix_store/ui.py
+msgid "Enabling Flatpak: rebuilding the system…"
+msgstr "正在启用 Flatpak：重新构建系统…"
+
+#: roudix_store/ui.py
+msgid "Rebuild in progress — follow it in the queue page."
+msgstr "正在重新构建 — 请在队列页面查看进度。"
+
+#: roudix_store/ui.py
+msgid "Restart Roudix Store"
+msgstr "重启 Roudix Store"
+
+#: roudix_store/ui.py
+msgid ""
+"Flatpak support is enabled. Restart Roudix Store so Flatpak apps are picked "
+"up."
+msgstr "Flatpak 支持已启用。请重启 Roudix Store 以识别 Flatpak 应用。"
+
+#: roudix_store/ui.py
+msgid "Later"
+msgstr "稍后"
+
+#: roudix_store/ui.py
+msgid "Restart now"
+msgstr "立即重启"
+
+#: roudix_store/ui.py
+msgid "First use: fetching the Flathub catalog…"
+msgstr "首次使用：正在获取 Flathub 目录…"
+
+#: roudix_store/ui.py
+msgid ""
+"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update "
+"--appstream"
+msgstr ""
+"暂无 Flathub 数据。roudix.flatpak.enable 是否已启用？请尝试：flatpak update --appstream"
+
+#: roudix_store/ui.py
+msgid "List"
+msgstr "列表"
+
+#: roudix_store/ui.py
+msgid "No applications found"
+msgstr "未找到应用"
+
+#: roudix_store/ui.py
+msgid "Try a different category or search term."
+msgstr "请尝试其他分类或搜索词。"
+
+#: roudix_store/ui.py
+msgid "Important Notices"
+msgstr "重要通知"
+
+#: roudix_store/ui.py
+msgid "Queued actions"
+msgstr "队列中的操作"
+
+#: roudix_store/ui.py
+msgid "Transaction log"
+msgstr "事务日志"
+
+#: roudix_store/ui.py
+msgid "View transaction log"
+msgstr "查看事务日志"
+
+#: roudix_store/ui.py
+msgid "Send to pastebin"
+msgstr "发送到 pastebin"
+
+#: roudix_store/ui.py
+msgid "Repositories"
+msgstr "软件源"
+
+#: roudix_store/ui.py
+msgid "Details"
+msgstr "详情"
+
+#: roudix_store/ui.py
+msgid "← Back"
+msgstr "← 返回"
+
+#: roudix_store/ui.py
+msgid "Source"
+msgstr "来源"
+
+#: roudix_store/ui.py
+msgid "Open"
+msgstr "打开"
+
+#: roudix_store/ui.py
+msgid "Loading…"
+msgstr "正在加载…"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Loaded {len} applications ({n_nix} nixpkgs, {n_flatpak} Flatpak)."
+msgstr "已加载 {len} 个应用（nixpkgs {n_nix} 个，Flatpak {n_flatpak} 个）。"
+
+#: roudix_store/ui.py
+msgid "No update feed URL is configured."
+msgstr "未配置更新源 URL。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Failed to load news from {url}.\n"
+"\n"
+"{exc}"
+msgstr ""
+"无法从 {url} 加载新闻。\n"
+"\n"
+"{exc}"
+
+#: roudix_store/ui.py
+msgid "Failed to load metadata."
+msgstr "加载元数据失败。"
+
+#: roudix_store/ui.py
+msgid "Startup failed"
+msgstr "启动失败"
+
+#: roudix_store/ui.py
+msgid "All"
+msgstr "全部"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Showing {n_repos} repositories."
+msgstr "正在显示 {n_repos} 个软件源。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid " in {repo_name}"
+msgstr "，在 {repo_name} 中"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Search results for “{current_search_text}” ({len} applications{repo_note})."
+msgstr "“{current_search_text}”的搜索结果（{len} 个应用{repo_note}）。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid " matching “{current_category_filter_text}”"
+msgstr "，匹配“{current_category_filter_text}”"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Showing {len} applications{repo_note}{extra}."
+msgstr "正在显示 {len} 个应用{repo_note}{extra}。"
+
+#: roudix_store/ui.py
+msgid "Search"
+msgstr "搜索"
+
+#: roudix_store/ui.py
+msgid "Packages: "
+msgstr "软件包："
+
+#: roudix_store/ui.py
+msgid "Installed: "
+msgstr "已安装："
+
+#: roudix_store/ui.py
+msgid "Available: "
+msgstr "可用："
+
+#: roudix_store/ui.py
+msgid "Repositories: "
+msgstr "软件源："
+
+#: roudix_store/ui.py
+msgid "Categories: "
+msgstr "分类："
+
+#: roudix_store/ui.py
+msgid "Installed (Roudix config)"
+msgstr "已安装（Roudix 配置）"
+
+#: roudix_store/ui.py
+msgid "Running"
+msgstr "运行中"
+
+#: roudix_store/ui.py
+msgid "User"
+msgstr "用户"
+
+#: roudix_store/ui.py
+msgid "User (Home Manager)"
+msgstr "用户（Home Manager）"
+
+#: roudix_store/ui.py
+msgid "installed via config"
+msgstr "通过配置安装"
+
+#: roudix_store/ui.py
+msgid "installed"
+msgstr "已安装"
+
+#: roudix_store/ui.py
+msgid "Homepage"
+msgstr "主页"
+
+#: roudix_store/ui.py
+msgid "Screenshots"
+msgstr "截图"
+
+#: roudix_store/ui.py
+msgid "Screenshots could not be loaded locally."
+msgstr "无法在本地加载截图。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{primary_pkg} is being applied right now."
+msgstr "{primary_pkg} 正在应用中。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Removed {primary_pkg} from the queue"
+msgstr "已将 {primary_pkg} 从队列中移除"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"{primary_pkg} comes from the Roudix configuration, not from the store — "
+"remove it from your config to uninstall it."
+msgstr "{primary_pkg} 来自 Roudix 配置，而非商店 — 请从你的配置中移除它以卸载。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to {action} {pkg}"
+msgstr "已将 {pkg} 的{action}加入队列"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued {action} for {pkg} — press Apply to run it"
+msgstr "已将 {pkg} 的{action}加入队列 — 点击“应用”开始执行"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{selected_count} selected"
+msgstr "已选择 {selected_count} 项"
+
+#: roudix_store/ui.py
+msgid "System update is already in the queue."
+msgstr "系统更新已在队列中。"
+
+#: roudix_store/ui.py
+msgid "System Update"
+msgstr "系统更新"
+
+#: roudix_store/ui.py
+msgid "System Update + Flatpaks"
+msgstr "系统更新 + Flatpak"
+
+#: roudix_store/ui.py
+msgid "Queued system update"
+msgstr "已将系统更新加入队列"
+
+#: roudix_store/ui.py
+msgid "Queued system update with Flatpaks"
+msgstr "已将系统更新（含 Flatpak）加入队列"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued system update via {command_label}"
+msgstr "已通过 {command_label} 将系统更新加入队列"
+
+#: roudix_store/ui.py
+msgid "No updates are available."
+msgstr "没有可用更新。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} updates"
+msgstr "{len} 个更新"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to update {len} package(s)"
+msgstr "已将 {len} 个软件包的更新加入队列"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued update for {names}"
+msgstr "已将更新加入队列：{names}"
+
+#: roudix_store/ui.py
+msgid "Cleared the pending queue"
+msgstr "已清空待处理队列"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Running {action} for {subject}"
+msgstr "正在对 {subject} 执行{action}"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Starting {action} for {subject}"
+msgstr "开始：对 {subject} 执行{action}"
+
+#: roudix_store/ui.py
+msgid "Operation completed."
+msgstr "操作已完成。"
+
+#: roudix_store/ui.py
+msgid "Operation failed."
+msgstr "操作失败。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{display_name} failed"
+msgstr "{display_name}：失败"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s)"
+" remain."
+msgstr "队列已结束。已清除 {done_count} 个已完成项；仍有 {len} 个失败项。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queue finished. Cleared {done_count} completed item(s)."
+msgstr "队列已结束。已清除 {done_count} 个已完成项。"
+
+#: roudix_store/ui.py
+msgid "Queue is empty."
+msgstr "队列为空。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Running {action} for {target}. {done} done, {failed} failed, {queued} "
+"queued."
+msgstr "正在对 {target} 执行{action}。已完成 {done} 项，失败 {failed} 项，排队 {queued} 项。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done} completed, {failed} failed, {queued} queued."
+msgstr "已完成 {done} 项，失败 {failed} 项，排队 {queued} 项。"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "0/{total} complete, {failed_count} failed"
+msgstr "0/{total} 已完成，{failed_count} 项失败"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done_count}/{total} complete, {failed_count} failed"
+msgstr "{done_count}/{total} 已完成，{failed_count} 项失败"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done_count}/{total} complete"
+msgstr "{done_count}/{total} 已完成"
+
+#: roudix_store/ui.py
+msgid "No queued package actions yet."
+msgstr "队列中暂无软件包操作。"
+
+#: roudix_store/ui.py
+msgid "system"
+msgstr "系统"
+
+#: roudix_store/ui.py
+msgid "user"
+msgstr "用户"
+
+#: roudix_store/ui.py
+msgid "Close"
+msgstr "关闭"
+
+#: roudix_store/ui.py
+msgid "Copy"
+msgstr "复制"
+
+#: roudix_store/ui.py
+msgid "Copied to clipboard"
+msgstr "已复制到剪贴板"
+
+#: roudix_store/ui.py
+msgid "No transaction log available yet."
+msgstr "暂无事务日志。"
+
+#: roudix_store/ui.py
+msgid "pbcli did not return a URL."
+msgstr "pbcli 未返回 URL。"
+
+#: roudix_store/ui.py
+msgid "pbcli was not found on this system."
+msgstr "此系统上找不到 pbcli。"
+
+#: roudix_store/ui.py
+msgid "Pastebin URL"
+msgstr "pastebin URL"
+
+#: roudix_store/ui.py
+msgid "Pastebin upload failed"
+msgstr "上传到 pastebin 失败"
+
+#: roudix_store/ui.py
+msgid "Confirm Installation"
+msgstr "确认安装"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "You have {len} package(s) ready. Do you want to install them?"
+msgstr "有 {len} 个软件包待安装。要安装吗？"

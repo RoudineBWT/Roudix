@@ -17,6 +17,7 @@ let
     quick-settings-audio-panel
     rounded-window-corners-reborn
     tiling-shell
+    user-themes
     vitals
   ];
 

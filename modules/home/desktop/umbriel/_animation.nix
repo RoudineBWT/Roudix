@@ -11,11 +11,11 @@
 ##   "roudix-plus"      — "roudix" + original shaders: accent border, cursor
 ##                        halo, workspace/layer/focus transitions
 ##                        (_effects/roudix-plus/). Follows the Noctalia palette.
-##   "roudix-plus-mocha" — the same, in Catppuccin Mocha + Peach (fixed colors,
+##   "roudix-plus-mocha" — the same, in the Roudix palette (fixed colors,
 ##                        independent of the wallpaper; see `mocha` below).
 ##   "roudix-wobbly"    — "roudix-plus" + a light jelly wobble when windows
 ##                        move/re-tile and real drag physics (windows_drag).
-##   "roudix-wobbly-mocha" — the same, in Catppuccin Mocha + Peach.
+##   "roudix-wobbly-mocha" — the same, in the Roudix palette.
 ##   "roudix-aurora"    — "roudix-plus" with a different border: one thin,
 ##                        slightly irregular stem (Sakura-like line, no leaves)
 ##                        through which a Peach/Maroon light flows (no comet),
@@ -23,10 +23,10 @@
 ##                        glow, and a "zip" of light around the border on focus
 ##                        (aurora.glsl, aurora-inner.glsl, focus-zip.glsl).
 ##                        Follows the Noctalia palette.
-##   "roudix-aurora-mocha" — the same, in Catppuccin Mocha + Peach.
+##   "roudix-aurora-mocha" — the same, in the Roudix palette.
 ##   "roudix-logo"      — "roudix-plus" + windows open/close through the Roudix
 ##                        logo shape (_effects/roudix-plus/logo.glsl). Fixed
-##                        Catppuccin Mocha colors = the logo's own Peach/Maroon.
+##                        Roudix palette colors = the logo's own Peach/Maroon.
 ##   "roudix-logo-wobbly" — the same + the jelly wobble of "roudix-wobbly".
 ##   "roudix-orbit"     — "roudix-plus" with a different border: a "snowflake
 ##                        braid" (two interlaced Peach/Maroon strands, logo-
@@ -35,9 +35,9 @@
 ##                        short sweep on focus change (orbit.glsl,
 ##                        orbit-inner.glsl, focus-sweep.glsl). Follows the
 ##                        Noctalia palette.
-##   "roudix-orbit-mocha" — the same, in Catppuccin Mocha + Peach.
+##   "roudix-orbit-mocha" — the same, in the Roudix palette.
 ##   "roudix-full"      — everything: logo open/close + jelly wobble + the
-##                        aurora border with its focus zip. Fixed Catppuccin Mocha colors
+##                        aurora border with its focus zip. Fixed Roudix palette colors
 ##                        (the logo needs them).
 ##   "roudix-full-noctalia" — same as "roudix-full" (logo + wobble + aurora border
 ##                        + focus zip) but WITHOUT the forced Mocha colors: every
@@ -50,18 +50,18 @@
 ##                        (_effects/sakura-overdrive/, from Ly-sec/nixos).
 ##                        Its presets read Umbriel's palette, supplied by the
 ##                        Noctalia include, so it only looks right on Noctalia.
-##   "sakura-roudix"    — the same suite in Catppuccin Mocha + Peach. Same
+##   "sakura-roudix"    — the same suite in the Roudix palette. Same
 ##                        shaders, but [colors] is set here (see `mocha`
 ##                        below); values in the main config override the ones
 ##                        Noctalia's included file provides, so the effects
-##                        stay Catppuccin whatever the wallpaper.
+##                        stay Roudix-palette whatever the wallpaper.
 ##
 ## Docs: https://docs.noctalia.dev/umbriel/animation/
 { lib, pkgs, osConfig, ... }:
 let
   setup = osConfig.roudix.umbriel.effects or "roudix";
 
-  # ── sakura-roudix: Catppuccin Mocha, Peach ────────────────────────────────
+  # ── sakura-roudix: Roudix palette ────────────────────────────────
   # Presets with `palette = true` read [colors].accent_primary,
   # accent_secondary, warning and error (umbriel_palette_at 0.0/0.25/0.5/0.75).
   # What each slot paints in the Sakura shaders:
@@ -72,16 +72,16 @@ let
   # The vine body is built from the LAST slot ("rose"), so if it stays red/pink
   # the whole border looks pink even when the petals are Peach.
   mocha = {
-    accent_primary   = "#fab387"; # Peach
-    accent_secondary = "#eba0ac"; # Maroon
-    warning          = "#f9e2af"; # Yellow
-    error            = "#fab387"; # Peach (vine body)
+    accent_primary   = "#ff8c42"; # Roudix primary
+    accent_secondary = "#f2b05e"; # Roudix secondary
+    warning          = "#ffc878"; # Roudix bright yellow
+    error            = "#ff8c42"; # Roudix primary (vine body)
   };
 
   # The shaders also hard-code a dark plum (vec3(0.035, 0.008, 0.028)) that is
-  # mixed into the "rose" slot for shadows/branches. Swap it for Catppuccin
-  # Crust (#11111b) in a private copy, so "sakura-overdrive" stays untouched.
-  crust = "vec3(0.067, 0.067, 0.106)";
+  # mixed into the "rose" slot for shadows/branches. Swap it for Roudix
+  # surface (#14100D) in a private copy, so "sakura-overdrive" stays untouched.
+  crust = "vec3(0.078, 0.063, 0.051)";
 
   sakuraSrc = ./_effects/sakura-overdrive;
 
@@ -190,8 +190,8 @@ let
     };
 
     # Windows open/close through the Roudix logo (logo.glsl, one shared
-    # direction-aware shader). Colors are forced to Catppuccin Mocha because
-    # the logo IS Peach (#fab387) + Maroon (#eba0ac); wallpaper colors would
+    # direction-aware shader). Colors are forced to Roudix palette because
+    # the logo IS Roudix primary (#ff8c42) + secondary (#f2b05e); wallpaper colors would
     # make the outline stop matching it.
     roudix-logo = setups.roudix-plus // {
       colors = mocha;

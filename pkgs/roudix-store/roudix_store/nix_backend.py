@@ -23,7 +23,7 @@ from typing import Callable, Iterable
 
 from . import localnix
 from .models import AppEntry
-from .i18n import L, LANG
+from .i18n import desktop_locales, tr
 
 INDEX_CACHE = os.path.join(localnix.BACKUP_DIR, "index.json")
 FLAKE_CATALOG = os.environ.get("ROUDIX_STORE_FLAKE_CATALOG") or "/etc/roudix-store/flake-catalog.json"
@@ -521,7 +521,7 @@ class NixBackend:
         return []
 
     def set_repository_enabled(self, repo_id: str, enabled: bool, event_cb=None) -> tuple[bool, str]:
-        return False, L("Les dépôts sont gérés par le flake Roudix.", "Repositories are managed by the Roudix flake.")
+        return False, tr("Repositories are managed by the Roudix flake.")
 
     def enrich_apps(self, apps: Iterable[AppEntry]) -> None:
         if isinstance(apps, list):
@@ -594,9 +594,11 @@ class NixBackend:
                 grouped.setdefault(entry["pname"], (entry, []))[1].append(fname)
         out: list[AppEntry] = []
         for pname, (entry, ids) in sorted(grouped.items()):
-            fr = LANG == "fr"
-            name = (entry.get("Name[fr]") if fr else None) or entry.get("Name") or pname
-            summary = (entry.get("Comment[fr]") if fr else None) or entry.get("Comment") or entry.get("GenericName") or ""
+            locales = desktop_locales()
+            name = next((entry[f"Name[{loc}]"] for loc in locales if entry.get(f"Name[{loc}]")), None) \
+                or entry.get("Name") or pname
+            summary = next((entry[f"Comment[{loc}]"] for loc in locales if entry.get(f"Comment[{loc}]")), None) \
+                or entry.get("Comment") or entry.get("GenericName") or ""
             icon = entry.get("Icon") or ""
             out.append(AppEntry(
                 appstream_id=f"external:{pname}", name=name, summary=summary, description=summary,
@@ -651,7 +653,7 @@ class NixBackend:
                 for s in ("home", "system"):
                     state[s].discard(pkg)
         else:
-            return L(f"« {action} » n'est pas géré sur Roudix (les mises à jour viennent du flake).", f"'{action}' is not supported on Roudix (updates come from the flake).")
+            return tr("'{action}' is not supported on Roudix (updates come from the flake).").format(action=action)
         return None
 
     def apply_changes(self, changes, event_cb: Callable[[dict], None] | None = None) -> tuple[bool, str]:
@@ -670,7 +672,7 @@ class NixBackend:
                 return False, error
         flatpak_only = bool(changes) and all(scope in localnix.FLATPAK_SCOPE_INFO for _a, _p, scope in changes)
         if new == self.installed and not flatpak_only:  # flatpak ones may still act on what is really installed
-            return True, L("Rien à changer.", "Nothing to change.")
+            return True, tr("Nothing to change.")
         if all(new[s] == self.installed[s] for s in localnix.NIX_SCOPES):
             return self._apply_flatpak_direct(changes, say)
 
@@ -678,13 +680,13 @@ class NixBackend:
         res = localnix.write_all(new)
         if res is not True:
             localnix.restore_files(saved)
-            return False, L(f"Impossible d'écrire local.nix : {res}", f"Could not write local.nix: {res}")
+            return False, tr("Could not write local.nix: {res}").format(res=res)
         for scope in new:
             if new[scope] != self.installed[scope]:
                 changed = ', '.join(sorted(new[scope] ^ self.installed[scope]))
-                say(L(f"local.nix mis à jour ({scope}) : {changed}", f"local.nix updated ({scope}): {changed}"))
+                say(tr("local.nix updated ({scope}): {changed}").format(scope=scope, changed=changed))
         if any(new[k] != self.installed[k] for k in localnix.FLATPAK_SCOPE_INFO):
-            say(L("Les apps Flatpak sont installées/supprimées par nix-flatpak pendant le switch — ça peut prendre un moment.", "Flatpak apps are installed/removed by nix-flatpak during the switch — this can take a while."))
+            say(tr("Flatpak apps are installed/removed by nix-flatpak during the switch — this can take a while."))
 
         cmd = ["nh", "os", "switch", "--elevation-strategy", "pkexec",
                "--accept-flake-config", f"path:{localnix.NH_FLAKE}"]
@@ -701,11 +703,11 @@ class NixBackend:
             return False, str(exc)
         if not ok:
             localnix.restore_files(saved)
-            return False, L("Échec de la reconstruction — local.nix restauré.", "Rebuild failed — local.nix restored.")
+            return False, tr("Rebuild failed — local.nix restored.")
         self.installed = new
         self.flatpak_actual = self._flatpak_list()
         self._refresh_nix_actual()
-        return True, L("Appliqué.", "Applied.")
+        return True, tr("Applied.")
 
     # ── flatpak without a rebuild ───────────────────────────────────────
     @staticmethod
@@ -748,16 +750,16 @@ class NixBackend:
             return True
         url = localnix.FLATPAK_REMOTE_URLS.get(remote)
         if not url:
-            say(L(f"Dépôt Flatpak inconnu « {remote} ».", f"Unknown Flatpak remote '{remote}'."))
+            say(tr("Unknown Flatpak remote '{remote}'.").format(remote=remote))
             return False
-        say(L(f"Ajout du dépôt {remote} à l'installation {scope}…", f"Adding the {remote} remote to the {scope} installation…"))
+        say(tr("Adding the {remote} remote to the {scope} installation…").format(remote=remote, scope=scope))
         return self._run_flatpak(flatpak, ["remote-add", "--if-not-exists", f"--{scope}", remote, url], say) == 0
 
     def _apply_flatpak_direct(self, changes, say: Callable[[str], None]) -> tuple[bool, str]:
         flatpak = shutil.which("flatpak")
         if not flatpak:
-            return False, L("flatpak est introuvable dans le PATH.", "flatpak was not found in PATH.")
-        say(L("Flatpak uniquement — application directe avec flatpak, sans reconstruction.", "Flatpak only — applying with flatpak directly, no rebuild."))
+            return False, tr("flatpak was not found in PATH.")
+        say(tr("Flatpak only — applying with flatpak directly, no rebuild."))
         actual = self._flatpak_list()
         final = {s: set(v) for s, v in self.installed.items()}
         failures: list[str] = []
@@ -770,16 +772,16 @@ class NixBackend:
             present = (pkg, remote, scope) in actual
             if action == "install":
                 if present:
-                    say(L(f"{pkg} est déjà installé ({where}) — enregistrement seulement.", f"{pkg} is already installed ({where}) — only recording it."))
+                    say(tr("{pkg} is already installed ({where}) — only recording it.").format(pkg=pkg, where=where))
                 else:
                     if not self._ensure_flatpak_remote(flatpak, remote, scope, say):
-                        failures.append(L(f"{pkg} : dépôt {remote} indisponible", f"{pkg}: remote {remote} unavailable"))
+                        failures.append(tr("{pkg}: remote {remote} unavailable").format(pkg=pkg, remote=remote))
                         continue
                     ref = f"{pkg}//beta" if remote == "flathub-beta" else pkg
                     code = self._run_flatpak(flatpak, ["install", "--noninteractive", "-y", f"--{scope}", remote, ref], say)
                     if code != 0:
-                        hint = L(" (les installations système demandent une autorisation via polkit)", " (system installs ask for authorization through polkit)") if scope == "system" else ""
-                        failures.append(L(f"{pkg} : échec de flatpak install{hint}", f"{pkg}: flatpak install failed{hint}"))
+                        hint = tr(" (system installs ask for authorization through polkit)") if scope == "system" else ""
+                        failures.append(tr("{pkg}: flatpak install failed{hint}").format(pkg=pkg, hint=hint))
                         continue
                 final[key].add(pkg)
             else:  # remove
@@ -788,14 +790,14 @@ class NixBackend:
                     ref = f"{pkg}//{branch}" if branch else pkg
                     code = self._run_flatpak(flatpak, ["uninstall", "--noninteractive", "-y", f"--{scope}", ref], say)
                     if code != 0:
-                        failures.append(L(f"{pkg} : échec de flatpak uninstall", f"{pkg}: flatpak uninstall failed"))
+                        failures.append(tr("{pkg}: flatpak uninstall failed").format(pkg=pkg))
                         continue
                     cleanup.add(scope)
                 else:
-                    say(L(f"{pkg} n'est pas installé ({where}) — retrait de local.nix seulement.", f"{pkg} is not installed ({where}) — only dropping it from local.nix."))
+                    say(tr("{pkg} is not installed ({where}) — only dropping it from local.nix.").format(pkg=pkg, where=where))
                 final[key].discard(pkg)
         for scope in sorted(cleanup):
-            say(L(f"Nettoyage des runtimes inutilisés ({scope})…", f"Cleaning unused runtimes ({scope})…"))
+            say(tr("Cleaning unused runtimes ({scope})…").format(scope=scope))
             self._run_flatpak(flatpak, ["uninstall", "--unused", "--noninteractive", "-y", f"--{scope}"], say)
 
         if final != self.installed:
@@ -803,13 +805,13 @@ class NixBackend:
             res = localnix.write_all(final)
             if res is not True:
                 localnix.restore_files(saved)
-                return False, L(f"Les changements Flatpak ont été appliqués mais local.nix n'a pas pu être écrit : {res}", f"Flatpak changes were applied but local.nix could not be written: {res}")
+                return False, tr("Flatpak changes were applied but local.nix could not be written: {res}").format(res=res)
             for key in localnix.FLATPAK_SCOPE_INFO:
                 if final[key] != self.installed[key]:
                     changed = ', '.join(sorted(final[key] ^ self.installed[key]))
-                    say(L(f"local.nix mis à jour ({key}) : {changed}", f"local.nix updated ({key}): {changed}"))
+                    say(tr("local.nix updated ({key}): {changed}").format(key=key, changed=changed))
             self.installed = final
         self.flatpak_actual = self._flatpak_list()
         if failures:
             return False, "; ".join(failures)
-        return True, L("Appliqué.", "Applied.")
+        return True, tr("Applied.")

@@ -1,0 +1,1785 @@
+# French translation of the Roudix installer.
+# Source strings are English (see src/roudix_installer/i18n.py).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-installer\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-21 00:00+0000\n"
+"Last-Translator: RoudineBWT\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Unknown disk"
+msgstr "Disque inconnu"
+
+#: src/roudix_installer/pages/disk.py src/roudix_installer/pages/summary.py
+msgid "Disk"
+msgstr "Disque"
+
+#: src/roudix_installer/pages/disk.py
+msgid "/boot (EFI)"
+msgstr "/boot (EFI)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Skip"
+msgstr "Ignorer"
+
+#: src/roudix_installer/pages/disk.py
+msgid "swap"
+msgstr "swap"
+
+#: src/roudix_installer/pages/disk.py
+msgid "⚠ The selected disk will be completely wiped (simple mode)"
+msgstr "⚠ Le disque sélectionné sera entièrement effacé (mode simple)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Partitioning mode"
+msgstr "Mode de partitionnement"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Simple (EFI + swap + root, wipes everything)"
+msgstr "Simple (EFI + swap + root, efface tout)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Advanced (custom disko.nix file)"
+msgstr "Avancé (fichier disko.nix custom)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Manual (partition it yourself)"
+msgstr "Manuel (partitionner soi-même)"
+
+#: src/roudix_installer/pages/disk.py src/roudix_installer/pages/options.py
+msgid "Options"
+msgstr "Options"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Filesystem"
+msgstr "Système de fichiers"
+
+#: src/roudix_installer/pages/disk.py
+msgid "ext4 (simple)"
+msgstr "ext4 (simple)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "btrfs (@, @home, @nix, @log subvolumes + zstd)"
+msgstr "btrfs (subvolumes @, @home, @nix, @log + zstd)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "/boot size (GB)"
+msgstr "Taille de /boot (Go)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "4G recommended with CachyOS + multiple Limine generations — 2G minimum"
+msgstr ""
+"4G recommandé avec CachyOS + plusieurs générations Limine — 2G minimum"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Add a swap partition"
+msgstr "Ajouter une partition swap"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Off by default — zram already covers this"
+msgstr "Désactivé par défaut — zram fait déjà ce travail"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Swap size (GB)"
+msgstr "Taille du swap (Go)"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Choose a disk"
+msgstr "Choisis un disque"
+
+#: src/roudix_installer/pages/disk.py
+msgid "disko.nix file"
+msgstr "Fichier disko.nix"
+
+#: src/roudix_installer/pages/disk.py
+msgid "No file selected"
+msgstr "Aucun fichier sélectionné"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Browse…"
+msgstr "Parcourir…"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Manual partitioning"
+msgstr "Partitionnement manuel"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Disk to partition"
+msgstr "Disque à partitionner"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Partition it"
+msgstr "Partitionner"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Open GParted"
+msgstr "Ouvrir GParted"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Refresh"
+msgstr "Rafraîchir"
+
+#: src/roudix_installer/pages/disk.py
+msgid "If you already partitioned it yourself (fdisk, cfdisk…) in a terminal"
+msgstr "Si tu as déjà partitionné toi-même (fdisk, cfdisk…) dans un terminal"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Assign mountpoints"
+msgstr "Assigner les points de montage"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Once partitioning is done, assign each partition to a mountpoint."
+msgstr ""
+"Une fois le partitionnement fait, associe chaque partition à un point de "
+"montage."
+
+#: src/roudix_installer/pages/disk.py src/roudix_installer/pages/options.py
+msgid "Continue"
+msgstr "Continuer"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Select a disko.nix"
+msgstr "Sélectionner un disko.nix"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/roudix_installer/pages/disk.py
+msgid "Choose"
+msgstr "Choisir"
+
+#: src/roudix_installer/pages/options.py
+msgid "Standard latest CachyOS kernel"
+msgstr "Standard latest CachyOS kernel"
+
+#: src/roudix_installer/pages/options.py
+msgid "x86_64-v3 optimized (recommended, recent CPUs)"
+msgstr "x86_64-v3 optimisé (recommandé, CPU récents)"
+
+#: src/roudix_installer/pages/options.py
+msgid "LTO build — better performance"
+msgstr "LTO — meilleures perfs"
+
+#: src/roudix_installer/pages/options.py
+msgid "LTO + x86_64-v3 (best performance, recent CPUs)"
+msgstr "LTO + x86_64-v3 (meilleures perfs, CPU récents)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Long-term support"
+msgstr "Support long terme"
+
+#: src/roudix_installer/pages/options.py
+msgid "LTS + LTO + x86_64-v3 (stable + fast)"
+msgstr "LTS + LTO + x86_64-v3 (stable + perf)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Release candidate — bleeding edge"
+msgstr "Release candidate — bleeding edge"
+
+#: src/roudix_installer/pages/options.py
+msgid "linux-zen (nixpkgs) — outside the xddxdd overlay"
+msgstr "linux-zen (nixpkgs) — hors overlay xddxdd"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs default LTS — outside the xddxdd overlay"
+msgstr "nixpkgs LTS par défaut — hors overlay xddxdd"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs latest mainline — outside the xddxdd overlay"
+msgstr "nixpkgs dernier stable mainline — hors overlay xddxdd"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs testing (RC/mainline) — outside the xddxdd overlay"
+msgstr "nixpkgs testing (RC/mainline) — hors overlay xddxdd"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod LTS (nixpkgs) — outside the xddxdd overlay"
+msgstr "XanMod LTS (nixpkgs) — hors overlay xddxdd"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod main branch (nixpkgs) — outside the xddxdd overlay"
+msgstr "XanMod branche main (nixpkgs) — hors overlay xddxdd"
+
+#: src/roudix_installer/pages/options.py
+msgid "Default — LTO + BORE"
+msgstr "Par défaut — LTO + BORE"
+
+#: src/roudix_installer/pages/options.py
+msgid "Server optimized (no desktop tuning)"
+msgstr "Optimisé serveur (pas de tuning desktop)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Security hardened"
+msgstr "Sécurité renforcée"
+
+#: src/roudix_installer/pages/options.py
+msgid "linux-zen (nixpkgs) — locally-rebuilt nvidia module"
+msgstr "linux-zen (nixpkgs) — module nvidia rebuild local"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs default LTS — locally-rebuilt nvidia module"
+msgstr "nixpkgs LTS par défaut — module nvidia rebuild local"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs latest mainline — locally-rebuilt nvidia module"
+msgstr "nixpkgs dernier stable mainline — module nvidia rebuild local"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs testing (RC/mainline) — locally-rebuilt nvidia module"
+msgstr "nixpkgs testing (RC/mainline) — module nvidia rebuild local"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod LTS (nixpkgs) — locally-rebuilt nvidia module"
+msgstr "XanMod LTS (nixpkgs) — module nvidia rebuild local"
+
+#: src/roudix_installer/pages/options.py
+msgid "XanMod main branch (nixpkgs) — locally-rebuilt nvidia module"
+msgstr "XanMod branche main (nixpkgs) — module nvidia rebuild local"
+
+#: src/roudix_installer/pages/options.py
+msgid "None"
+msgstr "Aucun"
+
+#: src/roudix_installer/pages/options.py
+msgid "Stable (recommended)"
+msgstr "Stable (recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Cinnamon (X11, older PCs)"
+msgstr "Cinnamon (X11, vieux PC)"
+
+#: src/roudix_installer/pages/options.py
+msgid "(detected)"
+msgstr "(détecté)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Noctalia — default shell"
+msgstr "Noctalia — shell par défaut"
+
+#: src/roudix_installer/pages/options.py
+msgid "Caelestia — Quickshell setup"
+msgstr "Caelestia — setup Quickshell"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "{name} — latest version (flake)"
+msgstr "{name} — dernière version (flake)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fish (recommended)"
+msgstr "Fish (recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Ghostty (recommended)"
+msgstr "Ghostty (recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Foot (native Wayland, lightweight)"
+msgstr "Foot (natif Wayland, léger)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nautilus — GNOME Files (recommended)"
+msgstr "Nautilus — GNOME Files (recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dolphin — KDE"
+msgstr "Dolphin — KDE"
+
+#: src/roudix_installer/pages/options.py
+msgid "Thunar — XFCE, lightweight"
+msgstr "Thunar — XFCE, léger"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nemo — Cinnamon"
+msgstr "Nemo — Cinnamon"
+
+#: src/roudix_installer/pages/options.py
+msgid "Zed — fast, modern (recommended)"
+msgstr "Zed — rapide, moderne (recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "None — I'll manage my own editor (AppImage, Flatpak...)"
+msgstr "Aucun — je gère mon propre éditeur (AppImage, Flatpak...)"
+
+#: src/roudix_installer/pages/options.py
+msgid "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommended)"
+msgstr "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)"
+msgstr ""
+"KWallet + xdg-desktop-portal-kde (utile si vous utilisez surtout des apps "
+"Qt/KDE)"
+
+#: src/roudix_installer/pages/options.py
+msgid "OpenRGB — mixed brands (Razer, ASUS, MSI...)"
+msgstr "OpenRGB — marques mixtes (Razer, ASUS, MSI...)"
+
+#: src/roudix_installer/pages/options.py
+msgid "No RGB control"
+msgstr "Aucune gestion RGB"
+
+#: src/roudix_installer/pages/options.py
+msgid "Limine (recommended)"
+msgstr "Limine (recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "main — stable, ~every 2 weeks (recommended)"
+msgstr "main — stable, ~toutes les 2 semaines (recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "testing — ~every 2 days, may occasionally break"
+msgstr "testing — ~tous les 2 jours, peut parfois casser"
+
+#: src/roudix_installer/pages/options.py
+msgid "dev — latest changes, least stable"
+msgstr "dev — derniers changements, le moins stable"
+
+#: src/roudix_installer/pages/options.py
+msgid "Cinny (lightweight, web)"
+msgstr "Cinny (léger, web)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Vencord (pre-installed)"
+msgstr "Vencord (préinstallé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Vanilla (no patch)"
+msgstr "Vanilla (sans patch)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Telegram (official client)"
+msgstr "Telegram (client officiel)"
+
+#: src/roudix_installer/pages/options.py
+msgid "AyuGram (fork: ghost mode, anti-recall...)"
+msgstr "AyuGram (fork : mode fantôme, anti-suppression...)"
+
+#: src/roudix_installer/pages/options.py
+msgid "VLC (widest format support)"
+msgstr "VLC (plus large support de formats)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Clapper (modern GTK4)"
+msgstr "Clapper (GTK4 moderne)"
+
+#: src/roudix_installer/pages/options.py
+msgid "mpv (+ yt-dlp)"
+msgstr "mpv (+ yt-dlp)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Celluloid (GTK front-end for mpv)"
+msgstr "Celluloid (interface GTK pour mpv)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fragments (minimal GNOME client)"
+msgstr "Fragments (client GNOME minimaliste)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spotify + Spicetify"
+msgstr "Spotify + Spicetify"
+
+#: src/roudix_installer/pages/options.py
+msgid "Thunderbird (full-featured)"
+msgstr "Thunderbird (complet)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Betterbird (Thunderbird fork)"
+msgstr "Betterbird (fork de Thunderbird)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Geary (lightweight, GNOME)"
+msgstr "Geary (léger, GNOME)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bitwarden (cloud-synced vault)"
+msgstr "Bitwarden (coffre synchronisé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "KeePassXC (local, offline vault)"
+msgstr "KeePassXC (coffre local, hors-ligne)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Proton Pass (cloud-synced vault)"
+msgstr "Proton Pass (coffre synchronisé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Colorful (default)"
+msgstr "Colorful (défaut)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Belgium"
+msgstr "Belgique"
+
+#: src/roudix_installer/pages/options.py
+msgid "United Kingdom"
+msgstr "Royaume-Uni"
+
+#: src/roudix_installer/pages/options.py
+msgid "Netherlands"
+msgstr "Pays-Bas"
+
+#: src/roudix_installer/pages/options.py
+msgid "Germany"
+msgstr "Allemagne"
+
+#: src/roudix_installer/pages/options.py
+msgid "Austria"
+msgstr "Autriche"
+
+#: src/roudix_installer/pages/options.py
+msgid "Switzerland"
+msgstr "Suisse"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spain"
+msgstr "Espagne"
+
+#: src/roudix_installer/pages/options.py
+msgid "Italy"
+msgstr "Italie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Poland"
+msgstr "Pologne"
+
+#: src/roudix_installer/pages/options.py
+msgid "Czech Republic"
+msgstr "République Tchèque"
+
+#: src/roudix_installer/pages/options.py
+msgid "Slovakia"
+msgstr "Slovaquie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hungary"
+msgstr "Hongrie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Romania"
+msgstr "Roumanie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bulgaria"
+msgstr "Bulgarie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Greece"
+msgstr "Grèce"
+
+#: src/roudix_installer/pages/options.py
+msgid "Finland"
+msgstr "Finlande"
+
+#: src/roudix_installer/pages/options.py
+msgid "Sweden"
+msgstr "Suède"
+
+#: src/roudix_installer/pages/options.py
+msgid "Norway"
+msgstr "Norvège"
+
+#: src/roudix_installer/pages/options.py
+msgid "Denmark"
+msgstr "Danemark"
+
+#: src/roudix_installer/pages/options.py
+msgid "Estonia"
+msgstr "Estonie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Latvia"
+msgstr "Lettonie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Lithuania"
+msgstr "Lituanie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Russia (Moscow)"
+msgstr "Russie (Moscou)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turkey"
+msgstr "Turquie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Iceland"
+msgstr "Islande"
+
+#: src/roudix_installer/pages/options.py
+msgid "Morocco"
+msgstr "Maroc"
+
+#: src/roudix_installer/pages/options.py
+msgid "Algeria"
+msgstr "Algérie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Tunisia"
+msgstr "Tunisie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Egypt"
+msgstr "Égypte"
+
+#: src/roudix_installer/pages/options.py
+msgid "South Africa"
+msgstr "Afrique du Sud"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nigeria"
+msgstr "Nigéria"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (East)"
+msgstr "États-Unis (Est)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Central)"
+msgstr "États-Unis (Centre)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Mountain)"
+msgstr "États-Unis (Montagne)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (West)"
+msgstr "États-Unis (Ouest)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Alaska)"
+msgstr "États-Unis (Alaska)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United States (Hawaii)"
+msgstr "États-Unis (Hawaï)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canada (East)"
+msgstr "Canada (Est)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canada (West)"
+msgstr "Canada (Ouest)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mexico"
+msgstr "Mexique"
+
+#: src/roudix_installer/pages/options.py
+msgid "Colombia"
+msgstr "Colombie"
+
+#: src/roudix_installer/pages/options.py
+msgid "Peru"
+msgstr "Pérou"
+
+#: src/roudix_installer/pages/options.py
+msgid "Chile"
+msgstr "Chili"
+
+#: src/roudix_installer/pages/options.py
+msgid "Argentina"
+msgstr "Argentine"
+
+#: src/roudix_installer/pages/options.py
+msgid "Brazil (São Paulo)"
+msgstr "Brésil (São Paulo)"
+
+#: src/roudix_installer/pages/options.py
+msgid "United Arab Emirates"
+msgstr "Émirats Arabes Unis"
+
+#: src/roudix_installer/pages/options.py
+msgid "Saudi Arabia"
+msgstr "Arabie Saoudite"
+
+#: src/roudix_installer/pages/options.py
+msgid "Israel"
+msgstr "Israël"
+
+#: src/roudix_installer/pages/options.py
+msgid "Lebanon"
+msgstr "Liban"
+
+#: src/roudix_installer/pages/options.py
+msgid "Iraq"
+msgstr "Irak"
+
+#: src/roudix_installer/pages/options.py
+msgid "India"
+msgstr "Inde"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nepal"
+msgstr "Népal"
+
+#: src/roudix_installer/pages/options.py
+msgid "Uzbekistan"
+msgstr "Ouzbékistan"
+
+#: src/roudix_installer/pages/options.py
+msgid "Thailand"
+msgstr "Thaïlande"
+
+#: src/roudix_installer/pages/options.py
+msgid "Indonesia (West)"
+msgstr "Indonésie (Ouest)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Singapore"
+msgstr "Singapour"
+
+#: src/roudix_installer/pages/options.py
+msgid "Malaysia"
+msgstr "Malaisie"
+
+#: src/roudix_installer/pages/options.py
+msgid "China"
+msgstr "Chine"
+
+#: src/roudix_installer/pages/options.py
+msgid "Taiwan"
+msgstr "Taïwan"
+
+#: src/roudix_installer/pages/options.py
+msgid "South Korea"
+msgstr "Corée du Sud"
+
+#: src/roudix_installer/pages/options.py
+msgid "Japan"
+msgstr "Japon"
+
+#: src/roudix_installer/pages/options.py
+msgid "Australia (West)"
+msgstr "Australie (Ouest)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Australia (Central)"
+msgstr "Australie (Centre)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Australia (East)"
+msgstr "Australie (Est)"
+
+#: src/roudix_installer/pages/options.py
+msgid "New Zealand"
+msgstr "Nouvelle-Zélande"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fiji"
+msgstr "Fidji"
+
+#: src/roudix_installer/pages/options.py
+msgid "C (minimal POSIX)"
+msgstr "C (POSIX minimal)"
+
+#: src/roudix_installer/pages/options.py
+msgid "English (US) International (dead keys)"
+msgstr "English (US) International (touches mortes)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Belgian AZERTY"
+msgstr "Belge AZERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "French AZERTY"
+msgstr "Français AZERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "French AZERTY (latin9)"
+msgstr "Français AZERTY (latin9)"
+
+#: src/roudix_installer/pages/options.py
+msgctxt "console keymap list"
+msgid "Swiss French QWERTZ"
+msgstr "Français Suisse QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "German QWERTZ"
+msgstr "Allemand QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "German QWERTZ (latin1)"
+msgstr "Allemand QWERTZ (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Austrian QWERTZ"
+msgstr "Autrichien QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Swiss QWERTZ"
+msgstr "Suisse QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dutch QWERTY"
+msgstr "Néerlandais QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spanish QWERTY"
+msgstr "Espagnol QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spanish QWERTY (cp850)"
+msgstr "Espagnol QWERTY (cp850)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Portuguese QWERTY (latin1)"
+msgstr "Portugais QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Brazilian Portuguese ABNT2"
+msgstr "Portugais Brésilien ABNT2"
+
+#: src/roudix_installer/pages/options.py
+msgid "Italian QWERTY"
+msgstr "Italien QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Italian QWERTY (latin1)"
+msgstr "Italien QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Polish QWERTY"
+msgstr "Polonais QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Russian"
+msgstr "Russe"
+
+#: src/roudix_installer/pages/options.py
+msgid "Ukrainian"
+msgstr "Ukrainien"
+
+#: src/roudix_installer/pages/options.py
+msgid "Czech QWERTY (latin2)"
+msgstr "Tchèque QWERTY (latin2)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Slovak QWERTY"
+msgstr "Slovaque QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hungarian QWERTY"
+msgstr "Hongrois QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Romanian QWERTY"
+msgstr "Roumain QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turkish Q"
+msgstr "Turc Q"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turkish F"
+msgstr "Turc F"
+
+#: src/roudix_installer/pages/options.py
+msgid "Japanese 106-key"
+msgstr "Japonais 106 touches"
+
+#: src/roudix_installer/pages/options.py
+msgid "Swedish QWERTY (latin1)"
+msgstr "Suédois QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Norwegian QWERTY (latin1)"
+msgstr "Norvégien QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Danish QWERTY (latin1)"
+msgstr "Danois QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Finnish QWERTY (latin1)"
+msgstr "Finnois QWERTY (latin1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Greek"
+msgstr "Grec"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hebrew"
+msgstr "Hébreu"
+
+#: src/roudix_installer/pages/options.py
+msgid "Arabic"
+msgstr "Arabe"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dvorak left"
+msgstr "Dvorak gauche"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dvorak right"
+msgstr "Dvorak droite"
+
+#: src/roudix_installer/pages/options.py
+msgid "US International (dead keys, recommended)"
+msgstr "US International (touches mortes, recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "US Basic QWERTY (no variant)"
+msgstr "US Basique QWERTY (sans variante)"
+
+#: src/roudix_installer/pages/options.py
+msgid "British QWERTY"
+msgstr "Britannique QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "French BÉPO"
+msgstr "Français BÉPO"
+
+#: src/roudix_installer/pages/options.py
+msgctxt "graphical keyboard layout list"
+msgid "Swiss French QWERTZ"
+msgstr "Suisse (romand) QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Swiss German QWERTZ"
+msgstr "Suisse (allemand) QWERTZ"
+
+#: src/roudix_installer/pages/options.py
+msgid "Portuguese QWERTY"
+msgstr "Portugais QWERTY"
+
+#: src/roudix_installer/pages/options.py
+msgid "Japanese"
+msgstr "Japonais"
+
+#: src/roudix_installer/pages/options.py
+msgid "Dvorak (US)"
+msgstr "Dvorak (US)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Colemak (US)"
+msgstr "Colemak (US)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "User"
+msgstr "Utilisateur"
+
+#: src/roudix_installer/pages/options.py
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Password"
+msgstr "Mot de passe"
+
+#: src/roudix_installer/pages/options.py
+msgid "Confirm password"
+msgstr "Confirmer le mot de passe"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Answers pre-filled with the “{hostname}” profile's values."
+msgstr "Réponses préremplies avec les valeurs du profil « {hostname} »."
+
+#: src/roudix_installer/pages/options.py
+msgid "Hardware"
+msgstr "Matériel"
+
+#: src/roudix_installer/pages/options.py
+msgid "GPU"
+msgstr "GPU"
+
+#: src/roudix_installer/pages/options.py
+msgid "AMD integrated (Ryzen APU)"
+msgstr "AMD intégré (APU Ryzen)"
+
+#: src/roudix_installer/pages/options.py
+msgid "AMD legacy — GCN 1.x/2.x"
+msgstr "AMD legacy — GCN 1.x/2.x"
+
+#: src/roudix_installer/pages/options.py
+msgid "Intel (integrated / Arc)"
+msgstr "Intel (intégré / Arc)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Optimus laptop (Intel/AMD + NVIDIA dGPU)"
+msgstr "Laptop Optimus (Intel/AMD + NVIDIA dGPU)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Laptop (TLP)"
+msgstr "Ordinateur portable (TLP)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
+"will still launch games normally but without the roudix-gaming CPU profile."
+msgstr ""
+"Désactive tuned au profit de TLP : si le jeu est aussi activé, game-"
+"performance lancera les jeux normalement mais sans le profil CPU roudix-"
+"gaming."
+
+#: src/roudix_installer/pages/options.py
+msgid "ThinkPad (40/80% battery charge thresholds)"
+msgstr "ThinkPad (seuils de charge batterie 40/80%)"
+
+#: src/roudix_installer/pages/options.py
+msgid "AMD GPU undervolting (lact, amdgpu.ppfeaturemask)"
+msgstr "Undervolting GPU AMD (lact, amdgpu.ppfeaturemask)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel"
+msgstr "Kernel"
+
+#: src/roudix_installer/pages/options.py
+msgid "GPU / CPU auto-detected — change them above if needed."
+msgstr "GPU / CPU détectés automatiquement — modifiable ci-dessus si besoin."
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Browser"
+msgstr "Navigateur"
+
+#: src/roudix_installer/pages/options.py
+msgid "Brave variant"
+msgstr "Variante Brave"
+
+#: src/roudix_installer/pages/options.py
+msgid "Also install Zen Browser"
+msgstr "Installer Zen Browser (en plus)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Zen channel"
+msgstr "Canal Zen"
+
+#: src/roudix_installer/pages/options.py
+msgid "Twilight (default)"
+msgstr "Twilight (défaut)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Zen mods (comma-separated)"
+msgstr "Mods Zen (séparés par des virgules)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Enable Sine (Zen mod engine)"
+msgstr "Activer Sine (moteur de mods Zen)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Sine mods (comma-separated)"
+msgstr "Mods Sine (séparés par des virgules)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Desktop"
+msgstr "Bureau"
+
+#: src/roudix_installer/pages/options.py
+msgid "Compositor / desktop"
+msgstr "Compositeur / bureau"
+
+#: src/roudix_installer/pages/options.py
+msgid "Graphical shell (bar/UI)"
+msgstr "Shell graphique (bar/UI)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Off: nixpkgs version"
+msgstr "Désactivé : version de nixpkgs"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"⚠ Roudix configurations are written for the flake (latest) versions first. "
+"On the nixpkgs version, a configuration error saying that an option, a "
+"setting or a key \"does not exist\" is normal: it was added after the "
+"nixpkgs version. Wait for nixpkgs to catch up, or turn the latest version "
+"on."
+msgstr ""
+"⚠ Les configurations Roudix sont écrites en priorité pour les versions flake"
+" (les plus récentes). Sur la version nixpkgs, une erreur de configuration "
+"disant qu'une option, un réglage ou une clé « n'existe pas » est normale : "
+"elle a été ajoutée après la version de nixpkgs. Patiente que nixpkgs la "
+"rattrape, ou active la dernière version."
+
+#: src/roudix_installer/pages/options.py
+msgid "Default shell"
+msgstr "Shell par défaut"
+
+#: src/roudix_installer/pages/options.py
+msgid "Terminal"
+msgstr "Terminal"
+
+#: src/roudix_installer/pages/options.py
+msgid "File manager"
+msgstr "Gestionnaire de fichiers"
+
+#: src/roudix_installer/pages/options.py
+msgid "Code editor"
+msgstr "Éditeur de code"
+
+#: src/roudix_installer/pages/options.py
+msgid "Keyring / xdg-desktop-portal"
+msgstr "Trousseau / xdg-desktop-portal"
+
+#: src/roudix_installer/pages/options.py
+msgid "System"
+msgstr "Système"
+
+#: src/roudix_installer/pages/options.py
+msgid "Installing inside a VM"
+msgstr "Installation dans une VM"
+
+#: src/roudix_installer/pages/options.py
+msgid "Gaming packages (Steam, Wine, Lutris…)"
+msgstr "Paquets gaming (Steam, Wine, Lutris…)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Ananicy (automatic gaming scheduling)"
+msgstr "Ananicy (ordonnancement auto pour le gaming)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Millennium (modded Steam client: themes and plugins)"
+msgstr "Millennium (client Steam modifié : thèmes et plugins)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Unofficial mod — off = stock Steam"
+msgstr "Mod non officiel — désactivé = Steam standard"
+
+#: src/roudix_installer/pages/options.py
+msgid "Lutris"
+msgstr "Lutris"
+
+#: src/roudix_installer/pages/options.py
+msgid "Heroic Games Launcher (Epic/GOG/Amazon)"
+msgstr "Heroic Games Launcher (Epic/GOG/Amazon)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Faugus Launcher"
+msgstr "Faugus Launcher"
+
+#: src/roudix_installer/pages/options.py
+msgid "Prism Launcher (Minecraft)"
+msgstr "Prism Launcher (Minecraft)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Modrinth App (alternative to Prism)"
+msgstr "Modrinth App (alternative à Prism)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Vintage Story"
+msgstr "Vintage Story"
+
+#: src/roudix_installer/pages/options.py
+msgid "MangoHud (in-game perf overlay)"
+msgstr "MangoHud (overlay de perfs en jeu)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git (bleeding-edge graphics drivers)"
+msgstr "Mesa git (pilotes graphiques bleeding edge)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Timezone"
+msgstr "Fuseau horaire"
+
+#: src/roudix_installer/pages/options.py
+msgid "System language"
+msgstr "Langue système"
+
+#: src/roudix_installer/pages/options.py
+msgid "Keyboard layout (console)"
+msgstr "Disposition clavier (console)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Graphical keyboard layout (Wayland)"
+msgstr "Disposition clavier graphique (Wayland)"
+
+#: src/roudix_installer/pages/options.py
+msgid "RGB controller"
+msgstr "Contrôleur RGB"
+
+#: src/roudix_installer/pages/options.py
+msgid "RAM RGB (Corsair DDR4/DDR5)"
+msgstr "RGB RAM (Corsair DDR4/DDR5)"
+
+#: src/roudix_installer/pages/options.py
+msgid "RAM type"
+msgstr "Type de RAM"
+
+#: src/roudix_installer/pages/options.py
+msgid "SMBus (e.g. i2c-1)"
+msgstr "SMBus (ex: i2c-1)"
+
+#: src/roudix_installer/pages/options.py
+msgid "RAM SKU (part number)"
+msgstr "SKU RAM (numéro de pièce)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
+"\"sudo dmidecode -t memory | grep 'Part Number'\"."
+msgstr ""
+"SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via « "
+"i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' »."
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Extras"
+msgstr "Extras"
+
+#: src/roudix_installer/pages/options.py
+msgid "GTA Online fix (blocks the Linux anti-cheat IP)"
+msgstr "Fix GTA Online (bloque l'IP anti-cheat Linux)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Virtualization (libvirt, virt-manager)"
+msgstr "Virtualisation (libvirt, virt-manager)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Automatic updates"
+msgstr "Mises à jour automatiques"
+
+#: src/roudix_installer/pages/options.py
+msgid "Interval (e.g. 1h, 6h, 24h)"
+msgstr "Intervalle (ex: 1h, 6h, 24h)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Branch (install + updates)"
+msgstr "Branche (installation + mises à jour)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bootloader"
+msgstr "Bootloader"
+
+#: src/roudix_installer/pages/options.py
+msgid "Matrix client"
+msgstr "Client Matrix"
+
+#: src/roudix_installer/pages/options.py
+msgid "Discord"
+msgstr "Discord"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Video player"
+msgstr "Lecteur vidéo"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Torrent client"
+msgstr "Client torrent"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Music player"
+msgstr "Lecteur de musique"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Mail client"
+msgstr "Client mail"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Password manager"
+msgstr "Gestionnaire de mots de passe"
+
+#: src/roudix_installer/pages/options.py
+msgid "Turn on the ones you want preinstalled."
+msgstr "Active celles que tu veux préinstallées."
+
+#: src/roudix_installer/pages/options.py
+msgid "Spicetify theme"
+msgstr "Thème Spicetify"
+
+#: src/roudix_installer/pages/options.py
+msgid "Spicetify color scheme (empty = theme default)"
+msgstr "Color scheme Spicetify (vide = défaut du thème)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Adblock extension (Spicetify)"
+msgstr "Extension Adblock (Spicetify)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Hide podcasts (Spicetify)"
+msgstr "Masquer les podcasts (Spicetify)"
+
+#: src/roudix_installer/pages/options.py
+msgid "End-to-end encrypted messenger"
+msgstr "Messagerie chiffrée de bout en bout"
+
+#: src/roudix_installer/pages/options.py
+msgid "Unofficial WhatsApp client"
+msgstr "Client WhatsApp non-officiel"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Self-hostable Discord alternative (independent of the Discord choice above)"
+msgstr ""
+"Alternative à Discord, auto-hébergeable (indépendant du choix Discord ci-"
+"dessus)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Content Creation"
+msgstr "Création de contenu"
+
+#: src/roudix_installer/pages/options.py
+msgid "Enable content-creation tooling"
+msgstr "Activer les outils de création de contenu"
+
+#: src/roudix_installer/pages/options.py
+msgid "VKCapture (Vulkan/OpenGL game capture)"
+msgstr "VKCapture (capture jeux Vulkan/OpenGL)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pipewire Audio Capture (per-app audio)"
+msgstr "Pipewire Audio Capture (audio par application)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Background Removal (AI virtual background)"
+msgstr "Background Removal (fond virtuel IA)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Move Transition (source animations)"
+msgstr "Move Transition (animations de sources)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Aitum Multistream (multi-platform streaming)"
+msgstr "Aitum Multistream (stream multi-plateformes)"
+
+#: src/roudix_installer/pages/options.py
+msgid "GStreamer (extra sources/outputs)"
+msgstr "GStreamer (sources/sorties supplémentaires)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Composite Blur (blur/glass filters)"
+msgstr "Composite Blur (flou/verre dépoli)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Advanced Scene Switcher (automated scene switching)"
+msgstr "Advanced Scene Switcher (changement de scène auto)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Input Overlay (on-screen keyboard/mouse/gamepad)"
+msgstr "Input Overlay (clavier/souris/manette à l'écran)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Waveform (audio waveform/spectrum)"
+msgstr "Waveform (spectre/waveform audio)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Video editor"
+msgstr "Éditeur vidéo"
+
+#: src/roudix_installer/pages/options.py
+msgid "DaVinci Resolve (free)"
+msgstr "DaVinci Resolve (gratuit)"
+
+#: src/roudix_installer/pages/options.py
+msgid "DaVinci Resolve Studio (paid)"
+msgstr "DaVinci Resolve Studio (payant)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Virtual camera (v4l2loopback)"
+msgstr "Webcam virtuelle (v4l2loopback)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Chatterino2 (third-party Twitch chat)"
+msgstr "Chatterino2 (chat Twitch tiers)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel (Chaotic-Nyx)"
+msgstr "Kernel (Chaotic-Nyx)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel (xddxdd)"
+msgstr "Kernel (xddxdd)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"This user doesn't exist on this system — run the installer from the account "
+"you want to keep."
+msgstr ""
+"Cet utilisateur n'existe pas sur ce système — lance l'installeur depuis le "
+"compte que tu veux garder."
+
+#: src/roudix_installer/pages/options.py
+msgid "Password can't be empty."
+msgstr "Le mot de passe ne peut pas être vide."
+
+#: src/roudix_installer/pages/options.py
+msgid "Passwords don't match."
+msgstr "Les mots de passe ne correspondent pas."
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation"
+msgstr "Installation"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Preparing…"
+msgstr "Préparation…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation log"
+msgstr "Journal d'installation"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Copy log"
+msgstr "Copier le journal"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Reboot now"
+msgstr "Redémarrer maintenant"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Finish"
+msgstr "Terminer"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Back to summary"
+msgstr "Retour au résumé"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Rebooting…"
+msgstr "Redémarrage…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: these options were NOT confirmed in local.nix — review the file "
+"before rebooting: {keys}"
+msgstr ""
+"Attention : ces options n'ont PAS été confirmées dans local.nix — relis le "
+"fichier avant de redémarrer : {keys}"
+
+#: src/roudix_installer/pages/progress.py
+msgid "✓ every chosen option was written to local.nix."
+msgstr "✓ toutes les options choisies ont bien été écrites dans local.nix."
+
+#: src/roudix_installer/pages/progress.py
+msgid "Dry run — nothing is written to disk"
+msgstr "Simulation — rien n'est écrit sur les disques"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the "
+"repo>)"
+msgstr ""
+"hosts/{host}/local.nix.example introuvable (essaie ROUDIX_CFG_ROOT=<chemin "
+"du repo>)"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Dry run finished — nothing was changed"
+msgstr "Test blanc terminé — rien n'a été modifié"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation — nothing is written"
+msgstr "Simulation — rien n'est écrit"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Fetching the Roudix configuration…"
+msgstr "Récupération de la configuration Roudix…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Clone failed — simulating with the local copy of the profiles."
+msgstr "Clonage impossible — simulation avec la copie locale des profils."
+
+#: src/roudix_installer/pages/progress.py
+msgid "Detecting hardware…"
+msgstr "Détection du matériel…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Generating local.nix / username.nix…"
+msgstr "Génération de local.nix / username.nix…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Evaluating the whole system with Nix…"
+msgstr "Évaluation du système complet par Nix…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "✓ the configuration evaluates: Nix can build this system."
+msgstr "✓ la configuration s'évalue : Nix sait construire ce système."
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation finished — nothing was changed"
+msgstr "Simulation terminée — rien n'a été modifié"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation complete 🎉"
+msgstr "Installation terminée 🎉"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Error"
+msgstr "Erreur"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installation failed"
+msgstr "Échec de l'installation"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Simulation failed"
+msgstr "La simulation a échoué"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Authentication was cancelled or refused."
+msgstr "L'authentification a été annulée ou refusée."
+
+#: src/roudix_installer/pages/progress.py
+msgid "failed"
+msgstr "a échoué"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Unknown partitioning mode"
+msgstr "Mode de partitionnement inconnu"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Partitioning the disk…"
+msgstr "Partitionnement du disque…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Mounting partitions…"
+msgstr "Montage des partitions…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "No partition assigned to / — cannot continue"
+msgstr "Aucune partition assignée à / — impossible de continuer"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "Checking branch '{branch}'…"
+msgstr "Vérification de la branche « {branch} »…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "Branch '{branch}' not found on {repo_url} — falling back to 'main'."
+msgstr ""
+"Branche « {branch} » introuvable sur {repo_url} — retour sur « main »."
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
+"local.nix generation may fail."
+msgstr ""
+"Avertissement: hosts/{host}/local.nix.example introuvable sur la branche « "
+"{branch} » — la génération de local.nix pourrait échouer."
+
+#: src/roudix_installer/pages/progress.py
+msgid "Copying the configuration…"
+msgstr "Copie de la configuration…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main)."
+msgstr ""
+"Branche « {branch} » choisie — clone depuis GitHub (l'ISO embarque "
+"uniquement main)."
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing"
+" outside an ISO) — cloning straight from GitHub instead."
+msgstr ""
+"/iso-cfg introuvable (ISO pas (encore) reconstruite avec isoImage.contents, "
+"ou test hors ISO) — clone direct depuis GitHub à la place."
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "btrfs detected — mount options auto-patched for: {patched}"
+msgstr "btrfs détecté — options de montage auto-patchées pour: {patched}"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "hosts/{hostname}/local.nix, username.nix, home/local.nix written."
+msgstr "hosts/{hostname}/local.nix, username.nix, home/local.nix écrits."
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: only {free} MiB free in /boot ({need} MiB recommended) — nixos-"
+"rebuild may fail on a small EFI partition."
+msgstr ""
+"Attention : seulement {free} Mio libres dans /boot ({need} Mio recommandés) "
+"— nixos-rebuild peut échouer sur une petite partition EFI."
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: only {free} GiB free for the Nix store ({need} GiB recommended)."
+msgstr ""
+"Attention : seulement {free} Gio libres pour le store Nix ({need} Gio "
+"recommandés)."
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Warning: your configuration uses system.stateVersion {old}, Roudix sets "
+"{new}. Services that keep data (databases…) deserve a look before booting "
+"it."
+msgstr ""
+"Attention : ta configuration utilise system.stateVersion {old}, Roudix met "
+"{new}. Les services qui gardent des données (bases de données…) méritent un "
+"coup d'œil avant de démarrer dessus."
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid ""
+"Note: Roudix will use the {new} bootloader (yours: {old}). If it ever fails "
+"to start, RESTORE.txt in the backup explains how to put your old "
+"configuration back."
+msgstr ""
+"Note : Roudix utilisera le bootloader {new} (le tien : {old}). S'il ne "
+"démarre pas, RESTORE.txt dans la sauvegarde explique comment remettre ton "
+"ancienne configuration."
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"Reusing /etc/nixos/hardware-configuration.nix (the one that boots this "
+"machine)."
+msgstr ""
+"Réutilisation de /etc/nixos/hardware-configuration.nix (celui qui fait "
+"démarrer cette machine)."
+
+#: src/roudix_installer/pages/progress.py
+msgid "Checking this system…"
+msgstr "Vérification de ce système…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "{cfg} already exists — moving it to {aside}."
+msgstr "{cfg} existe déjà — déplacé vers {aside}."
+
+#: src/roudix_installer/pages/progress.py
+msgid "Backing up /etc/nixos…"
+msgstr "Sauvegarde de /etc/nixos…"
+
+#: src/roudix_installer/pages/progress.py
+#, python-brace-format
+msgid "✓ backup done: {dest} (see RESTORE.txt in it)."
+msgstr "✓ sauvegarde faite : {dest} (voir RESTORE.txt dedans)."
+
+#: src/roudix_installer/pages/progress.py
+msgid "Building Roudix — this can take a while…"
+msgstr "Construction de Roudix — ça peut être long…"
+
+#: src/roudix_installer/pages/progress.py
+msgid ""
+"✓ Roudix is built. Reboot to start it; your previous system stays in the "
+"boot menu."
+msgstr ""
+"✓ Roudix est construit. Redémarre pour le lancer ; ton ancien système reste "
+"dans le menu de démarrage."
+
+#: src/roudix_installer/pages/progress.py
+msgid "Installing the system…"
+msgstr "Installation du système…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Setting the password…"
+msgstr "Configuration du mot de passe…"
+
+#: src/roudix_installer/pages/progress.py
+msgid "Copying config for nh os switch…"
+msgstr "Copie de la config pour nh os switch…"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Summary"
+msgstr "Résumé"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Check before starting the install"
+msgstr "Vérifie avant de lancer l'installation"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Simulate (nothing is written)"
+msgstr "Simuler (rien n'est écrit)"
+
+#: src/roudix_installer/pages/summary.py
+msgid ""
+"Generates the configuration in a temporary folder and checks that it "
+"evaluates. Nothing is partitioned, installed or modified."
+msgstr ""
+"Génère la configuration dans un dossier temporaire et vérifie qu'elle "
+"s'évalue. Rien n'est partitionné, installé ni modifié."
+
+#: src/roudix_installer/pages/summary.py
+msgid "Convert this NixOS to Roudix"
+msgstr "Convertir cette NixOS en Roudix"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Install Roudix"
+msgstr "Installer Roudix"
+
+#: src/roudix_installer/pages/summary.py
+msgid "latest (flake)"
+msgstr "dernière (flake)"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Versions"
+msgstr "Versions"
+
+#: src/roudix_installer/pages/summary.py
+msgid ", no swap (zram)"
+msgstr ", pas de swap (zram)"
+
+#: src/roudix_installer/pages/summary.py
+msgid "wiped"
+msgstr "effacé"
+
+#: src/roudix_installer/pages/summary.py
+msgid "custom disko"
+msgstr "disko custom"
+
+#: src/roudix_installer/pages/summary.py
+msgid "no partition assigned"
+msgstr "aucune partition assignée"
+
+#: src/roudix_installer/pages/summary.py
+msgid "bare metal"
+msgstr "bare metal"
+
+#: src/roudix_installer/pages/summary.py
+msgid "disabled"
+msgstr "désactivé"
+
+#: src/roudix_installer/pages/summary.py
+msgid "enabled"
+msgstr "activé"
+
+#: src/roudix_installer/pages/summary.py
+msgid "no plugins"
+msgstr "sans plugin"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Existing NixOS — nothing is wiped"
+msgstr "NixOS existante — rien n'est effacé"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Mode"
+msgstr "Mode"
+
+#: src/roudix_installer/pages/summary.py src/roudix_installer/pages/welcome.py
+msgid "Profile / host"
+msgstr "Profil / hôte"
+
+#: src/roudix_installer/pages/summary.py
+#, python-brace-format
+msgid ""
+"/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current system "
+"stays in the boot menu."
+msgstr ""
+"/etc/nixos est copié dans {dir} (avec un RESTORE.txt), et ton système actuel"
+" reste dans le menu de démarrage."
+
+#: src/roudix_installer/pages/summary.py
+msgid "Safety net"
+msgstr "Filet de sécurité"
+
+#: src/roudix_installer/pages/summary.py
+msgid "set ✓"
+msgstr "défini ✓"
+
+#: src/roudix_installer/pages/summary.py
+msgid "⚠ not set"
+msgstr "⚠ non défini"
+
+#: src/roudix_installer/pages/summary.py
+msgid " (Optimus laptop)"
+msgstr " (laptop Optimus)"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Editor"
+msgstr "Éditeur"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Keyring / portal"
+msgstr "Trousseau / portal"
+
+#: src/roudix_installer/pages/summary.py
+msgid "n/a (managed by the desktop)"
+msgstr "n/a (géré par le bureau)"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Shell"
+msgstr "Shell"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Locale"
+msgstr "Locale"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Graphical keyboard"
+msgstr "Clavier graphique"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Branch"
+msgstr "Branche"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Virtualization"
+msgstr "Virtualisation"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Extras row: nothing selected"
+msgid "none"
+msgstr "aucun"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Apps row: nothing selected"
+msgid "none"
+msgstr "aucune"
+
+#: src/roudix_installer/pages/summary.py
+msgid "hide podcasts"
+msgstr "masquer podcasts"
+
+#: src/roudix_installer/pages/summary.py
+msgid "no extensions"
+msgstr "sans extension"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "roudix — full desktop, every option"
+msgstr "roudix — bureau complet, toutes les options"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "nixie — light laptop, few questions"
+msgstr "nixie — portable léger, peu de questions"
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"This machine already runs NixOS. Roudix is built next to your current "
+"system: nothing is wiped, /etc/nixos is backed up first, and your previous "
+"system stays in the boot menu. Two steps: options, then off we go."
+msgstr ""
+"Cette machine tourne déjà sous NixOS. Roudix est construit à côté de ton "
+"système actuel : rien n'est effacé, /etc/nixos est sauvegardé d'abord, et "
+"ton ancien système reste dans le menu de démarrage. Deux étapes : les "
+"options, puis c'est parti."
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"We're about to install Roudix on this machine. Three steps: disk, options, "
+"then off we go."
+msgstr ""
+"On va installer Roudix sur cette machine. Trois étapes : disque, options, "
+"puis c'est parti."
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Profile to install"
+msgstr "Profil à installer"
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Get started"
+msgstr "Commencer"
+
+#: src/roudix_installer/pages/welcome.py
+msgid ""
+"Warning: this profile can't be found in this ISO — every question will be "
+"asked."
+msgstr ""
+"Attention : ce profil est introuvable dans cette ISO — toutes les questions "
+"seront posées."
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Every question will be asked."
+msgstr "Toutes les questions seront posées."
+
+#: src/roudix_installer/pages/welcome.py
+msgid "Only the questions relevant to this profile will be asked."
+msgstr "Seules les questions utiles à ce profil seront posées."

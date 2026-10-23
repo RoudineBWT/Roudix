@@ -1,8 +1,8 @@
 from gi.repository import Adw, Gtk
 
-from roudix_installer import host_defaults, host_profile
+from roudix_installer import existing_nixos, host_defaults, host_profile
 from roudix_installer.hardware_detect import detect_cpu, detect_gpu
-from roudix_installer.i18n import L
+from roudix_installer.i18n import tr, trc, tr_noop
 from roudix_installer.ui_helpers import page_with_header
 
 # ── Option lists, mirrored 1:1 from the pick() calls in roudix-installer.sh ──
@@ -14,45 +14,36 @@ def _kernels():
     return [
         (
             "cachyos-latest",
-            L("Standard latest CachyOS kernel", "Standard latest CachyOS kernel"),
+            tr("Standard latest CachyOS kernel"),
         ),
         (
             "cachyos-latest-v3",
-            L(
-                "x86_64-v3 optimisé (recommandé, CPU récents)",
-                "x86_64-v3 optimized (recommended, recent CPUs)",
-            ),
+            tr("x86_64-v3 optimized (recommended, recent CPUs)"),
         ),
         (
             "cachyos-latest-lto",
-            L("LTO — meilleures perfs", "LTO build — better performance"),
+            tr("LTO build — better performance"),
         ),
         (
             "cachyos-latest-lto-v3",
-            L(
-                "LTO + x86_64-v3 (meilleures perfs, CPU récents)",
-                "LTO + x86_64-v3 (best performance, recent CPUs)",
-            ),
+            tr("LTO + x86_64-v3 (best performance, recent CPUs)"),
         ),
-        ("cachyos-lts", L("Support long terme", "Long-term support")),
+        ("cachyos-lts", tr("Long-term support")),
         ("cachyos-lts-v3", "LTS + x86_64-v3"),
         (
             "cachyos-lts-lto-v3",
-            L(
-                "LTS + LTO + x86_64-v3 (stable + perf)",
-                "LTS + LTO + x86_64-v3 (stable + fast)",
-            ),
+            tr("LTS + LTO + x86_64-v3 (stable + fast)"),
         ),
         (
             "cachyos-rc",
-            L("Release candidate — bleeding edge", "Release candidate — bleeding edge"),
+            tr("Release candidate — bleeding edge"),
         ),
-        ("zen", L("linux-zen (nixpkgs) — hors overlay xddxdd", "linux-zen (nixpkgs) — outside the xddxdd overlay")),
-        ("nixpkgs-lts", L("nixpkgs LTS par défaut — hors overlay xddxdd", "nixpkgs default LTS — outside the xddxdd overlay")),
-        ("nixpkgs-latest", L("nixpkgs dernier stable mainline — hors overlay xddxdd", "nixpkgs latest mainline — outside the xddxdd overlay")),
-        ("nixpkgs-testing", L("nixpkgs testing (RC/mainline) — hors overlay xddxdd", "nixpkgs testing (RC/mainline) — outside the xddxdd overlay")),
-        ("xanmod-lts", L("XanMod LTS (nixpkgs) — hors overlay xddxdd", "XanMod LTS (nixpkgs) — outside the xddxdd overlay")),
-        ("xanmod-latest", L("XanMod branche main (nixpkgs) — hors overlay xddxdd", "XanMod main branch (nixpkgs) — outside the xddxdd overlay")),
+        ("zen", tr("linux-zen (nixpkgs) — outside the xddxdd overlay")),
+        ("nixpkgs-lts", tr("nixpkgs default LTS — outside the xddxdd overlay")),
+        ("nixpkgs-latest", tr("nixpkgs latest mainline — outside the xddxdd overlay")),
+        ("nixpkgs-testing", tr("nixpkgs testing (RC/mainline) — outside the xddxdd overlay")),
+        ("xanmod-lts", tr("XanMod LTS (nixpkgs) — outside the xddxdd overlay")),
+        ("xanmod-latest", tr("XanMod main branch (nixpkgs) — outside the xddxdd overlay")),
     ]
 
 
@@ -61,22 +52,22 @@ def _kernels_chaotic():
     # out-of-tree modules like nvidia are more fragile with it). Required
     # for nvidia_cachyos, the precompiled Nvidia driver matched to this kernel.
     return [
-        ("cachyos", L("Par défaut — LTO + BORE", "Default — LTO + BORE")),
-        ("cachyos-lts", L("Support long terme", "Long-term support")),
-        ("cachyos-server", L("Optimisé serveur (pas de tuning desktop)", "Server optimized (no desktop tuning)")),
-        ("cachyos-hardened", L("Sécurité renforcée", "Security hardened")),
-        ("zen", L("linux-zen (nixpkgs) — module nvidia rebuild local", "linux-zen (nixpkgs) — locally-rebuilt nvidia module")),
-        ("nixpkgs-lts", L("nixpkgs LTS par défaut — module nvidia rebuild local", "nixpkgs default LTS — locally-rebuilt nvidia module")),
-        ("nixpkgs-latest", L("nixpkgs dernier stable mainline — module nvidia rebuild local", "nixpkgs latest mainline — locally-rebuilt nvidia module")),
-        ("nixpkgs-testing", L("nixpkgs testing (RC/mainline) — module nvidia rebuild local", "nixpkgs testing (RC/mainline) — locally-rebuilt nvidia module")),
-        ("xanmod-lts", L("XanMod LTS (nixpkgs) — module nvidia rebuild local", "XanMod LTS (nixpkgs) — locally-rebuilt nvidia module")),
-        ("xanmod-latest", L("XanMod branche main (nixpkgs) — module nvidia rebuild local", "XanMod main branch (nixpkgs) — locally-rebuilt nvidia module")),
+        ("cachyos", tr("Default — LTO + BORE")),
+        ("cachyos-lts", tr("Long-term support")),
+        ("cachyos-server", tr("Server optimized (no desktop tuning)")),
+        ("cachyos-hardened", tr("Security hardened")),
+        ("zen", tr("linux-zen (nixpkgs) — locally-rebuilt nvidia module")),
+        ("nixpkgs-lts", tr("nixpkgs default LTS — locally-rebuilt nvidia module")),
+        ("nixpkgs-latest", tr("nixpkgs latest mainline — locally-rebuilt nvidia module")),
+        ("nixpkgs-testing", tr("nixpkgs testing (RC/mainline) — locally-rebuilt nvidia module")),
+        ("xanmod-lts", tr("XanMod LTS (nixpkgs) — locally-rebuilt nvidia module")),
+        ("xanmod-latest", tr("XanMod main branch (nixpkgs) — locally-rebuilt nvidia module")),
     ]
 
 
 def _browsers():
     return [
-        ("none", L("Aucun", "None")),
+        ("none", tr("None")),
         ("brave", "Brave"),
         ("helium", "Helium"),
         ("vivaldi", "Vivaldi"),
@@ -91,7 +82,7 @@ def _browsers():
 
 def _brave_variants():
     return [
-        ("brave", L("Stable (recommandé)", "Stable (recommended)")),
+        ("brave", tr("Stable (recommended)")),
         ("brave-beta", "Beta"),
         ("brave-nightly", "Nightly"),
         ("brave-origin", "Origin Stable"),
@@ -105,7 +96,7 @@ def _desktops():
         ("niri", "Niri"),
         ("gnome", "GNOME"),
         ("kde", "KDE Plasma"),
-        ("cinnamon", L("Cinnamon (X11, vieux PC)", "Cinnamon (X11, older PCs)")),
+        ("cinnamon", tr("Cinnamon (X11, older PCs)")),
         ("hyprland", "Hyprland"),
         ("mangowc", "MangoWC"),
         ("umbriel", "Umbriel"),
@@ -117,7 +108,7 @@ def _mark_detected(pairs, detected_value):
     if not detected_value:
         return pairs
     return [
-        (value, f"{label} {L('(détecté)', '(detected)')}" if value == detected_value else label)
+        (value, f"{label} " + tr("(detected)") if value == detected_value else label)
         for value, label in pairs
     ]
 
@@ -127,17 +118,17 @@ def _shells(desktop=None):
     # Hyprland-specific (its Quickshell config assumes Hyprland's IPC), so it
     # only makes sense to offer it there. Niri/MangoWC get Noctalia + DMS.
     if desktop == "umbriel":
-        return [("noctalia", L("Noctalia — shell par défaut", "Noctalia — default shell"))]
+        return [("noctalia", tr("Noctalia — default shell"))]
 
     base = [
-        ("noctalia", L("Noctalia — shell par défaut", "Noctalia — default shell")),
+        ("noctalia", tr("Noctalia — default shell")),
         ("dms", "DankMaterialShell — Material 3"),
     ]
     if desktop == "hyprland":
         base = base + [
             (
                 "caelestia",
-                L("Caelestia — setup Quickshell", "Caelestia — Quickshell setup"),
+                tr("Caelestia — Quickshell setup"),
             )
         ]
     return base
@@ -150,43 +141,40 @@ LATEST_SHELLS = {"noctalia": "Noctalia", "dms": "DMS", "caelestia": "Caelestia"}
 
 
 def _latest_title(name):
-    return L(f"{name} — dernière version (flake)", f"{name} — latest version (flake)")
+    return tr("{name} — latest version (flake)").format(name=name)
 
 
 def _default_shells():
-    return [("fish", L("Fish (recommandé)", "Fish (recommended)")), ("bash", "Bash")]
+    return [("fish", tr("Fish (recommended)")), ("bash", "Bash")]
 
 
 def _terminals():
     return [
-        ("ghostty", L("Ghostty (recommandé)", "Ghostty (recommended)")),
+        ("ghostty", tr("Ghostty (recommended)")),
         ("kitty", "Kitty"),
         ("alacritty", "Alacritty"),
-        ("foot", L("Foot (natif Wayland, léger)", "Foot (native Wayland, lightweight)")),
+        ("foot", tr("Foot (native Wayland, lightweight)")),
         ("wezterm", "WezTerm"),
     ]
 
 
 def _file_managers():
     return [
-        ("nautilus", L("Nautilus — GNOME Files (recommandé)", "Nautilus — GNOME Files (recommended)")),
-        ("dolphin", L("Dolphin — KDE", "Dolphin — KDE")),
-        ("thunar", L("Thunar — XFCE, léger", "Thunar — XFCE, lightweight")),
-        ("nemo", L("Nemo — Cinnamon", "Nemo — Cinnamon")),
+        ("nautilus", tr("Nautilus — GNOME Files (recommended)")),
+        ("dolphin", tr("Dolphin — KDE")),
+        ("thunar", tr("Thunar — XFCE, lightweight")),
+        ("nemo", tr("Nemo — Cinnamon")),
     ]
 
 
 def _editors():
     return [
-        ("zed", L("Zed — rapide, moderne (recommandé)", "Zed — fast, modern (recommended)")),
+        ("zed", tr("Zed — fast, modern (recommended)")),
         ("vscode", "Visual Studio Code"),
         ("neovim", "Neovim"),
         (
             "none",
-            L(
-                "Aucun — je gère mon propre éditeur (AppImage, Flatpak...)",
-                "None — I'll manage my own editor (AppImage, Flatpak...)",
-            ),
+            tr("None — I'll manage my own editor (AppImage, Flatpak...)"),
         ),
     ]
 
@@ -195,17 +183,11 @@ def _desktop_integrations():
     return [
         (
             "gnome",
-            L(
-                "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommandé)",
-                "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommended)",
-            ),
+            tr("GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommended)"),
         ),
         (
             "kde",
-            L(
-                "KWallet + xdg-desktop-portal-kde (utile si vous utilisez surtout des apps Qt/KDE)",
-                "KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)",
-            ),
+            tr("KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)"),
         ),
     ]
 
@@ -215,192 +197,189 @@ def _rgb_options():
         ("openlinkhub", "OpenLinkHub — Corsair (iCUE Link, Commander...)"),
         (
             "openrgb",
-            L(
-                "OpenRGB — marques mixtes (Razer, ASUS, MSI...)",
-                "OpenRGB — mixed brands (Razer, ASUS, MSI...)",
-            ),
+            tr("OpenRGB — mixed brands (Razer, ASUS, MSI...)"),
         ),
-        ("none", L("Aucune gestion RGB", "No RGB control")),
+        ("none", tr("No RGB control")),
     ]
 
 
 def _bootloaders():
     return [
-        ("limine", L("Limine (recommandé)", "Limine (recommended)")),
+        ("limine", tr("Limine (recommended)")),
         ("systemd-boot", "systemd-boot"),
     ]
 
 
 def _branches():
     return [
-        ("main", L("main — stable, ~toutes les 2 semaines (recommandé)", "main — stable, ~every 2 weeks (recommended)")),
-        ("testing", L("testing — ~tous les 2 jours, peut parfois casser", "testing — ~every 2 days, may occasionally break")),
-        ("dev", L("dev — derniers changements, le moins stable", "dev — latest changes, least stable")),
+        ("main", tr("main — stable, ~every 2 weeks (recommended)")),
+        ("testing", tr("testing — ~every 2 days, may occasionally break")),
+        ("dev", tr("dev — latest changes, least stable")),
     ]
 
 
 def _matrix():
     return [
-        ("none", L("Aucun", "None")),
+        ("none", tr("None")),
         ("element", "Element Desktop"),
-        ("cinny", L("Cinny (léger, web)", "Cinny (lightweight, web)")),
+        ("cinny", tr("Cinny (lightweight, web)")),
     ]
 
 
 def _discord():
     return [
-        ("vencord", L("Vencord (préinstallé)", "Vencord (pre-installed)")),
-        ("vanilla", L("Vanilla (sans patch)", "Vanilla (no patch)")),
-        ("none", L("Aucun", "None")),
+        ("vencord", tr("Vencord (pre-installed)")),
+        ("vanilla", tr("Vanilla (no patch)")),
+        ("none", tr("None")),
     ]
 
 
 def _telegram():
     return [
-        ("none", L("Aucun", "None")),
-        ("telegram", L("Telegram (client officiel)", "Telegram (official client)")),
-        ("ayugram", L("AyuGram (fork : mode fantôme, anti-suppression...)", "AyuGram (fork: ghost mode, anti-recall...)")),
+        ("none", tr("None")),
+        ("telegram", tr("Telegram (official client)")),
+        ("ayugram", tr("AyuGram (fork: ghost mode, anti-recall...)")),
     ]
 
 
 def _video_player():
     return [
-        ("vlc", L("VLC (plus large support de formats)", "VLC (widest format support)")),
-        ("clapper", L("Clapper (GTK4 moderne)", "Clapper (modern GTK4)")),
-        ("mpv", L("mpv (+ yt-dlp)", "mpv (+ yt-dlp)")),
-        ("celluloid", L("Celluloid (interface GTK pour mpv)", "Celluloid (GTK front-end for mpv)")),
-        ("none", L("Aucun", "None")),
+        ("vlc", tr("VLC (widest format support)")),
+        ("clapper", tr("Clapper (modern GTK4)")),
+        ("mpv", tr("mpv (+ yt-dlp)")),
+        ("celluloid", tr("Celluloid (GTK front-end for mpv)")),
+        ("none", tr("None")),
     ]
 
 
 def _torrent_client():
     return [
-        ("none", L("Aucun", "None")),
+        ("none", tr("None")),
         ("qbittorrent", "qBittorrent"),
-        ("fragments", L("Fragments (client GNOME minimaliste)", "Fragments (minimal GNOME client)")),
+        ("fragments", tr("Fragments (minimal GNOME client)")),
         ("deluge", "Deluge"),
     ]
 
 
 def _music_player():
     return [
-        ("spotify", L("Spotify + Spicetify", "Spotify + Spicetify")),
+        ("spotify", tr("Spotify + Spicetify")),
         ("ytmdesktop", "YouTube Music Desktop"),
         ("sonora", "Sonora (Spotify / YouTube Music)"),
-        ("none", L("Aucun", "None")),
+        ("none", tr("None")),
     ]
 
 
 def _mail_client():
     return [
-        ("none", L("Aucun", "None")),
-        ("thunderbird", L("Thunderbird (complet)", "Thunderbird (full-featured)")),
+        ("none", tr("None")),
+        ("thunderbird", tr("Thunderbird (full-featured)")),
         (
             "betterbird",
-            L("Betterbird (fork de Thunderbird)", "Betterbird (Thunderbird fork)"),
+            tr("Betterbird (Thunderbird fork)"),
         ),
-        ("geary", L("Geary (léger, GNOME)", "Geary (lightweight, GNOME)")),
+        ("geary", tr("Geary (lightweight, GNOME)")),
     ]
 
 
 def _password_manager():
     return [
-        ("none", L("Aucun", "None")),
-        ("bitwarden", L("Bitwarden (coffre synchronisé)", "Bitwarden (cloud-synced vault)")),
-        ("keepassxc", L("KeePassXC (coffre local, hors-ligne)", "KeePassXC (local, offline vault)")),
-        ("protonpass", L("Proton Pass (coffre synchronisé)", "Proton Pass (cloud-synced vault)")),
+        ("none", tr("None")),
+        ("bitwarden", tr("Bitwarden (cloud-synced vault)")),
+        ("keepassxc", tr("KeePassXC (local, offline vault)")),
+        ("protonpass", tr("Proton Pass (cloud-synced vault)")),
     ]
 
 
 def _spicetify_themes():
     return [
-        ("colorful", L("Colorful (défaut)", "Colorful (default)")),
+        ("colorful", tr("Colorful (default)")),
         ("comfy", "Comfy"),
     ]
 
 
 def _timezones():
     return [
-        ("Europe/Brussels", L("Belgique", "Belgium")),
+        ("Europe/Brussels", tr("Belgium")),
         ("Europe/Paris", "France"),
-        ("Europe/London", L("Royaume-Uni", "United Kingdom")),
-        ("Europe/Amsterdam", L("Pays-Bas", "Netherlands")),
-        ("Europe/Berlin", L("Allemagne", "Germany")),
-        ("Europe/Vienna", L("Autriche", "Austria")),
-        ("Europe/Zurich", L("Suisse", "Switzerland")),
+        ("Europe/London", tr("United Kingdom")),
+        ("Europe/Amsterdam", tr("Netherlands")),
+        ("Europe/Berlin", tr("Germany")),
+        ("Europe/Vienna", tr("Austria")),
+        ("Europe/Zurich", tr("Switzerland")),
         ("Europe/Luxembourg", "Luxembourg"),
-        ("Europe/Madrid", L("Espagne", "Spain")),
+        ("Europe/Madrid", tr("Spain")),
         ("Europe/Lisbon", "Portugal"),
-        ("Europe/Rome", L("Italie", "Italy")),
-        ("Europe/Warsaw", L("Pologne", "Poland")),
-        ("Europe/Prague", L("République Tchèque", "Czech Republic")),
-        ("Europe/Bratislava", L("Slovaquie", "Slovakia")),
-        ("Europe/Budapest", L("Hongrie", "Hungary")),
-        ("Europe/Bucharest", L("Roumanie", "Romania")),
-        ("Europe/Sofia", L("Bulgarie", "Bulgaria")),
-        ("Europe/Athens", L("Grèce", "Greece")),
-        ("Europe/Helsinki", L("Finlande", "Finland")),
-        ("Europe/Stockholm", L("Suède", "Sweden")),
-        ("Europe/Oslo", L("Norvège", "Norway")),
-        ("Europe/Copenhagen", L("Danemark", "Denmark")),
-        ("Europe/Tallinn", L("Estonie", "Estonia")),
-        ("Europe/Riga", L("Lettonie", "Latvia")),
-        ("Europe/Vilnius", L("Lituanie", "Lithuania")),
+        ("Europe/Rome", tr("Italy")),
+        ("Europe/Warsaw", tr("Poland")),
+        ("Europe/Prague", tr("Czech Republic")),
+        ("Europe/Bratislava", tr("Slovakia")),
+        ("Europe/Budapest", tr("Hungary")),
+        ("Europe/Bucharest", tr("Romania")),
+        ("Europe/Sofia", tr("Bulgaria")),
+        ("Europe/Athens", tr("Greece")),
+        ("Europe/Helsinki", tr("Finland")),
+        ("Europe/Stockholm", tr("Sweden")),
+        ("Europe/Oslo", tr("Norway")),
+        ("Europe/Copenhagen", tr("Denmark")),
+        ("Europe/Tallinn", tr("Estonia")),
+        ("Europe/Riga", tr("Latvia")),
+        ("Europe/Vilnius", tr("Lithuania")),
         ("Europe/Kiev", "Ukraine"),
-        ("Europe/Moscow", L("Russie (Moscou)", "Russia (Moscow)")),
-        ("Europe/Istanbul", L("Turquie", "Turkey")),
-        ("Atlantic/Reykjavik", L("Islande", "Iceland")),
-        ("Africa/Casablanca", L("Maroc", "Morocco")),
-        ("Africa/Algiers", L("Algérie", "Algeria")),
-        ("Africa/Tunis", L("Tunisie", "Tunisia")),
-        ("Africa/Cairo", L("Égypte", "Egypt")),
-        ("Africa/Johannesburg", L("Afrique du Sud", "South Africa")),
-        ("Africa/Lagos", L("Nigéria", "Nigeria")),
+        ("Europe/Moscow", tr("Russia (Moscow)")),
+        ("Europe/Istanbul", tr("Turkey")),
+        ("Atlantic/Reykjavik", tr("Iceland")),
+        ("Africa/Casablanca", tr("Morocco")),
+        ("Africa/Algiers", tr("Algeria")),
+        ("Africa/Tunis", tr("Tunisia")),
+        ("Africa/Cairo", tr("Egypt")),
+        ("Africa/Johannesburg", tr("South Africa")),
+        ("Africa/Lagos", tr("Nigeria")),
         ("Africa/Nairobi", "Kenya"),
-        ("America/New_York", L("États-Unis (Est)", "United States (East)")),
-        ("America/Chicago", L("États-Unis (Centre)", "United States (Central)")),
-        ("America/Denver", L("États-Unis (Montagne)", "United States (Mountain)")),
-        ("America/Los_Angeles", L("États-Unis (Ouest)", "United States (West)")),
-        ("America/Anchorage", L("États-Unis (Alaska)", "United States (Alaska)")),
-        ("Pacific/Honolulu", L("États-Unis (Hawaï)", "United States (Hawaii)")),
-        ("America/Toronto", L("Canada (Est)", "Canada (East)")),
-        ("America/Vancouver", L("Canada (Ouest)", "Canada (West)")),
-        ("America/Mexico_City", L("Mexique", "Mexico")),
-        ("America/Bogota", L("Colombie", "Colombia")),
-        ("America/Lima", L("Pérou", "Peru")),
-        ("America/Santiago", L("Chili", "Chile")),
-        ("America/Buenos_Aires", L("Argentine", "Argentina")),
-        ("America/Sao_Paulo", L("Brésil (São Paulo)", "Brazil (São Paulo)")),
+        ("America/New_York", tr("United States (East)")),
+        ("America/Chicago", tr("United States (Central)")),
+        ("America/Denver", tr("United States (Mountain)")),
+        ("America/Los_Angeles", tr("United States (West)")),
+        ("America/Anchorage", tr("United States (Alaska)")),
+        ("Pacific/Honolulu", tr("United States (Hawaii)")),
+        ("America/Toronto", tr("Canada (East)")),
+        ("America/Vancouver", tr("Canada (West)")),
+        ("America/Mexico_City", tr("Mexico")),
+        ("America/Bogota", tr("Colombia")),
+        ("America/Lima", tr("Peru")),
+        ("America/Santiago", tr("Chile")),
+        ("America/Buenos_Aires", tr("Argentina")),
+        ("America/Sao_Paulo", tr("Brazil (São Paulo)")),
         ("America/Caracas", "Venezuela"),
-        ("Asia/Dubai", L("Émirats Arabes Unis", "United Arab Emirates")),
-        ("Asia/Riyadh", L("Arabie Saoudite", "Saudi Arabia")),
-        ("Asia/Jerusalem", L("Israël", "Israel")),
-        ("Asia/Beirut", L("Liban", "Lebanon")),
-        ("Asia/Baghdad", L("Irak", "Iraq")),
+        ("Asia/Dubai", tr("United Arab Emirates")),
+        ("Asia/Riyadh", tr("Saudi Arabia")),
+        ("Asia/Jerusalem", tr("Israel")),
+        ("Asia/Beirut", tr("Lebanon")),
+        ("Asia/Baghdad", tr("Iraq")),
         ("Asia/Tehran", "Iran"),
         ("Asia/Karachi", "Pakistan"),
-        ("Asia/Kolkata", L("Inde", "India")),
+        ("Asia/Kolkata", tr("India")),
         ("Asia/Dhaka", "Bangladesh"),
         ("Asia/Colombo", "Sri Lanka"),
-        ("Asia/Kathmandu", L("Népal", "Nepal")),
+        ("Asia/Kathmandu", tr("Nepal")),
         ("Asia/Almaty", "Kazakhstan"),
-        ("Asia/Tashkent", L("Ouzbékistan", "Uzbekistan")),
-        ("Asia/Bangkok", L("Thaïlande", "Thailand")),
+        ("Asia/Tashkent", tr("Uzbekistan")),
+        ("Asia/Bangkok", tr("Thailand")),
         ("Asia/Ho_Chi_Minh", "Vietnam"),
-        ("Asia/Jakarta", L("Indonésie (Ouest)", "Indonesia (West)")),
-        ("Asia/Singapore", L("Singapour", "Singapore")),
-        ("Asia/Kuala_Lumpur", L("Malaisie", "Malaysia")),
+        ("Asia/Jakarta", tr("Indonesia (West)")),
+        ("Asia/Singapore", tr("Singapore")),
+        ("Asia/Kuala_Lumpur", tr("Malaysia")),
         ("Asia/Manila", "Philippines"),
-        ("Asia/Shanghai", L("Chine", "China")),
+        ("Asia/Shanghai", tr("China")),
         ("Asia/Hong_Kong", "Hong Kong"),
-        ("Asia/Taipei", L("Taïwan", "Taiwan")),
-        ("Asia/Seoul", L("Corée du Sud", "South Korea")),
-        ("Asia/Tokyo", L("Japon", "Japan")),
-        ("Australia/Perth", L("Australie (Ouest)", "Australia (West)")),
-        ("Australia/Adelaide", L("Australie (Centre)", "Australia (Central)")),
-        ("Australia/Sydney", L("Australie (Est)", "Australia (East)")),
-        ("Pacific/Auckland", L("Nouvelle-Zélande", "New Zealand")),
-        ("Pacific/Fiji", L("Fidji", "Fiji")),
+        ("Asia/Taipei", tr("Taiwan")),
+        ("Asia/Seoul", tr("South Korea")),
+        ("Asia/Tokyo", tr("Japan")),
+        ("Australia/Perth", tr("Australia (West)")),
+        ("Australia/Adelaide", tr("Australia (Central)")),
+        ("Australia/Sydney", tr("Australia (East)")),
+        ("Pacific/Auckland", tr("New Zealand")),
+        ("Pacific/Fiji", tr("Fiji")),
         ("UTC", "UTC"),
     ]
 
@@ -442,50 +421,50 @@ def _locales():
         ("da_DK.UTF-8", "Dansk (Danmark)"),
         ("fi_FI.UTF-8", "Suomi (Suomi)"),
         ("el_GR.UTF-8", "Ελληνικά (Ελλάδα)"),
-        ("C.UTF-8", L("C (POSIX minimal)", "C (minimal POSIX)")),
+        ("C.UTF-8", tr("C (minimal POSIX)")),
     ]
 
 
 def _keymaps():
     return [
         ("us", "English (US) QWERTY"),
-        ("us-acentos", L("English (US) International (touches mortes)", "English (US) International (dead keys)")),
+        ("us-acentos", tr("English (US) International (dead keys)")),
         ("uk", "English (UK) QWERTY"),
-        ("be-latin1", L("Belge AZERTY", "Belgian AZERTY")),
-        ("fr", L("Français AZERTY", "French AZERTY")),
-        ("fr-latin9", L("Français AZERTY (latin9)", "French AZERTY (latin9)")),
-        ("fr_CH", L("Français Suisse QWERTZ", "Swiss French QWERTZ")),
-        ("de", L("Allemand QWERTZ", "German QWERTZ")),
-        ("de-latin1", L("Allemand QWERTZ (latin1)", "German QWERTZ (latin1)")),
-        ("at", L("Autrichien QWERTZ", "Austrian QWERTZ")),
-        ("ch", L("Suisse QWERTZ", "Swiss QWERTZ")),
-        ("nl", L("Néerlandais QWERTY", "Dutch QWERTY")),
-        ("es", L("Espagnol QWERTY", "Spanish QWERTY")),
-        ("es-cp850", L("Espagnol QWERTY (cp850)", "Spanish QWERTY (cp850)")),
-        ("pt-latin1", L("Portugais QWERTY (latin1)", "Portuguese QWERTY (latin1)")),
-        ("br-abnt2", L("Portugais Brésilien ABNT2", "Brazilian Portuguese ABNT2")),
-        ("it", L("Italien QWERTY", "Italian QWERTY")),
-        ("it-latin1", L("Italien QWERTY (latin1)", "Italian QWERTY (latin1)")),
-        ("pl2", L("Polonais QWERTY", "Polish QWERTY")),
-        ("ru", L("Russe", "Russian")),
-        ("ua", L("Ukrainien", "Ukrainian")),
-        ("cz-lat2", L("Tchèque QWERTY (latin2)", "Czech QWERTY (latin2)")),
-        ("sk-qwerty", L("Slovaque QWERTY", "Slovak QWERTY")),
-        ("hu", L("Hongrois QWERTY", "Hungarian QWERTY")),
-        ("ro", L("Roumain QWERTY", "Romanian QWERTY")),
-        ("trq", L("Turc Q", "Turkish Q")),
-        ("trf", L("Turc F", "Turkish F")),
-        ("jp106", L("Japonais 106 touches", "Japanese 106-key")),
-        ("sv-latin1", L("Suédois QWERTY (latin1)", "Swedish QWERTY (latin1)")),
-        ("no-latin1", L("Norvégien QWERTY (latin1)", "Norwegian QWERTY (latin1)")),
-        ("dk-latin1", L("Danois QWERTY (latin1)", "Danish QWERTY (latin1)")),
-        ("fi-latin1", L("Finnois QWERTY (latin1)", "Finnish QWERTY (latin1)")),
-        ("gr", L("Grec", "Greek")),
-        ("il", L("Hébreu", "Hebrew")),
-        ("arabic", L("Arabe", "Arabic")),
+        ("be-latin1", tr("Belgian AZERTY")),
+        ("fr", tr("French AZERTY")),
+        ("fr-latin9", tr("French AZERTY (latin9)")),
+        ("fr_CH", trc("console keymap list", "Swiss French QWERTZ")),
+        ("de", tr("German QWERTZ")),
+        ("de-latin1", tr("German QWERTZ (latin1)")),
+        ("at", tr("Austrian QWERTZ")),
+        ("ch", tr("Swiss QWERTZ")),
+        ("nl", tr("Dutch QWERTY")),
+        ("es", tr("Spanish QWERTY")),
+        ("es-cp850", tr("Spanish QWERTY (cp850)")),
+        ("pt-latin1", tr("Portuguese QWERTY (latin1)")),
+        ("br-abnt2", tr("Brazilian Portuguese ABNT2")),
+        ("it", tr("Italian QWERTY")),
+        ("it-latin1", tr("Italian QWERTY (latin1)")),
+        ("pl2", tr("Polish QWERTY")),
+        ("ru", tr("Russian")),
+        ("ua", tr("Ukrainian")),
+        ("cz-lat2", tr("Czech QWERTY (latin2)")),
+        ("sk-qwerty", tr("Slovak QWERTY")),
+        ("hu", tr("Hungarian QWERTY")),
+        ("ro", tr("Romanian QWERTY")),
+        ("trq", tr("Turkish Q")),
+        ("trf", tr("Turkish F")),
+        ("jp106", tr("Japanese 106-key")),
+        ("sv-latin1", tr("Swedish QWERTY (latin1)")),
+        ("no-latin1", tr("Norwegian QWERTY (latin1)")),
+        ("dk-latin1", tr("Danish QWERTY (latin1)")),
+        ("fi-latin1", tr("Finnish QWERTY (latin1)")),
+        ("gr", tr("Greek")),
+        ("il", tr("Hebrew")),
+        ("arabic", tr("Arabic")),
         ("dvorak", "Dvorak (US)"),
-        ("dvorak-l", L("Dvorak gauche", "Dvorak left")),
-        ("dvorak-r", L("Dvorak droite", "Dvorak right")),
+        ("dvorak-l", tr("Dvorak left")),
+        ("dvorak-r", tr("Dvorak right")),
         ("colemak", "Colemak"),
     ]
 
@@ -498,31 +477,31 @@ def _gfx_keyboard_layouts():
     in _validate() before writing roudix.keyboardLayout/Variant.
     """
     return [
-        ("us:intl", L("US International (touches mortes, recommandé)", "US International (dead keys, recommended)")),
-        ("us:", L("US Basique QWERTY (sans variante)", "US Basic QWERTY (no variant)")),
-        ("gb:", L("Britannique QWERTY", "British QWERTY")),
-        ("be:", L("Belge AZERTY", "Belgian AZERTY")),
-        ("fr:", L("Français AZERTY", "French AZERTY")),
-        ("fr:bepo", L("Français BÉPO", "French BÉPO")),
-        ("de:", L("Allemand QWERTZ", "German QWERTZ")),
-        ("ch:fr", L("Suisse (romand) QWERTZ", "Swiss French QWERTZ")),
-        ("ch:de", L("Suisse (allemand) QWERTZ", "Swiss German QWERTZ")),
-        ("nl:", L("Néerlandais QWERTY", "Dutch QWERTY")),
-        ("es:", L("Espagnol QWERTY", "Spanish QWERTY")),
-        ("it:", L("Italien QWERTY", "Italian QWERTY")),
-        ("pt:", L("Portugais QWERTY", "Portuguese QWERTY")),
-        ("pl:", L("Polonais QWERTY", "Polish QWERTY")),
-        ("ru:", L("Russe", "Russian")),
-        ("ua:", L("Ukrainien", "Ukrainian")),
-        ("jp:", L("Japonais", "Japanese")),
-        ("us:dvorak", L("Dvorak (US)", "Dvorak (US)")),
-        ("us:colemak", L("Colemak (US)", "Colemak (US)")),
+        ("us:intl", tr("US International (dead keys, recommended)")),
+        ("us:", tr("US Basic QWERTY (no variant)")),
+        ("gb:", tr("British QWERTY")),
+        ("be:", tr("Belgian AZERTY")),
+        ("fr:", tr("French AZERTY")),
+        ("fr:bepo", tr("French BÉPO")),
+        ("de:", tr("German QWERTZ")),
+        ("ch:fr", trc("graphical keyboard layout list", "Swiss French QWERTZ")),
+        ("ch:de", tr("Swiss German QWERTZ")),
+        ("nl:", tr("Dutch QWERTY")),
+        ("es:", tr("Spanish QWERTY")),
+        ("it:", tr("Italian QWERTY")),
+        ("pt:", tr("Portuguese QWERTY")),
+        ("pl:", tr("Polish QWERTY")),
+        ("ru:", tr("Russian")),
+        ("ua:", tr("Ukrainian")),
+        ("jp:", tr("Japanese")),
+        ("us:dvorak", tr("Dvorak (US)")),
+        ("us:colemak", tr("Colemak (US)")),
     ]
 
 
 class OptionsPage(Adw.NavigationPage):
     def __init__(self, state, on_next):
-        super().__init__(title=L("Options", "Options"))
+        super().__init__(title=tr("Options"))
         self.state = state
         self.on_next = on_next
         self._rows = {}  # id(row) -> value list
@@ -539,19 +518,26 @@ class OptionsPage(Adw.NavigationPage):
         scroller.set_child(box)
 
         # ── Utilisateur ──
-        user_group = Adw.PreferencesGroup(title=L("Utilisateur", "User"))
-        self.username_row = Adw.EntryRow(title=L("Nom d'utilisateur", "Username"))
+        user_group = Adw.PreferencesGroup(title=tr("User"))
+        self.username_row = Adw.EntryRow(title=tr("Username"))
         self.username_row.set_text(state.username)
         user_group.add(self.username_row)
 
 
-        self.password_row = Adw.PasswordEntryRow(title=L("Mot de passe", "Password"))
+        self.password_row = Adw.PasswordEntryRow(title=tr("Password"))
         user_group.add(self.password_row)
+        # Already-installed NixOS: the account exists and keeps its password,
+        # so the password rows are not asked at all.
+        self._existing = state.mode == existing_nixos.MODE_EXISTING
 
         self.password_confirm_row = Adw.PasswordEntryRow(
-            title=L("Confirmer le mot de passe", "Confirm password")
+            title=tr("Confirm password")
         )
         user_group.add(self.password_confirm_row)
+        if self._existing:
+            self.password_row.set_visible(False)
+            self.password_confirm_row.set_visible(False)
+            self.username_row.set_editable(False)
 
         self.password_warning = Gtk.Label(
             css_classes=["error", "caption"],
@@ -570,10 +556,7 @@ class OptionsPage(Adw.NavigationPage):
         seeded = host_defaults.seed_state(state, state.hostname, allowed=self._seed_allowed())
         if seeded:
             box.append(Gtk.Label(
-                label=L(
-                    f"Réponses préremplies avec les valeurs du profil « {state.hostname} ».",
-                    f"Answers pre-filled with the \u201c{state.hostname}\u201d profile's values.",
-                ),
+                label=tr("Answers pre-filled with the “{hostname}” profile's values.").format(hostname=state.hostname),
                 css_classes=["dim-label", "caption"], wrap=True, xalign=0,
             ))
 
@@ -590,22 +573,22 @@ class OptionsPage(Adw.NavigationPage):
         if cpu_detected:
             state.cpu = cpu_detected
 
-        hw_group = Adw.PreferencesGroup(title=L("Matériel", "Hardware"))
+        hw_group = Adw.PreferencesGroup(title=tr("Hardware"))
         self.gpu_row = self._combo(
-            L("GPU", "GPU"),
+            tr("GPU"),
             _mark_detected(
                 [
                     ("amd", "AMD — RDNA / GCN 3+"),
                     (
                         "amd-igpu",
-                        L("AMD intégré (APU Ryzen)", "AMD integrated (Ryzen APU)"),
+                        tr("AMD integrated (Ryzen APU)"),
                     ),
                     (
                         "amd-legacy",
-                        L("AMD legacy — GCN 1.x/2.x", "AMD legacy — GCN 1.x/2.x"),
+                        tr("AMD legacy — GCN 1.x/2.x"),
                     ),
                     ("nvidia", "NVIDIA"),
-                    ("intel", L("Intel (intégré / Arc)", "Intel (integrated / Arc)")),
+                    ("intel", tr("Intel (integrated / Arc)")),
                 ],
                 gpu_detected,
             ),
@@ -614,19 +597,13 @@ class OptionsPage(Adw.NavigationPage):
         hw_group.add(self.gpu_row)
 
         self.nvidia_laptop_row = Adw.SwitchRow(
-            title=L(
-                "Laptop Optimus (Intel/AMD + NVIDIA dGPU)",
-                "Optimus laptop (Intel/AMD + NVIDIA dGPU)",
-            )
+            title=tr("Optimus laptop (Intel/AMD + NVIDIA dGPU)")
         )
         self.nvidia_laptop_row.set_active(state.nvidia_laptop)
         hw_group.add(self.nvidia_laptop_row)
 
         self.laptop_row = Adw.SwitchRow(
-            title=L(
-                "Ordinateur portable (TLP)",
-                "Laptop (TLP)",
-            )
+            title=tr("Laptop (TLP)")
         )
         self.laptop_row.set_active(state.laptop)
         hw_group.add(self.laptop_row)
@@ -635,14 +612,9 @@ class OptionsPage(Adw.NavigationPage):
         # modules/system/power/laptop.nix) — surface the same trade-off
         # here that the gaming module warns about at eval time.
         self.laptop_gaming_note = Gtk.Label(
-            label=L(
-                "Désactive tuned au profit de TLP : si le jeu est aussi activé, "
-                "game-performance lancera les jeux normalement mais sans le "
-                "profil CPU roudix-gaming.",
-                "Disables tuned in favor of TLP: if gaming is also enabled, "
+            label=tr("Disables tuned in favor of TLP: if gaming is also enabled, "
                 "game-performance will still launch games normally but "
-                "without the roudix-gaming CPU profile.",
-            ),
+                "without the roudix-gaming CPU profile."),
             css_classes=["dim-label", "caption"],
             wrap=True,
             xalign=0,
@@ -650,19 +622,13 @@ class OptionsPage(Adw.NavigationPage):
         )
 
         self.thinkpad_row = Adw.SwitchRow(
-            title=L(
-                "ThinkPad (seuils de charge batterie 40/80%)",
-                "ThinkPad (40/80% battery charge thresholds)",
-            )
+            title=tr("ThinkPad (40/80% battery charge thresholds)")
         )
         self.thinkpad_row.set_active(state.laptop_thinkpad)
         hw_group.add(self.thinkpad_row)
 
         self.undervolt_row = Adw.SwitchRow(
-            title=L(
-                "Undervolting GPU AMD (lact, amdgpu.ppfeaturemask)",
-                "AMD GPU undervolting (lact, amdgpu.ppfeaturemask)",
-            )
+            title=tr("AMD GPU undervolting (lact, amdgpu.ppfeaturemask)")
         )
         self.undervolt_row.set_active(state.undervolt_enable)
         hw_group.add(self.undervolt_row)
@@ -674,17 +640,14 @@ class OptionsPage(Adw.NavigationPage):
         )
         hw_group.add(self.cpu_row)
 
-        self.kernel_row = self._combo(L("Kernel", "Kernel"), _kernels(), state.kernel)
+        self.kernel_row = self._combo(tr("Kernel"), _kernels(), state.kernel)
         hw_group.add(self.kernel_row)
         box.append(hw_group)
         box.append(self.laptop_gaming_note)
 
         if gpu_detected or cpu_detected:
             hw_note = Gtk.Label(
-                label=L(
-                    "GPU / CPU détectés automatiquement — modifiable ci-dessus si besoin.",
-                    "GPU / CPU auto-detected — change them above if needed.",
-                ),
+                label=tr("GPU / CPU auto-detected — change them above if needed."),
                 css_classes=["dim-label", "caption"],
                 wrap=True,
                 xalign=0,
@@ -696,30 +659,30 @@ class OptionsPage(Adw.NavigationPage):
         self._sync_kernel_row()
 
         # ── Navigateur ──
-        browser_group = Adw.PreferencesGroup(title=L("Navigateur", "Browser"))
+        browser_group = Adw.PreferencesGroup(title=tr("Browser"))
         browsers = _browsers()
         self.browser_row = self._combo(
-            L("Navigateur", "Browser"),
+            tr("Browser"),
             browsers,
             state.browser if state.browser in dict(browsers) else "brave",
         )
         browser_group.add(self.browser_row)
 
         self.brave_variant_row = self._combo(
-            L("Variante Brave", "Brave variant"), _brave_variants(), "brave"
+            tr("Brave variant"), _brave_variants(), "brave"
         )
         browser_group.add(self.brave_variant_row)
 
         self.zen_row = Adw.SwitchRow(
-            title=L("Installer Zen Browser (en plus)", "Also install Zen Browser")
+            title=tr("Also install Zen Browser")
         )
         self.zen_row.set_active(state.zen_browser)
         browser_group.add(self.zen_row)
 
         self.zen_variant_row = self._combo(
-            L("Canal Zen", "Zen channel"),
+            tr("Zen channel"),
             [
-                ("twilight", L("Twilight (défaut)", "Twilight (default)")),
+                ("twilight", tr("Twilight (default)")),
                 ("beta", "Beta"),
             ],
             state.zen_variant,
@@ -727,19 +690,19 @@ class OptionsPage(Adw.NavigationPage):
         browser_group.add(self.zen_variant_row)
 
         self.zen_mods_row = Adw.EntryRow(
-            title=L("Mods Zen (séparés par des virgules)", "Zen mods (comma-separated)")
+            title=tr("Zen mods (comma-separated)")
         )
         self.zen_mods_row.set_text(", ".join(state.zen_mods))
         browser_group.add(self.zen_mods_row)
 
         self.zen_sine_row = Adw.SwitchRow(
-            title=L("Activer Sine (moteur de mods Zen)", "Enable Sine (Zen mod engine)")
+            title=tr("Enable Sine (Zen mod engine)")
         )
         self.zen_sine_row.set_active(state.zen_sine_enable)
         browser_group.add(self.zen_sine_row)
 
         self.zen_sine_mods_row = Adw.EntryRow(
-            title=L("Mods Sine (séparés par des virgules)", "Sine mods (comma-separated)")
+            title=tr("Sine mods (comma-separated)")
         )
         self.zen_sine_mods_row.set_text(", ".join(state.zen_sine_mods))
         browser_group.add(self.zen_sine_mods_row)
@@ -748,16 +711,16 @@ class OptionsPage(Adw.NavigationPage):
         self._sync_zen_rows()
 
         # ── Bureau ──
-        desktop_group = Adw.PreferencesGroup(title=L("Bureau", "Desktop"))
+        desktop_group = Adw.PreferencesGroup(title=tr("Desktop"))
         self.desktop_row = self._combo(
-            L("Compositeur / bureau", "Compositor / desktop"),
+            tr("Compositor / desktop"),
             _desktops(),
             state.desktop,
         )
         desktop_group.add(self.desktop_row)
 
         self.shell_row = self._combo(
-            L("Shell graphique (bar/UI)", "Graphical shell (bar/UI)"),
+            tr("Graphical shell (bar/UI)"),
             _shells(state.desktop),
             state.desktop_shell,
         )
@@ -769,38 +732,24 @@ class OptionsPage(Adw.NavigationPage):
         # compositor / shell is selected (see _sync_latest_rows).
         self.latest_de_row = Adw.SwitchRow(
             title=_latest_title("Niri"),
-            subtitle=L(
-                "Désactivé : version de nixpkgs",
-                "Off: nixpkgs version",
-            ),
+            subtitle=tr("Off: nixpkgs version"),
         )
         self.latest_de_row.set_active(False)
         desktop_group.add(self.latest_de_row)
 
         self.latest_shell_row = Adw.SwitchRow(
             title=_latest_title("Noctalia"),
-            subtitle=L(
-                "Désactivé : version de nixpkgs",
-                "Off: nixpkgs version",
-            ),
+            subtitle=tr("Off: nixpkgs version"),
         )
         self.latest_shell_row.set_active(False)
         desktop_group.add(self.latest_shell_row)
 
         self.latest_note = Gtk.Label(
-            label=L(
-                "⚠ Les configurations Roudix sont écrites en priorité pour les "
-                "versions flake (les plus récentes). Sur la version nixpkgs, une "
-                "erreur de configuration disant qu'une option, un réglage ou une "
-                "clé « n'existe pas » est normale : elle a été ajoutée après la "
-                "version de nixpkgs. Patiente que nixpkgs la rattrape, ou active "
-                "la dernière version.",
-                "⚠ Roudix configurations are written for the flake (latest) "
+            label=tr("⚠ Roudix configurations are written for the flake (latest) "
                 "versions first. On the nixpkgs version, a configuration error "
                 "saying that an option, a setting or a key \"does not exist\" is "
                 "normal: it was added after the nixpkgs version. Wait for nixpkgs "
-                "to catch up, or turn the latest version on.",
-            ),
+                "to catch up, or turn the latest version on."),
             css_classes=["dim-label", "caption"],
             wrap=True,
             xalign=0,
@@ -813,36 +762,33 @@ class OptionsPage(Adw.NavigationPage):
         desktop_group.add(self.latest_note)
 
         self.default_shell_row = self._combo(
-            L("Shell par défaut", "Default shell"),
+            tr("Default shell"),
             _default_shells(),
             state.default_shell,
         )
         desktop_group.add(self.default_shell_row)
 
         self.terminal_row = self._combo(
-            L("Terminal", "Terminal"), _terminals(), state.terminal
+            tr("Terminal"), _terminals(), state.terminal
         )
         desktop_group.add(self.terminal_row)
 
         self.file_manager_row = self._combo(
-            L("Gestionnaire de fichiers", "File manager"),
+            tr("File manager"),
             _file_managers(),
             state.file_manager,
         )
         desktop_group.add(self.file_manager_row)
 
         self.editor_row = self._combo(
-            L("Éditeur de code", "Code editor"),
+            tr("Code editor"),
             _editors(),
             state.editor,
         )
         desktop_group.add(self.editor_row)
 
         self.desktop_integration_row = self._combo(
-            L(
-                "Trousseau / xdg-desktop-portal",
-                "Keyring / xdg-desktop-portal",
-            ),
+            tr("Keyring / xdg-desktop-portal"),
             _desktop_integrations(),
             state.desktop_integration,
         )
@@ -860,80 +806,65 @@ class OptionsPage(Adw.NavigationPage):
         )
 
         # ── System ──
-        sys_group = Adw.PreferencesGroup(title=L("Système", "System"))
+        sys_group = Adw.PreferencesGroup(title=tr("System"))
         self.vm_guest_row = Adw.SwitchRow(
-            title=L("Installation dans une VM", "Installing inside a VM")
+            title=tr("Installing inside a VM")
         )
         self.vm_guest_row.set_active(state.vm_guest)
         sys_group.add(self.vm_guest_row)
 
         self.gaming_row = Adw.SwitchRow(
-            title=L(
-                "Paquets gaming (Steam, Wine, Lutris…)",
-                "Gaming packages (Steam, Wine, Lutris…)",
-            )
+            title=tr("Gaming packages (Steam, Wine, Lutris…)")
         )
         self.gaming_row.set_active(state.gaming)
         sys_group.add(self.gaming_row)
 
         self.ananicy_row = Adw.SwitchRow(
-            title=L(
-                "Ananicy (ordonnancement auto pour le gaming)",
-                "Ananicy (automatic gaming scheduling)",
-            )
+            title=tr("Ananicy (automatic gaming scheduling)")
         )
         self.ananicy_row.set_active(state.ananicy_enable)
         sys_group.add(self.ananicy_row)
 
         self.millennium_row = Adw.SwitchRow(
-            title=L(
-                "Millennium (client Steam modifié : thèmes et plugins)",
-                "Millennium (modded Steam client: themes and plugins)",
-            ),
-            subtitle=L(
-                "Mod non officiel — désactivé = Steam standard",
-                "Unofficial mod — off = stock Steam",
-            ),
+            title=tr("Millennium (modded Steam client: themes and plugins)"),
+            subtitle=tr("Unofficial mod — off = stock Steam"),
         )
         self.millennium_row.set_active(state.gaming_steam_millennium)
         sys_group.add(self.millennium_row)
 
         self.gaming_apps_rows = {}
-        for attr, title_fr, title_en, default in (
-            ("lutris", "Lutris", "Lutris", state.gaming_apps_lutris),
-            ("heroic", "Heroic Games Launcher (Epic/GOG/Amazon)", "Heroic Games Launcher (Epic/GOG/Amazon)", state.gaming_apps_heroic),
-            ("faugus", "Faugus Launcher", "Faugus Launcher", state.gaming_apps_faugus),
-            ("prismlauncher", "Prism Launcher (Minecraft)", "Prism Launcher (Minecraft)", state.gaming_apps_prismlauncher),
-            ("modrinth", "Modrinth App (alternative à Prism)", "Modrinth App (alternative to Prism)", state.gaming_apps_modrinth),
-            ("vintagestory", "Vintage Story", "Vintage Story", state.gaming_apps_vintagestory),
-            ("mangohud", "MangoHud (overlay de perfs en jeu)", "MangoHud (in-game perf overlay)", state.gaming_apps_mangohud),
+        for attr, title, default in (
+            ("lutris", tr_noop("Lutris"), state.gaming_apps_lutris),
+            ("heroic", tr_noop("Heroic Games Launcher (Epic/GOG/Amazon)"), state.gaming_apps_heroic),
+            ("faugus", tr_noop("Faugus Launcher"), state.gaming_apps_faugus),
+            ("prismlauncher", tr_noop("Prism Launcher (Minecraft)"), state.gaming_apps_prismlauncher),
+            ("modrinth", tr_noop("Modrinth App (alternative to Prism)"), state.gaming_apps_modrinth),
+            ("vintagestory", tr_noop("Vintage Story"), state.gaming_apps_vintagestory),
+            ("mangohud", tr_noop("MangoHud (in-game perf overlay)"), state.gaming_apps_mangohud),
         ):
-            row = Adw.SwitchRow(title=L(title_fr, title_en))
+            row = Adw.SwitchRow(title=tr(title))
             row.set_active(default)
             sys_group.add(row)
             self.gaming_apps_rows[attr] = row
 
         self.mesa_git_row = Adw.SwitchRow(
-            title=L(
-                "Mesa git (pilotes graphiques bleeding edge)",
-                "Mesa git (bleeding-edge graphics drivers)",
-            )
+            title=tr("Mesa git (bleeding-edge graphics drivers)")
         )
         self.mesa_git_row.set_active(state.mesa_use_git)
         sys_group.add(self.mesa_git_row)
 
         self.timezone_row = self._combo(
-            L("Fuseau horaire", "Timezone"), _timezones(), state.timezone
+            tr("Timezone"), _timezones(), state.timezone
         )
         sys_group.add(self.timezone_row)
 
         self.locale_row = self._combo(
-            L("Langue système", "System language"), _locales(), state.locale
+            tr("System language"), _locales(), state.locale
         )
         sys_group.add(self.locale_row)
 
         self.keymap_row = self._combo(
-            L("Disposition clavier (console)", "Keyboard layout (console)"),
+            tr("Keyboard layout (console)"),
             _keymaps(),
             state.keymap,
         )
@@ -945,10 +876,7 @@ class OptionsPage(Adw.NavigationPage):
             else f"{state.keyboard_layout}:"
         )
         self.gfx_keyboard_row = self._combo(
-            L(
-                "Disposition clavier graphique (Wayland)",
-                "Graphical keyboard layout (Wayland)",
-            ),
+            tr("Graphical keyboard layout (Wayland)"),
             _gfx_keyboard_layouts(),
             _initial_gfx_value,
         )
@@ -959,31 +887,31 @@ class OptionsPage(Adw.NavigationPage):
         # ── RGB ──
         rgb_group = Adw.PreferencesGroup(title="RGB")
         self.rgb_row = self._combo(
-            L("Contrôleur RGB", "RGB controller"), _rgb_options(), state.rgb
+            tr("RGB controller"), _rgb_options(), state.rgb
         )
         rgb_group.add(self.rgb_row)
 
         self.memory_rgb_row = Adw.SwitchRow(
-            title=L("RGB RAM (Corsair DDR4/DDR5)", "RAM RGB (Corsair DDR4/DDR5)")
+            title=tr("RAM RGB (Corsair DDR4/DDR5)")
         )
         self.memory_rgb_row.set_active(state.memory_rgb_enable)
         rgb_group.add(self.memory_rgb_row)
 
         self.memory_type_row = self._combo(
-            L("Type de RAM", "RAM type"),
+            tr("RAM type"),
             [("ddr5", "DDR5"), ("ddr4", "DDR4")],
             state.memory_type,
         )
         rgb_group.add(self.memory_type_row)
 
         self.memory_smbus_row = Adw.EntryRow(
-            title=L("SMBus (ex: i2c-1)", "SMBus (e.g. i2c-1)")
+            title=tr("SMBus (e.g. i2c-1)")
         )
         self.memory_smbus_row.set_text(state.memory_smbus)
         rgb_group.add(self.memory_smbus_row)
 
         self.memory_sku_row = Adw.EntryRow(
-            title=L("SKU RAM (numéro de pièce)", "RAM SKU (part number)")
+            title=tr("RAM SKU (part number)")
         )
         self.memory_sku_row.set_text(state.memory_sku)
         rgb_group.add(self.memory_sku_row)
@@ -991,12 +919,8 @@ class OptionsPage(Adw.NavigationPage):
         self._sync_memory_rows()
 
         self.rgb_note = rgb_note = Gtk.Label(
-            label=L(
-                "SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via "
-                "« i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' ».",
-                "SMBus / RAM SKU aren't auto-detected — find them via "
-                "\"i2cdetect -l\" and \"sudo dmidecode -t memory | grep 'Part Number'\".",
-            ),
+            label=tr("SMBus / RAM SKU aren't auto-detected — find them via "
+                "\"i2cdetect -l\" and \"sudo dmidecode -t memory | grep 'Part Number'\"."),
             css_classes=["dim-label", "caption"],
             wrap=True,
             xalign=0,
@@ -1004,12 +928,9 @@ class OptionsPage(Adw.NavigationPage):
         box.append(rgb_note)
 
         # ── Extras ──
-        extra_group = Adw.PreferencesGroup(title=L("Extras", "Extras"))
+        extra_group = Adw.PreferencesGroup(title=tr("Extras"))
         self.gta_fix_row = Adw.SwitchRow(
-            title=L(
-                "Fix GTA Online (bloque l'IP anti-cheat Linux)",
-                "GTA Online fix (blocks the Linux anti-cheat IP)",
-            )
+            title=tr("GTA Online fix (blocks the Linux anti-cheat IP)")
         )
         self.gta_fix_row.set_active(state.gta_fix)
         extra_group.add(self.gta_fix_row)
@@ -1019,44 +940,41 @@ class OptionsPage(Adw.NavigationPage):
         extra_group.add(self.flatpak_row)
 
         self.virt_row = Adw.SwitchRow(
-            title=L(
-                "Virtualisation (libvirt, virt-manager)",
-                "Virtualization (libvirt, virt-manager)",
-            )
+            title=tr("Virtualization (libvirt, virt-manager)")
         )
         self.virt_row.set_active(state.virtualization)
         extra_group.add(self.virt_row)
 
         self.autoupdate_row = Adw.SwitchRow(
-            title=L("Mises à jour automatiques", "Automatic updates")
+            title=tr("Automatic updates")
         )
         self.autoupdate_row.set_active(state.autoupdate)
         extra_group.add(self.autoupdate_row)
 
         self.autoupdate_interval_row = Adw.EntryRow(
-            title=L("Intervalle (ex: 1h, 6h, 24h)", "Interval (e.g. 1h, 6h, 24h)")
+            title=tr("Interval (e.g. 1h, 6h, 24h)")
         )
         self.autoupdate_interval_row.set_text(state.autoupdate_interval)
         extra_group.add(self.autoupdate_interval_row)
 
         self.branch_row = self._combo(
-            L("Branche (installation + mises à jour)", "Branch (install + updates)"),
+            tr("Branch (install + updates)"),
             _branches(), state.branch,
         )
         extra_group.add(self.branch_row)
 
         self.bootloader_row = self._combo(
-            L("Bootloader", "Bootloader"), _bootloaders(), state.bootloader
+            tr("Bootloader"), _bootloaders(), state.bootloader
         )
         extra_group.add(self.bootloader_row)
 
         self.matrix_row = self._combo(
-            L("Client Matrix", "Matrix client"), _matrix(), state.matrix_client
+            tr("Matrix client"), _matrix(), state.matrix_client
         )
         extra_group.add(self.matrix_row)
 
         self.discord_row = self._combo(
-            L("Discord", "Discord"), _discord(), state.discord
+            tr("Discord"), _discord(), state.discord
         )
         extra_group.add(self.discord_row)
 
@@ -1066,27 +984,27 @@ class OptionsPage(Adw.NavigationPage):
         extra_group.add(self.telegram_row)
 
         self.video_player_row = self._combo(
-            L("Lecteur vidéo", "Video player"), _video_player(), state.video_player
+            tr("Video player"), _video_player(), state.video_player
         )
         extra_group.add(self.video_player_row)
 
         self.torrent_client_row = self._combo(
-            L("Client torrent", "Torrent client"), _torrent_client(), state.torrent_client
+            tr("Torrent client"), _torrent_client(), state.torrent_client
         )
         extra_group.add(self.torrent_client_row)
 
         self.music_player_row = self._combo(
-            L("Lecteur de musique", "Music player"), _music_player(), state.music_player
+            tr("Music player"), _music_player(), state.music_player
         )
         extra_group.add(self.music_player_row)
 
         self.mail_client_row = self._combo(
-            L("Client mail", "Mail client"), _mail_client(), state.mail_client
+            tr("Mail client"), _mail_client(), state.mail_client
         )
         extra_group.add(self.mail_client_row)
 
         self.password_manager_row = self._combo(
-            L("Gestionnaire de mots de passe", "Password manager"), _password_manager(), state.password_manager
+            tr("Password manager"), _password_manager(), state.password_manager
         )
         extra_group.add(self.password_manager_row)
 
@@ -1100,10 +1018,7 @@ class OptionsPage(Adw.NavigationPage):
         # ── Apps ──
         apps_group = Adw.PreferencesGroup(
             title="Apps",
-            description=L(
-                "Active celles que tu veux préinstallées.",
-                "Turn on the ones you want preinstalled.",
-            ),
+            description=tr("Turn on the ones you want preinstalled."),
         )
         self.app_gimp_row = Adw.SwitchRow(title="GIMP")
         self.app_gimp_row.set_active(state.app_gimp)
@@ -1114,27 +1029,24 @@ class OptionsPage(Adw.NavigationPage):
         apps_group.add(self.app_inkscape_row)
 
         self.spicetify_theme_row = self._combo(
-            L("Thème Spicetify", "Spicetify theme"), _spicetify_themes(), state.spicetify_theme
+            tr("Spicetify theme"), _spicetify_themes(), state.spicetify_theme
         )
         apps_group.add(self.spicetify_theme_row)
 
         self.spicetify_color_scheme_row = Adw.EntryRow(
-            title=L(
-                "Color scheme Spicetify (vide = défaut du thème)",
-                "Spicetify color scheme (empty = theme default)",
-            )
+            title=tr("Spicetify color scheme (empty = theme default)")
         )
         self.spicetify_color_scheme_row.set_text(state.spicetify_color_scheme)
         apps_group.add(self.spicetify_color_scheme_row)
 
         self.spicetify_adblock_row = Adw.SwitchRow(
-            title=L("Extension Adblock (Spicetify)", "Adblock extension (Spicetify)")
+            title=tr("Adblock extension (Spicetify)")
         )
         self.spicetify_adblock_row.set_active(state.spicetify_adblock)
         apps_group.add(self.spicetify_adblock_row)
 
         self.spicetify_hide_podcasts_row = Adw.SwitchRow(
-            title=L("Masquer les podcasts (Spicetify)", "Hide podcasts (Spicetify)")
+            title=tr("Hide podcasts (Spicetify)")
         )
         self.spicetify_hide_podcasts_row.set_active(state.spicetify_hide_podcasts)
         apps_group.add(self.spicetify_hide_podcasts_row)
@@ -1153,24 +1065,21 @@ class OptionsPage(Adw.NavigationPage):
 
         self.app_signal_row = Adw.SwitchRow(
             title="Signal",
-            subtitle=L("Messagerie chiffrée de bout en bout", "End-to-end encrypted messenger"),
+            subtitle=tr("End-to-end encrypted messenger"),
         )
         self.app_signal_row.set_active(state.app_signal)
         apps_group.add(self.app_signal_row)
 
         self.app_zapzap_row = Adw.SwitchRow(
             title="ZapZap",
-            subtitle=L("Client WhatsApp non-officiel", "Unofficial WhatsApp client"),
+            subtitle=tr("Unofficial WhatsApp client"),
         )
         self.app_zapzap_row.set_active(state.app_zapzap)
         apps_group.add(self.app_zapzap_row)
 
         self.app_fluxer_row = Adw.SwitchRow(
             title="Fluxer",
-            subtitle=L(
-                "Alternative à Discord, auto-hébergeable (indépendant du choix Discord ci-dessus)",
-                "Self-hostable Discord alternative (independent of the Discord choice above)",
-            ),
+            subtitle=tr("Self-hostable Discord alternative (independent of the Discord choice above)"),
         )
         self.app_fluxer_row.set_active(state.app_fluxer)
         apps_group.add(self.app_fluxer_row)
@@ -1179,12 +1088,9 @@ class OptionsPage(Adw.NavigationPage):
         self._sync_spicetify_rows()
 
         # ── Content Creation ──
-        cc_group = Adw.PreferencesGroup(title=L("Création de contenu", "Content Creation"))
+        cc_group = Adw.PreferencesGroup(title=tr("Content Creation"))
         self.content_creation_row = Adw.SwitchRow(
-            title=L(
-                "Activer les outils de création de contenu",
-                "Enable content-creation tooling",
-            )
+            title=tr("Enable content-creation tooling")
         )
         self.content_creation_row.set_active(state.content_creation_enable)
         cc_group.add(self.content_creation_row)
@@ -1198,50 +1104,47 @@ class OptionsPage(Adw.NavigationPage):
         # option (actively maintained successor from the Aitum team,
         # independent encoders/bitrate per platform).
         self.obs_plugin_rows = {}
-        for attr, title_fr, title_en, default in (
-            ("vkcapture", "VKCapture (capture jeux Vulkan/OpenGL)", "VKCapture (Vulkan/OpenGL game capture)", state.obs_plugin_vkcapture),
-            ("pipewire_audio", "Pipewire Audio Capture (audio par application)", "Pipewire Audio Capture (per-app audio)", state.obs_plugin_pipewire_audio_capture),
-            ("background_removal", "Background Removal (fond virtuel IA)", "Background Removal (AI virtual background)", state.obs_plugin_background_removal),
-            ("move_transition", "Move Transition (animations de sources)", "Move Transition (source animations)", state.obs_plugin_move_transition),
-            ("aitum_multistream", "Aitum Multistream (stream multi-plateformes)", "Aitum Multistream (multi-platform streaming)", state.obs_plugin_aitum_multistream),
-            ("gstreamer", "GStreamer (sources/sorties supplémentaires)", "GStreamer (extra sources/outputs)", state.obs_plugin_gstreamer),
-            ("composite_blur", "Composite Blur (flou/verre dépoli)", "Composite Blur (blur/glass filters)", state.obs_plugin_composite_blur),
-            ("advanced_scene_switcher", "Advanced Scene Switcher (changement de scène auto)", "Advanced Scene Switcher (automated scene switching)", state.obs_plugin_advanced_scene_switcher),
-            ("input_overlay", "Input Overlay (clavier/souris/manette à l'écran)", "Input Overlay (on-screen keyboard/mouse/gamepad)", state.obs_plugin_input_overlay),
-            ("waveform", "Waveform (spectre/waveform audio)", "Waveform (audio waveform/spectrum)", state.obs_plugin_waveform),
+        for attr, title, default in (
+            ("vkcapture", tr_noop("VKCapture (Vulkan/OpenGL game capture)"), state.obs_plugin_vkcapture),
+            ("pipewire_audio", tr_noop("Pipewire Audio Capture (per-app audio)"), state.obs_plugin_pipewire_audio_capture),
+            ("background_removal", tr_noop("Background Removal (AI virtual background)"), state.obs_plugin_background_removal),
+            ("move_transition", tr_noop("Move Transition (source animations)"), state.obs_plugin_move_transition),
+            ("aitum_multistream", tr_noop("Aitum Multistream (multi-platform streaming)"), state.obs_plugin_aitum_multistream),
+            ("gstreamer", tr_noop("GStreamer (extra sources/outputs)"), state.obs_plugin_gstreamer),
+            ("composite_blur", tr_noop("Composite Blur (blur/glass filters)"), state.obs_plugin_composite_blur),
+            ("advanced_scene_switcher", tr_noop("Advanced Scene Switcher (automated scene switching)"), state.obs_plugin_advanced_scene_switcher),
+            ("input_overlay", tr_noop("Input Overlay (on-screen keyboard/mouse/gamepad)"), state.obs_plugin_input_overlay),
+            ("waveform", tr_noop("Waveform (audio waveform/spectrum)"), state.obs_plugin_waveform),
         ):
-            row = Adw.SwitchRow(title=L(title_fr, title_en))
+            row = Adw.SwitchRow(title=tr(title))
             row.set_active(default)
             cc_group.add(row)
             self.obs_plugin_rows[attr] = row
 
         self.video_editor_row = self._combo(
-            L("Éditeur vidéo", "Video editor"),
+            tr("Video editor"),
             [
                 ("kdenlive", "Kdenlive"),
-                ("davinci-resolve", L("DaVinci Resolve (gratuit)", "DaVinci Resolve (free)")),
+                ("davinci-resolve", tr("DaVinci Resolve (free)")),
                 (
                     "davinci-resolve-studio",
-                    L("DaVinci Resolve Studio (payant)", "DaVinci Resolve Studio (paid)"),
+                    tr("DaVinci Resolve Studio (paid)"),
                 ),
                 ("shotcut", "Shotcut"),
-                ("none", L("Aucun", "None")),
+                ("none", tr("None")),
             ],
             state.video_editor,
         )
         cc_group.add(self.video_editor_row)
 
         self.virtual_camera_row = Adw.SwitchRow(
-            title=L("Webcam virtuelle (v4l2loopback)", "Virtual camera (v4l2loopback)")
+            title=tr("Virtual camera (v4l2loopback)")
         )
         self.virtual_camera_row.set_active(state.virtual_camera_enable)
         cc_group.add(self.virtual_camera_row)
 
         self.chatterino_row = Adw.SwitchRow(
-            title=L(
-                "Chatterino2 (chat Twitch tiers)",
-                "Chatterino2 (third-party Twitch chat)",
-            )
+            title=tr("Chatterino2 (third-party Twitch chat)")
         )
         self.chatterino_row.set_active(state.chatterino_enable)
         cc_group.add(self.chatterino_row)
@@ -1283,7 +1186,7 @@ class OptionsPage(Adw.NavigationPage):
         })
 
         next_btn = Gtk.Button(
-            label=L("Continuer", "Continue"),
+            label=tr("Continue"),
             css_classes=["suggested-action", "pill"],
             halign=Gtk.Align.END,
             margin_top=12,
@@ -1291,7 +1194,7 @@ class OptionsPage(Adw.NavigationPage):
         next_btn.connect("clicked", self._validate)
         box.append(next_btn)
 
-        self.set_child(page_with_header(L("Options", "Options"), scroller))
+        self.set_child(page_with_header(tr("Options"), scroller))
 
 
     # ── per-host question filter (see host_profile.py) ───────────────────
@@ -1493,9 +1396,9 @@ class OptionsPage(Adw.NavigationPage):
         values = [v for v, _ in pairs]
         labels = [l for _, l in pairs]
         self.kernel_row.set_title(
-            L("Kernel (Chaotic-Nyx)", "Kernel (Chaotic-Nyx)")
+            tr("Kernel (Chaotic-Nyx)")
             if is_nvidia
-            else L("Kernel (xddxdd)", "Kernel (xddxdd)")
+            else tr("Kernel (xddxdd)")
         )
         self.kernel_row.set_model(Gtk.StringList.new(labels))
         self.kernel_row.set_selected(values.index(current) if current in values else 0)
@@ -1629,15 +1532,22 @@ class OptionsPage(Adw.NavigationPage):
     def _validate(self, _btn):
         password = self.password_row.get_text()
         confirm = self.password_confirm_row.get_text()
-        if not password:
+        if self._existing:
+            if not existing_nixos.user_exists(self.username_row.get_text()):
+                self.password_warning.set_label(
+                    tr("This user doesn't exist on this system — run the installer from the account you want to keep."))
+                self.password_warning.set_visible(True)
+                return
+            password = confirm = ""  # nothing to set: the account keeps its password
+        elif not password:
             self.password_warning.set_label(
-                L("Le mot de passe ne peut pas être vide.", "Password can't be empty.")
+                tr("Password can't be empty.")
             )
             self.password_warning.set_visible(True)
             return
-        if password != confirm:
+        if not self._existing and password != confirm:
             self.password_warning.set_label(
-                L("Les mots de passe ne correspondent pas.", "Passwords don't match.")
+                tr("Passwords don't match.")
             )
             self.password_warning.set_visible(True)
             return

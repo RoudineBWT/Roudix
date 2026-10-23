@@ -1,0 +1,1227 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the roudix-store package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-store\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: roudix-store.py
+msgid "Search apps…"
+msgstr ""
+
+#: roudix-store.py
+msgid "Loading nixpkgs index…"
+msgstr ""
+
+#: roudix-store.py
+msgid "Refresh index"
+msgstr ""
+
+#: roudix-store.py
+msgid "Install for"
+msgstr ""
+
+#: roudix-store.py roudix_store/ui.py
+msgid "System"
+msgstr ""
+
+#: roudix-store.py
+msgid "User (home)"
+msgstr ""
+
+#: roudix-store.py
+msgid "Pick an application"
+msgstr ""
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Apply"
+msgstr ""
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Clear"
+msgstr ""
+
+#: roudix-store.py
+msgid "Index unavailable: "
+msgstr ""
+
+#: roudix-store.py
+#, python-brace-format
+msgid "{len} packages — type at least 2 letters."
+msgstr ""
+
+#: roudix-store.py
+msgid "Version"
+msgstr ""
+
+#: roudix-store.py
+msgid "License"
+msgstr ""
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Remove from queue"
+msgstr ""
+
+#: roudix-store.py
+msgid "Uninstall"
+msgstr ""
+
+#: roudix-store.py
+msgid "Add to queue"
+msgstr ""
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Queue empty"
+msgstr ""
+
+#: roudix-store.py
+msgid "Write failed: "
+msgstr ""
+
+#: roudix-store.py
+msgid "✓ Applied."
+msgstr ""
+
+#: roudix-store.py
+msgid "✗ Failed — local.nix restored."
+msgstr ""
+
+#: roudix_store/flatpak_support.py
+msgid "No Flatpak remote yet — the metadata will be fetched at the next start."
+msgstr ""
+
+#: roudix_store/flatpak_support.py roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Could not write local.nix: {res}"
+msgstr ""
+
+#: roudix_store/flatpak_support.py
+msgid "local.nix updated: roudix.flatpak.enable = true"
+msgstr ""
+
+#: roudix_store/flatpak_support.py roudix_store/nix_backend.py
+msgid "Rebuild failed — local.nix restored."
+msgstr ""
+
+#: roudix_store/flatpak_support.py
+msgid "Fetching the Flathub catalog…"
+msgstr ""
+
+#: roudix_store/flatpak_support.py
+msgid "Flatpak support enabled."
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Install"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "install"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Remove"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "remove"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Update"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "update"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "System-update"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "system-update"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Install-rpms"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "install-rpms"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "queued"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "running"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "done"
+msgstr ""
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "failed"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "'{action}' is not supported on Roudix (updates come from the flake)."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid "Nothing to change."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "local.nix updated ({scope}): {changed}"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid ""
+"Flatpak apps are installed/removed by nix-flatpak during the switch — this "
+"can take a while."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Unknown Flatpak remote '{remote}'."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Adding the {remote} remote to the {scope} installation…"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid "flatpak was not found in PATH."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid "Flatpak only — applying with flatpak directly, no rebuild."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already installed ({where}) — only recording it."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: remote {remote} unavailable"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid " (system installs ask for authorization through polkit)"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: flatpak install failed{hint}"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: flatpak uninstall failed"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not installed ({where}) — only dropping it from local.nix."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Cleaning unused runtimes ({scope})…"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Flatpak changes were applied but local.nix could not be written: {res}"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "local.nix updated ({key}): {changed}"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "No news available."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Waiting"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} RPM files"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} packages"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Installed"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Queue"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Productivity"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Graphics & Photography"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Audio & Video"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Education"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Networking"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Developer Tools"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Science"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Utilities"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Audio & Video Editing"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Disc Burning"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Midi"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Mixer"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Player"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Recorder"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Sequencer"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Tuner"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "TV"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Building"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Database"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Debugger"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "GUI Designer"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "IDE"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Profiling"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Revision Control"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Translation"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Web Development"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Action Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Adventure Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Arcade Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Blocks Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Board Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Card Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Emulators"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Kids' Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Logic Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Role Playing"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Shooter"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Simulation"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Sports Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Strategy Games"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "2D Graphics"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "3D Graphics"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "OCR"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Photography"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Publishing"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Raster Graphics"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Scanning"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Vector Graphics"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Viewer"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Chat"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Email"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Feed"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "File Transfer"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Ham Radio"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Instant Messaging"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "IRC Client"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Monitor"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "News"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "P2P"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Remote Access"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Telephony"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Video Conference"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Web Browser"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Calendar"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Chart"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Contact Management"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Dictionary"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Finance"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Presentation"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Project Management"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Spreadsheet"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Word Processor"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "File Manager"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Filesystem"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "File Tools"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Security"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Terminal Emulator"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Accessibility"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Archiving"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Calculator"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Clock"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Compression"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Telephony Tools"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Text Editor"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Text Tools"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Update"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Remove"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Install"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Loading news…"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Search filter…"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Grid View"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "List View"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Clear Selection"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Update Selected"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Select All and Update"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Also update flatpaks"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Append --all to nobara-sync for this system update."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Toggle News Panel"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "View Queue"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Loading AppStream metadata and the nixpkgs index…"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Drop one or more .rpm files to install them."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "No RPM files were found in the drop."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Those RPM files are already queued."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Local RPM Install"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Install local RPM files"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to install {len} RPM file(s)"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued RPM install for {names}"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Search applications…"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "All repositories"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Updater settings"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Update checker"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Enable update checker"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Enable notifications"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Check every"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "These settings affect the tray updater service."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Categories"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Flatpak is not enabled"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Turn it on to install apps from Flathub."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Enable Flatpak"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Turns on roudix.flatpak.enable, then rebuilds the system."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "An operation is already running."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Enable Flatpak support?"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid ""
+"This writes “roudix.flatpak.enable = true” to your local.nix, then rebuilds "
+"the system (a few minutes). The Flathub catalog is then fetched and Roudix "
+"Store has to be restarted for Flatpak to be picked up."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Cancel"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Enable and rebuild"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Enabling Flatpak support…"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Enabling Flatpak: rebuilding the system…"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Rebuild in progress — follow it in the queue page."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Restart Roudix Store"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid ""
+"Flatpak support is enabled. Restart Roudix Store so Flatpak apps are picked "
+"up."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Later"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Restart now"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "First use: fetching the Flathub catalog…"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid ""
+"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update --"
+"appstream"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "List"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "No applications found"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Try a different category or search term."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Important Notices"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Queued actions"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Transaction log"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "View transaction log"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Send to pastebin"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Repositories"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Details"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "← Back"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Source"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Open"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Loading…"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Loaded {len} applications ({n_nix} nixpkgs, {n_flatpak} Flatpak)."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "No update feed URL is configured."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Failed to load news from {url}.\n"
+"\n"
+"{exc}"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Failed to load metadata."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Startup failed"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "All"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Showing {n_repos} repositories."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid " in {repo_name}"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Search results for “{current_search_text}” ({len} applications{repo_note})."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid " matching “{current_category_filter_text}”"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Showing {len} applications{repo_note}{extra}."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Search"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Packages: "
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Installed: "
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Available: "
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Repositories: "
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Categories: "
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Installed (Roudix config)"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Running"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "User"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "User (Home Manager)"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "installed via config"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "installed"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Homepage"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Screenshots"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Screenshots could not be loaded locally."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{primary_pkg} is being applied right now."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Removed {primary_pkg} from the queue"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"{primary_pkg} comes from the Roudix configuration, not from the store — "
+"remove it from your config to uninstall it."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to {action} {pkg}"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued {action} for {pkg} — press Apply to run it"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{selected_count} selected"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "System update is already in the queue."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "System Update"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "System Update + Flatpaks"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Queued system update"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Queued system update with Flatpaks"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued system update via {command_label}"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "No updates are available."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} updates"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to update {len} package(s)"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued update for {names}"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Cleared the pending queue"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Running {action} for {subject}"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Starting {action} for {subject}"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Operation completed."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Operation failed."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{display_name} failed"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s) "
+"remain."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queue finished. Cleared {done_count} completed item(s)."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Queue is empty."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Running {action} for {target}. {done} done, {failed} failed, {queued} queued."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done} completed, {failed} failed, {queued} queued."
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "0/{total} complete, {failed_count} failed"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done_count}/{total} complete, {failed_count} failed"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done_count}/{total} complete"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "No queued package actions yet."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "system"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "user"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Close"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Copy"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Copied to clipboard"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "No transaction log available yet."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "pbcli did not return a URL."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "pbcli was not found on this system."
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Pastebin URL"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Pastebin upload failed"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Confirm Installation"
+msgstr ""
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "You have {len} package(s) ready. Do you want to install them?"
+msgstr ""

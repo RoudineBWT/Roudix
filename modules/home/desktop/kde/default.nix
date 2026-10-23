@@ -3,6 +3,7 @@ let
   wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixKitsune/contents/images/2560x1440.png";
 
   kwriteconfig6 = "${pkgs.kdePackages.kconfig}/bin/kwriteconfig6";
+  kreadconfig6  = "${pkgs.kdePackages.kconfig}/bin/kreadconfig6";
 
   terminalDesktopId = {
     ghostty   = "com.mitchellh.ghostty.desktop";
@@ -46,19 +47,34 @@ in
       # Run once, guarded by a marker file, then never again: whatever the
       # user picks afterwards in System Settings is theirs. To re-apply the
       # Roudix look on purpose: rm ~/.local/state/roudix/kde-theme-seeded
+      # (colour scheme only: rm ~/.local/state/roudix/kde-colorscheme-roudix-seeded)
       startup.startupScript."roudix_theme_defaults" = {
         priority = 1;
         text = ''
           marker="$HOME/.local/state/roudix/kde-theme-seeded"
           if [ ! -f "$marker" ]; then
             plasma-apply-lookandfeel -a org.kde.breezedark.desktop
-            plasma-apply-colorscheme BreezeDark
+            plasma-apply-colorscheme RoudixDark
             plasma-apply-cursortheme capitaine-cursors-white
             # Icons via kwriteconfig6 rather than plasma-manager: keeps
             # kdeglobals a normal, writable file (papirusSync / telaSync
             # patch its [Icons] Theme= key with sed).
             ${kwriteconfig6} --file kdeglobals --group Icons --key Theme "Papirus-Dark"
             mkdir -p "$(dirname "$marker")" && touch "$marker"
+          fi
+
+          # One-shot migration for users seeded before the Roudix colour
+          # scheme existed: they keep their theme, but still on the stock
+          # BreezeDark get the new default once. Anyone who picked another
+          # scheme is left alone. Roudix Light is a manual pick in
+          # System Settings > Colors & Themes > Colors.
+          cs_marker="$HOME/.local/state/roudix/kde-colorscheme-roudix-seeded"
+          if [ ! -f "$cs_marker" ]; then
+            current="$(${kreadconfig6} --file kdeglobals --group General --key ColorScheme)"
+            if [ -z "$current" ] || [ "$current" = "BreezeDark" ]; then
+              plasma-apply-colorscheme RoudixDark
+            fi
+            mkdir -p "$(dirname "$cs_marker")" && touch "$cs_marker"
           fi
         '';
       };

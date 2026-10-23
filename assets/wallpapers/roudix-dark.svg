@@ -1,18 +1,18 @@
 <svg width="2560" height="1440" viewBox="0 0 2560 1440" xmlns="http://www.w3.org/2000/svg">
 <style>
-  .bg { fill: #1e1e2e; }
-  .h1 { stroke: #313244; fill: none; stroke-width: 1; }
-  .h2 { stroke: #45475a; fill: none; stroke-width: 1; opacity: 0.4; }
-  .acc1 { fill: #fab387; opacity: 0.12; }
-  .acc2 { fill: #eba0ac; opacity: 0.10; }
-  .acc3 { fill: #f2cdcd; opacity: 0.08; }
-  .acc4 { fill: #cba6f7; opacity: 0.07; }
-  .glow1 { fill: #fab387; opacity: 0.06; }
-  .glow2 { fill: #eba0ac; opacity: 0.05; }
-  .line { stroke: #313244; stroke-width: 0.8; fill: none; opacity: 0.6; }
-  .dot { fill: #585b70; }
-  .dot-acc { fill: #fab387; }
-  .dot-acc2 { fill: #eba0ac; }
+  .bg { fill: #211a15; }
+  .h1 { stroke: #2a211b; fill: none; stroke-width: 1; }
+  .h2 { stroke: #4a3b31; fill: none; stroke-width: 1; opacity: 0.4; }
+  .acc1 { fill: #ff8c42; opacity: 0.12; }
+  .acc2 { fill: #f2b05e; opacity: 0.10; }
+  .acc3 { fill: #ffc878; opacity: 0.08; }
+  .acc4 { fill: #b98558; opacity: 0.07; }
+  .glow1 { fill: #ff8c42; opacity: 0.06; }
+  .glow2 { fill: #f2b05e; opacity: 0.05; }
+  .line { stroke: #2a211b; stroke-width: 0.8; fill: none; opacity: 0.6; }
+  .dot { fill: #4a3b31; }
+  .dot-acc { fill: #ff8c42; }
+  .dot-acc2 { fill: #f2b05e; }
 </style>
 <rect width="2560" height="1440" class="bg"/>
 <defs>
@@ -54,15 +54,15 @@
 <circle cx="480" cy="320" r="3" class="dot-acc"/><circle cx="960" cy="480" r="3" class="dot-acc2"/><circle cx="1600" cy="320" r="3" class="dot-acc"/><circle cx="2080" cy="480" r="3" class="dot-acc2"/><circle cx="320" cy="800" r="3" class="dot-acc2"/><circle cx="1920" cy="960" r="3" class="dot-acc2"/><circle cx="640" cy="1120" r="3" class="dot-acc"/><circle cx="1760" cy="1120" r="3" class="dot-acc2"/><circle cx="2240" cy="800" r="3" class="dot-acc"/>
 <g transform="translate(1280,720)">
   <g id="armd">
-    <rect x="-18" y="-195" width="36" height="138" rx="18" fill="#fab387" opacity="0.95"/>
-    <polygon points="0,-216 16,-188 0,-165 -16,-188" fill="#f2cdcd" opacity="0.95"/>
+    <rect x="-18" y="-195" width="36" height="138" rx="18" fill="#ff8c42" opacity="0.95"/>
+    <polygon points="0,-216 16,-188 0,-165 -16,-188" fill="#ffc878" opacity="0.95"/>
     <g transform="rotate(-30) translate(0,-126)">
-      <rect x="-13" y="-63" width="26" height="66" rx="13" transform="rotate(30)" fill="#eba0ac" opacity="0.95"/>
-      <polygon points="0,-76 10,-54 0,-35 -10,-54" transform="rotate(30)" fill="#f2cdcd" opacity="0.95"/>
+      <rect x="-13" y="-63" width="26" height="66" rx="13" transform="rotate(30)" fill="#f2b05e" opacity="0.95"/>
+      <polygon points="0,-76 10,-54 0,-35 -10,-54" transform="rotate(30)" fill="#ffc878" opacity="0.95"/>
     </g>
     <g transform="rotate(30) translate(0,-126)">
-      <rect x="-13" y="-63" width="26" height="66" rx="13" transform="rotate(-30)" fill="#eba0ac" opacity="0.95"/>
-      <polygon points="0,-76 10,-54 0,-35 -10,-54" transform="rotate(-30)" fill="#f2cdcd" opacity="0.95"/>
+      <rect x="-13" y="-63" width="26" height="66" rx="13" transform="rotate(-30)" fill="#f2b05e" opacity="0.95"/>
+      <polygon points="0,-76 10,-54 0,-35 -10,-54" transform="rotate(-30)" fill="#ffc878" opacity="0.95"/>
     </g>
   </g>
   <use href="#armd" transform="rotate(60)"/>
@@ -70,8 +70,8 @@
   <use href="#armd" transform="rotate(180)"/>
   <use href="#armd" transform="rotate(240)"/>
   <use href="#armd" transform="rotate(300)"/>
-  <circle cx="0" cy="0" r="52" fill="none" stroke="#f5e0dc" stroke-width="22" opacity="0.95"/>
-  <circle cx="0" cy="0" r="30" fill="none" stroke="#eba0ac" stroke-width="13" opacity="0.95"/>
-  <circle cx="0" cy="0" r="12" fill="#fab387" opacity="0.95"/>
+  <circle cx="0" cy="0" r="52" fill="none" stroke="#f5ebdd" stroke-width="22" opacity="0.95"/>
+  <circle cx="0" cy="0" r="30" fill="none" stroke="#f2b05e" stroke-width="13" opacity="0.95"/>
+  <circle cx="0" cy="0" r="12" fill="#ff8c42" opacity="0.95"/>
 </g>
 </svg>

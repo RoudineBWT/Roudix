@@ -13,6 +13,7 @@ let
     "gsconnect@andyholmes.github.io"
     "quick-settings-audio-panel@rayzeq.github.io"
     "rounded-window-corners@fxgn"
+    "user-theme@gnome-shell-extensions.gcampax.github.com"
     "Vitals@CoreCoding.com"
   ];
 
@@ -159,6 +160,13 @@ let
       categories = [ "X-Roudix" ];
     };
 
+    # ── Shell theme (User Themes) ─────────────────────────────────────────
+    # Roudix-Dark / Roudix-Light ship in roudix-branding (share/themes), generated
+    # from assets/palette/Roudix.json. Switch to Roudix-Light in Tweaks > Appearance.
+    "org/gnome/shell/extensions/user-theme" = {
+      name = "Roudix-Dark";
+    };
+
     # ── ArcMenu ───────────────────────────────────────────────────────────
     "org/gnome/shell/extensions/arcmenu" = {
       custom-menu-button-icon = "/run/current-system/sw/share/icons/hicolor/scalable/apps/roudix-logo.svg";
@@ -277,6 +285,7 @@ in
     # has forced it on since 2017). All of it is a default, not a lock —
     # the user can change any of it and a rebuild will never revert it.
     programs.dconf.enable = true;
+    environment.pathsToLink = [ "/share/themes" ];
     programs.dconf.profiles.user.databases = [
       { settings = gnomeDefaults; }
     ];

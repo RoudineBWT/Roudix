@@ -45,20 +45,39 @@ def setup_logging():
 log = logging.getLogger("roudix-welcome")
 
 
-def _detect_lang() -> str:
-    # Same bilingual idiom as roudix-switcher / roudix-installer.
-    for var in ("LC_ALL", "LC_MESSAGES", "LANG", "LANGUAGE"):
-        val = os.environ.get(var, "")
-        if val:
-            return "fr" if val.lower().startswith("fr") else "en"
-    return "en"
+# ── translations (gettext) ───────────────────────────────────────────────────
+# Messages are written in English: tr("…"). Catalogs live in po/<lang>.po and the Nix
+# package compiles them to share/locale/<lang>/LC_MESSAGES/roudix-welcome.mo. The language comes
+# from LANGUAGE / LC_ALL / LC_MESSAGES / LANG; a missing catalog falls back to English.
+import gettext as _gettext
+import glob as _glob
+
+_DOMAIN = "roudix-welcome"
 
 
-LANG = _detect_lang()
+def _find_localedir(domain):
+    cands = [os.environ.get("ROUDIX_LOCALEDIR", "")]
+    d = os.path.dirname(os.path.realpath(__file__))
+    while True:
+        cands += [os.path.join(d, "share", "locale"), os.path.join(d, "locale")]
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    for c in cands:
+        if c and _glob.glob(os.path.join(c, "*", "LC_MESSAGES", domain + ".mo")):
+            return c
+    return None
 
 
-def L(fr: str, en: str) -> str:
-    return fr if LANG == "fr" else en
+_translation = _gettext.translation(_DOMAIN, _find_localedir(_DOMAIN), fallback=True)
+tr = _translation.gettext        # tr("text")
+trc = _translation.pgettext      # trc("context", "text")
+
+
+def tr_noop(text):
+    """Mark a string for extraction now, translate it later with tr()."""
+    return text
 
 
 def get_pretty_name() -> str:
@@ -92,29 +111,20 @@ APPS = [
     {
         "id":       "roudix-store",
         "icon":     "io.roudix.store",
-        "title":    L("Logithèque", "Software Store"),
-        "subtitle": L(
-            "Installe des applications nixpkgs et Flatpak",
-            "Install nixpkgs and Flatpak apps",
-        ),
+        "title":    tr("Software Store"),
+        "subtitle": tr("Install nixpkgs and Flatpak apps"),
     },
     {
         "id":       "roudix-switcher",
         "icon":     "io.roudix.switcher",
-        "title":    L("Personnalisation", "Customizer"),
-        "subtitle": L(
-            "Bureau, shell, apps et réglages système",
-            "Desktop, shell, apps and system tweaks",
-        ),
+        "title":    tr("Customizer"),
+        "subtitle": tr("Desktop, shell, apps and system tweaks"),
     },
     {
         "id":       "roudix-kernel-switcher",
         "icon":     "io.roudix.kernel-switcher",
-        "title":    L("Kernel", "Kernel Switcher"),
-        "subtitle": L(
-            "Choisis ta variante de kernel CachyOS",
-            "Pick your CachyOS kernel variant",
-        ),
+        "title":    tr("Kernel Switcher"),
+        "subtitle": tr("Pick your CachyOS kernel variant"),
     },
     {
         # Binary/desktop id is "roudix-scheduler" (see
@@ -122,11 +132,8 @@ APPS = [
         # attribute/module is roudix-scheduler-switcher.
         "id":       "roudix-scheduler",
         "icon":     "io.roudix.scheduler",
-        "title":    L("Ordonnanceur SCX", "SCX Scheduler"),
-        "subtitle": L(
-            "Choisis et applique un ordonnanceur SCX",
-            "Choose and apply an SCX scheduler",
-        ),
+        "title":    tr("SCX Scheduler"),
+        "subtitle": tr("Choose and apply an SCX scheduler"),
     },
 ]
 
@@ -147,7 +154,7 @@ def launch(app_id: str):
 class RoudixWelcomeWindow(Adw.ApplicationWindow):
     def __init__(self, app):
         super().__init__(application=app)
-        self.set_title(L("Bienvenue sur Roudix", "Welcome to Roudix"))
+        self.set_title(tr("Welcome to Roudix"))
         # Resizable (not resizable(False) like roudix-kernel-switcher):
         # the content here is expected to grow over time (more resources,
         # more launchers...), so let people make the window bigger instead
@@ -191,7 +198,7 @@ class RoudixWelcomeWindow(Adw.ApplicationWindow):
         title = Gtk.Label()
         title.set_markup(
             f"<span size='x-large' weight='bold'>"
-            f"{L('Bienvenue sur Roudix', 'Welcome to Roudix')}</span>"
+            f"{tr('Welcome to Roudix')}</span>"
         )
         main_box.append(title)
 
@@ -200,22 +207,13 @@ class RoudixWelcomeWindow(Adw.ApplicationWindow):
         # (per Roudine's request) — what Roudix is, in a couple of lines.
         description = Gtk.Label()
         description.set_markup(
-            L(
-                "<span size='small'>"
-                "Roudix est ta distribution NixOS personnelle : compositeurs "
-                "Wayland (Niri, Hyprland, MangoWC, Umbriel), GNOME et KDE, "
-                "kernel CachyOS et tout un tas de réglages pensés pour toi — "
-                "et pour la famille et les amis à qui tu la partages. Utilise "
-                "les raccourcis ci-dessous pour personnaliser ton système "
-                "ou changer de kernel et d'ordonnanceur, ou la logithèque pour installer des applications.</span>",
-                "<span size='small'>"
+            tr("<span size='small'>"
                 "Roudix is your personal NixOS distribution: Wayland "
                 "compositors (Niri, Hyprland, MangoWC, Umbriel), GNOME and "
                 "KDE, a CachyOS kernel, and a bunch of tweaks built for you — "
                 "and for the family and friends you share it with. Use the "
                 "shortcuts below to customize your system, switch kernel "
-                "and scheduler, or install apps from the store.</span>",
-            )
+                "and scheduler, or install apps from the store.</span>")
         )
         description.add_css_class("dim-label")
         description.set_wrap(True)
@@ -225,7 +223,7 @@ class RoudixWelcomeWindow(Adw.ApplicationWindow):
 
         # ── Launchers ─────────────────────────────────────────────────────────
         apps_group = Adw.PreferencesGroup()
-        apps_group.set_title(L("Applications Roudix", "Roudix Apps"))
+        apps_group.set_title(tr("Roudix Apps"))
         main_box.append(apps_group)
 
         for entry in APPS:
@@ -235,7 +233,7 @@ class RoudixWelcomeWindow(Adw.ApplicationWindow):
             row.set_icon_name(entry["icon"])
             row.set_activatable(True)
 
-            open_btn = Gtk.Button(label=L("Ouvrir", "Open"))
+            open_btn = Gtk.Button(label=tr("Open"))
             open_btn.add_css_class("flat")
             open_btn.set_valign(Gtk.Align.CENTER)
             open_btn.connect("clicked", lambda _b, aid=entry["id"]: launch(aid))
@@ -246,15 +244,15 @@ class RoudixWelcomeWindow(Adw.ApplicationWindow):
 
         # ── Resources ─────────────────────────────────────────────────────────
         links_group = Adw.PreferencesGroup()
-        links_group.set_title(L("Ressources", "Resources"))
+        links_group.set_title(tr("Resources"))
         main_box.append(links_group)
 
         github_row = Adw.ActionRow()
-        github_row.set_title(L("Code source & documentation", "Source code & documentation"))
+        github_row.set_title(tr("Source code & documentation"))
         github_row.set_subtitle("github.com/RoudineBWT/Roudix")
         github_row.set_icon_name("system-software-install-symbolic")
         github_row.set_activatable(True)
-        github_btn = Gtk.Button(label=L("Ouvrir", "Open"))
+        github_btn = Gtk.Button(label=tr("Open"))
         github_btn.add_css_class("flat")
         github_btn.set_valign(Gtk.Align.CENTER)
         github_btn.connect("clicked", lambda _b: open_uri(GITHUB_URL))
@@ -267,19 +265,16 @@ class RoudixWelcomeWindow(Adw.ApplicationWindow):
         main_box.append(startup_group)
 
         startup_row = Adw.SwitchRow()
-        startup_row.set_title(L("Afficher au démarrage", "Show at startup"))
+        startup_row.set_title(tr("Show at startup"))
         startup_row.set_subtitle(
-            L(
-                "Réaffiche cette fenêtre à chaque connexion",
-                "Show this window again on every login",
-            )
+            tr("Show this window again on every login")
         )
         startup_row.set_active(not os.path.exists(DISABLED_MARKER))
         startup_row.connect("notify::active", self.on_startup_toggled)
         startup_group.add(startup_row)
 
         # ── Close + version footer ───────────────────────────────────────────
-        close_btn = Gtk.Button(label=L("Fermer", "Close"))
+        close_btn = Gtk.Button(label=tr("Close"))
         close_btn.add_css_class("pill")
         close_btn.set_halign(Gtk.Align.CENTER)
         close_btn.set_margin_top(4)

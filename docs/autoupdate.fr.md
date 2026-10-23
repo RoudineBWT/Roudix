@@ -1,4 +1,4 @@
-*[English version](autoupdate.md)*
+[English](autoupdate.md) · **Français** · [Español](autoupdate.es.md) · [Português (Brasil)](autoupdate.pt_BR.md) · [Русский](autoupdate.ru.md) · [简体中文](autoupdate.zh_CN.md) · [हिन्दी](autoupdate.hi.md) · [العربية](autoupdate.ar.md)
 
 # Mise à jour automatique
 

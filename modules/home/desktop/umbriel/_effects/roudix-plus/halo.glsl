@@ -19,7 +19,7 @@ vec4 cursor(vec2 uv) {
     float window = 1.0 - smoothstep(R_INNER * R_INNER, R_OUTER * R_OUTER, d2);
     float a = PEAK * exp(-d2 / (2.0 * SIGMA * SIGMA)) * window;
 
-    vec3 col = vec3(0.980, 0.702, 0.529); // Peach (fallback)
+    vec3 col = vec3(1.000, 0.549, 0.259); // Roudix primary #FF8C42 (fallback)
     if (umbriel_palette_count > 0) {
         col = umbriel_palette_at(0.0).rgb;
     }

@@ -26,7 +26,7 @@
     cp ${pkgs.grub2}/share/grub/unicode.pf2 $out/unicode.pf2
 
     cat > $out/theme.txt <<'THEMEEOF'
-    desktop-color: "#1e1e2e"
+    desktop-color: "#14100d"
     title-text: ""
 
     + image {
@@ -42,8 +42,8 @@
         top = 42%
         width = 70%
         height = 48%
-        item_color = "#cdd6f4"
-        selected_item_color = "#fab387"
+        item_color = "#eadbcb"
+        selected_item_color = "#ff8c42"
         item_height = 32
         item_padding = 4
         item_spacing = 6
@@ -100,6 +100,16 @@
   time.timeZone = "Europe/Brussels";
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";
+
+  # ── Fonts for the installer languages ─────────────────────────────────
+  # The installer is translated (iso/roudix-installer/po): the live GNOME fonts do
+  # not cover Chinese, Hindi or Arabic, which would show up as empty boxes.
+  # noto-fonts = Cyrillic, Devanagari, Arabic…; noto-fonts-cjk-sans = Chinese/Japanese/Korean.
+  # (They add a few hundred MB to the ISO before compression: drop the ones you don't ship.)
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+  ];
 
   # ── Nix settings ─────────────────────────────────────────────────────────
   nix.settings = {

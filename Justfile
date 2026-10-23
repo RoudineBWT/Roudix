@@ -45,19 +45,43 @@ build host="roudix":
 
 # statix (report only) + deadnix (fails on dead code) — same as CI
 lint:
-    nix run nixpkgs#statix -- check . || true
-    nix run nixpkgs#deadnix -- --fail --no-lambda-pattern-names .
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # Inside `nix develop` the tools are on PATH (pinned by the flake); otherwise fetch them.
+    if command -v statix >/dev/null;  then statix=(statix);   else statix=(nix run nixpkgs#statix --); fi
+    if command -v deadnix >/dev/null; then deadnix=(deadnix); else deadnix=(nix run nixpkgs#deadnix --); fi
+    "${statix[@]}" check . || true
+    "${deadnix[@]}" --fail --no-lambda-pattern-names .
 
 # Python: real errors only (syntax, undefined names) — same as CI
 py:
-    nix run nixpkgs#ruff -- check --select E9,F63,F7,F82 --no-cache pkgs iso scripts
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if command -v ruff >/dev/null; then ruff=(ruff); else ruff=(nix run nixpkgs#ruff --); fi
+    "${ruff[@]}" check --select E9,F63,F7,F82 --no-cache pkgs iso scripts
 
 # Stale repo-relative paths in pkgs/ and the installer — same as CI
 paths:
     python3 scripts/check-path-refs.py
 
+# Installer translations: re-extract strings and merge them into po/*.po (then translate what is empty/fuzzy)
+i18n-update:
+    scripts/i18n.sh update
+
+# Installer translations: compile po/*.po to .mo (needed to run the installer from the source tree)
+i18n-compile:
+    scripts/i18n.sh compile
+
+# Installer translations: fail if a .po is out of date, incomplete or invalid
+i18n-check:
+    scripts/i18n.sh check
+
+# Start a new installer translation, e.g. `just i18n-new de`
+i18n-new lang:
+    scripts/i18n.sh new {{lang}}
+
 # Everything CI checks, in one go
-ci: paths py lint check-all
+ci: paths py lint i18n-check check-all
 
 # Regroupe les commits "auto:" de gitwatch en UN commit au vrai message (IA locale), à relire. Ajoute -n pour juste voir le message.
 ship *args:

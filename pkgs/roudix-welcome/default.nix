@@ -7,6 +7,7 @@ pkgs.stdenv.mkDerivation {
   nativeBuildInputs = with pkgs; [
     wrapGAppsHook4
     gobject-introspection
+    gettext
   ];
 
   buildInputs = with pkgs; [
@@ -33,7 +34,14 @@ pkgs.stdenv.mkDerivation {
     cat > $out/share/applications/io.roudix.welcome.desktop << EOF
     [Desktop Entry]
     Name=Roudix Welcome
-    Comment=Bienvenue sur Roudix — accès rapide aux outils de personnalisation
+    Comment=Welcome to Roudix — quick access to the customization tools
+    Comment[fr]=Bienvenue sur Roudix — accès rapide aux outils de personnalisation
+    Comment[es]=Te damos la bienvenida a Roudix — acceso rápido a las herramientas de personalización
+    Comment[pt_BR]=Bem-vindo ao Roudix — acesso rápido às ferramentas de personalização
+    Comment[ru]=Добро пожаловать в Roudix — быстрый доступ к инструментам настройки
+    Comment[zh_CN]=欢迎使用 Roudix — 快速访问各种定制工具
+    Comment[hi]=Roudix में आपका स्वागत है — अनुकूलन टूल्स तक त्वरित पहुँच
+    Comment[ar]=مرحبًا بك في Roudix — وصول سريع إلى أدوات التخصيص
     Exec=roudix-welcome
     Icon=roudix-logo
     Terminal=false
@@ -41,6 +49,15 @@ pkgs.stdenv.mkDerivation {
     Categories=System;Settings;X-Roudix;
     Keywords=welcome;bienvenue;switcher;kernel;scheduler;store;
     EOF
+
+    # Translations: po/<lang>.po → share/locale/<lang>/LC_MESSAGES/roudix-welcome.mo
+    # (the app looks them up relative to its own install prefix: see tr() in the sources)
+    for po in po/*.po; do
+      [ -e "$po" ] || continue
+      lang=$(basename "$po" .po)
+      mkdir -p "$out/share/locale/$lang/LC_MESSAGES"
+      msgfmt --check -o "$out/share/locale/$lang/LC_MESSAGES/roudix-welcome.mo" "$po"
+    done
   '';
 
   meta = {

@@ -24,6 +24,9 @@ Environment:
   ROUDIX_AI_CMD      instead of Ollama: a command that reads the prompt on
                      stdin and prints the message, e.g. "claude -p"
   ROUDIX_AI_TIMEOUT  seconds to wait for the model (default 90)
+  ROUDIX_AI_KEEP_ALIVE  how long Ollama keeps the model in (V)RAM after the answer
+                     (default 0 = unload at once, so the GPU memory is free again as
+                     soon as the message is written; e.g. "5m" to keep it warm)
   ROUDIX_AI_LANG     language of the message   (default English)
 """
 from __future__ import annotations
@@ -44,6 +47,7 @@ URL = os.environ.get("ROUDIX_AI_URL", "http://127.0.0.1:11434").rstrip("/")
 MODEL = os.environ.get("ROUDIX_AI_MODEL", "qwen2.5-coder:14b")
 CMD = os.environ.get("ROUDIX_AI_CMD", "")
 TIMEOUT = int(os.environ.get("ROUDIX_AI_TIMEOUT", "90"))
+KEEP_ALIVE = os.environ.get("ROUDIX_AI_KEEP_ALIVE", "0")
 LANG = os.environ.get("ROUDIX_AI_LANG", "English")
 
 SERVICE = "roudix-gitwatch"
@@ -238,6 +242,12 @@ def build_prompt(files: list[dict], scope: str | None, bodies: str) -> str:
             f"\n\nDiff:\n{bodies}\n")
 
 
+def keep_alive_value():
+    """Ollama wants a number of seconds (0 = unload now) or a duration string like "5m"."""
+    v = KEEP_ALIVE.strip()
+    return int(v) if re.fullmatch(r"-?\d+", v) else v
+
+
 def ask_llm(system: str, user: str, timeout: int) -> str:
     if CMD:
         try:
@@ -249,7 +259,7 @@ def ask_llm(system: str, user: str, timeout: int) -> str:
             raise LLMError(f"ROUDIX_AI_CMD exited {r.returncode}: {r.stderr.strip()[:200]}")
         return r.stdout
     body = json.dumps({
-        "model": MODEL, "stream": False,
+        "model": MODEL, "stream": False, "keep_alive": keep_alive_value(),
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
         "options": {"temperature": 0.2, "num_ctx": 8192},
     }).encode()

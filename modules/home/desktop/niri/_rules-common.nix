@@ -46,7 +46,7 @@ in
       open-maximized = true;
     }
     {
-      matches = [ { app-id = "^org.gnome.Nautilus$"; title = "^Save As$"; } ];
+      matches = [ { app-id = "^(org.gnome.Nautilus|nemo)$"; title = "^Save As$"; } ];
       open-focused = true;
     }
     {
@@ -115,7 +115,7 @@ in
       open-floating = true;
     }
     {
-      matches = [ { app-id = "^org\\.(gnome\\.Nautilus|kde\\.dolphin)$"; } ];
+      matches = [ { app-id = "^(org\\.(gnome\\.Nautilus|kde\\.dolphin)|nemo)$"; } ];
       excludes = [
         { app-id = "^xdg-desktop-portal(-gtk)?$"; }
         { title = "(?i)^(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$"; }

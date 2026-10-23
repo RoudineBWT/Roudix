@@ -10,7 +10,6 @@ let
     "hyprland.lua"
     "config/animations.lua"
     "config/autostart.lua"
-    "config/colors.lua"
     "config/decorations.lua"
     "config/defaults.lua"
     "config/environment.lua"
@@ -160,6 +159,23 @@ in
       }
       {
         "hypr/noctalia-cheatsheet.lua".source = noctaliaCheatsheet;
+      }
+      {
+        # Generated from assets/palette/Roudix.json (theming/palette.nix).
+        "hypr/config/colors.lua".text =
+          let
+            p = config.roudix.palette.dark;
+            h = config.roudix.palette.lib.hypr;
+          in ''
+            -- Généré par hyprland/default.nix depuis assets/palette/Roudix.json — NE PAS ÉDITER.
+            ROUDIX_ACCENT   = "${h p.primary}"
+            ROUDIX_ACCENT2  = "${h p.secondary}"
+            ROUDIX_URGENT   = "${h p.error}"
+            ROUDIX_BG       = "${h p.outline}"
+            ROUDIX_SURFACE  = "${h p.surface}"
+            ROUDIX_TEXT     = "${h p.onSurface}"
+            ROUDIX_SHADOW   = "${config.roudix.palette.lib.hyprA p.shadow "70"}"
+          '';
       }
     ];
 

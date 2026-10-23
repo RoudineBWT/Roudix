@@ -1,20 +1,75 @@
-{ lib, config, options, pkgs, ... }:
+{ lib, config, ... }:
+let
+  cfg = config.roudix.pipewire;
+in
 {
 
-  options.roudix.pipewire.enable = lib.mkOption {
-    description = "Enable Roudix pipewire configurations";
-    type = lib.types.bool;
-    default = true;
+  options.roudix.pipewire = {
+    enable = lib.mkOption {
+      description = "Enable Roudix pipewire configurations";
+      type = lib.types.bool;
+      default = true;
+    };
+
+    lowLatency.enable = lib.mkOption {
+      description = ''
+        Low-latency PipeWire clock (48 kHz, quantum 128, allowed 128-512).
+        Off by default: PipeWire then runs with its upstream defaults, like
+        Fedora does. Apps can still ask for more buffer (up to 512).
+      '';
+      type = lib.types.bool;
+      default = false;
+    };
+
+    realtimeTweaks.enable = lib.mkOption {
+      description = ''
+        CachyOS-Settings-style realtime tweaks: realtime/nice limits for the
+        "audio" group (PAM) and udev access to cpu_dma_latency, rtc0 and hpet
+        for that group. The user must be in the "audio" group. Off by default
+        (not needed for normal desktop audio).
+      '';
+      type = lib.types.bool;
+      default = false;
+    };
+
+    usbNoAutosuspend.enable = lib.mkOption {
+      description = ''
+        Disable USB autosuspend globally (usbcore.autosuspend=-1). Can help
+        USB audio interfaces/headsets that drop out after idle, but it costs
+        battery on a laptop (and fights TLP's USB_AUTOSUSPEND). Off by default.
+      '';
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
-  config = lib.mkIf config.roudix.pipewire.enable {
-      # Keeps USB audio interfaces / headsets from dropping out after idle.
-      # Not on laptops: it would fight TLP's USB_AUTOSUSPEND and cost battery.
-      boot.kernelParams = lib.optional (!config.roudix.laptop.enable) "usbcore.autosuspend=-1";
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    # Upstream defaults, like Fedora: nothing else is tuned.
+    {
       security.rtkit.enable = true;
 
-      # ── CachyOS-Settings audio tweaks ───────────────────────────────────
-      # Realtime limits for the audio group (20-audio.conf). NixOS only
+      services.pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true; # Steam / Wine
+        pulse.enable = true;
+        jack.enable = true;
+      };
+    }
+
+    (lib.mkIf cfg.lowLatency.enable {
+      services.pipewire.extraConfig.pipewire."92-low-latency" = {
+        "context.properties" = {
+          "default.clock.rate" = 48000;
+          "default.clock.quantum" = 128;
+          "default.clock.min-quantum" = 128;
+          "default.clock.max-quantum" = 512;
+        };
+      };
+    })
+
+    (lib.mkIf cfg.realtimeTweaks.enable {
+      # Realtime limits for the audio group (CachyOS 20-audio.conf). NixOS only
       # grants them to @pipewire, and the user isn't in that group.
       security.pam.loginLimits = [
         { domain = "@audio"; item = "rtprio"; type = "-"; value = 99; }
@@ -28,44 +83,11 @@
         KERNEL=="rtc0", GROUP="audio"
         KERNEL=="hpet", GROUP="audio"
       '';
+    })
 
-      # Desktop: the HDA codec never powers down (avoids crackle after idle).
-      # Laptop: TLP decides, see SOUND_POWER_SAVE_ON_AC in power/laptop.nix.
-      boot.extraModprobeConfig = lib.mkIf (!config.roudix.laptop.enable) ''
-        options snd_hda_intel power_save=0
-      '';
+    (lib.mkIf cfg.usbNoAutosuspend.enable {
+      boot.kernelParams = [ "usbcore.autosuspend=-1" ];
+    })
+  ]);
 
-      services.pipewire = {
-        enable = true;
-        jack.enable = true;
-        pulse.enable = true;
-
-        extraConfig.pipewire."92-low-latency" = {
-          "context.properties" = {
-            "default.clock.rate" = 48000;
-            "default.clock.quantum" = 256;
-            # Default stays 256; apps may still ask for lower latency (64)
-            # or a bigger buffer (1024) instead of being pinned to 256.
-            "default.clock.min-quantum" = 64;
-            "default.clock.max-quantum" = 1024;
-          };
-        };
-
-        alsa = {
-          enable = true;
-          support32Bit = true;
-        };
-
-        wireplumber.extraConfig = {
-          "10-disable-camera" = {
-            "wireplumber.profiles" = {
-              main = {
-                "monitor.libcamera" = "disabled";
-              };
-            };
-          };
-        };
-      };
-    };
-
-  }
+}

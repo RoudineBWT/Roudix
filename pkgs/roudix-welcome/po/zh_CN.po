@@ -1,0 +1,81 @@
+# Simplified Chinese translation of roudix-welcome (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-welcome\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Simplified Chinese\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: roudix-welcome.py
+msgid "Software Store"
+msgstr "软件商店"
+
+#: roudix-welcome.py
+msgid "Install nixpkgs and Flatpak apps"
+msgstr "安装 nixpkgs 和 Flatpak 应用"
+
+#: roudix-welcome.py
+msgid "Customizer"
+msgstr "定制器"
+
+#: roudix-welcome.py
+msgid "Desktop, shell, apps and system tweaks"
+msgstr "桌面、shell、应用和系统调整"
+
+#: roudix-welcome.py
+msgid "Kernel Switcher"
+msgstr "内核切换器"
+
+#: roudix-welcome.py
+msgid "Pick your CachyOS kernel variant"
+msgstr "选择你的 CachyOS 内核变体"
+
+#: roudix-welcome.py
+msgid "SCX Scheduler"
+msgstr "SCX 调度器"
+
+#: roudix-welcome.py
+msgid "Choose and apply an SCX scheduler"
+msgstr "选择并应用 SCX 调度器"
+
+#: roudix-welcome.py
+msgid "Welcome to Roudix"
+msgstr "欢迎使用 Roudix"
+
+#: roudix-welcome.py
+msgid "<span size='small'>Roudix is your personal NixOS distribution: Wayland compositors (Niri, Hyprland, MangoWC, Umbriel), GNOME and KDE, a CachyOS kernel, and a bunch of tweaks built for you — and for the family and friends you share it with. Use the shortcuts below to customize your system, switch kernel and scheduler, or install apps from the store.</span>"
+msgstr "<span size='small'>Roudix 是你的个人 NixOS 发行版：Wayland 合成器（Niri、Hyprland、MangoWC、Umbriel）、GNOME 和 KDE、CachyOS 内核，以及一系列为你——也为与你分享它的家人和朋友——打造的调整。使用下方的快捷入口来定制系统、切换内核和调度器，或从商店安装应用。</span>"
+
+#: roudix-welcome.py
+msgid "Roudix Apps"
+msgstr "Roudix 应用"
+
+#: roudix-welcome.py
+msgid "Open"
+msgstr "打开"
+
+#: roudix-welcome.py
+msgid "Resources"
+msgstr "资源"
+
+#: roudix-welcome.py
+msgid "Source code & documentation"
+msgstr "源代码与文档"
+
+#: roudix-welcome.py
+msgid "Show at startup"
+msgstr "启动时显示"
+
+#: roudix-welcome.py
+msgid "Show this window again on every login"
+msgstr "每次登录时再次显示此窗口"
+
+#: roudix-welcome.py
+msgid "Close"
+msgstr "关闭"

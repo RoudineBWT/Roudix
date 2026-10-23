@@ -1,0 +1,81 @@
+# Translations of roudix-welcome (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-welcome\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: roudix-welcome.py
+msgid "Software Store"
+msgstr "Logithèque"
+
+#: roudix-welcome.py
+msgid "Install nixpkgs and Flatpak apps"
+msgstr "Installe des applications nixpkgs et Flatpak"
+
+#: roudix-welcome.py
+msgid "Customizer"
+msgstr "Personnalisation"
+
+#: roudix-welcome.py
+msgid "Desktop, shell, apps and system tweaks"
+msgstr "Bureau, shell, apps et réglages système"
+
+#: roudix-welcome.py
+msgid "Kernel Switcher"
+msgstr "Kernel"
+
+#: roudix-welcome.py
+msgid "Pick your CachyOS kernel variant"
+msgstr "Choisis ta variante de kernel CachyOS"
+
+#: roudix-welcome.py
+msgid "SCX Scheduler"
+msgstr "Ordonnanceur SCX"
+
+#: roudix-welcome.py
+msgid "Choose and apply an SCX scheduler"
+msgstr "Choisis et applique un ordonnanceur SCX"
+
+#: roudix-welcome.py
+msgid "Welcome to Roudix"
+msgstr "Bienvenue sur Roudix"
+
+#: roudix-welcome.py
+msgid "<span size='small'>Roudix is your personal NixOS distribution: Wayland compositors (Niri, Hyprland, MangoWC, Umbriel), GNOME and KDE, a CachyOS kernel, and a bunch of tweaks built for you — and for the family and friends you share it with. Use the shortcuts below to customize your system, switch kernel and scheduler, or install apps from the store.</span>"
+msgstr "<span size='small'>Roudix est ta distribution NixOS personnelle : compositeurs Wayland (Niri, Hyprland, MangoWC, Umbriel), GNOME et KDE, kernel CachyOS et tout un tas de réglages pensés pour toi — et pour la famille et les amis à qui tu la partages. Utilise les raccourcis ci-dessous pour personnaliser ton système ou changer de kernel et d'ordonnanceur, ou la logithèque pour installer des applications.</span>"
+
+#: roudix-welcome.py
+msgid "Roudix Apps"
+msgstr "Applications Roudix"
+
+#: roudix-welcome.py
+msgid "Open"
+msgstr "Ouvrir"
+
+#: roudix-welcome.py
+msgid "Resources"
+msgstr "Ressources"
+
+#: roudix-welcome.py
+msgid "Source code & documentation"
+msgstr "Code source & documentation"
+
+#: roudix-welcome.py
+msgid "Show at startup"
+msgstr "Afficher au démarrage"
+
+#: roudix-welcome.py
+msgid "Show this window again on every login"
+msgstr "Réaffiche cette fenêtre à chaque connexion"
+
+#: roudix-welcome.py
+msgid "Close"
+msgstr "Fermer"

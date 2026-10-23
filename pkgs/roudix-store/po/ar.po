@@ -1,0 +1,1243 @@
+# Arabic translation of roudix-store (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-store\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#: roudix-store.py
+msgid "Search apps…"
+msgstr "ابحث عن تطبيقات…"
+
+#: roudix-store.py
+msgid "Loading nixpkgs index…"
+msgstr "جارٍ تحميل فهرس nixpkgs…"
+
+#: roudix-store.py
+msgid "Refresh index"
+msgstr "تحديث الفهرس"
+
+#: roudix-store.py
+msgid "Install for"
+msgstr "التثبيت لـ"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "System"
+msgstr "النظام"
+
+#: roudix-store.py
+msgid "User (home)"
+msgstr "المستخدم (home)"
+
+#: roudix-store.py
+msgid "Pick an application"
+msgstr "اختر تطبيقًا"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Apply"
+msgstr "تطبيق"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Clear"
+msgstr "مسح"
+
+#: roudix-store.py
+msgid "Index unavailable: "
+msgstr "الفهرس غير متاح: "
+
+#: roudix-store.py
+#, python-brace-format
+msgid "{len} packages — type at least 2 letters."
+msgstr "{len} حزمة — اكتب حرفين على الأقل."
+
+#: roudix-store.py
+msgid "Version"
+msgstr "الإصدار"
+
+#: roudix-store.py
+msgid "License"
+msgstr "الرخصة"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Remove from queue"
+msgstr "إزالة من قائمة الانتظار"
+
+#: roudix-store.py
+msgid "Uninstall"
+msgstr "إلغاء التثبيت"
+
+#: roudix-store.py
+msgid "Add to queue"
+msgstr "إضافة إلى قائمة الانتظار"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Queue empty"
+msgstr "قائمة الانتظار فارغة"
+
+#: roudix-store.py
+msgid "Write failed: "
+msgstr "فشلت الكتابة: "
+
+#: roudix-store.py
+msgid "✓ Applied."
+msgstr "✓ تم التطبيق."
+
+#: roudix-store.py
+msgid "✗ Failed — local.nix restored."
+msgstr "✗ فشل — تمت استعادة local.nix."
+
+#: roudix_store/flatpak_support.py
+msgid ""
+"No Flatpak remote yet — the metadata will be fetched at the next start."
+msgstr ""
+"لا يوجد مستودع Flatpak بعد — ستُجلب البيانات الوصفية عند التشغيل التالي."
+
+#: roudix_store/flatpak_support.py roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Could not write local.nix: {res}"
+msgstr "تعذّرت كتابة local.nix: {res}"
+
+#: roudix_store/flatpak_support.py
+msgid "local.nix updated: roudix.flatpak.enable = true"
+msgstr "تم تحديث local.nix: roudix.flatpak.enable = true"
+
+#: roudix_store/flatpak_support.py roudix_store/nix_backend.py
+msgid "Rebuild failed — local.nix restored."
+msgstr "فشلت إعادة البناء — تمت استعادة local.nix."
+
+#: roudix_store/flatpak_support.py
+msgid "Fetching the Flathub catalog…"
+msgstr "جارٍ جلب فهرس Flathub…"
+
+#: roudix_store/flatpak_support.py
+msgid "Flatpak support enabled."
+msgstr "تم تفعيل دعم Flatpak."
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Install"
+msgstr "التثبيت"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "install"
+msgstr "تثبيت"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Remove"
+msgstr "الإزالة"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "remove"
+msgstr "إزالة"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Update"
+msgstr "التحديث"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "update"
+msgstr "تحديث"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "System-update"
+msgstr "تحديث النظام"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "system-update"
+msgstr "تحديث النظام"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Install-rpms"
+msgstr "تثبيت RPM"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "install-rpms"
+msgstr "تثبيت RPM"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "queued"
+msgstr "في الانتظار"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "running"
+msgstr "قيد التنفيذ"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "done"
+msgstr "تم"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "failed"
+msgstr "فشل"
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
+msgstr "تُدار المستودعات بواسطة flake الخاص بـ Roudix."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "'{action}' is not supported on Roudix (updates come from the flake)."
+msgstr "«{action}» غير مدعوم في Roudix (التحديثات تأتي من flake)."
+
+#: roudix_store/nix_backend.py
+msgid "Nothing to change."
+msgstr "لا شيء لتغييره."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "local.nix updated ({scope}): {changed}"
+msgstr "تم تحديث local.nix ({scope}): {changed}"
+
+#: roudix_store/nix_backend.py
+msgid ""
+"Flatpak apps are installed/removed by nix-flatpak during the switch — this "
+"can take a while."
+msgstr ""
+"يتم تثبيت تطبيقات Flatpak أو إزالتها بواسطة nix-flatpak أثناء switch — قد "
+"يستغرق ذلك بعض الوقت."
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr "تم التطبيق."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Unknown Flatpak remote '{remote}'."
+msgstr "مستودع Flatpak غير معروف «{remote}»."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Adding the {remote} remote to the {scope} installation…"
+msgstr "جارٍ إضافة المستودع {remote} إلى تثبيت {scope}…"
+
+#: roudix_store/nix_backend.py
+msgid "flatpak was not found in PATH."
+msgstr "لم يتم العثور على flatpak في PATH."
+
+#: roudix_store/nix_backend.py
+msgid "Flatpak only — applying with flatpak directly, no rebuild."
+msgstr "Flatpak فقط — يتم التطبيق مباشرةً عبر flatpak دون إعادة بناء."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already installed ({where}) — only recording it."
+msgstr "{pkg} مثبّت بالفعل ({where}) — يتم تسجيله فقط."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: remote {remote} unavailable"
+msgstr "{pkg}: المستودع {remote} غير متاح"
+
+#: roudix_store/nix_backend.py
+msgid " (system installs ask for authorization through polkit)"
+msgstr " (تطلب عمليات التثبيت على مستوى النظام إذنًا عبر polkit)"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: flatpak install failed{hint}"
+msgstr "{pkg}: فشل flatpak install{hint}"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: flatpak uninstall failed"
+msgstr "{pkg}: فشل flatpak uninstall"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not installed ({where}) — only dropping it from local.nix."
+msgstr "{pkg} غير مثبّت ({where}) — تتم إزالته من local.nix فقط."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Cleaning unused runtimes ({scope})…"
+msgstr "جارٍ تنظيف بيئات التشغيل غير المستخدمة ({scope})…"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Flatpak changes were applied but local.nix could not be written: {res}"
+msgstr "تم تطبيق تغييرات Flatpak لكن تعذّرت كتابة local.nix: {res}"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "local.nix updated ({key}): {changed}"
+msgstr "تم تحديث local.nix ({key}): {changed}"
+
+#: roudix_store/ui.py
+msgid "No news available."
+msgstr "لا توجد أخبار متاحة."
+
+#: roudix_store/ui.py
+msgid "Waiting"
+msgstr "في الانتظار"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} RPM files"
+msgstr "{len} ملف RPM"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} packages"
+msgstr "{len} حزمة"
+
+#: roudix_store/ui.py
+msgid "Installed"
+msgstr "المثبّتة"
+
+#: roudix_store/ui.py
+msgid "Queue"
+msgstr "قائمة الانتظار"
+
+#: roudix_store/ui.py
+msgid "Productivity"
+msgstr "الإنتاجية"
+
+#: roudix_store/ui.py
+msgid "Graphics & Photography"
+msgstr "الرسوميات والتصوير"
+
+#: roudix_store/ui.py
+msgid "Audio & Video"
+msgstr "الصوت والفيديو"
+
+#: roudix_store/ui.py
+msgid "Education"
+msgstr "التعليم"
+
+#: roudix_store/ui.py
+msgid "Networking"
+msgstr "الشبكات"
+
+#: roudix_store/ui.py
+msgid "Games"
+msgstr "الألعاب"
+
+#: roudix_store/ui.py
+msgid "Developer Tools"
+msgstr "أدوات التطوير"
+
+#: roudix_store/ui.py
+msgid "Science"
+msgstr "العلوم"
+
+#: roudix_store/ui.py
+msgid "Utilities"
+msgstr "أدوات مساعدة"
+
+#: roudix_store/ui.py
+msgid "Audio & Video Editing"
+msgstr "تحرير الصوت والفيديو"
+
+#: roudix_store/ui.py
+msgid "Disc Burning"
+msgstr "نسخ الأقراص"
+
+#: roudix_store/ui.py
+msgid "Midi"
+msgstr "MIDI"
+
+#: roudix_store/ui.py
+msgid "Mixer"
+msgstr "المازجات"
+
+#: roudix_store/ui.py
+msgid "Player"
+msgstr "المشغّلات"
+
+#: roudix_store/ui.py
+msgid "Recorder"
+msgstr "المسجّلات"
+
+#: roudix_store/ui.py
+msgid "Sequencer"
+msgstr "المتسلسلات الموسيقية"
+
+#: roudix_store/ui.py
+msgid "Tuner"
+msgstr "الموالِفات"
+
+#: roudix_store/ui.py
+msgid "TV"
+msgstr "التلفاز"
+
+#: roudix_store/ui.py
+msgid "Building"
+msgstr "البناء"
+
+#: roudix_store/ui.py
+msgid "Database"
+msgstr "قواعد البيانات"
+
+#: roudix_store/ui.py
+msgid "Debugger"
+msgstr "تصحيح الأخطاء"
+
+#: roudix_store/ui.py
+msgid "GUI Designer"
+msgstr "مصمّمات الواجهات"
+
+#: roudix_store/ui.py
+msgid "IDE"
+msgstr "IDE"
+
+#: roudix_store/ui.py
+msgid "Profiling"
+msgstr "تحليل الأداء"
+
+#: roudix_store/ui.py
+msgid "Revision Control"
+msgstr "التحكم في الإصدارات"
+
+#: roudix_store/ui.py
+msgid "Translation"
+msgstr "الترجمة"
+
+#: roudix_store/ui.py
+msgid "Web Development"
+msgstr "تطوير الويب"
+
+#: roudix_store/ui.py
+msgid "Action Games"
+msgstr "ألعاب الأكشن"
+
+#: roudix_store/ui.py
+msgid "Adventure Games"
+msgstr "ألعاب المغامرة"
+
+#: roudix_store/ui.py
+msgid "Arcade Games"
+msgstr "ألعاب الأركيد"
+
+#: roudix_store/ui.py
+msgid "Blocks Games"
+msgstr "ألعاب الكتل"
+
+#: roudix_store/ui.py
+msgid "Board Games"
+msgstr "ألعاب الطاولة"
+
+#: roudix_store/ui.py
+msgid "Card Games"
+msgstr "ألعاب الورق"
+
+#: roudix_store/ui.py
+msgid "Emulators"
+msgstr "المحاكيات"
+
+#: roudix_store/ui.py
+msgid "Kids' Games"
+msgstr "ألعاب الأطفال"
+
+#: roudix_store/ui.py
+msgid "Logic Games"
+msgstr "ألعاب المنطق"
+
+#: roudix_store/ui.py
+msgid "Role Playing"
+msgstr "ألعاب تقمّص الأدوار"
+
+#: roudix_store/ui.py
+msgid "Shooter"
+msgstr "ألعاب الرماية"
+
+#: roudix_store/ui.py
+msgid "Simulation"
+msgstr "المحاكاة"
+
+#: roudix_store/ui.py
+msgid "Sports Games"
+msgstr "الألعاب الرياضية"
+
+#: roudix_store/ui.py
+msgid "Strategy Games"
+msgstr "ألعاب الاستراتيجية"
+
+#: roudix_store/ui.py
+msgid "2D Graphics"
+msgstr "رسوميات ثنائية الأبعاد"
+
+#: roudix_store/ui.py
+msgid "3D Graphics"
+msgstr "رسوميات ثلاثية الأبعاد"
+
+#: roudix_store/ui.py
+msgid "OCR"
+msgstr "OCR"
+
+#: roudix_store/ui.py
+msgid "Photography"
+msgstr "التصوير الفوتوغرافي"
+
+#: roudix_store/ui.py
+msgid "Publishing"
+msgstr "النشر المكتبي"
+
+#: roudix_store/ui.py
+msgid "Raster Graphics"
+msgstr "الرسوميات النقطية"
+
+#: roudix_store/ui.py
+msgid "Scanning"
+msgstr "المسح الضوئي"
+
+#: roudix_store/ui.py
+msgid "Vector Graphics"
+msgstr "الرسوميات المتجهة"
+
+#: roudix_store/ui.py
+msgid "Viewer"
+msgstr "برامج العرض"
+
+#: roudix_store/ui.py
+msgid "Chat"
+msgstr "الدردشة"
+
+#: roudix_store/ui.py
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+#: roudix_store/ui.py
+msgid "Feed"
+msgstr "التغذيات الإخبارية"
+
+#: roudix_store/ui.py
+msgid "File Transfer"
+msgstr "نقل الملفات"
+
+#: roudix_store/ui.py
+msgid "Ham Radio"
+msgstr "الراديو الهاوي"
+
+#: roudix_store/ui.py
+msgid "Instant Messaging"
+msgstr "المراسلة الفورية"
+
+#: roudix_store/ui.py
+msgid "IRC Client"
+msgstr "عملاء IRC"
+
+#: roudix_store/ui.py
+msgid "Monitor"
+msgstr "المراقبة"
+
+#: roudix_store/ui.py
+msgid "News"
+msgstr "الأخبار"
+
+#: roudix_store/ui.py
+msgid "P2P"
+msgstr "P2P"
+
+#: roudix_store/ui.py
+msgid "Remote Access"
+msgstr "الوصول عن بُعد"
+
+#: roudix_store/ui.py
+msgid "Telephony"
+msgstr "الاتصالات الهاتفية"
+
+#: roudix_store/ui.py
+msgid "Video Conference"
+msgstr "مؤتمرات الفيديو"
+
+#: roudix_store/ui.py
+msgid "Web Browser"
+msgstr "متصفحات الويب"
+
+#: roudix_store/ui.py
+msgid "Calendar"
+msgstr "التقويم"
+
+#: roudix_store/ui.py
+msgid "Chart"
+msgstr "المخططات"
+
+#: roudix_store/ui.py
+msgid "Contact Management"
+msgstr "إدارة جهات الاتصال"
+
+#: roudix_store/ui.py
+msgid "Dictionary"
+msgstr "القواميس"
+
+#: roudix_store/ui.py
+msgid "Finance"
+msgstr "المالية"
+
+#: roudix_store/ui.py
+msgid "Presentation"
+msgstr "العروض التقديمية"
+
+#: roudix_store/ui.py
+msgid "Project Management"
+msgstr "إدارة المشاريع"
+
+#: roudix_store/ui.py
+msgid "Spreadsheet"
+msgstr "جداول البيانات"
+
+#: roudix_store/ui.py
+msgid "Word Processor"
+msgstr "معالجات النصوص"
+
+#: roudix_store/ui.py
+msgid "File Manager"
+msgstr "مديرو الملفات"
+
+#: roudix_store/ui.py
+msgid "Filesystem"
+msgstr "أنظمة الملفات"
+
+#: roudix_store/ui.py
+msgid "File Tools"
+msgstr "أدوات الملفات"
+
+#: roudix_store/ui.py
+msgid "Security"
+msgstr "الأمان"
+
+#: roudix_store/ui.py
+msgid "Terminal Emulator"
+msgstr "محاكيات الطرفية"
+
+#: roudix_store/ui.py
+msgid "Accessibility"
+msgstr "إمكانية الوصول"
+
+#: roudix_store/ui.py
+msgid "Archiving"
+msgstr "الأرشفة"
+
+#: roudix_store/ui.py
+msgid "Calculator"
+msgstr "الآلات الحاسبة"
+
+#: roudix_store/ui.py
+msgid "Clock"
+msgstr "الساعة"
+
+#: roudix_store/ui.py
+msgid "Compression"
+msgstr "الضغط"
+
+#: roudix_store/ui.py
+msgid "Telephony Tools"
+msgstr "أدوات الاتصالات الهاتفية"
+
+#: roudix_store/ui.py
+msgid "Text Editor"
+msgstr "محررات النصوص"
+
+#: roudix_store/ui.py
+msgid "Text Tools"
+msgstr "أدوات النصوص"
+
+#: roudix_store/ui.py
+msgid "Update"
+msgstr "تحديث"
+
+#: roudix_store/ui.py
+msgid "Remove"
+msgstr "إزالة"
+
+#: roudix_store/ui.py
+msgid "Install"
+msgstr "تثبيت"
+
+#: roudix_store/ui.py
+msgid "Loading news…"
+msgstr "جارٍ تحميل الأخبار…"
+
+#: roudix_store/ui.py
+msgid "Search filter…"
+msgstr "تصفية…"
+
+#: roudix_store/ui.py
+msgid "Grid View"
+msgstr "عرض الشبكة"
+
+#: roudix_store/ui.py
+msgid "List View"
+msgstr "عرض القائمة"
+
+#: roudix_store/ui.py
+msgid "Clear Selection"
+msgstr "مسح التحديد"
+
+#: roudix_store/ui.py
+msgid "Update Selected"
+msgstr "تحديث المحدد"
+
+#: roudix_store/ui.py
+msgid "Select All and Update"
+msgstr "تحديد الكل وتحديثه"
+
+#: roudix_store/ui.py
+msgid "Also update flatpaks"
+msgstr "تحديث حزم flatpak أيضًا"
+
+#: roudix_store/ui.py
+msgid "Append --all to nobara-sync for this system update."
+msgstr "أضِف --all إلى nobara-sync في تحديث النظام هذا."
+
+#: roudix_store/ui.py
+msgid "Toggle News Panel"
+msgstr "إظهار/إخفاء لوحة الأخبار"
+
+#: roudix_store/ui.py
+msgid "View Queue"
+msgstr "عرض قائمة الانتظار"
+
+#: roudix_store/ui.py
+msgid "Loading AppStream metadata and the nixpkgs index…"
+msgstr "جارٍ تحميل بيانات AppStream الوصفية وفهرس nixpkgs…"
+
+#: roudix_store/ui.py
+msgid "Drop one or more .rpm files to install them."
+msgstr "أفلت ملف .rpm واحدًا أو أكثر لتثبيتها."
+
+#: roudix_store/ui.py
+msgid "No RPM files were found in the drop."
+msgstr "لم يتم العثور على ملفات RPM فيما أفلتّه."
+
+#: roudix_store/ui.py
+msgid "Those RPM files are already queued."
+msgstr "ملفات RPM هذه موجودة بالفعل في قائمة الانتظار."
+
+#: roudix_store/ui.py
+msgid "Local RPM Install"
+msgstr "تثبيت RPM محلي"
+
+#: roudix_store/ui.py
+msgid "Install local RPM files"
+msgstr "تثبيت ملفات RPM محلية"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to install {len} RPM file(s)"
+msgstr "تمت إضافة تثبيت {len} ملف(ات) RPM إلى قائمة الانتظار"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued RPM install for {names}"
+msgstr "تمت إضافة تثبيت RPM إلى قائمة الانتظار: {names}"
+
+#: roudix_store/ui.py
+msgid "Search applications…"
+msgstr "ابحث عن تطبيقات…"
+
+#: roudix_store/ui.py
+msgid "All repositories"
+msgstr "كل المستودعات"
+
+#: roudix_store/ui.py
+msgid "Updater settings"
+msgstr "إعدادات التحديث"
+
+#: roudix_store/ui.py
+msgid "Update checker"
+msgstr "التحقق من التحديثات"
+
+#: roudix_store/ui.py
+msgid "Enable update checker"
+msgstr "تفعيل التحقق من التحديثات"
+
+#: roudix_store/ui.py
+msgid "Enable notifications"
+msgstr "تفعيل الإشعارات"
+
+#: roudix_store/ui.py
+msgid "Check every"
+msgstr "التحقق كل"
+
+#: roudix_store/ui.py
+msgid "These settings affect the tray updater service."
+msgstr "تؤثر هذه الإعدادات على خدمة التحديث في علبة النظام."
+
+#: roudix_store/ui.py
+msgid "Categories"
+msgstr "الفئات"
+
+#: roudix_store/ui.py
+msgid "Flatpak is not enabled"
+msgstr "Flatpak غير مفعّل"
+
+#: roudix_store/ui.py
+msgid "Turn it on to install apps from Flathub."
+msgstr "فعّله لتثبيت التطبيقات من Flathub."
+
+#: roudix_store/ui.py
+msgid "Enable Flatpak"
+msgstr "تفعيل Flatpak"
+
+#: roudix_store/ui.py
+msgid "Turns on roudix.flatpak.enable, then rebuilds the system."
+msgstr "يفعّل roudix.flatpak.enable ثم يعيد بناء النظام."
+
+#: roudix_store/ui.py
+msgid "An operation is already running."
+msgstr "هناك عملية قيد التشغيل بالفعل."
+
+#: roudix_store/ui.py
+msgid "Enable Flatpak support?"
+msgstr "تفعيل دعم Flatpak؟"
+
+#: roudix_store/ui.py
+msgid ""
+"This writes “roudix.flatpak.enable = true” to your local.nix, then rebuilds "
+"the system (a few minutes). The Flathub catalog is then fetched and Roudix "
+"Store has to be restarted for Flatpak to be picked up."
+msgstr ""
+"سيؤدي هذا إلى كتابة «roudix.flatpak.enable = true» في ملف local.nix لديك ثم "
+"إعادة بناء النظام (بضع دقائق). بعد ذلك يُجلب فهرس Flathub ويجب إعادة تشغيل "
+"Roudix Store ليتم التعرّف على Flatpak."
+
+#: roudix_store/ui.py
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: roudix_store/ui.py
+msgid "Enable and rebuild"
+msgstr "تفعيل وإعادة بناء"
+
+#: roudix_store/ui.py
+msgid "Enabling Flatpak support…"
+msgstr "جارٍ تفعيل دعم Flatpak…"
+
+#: roudix_store/ui.py
+msgid "Enabling Flatpak: rebuilding the system…"
+msgstr "جارٍ تفعيل Flatpak: إعادة بناء النظام…"
+
+#: roudix_store/ui.py
+msgid "Rebuild in progress — follow it in the queue page."
+msgstr "إعادة البناء جارية — تابع التقدّم في صفحة قائمة الانتظار."
+
+#: roudix_store/ui.py
+msgid "Restart Roudix Store"
+msgstr "إعادة تشغيل Roudix Store"
+
+#: roudix_store/ui.py
+msgid ""
+"Flatpak support is enabled. Restart Roudix Store so Flatpak apps are picked "
+"up."
+msgstr ""
+"دعم Flatpak مفعّل. أعد تشغيل Roudix Store ليتم التعرّف على تطبيقات Flatpak."
+
+#: roudix_store/ui.py
+msgid "Later"
+msgstr "لاحقًا"
+
+#: roudix_store/ui.py
+msgid "Restart now"
+msgstr "إعادة التشغيل الآن"
+
+#: roudix_store/ui.py
+msgid "First use: fetching the Flathub catalog…"
+msgstr "الاستخدام الأول: جارٍ جلب فهرس Flathub…"
+
+#: roudix_store/ui.py
+msgid ""
+"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update "
+"--appstream"
+msgstr ""
+"لا توجد بيانات Flathub بعد. هل roudix.flatpak.enable مفعّل؟ جرّب: flatpak "
+"update --appstream"
+
+#: roudix_store/ui.py
+msgid "List"
+msgstr "قائمة"
+
+#: roudix_store/ui.py
+msgid "No applications found"
+msgstr "لم يتم العثور على تطبيقات"
+
+#: roudix_store/ui.py
+msgid "Try a different category or search term."
+msgstr "جرّب فئة أخرى أو عبارة بحث أخرى."
+
+#: roudix_store/ui.py
+msgid "Important Notices"
+msgstr "إشعارات مهمة"
+
+#: roudix_store/ui.py
+msgid "Queued actions"
+msgstr "الإجراءات في قائمة الانتظار"
+
+#: roudix_store/ui.py
+msgid "Transaction log"
+msgstr "سجل المعاملات"
+
+#: roudix_store/ui.py
+msgid "View transaction log"
+msgstr "عرض سجل المعاملات"
+
+#: roudix_store/ui.py
+msgid "Send to pastebin"
+msgstr "إرسال إلى pastebin"
+
+#: roudix_store/ui.py
+msgid "Repositories"
+msgstr "المستودعات"
+
+#: roudix_store/ui.py
+msgid "Details"
+msgstr "التفاصيل"
+
+#: roudix_store/ui.py
+msgid "← Back"
+msgstr "→ رجوع"
+
+#: roudix_store/ui.py
+msgid "Source"
+msgstr "المصدر"
+
+#: roudix_store/ui.py
+msgid "Open"
+msgstr "فتح"
+
+#: roudix_store/ui.py
+msgid "Loading…"
+msgstr "جارٍ التحميل…"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Loaded {len} applications ({n_nix} nixpkgs, {n_flatpak} Flatpak)."
+msgstr "تم تحميل {len} تطبيق ({n_nix} من nixpkgs، {n_flatpak} من Flatpak)."
+
+#: roudix_store/ui.py
+msgid "No update feed URL is configured."
+msgstr "لم يتم ضبط عنوان URL لتغذية التحديثات."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Failed to load news from {url}.\n"
+"\n"
+"{exc}"
+msgstr ""
+"تعذّر تحميل الأخبار من {url}.\n"
+"\n"
+"{exc}"
+
+#: roudix_store/ui.py
+msgid "Failed to load metadata."
+msgstr "تعذّر تحميل البيانات الوصفية."
+
+#: roudix_store/ui.py
+msgid "Startup failed"
+msgstr "فشل بدء التشغيل"
+
+#: roudix_store/ui.py
+msgid "All"
+msgstr "الكل"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Showing {n_repos} repositories."
+msgstr "جارٍ عرض {n_repos} من المستودعات."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid " in {repo_name}"
+msgstr " في {repo_name}"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Search results for “{current_search_text}” ({len} applications{repo_note})."
+msgstr "نتائج البحث عن «{current_search_text}» ({len} تطبيق{repo_note})."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid " matching “{current_category_filter_text}”"
+msgstr " مطابقة لـ «{current_category_filter_text}»"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Showing {len} applications{repo_note}{extra}."
+msgstr "عرض {len} تطبيق{repo_note}{extra}."
+
+#: roudix_store/ui.py
+msgid "Search"
+msgstr "بحث"
+
+#: roudix_store/ui.py
+msgid "Packages: "
+msgstr "الحزم: "
+
+#: roudix_store/ui.py
+msgid "Installed: "
+msgstr "المثبّت: "
+
+#: roudix_store/ui.py
+msgid "Available: "
+msgstr "المتاح: "
+
+#: roudix_store/ui.py
+msgid "Repositories: "
+msgstr "المستودعات: "
+
+#: roudix_store/ui.py
+msgid "Categories: "
+msgstr "الفئات: "
+
+#: roudix_store/ui.py
+msgid "Installed (Roudix config)"
+msgstr "مثبّت (إعدادات Roudix)"
+
+#: roudix_store/ui.py
+msgid "Running"
+msgstr "قيد التشغيل"
+
+#: roudix_store/ui.py
+msgid "User"
+msgstr "المستخدم"
+
+#: roudix_store/ui.py
+msgid "User (Home Manager)"
+msgstr "المستخدم (Home Manager)"
+
+#: roudix_store/ui.py
+msgid "installed via config"
+msgstr "مثبّت عبر الإعدادات"
+
+#: roudix_store/ui.py
+msgid "installed"
+msgstr "مثبّت"
+
+#: roudix_store/ui.py
+msgid "Homepage"
+msgstr "الصفحة الرئيسية"
+
+#: roudix_store/ui.py
+msgid "Screenshots"
+msgstr "لقطات الشاشة"
+
+#: roudix_store/ui.py
+msgid "Screenshots could not be loaded locally."
+msgstr "تعذّر تحميل لقطات الشاشة محليًا."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{primary_pkg} is being applied right now."
+msgstr "يتم تطبيق {primary_pkg} الآن."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Removed {primary_pkg} from the queue"
+msgstr "تمت إزالة {primary_pkg} من قائمة الانتظار"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"{primary_pkg} comes from the Roudix configuration, not from the store — "
+"remove it from your config to uninstall it."
+msgstr ""
+"{primary_pkg} يأتي من إعدادات Roudix وليس من المتجر — أزله من إعداداتك "
+"لإلغاء تثبيته."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to {action} {pkg}"
+msgstr "تمت إضافة {action} لـ {pkg} إلى قائمة الانتظار"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued {action} for {pkg} — press Apply to run it"
+msgstr ""
+"تمت إضافة {action} لـ {pkg} إلى قائمة الانتظار — اضغط «تطبيق» لبدء التنفيذ"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{selected_count} selected"
+msgstr "تم تحديد {selected_count}"
+
+#: roudix_store/ui.py
+msgid "System update is already in the queue."
+msgstr "تحديث النظام موجود بالفعل في قائمة الانتظار."
+
+#: roudix_store/ui.py
+msgid "System Update"
+msgstr "تحديث النظام"
+
+#: roudix_store/ui.py
+msgid "System Update + Flatpaks"
+msgstr "تحديث النظام + Flatpak"
+
+#: roudix_store/ui.py
+msgid "Queued system update"
+msgstr "تمت إضافة تحديث النظام إلى قائمة الانتظار"
+
+#: roudix_store/ui.py
+msgid "Queued system update with Flatpaks"
+msgstr "تمت إضافة تحديث النظام مع Flatpak إلى قائمة الانتظار"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued system update via {command_label}"
+msgstr "تمت إضافة تحديث النظام إلى قائمة الانتظار عبر {command_label}"
+
+#: roudix_store/ui.py
+msgid "No updates are available."
+msgstr "لا توجد تحديثات متاحة."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} updates"
+msgstr "{len} تحديث"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to update {len} package(s)"
+msgstr "تمت إضافة تحديث {len} حزمة إلى قائمة الانتظار"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued update for {names}"
+msgstr "تمت إضافة التحديث إلى قائمة الانتظار لـ {names}"
+
+#: roudix_store/ui.py
+msgid "Cleared the pending queue"
+msgstr "تم مسح قائمة الانتظار المعلّقة"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Running {action} for {subject}"
+msgstr "جارٍ {action}: {subject}"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Starting {action} for {subject}"
+msgstr "بدء {action}: {subject}"
+
+#: roudix_store/ui.py
+msgid "Operation completed."
+msgstr "اكتملت العملية."
+
+#: roudix_store/ui.py
+msgid "Operation failed."
+msgstr "فشلت العملية."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{display_name} failed"
+msgstr "{display_name}: فشل"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s)"
+" remain."
+msgstr ""
+"انتهت قائمة الانتظار. تم مسح {done_count} عنصر مكتمل؛ وبقي {len} عنصر فاشل."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queue finished. Cleared {done_count} completed item(s)."
+msgstr "انتهت قائمة الانتظار. تم مسح {done_count} عنصر مكتمل."
+
+#: roudix_store/ui.py
+msgid "Queue is empty."
+msgstr "قائمة الانتظار فارغة."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Running {action} for {target}. {done} done, {failed} failed, {queued} "
+"queued."
+msgstr ""
+"جارٍ {action}: {target}. المكتمل: {done}، الفاشل: {failed}، في الانتظار: "
+"{queued}."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done} completed, {failed} failed, {queued} queued."
+msgstr "المكتمل: {done}، الفاشل: {failed}، في الانتظار: {queued}."
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "0/{total} complete, {failed_count} failed"
+msgstr "0/{total} مكتمل، الفاشل: {failed_count}"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done_count}/{total} complete, {failed_count} failed"
+msgstr "{done_count}/{total} مكتمل، الفاشل: {failed_count}"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done_count}/{total} complete"
+msgstr "{done_count}/{total} مكتمل"
+
+#: roudix_store/ui.py
+msgid "No queued package actions yet."
+msgstr "لا توجد إجراءات حزم في قائمة الانتظار بعد."
+
+#: roudix_store/ui.py
+msgid "system"
+msgstr "النظام"
+
+#: roudix_store/ui.py
+msgid "user"
+msgstr "المستخدم"
+
+#: roudix_store/ui.py
+msgid "Close"
+msgstr "إغلاق"
+
+#: roudix_store/ui.py
+msgid "Copy"
+msgstr "نسخ"
+
+#: roudix_store/ui.py
+msgid "Copied to clipboard"
+msgstr "تم النسخ إلى الحافظة"
+
+#: roudix_store/ui.py
+msgid "No transaction log available yet."
+msgstr "لا يوجد سجل معاملات بعد."
+
+#: roudix_store/ui.py
+msgid "pbcli did not return a URL."
+msgstr "لم يُرجع pbcli أي عنوان URL."
+
+#: roudix_store/ui.py
+msgid "pbcli was not found on this system."
+msgstr "لم يتم العثور على pbcli على هذا النظام."
+
+#: roudix_store/ui.py
+msgid "Pastebin URL"
+msgstr "عنوان URL لـ pastebin"
+
+#: roudix_store/ui.py
+msgid "Pastebin upload failed"
+msgstr "فشل الرفع إلى pastebin"
+
+#: roudix_store/ui.py
+msgid "Confirm Installation"
+msgstr "تأكيد التثبيت"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "You have {len} package(s) ready. Do you want to install them?"
+msgstr "لديك {len} حزمة جاهزة. هل تريد تثبيتها؟"

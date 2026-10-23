@@ -14,6 +14,7 @@ pkgs.stdenv.mkDerivation {
   nativeBuildInputs = with pkgs; [
     wrapGAppsHook4
     gobject-introspection
+    gettext
   ];
 
   buildInputs = with pkgs; [
@@ -51,8 +52,14 @@ pkgs.stdenv.mkDerivation {
     cat > $out/share/applications/io.roudix.config.desktop << EOF2
     [Desktop Entry]
     Name=Roudix Config
-    Comment=Configure Umbriel, Niri ou MangoWC — règles de fenêtres, écrans, raccourcis
-    Comment[en]=Configure Umbriel, Niri or MangoWC — window rules, screens, shortcuts
+    Comment=Configure Umbriel, Niri or MangoWC — window rules, screens, shortcuts
+    Comment[fr]=Configure Umbriel, Niri ou MangoWC — règles de fenêtres, écrans, raccourcis
+    Comment[es]=Configura Umbriel, Niri o MangoWC — reglas de ventanas, pantallas, atajos
+    Comment[pt_BR]=Configure o Umbriel, o Niri ou o MangoWC — regras de janelas, telas, atalhos
+    Comment[ru]=Настройка Umbriel, Niri или MangoWC — правила окон, экраны, сочетания клавиш
+    Comment[zh_CN]=配置 Umbriel、Niri 或 MangoWC — 窗口规则、屏幕、快捷键
+    Comment[hi]=Umbriel, Niri या MangoWC कॉन्फ़िगर करें — विंडो नियम, स्क्रीन, शॉर्टकट
+    Comment[ar]=اضبط Umbriel أو Niri أو MangoWC — قواعد النوافذ والشاشات والاختصارات
     Exec=roudix-config
     Icon=io.roudix.config
     Terminal=false
@@ -61,6 +68,15 @@ pkgs.stdenv.mkDerivation {
     Categories=System;Settings;X-Roudix;
     Keywords=umbriel;niri;mango;mangowc;config;raccourcis;shortcuts;écrans;screens;workspaces;règles;rules;fenêtres;windows;
     EOF2
+
+    # Translations: po/<lang>.po → share/locale/<lang>/LC_MESSAGES/roudix-config.mo
+    # (the app looks them up relative to its own install prefix: see tr() in the sources)
+    for po in po/*.po; do
+      [ -e "$po" ] || continue
+      lang=$(basename "$po" .po)
+      mkdir -p "$out/share/locale/$lang/LC_MESSAGES"
+      msgfmt --check -o "$out/share/locale/$lang/LC_MESSAGES/roudix-config.mo" "$po"
+    done
 
     runHook postInstall
   '';

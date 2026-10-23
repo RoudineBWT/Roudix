@@ -25,9 +25,27 @@ Ce chemin remplace entièrement les deux étapes ci-dessous (pas besoin de `roud
 
 ## Option B — Vous avez déjà NixOS installé
 
-Si NixOS est déjà installé (via l'ISO officielle stable/unstable, ou tout autre moyen) et que vous voulez juste installer Roudix par-dessus, utilisez plutôt le script d'installation bash :
+Si NixOS est déjà installé (via l'ISO officielle stable/unstable, ou tout autre moyen) et que vous voulez juste installer Roudix par-dessus, il y a deux installeurs : le graphique (depuis une session de bureau) et le script bash (fonctionne depuis un simple TTY).
 
-> **Note :** installez d'abord NixOS avec l'ISO [stable](https://nixos.org/download/) ou [unstable](https://releases.nixos.org/nixos/unstable/nixos-26.05pre980183.4bd9165a9165), puis lancez le script ci-dessous ou suivez l'installation manuelle.
+> **Note :** installez d'abord NixOS avec l'ISO [stable](https://nixos.org/download/) ou [unstable](https://releases.nixos.org/nixos/unstable/nixos-26.05pre980183.4bd9165a9165), puis lancez l'un des installeurs ci-dessous ou suivez l'installation manuelle.
+
+### B1 — Installeur graphique (recommandé sur un bureau)
+
+Le même assistant que sur l'ISO, sans la page disque. Lancez-le depuis le compte que vous voulez garder :
+
+```bash
+nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
+```
+
+- **Rien n'est effacé.** La configuration va dans `~/.config/roudix` (un dossier existant est déplacé, jamais supprimé), puis `nixos-rebuild boot` construit Roudix et le programme pour le prochain démarrage. Votre système actuel reste dans le menu de démarrage.
+- **Votre `/etc/nixos` est sauvegardé** dans `/var/backups/roudix/nixos-<date>/` avec un `RESTORE.txt` (génération précédente, bootloader, `stateVersion`, et les commandes exactes pour revenir en arrière). `hardware-configuration.nix` est réutilisé tel quel, jamais écrasé.
+- **Simulez d'abord.** Le bouton *Simuler* de la page résumé génère la configuration dans un dossier temporaire, vérifie que chaque option a bien été écrite et fait évaluer tout le système par Nix. Rien n'est modifié sur votre machine.
+- Avertissements avant de commencer : peu de place dans `/boot` (une partition EFI de 512 Mo se remplit vite), changement de bootloader, `system.stateVersion` plus ancienne.
+- Le mot de passe administrateur est demandé via une fenêtre polkit (il faut un agent polkit, donc n'importe quelle session de bureau normale).
+
+**Revenir en arrière :** choisissez la génération précédente dans le menu de démarrage, puis `sudo nixos-rebuild switch --rollback`. Si la machine ne démarre plus du tout, `RESTORE.txt` explique comment restaurer l'ancienne configuration depuis une clé live.
+
+### B2 — Script bash (TTY / pas de session graphique)
 
 **Télécharger le script roudix-installer**
 

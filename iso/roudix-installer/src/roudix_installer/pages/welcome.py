@@ -3,8 +3,8 @@ from pathlib import Path
 
 from gi.repository import Adw, Gtk
 
-from roudix_installer import host_profile, i18n
-from roudix_installer.i18n import L
+from roudix_installer import existing_nixos, host_profile, i18n
+from roudix_installer.i18n import tr
 from roudix_installer.ui_helpers import page_with_header
 
 REAL_LOGO = Path("/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png")
@@ -12,8 +12,8 @@ REAL_LOGO = Path("/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix
 
 def _host_label(name: str) -> str:
     return {
-        "roudix": L("roudix — bureau complet, toutes les options", "roudix — full desktop, every option"),
-        "nixie": L("nixie — portable léger, peu de questions", "nixie — light laptop, few questions"),
+        "roudix": tr("roudix — full desktop, every option"),
+        "nixie": tr("nixie — light laptop, few questions"),
     }.get(name, name)
 
 
@@ -56,37 +56,43 @@ class WelcomePage(Adw.NavigationPage):
     def _show_language_step(self):
         self._clear_below_title()
 
+        # One line, every language: nobody has chosen theirs yet.
         subtitle = Gtk.Label(
-            label="Choose your language / Choisis ta langue",
-            css_classes=["dim-label"],
+            label=" · ".join(prompt for _code, _name, prompt in i18n.LANGUAGES),
+            css_classes=["dim-label"], wrap=True, justify=Gtk.Justification.CENTER,
         )
         self.box.append(subtitle)
 
-        button_row = Gtk.Box(spacing=12, halign=Gtk.Align.CENTER)
-        # Order matches the subtitle above ("Choose your language / Choisis ta
-        # langue" — English first): English button first, then French.
-        en_btn = Gtk.Button(label="English", css_classes=["pill"])
-        en_btn.connect("clicked", lambda *_: self._choose_lang("en"))
-        fr_btn = Gtk.Button(label="Français", css_classes=["pill"])
-        fr_btn.connect("clicked", lambda *_: self._choose_lang("fr"))
-        button_row.append(en_btn)
-        button_row.append(fr_btn)
-        self.box.append(button_row)
+        flow = Gtk.FlowBox(
+            selection_mode=Gtk.SelectionMode.NONE, homogeneous=True,
+            min_children_per_line=2, max_children_per_line=4,
+            column_spacing=12, row_spacing=12, halign=Gtk.Align.CENTER,
+        )
+        for code, name, _prompt in i18n.LANGUAGES:
+            btn = Gtk.Button(label=name, css_classes=["pill"])
+            btn.connect("clicked", lambda _b, c=code: self._choose_lang(c))
+            flow.append(btn)
+        self.box.append(flow)
 
     def _choose_lang(self, lang: str):
         i18n.set_lang(lang)
+        # Mirror the whole UI for right-to-left languages (Arabic…); GTK re-lays out
+        # the widgets that already exist and the ones built later.
+        Gtk.Widget.set_default_direction(
+            Gtk.TextDirection.RTL if i18n.is_rtl(lang) else Gtk.TextDirection.LTR
+        )
         self._show_welcome_step()
 
     def _show_welcome_step(self):
         self._clear_below_title()
 
-        subtitle = Gtk.Label(
-            label=L(
-                "On va installer Roudix sur cette machine. Trois étapes : disque, options, puis c'est parti.",
-                "We're about to install Roudix on this machine. Three steps: disk, options, then off we go.",
-            ),
-            css_classes=["dim-label"], wrap=True,
-        )
+        if self.state.mode == existing_nixos.MODE_EXISTING:
+            text = tr("This machine already runs NixOS. Roudix is built next to your current system: "
+                      "nothing is wiped, /etc/nixos is backed up first, and your previous system stays "
+                      "in the boot menu. Two steps: options, then off we go.")
+        else:
+            text = tr("We're about to install Roudix on this machine. Three steps: disk, options, then off we go.")
+        subtitle = Gtk.Label(label=text, css_classes=["dim-label"], wrap=True)
         self.box.append(subtitle)
 
         # Which hosts/<name>/ profile to install. Asked here, before the
@@ -96,11 +102,11 @@ class WelcomePage(Adw.NavigationPage):
         if self.state.hostname not in self._hosts:
             self.state.hostname = self._hosts[0]
         if len(self._hosts) > 1:
-            group = Adw.PreferencesGroup(title=L("Profil à installer", "Profile to install"))
+            group = Adw.PreferencesGroup(title=tr("Profile to install"))
             group.set_size_request(460, -1)
             group.set_halign(Gtk.Align.CENTER)
             self.host_row = Adw.ComboRow(
-                title=L("Profil / hôte", "Profile / host"),
+                title=tr("Profile / host"),
                 model=Gtk.StringList.new([_host_label(n) for n in self._hosts]),
             )
             self.host_row.set_selected(self._hosts.index(self.state.hostname))
@@ -111,7 +117,7 @@ class WelcomePage(Adw.NavigationPage):
             self.box.append(self.host_note)
             self._on_host_selected()
 
-        start_btn = Gtk.Button(label=L("Commencer", "Get started"),
+        start_btn = Gtk.Button(label=tr("Get started"),
                                 css_classes=["suggested-action", "pill"])
         start_btn.set_halign(Gtk.Align.CENTER)
         start_btn.connect("clicked", lambda *_: self.on_next())
@@ -121,15 +127,9 @@ class WelcomePage(Adw.NavigationPage):
         name = self._hosts[self.host_row.get_selected()]
         self.state.hostname = name
         if host_profile.find_example(name) is None:
-            note = L(
-                "Attention : ce profil est introuvable dans cette ISO — toutes les questions seront posées.",
-                "Warning: this profile can't be found in this ISO — every question will be asked.",
-            )
+            note = tr("Warning: this profile can't be found in this ISO — every question will be asked.")
         elif host_profile.listed_options(name) is None:
-            note = L("Toutes les questions seront posées.", "Every question will be asked.")
+            note = tr("Every question will be asked.")
         else:
-            note = L(
-                "Seules les questions utiles à ce profil seront posées.",
-                "Only the questions relevant to this profile will be asked.",
-            )
+            note = tr("Only the questions relevant to this profile will be asked.")
         self.host_note.set_label(note)

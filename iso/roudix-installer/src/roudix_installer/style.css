@@ -1,4 +1,4 @@
-/* Catppuccin Mocha, accent = Peach — matches the Limine bootloader theme
+/* Roudix palette (Roudix.json, dark), accent = primary orange — matches the Limine bootloader theme
    and the rest of Roudix's branding.
 
    This redefines libadwaita's own semantic color variables instead of
@@ -13,65 +13,65 @@
 */
 
 :root {
-  --window-bg-color: #1e1e2e;
-  --window-fg-color: #cdd6f4;
+  --window-bg-color: #211a15;
+  --window-fg-color: #eadbcb;
 
-  --view-bg-color: #181825;
-  --view-fg-color: #cdd6f4;
+  --view-bg-color: #17120f;
+  --view-fg-color: #eadbcb;
 
-  --headerbar-bg-color: #181825;
-  --headerbar-fg-color: #cdd6f4;
-  --headerbar-border-color: #cdd6f4;
-  --headerbar-backdrop-color: #181825;
+  --headerbar-bg-color: #17120f;
+  --headerbar-fg-color: #eadbcb;
+  --headerbar-border-color: #eadbcb;
+  --headerbar-backdrop-color: #17120f;
   --headerbar-shade-color: rgba(0, 0, 0, 0.36);
 
-  --card-bg-color: #313244;
-  --card-fg-color: #cdd6f4;
+  --card-bg-color: #2a211b;
+  --card-fg-color: #eadbcb;
   --card-shade-color: rgba(0, 0, 0, 0.36);
 
-  --dialog-bg-color: #1e1e2e;
-  --dialog-fg-color: #cdd6f4;
+  --dialog-bg-color: #211a15;
+  --dialog-fg-color: #eadbcb;
 
-  --popover-bg-color: #313244;
-  --popover-fg-color: #cdd6f4;
+  --popover-bg-color: #2a211b;
+  --popover-fg-color: #eadbcb;
 
-  --sidebar-bg-color: #181825;
-  --sidebar-fg-color: #cdd6f4;
+  --sidebar-bg-color: #17120f;
+  --sidebar-fg-color: #eadbcb;
 
-  --accent-bg-color: #fab387;
-  --accent-fg-color: #1e1e2e;
-  --accent-color: #fab387;
+  --accent-bg-color: #ff8c42;
+  --accent-fg-color: #211a15;
+  --accent-color: #ff8c42;
 
-  --destructive-bg-color: #f38ba8;
-  --destructive-fg-color: #1e1e2e;
-  --destructive-color: #f38ba8;
+  --destructive-bg-color: #e5604d;
+  --destructive-fg-color: #211a15;
+  --destructive-color: #e5604d;
 
-  --success-bg-color: #a6e3a1;
-  --success-fg-color: #1e1e2e;
-  --success-color: #a6e3a1;
+  --success-bg-color: #a8b86a;
+  --success-fg-color: #211a15;
+  --success-color: #a8b86a;
 
-  --warning-bg-color: #f9e2af;
-  --warning-fg-color: #1e1e2e;
-  --warning-color: #f9e2af;
+  --warning-bg-color: #f2b05e;
+  --warning-fg-color: #211a15;
+  --warning-color: #f2b05e;
 
-  --error-bg-color: #f38ba8;
-  --error-fg-color: #1e1e2e;
-  --error-color: #f38ba8;
+  --error-bg-color: #e5604d;
+  --error-fg-color: #211a15;
+  --error-color: #e5604d;
 
   --shade-color: rgba(0, 0, 0, 0.5);
   --scrollbar-outline-color: rgba(0, 0, 0, 0.5);
 }
 
 .title-1, .title-3 {
-  color: #cba6f7; /* mauve, matches the Limine/gem branding accent */
+  color: #b98558; /* mauve, matches the Limine/gem branding accent */
 }
 
 textview {
-  background-color: #181825;
-  color: #cdd6f4;
+  background-color: #17120f;
+  color: #eadbcb;
   font-family: monospace;
 }
 
 progressbar > trough > progress {
-  background-color: #fab387;
+  background-color: #ff8c42;
 }

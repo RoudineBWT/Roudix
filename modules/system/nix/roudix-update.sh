@@ -192,6 +192,12 @@ if [ "$SHOW_CHANGES" -eq 1 ]; then
     step "$(L "Prochain démarrage vs système en cours" "Next boot vs running system")"
     nix store diff-closures /run/current-system /nix/var/nix/profiles/system
   fi
+  # What the last auto-update brought, as written by roudix-autoupdate (feat/fix commits).
+  LAST_CHANGES=/var/lib/roudix-autoupdate/last-changes.txt
+  if [ -s "$LAST_CHANGES" ]; then
+    step "$(L "Nouveautés de la dernière mise à jour automatique" "What the last automatic update brought")"
+    sed 's/^/  • /' "$LAST_CHANGES"
+  fi
   exit 0
 fi
 

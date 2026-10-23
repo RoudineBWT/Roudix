@@ -44,6 +44,35 @@ let
   tweakPolicies =
     (builtins.fromJSON (builtins.readFile ./zen-policies.json)).policies
     // { Preferences = policyPrefs; };
+
+  # ── user.js written into an existing profile ───────────────────────────
+  # `roudix.<browser>.tweaks.profile` = profile dir relative to $HOME. Used
+  # for Zen when a profile is picked (null = the HM-managed `default` one) and
+  # for Firefox (no HM profile there — packages come from roudix.browsers).
+  renderUserJs = prefs:
+    lib.concatStringsSep "\n"
+      (lib.mapAttrsToList (n: v: "user_pref(${builtins.toJSON n}, ${builtins.toJSON v});") prefs)
+    + "\n";
+
+  zenCustomProfile = tw.profile != null;
+
+  fw = osConfig.roudix.firefox.tweaks;
+  fwCats = [ "base" ]
+    ++ lib.optional fw.performance         "performance"
+    ++ lib.optional fw.privacy             "privacy"
+    ++ lib.optional fw.disableSafeBrowsing "safebrowsing"
+    ++ lib.optional fw.ui                  "ui";
+  # zen.* prefs mean nothing to Firefox.
+  fwPrefs = lib.filterAttrs (n: _: !(lib.hasPrefix "zen." n))
+    (lib.foldl' (acc: c: acc // zenPrefs.${c}.prefs) { } fwCats);
+
+  userJsFiles =
+    lib.optionalAttrs (osConfig.roudix.zen.enable && tw.enable && zenCustomProfile) {
+      "${tw.profile}/user.js" = { text = renderUserJs tweakPrefs; force = true; };
+    }
+    // lib.optionalAttrs (fw.enable && fw.profile != null) {
+      "${fw.profile}/user.js" = { text = renderUserJs fwPrefs; force = true; };
+    };
 in
 {
   imports = [
@@ -67,11 +96,14 @@ in
       };
       mods = lib.mkIf (!osConfig.roudix.zen.sine.enable) osConfig.roudix.zen.mods;
 
-      # user.js — see roudix.zen.tweaks
-      settings = lib.mkIf tw.enable (lib.mapAttrs (_: lib.mkDefault) tweakPrefs);
+      # user.js — see roudix.zen.tweaks (the HM-managed profile only; with
+      # roudix.zen.tweaks.profile set, userJsFiles below targets that one).
+      settings = lib.mkIf (tw.enable && !zenCustomProfile) (lib.mapAttrs (_: lib.mkDefault) tweakPrefs);
     };
 
     # policies.json — see roudix.zen.tweaks.policies
     policies = lib.mkIf (tw.enable && tw.policies) tweakPolicies;
   };
+
+  home.file = userJsFiles;
 }

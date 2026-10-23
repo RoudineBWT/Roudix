@@ -19,3 +19,7 @@ modules/home/dev/ssh.nix
 modules/home/dev/gitwatch.nix
 __pycache__/
 *.bak
+
+# Compiled gettext catalogs of the installer (built by scripts/i18n.sh compile / by Nix)
+iso/roudix-installer/src/roudix_installer/locale/
+pkgs/*/locale/

@@ -53,6 +53,33 @@ stdenvNoCC.mkDerivation {
     cp $src/logo/roudix-logo.svg \
       $out/share/icons/hicolor/symbolic/apps/start-here-kde-symbolic.svg
 
+    # ── KDE colour schemes (Roudix Dark / Light) ──────────────────────────────
+    # Generated from assets/palette/Roudix.json by
+    # scripts/gen-kde-colorscheme.py — re-run it after touching the palette.
+    mkdir -p $out/share/color-schemes
+    cp $src/kde/color-schemes/RoudixDark.colors  $out/share/color-schemes/RoudixDark.colors
+    cp $src/kde/color-schemes/RoudixLight.colors $out/share/color-schemes/RoudixLight.colors
+
+    # ── GNOME Shell themes (Roudix Dark / Light) ──────────────────────────────
+    # Generated from assets/palette/Roudix.json by
+    # scripts/gen-gnome-shell-theme.py — re-run it after touching the palette.
+    # Picked up by the User Themes extension (gnome.nix sets Roudix-Dark).
+    for THEME in Roudix-Dark Roudix-Light; do
+      mkdir -p $out/share/themes/$THEME/gnome-shell
+      cp $src/gnome-shell/$THEME/gnome-shell/gnome-shell.css \
+        $out/share/themes/$THEME/gnome-shell/gnome-shell.css
+    done
+
+    # ── Terminal colour schemes (palette-generated, see gen-kde-colorscheme.py) ─
+    # Konsole: colour schemes + default "Roudix" profile.
+    mkdir -p $out/share/konsole
+    cp $src/konsole/RoudixDark.colorscheme  $out/share/konsole/RoudixDark.colorscheme
+    cp $src/konsole/RoudixLight.colorscheme $out/share/konsole/RoudixLight.colorscheme
+    cp $src/konsole/Roudix.profile          $out/share/konsole/Roudix.profile
+    # Ptyxis: one palette file with light + dark variants.
+    mkdir -p $out/share/org.gnome.Ptyxis/palettes
+    cp $src/ptyxis/Roudix.palette $out/share/org.gnome.Ptyxis/palettes/Roudix.palette
+
     # ── Wallpapers SVG (fallback) ─────────────────────────────────────────────
     mkdir -p $out/share/backgrounds/roudix
     cp $src/wallpapers/roudix-dark.svg $out/share/backgrounds/roudix/roudix-dark.svg
@@ -358,8 +385,8 @@ JSONEOF
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#231820</pcolor>
-    <scolor>#231820</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix</name>
@@ -367,24 +394,24 @@ JSONEOF
     <filename-dark>/run/current-system/sw/share/backgrounds/roudix/roudix-dark.png</filename-dark>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#eff1f5</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#FBF5EE</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Cosmos</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_cosmos.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#1e1e2e</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Moonrise</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/Roudix_Moonrise.jpg</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#1e1e2e</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Logo</name>
@@ -392,24 +419,24 @@ JSONEOF
     <filename-dark>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_dark_logo.png</filename-dark>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#eff1f5</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#FBF5EE</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Orbit</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_orbit.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#1e1e2e</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Roudix Drift</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix_wallpaper_drift.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#1e1e2e</pcolor>
-    <scolor>#1e1e2e</scolor>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
   </wallpaper>
 </wallpapers>
 XMLEOF

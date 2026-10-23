@@ -1,13 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, lib, roudixPalette, ... }:
 let
   papirusIconsOut = "${pkgs.papirus-icon-theme}/share/icons";
 
   papirusSync = pkgs.writeShellScriptBin "noctalia-papirus-sync" ''
     set -euo pipefail
     primaryFile="$HOME/.config/noctalia/generated/tela-primary.txt"
-    [ -f "$primaryFile" ] || exit 0
-
-    primary=$(tr -d '[:space:]' < "$primaryFile")
+    # Noctalia's generated primary wins; otherwise Roudix.json's primary.
+    if [ -f "$primaryFile" ]; then
+      primary=$(tr -d '[:space:]' < "$primaryFile")
+    else
+      primary="${roudixPalette.primary}"
+    fi
     case "$primary" in
       \#[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]) ;;
       *) exit 0 ;;
@@ -57,6 +60,10 @@ let
   '';
 in
 {
+  home.activation.papirusSyncRecolor = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    [ -d "$HOME/.icons/Papirus-Dark-noctalia" ] || ${papirusSync}/bin/noctalia-papirus-sync || true
+  '';
+
   home.packages = [ pkgs.papirus-icon-theme papirusSync pkgs.gnused ];
 
   # Reuses the shared template defined in tela-icon.nix
