@@ -33,8 +33,14 @@ msgid "Detection failed."
 msgstr "Falló la detección."
 
 #: roudix-hw-sync-gui.py
-msgid "New PC, new graphics card or new processor? Roudix looks at your hardware and updates your configuration to match. Nothing is changed until you press a button below."
-msgstr "¿PC nuevo, tarjeta gráfica nueva o procesador nuevo? Roudix analiza tu hardware y actualiza tu configuración para que coincida. No se cambia nada hasta que pulses un botón de abajo."
+msgid ""
+"New PC, new graphics card or new processor? Roudix looks at your hardware "
+"and updates your configuration to match. Nothing is changed until you press "
+"a button below."
+msgstr ""
+"¿PC nuevo, tarjeta gráfica nueva o procesador nuevo? Roudix analiza tu "
+"hardware y actualiza tu configuración para que coincida. No se cambia nada "
+"hasta que pulses un botón de abajo."
 
 #: roudix-hw-sync-gui.py
 msgid "Your hardware"
@@ -93,7 +99,7 @@ msgid "Your configuration already matches this hardware"
 msgstr "Tu configuración ya coincide con este hardware"
 
 #: roudix-hw-sync-gui.py
-#, c-format
+#, python-format
 msgid "%d line will be updated in local.nix"
 msgid_plural "%d lines will be updated in local.nix"
 msgstr[0] "Se actualizará %d línea en local.nix"
@@ -103,36 +109,33 @@ msgstr[1] "Se actualizarán %d líneas en local.nix"
 msgid "Apply changes?"
 msgstr "¿Aplicar los cambios?"
 
-#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
 #: roudix-hw-sync-gui.py
 #, python-brace-format
 msgid "CPU: <b>{cpu}</b>"
 msgstr "CPU: <b>{cpu}</b>"
 
-#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
 #: roudix-hw-sync-gui.py
 #, python-brace-format
 msgid "GPU: <b>{gpu}</b>"
 msgstr "GPU: <b>{gpu}</b>"
 
-#. TRANSLATORS: {answer} is replaced by the words "yes" / "no" below.
 #: roudix-hw-sync-gui.py
-#, python-brace-format
-msgid "Hybrid laptop: <b>{answer}</b>"
-msgstr "Portátil híbrido: <b>{answer}</b>"
+msgid "no"
+msgstr "no"
 
 #: roudix-hw-sync-gui.py
 msgid "yes"
 msgstr "sí"
 
 #: roudix-hw-sync-gui.py
-msgid "no"
-msgstr "no"
+#, python-brace-format
+msgid "Hybrid laptop: <b>{answer}</b>"
+msgstr "Portátil híbrido: <b>{answer}</b>"
 
-#. TRANSLATORS: Pango markup: keep the <tt> tags.
 #: roudix-hw-sync-gui.py
 msgid "A backup of your settings is kept as <tt>local.nix.bak</tt>."
-msgstr "Se guarda una copia de seguridad de tus ajustes como <tt>local.nix.bak</tt>."
+msgstr ""
+"Se guarda una copia de seguridad de tus ajustes como <tt>local.nix.bak</tt>."
 
 #: roudix-hw-sync-gui.py
 msgid "Your system will then be rebuilt, this can take a few minutes."
@@ -195,27 +198,27 @@ msgid "✗ Rebuild failed (exit code {rc})."
 msgstr "✗ Falló la reconstrucción (código de salida {rc})."
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Unknown option: %s"
 msgstr "Opción desconocida: %s"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Invalid --gpu: %s"
 msgstr "Valor de --gpu no válido: %s"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Invalid --cpu: %s"
 msgstr "Valor de --cpu no válido: %s"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Invalid --laptop: %s"
 msgstr "Valor de --laptop no válido: %s"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "local.nix not found: %s"
 msgstr "No se encontró local.nix: %s"
 
@@ -227,32 +230,36 @@ msgstr "No se detectó el fabricante de la CPU, usa --cpu amd|intel"
 msgid "GPU not detected, use --gpu ..."
 msgstr "No se detectó la GPU, usa --gpu ..."
 
-#. TRANSLATORS: Keep CPU=, GPU= and nvidiaLaptop= as they are (option names), and the three %s in this order.
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
 msgstr "Detectado: CPU=%s  GPU=%s  nvidiaLaptop=%s"
 
 #: roudix-hw-sync
-msgid "warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), module default applies"
-msgstr "aviso: no hay ninguna línea hardware.myKernelChaotic en local.nix (nvidia la usa), se aplica el valor por defecto del módulo"
+msgid ""
+"warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), "
+"module default applies"
+msgstr ""
+"aviso: no hay ninguna línea hardware.myKernelChaotic en local.nix (nvidia la "
+"usa), se aplica el valor por defecto del módulo"
 
 #: roudix-hw-sync
 msgid "Nothing to change."
 msgstr "No hay nada que cambiar."
 
-#. TRANSLATORS: Must start with an ASCII "(": the GUI uses that to tell this note apart from the diff.
 #: roudix-hw-sync
 msgid "(dry-run: file left untouched)"
 msgstr "(simulación: archivo sin modificar)"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Done. Backup: %s"
 msgstr "Hecho. Copia de seguridad: %s"
 
-#. TRANSLATORS: Keep the command and $NH_FLAKE exactly as they are.
 #: roudix-hw-sync
-msgid "Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)"
-msgstr "Ahora reconstruye: rebuild   (o: nh os boot --accept-flake-config path:$NH_FLAKE)"
-
+#, sh-format
+msgid ""
+"Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)"
+msgstr ""
+"Ahora reconstruye: rebuild   (o: nh os boot --accept-flake-config path:"
+"$NH_FLAKE)"

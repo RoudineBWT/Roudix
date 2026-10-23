@@ -33,8 +33,14 @@ msgid "Detection failed."
 msgstr "पहचान विफल रही।"
 
 #: roudix-hw-sync-gui.py
-msgid "New PC, new graphics card or new processor? Roudix looks at your hardware and updates your configuration to match. Nothing is changed until you press a button below."
-msgstr "नया PC, नया ग्राफ़िक्स कार्ड या नया प्रोसेसर? Roudix आपके हार्डवेयर की जाँच करता है और उसके अनुसार आपका कॉन्फ़िगरेशन अपडेट करता है। नीचे दिया गया कोई बटन दबाने तक कुछ भी नहीं बदला जाएगा।"
+msgid ""
+"New PC, new graphics card or new processor? Roudix looks at your hardware "
+"and updates your configuration to match. Nothing is changed until you press "
+"a button below."
+msgstr ""
+"नया PC, नया ग्राफ़िक्स कार्ड या नया प्रोसेसर? Roudix आपके हार्डवेयर की जाँच करता है और "
+"उसके अनुसार आपका कॉन्फ़िगरेशन अपडेट करता है। नीचे दिया गया कोई बटन दबाने तक कुछ भी नहीं "
+"बदला जाएगा।"
 
 #: roudix-hw-sync-gui.py
 msgid "Your hardware"
@@ -93,7 +99,7 @@ msgid "Your configuration already matches this hardware"
 msgstr "आपका कॉन्फ़िगरेशन पहले से इस हार्डवेयर से मेल खाता है"
 
 #: roudix-hw-sync-gui.py
-#, c-format
+#, python-format
 msgid "%d line will be updated in local.nix"
 msgid_plural "%d lines will be updated in local.nix"
 msgstr[0] "local.nix में %d पंक्ति अपडेट की जाएगी"
@@ -103,33 +109,29 @@ msgstr[1] "local.nix में %d पंक्तियाँ अपडेट �
 msgid "Apply changes?"
 msgstr "बदलाव लागू करें?"
 
-#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
 #: roudix-hw-sync-gui.py
 #, python-brace-format
 msgid "CPU: <b>{cpu}</b>"
 msgstr "CPU: <b>{cpu}</b>"
 
-#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
 #: roudix-hw-sync-gui.py
 #, python-brace-format
 msgid "GPU: <b>{gpu}</b>"
 msgstr "GPU: <b>{gpu}</b>"
 
-#. TRANSLATORS: {answer} is replaced by the words "yes" / "no" below.
 #: roudix-hw-sync-gui.py
-#, python-brace-format
-msgid "Hybrid laptop: <b>{answer}</b>"
-msgstr "हाइब्रिड लैपटॉप: <b>{answer}</b>"
+msgid "no"
+msgstr "नहीं"
 
 #: roudix-hw-sync-gui.py
 msgid "yes"
 msgstr "हाँ"
 
 #: roudix-hw-sync-gui.py
-msgid "no"
-msgstr "नहीं"
+#, python-brace-format
+msgid "Hybrid laptop: <b>{answer}</b>"
+msgstr "हाइब्रिड लैपटॉप: <b>{answer}</b>"
 
-#. TRANSLATORS: Pango markup: keep the <tt> tags.
 #: roudix-hw-sync-gui.py
 msgid "A backup of your settings is kept as <tt>local.nix.bak</tt>."
 msgstr "आपकी सेटिंग्स का बैकअप <tt>local.nix.bak</tt> के रूप में रखा जाता है।"
@@ -195,27 +197,27 @@ msgid "✗ Rebuild failed (exit code {rc})."
 msgstr "✗ रीबिल्ड विफल रहा (एग्ज़िट कोड {rc})।"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Unknown option: %s"
 msgstr "अज्ञात विकल्प: %s"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Invalid --gpu: %s"
 msgstr "अमान्य --gpu: %s"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Invalid --cpu: %s"
 msgstr "अमान्य --cpu: %s"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Invalid --laptop: %s"
 msgstr "अमान्य --laptop: %s"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "local.nix not found: %s"
 msgstr "local.nix नहीं मिला: %s"
 
@@ -227,32 +229,35 @@ msgstr "CPU निर्माता की पहचान नहीं हो 
 msgid "GPU not detected, use --gpu ..."
 msgstr "GPU की पहचान नहीं हो सकी, --gpu ... इस्तेमाल करें"
 
-#. TRANSLATORS: Keep CPU=, GPU= and nvidiaLaptop= as they are (option names), and the three %s in this order.
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
 msgstr "पहचाना गया: CPU=%s  GPU=%s  nvidiaLaptop=%s"
 
 #: roudix-hw-sync
-msgid "warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), module default applies"
-msgstr "चेतावनी: local.nix में hardware.myKernelChaotic वाली पंक्ति नहीं है (nvidia इसे इस्तेमाल करता है), मॉड्यूल का डिफ़ॉल्ट लागू होगा"
+msgid ""
+"warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), "
+"module default applies"
+msgstr ""
+"चेतावनी: local.nix में hardware.myKernelChaotic वाली पंक्ति नहीं है (nvidia इसे "
+"इस्तेमाल करता है), मॉड्यूल का डिफ़ॉल्ट लागू होगा"
 
 #: roudix-hw-sync
 msgid "Nothing to change."
 msgstr "बदलने के लिए कुछ नहीं है।"
 
-#. TRANSLATORS: Must start with an ASCII "(": the GUI uses that to tell this note apart from the diff.
 #: roudix-hw-sync
 msgid "(dry-run: file left untouched)"
 msgstr "(ड्राई-रन: फ़ाइल में कोई बदलाव नहीं किया गया)"
 
 #: roudix-hw-sync
-#, c-format
+#, sh-printf-format
 msgid "Done. Backup: %s"
 msgstr "हो गया। बैकअप: %s"
 
-#. TRANSLATORS: Keep the command and $NH_FLAKE exactly as they are.
 #: roudix-hw-sync
-msgid "Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)"
-msgstr "अब रीबिल्ड करें: rebuild   (या: nh os boot --accept-flake-config path:$NH_FLAKE)"
-
+#, sh-format
+msgid ""
+"Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)"
+msgstr ""
+"अब रीबिल्ड करें: rebuild   (या: nh os boot --accept-flake-config path:$NH_FLAKE)"

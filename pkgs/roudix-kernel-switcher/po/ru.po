@@ -14,8 +14,12 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: roudix-kernel-switcher.py
-msgid "linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay"
-msgstr "linux-zen — mainline-ядро из nixpkgs, есть в кэше cache.nixos.org, не зависит от оверлея xddxdd"
+msgid ""
+"linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent "
+"of the xddxdd overlay"
+msgstr ""
+"linux-zen — mainline-ядро из nixpkgs, есть в кэше cache.nixos.org, не "
+"зависит от оверлея xddxdd"
 
 #: roudix-kernel-switcher.py
 msgid "linux LTS — nixpkgs default kernel, cached on cache.nixos.org"
@@ -23,11 +27,14 @@ msgstr "linux LTS — ядро nixpkgs по умолчанию, есть в кэ
 
 #: roudix-kernel-switcher.py
 msgid "linux latest — newest mainline stable, cached on cache.nixos.org"
-msgstr "linux latest — новейшая стабильная mainline-версия, есть в кэше cache.nixos.org"
+msgstr ""
+"linux latest — новейшая стабильная mainline-версия, есть в кэше "
+"cache.nixos.org"
 
 #: roudix-kernel-switcher.py
 msgid "linux_testing — mainline RC/testing kernel, cached on cache.nixos.org"
-msgstr "linux_testing — тестовое mainline-ядро (RC), есть в кэше cache.nixos.org"
+msgstr ""
+"linux_testing — тестовое mainline-ядро (RC), есть в кэше cache.nixos.org"
 
 #: roudix-kernel-switcher.py
 msgid "XanMod LTS — nixpkgs, performance governor + lazy preemption + BBRv3"
@@ -106,8 +113,12 @@ msgid "Release candidate  —  unstable"
 msgstr "Релиз-кандидат  —  нестабильно"
 
 #: roudix-kernel-switcher.py
-msgid "linux-zen — nvidia module cached only with the open driver; closed driver compiles locally on every bump"
-msgstr "linux-zen — модуль nvidia есть в кэше только для открытого драйвера; закрытый драйвер собирается локально при каждом обновлении"
+msgid ""
+"linux-zen — nvidia module cached only with the open driver; closed driver "
+"compiles locally on every bump"
+msgstr ""
+"linux-zen — модуль nvidia есть в кэше только для открытого драйвера; "
+"закрытый драйвер собирается локально при каждом обновлении"
 
 #: roudix-kernel-switcher.py
 msgid "linux LTS — same nvidia module caveat as zen"
@@ -118,8 +129,11 @@ msgid "linux latest — same nvidia module caveat as zen"
 msgstr "linux latest — то же ограничение модуля nvidia, что и у zen"
 
 #: roudix-kernel-switcher.py
-msgid "linux_testing — mainline RC/testing kernel, same nvidia module caveat as zen"
-msgstr "linux_testing — тестовое mainline-ядро (RC), то же ограничение модуля nvidia, что и у zen"
+msgid ""
+"linux_testing — mainline RC/testing kernel, same nvidia module caveat as zen"
+msgstr ""
+"linux_testing — тестовое mainline-ядро (RC), то же ограничение модуля "
+"nvidia, что и у zen"
 
 #: roudix-kernel-switcher.py
 msgid "XanMod LTS — same nvidia module caveat as zen"
@@ -137,12 +151,10 @@ msgstr "По умолчанию  —  LTO + BORE, включает nvidia_cachyo
 msgid "Server optimised  —  no desktop tuning"
 msgstr "Оптимизировано для серверов  —  без настроек для рабочего стола"
 
-#. TRANSLATORS: Heading above a list of kernels ("latest kernels").
 #: roudix-kernel-switcher.py
 msgid "Latest"
 msgstr "Свежие"
 
-#. TRANSLATORS: Heading above a list of kernel variants.
 #: roudix-kernel-switcher.py
 msgid "Variants"
 msgstr "Варианты"
@@ -157,8 +169,12 @@ msgid "Kernel source: {source}"
 msgstr "Источник ядра: {source}"
 
 #: roudix-kernel-switcher.py
-msgid "Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos (precompiled driver) stays matched to your kernel."
-msgstr "Обнаружена видеокарта Nvidia — показаны только варианты Chaotic-Nyx, чтобы nvidia_cachyos (предсобранный драйвер) оставался совместимым с вашим ядром."
+msgid ""
+"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
+"(precompiled driver) stays matched to your kernel."
+msgstr ""
+"Обнаружена видеокарта Nvidia — показаны только варианты Chaotic-Nyx, чтобы "
+"nvidia_cachyos (предсобранный драйвер) оставался совместимым с вашим ядром."
 
 #: roudix-kernel-switcher.py
 msgid "Active kernel"
@@ -185,7 +201,6 @@ msgstr "Это ядро уже активно."
 msgid "Apply changes?"
 msgstr "Применить изменения?"
 
-#. TRANSLATORS: Pango markup: keep the <b> tags and the {placeholders}.
 #: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Kernel: <b>{current}</b> → <b>{selected}</b>"
@@ -193,7 +208,8 @@ msgstr "Ядро: <b>{current}</b> → <b>{selected}</b>"
 
 #: roudix-kernel-switcher.py
 msgid "Your NixOS configuration will be rebuilt. This may take a few minutes."
-msgstr "Конфигурация NixOS будет пересобрана. Это может занять несколько минут."
+msgstr ""
+"Конфигурация NixOS будет пересобрана. Это может занять несколько минут."
 
 #: roudix-kernel-switcher.py
 msgid "Cancel"
@@ -241,7 +257,9 @@ msgstr "✓ Готово — перезагрузите компьютер, чт
 
 #: roudix-kernel-switcher.py
 msgid "✓ Rebuild completed successfully. Reboot to apply changes."
-msgstr "✓ Пересборка успешно завершена. Перезагрузите компьютер, чтобы применить изменения."
+msgstr ""
+"✓ Пересборка успешно завершена. Перезагрузите компьютер, чтобы применить "
+"изменения."
 
 #: roudix-kernel-switcher.py
 #, python-brace-format
@@ -252,4 +270,3 @@ msgstr "✗ Сборка не удалась (код {rc}). См. журнал."
 #, python-brace-format
 msgid "✗ Rebuild failed (exit code {rc})."
 msgstr "✗ Пересборка не удалась (код завершения {rc})."
-

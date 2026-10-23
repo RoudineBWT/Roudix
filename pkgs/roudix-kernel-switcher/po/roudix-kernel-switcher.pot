@@ -1,11 +1,13 @@
-# Translations template for roudix-kernel-switcher (Roudix).
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the roudix-kernel-switcher package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: roudix-kernel-switcher\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +17,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: roudix-kernel-switcher.py
-msgid "linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay"
+msgid ""
+"linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent "
+"of the xddxdd overlay"
 msgstr ""
 
 #: roudix-kernel-switcher.py
@@ -107,7 +111,9 @@ msgid "Release candidate  —  unstable"
 msgstr ""
 
 #: roudix-kernel-switcher.py
-msgid "linux-zen — nvidia module cached only with the open driver; closed driver compiles locally on every bump"
+msgid ""
+"linux-zen — nvidia module cached only with the open driver; closed driver "
+"compiles locally on every bump"
 msgstr ""
 
 #: roudix-kernel-switcher.py
@@ -119,7 +125,8 @@ msgid "linux latest — same nvidia module caveat as zen"
 msgstr ""
 
 #: roudix-kernel-switcher.py
-msgid "linux_testing — mainline RC/testing kernel, same nvidia module caveat as zen"
+msgid ""
+"linux_testing — mainline RC/testing kernel, same nvidia module caveat as zen"
 msgstr ""
 
 #: roudix-kernel-switcher.py
@@ -138,12 +145,10 @@ msgstr ""
 msgid "Server optimised  —  no desktop tuning"
 msgstr ""
 
-#. TRANSLATORS: Heading above a list of kernels ("latest kernels").
 #: roudix-kernel-switcher.py
 msgid "Latest"
 msgstr ""
 
-#. TRANSLATORS: Heading above a list of kernel variants.
 #: roudix-kernel-switcher.py
 msgid "Variants"
 msgstr ""
@@ -158,7 +163,9 @@ msgid "Kernel source: {source}"
 msgstr ""
 
 #: roudix-kernel-switcher.py
-msgid "Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos (precompiled driver) stays matched to your kernel."
+msgid ""
+"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
+"(precompiled driver) stays matched to your kernel."
 msgstr ""
 
 #: roudix-kernel-switcher.py
@@ -186,7 +193,6 @@ msgstr ""
 msgid "Apply changes?"
 msgstr ""
 
-#. TRANSLATORS: Pango markup: keep the <b> tags and the {placeholders}.
 #: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Kernel: <b>{current}</b> → <b>{selected}</b>"
@@ -253,4 +259,3 @@ msgstr ""
 #, python-brace-format
 msgid "✗ Rebuild failed (exit code {rc})."
 msgstr ""
-

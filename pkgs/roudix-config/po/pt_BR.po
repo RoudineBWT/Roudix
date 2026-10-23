@@ -1,0 +1,1056 @@
+# Brazilian Portuguese translation of roudix-config (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-config\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Brazilian Portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "(unchanged)"
+msgstr "(inalterado)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Save"
+msgstr "Salvar"
+
+#: roudix-config-gui.py
+msgid "Window rule"
+msgstr "Regra de janela"
+
+#: roudix-config-gui.py
+msgid "Application"
+msgstr "Aplicativo"
+
+#: roudix-config-gui.py
+msgid ""
+"● open now · ○ seen open before · no symbol: installed (the app_id is then a"
+" guess)"
+msgstr ""
+"● aberto agora · ○ visto aberto antes · sem símbolo: instalado (o app_id é "
+"então um palpite)"
+
+#: roudix-config-gui.py
+msgid "Pick an app"
+msgstr "Escolher um app"
+
+#: roudix-config-gui.py
+msgid "(type it by hand)"
+msgstr "(digitar manualmente)"
+
+#: roudix-config-gui.py
+msgid "app_id (regex)"
+msgstr "app_id (regex)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Title (regex, optional)"
+msgstr "Título (regex, opcional)"
+
+#: roudix-config-gui.py
+msgid "Settings (leave “unchanged” to force nothing)"
+msgstr "Configurações (deixe “inalterado” para não forçar nada)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Screen"
+msgstr "Tela"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Workspace"
+msgstr "Workspace"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Placement"
+msgstr "Posicionamento"
+
+#: roudix-config-gui.py roudix-config.py roudix_config_backends.py
+msgid "Blur"
+msgstr "Desfoque (blur)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Opacity (0 to 1, optional)"
+msgstr "Opacidade (0 a 1, opcional)"
+
+#: roudix-config-gui.py
+msgid "Opacity: a number between 0 and 1"
+msgstr "Opacidade: um número entre 0 e 1"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Output"
+msgstr "Saída"
+
+#: roudix-config-gui.py
+msgid "Display"
+msgstr "Exibição"
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "The mode format is {example}"
+msgstr "O formato do modo é {example}"
+
+#: roudix-config-gui.py
+msgid "Detected modes (the compositor must be running)"
+msgstr "Modos detectados (o compositor precisa estar em execução)"
+
+#: roudix-config-gui.py
+msgid "(pick one)"
+msgstr "(escolha um)"
+
+#: roudix-config-gui.py
+msgid "Resolution / refresh rate"
+msgstr "Resolução / taxa de atualização"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Scale (0.25 to 4)"
+msgstr "Escala (0.25 a 4)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Rotation"
+msgstr "Rotação"
+
+#: roudix-config-gui.py
+msgid "Workspaces"
+msgstr "Workspaces"
+
+#: roudix-config-gui.py
+msgid ""
+"Names separated by spaces. Avoid a purely numeric name that exists on one "
+"screen only: the compositor treats it as unique and Mod+N would always jump "
+"to that screen."
+msgstr ""
+"Nomes separados por espaços. Evite um nome puramente numérico que exista em "
+"apenas uma tela: o compositor o trata como único e Mod+N sempre pularia para"
+" essa tela."
+
+#: roudix-config-gui.py
+msgid "This screen's workspace names"
+msgstr "Nomes dos workspaces desta tela"
+
+#: roudix-config-gui.py roudix-config.py
+msgid " (current)"
+msgstr " (atual)"
+
+#: roudix-config-gui.py
+msgid "Pick a screen"
+msgstr "Escolha uma tela"
+
+#: roudix-config-gui.py roudix_config_backends.py
+msgid "Mode: use 2560x1440 or 2560x1440@240"
+msgstr "Modo: use 2560x1440 ou 2560x1440@240"
+
+#: roudix-config-gui.py
+msgid "Scale: a number"
+msgstr "Escala: um número"
+
+#: roudix-config-gui.py
+msgid "Scale between 0.25 and 4"
+msgstr "Escala entre 0.25 e 4"
+
+#: roudix-config-gui.py
+msgid "Nothing to save"
+msgstr "Nada para salvar"
+
+#: roudix-config-gui.py
+msgid "Shortcut"
+msgstr "Atalho"
+
+#: roudix-config-gui.py
+msgid "Keys"
+msgstr "Teclas"
+
+#: roudix-config-gui.py
+msgid "Key"
+msgstr "Tecla"
+
+#: roudix-config-gui.py
+msgid "Result"
+msgstr "Resultado"
+
+#: roudix-config-gui.py
+msgid "Niri: an existing shortcut's key can't be changed here."
+msgstr "Niri: a tecla de um atalho existente não pode ser alterada aqui."
+
+#: roudix-config-gui.py
+msgid "Full shortcut (editable)"
+msgstr "Atalho completo (editável)"
+
+#: roudix-config-gui.py
+msgid "Action"
+msgstr "Ação"
+
+#: roudix-config-gui.py
+msgid "Actions already in use"
+msgstr "Ações já em uso"
+
+#: roudix-config-gui.py
+msgid "(pick to fill in)"
+msgstr "(escolha para preencher)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Rules"
+msgstr "Regras"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Screens"
+msgstr "Telas"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Shortcuts"
+msgstr "Atalhos"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Add"
+msgstr "Adicionar"
+
+#: roudix-config-gui.py
+msgid "Reset everything"
+msgstr "Redefinir tudo"
+
+#: roudix-config-gui.py
+msgid "Discards your changes on this page"
+msgstr "Descarta suas alterações nesta página"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Rebuild"
+msgstr "Rebuild"
+
+#: roudix-config-gui.py
+msgid "Runs `nh os switch` in a terminal (applies your changes)"
+msgstr "Executa `nh os switch` em um terminal (aplica suas alterações)"
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid ""
+"{label}: you can change a shortcut's action or add new ones (✎ = changed by "
+"you). Moving or deleting a default shortcut is done in the File tab."
+msgstr ""
+"{label}: você pode alterar a ação de um atalho ou adicionar novos (✎ = "
+"alterado por você). Mover ou excluir um atalho padrão é feito na aba "
+"Arquivo."
+
+#: roudix-config-gui.py
+msgid ""
+"Once you change anything, the shortcut table is frozen: new default "
+"shortcuts added to the repo won't reach you any more (“Reset everything” to "
+"go back)."
+msgstr ""
+"Assim que você alterar qualquer coisa, a tabela de atalhos fica congelada: "
+"os novos atalhos padrão adicionados ao repositório não chegarão mais até "
+"você (“Redefinir tudo” para voltar)."
+
+#: roudix-config-gui.py
+msgid "Filter shortcuts…"
+msgstr "Filtrar atalhos…"
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid ""
+"Your whole {custom_name} file. The “roudix-config” block is managed by the "
+"app; the rest is yours. Saving makes a .bak copy and checks the syntax."
+msgstr ""
+"Todo o seu arquivo {custom_name}. O bloco “roudix-config” é gerenciado pelo "
+"app; o resto é seu. Ao salvar, é criada uma cópia .bak e a sintaxe é "
+"verificada."
+
+#: roudix-config-gui.py roudix-config.py
+msgid "File"
+msgstr "Arquivo"
+
+#: roudix-config-gui.py
+msgid "Unsaved changes in “File”: save them first."
+msgstr "Alterações não salvas em “Arquivo”: salve-as primeiro."
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "Not saved — Nix error: {msg}"
+msgstr "Não salvo — erro do Nix: {msg}"
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "Saved ({msg}). Rebuild required."
+msgstr "Salvo ({msg}). Rebuild necessário."
+
+#: roudix-config-gui.py
+msgid ""
+"The most common settings. A value you changed is marked ✎ (↶ to restore the "
+"default); the others follow the repo's defaults. Rebuild required to apply."
+msgstr ""
+"As configurações mais comuns. Um valor que você alterou é marcado com ✎ (↶ "
+"para restaurar o padrão); os demais seguem os padrões do repositório. É "
+"necessário um rebuild para aplicar."
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Settings"
+msgstr "Configurações"
+
+#: roudix-config-gui.py
+msgid "No settings available for this desktop."
+msgstr "Nenhuma configuração disponível para este desktop."
+
+#: roudix-config-gui.py
+msgid "current value unknown (compositor config not read)"
+msgstr "valor atual desconhecido (a configuração do compositor não foi lida)"
+
+#: roudix-config-gui.py
+msgid "Restore the default value"
+msgstr "Restaurar o valor padrão"
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "{title} restored — rebuild required."
+msgstr "{title} restaurado — rebuild necessário."
+
+#: roudix-config-gui.py
+msgid "Click to edit"
+msgstr "Clique para editar"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Delete"
+msgstr "Excluir"
+
+#: roudix-config-gui.py
+msgid "No rules"
+msgstr "Nenhuma regra"
+
+#: roudix-config-gui.py
+msgid "Add one with the + button"
+msgstr "Adicione uma com o botão +"
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "  ·  title: {m}"
+msgstr "  ·  título: {m}"
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "{get} · scale {get2} · rotation {get3}"
+msgstr "{get} · escala {get2} · rotação {get3}"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "dynamic"
+msgstr "dinâmicos"
+
+#: roudix-config-gui.py
+msgid ""
+"\n"
+"workspaces: "
+msgstr ""
+"\n"
+"workspaces: "
+
+#: roudix-config-gui.py
+msgid "Default"
+msgstr "Padrão"
+
+#: roudix-config-gui.py
+msgid "Restore this screen's default values"
+msgstr "Restaurar os valores padrão desta tela"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Shortcuts reset — rebuild required."
+msgstr "Atalhos redefinidos — rebuild necessário."
+
+#: roudix-config-gui.py
+msgid "Settings reset — rebuild required."
+msgstr "Configurações redefinidas — rebuild necessário."
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "Rebuild started in {term}."
+msgstr "Rebuild iniciado em {term}."
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Rule saved — rebuild required."
+msgstr "Regra salva — rebuild necessário."
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Rule deleted — rebuild required."
+msgstr "Regra excluída — rebuild necessário."
+
+#: roudix-config-gui.py roudix-config.py
+#, python-brace-format
+msgid "{n} saved — rebuild required."
+msgstr "{n} salvo — rebuild necessário."
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "{name} reset — rebuild required."
+msgstr "{name} redefinido — rebuild necessário."
+
+#: roudix-config-gui.py roudix-config.py
+#, python-brace-format
+msgid "{k} → {a} saved — rebuild required."
+msgstr "{k} → {a} salvo — rebuild necessário."
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "{key} deleted — rebuild required."
+msgstr "{key} excluído — rebuild necessário."
+
+#: roudix-config-gui.py
+#, python-brace-format
+msgid "Couldn't prepare {custom_name}: {e}"
+msgstr "Não foi possível preparar {custom_name}: {e}"
+
+#: roudix-config-gui.py
+msgid "Not available"
+msgstr "Indisponível"
+
+#: roudix-config.py
+msgid "Window rule — Ctrl+S save · Esc cancel"
+msgstr "Regra de janela — Ctrl+S salvar · Esc cancelar"
+
+#: roudix-config.py
+msgid "App — ● open now · ○ seen open before · no symbol = installed"
+msgstr "App — ● aberto agora · ○ visto aberto antes · sem símbolo = instalado"
+
+#: roudix-config.py
+msgid "Search an app…"
+msgstr "Buscar um app…"
+
+#: roudix-config.py
+msgid "app_id (regex — filled as ^…$ when you pick an app)"
+msgstr "app_id (regex — preenchido como ^…$ ao escolher um app)"
+
+#: roudix-config.py
+msgid "opacity: a number between 0 and 1"
+msgstr "opacidade: um número entre 0 e 1"
+
+#: roudix-config.py
+msgid "Screen — Ctrl+S save · Esc cancel"
+msgstr "Tela — Ctrl+S salvar · Esc cancelar"
+
+#: roudix-config.py
+msgid "Resolution / refresh rate (detected modes when the compositor runs)"
+msgstr ""
+"Resolução / taxa de atualização (modos detectados quando o compositor está "
+"em execução)"
+
+#: roudix-config.py
+msgid "(pick a mode)"
+msgstr "(escolha um modo)"
+
+#: roudix-config.py
+msgid "This screen's workspace names, separated by spaces"
+msgstr "Nomes dos workspaces desta tela, separados por espaços"
+
+#: roudix-config.py
+msgid "e.g.  web code chat   (or icons)"
+msgstr "ex.  web code chat   (ou ícones)"
+
+#: roudix-config.py
+msgid ""
+"Avoid a purely numeric name that exists on one screen only: the compositor "
+"treats it as unique and Mod+N would always jump to that screen."
+msgstr ""
+"Evite um nome puramente numérico que exista em apenas uma tela: o compositor"
+" o trata como único e Mod+N sempre pularia para essa tela."
+
+#: roudix-config.py
+msgid "pick an output"
+msgstr "escolha uma saída"
+
+#: roudix-config.py
+msgid "mode: use 2560x1440 or 2560x1440@240"
+msgstr "modo: use 2560x1440 ou 2560x1440@240"
+
+#: roudix-config.py
+msgid "scale: a number"
+msgstr "escala: um número"
+
+#: roudix-config.py
+msgid "scale between 0.25 and 4"
+msgstr "escala entre 0.25 e 4"
+
+#: roudix-config.py
+msgid "nothing to save"
+msgstr "nada para salvar"
+
+#: roudix-config.py
+msgid "Shortcut — Ctrl+S save · Esc cancel"
+msgstr "Atalho — Ctrl+S salvar · Esc cancelar"
+
+#: roudix-config.py
+msgid "Shortcut. "
+msgstr "Atalho. "
+
+#: roudix-config.py
+msgid "An existing shortcut's key can't be changed here."
+msgstr "A tecla de um atalho existente não pode ser alterada aqui."
+
+#: roudix-config.py
+msgid "Action. "
+msgstr "Ação. "
+
+#: roudix-config.py
+msgid "Actions already in use (pick to fill in)"
+msgstr "Ações já em uso (escolha para preencher)"
+
+#: roudix-config.py
+msgid "(none)"
+msgstr "(nenhuma)"
+
+#: roudix-config.py
+msgid "Ctrl+S save · Esc cancel"
+msgstr "Ctrl+S salvar · Esc cancelar"
+
+#: roudix-config.py
+msgid "off"
+msgstr "desativado"
+
+#: roudix-config.py
+msgid "on"
+msgstr "ativado"
+
+#: roudix-config.py
+#, python-brace-format
+msgid "Value between {lo} and {hi}"
+msgstr "Valor entre {lo} e {hi}"
+
+#: roudix-config.py
+msgid "invalid value"
+msgstr "valor inválido"
+
+#: roudix-config.py
+msgid "Edit"
+msgstr "Editar"
+
+#: roudix-config.py
+msgid "Reset"
+msgstr "Redefinir"
+
+#: roudix-config.py
+msgid "Quit"
+msgstr "Sair"
+
+#: roudix-config.py
+msgid "Save the .nix"
+msgstr "Salvar o .nix"
+
+#: roudix-config.py
+msgid ""
+"Unsaved changes in the File tab: Ctrl+S to keep them (or leave without "
+"saving) before continuing."
+msgstr ""
+"Alterações não salvas na aba Arquivo: Ctrl+S para mantê-las (ou saia sem "
+"salvar) antes de continuar."
+
+#: roudix-config.py
+msgid "a add · e edit · d delete"
+msgstr "a adicionar · e editar · d excluir"
+
+#: roudix-config.py
+msgid ", workspace names"
+msgstr ", nomes dos workspaces"
+
+#: roudix-config.py
+#, python-brace-format
+msgid ""
+"e edit (resolution, scale, rotation{names}) · r back to the output's "
+"defaults"
+msgstr ""
+"e editar (resolução, escala, rotação{names}) · r voltar aos valores padrão "
+"da saída"
+
+#: roudix-config.py
+#, python-brace-format
+msgid ""
+"a add · e change the action · r reset everything\n"
+"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = changed by you."
+msgstr ""
+"a adicionar · e alterar a ação · r redefinir tudo\n"
+"{label}: mover ou excluir um atalho padrão é feito na aba Arquivo. ✎ = alterado por você."
+
+#: roudix-config.py
+msgid ""
+"a add · e edit · d delete · r reset everything\n"
+"Once changed, the table is frozen: new default shortcuts added to the repo won't reach you any more (r to go back)."
+msgstr ""
+"a adicionar · e editar · d excluir · r redefinir tudo\n"
+"Depois de alterada, a tabela fica congelada: os novos atalhos padrão adicionados ao repositório não chegarão mais até você (r para voltar)."
+
+#: roudix-config.py
+msgid ""
+"e edit · r restore this setting's default · F5 rebuild\n"
+"✎ = changed by you; the others follow the repo's defaults."
+msgstr ""
+"e editar · r restaurar o padrão desta configuração · F5 rebuild\n"
+"✎ = alterado por você; os demais seguem os padrões do repositório."
+
+#: roudix-config.py
+#, python-brace-format
+msgid "Your {custom_name} file. Ctrl+S saves (.bak copy + syntax check)."
+msgstr ""
+"Seu arquivo {custom_name}. Ctrl+S salva (cópia .bak + verificação de "
+"sintaxe)."
+
+#: roudix-config.py
+msgid "settings"
+msgstr "configurações"
+
+#: roudix-config.py
+msgid "title"
+msgstr "título"
+
+#: roudix-config.py
+msgid "output"
+msgstr "saída"
+
+#: roudix-config.py
+msgid "rotation"
+msgstr "rotação"
+
+#: roudix-config.py
+msgid "scale"
+msgstr "escala"
+
+#: roudix-config.py
+msgid "shortcut"
+msgstr "atalho"
+
+#: roudix-config.py
+msgid "group"
+msgstr "grupo"
+
+#: roudix-config.py
+msgid "setting"
+msgstr "configuração"
+
+#: roudix-config.py
+msgid "value"
+msgstr "valor"
+
+#: roudix-config.py
+#, python-brace-format
+msgid "{label}: deleting a default shortcut is done in the File tab."
+msgstr "{label}: excluir um atalho padrão é feito na aba Arquivo."
+
+#: roudix-config.py
+#, python-brace-format
+msgid "{k} deleted — rebuild required."
+msgstr "{k} excluído — rebuild necessário."
+
+#: roudix-config.py
+msgid "Setting restored — rebuild required (F5)."
+msgstr "Configuração restaurada — rebuild necessário (F5)."
+
+#: roudix-config.py
+#, python-brace-format
+msgid "{k} reset — rebuild required."
+msgstr "{k} redefinido — rebuild necessário."
+
+#: roudix-config.py
+#, python-brace-format
+msgid "NOT saved — Nix error: {msg}"
+msgstr "NÃO salvo — erro do Nix: {msg}"
+
+#: roudix-config.py
+#, python-brace-format
+msgid "{name} saved ({msg}). Previous version: {name}.bak — rebuild required."
+msgstr ""
+"{name} salvo ({msg}). Versão anterior: {name}.bak — rebuild necessário."
+
+#: roudix-config.py
+#, python-brace-format
+msgid "{title} saved — rebuild required (F5)."
+msgstr "{title} salvo — rebuild necessário (F5)."
+
+#: roudix-config.py
+msgid "Rebuild done ✔"
+msgstr "Rebuild concluído ✔"
+
+#: roudix-config.py
+#, python-brace-format
+msgid "Rebuild failed ✘ (code {rc})"
+msgstr "Rebuild com falha ✘ (código {rc})"
+
+#: roudix-config.py
+msgid "Press Enter to return to roudix-config… "
+msgstr "Pressione Enter para voltar ao roudix-config… "
+
+#: roudix-config.py
+#, python-brace-format
+msgid "Can't rebuild from the TUI ({e}): run the `rebuild` alias."
+msgstr ""
+"Não foi possível fazer o rebuild pelo TUI ({e}): execute o alias `rebuild`."
+
+#: roudix-config.py
+msgid ""
+"Rebuild finished (see the terminal) — reload the compositor config if "
+"needed."
+msgstr ""
+"Rebuild concluído (veja o terminal) — recarregue a configuração do "
+"compositor se necessário."
+
+#: roudix-config.py
+msgid "Configure Umbriel, Niri or MangoWC without writing Nix."
+msgstr "Configure o Umbriel, o Niri ou o MangoWC sem escrever Nix."
+
+#: roudix-config.py
+msgid "print the managed rules and exit"
+msgstr "mostra as regras gerenciadas e sai"
+
+#: roudix-config.py
+msgid "only create the -custom.nix file, then exit"
+msgstr "apenas cria o arquivo -custom.nix e sai"
+
+#: roudix-config.py
+msgid "Nothing to do."
+msgstr "Nada a fazer."
+
+#: roudix_config_backends.py
+msgid "Appearance"
+msgstr "Aparência"
+
+#: roudix_config_backends.py
+msgid "Layout"
+msgstr "Disposição"
+
+#: roudix_config_backends.py
+msgid "Animations"
+msgstr "Animações"
+
+#: roudix_config_backends.py
+msgid "Mouse, keyboard, cursor"
+msgstr "Mouse, teclado, cursor"
+
+#: roudix_config_backends.py
+msgid "Behavior"
+msgstr "Comportamento"
+
+#: roudix_config_backends.py
+#, python-brace-format
+msgid "unknown value: {value}"
+msgstr "valor desconhecido: {value}"
+
+#: roudix_config_backends.py
+msgid "empty text or forbidden characters"
+msgstr "texto vazio ou caracteres proibidos"
+
+#: roudix_config_backends.py
+msgid "Gap between windows (px)"
+msgstr "Espaçamento entre janelas (px)"
+
+#: roudix_config_backends.py
+msgid "Corner radius (px)"
+msgstr "Raio dos cantos (px)"
+
+#: roudix_config_backends.py
+msgid "Blur: passes"
+msgstr "Desfoque: passagens"
+
+#: roudix_config_backends.py
+msgid "Window shadows"
+msgstr "Sombras das janelas"
+
+#: roudix_config_backends.py
+msgid "Prefer server-side decorations"
+msgstr "Preferir decorações do lado do servidor"
+
+#: roudix_config_backends.py
+msgid "Default layout"
+msgstr "Disposição padrão"
+
+#: roudix_config_backends.py
+msgid "Center the focused column"
+msgstr "Centralizar a coluna em foco"
+
+#: roudix_config_backends.py
+msgid "Default column width"
+msgstr "Largura padrão das colunas"
+
+#: roudix_config_backends.py
+msgid "Master area width"
+msgstr "Largura da área principal (master)"
+
+#: roudix_config_backends.py
+msgid "Tap to click (touchpad)"
+msgstr "Tocar para clicar (touchpad)"
+
+#: roudix_config_backends.py
+msgid "Natural scrolling (touchpad)"
+msgstr "Rolagem natural (touchpad)"
+
+#: roudix_config_backends.py
+msgid "Mouse acceleration"
+msgstr "Aceleração do mouse"
+
+#: roudix_config_backends.py
+msgid "Focus follows mouse"
+msgstr "O foco segue o mouse"
+
+#: roudix_config_backends.py
+msgid "Hide the cursor while typing"
+msgstr "Ocultar o cursor ao digitar"
+
+#: roudix_config_backends.py
+msgid "Cursor size"
+msgstr "Tamanho do cursor"
+
+#: roudix_config_backends.py
+msgid "Cursor theme"
+msgstr "Tema do cursor"
+
+#: roudix_config_backends.py
+msgid "Focus windows that ask for attention"
+msgstr "Dar foco às janelas que o solicitam"
+
+#: roudix_config_backends.py
+msgid "Workspace back-and-forth"
+msgstr "Voltar ao workspace anterior (mesma tecla)"
+
+#: roudix_config_backends.py
+msgid "Shortcut cheatsheet at startup"
+msgstr "Ajuda de atalhos na inicialização"
+
+#: roudix_config_backends.py
+msgid "Outer margin (px)"
+msgstr "Margem externa (px)"
+
+#: roudix_config_backends.py
+msgid "Border width (px)"
+msgstr "Espessura da borda (px)"
+
+#: roudix_config_backends.py
+msgid "Blur: radius"
+msgstr "Desfoque: raio"
+
+#: roudix_config_backends.py
+msgid "Unfocused window opacity"
+msgstr "Opacidade das janelas sem foco"
+
+#: roudix_config_backends.py
+msgid "Focused window opacity"
+msgstr "Opacidade da janela em foco"
+
+#: roudix_config_backends.py
+msgid "No gaps with a single window"
+msgstr "Sem espaçamento com uma única janela"
+
+#: roudix_config_backends.py
+msgid "No border with a single window"
+msgstr "Sem borda com uma única janela"
+
+#: roudix_config_backends.py
+msgid "Default scroller width"
+msgstr "Largura padrão no modo scroller"
+
+#: roudix_config_backends.py
+msgid "Cursor follows focus"
+msgstr "O cursor segue o foco"
+
+#: roudix_config_backends.py
+msgid "Num Lock on at startup"
+msgstr "Num Lock ativado na inicialização"
+
+#: roudix_config_backends.py
+msgid "Key repeat rate (per second)"
+msgstr "Repetição de teclas (por segundo)"
+
+#: roudix_config_backends.py
+msgid "Key repeat delay (ms)"
+msgstr "Atraso de repetição (ms)"
+
+#: roudix_config_backends.py
+msgid "Animation slowdown (×)"
+msgstr "Desacelerar as animações (×)"
+
+#: roudix_config_backends.py
+msgid "Hot corner (overview)"
+msgstr "Canto ativo (overview)"
+
+#: roudix_config_backends.py
+msgid "Hide the shortcut overlay at startup"
+msgstr "Ocultar a sobreposição de atalhos na inicialização"
+
+#: roudix_config_backends.py
+msgid "e.g. Mod+Q, Mod+Shift+Return, XF86AudioMute"
+msgstr "ex. Mod+Q, Mod+Shift+Return, XF86AudioMute"
+
+#: roudix_config_backends.py
+msgid "shortcut and action required"
+msgstr "atalho e ação obrigatórios"
+
+#: roudix_config_backends.py
+msgid "generated by Roudix Config — edit it through the app"
+msgstr "gerado pelo Roudix Config — edite-o pelo app"
+
+#: roudix_config_backends.py
+msgid ""
+"e.g. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modifiers, key)"
+msgstr ""
+"ex. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modificadores, "
+"tecla)"
+
+#: roudix_config_backends.py
+msgid "Mango shortcut: “MODS,KEY” (e.g. SUPER,Q)"
+msgstr "Atalho do Mango: “MODS,KEY” (ex. SUPER,Q)"
+
+#: roudix_config_backends.py
+msgid "Action: unbalanced quotes"
+msgstr "Ação: aspas sem fechar"
+
+#: roudix_config_backends.py
+msgid "Empty action"
+msgstr "Ação vazia"
+
+#: roudix_config_backends.py
+msgid "Invalid action name (e.g. spawn, close-window, focus-workspace)"
+msgstr "Nome de ação inválido (ex. spawn, close-window, focus-workspace)"
+
+#: roudix_config_backends.py
+msgid "Niri: moving a shortcut isn't supported (use the File tab)."
+msgstr "Niri: mover um atalho não é suportado (use a aba Arquivo)."
+
+#: roudix_config_core.py
+#, python-brace-format
+msgid ""
+"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg}"
+" — trailing comma before ] or }} ?"
+msgstr ""
+"JSON inválido no bloco roudix-config (linha {line}, coluna {colno}): {msg} —"
+" vírgula sobrando antes de ] ou }} ?"
+
+#: roudix_config_core.py
+#, python-brace-format
+msgid "module body not found in {name}"
+msgstr "corpo do módulo não encontrado em {name}"
+
+#: roudix_config_core.py
+#, python-brace-format
+msgid "missing file: {example}"
+msgstr "arquivo ausente: {example}"
+
+#: roudix_config_core.py
+#, python-brace-format
+msgid "{name} created from {name2}"
+msgstr "{name} criado a partir de {name2}"
+
+#: roudix_config_core.py
+msgid "Removed the old umbriel-managed.nix import (obsolete)"
+msgstr "Importação antiga de umbriel-managed.nix removida (obsoleta)"
+
+#: roudix_config_core.py
+msgid ""
+"NOTE: umbriel-custom.nix still mentions umbriel-managed.nix — remove it by "
+"hand, that file is obsolete."
+msgstr ""
+"NOTA: umbriel-custom.nix ainda menciona umbriel-managed.nix — remova à mão, "
+"esse arquivo está obsoleto."
+
+#: roudix_config_core.py
+#, python-brace-format
+msgid "Rules and settings moved from {name} to {name2}"
+msgstr "Regras e configurações movidas de {name} para {name2}"
+
+#: roudix_config_core.py
+msgid "(seen open before)"
+msgstr "(visto aberto antes)"
+
+#: roudix_config_core.py
+msgid "(installed, app_id guessed)"
+msgstr "(instalado, app_id presumido)"
+
+#: roudix_config_core.py
+msgid "Floating"
+msgstr "Flutuante"
+
+#: roudix_config_core.py
+msgid "Maximized"
+msgstr "Maximizada"
+
+#: roudix_config_core.py
+msgid "Fullscreen"
+msgstr "Tela cheia"
+
+#: roudix_config_core.py
+msgid "Off"
+msgstr "Desativado"
+
+#: roudix_config_core.py
+msgid "On"
+msgstr "Ativado"
+
+#: roudix_config_core.py
+msgid "app_id or title required"
+msgstr "app_id ou título obrigatório"
+
+#: roudix_config_core.py
+msgid "opacity must be between 0 and 1"
+msgstr "a opacidade deve estar entre 0 e 1"
+
+#: roudix_config_core.py
+msgid "choose at least one setting"
+msgstr "escolha pelo menos uma configuração"
+
+#: roudix_config_core.py
+#, python-brace-format
+msgid ""
+"Roudix Config isn't available on {t}: use its native settings (System "
+"Settings)."
+msgstr ""
+"O Roudix Config não está disponível no {t}: use as configurações nativas "
+"dele (Configurações do Sistema)."
+
+#: roudix_config_core.py
+#, python-brace-format
+msgid "Roudix Config doesn't support {t} yet (for now: {join})."
+msgstr "O Roudix Config ainda não suporta {t} (por enquanto: {join})."
+
+#: roudix_config_core.py
+msgid ""
+"Can't determine the desktop (roudix.desktop.type). Rebuild so that "
+"~/.local/share/roudix/desktop-type gets created."
+msgstr ""
+"Não foi possível determinar o desktop (roudix.desktop.type). Faça um rebuild"
+" para que ~/.local/share/roudix/desktop-type seja criado."
+
+#: roudix_config_core.py
+#, python-brace-format
+msgid "unknown setting: {sid}"
+msgstr "configuração desconhecida: {sid}"
+
+#: roudix_config_core.py
+msgid "`nh` not found: run the rebuild by hand (the `rebuild` alias)."
+msgstr ""
+"`nh` não encontrado: execute o rebuild manualmente (o alias `rebuild`)."
+
+#: roudix_config_core.py
+msgid "Rebuild done ✔ — reload the compositor config if needed."
+msgstr ""
+"Rebuild concluído ✔ — recarregue a configuração do compositor se necessário."
+
+#: roudix_config_core.py
+msgid "Rebuild failed ✘ (code $rc) — read the messages above."
+msgstr "Rebuild com falha ✘ (código $rc) — leia as mensagens acima."
+
+#: roudix_config_core.py
+msgid "Press Enter to close… "
+msgstr "Pressione Enter para fechar… "
+
+#: roudix_config_core.py
+msgid "No terminal found: run the rebuild by hand (the `rebuild` alias)."
+msgstr ""
+"Nenhum terminal encontrado: execute o rebuild manualmente (o alias "
+"`rebuild`)."
+
+#: roudix_config_core.py
+msgid "syntax not checked, nix-instantiate not found"
+msgstr "sintaxe não verificada, nix-instantiate não encontrado"
+
+#: roudix_config_core.py
+msgid "valid Nix syntax"
+msgstr "sintaxe Nix válida"
+
+#: roudix_config_core.py
+msgid "syntax error"
+msgstr "erro de sintaxe"
