@@ -97,6 +97,7 @@ def _desktops():
         ("gnome", "GNOME"),
         ("kde", "KDE Plasma"),
         ("cinnamon", tr("Cinnamon (X11, older PCs)")),
+        ("cosmic", tr("COSMIC (System76, Rust)")),
         ("hyprland", "Hyprland"),
         ("mangowc", "MangoWC"),
         ("umbriel", "Umbriel"),
@@ -1478,6 +1479,9 @@ class OptionsPage(Adw.NavigationPage):
             self.file_manager_row.set_visible(False)
         elif desktop == "cinnamon":
             self._set_combo_value(self.file_manager_row, "nemo")
+            self.file_manager_row.set_visible(False)
+        elif desktop == "cosmic":
+            # COSMIC Files ships with the desktop; Roudix has no choice to make.
             self.file_manager_row.set_visible(False)
         else:
             self.file_manager_row.set_visible(True)

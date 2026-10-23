@@ -9,6 +9,11 @@ let
   # (niri, hyprland, mangowc, umbriel), which otherwise ship no GTK theme
   # at all — see the "not applied automatically" note in
   # theming/papirus-icon.nix / theming/tela-icon.nix.
+  #
+  # COSMIC is deliberately NOT in the exclusion list below: it themes its own
+  # libcosmic apps, but has no GTK theming of its own, so GTK apps get the
+  # same adw-gtk3 / dconf / icon / cursor setup as on the bare compositors
+  # (their Roudix colours are added by modules/home/desktop/cosmic).
   needsGtkTheme = desktopType != "gnome" && desktopType != "kde" && desktopType != "cinnamon";
 
   # roudix.iconTheme (modules/system/desktop/icon-theme.nix), set via roudix-switcher

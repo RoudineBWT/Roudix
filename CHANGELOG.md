@@ -8,6 +8,7 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 ## [Unreleased]
 
 ### Added
+- COSMIC as a desktop choice (`roudix.desktop.type = "cosmic"`, also in `roudix-switch`, `roudix-switcher` and both installers): cosmic-comp + cosmic-greeter, Roudix Kitsune wallpaper, keyboard layout from `roudix.keyboard*`, dock pinned like GNOME / KDE (browser(s), COSMIC Files, terminal, Roudix Store, Settings) and a **Roudix** folder in the app library for the Roudix apps (`X-Roudix`). All of it is a cosmic-config default (never overrides what the user changed). GTK apps get the Roudix palette (`gtk.gtk{3,4}.extraCss`); COSMIC's native theme is not generated from `Roudix.json` yet. `system76-scheduler` is off by default (SCX).
 - `roudix-installer` (Python / GTK) can now convert an already installed NixOS: no
   disk page, config cloned to `~/.config/roudix`, applied with `nixos-rebuild boot`
   (the previous generation stays in the boot menu), privileged steps through

@@ -13,11 +13,12 @@ Changez de bureau à tout moment avec `roudix-switch <de>` ou via l'interface **
 | `gnome` | GNOME 49.5 | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 | `cinnamon` | Cinnamon | Session X11 + LightDM — bureau classique, adapté aux vieux PC (GNOME 49 est Wayland uniquement) |
+| `cosmic` | COSMIC | Bureau Wayland de System76 (cosmic-comp), cosmic-greeter |
 
 Pour changer de façon permanente, modifiez `hosts/roudix/local.nix` :
 
 ```nix
-roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde" ou "cinnamon"
+roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde", "cinnamon" ou "cosmic"
 ```
 
 Ou utilisez la fonction fish — elle modifie la config et rebuild en une seule étape :
@@ -285,4 +286,18 @@ Surcharger les applications épinglées dans `hosts/roudix/local.nix` :
 
 ```nix
 roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.desktop" "cinnamon-settings.desktop" ];
+```
+
+## Défauts COSMIC
+
+COSMIC utilise le wallpaper Roudix Kitsune par défaut et la disposition clavier de `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. Le dock épingle le(s) navigateur(s) choisi(s) dans Roudix (et Zen s'il est activé), COSMIC Files, ton terminal, Roudix Store et les Paramètres COSMIC — même idée que le dash de GNOME et le gestionnaire de tâches de Plasma. Dans la bibliothèque d'applications, toutes les apps Roudix (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) sont regroupées dans un dossier **Roudix** et ne sont plus listées dans Système / Utilitaires. COSMIC Store n'est pas installé : Roudix Store le remplace.
+
+Ce sont des valeurs par défaut, livrées sous forme de fichiers cosmic-config système : elles ne s'appliquent qu'à ce que l'utilisateur n'a pas modifié, et une reconstruction ne revient jamais sur un choix fait dans les Paramètres COSMIC.
+
+Les apps GTK (navigateurs, apps Roudix...) reçoivent la palette Roudix (`assets/palette/Roudix.json`) par-dessus adw-gtk3 / libadwaita, et ton terminal reçoit son schéma de couleurs Roudix comme sur les autres bureaux. Les apps et le panneau propres à COSMIC suivent le thème choisi dans Paramètres > Apparence ; la palette Roudix n'y est **pas** appliquée automatiquement (voir la note dans `modules/home/desktop/cosmic/default.nix`).
+
+`system76-scheduler`, activé par le module COSMIC de nixpkgs, est désactivé par défaut car Roudix a son propre ordonnanceur (SCX). Pour le garder :
+
+```nix
+services.system76-scheduler.enable = true;
 ```

@@ -257,6 +257,10 @@ msgid "Cinnamon (X11, older PCs)"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py
+msgid "COSMIC (System76, Rust)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
 msgid "(detected)"
 msgstr ""
 

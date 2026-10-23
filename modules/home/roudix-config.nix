@@ -9,7 +9,7 @@ in
   options.roudix.configApp.enable = mkOption {
     type = types.bool;
     # The app configures the compositor selected by roudix.desktop.type and only
-    # knows the ones listed here; on GNOME / KDE / Cinnamon it would just say
+    # knows the ones listed here; on GNOME / KDE / Cinnamon / COSMIC it would just say
     # "non disponible", so it isn't installed there by default.
     default = builtins.elem osConfig.roudix.desktop.type [ "umbriel" "niri" "mangowc" ];
     description = ''

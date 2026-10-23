@@ -494,7 +494,7 @@ def rule_summary(rule: dict) -> str:
 # ───────────────────────── availability (which compositor?) ─────────────────────────
 
 SUPPORTED = {"umbriel", "niri", "mangowc"}
-NATIVE_DE = {"gnome", "kde", "cinnamon"}
+NATIVE_DE = {"gnome", "kde", "cinnamon", "cosmic"}
 TRANSFORMS = ["normal", "90", "180", "270", "flipped", "flipped-90", "flipped-180", "flipped-270"]
 
 
@@ -519,7 +519,8 @@ def desktop_type() -> str | None:
     sess = (os.environ.get("XDG_CURRENT_DESKTOP", "") + ":" + os.environ.get("XDG_SESSION_DESKTOP", "")).lower()
     for name, needle in (("umbriel", "umbriel"), ("niri", "niri"), ("hyprland", "hyprland"),
                          ("mangowc", "mango"), ("gnome", "gnome"), ("kde", "kde"),
-                         ("kde", "plasma"), ("cinnamon", "cinnamon")):
+                         ("kde", "plasma"), ("cinnamon", "cinnamon"),
+                         ("cosmic", "cosmic")):
         if needle in sess:
             return name
     return None

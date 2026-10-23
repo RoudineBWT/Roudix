@@ -10,7 +10,7 @@ yours and is never touched (the File tab edits the whole file).
 
 Tabs: window rules · screens (& workspaces where supported) · shortcuts · file.
 It configures the compositor selected by roudix.desktop.type (not on
-GNOME / KDE / Cinnamon, where it stays unavailable).
+GNOME / KDE / Cinnamon / COSMIC, where it stays unavailable).
 
     roudix-config-tui            # TUI (run it inside your session)
     roudix-config-tui --list     # print the managed rules

@@ -35,7 +35,7 @@
     example = "caps:digits_row";
     description = ''
       XKB options (comma-separated, as in `setxkbmap -option`). Currently
-      applied on Cinnamon only (LightDM + session).
+      applied on Cinnamon (LightDM + session) and COSMIC (cosmic-comp).
 
       Handy one for AZERTY ("fr"/"be") layouts: "caps:digits_row" makes
       Caps Lock turn the top row into digits (no Shift needed), handy on

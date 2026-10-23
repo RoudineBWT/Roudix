@@ -71,7 +71,7 @@ pkgs.stdenv.mkDerivation {
     Terminal=false
     Type=Application
     Categories=System;Settings;X-Roudix;
-    Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;cinnamon;customize;browser;editor;terminal;gaming;
+    Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;cinnamon;cosmic;customize;browser;editor;terminal;gaming;
     EOF
 
     # Translations: po/<lang>.po → share/locale/<lang>/LC_MESSAGES/roudix-switcher.mo

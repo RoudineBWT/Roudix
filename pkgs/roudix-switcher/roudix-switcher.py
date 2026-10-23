@@ -145,6 +145,12 @@ ENVIRONMENTS = [
         "icon":     "cinnamon.svg",
     },
     {
+        "id":       "cosmic",
+        "name":     "COSMIC",
+        "subtitle": tr("COSMIC — modern Wayland desktop by System76, written in Rust"),
+        "icon":     "cosmic.svg",
+    },
+    {
         "id":       "mangowc",
         "name":     "MangoWC",
         "subtitle": tr("Lightweight dynamic tiling Wayland compositor"),
