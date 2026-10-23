@@ -29,7 +29,7 @@ gi.require_version("Adw", "1")
 from gi.repository import Adw, GLib, Gtk, Pango  # noqa: E402
 
 from roudix_config_core import (  # noqa: E402
-    PLACEMENTS, TRANSFORMS, L, availability, backend, bind_action, blur_label, bootstrap, build_rule,
+    PLACEMENTS, TRANSFORMS, availability, tr, backend, bind_action, blur_label, bootstrap, build_rule,
     build_sources, custom_path, effective_binds, effective_outputs, get_overrides, list_desktop_apps,
     list_outputs, list_outputs_full, list_windows, load_data, load_live, load_seen, nix_parse_check,
     placement_label, remember_windows, reset_override, rule_preview, rule_summary, save_binds_override,
@@ -41,7 +41,7 @@ from roudix_config_core import (  # noqa: E402
 from roudix_config_backends import GROUPS  # noqa: E402
 
 APP_ID = "io.roudix.config"
-UNSET = L("(inchangé)", "(unchanged)")
+UNSET = tr("(unchanged)")
 
 
 # ───────────────────────── small widget helpers ─────────────────────────
@@ -94,9 +94,9 @@ class FormDialog(Adw.Window):
         self.overlay.set_child(self.page)
 
         header = Adw.HeaderBar()
-        cancel = Gtk.Button(label=L("Annuler", "Cancel"))
+        cancel = Gtk.Button(label=tr("Cancel"))
         cancel.connect("clicked", lambda *_: self.close())
-        save = Gtk.Button(label=L("Enregistrer", "Save"))
+        save = Gtk.Button(label=tr("Save"))
         save.add_css_class("suggested-action")
         save.connect("clicked", lambda *_: self.save())
         header.pack_start(cancel)
@@ -140,33 +140,31 @@ class FormDialog(Adw.Window):
 
 class RuleDialog(FormDialog):
     def __init__(self, parent, sources, outputs, initial, on_done):
-        super().__init__(parent, L("Règle de fenêtre", "Window rule"), on_done)
+        super().__init__(parent, tr("Window rule"), on_done)
         B = backend()
         self.sources, self.outputs = sources, outputs
         self.place_keys = [k for k in PLACEMENTS if k in B.placements]
         self.blur_values = list(B.blur_choices)
         self.ws_choices = B.workspace_choices()
 
-        g = self.group(L("Application", "Application"),
-                       L("● ouverte maintenant · ○ déjà vue ouverte · sans symbole : installée (l'app_id est alors deviné)",
-                         "● open now · ○ seen open before · no symbol: installed (the app_id is then a guess)"))
-        self.pick = combo(L("Choisir une app", "Pick an app"),
-                          [L("(saisir à la main)", "(type it by hand)")] + [s["label"].strip() for s in sources],
+        g = self.group(tr("Application"),
+                       tr("● open now · ○ seen open before · no symbol: installed (the app_id is then a guess)"))
+        self.pick = combo(tr("Pick an app"),
+                          [tr("(type it by hand)")] + [s["label"].strip() for s in sources],
                           searchable=True)
         self.pick.connect("notify::selected", self.on_pick)
         g.add(self.pick)
-        self.app_id = entry(L("app_id (regex)", "app_id (regex)"))
-        self.title_re = entry(L("Titre (regex, optionnel)", "Title (regex, optional)"))
+        self.app_id = entry(tr("app_id (regex)"))
+        self.title_re = entry(tr("Title (regex, optional)"))
         g.add(self.app_id)
         g.add(self.title_re)
 
-        g2 = self.group(L("Réglages (laisser « inchangé » pour ne rien forcer)",
-                          "Settings (leave “unchanged” to force nothing)"))
-        self.output = combo(L("Écran", "Screen"), [UNSET] + outputs)
-        self.ws = combo(L("Workspace", "Workspace"), [UNSET] + [lab for lab, _ in self.ws_choices])
-        self.place = combo(L("Placement", "Placement"), [UNSET] + [placement_label(k) for k in self.place_keys])
-        self.blur = combo(L("Flou (blur)", "Blur"), [UNSET] + [blur_label(v) for v in self.blur_values])
-        self.opacity = entry(L("Opacité (0 à 1, optionnel)", "Opacity (0 to 1, optional)"))
+        g2 = self.group(tr("Settings (leave “unchanged” to force nothing)"))
+        self.output = combo(tr("Screen"), [UNSET] + outputs)
+        self.ws = combo(tr("Workspace"), [UNSET] + [lab for lab, _ in self.ws_choices])
+        self.place = combo(tr("Placement"), [UNSET] + [placement_label(k) for k in self.place_keys])
+        self.blur = combo(tr("Blur"), [UNSET] + [blur_label(v) for v in self.blur_values])
+        self.opacity = entry(tr("Opacity (0 to 1, optional)"))
         for w in (self.output, self.ws, self.place, self.blur, self.opacity):
             g2.add(w)
 
@@ -206,7 +204,7 @@ class RuleDialog(FormDialog):
         try:
             opacity = float(op) if op else None
         except ValueError:
-            raise ValueError(L("Opacité : un nombre entre 0 et 1", "Opacity: a number between 0 and 1"))
+            raise ValueError(tr("Opacity: a number between 0 and 1"))
         o, w, p, b = (self.output.get_selected(), self.ws.get_selected(),
                       self.place.get_selected(), self.blur.get_selected())
         return build_rule(
@@ -227,32 +225,29 @@ class RuleDialog(FormDialog):
 
 class OutputDialog(FormDialog):
     def __init__(self, parent, name, names, cfg, live, on_done):
-        super().__init__(parent, L("Écran", "Screen"), on_done, height=760)
+        super().__init__(parent, tr("Screen"), on_done, height=760)
         B = backend()
         self.names, self.cfg, self.live = names, cfg, live
-        g = self.group(L("Sortie", "Output"))
-        self.name = combo(L("Écran", "Screen"), names)
+        g = self.group(tr("Output"))
+        self.name = combo(tr("Screen"), names)
         g.add(self.name)
 
-        g2 = self.group(L("Affichage", "Display"),
-                        L("Le format du mode est 2560x1440 ou 2560x1440@240.000",
-                          "The mode format is 2560x1440 or 2560x1440@240.000"))
-        self.modes = combo(L("Modes détectés (le compositeur doit tourner)", "Detected modes (the compositor must be running)"),
-                           [L("(choisir)", "(pick one)")])
-        self.mode = entry(L("Résolution / fréquence", "Resolution / refresh rate"))
-        self.scale = entry(L("Échelle (0.25 à 4)", "Scale (0.25 to 4)"))
-        self.transform = combo(L("Rotation", "Rotation"), [UNSET] + TRANSFORMS)
+        g2 = self.group(tr("Display"),
+                        tr("The mode format is {example}").format(example="2560x1440 or 2560x1440@240.000"))
+        self.modes = combo(tr("Detected modes (the compositor must be running)"),
+                           [tr("(pick one)")])
+        self.mode = entry(tr("Resolution / refresh rate"))
+        self.scale = entry(tr("Scale (0.25 to 4)"))
+        self.transform = combo(tr("Rotation"), [UNSET] + TRANSFORMS)
         for w in (self.modes, self.mode, self.scale, self.transform):
             g2.add(w)
 
         self.workspaces = None
         if B.workspace_names:
-            g3 = self.group(L("Workspaces", "Workspaces"),
-                            L("Noms séparés par des espaces. Évite un nom purement numérique présent sur un seul écran : "
-                              "le compositeur le traite comme unique et Mod+N sauterait toujours vers cet écran.",
-                              "Names separated by spaces. Avoid a purely numeric name that exists on one screen only: "
+            g3 = self.group(tr("Workspaces"),
+                            tr("Names separated by spaces. Avoid a purely numeric name that exists on one screen only: "
                               "the compositor treats it as unique and Mod+N would always jump to that screen."))
-            self.workspaces = entry(L("Noms des workspaces de cet écran", "This screen's workspace names"))
+            self.workspaces = entry(tr("This screen's workspace names"))
             g3.add(self.workspaces)
 
         if name in names:
@@ -270,9 +265,9 @@ class OutputDialog(FormDialog):
         cfg = self.cfg.get(n, {})
         info = self.live.get(n, {})
         self._modes = info.get("modes", [])
-        cur = L(" (actuel)", " (current)")
+        cur = tr(" (current)")
         self.modes.set_model(Gtk.StringList.new(
-            [L("(choisir)", "(pick one)")] + [m + (cur if m == info.get("current") else "") for m in self._modes]))
+            [tr("(pick one)")] + [m + (cur if m == info.get("current") else "") for m in self._modes]))
         self.mode.set_text(str(cfg.get("mode", "")))
         self.scale.set_text("" if "scale" not in cfg else str(cfg["scale"]))
         t = cfg.get("transform")
@@ -290,21 +285,21 @@ class OutputDialog(FormDialog):
         import re
         name = self.current_name()
         if not name:
-            raise ValueError(L("Choisis un écran", "Pick a screen"))
+            raise ValueError(tr("Pick a screen"))
         ch: dict = {}
         mode = self.mode.get_text().strip()
         if mode:
             if not re.fullmatch(r"\d+x\d+(@\d+(\.\d+)?)?", mode):
-                raise ValueError(L("Mode : format 2560x1440 ou 2560x1440@240", "Mode: use 2560x1440 or 2560x1440@240"))
+                raise ValueError(tr("Mode: use 2560x1440 or 2560x1440@240"))
             ch["mode"] = mode
         sc = self.scale.get_text().strip()
         if sc:
             try:
                 v = float(sc.replace(",", "."))
             except ValueError:
-                raise ValueError(L("Échelle : un nombre", "Scale: a number"))
+                raise ValueError(tr("Scale: a number"))
             if not 0.25 <= v <= 4.0:
-                raise ValueError(L("Échelle entre 0.25 et 4", "Scale between 0.25 and 4"))
+                raise ValueError(tr("Scale between 0.25 and 4"))
             ch["scale"] = int(v) if v == int(v) else v
         t = self.transform.get_selected()
         if t > 0:
@@ -314,20 +309,20 @@ class OutputDialog(FormDialog):
             if ws:
                 ch["workspaces"] = ws
         if not ch:
-            raise ValueError(L("Rien à enregistrer", "Nothing to save"))
+            raise ValueError(tr("Nothing to save"))
         return name, ch
 
 
 class BindDialog(FormDialog):
     def __init__(self, parent, key, action, known, on_done):
-        super().__init__(parent, L("Raccourci", "Shortcut"), on_done, height=840)
+        super().__init__(parent, tr("Shortcut"), on_done, height=840)
         B = backend()
         self.B, self.known = B, known
         self._lock = False
         editing = bool(key)
         frozen = editing and not B.can_move_binds     # e.g. Niri: only the action may change
 
-        g = self.group(L("Touches", "Keys"), B.key_help())
+        g = self.group(tr("Keys"), B.key_help())
         self.mod_rows: dict[str, Adw.SwitchRow] = {}
         for m in B.modifiers:
             r = Adw.SwitchRow(title=m)
@@ -335,24 +330,23 @@ class BindDialog(FormDialog):
             r.set_sensitive(not frozen)
             self.mod_rows[m] = r
             g.add(r)
-        self.key = entry(L("Touche", "Key"))
+        self.key = entry(tr("Key"))
         self.key.connect("changed", lambda *_: self.compose_raw())
         self.key.set_sensitive(not frozen)
         g.add(self.key)
 
-        g2 = self.group(L("Résultat", "Result"),
-                        L("Niri : la touche d'un raccourci existant n'est pas modifiable ici.",
-                          "Niri: an existing shortcut's key can't be changed here.") if frozen else "")
-        self.raw = entry(L("Raccourci complet (modifiable)", "Full shortcut (editable)"))
+        g2 = self.group(tr("Result"),
+                        tr("Niri: an existing shortcut's key can't be changed here.") if frozen else "")
+        self.raw = entry(tr("Full shortcut (editable)"))
         self.raw.connect("changed", lambda *_: self.parse_raw())
         self.raw.set_sensitive(not frozen)
         g2.add(self.raw)
 
-        g3 = self.group(L("Action", "Action"), B.action_help())
-        self.action = entry(L("Action", "Action"))
+        g3 = self.group(tr("Action"), B.action_help())
+        self.action = entry(tr("Action"))
         self.action.set_text(action)
-        self.known_row = combo(L("Actions déjà utilisées", "Actions already in use"),
-                               [L("(choisir pour remplir)", "(pick to fill in)")] + [k[:80] for k in known],
+        self.known_row = combo(tr("Actions already in use"),
+                               [tr("(pick to fill in)")] + [k[:80] for k in known],
                                searchable=True)
         self.known_row.connect("notify::selected", self.on_known)
         g3.add(self.action)
@@ -402,9 +396,9 @@ class ConfigWindow(Adw.ApplicationWindow):
         self.overlay = Adw.ToastOverlay()
 
         self.stack = Gtk.Stack(transition_type=Gtk.StackTransitionType.CROSSFADE)
-        self.rules_list = self.make_list_page("rules", L("Règles", "Rules"))
-        self.screens_list = self.make_list_page("screens", L("Écrans", "Screens"))
-        self.binds_list = self.make_list_page("binds", L("Raccourcis", "Shortcuts"), searchable=True,
+        self.rules_list = self.make_list_page("rules", tr("Rules"))
+        self.screens_list = self.make_list_page("screens", tr("Screens"))
+        self.binds_list = self.make_list_page("binds", tr("Shortcuts"), searchable=True,
                                               hint=self.binds_hint())
         self.make_settings_page()
         self.make_nix_page()
@@ -413,18 +407,17 @@ class ConfigWindow(Adw.ApplicationWindow):
         # placeholder when the page has none), so use a plain StackSwitcher.
         switcher = Gtk.StackSwitcher(stack=self.stack)
         header = Adw.HeaderBar(title_widget=switcher)
-        self.add_btn = Gtk.Button(icon_name="list-add-symbolic", tooltip_text=L("Ajouter", "Add"))
+        self.add_btn = Gtk.Button(icon_name="list-add-symbolic", tooltip_text=tr("Add"))
         self.add_btn.connect("clicked", lambda *_: self.on_add())
-        self.reset_btn = Gtk.Button(label=L("Tout remettre par défaut", "Reset everything"),
-                                    tooltip_text=L("Abandonne tes changements de cette page", "Discards your changes on this page"))
+        self.reset_btn = Gtk.Button(label=tr("Reset everything"),
+                                    tooltip_text=tr("Discards your changes on this page"))
         self.reset_btn.connect("clicked", lambda *_: self.on_reset())
-        self.save_btn = Gtk.Button(label=L("Sauvegarder", "Save"))
+        self.save_btn = Gtk.Button(label=tr("Save"))
         self.save_btn.add_css_class("suggested-action")
         self.save_btn.connect("clicked", lambda *_: self.save_nix())
         self.rebuild_btn = Gtk.Button(child=Adw.ButtonContent(icon_name="system-software-update-symbolic",
-                                                              label=L("Rebuild", "Rebuild")),
-                                      tooltip_text=L("Lance `nh os switch` dans un terminal (applique tes changements)",
-                                                     "Runs `nh os switch` in a terminal (applies your changes)"))
+                                                              label=tr("Rebuild")),
+                                      tooltip_text=tr("Runs `nh os switch` in a terminal (applies your changes)"))
         self.rebuild_btn.connect("clicked", lambda *_: self.on_rebuild())
         header.pack_start(self.add_btn)
         header.pack_start(self.reset_btn)
@@ -447,13 +440,10 @@ class ConfigWindow(Adw.ApplicationWindow):
     def binds_hint() -> str:
         B = backend()
         if B.binds_mode == "keys":
-            return L(f"{B.label} : tu peux changer l'action d'un raccourci ou en ajouter (✎ = modifié par toi). "
-                     "Déplacer ou supprimer un raccourci par défaut se fait dans l'onglet Fichier.",
-                     f"{B.label}: you can change a shortcut's action or add new ones (✎ = changed by you). "
-                     "Moving or deleting a default shortcut is done in the File tab.")
-        return L("Dès la première modification, la table de raccourcis est figée : les nouveaux raccourcis par défaut "
-                 "du dépôt n'arriveront plus (« Tout remettre par défaut » pour revenir).",
-                 "Once you change anything, the shortcut table is frozen: new default shortcuts added to the repo "
+            return tr("{label}: you can change a shortcut's action or add new ones (✎ = "
+                    "changed by you). Moving or deleting a default shortcut is done in the "
+                    "File tab.").format(label=B.label)
+        return tr("Once you change anything, the shortcut table is frozen: new default shortcuts added to the repo "
                  "won't reach you any more (“Reset everything” to go back).")
 
     # ── pages ──
@@ -465,7 +455,7 @@ class ConfigWindow(Adw.ApplicationWindow):
             lab.add_css_class("dim-label")
             box.append(lab)
         if searchable:
-            search = Gtk.SearchEntry(placeholder_text=L("Filtrer les raccourcis…", "Filter shortcuts…"))
+            search = Gtk.SearchEntry(placeholder_text=tr("Filter shortcuts…"))
             search.connect("search-changed", lambda e: self.filter_binds(e.get_text()))
             box.append(search)
             self.bind_search = search
@@ -480,18 +470,16 @@ class ConfigWindow(Adw.ApplicationWindow):
     def make_nix_page(self) -> None:
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6,
                       margin_top=12, margin_bottom=12, margin_start=12, margin_end=12)
-        hint = Gtk.Label(xalign=0, wrap=True, label=L(
-            f"Ton fichier {backend().custom_name} en entier. Le bloc « roudix-config » est géré par l'app ; "
-            "le reste est à toi. La sauvegarde crée une copie .bak et vérifie la syntaxe.",
-            f"Your whole {backend().custom_name} file. The “roudix-config” block is managed by the app; "
-            "the rest is yours. Saving makes a .bak copy and checks the syntax."))
+        hint = Gtk.Label(xalign=0, wrap=True, label=tr("Your whole {custom_name} file. The “roudix-config” block is managed by "
+                "the app; the rest is yours. Saving makes a .bak copy and checks the "
+                "syntax.").format(custom_name=backend().custom_name))
         hint.add_css_class("dim-label")
         box.append(hint)
         self.nix_view = Gtk.TextView(monospace=True, top_margin=6, bottom_margin=6, left_margin=8, right_margin=8)
         scroll = Gtk.ScrolledWindow(vexpand=True)
         scroll.set_child(self.nix_view)
         box.append(scroll)
-        self.stack.add_titled(box, "nix", L("Fichier", "File"))
+        self.stack.add_titled(box, "nix", tr("File"))
 
     # ── state helpers ──
     def toast(self, msg: str) -> None:
@@ -550,8 +538,7 @@ class ConfigWindow(Adw.ApplicationWindow):
 
     def blocked(self) -> bool:
         if self.page_name() != "nix" and self.nix_dirty():
-            self.toast(L("Modifications non sauvegardées dans « Fichier » : sauvegarde-les d'abord.",
-                         "Unsaved changes in “File”: save them first."))
+            self.toast(tr("Unsaved changes in “File”: save them first."))
             return True
         return False
 
@@ -559,7 +546,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         text = self.nix_buffer_text()
         ok, msg = nix_parse_check(text)
         if not ok:
-            self.toast(L(f"Non sauvegardé — erreur Nix : {msg}", f"Not saved — Nix error: {msg}"))
+            self.toast(tr("Not saved — Nix error: {msg}").format(msg=msg))
             return
         p = custom_path()
         if p.exists():
@@ -568,16 +555,13 @@ class ConfigWindow(Adw.ApplicationWindow):
         self.nix_text = text
         self.data = load_data()
         self.render_all()
-        self.toast(L(f"Sauvegardé ({msg}). Rebuild requis.", f"Saved ({msg}). Rebuild required."))
+        self.toast(tr("Saved ({msg}). Rebuild required.").format(msg=msg))
 
     # ── settings page ──
     def make_settings_page(self) -> None:
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12,
                       margin_top=12, margin_bottom=12, margin_start=12, margin_end=12)
-        hint = Gtk.Label(xalign=0, wrap=True, label=L(
-            "Les réglages les plus courants. Une valeur modifiée par toi est marquée ✎ (↶ pour la remettre par défaut) ; "
-            "les autres suivent les valeurs par défaut du dépôt. Rebuild requis pour appliquer.",
-            "The most common settings. A value you changed is marked ✎ (↶ to restore the default); "
+        hint = Gtk.Label(xalign=0, wrap=True, label=tr("The most common settings. A value you changed is marked ✎ (↶ to restore the default); "
             "the others follow the repo's defaults. Rebuild required to apply."))
         hint.add_css_class("dim-label")
         box.append(hint)
@@ -587,7 +571,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         box.append(self.settings_scroll)
         self._set_rows: dict = {}
         self._building = False
-        self.stack.add_titled(box, "settings", L("Réglages", "Settings"))
+        self.stack.add_titled(box, "settings", tr("Settings"))
 
     def render_settings(self) -> None:
         vadj = self.settings_scroll.get_vadjustment()
@@ -597,8 +581,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         self._set_rows = {}
         cat = settings_catalog()
         if not cat:
-            self.settings_box.append(Gtk.Label(label=L("Aucun réglage disponible pour ce bureau.",
-                                                       "No settings available for this desktop."), xalign=0))
+            self.settings_box.append(Gtk.Label(label=tr("No settings available for this desktop."), xalign=0))
             return
         ov = get_overrides(self.data)
         mine = ov.get("settings") or {}
@@ -618,8 +601,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         GLib.idle_add(lambda: vadj.set_value(pos) and False)
 
     def setting_row(self, sp, value, changed: bool):
-        unknown = L("valeur actuelle inconnue (config du compositeur non lue)",
-                    "current value unknown (compositor config not read)")
+        unknown = tr("current value unknown (compositor config not read)")
         if sp.kind == "bool":
             row = Adw.SwitchRow(title=sp.title)
             row.set_active(bool(value))
@@ -642,7 +624,7 @@ class ConfigWindow(Adw.ApplicationWindow):
             row.connect("apply", lambda r, *_: self.on_setting(sp, r.get_text()))
         if value is None and sp.kind != "bool":
             row.set_subtitle(unknown) if hasattr(row, "set_subtitle") else None
-        undo = icon_button("edit-undo-symbolic", L("Remettre la valeur par défaut", "Restore the default value"),
+        undo = icon_button("edit-undo-symbolic", tr("Restore the default value"),
                            lambda: self.on_setting_reset(sp))
         undo.set_visible(changed)
         row.add_suffix(undo)
@@ -674,7 +656,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         reset_setting(sp.id)
         self.reload()
         self.render_settings()
-        self.toast(L(f"{sp.title} remis par défaut — rebuild requis.", f"{sp.title} restored — rebuild required."))
+        self.toast(tr("{title} restored — rebuild required.").format(title=sp.title))
 
     # ── rendering ──
     def render_all(self) -> None:
@@ -685,12 +667,12 @@ class ConfigWindow(Adw.ApplicationWindow):
 
     def row(self, title: str, subtitle: str, on_edit, on_delete=None) -> Adw.ActionRow:
         r = Adw.ActionRow(title=title, subtitle=subtitle, activatable=True,
-                          tooltip_text=L("Cliquer pour modifier", "Click to edit"))
+                          tooltip_text=tr("Click to edit"))
         plain(r)
         r.set_subtitle_lines(2)
         r.connect("activated", lambda *_: on_edit())
         if on_delete:
-            r.add_suffix(icon_button("user-trash-symbolic", L("Supprimer", "Delete"), on_delete))
+            r.add_suffix(icon_button("user-trash-symbolic", tr("Delete"), on_delete))
         r.add_suffix(Gtk.Image.new_from_icon_name("go-next-symbolic"))
         return r
 
@@ -698,12 +680,12 @@ class ConfigWindow(Adw.ApplicationWindow):
         clear(self.rules_list)
         rules = self.rules()
         if not rules:
-            self.rules_list.append(Adw.ActionRow(title=L("Aucune règle", "No rules"),
-                                                 subtitle=L("Ajoute-en une avec le bouton +", "Add one with the + button")))
+            self.rules_list.append(Adw.ActionRow(title=tr("No rules"),
+                                                 subtitle=tr("Add one with the + button")))
         for i, r in enumerate(rules):
             m = r["match"]
             title = m.get("app_id", "") or m.get("title", "")
-            sub = rule_summary(r) + (L(f"  ·  titre : {m['title']}", f"  ·  title: {m['title']}")
+            sub = rule_summary(r) + (tr("  ·  title: {m}").format(m=m['title'])
                                      if "app_id" in m and "title" in m else "")
             self.rules_list.append(self.row(title, sub, lambda i=i: self.edit_rule(i), lambda i=i: self.delete_rule(i)))
 
@@ -714,18 +696,16 @@ class ConfigWindow(Adw.ApplicationWindow):
         ov = get_overrides(self.data).get("output", {})
         for n in self.screen_names():
             c = eff.get(n, {})
-            sub = L(f"{c.get('mode', 'auto')} · échelle {c.get('scale', 1)} · rotation {c.get('transform', 'normal')}",
-                    f"{c.get('mode', 'auto')} · scale {c.get('scale', 1)} · rotation {c.get('transform', 'normal')}")
+            sub = tr("{get} · scale {get2} · rotation {get3}").format(get=c.get('mode', 'auto'), get2=c.get('scale', 1), get3=c.get('transform', 'normal'))
             if B.workspace_names:
                 ws = c.get("workspaces")
-                dyn = L("dynamiques", "dynamic")
-                sub += L("\nworkspaces : ", "\nworkspaces: ") + (" ".join(ws) if isinstance(ws, list) else (ws or dyn))
+                dyn = tr("dynamic")
+                sub += tr("\nworkspaces: ") + (" ".join(ws) if isinstance(ws, list) else (ws or dyn))
             title = n + ("  ✎" if n in ov else "")
             r = self.row(title, sub, lambda n=n: self.edit_output(n))
             if n in ov:
-                btn = Gtk.Button(label=L("Défaut", "Default"),
-                                 tooltip_text=L("Remettre les valeurs par défaut de cet écran",
-                                                "Restore this screen's default values"),
+                btn = Gtk.Button(label=tr("Default"),
+                                 tooltip_text=tr("Restore this screen's default values"),
                                  valign=Gtk.Align.CENTER)
                 btn.add_css_class("flat")
                 btn.connect("clicked", lambda *_, n=n: self.reset_output(n))
@@ -765,12 +745,12 @@ class ConfigWindow(Adw.ApplicationWindow):
             reset_override("keybinds")
             self.reload()
             self.render_binds()
-            self.toast(L("Raccourcis remis par défaut — rebuild requis.", "Shortcuts reset — rebuild required."))
+            self.toast(tr("Shortcuts reset — rebuild required."))
         elif self.page_name() == "settings":
             reset_override("settings")
             self.reload()
             self.render_settings()
-            self.toast(L("Réglages remis par défaut — rebuild requis.", "Settings reset — rebuild required."))
+            self.toast(tr("Settings reset — rebuild required."))
 
     def on_rebuild(self) -> None:
         if self.blocked():
@@ -780,7 +760,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         except (ValueError, OSError) as e:
             self.toast(str(e))
             return
-        self.toast(L(f"Rebuild lancé dans {term}.", f"Rebuild started in {term}."))
+        self.toast(tr("Rebuild started in {term}.").format(term=term))
 
     def edit_rule(self, index) -> None:
         if self.blocked():
@@ -797,7 +777,7 @@ class ConfigWindow(Adw.ApplicationWindow):
                 self.rules()[index] = rule
             self.persist()
             self.render_rules()
-            self.toast(L("Règle enregistrée — rebuild requis.", "Rule saved — rebuild required."))
+            self.toast(tr("Rule saved — rebuild required."))
         RuleDialog(self, sources, list_outputs(), initial, done).present()
 
     def delete_rule(self, index) -> None:
@@ -806,7 +786,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         del self.rules()[index]
         self.persist()
         self.render_rules()
-        self.toast(L("Règle supprimée — rebuild requis.", "Rule deleted — rebuild required."))
+        self.toast(tr("Rule deleted — rebuild required."))
 
     def edit_output(self, name) -> None:
         if self.blocked():
@@ -819,7 +799,7 @@ class ConfigWindow(Adw.ApplicationWindow):
             save_output_override(n, ch)
             self.reload()
             self.render_screens()
-            self.toast(L(f"{n} enregistré — rebuild requis.", f"{n} saved — rebuild required."))
+            self.toast(tr("{n} saved — rebuild required.").format(n=n))
         OutputDialog(self, name, names, eff, list_outputs_full(), done).present()
 
     def reset_output(self, name) -> None:
@@ -828,7 +808,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         reset_override("output", name)
         self.reload()
         self.render_screens()
-        self.toast(L(f"{name} remis par défaut — rebuild requis.", f"{name} reset — rebuild required."))
+        self.toast(tr("{name} reset — rebuild required.").format(name=name))
 
     def edit_bind(self, key) -> None:
         if self.blocked():
@@ -851,7 +831,7 @@ class ConfigWindow(Adw.ApplicationWindow):
             save_binds_override(new)
             self.reload()
             self.render_binds()
-            self.toast(L(f"{k} → {a} enregistré — rebuild requis.", f"{k} → {a} saved — rebuild required."))
+            self.toast(tr("{k} → {a} saved — rebuild required.").format(k=k, a=a))
         BindDialog(self, key or "", action, known, done).present()
 
     def delete_bind(self, key) -> None:
@@ -862,7 +842,7 @@ class ConfigWindow(Adw.ApplicationWindow):
         save_binds_override(table)
         self.reload()
         self.render_binds()
-        self.toast(L(f"{key} supprimé — rebuild requis.", f"{key} deleted — rebuild required."))
+        self.toast(tr("{key} deleted — rebuild required.").format(key=key))
 
 
 # ───────────────────────── application ─────────────────────────
@@ -887,8 +867,7 @@ class App(Adw.Application):
             try:
                 msgs = bootstrap()
             except Exception as e:  # noqa: BLE001 - show anything to the user, no terminal here
-                self.win = self.unavailable(L(f"Impossible de préparer {backend().custom_name} : {e}",
-                                              f"Couldn't prepare {backend().custom_name}: {e}"))
+                self.win = self.unavailable(tr("Couldn't prepare {custom_name}: {e}").format(custom_name=backend().custom_name, e=e))
                 self.win.present()
                 return
             self.win = ConfigWindow(self, msgs)
@@ -897,7 +876,7 @@ class App(Adw.Application):
     def unavailable(self, reason: str) -> Adw.ApplicationWindow:
         win = Adw.ApplicationWindow(application=self, title="Roudix Config", default_width=520, default_height=360)
         page = Adw.StatusPage(icon_name="dialog-information-symbolic",
-                              title=L("Non disponible", "Not available"), description=reason)
+                              title=tr("Not available"), description=reason)
         view = Adw.ToolbarView(content=page)
         view.add_top_bar(Adw.HeaderBar())
         win.set_content(view)

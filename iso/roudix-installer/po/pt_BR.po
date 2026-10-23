@@ -3,10 +3,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: roudix-installer\n"
+"Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2026-10-22 00:00+0000\n"
 "Last-Translator: Claude\n"
 "Language-Team: Brazilian Portuguese\n"
-"Report-Msgid-Bugs-To: \n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -127,7 +127,8 @@ msgstr "Atualizar"
 
 #: src/roudix_installer/pages/disk.py
 msgid "If you already partitioned it yourself (fdisk, cfdisk…) in a terminal"
-msgstr "Se você já particionou por conta própria (fdisk, cfdisk…) em um terminal"
+msgstr ""
+"Se você já particionou por conta própria (fdisk, cfdisk…) em um terminal"
 
 #: src/roudix_installer/pages/disk.py
 msgid "Assign mountpoints"
@@ -135,7 +136,9 @@ msgstr "Atribuir pontos de montagem"
 
 #: src/roudix_installer/pages/disk.py
 msgid "Once partitioning is done, assign each partition to a mountpoint."
-msgstr "Depois de concluir o particionamento, atribua cada partição a um ponto de montagem."
+msgstr ""
+"Depois de concluir o particionamento, atribua cada partição a um ponto de "
+"montagem."
 
 #: src/roudix_installer/pages/disk.py src/roudix_installer/pages/options.py
 msgid "Continue"
@@ -227,11 +230,13 @@ msgstr "LTS padrão do nixpkgs — módulo nvidia recompilado localmente"
 
 #: src/roudix_installer/pages/options.py
 msgid "nixpkgs latest mainline — locally-rebuilt nvidia module"
-msgstr "Mainline mais recente do nixpkgs — módulo nvidia recompilado localmente"
+msgstr ""
+"Mainline mais recente do nixpkgs — módulo nvidia recompilado localmente"
 
 #: src/roudix_installer/pages/options.py
 msgid "nixpkgs testing (RC/mainline) — locally-rebuilt nvidia module"
-msgstr "Testing do nixpkgs (RC/mainline) — módulo nvidia recompilado localmente"
+msgstr ""
+"Testing do nixpkgs (RC/mainline) — módulo nvidia recompilado localmente"
 
 #: src/roudix_installer/pages/options.py
 msgid "XanMod LTS (nixpkgs) — locally-rebuilt nvidia module"
@@ -239,7 +244,8 @@ msgstr "XanMod LTS (nixpkgs) — módulo nvidia recompilado localmente"
 
 #: src/roudix_installer/pages/options.py
 msgid "XanMod main branch (nixpkgs) — locally-rebuilt nvidia module"
-msgstr "Branch principal do XanMod (nixpkgs) — módulo nvidia recompilado localmente"
+msgstr ""
+"Branch principal do XanMod (nixpkgs) — módulo nvidia recompilado localmente"
 
 #: src/roudix_installer/pages/options.py
 msgid "None"
@@ -312,7 +318,9 @@ msgstr "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recomendado)"
 
 #: src/roudix_installer/pages/options.py
 msgid "KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)"
-msgstr "KWallet + xdg-desktop-portal-kde (útil se você usa principalmente apps Qt/KDE)"
+msgstr ""
+"KWallet + xdg-desktop-portal-kde (útil se você usa principalmente apps Qt/"
+"KDE)"
 
 #: src/roudix_installer/pages/options.py
 msgid "OpenRGB — mixed brands (Razer, ASUS, MSI...)"
@@ -913,7 +921,10 @@ msgstr "Notebook (TLP)"
 msgid ""
 "Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
 "will still launch games normally but without the roudix-gaming CPU profile."
-msgstr "Desativa o tuned em favor do TLP: se o gaming também estiver ativado, o game-performance continuará iniciando os jogos normalmente, mas sem o perfil de CPU roudix-gaming."
+msgstr ""
+"Desativa o tuned em favor do TLP: se o gaming também estiver ativado, o game-"
+"performance continuará iniciando os jogos normalmente, mas sem o perfil de "
+"CPU roudix-gaming."
 
 #: src/roudix_installer/pages/options.py
 msgid "ThinkPad (40/80% battery charge thresholds)"
@@ -985,7 +996,12 @@ msgid ""
 "On the nixpkgs version, a configuration error saying that an option, a "
 "setting or a key \"does not exist\" is normal: it was added after the "
 "nixpkgs version. Wait for nixpkgs to catch up, or turn the latest version on."
-msgstr "⚠ As configurações do Roudix são escritas primeiro para as versões flake (latest). Na versão do nixpkgs, é normal que um erro de configuração diga que uma opção, um ajuste ou uma chave \"não existe\": ela foi adicionada depois da versão do nixpkgs. Espere o nixpkgs se atualizar ou ative a versão mais recente."
+msgstr ""
+"⚠ As configurações do Roudix são escritas primeiro para as versões flake "
+"(latest). Na versão do nixpkgs, é normal que um erro de configuração diga "
+"que uma opção, um ajuste ou uma chave \"não existe\": ela foi adicionada "
+"depois da versão do nixpkgs. Espere o nixpkgs se atualizar ou ative a versão "
+"mais recente."
 
 #: src/roudix_installer/pages/options.py
 msgid "Default shell"
@@ -1103,7 +1119,9 @@ msgstr "SKU da RAM (part number)"
 msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
-msgstr "SMBus / SKU da RAM não são detectados automaticamente — encontre-os com \"i2cdetect -l\" e \"sudo dmidecode -t memory | grep 'Part Number'\"."
+msgstr ""
+"SMBus / SKU da RAM não são detectados automaticamente — encontre-os com "
+"\"i2cdetect -l\" e \"sudo dmidecode -t memory | grep 'Part Number'\"."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Extras"
@@ -1192,7 +1210,9 @@ msgstr "Cliente não oficial do WhatsApp"
 #: src/roudix_installer/pages/options.py
 msgid ""
 "Self-hostable Discord alternative (independent of the Discord choice above)"
-msgstr "Alternativa ao Discord que pode ser auto-hospedada (independente da escolha de Discord acima)"
+msgstr ""
+"Alternativa ao Discord que pode ser auto-hospedada (independente da escolha "
+"de Discord acima)"
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Content Creation"
@@ -1274,7 +1294,9 @@ msgstr "Kernel (xddxdd)"
 msgid ""
 "This user doesn't exist on this system — run the installer from the account "
 "you want to keep."
-msgstr "Este usuário não existe neste sistema — execute o instalador a partir da conta que você quer manter."
+msgstr ""
+"Este usuário não existe neste sistema — execute o instalador a partir da "
+"conta que você quer manter."
 
 #: src/roudix_installer/pages/options.py
 msgid "Password can't be empty."
@@ -1321,7 +1343,9 @@ msgstr "Reiniciando…"
 msgid ""
 "Warning: these options were NOT confirmed in local.nix — review the file "
 "before rebooting: {keys}"
-msgstr "Aviso: estas opções NÃO foram confirmadas no local.nix — revise o arquivo antes de reiniciar: {keys}"
+msgstr ""
+"Aviso: estas opções NÃO foram confirmadas no local.nix — revise o arquivo "
+"antes de reiniciar: {keys}"
 
 #: src/roudix_installer/pages/progress.py
 msgid "✓ every chosen option was written to local.nix."
@@ -1336,7 +1360,9 @@ msgstr "Simulação — nada é gravado no disco"
 msgid ""
 "hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the "
 "repo>)"
-msgstr "hosts/{host}/local.nix.example não encontrado (tente ROUDIX_CFG_ROOT=<caminho do repositório>)"
+msgstr ""
+"hosts/{host}/local.nix.example não encontrado (tente "
+"ROUDIX_CFG_ROOT=<caminho do repositório>)"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Dry run finished — nothing was changed"
@@ -1368,7 +1394,9 @@ msgstr "Avaliando todo o sistema com o Nix…"
 
 #: src/roudix_installer/pages/progress.py
 msgid "✓ the configuration evaluates: Nix can build this system."
-msgstr "✓ a configuração é avaliada com sucesso: o Nix consegue construir este sistema."
+msgstr ""
+"✓ a configuração é avaliada com sucesso: o Nix consegue construir este "
+"sistema."
 
 #: src/roudix_installer/pages/progress.py
 msgid "Simulation finished — nothing was changed"
@@ -1429,7 +1457,9 @@ msgstr "Branch '{branch}' não encontrado em {repo_url} — voltando para 'main'
 msgid ""
 "Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
 "local.nix generation may fail."
-msgstr "Aviso: hosts/{host}/local.nix.example não encontrado no branch '{branch}' — a geração do local.nix pode falhar."
+msgstr ""
+"Aviso: hosts/{host}/local.nix.example não encontrado no branch '{branch}' — "
+"a geração do local.nix pode falhar."
 
 #: src/roudix_installer/pages/progress.py
 msgid "Copying the configuration…"
@@ -1439,18 +1469,23 @@ msgstr "Copiando a configuração…"
 #, python-brace-format
 msgid ""
 "Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main)."
-msgstr "Branch '{branch}' selecionado — clonando do GitHub (a ISO só inclui o main)."
+msgstr ""
+"Branch '{branch}' selecionado — clonando do GitHub (a ISO só inclui o main)."
 
 #: src/roudix_installer/pages/progress.py
 msgid ""
 "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing "
 "outside an ISO) — cloning straight from GitHub instead."
-msgstr "/iso-cfg não encontrado (ISO ainda não reconstruída com isoImage.contents, ou teste fora de uma ISO) — clonando direto do GitHub."
+msgstr ""
+"/iso-cfg não encontrado (ISO ainda não reconstruída com isoImage.contents, "
+"ou teste fora de uma ISO) — clonando direto do GitHub."
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
 msgid "btrfs detected — mount options auto-patched for: {patched}"
-msgstr "btrfs detectado — opções de montagem ajustadas automaticamente para: {patched}"
+msgstr ""
+"btrfs detectado — opções de montagem ajustadas automaticamente para: "
+"{patched}"
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1462,20 +1497,27 @@ msgstr "hosts/{hostname}/local.nix, username.nix e home/local.nix gravados."
 msgid ""
 "Warning: only {free} MiB free in /boot ({need} MiB recommended) — nixos-"
 "rebuild may fail on a small EFI partition."
-msgstr "Aviso: apenas {free} MiB livres em /boot ({need} MiB recomendados) — o nixos-rebuild pode falhar em uma partição EFI pequena."
+msgstr ""
+"Aviso: apenas {free} MiB livres em /boot ({need} MiB recomendados) — o nixos-"
+"rebuild pode falhar em uma partição EFI pequena."
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
 msgid ""
 "Warning: only {free} GiB free for the Nix store ({need} GiB recommended)."
-msgstr "Aviso: apenas {free} GiB livres para o store do Nix ({need} GiB recomendados)."
+msgstr ""
+"Aviso: apenas {free} GiB livres para o store do Nix ({need} GiB "
+"recomendados)."
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
 msgid ""
 "Warning: your configuration uses system.stateVersion {old}, Roudix sets "
 "{new}. Services that keep data (databases…) deserve a look before booting it."
-msgstr "Aviso: sua configuração usa system.stateVersion {old}, e o Roudix define {new}. Serviços que guardam dados (bancos de dados…) merecem uma olhada antes de iniciar."
+msgstr ""
+"Aviso: sua configuração usa system.stateVersion {old}, e o Roudix define "
+"{new}. Serviços que guardam dados (bancos de dados…) merecem uma olhada "
+"antes de iniciar."
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1483,13 +1525,17 @@ msgid ""
 "Note: Roudix will use the {new} bootloader (yours: {old}). If it ever fails "
 "to start, RESTORE.txt in the backup explains how to put your old "
 "configuration back."
-msgstr "Nota: o Roudix usará o bootloader {new} (o seu: {old}). Se ele não iniciar, o RESTORE.txt no backup explica como restaurar sua configuração anterior."
+msgstr ""
+"Nota: o Roudix usará o bootloader {new} (o seu: {old}). Se ele não iniciar, "
+"o RESTORE.txt no backup explica como restaurar sua configuração anterior."
 
 #: src/roudix_installer/pages/progress.py
 msgid ""
 "Reusing /etc/nixos/hardware-configuration.nix (the one that boots this "
 "machine)."
-msgstr "Reutilizando /etc/nixos/hardware-configuration.nix (o que inicia esta máquina)."
+msgstr ""
+"Reutilizando /etc/nixos/hardware-configuration.nix (o que inicia esta "
+"máquina)."
 
 #: src/roudix_installer/pages/progress.py
 msgid "Checking this system…"
@@ -1517,7 +1563,9 @@ msgstr "Construindo o Roudix — pode demorar um pouco…"
 msgid ""
 "✓ Roudix is built. Reboot to start it; your previous system stays in the "
 "boot menu."
-msgstr "✓ O Roudix foi construído. Reinicie para iniciá-lo; seu sistema anterior continua no menu de boot."
+msgstr ""
+"✓ O Roudix foi construído. Reinicie para iniciá-lo; seu sistema anterior "
+"continua no menu de boot."
 
 #: src/roudix_installer/pages/progress.py
 msgid "Installing the system…"
@@ -1547,7 +1595,9 @@ msgstr "Simular (nada é gravado)"
 msgid ""
 "Generates the configuration in a temporary folder and checks that it "
 "evaluates. Nothing is partitioned, installed or modified."
-msgstr "Gera a configuração em uma pasta temporária e verifica se ela é avaliada. Nada é particionado, instalado ou modificado."
+msgstr ""
+"Gera a configuração em uma pasta temporária e verifica se ela é avaliada. "
+"Nada é particionado, instalado ou modificado."
 
 #: src/roudix_installer/pages/summary.py
 msgid "Convert this NixOS to Roudix"
@@ -1614,7 +1664,9 @@ msgstr "Perfil / host"
 msgid ""
 "/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current system "
 "stays in the boot menu."
-msgstr "O /etc/nixos é copiado para {dir} (com um RESTORE.txt), e seu sistema atual continua no menu de boot."
+msgstr ""
+"O /etc/nixos é copiado para {dir} (com um RESTORE.txt), e seu sistema atual "
+"continua no menu de boot."
 
 #: src/roudix_installer/pages/summary.py
 msgid "Safety net"
@@ -1695,13 +1747,18 @@ msgid ""
 "This machine already runs NixOS. Roudix is built next to your current "
 "system: nothing is wiped, /etc/nixos is backed up first, and your previous "
 "system stays in the boot menu. Two steps: options, then off we go."
-msgstr "Esta máquina já roda NixOS. O Roudix é construído ao lado do seu sistema atual: nada é apagado, o /etc/nixos passa antes por um backup e seu sistema anterior continua no menu de boot. Duas etapas: opções e mãos à obra."
+msgstr ""
+"Esta máquina já roda NixOS. O Roudix é construído ao lado do seu sistema "
+"atual: nada é apagado, o /etc/nixos passa antes por um backup e seu sistema "
+"anterior continua no menu de boot. Duas etapas: opções e mãos à obra."
 
 #: src/roudix_installer/pages/welcome.py
 msgid ""
 "We're about to install Roudix on this machine. Three steps: disk, options, "
 "then off we go."
-msgstr "Vamos instalar o Roudix neste computador. Três etapas: disco, opções e mãos à obra."
+msgstr ""
+"Vamos instalar o Roudix neste computador. Três etapas: disco, opções e mãos "
+"à obra."
 
 #: src/roudix_installer/pages/welcome.py
 msgid "Profile to install"
@@ -1715,7 +1772,9 @@ msgstr "Começar"
 msgid ""
 "Warning: this profile can't be found in this ISO — every question will be "
 "asked."
-msgstr "Aviso: este perfil não foi encontrado nesta ISO — todas as perguntas serão feitas."
+msgstr ""
+"Aviso: este perfil não foi encontrado nesta ISO — todas as perguntas serão "
+"feitas."
 
 #: src/roudix_installer/pages/welcome.py
 msgid "Every question will be asked."

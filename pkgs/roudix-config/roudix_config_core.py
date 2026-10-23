@@ -19,19 +19,39 @@ from pathlib import Path
 
 # ───────────────────────── language (same idiom as the other Roudix apps) ─────────────────────────
 
-def _detect_lang() -> str:
-    for var in ("LC_ALL", "LC_MESSAGES", "LANG", "LANGUAGE"):
-        val = os.environ.get(var, "")
-        if val:
-            return "fr" if val.lower().startswith("fr") else "en"
-    return "en"
+# ── translations (gettext) ───────────────────────────────────────────────────
+# Messages are written in English: tr("…"). Catalogs live in po/<lang>.po and the Nix
+# package compiles them to share/locale/<lang>/LC_MESSAGES/roudix-config.mo. The language comes
+# from LANGUAGE / LC_ALL / LC_MESSAGES / LANG; a missing catalog falls back to English.
+import gettext as _gettext
+import glob as _glob
+
+_DOMAIN = "roudix-config"
 
 
-LANG = _detect_lang()
+def _find_localedir(domain):
+    cands = [os.environ.get("ROUDIX_LOCALEDIR", "")]
+    d = os.path.dirname(os.path.realpath(__file__))
+    while True:
+        cands += [os.path.join(d, "share", "locale"), os.path.join(d, "locale")]
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    for c in cands:
+        if c and _glob.glob(os.path.join(c, "*", "LC_MESSAGES", domain + ".mo")):
+            return c
+    return None
 
 
-def L(fr: str, en: str) -> str:
-    return fr if LANG == "fr" else en
+_translation = _gettext.translation(_DOMAIN, _find_localedir(_DOMAIN), fallback=True)
+tr = _translation.gettext        # tr("text")
+trc = _translation.pgettext      # trc("context", "text")
+
+
+def tr_noop(text):
+    """Mark a string for extraction now, translate it later with tr()."""
+    return text
 
 
 def backend():
@@ -135,10 +155,8 @@ def block_json_error(text: str) -> str | None:
         json.loads(nix_unescape(j.group(1)))
     except json.JSONDecodeError as e:
         line = text[: m.start() + j.start(1)].count("\n") + e.lineno
-        return L(f"JSON invalide dans le bloc roudix-config (ligne {line}, colonne {e.colno}) : {e.msg}"
-                 " — virgule en trop avant ] ou } ?",
-                 f"Invalid JSON in the roudix-config block (line {line}, column {e.colno}): {e.msg}"
-                 " — trailing comma before ] or } ?")
+        return tr("Invalid JSON in the roudix-config block (line {line}, column {colno}): "
+                "{msg} — trailing comma before ] or }} ?").format(line=line, colno=e.colno, msg=e.msg)
     return None
 
 
@@ -171,7 +189,7 @@ def splice_block(text: str, block: str | None) -> str:
         return text[: m.end()] + "\n" + block.rstrip("\n") + "\n" + text[m.end():]
     m = re.search(r"^\{[ \t]*\n", text, re.M)
     if not m:
-        raise ValueError(L(f"corps du module introuvable dans {custom_path().name}", f"module body not found in {custom_path().name}"))
+        raise ValueError(tr("module body not found in {name}").format(name=custom_path().name))
     return text[: m.end()] + "  imports = [\n" + block + "  ];\n" + text[m.end():]
 
 
@@ -184,9 +202,9 @@ def bootstrap() -> list[str]:
 
     if not custom.exists():
         if not example.exists():
-            raise FileNotFoundError(L(f"fichier manquant : {example}", f"missing file: {example}"))
+            raise FileNotFoundError(tr("missing file: {example}").format(example=example))
         shutil.copyfile(example, custom)
-        msgs.append(L(f"{custom.name} créé à partir de {example.name}", f"{custom.name} created from {example.name}"))
+        msgs.append(tr("{name} created from {name2}").format(name=custom.name, name2=example.name))
 
     text = custom.read_text()
     # v2 imported a separate umbriel-managed.nix from the custom file: drop that.
@@ -194,10 +212,9 @@ def bootstrap() -> list[str]:
     if cleaned != text:
         text = cleaned
         custom.write_text(text)
-        msgs.append(L("Ancien import umbriel-managed.nix retiré (obsolète)", "Removed the old umbriel-managed.nix import (obsolete)"))
+        msgs.append(tr("Removed the old umbriel-managed.nix import (obsolete)"))
     elif "umbriel-managed.nix" in text:
-        msgs.append(L("NOTE : umbriel-custom.nix mentionne encore umbriel-managed.nix — retire-le à la main, ce fichier est obsolète.",
-                      "NOTE: umbriel-custom.nix still mentions umbriel-managed.nix — remove it by hand, that file is obsolete."))
+        msgs.append(tr("NOTE: umbriel-custom.nix still mentions umbriel-managed.nix — remove it by hand, that file is obsolete."))
 
     old = home_dir() / "umbriel-managed.json"       # only ever written by the Umbriel-only v2
     if backend().id == "umbriel" and old.exists():
@@ -209,7 +226,7 @@ def bootstrap() -> list[str]:
             data = {k: legacy[k] for k in ("window_rule", "overrides") if legacy.get(k)}
             if data:
                 save_data(data)
-                msgs.append(L(f"Règles et réglages déplacés de {old.name} vers {custom.name}", f"Rules and settings moved from {old.name} to {custom.name}"))
+                msgs.append(tr("Rules and settings moved from {name} to {name2}").format(name=old.name, name2=custom.name))
         seen = legacy.get("seen")
         if isinstance(seen, dict) and seen:
             merged = {**load_seen(), **seen}
@@ -405,12 +422,12 @@ def build_sources(windows: list[dict], seen: dict[str, str], apps: list[dict]) -
         known.add(w["app_id"])
     for app_id, title in sorted(seen.items()):
         if app_id not in known:
-            items.append({"kind": "seen", "label": f"○ {app_id} — {title[:50]} " + L("(vu ouvert avant)", "(seen open before)"),
+            items.append({"kind": "seen", "label": f"○ {app_id} — {title[:50]} " + tr("(seen open before)"),
                           "pattern": exact_pattern(app_id)})
             known.add(app_id)
     for a in apps:
         if known.isdisjoint(a["candidates"]):
-            items.append({"kind": "installed", "label": f"  {a['name']} " + L("(installée, app_id deviné)", "(installed, app_id guessed)"),
+            items.append({"kind": "installed", "label": f"  {a['name']} " + tr("(installed, app_id guessed)"),
                           "pattern": pattern_for(a["candidates"])})
     return items
 
@@ -429,12 +446,12 @@ PLACEMENTS = {
 
 
 def placement_label(key: str) -> str:
-    return {"floating": L("Flottante", "Floating"), "maximize": L("Maximisée", "Maximized"),
-            "fullscreen": L("Plein écran", "Fullscreen")}[key]
+    return {"floating": tr("Floating"), "maximize": tr("Maximized"),
+            "fullscreen": tr("Fullscreen")}[key]
 
 
 def blur_label(value) -> str:
-    return {True: L("Activé", "On"), False: L("Désactivé", "Off")}[value]
+    return {True: tr("On"), False: tr("Off")}[value]
 
 
 def build_rule(app_id: str, title: str = "", output: str | None = None,
@@ -446,7 +463,7 @@ def build_rule(app_id: str, title: str = "", output: str | None = None,
     if title:
         match["title"] = title
     if not match:
-        raise ValueError(L("app_id ou titre requis", "app_id or title required"))
+        raise ValueError(tr("app_id or title required"))
     rule: dict = {"match": match}
     if output:
         rule["default_output"] = output
@@ -458,10 +475,10 @@ def build_rule(app_id: str, title: str = "", output: str | None = None,
         rule["blur"] = blur
     if opacity is not None:
         if not 0.0 <= opacity <= 1.0:
-            raise ValueError(L("opacité entre 0 et 1", "opacity must be between 0 and 1"))
+            raise ValueError(tr("opacity must be between 0 and 1"))
         rule["opacity"] = opacity
     if len(rule) == 1:
-        raise ValueError(L("choisis au moins un réglage", "choose at least one setting"))
+        raise ValueError(tr("choose at least one setting"))
     return rule
 
 
@@ -514,14 +531,11 @@ def availability() -> str | None:
     if t in SUPPORTED:
         return None
     if t in NATIVE_DE:
-        return L(f"Roudix Config n'est pas disponible sur {t} : utilise ses réglages natifs (Paramètres système).",
-                 f"Roudix Config isn't available on {t}: use its native settings (System Settings).")
+        return tr("Roudix Config isn't available on {t}: use its native settings (System "
+                "Settings).").format(t=t)
     if t:
-        return L(f"Roudix Config ne gère pas encore {t} (pour l'instant : {', '.join(sorted(SUPPORTED))}).",
-                 f"Roudix Config doesn't support {t} yet (for now: {', '.join(sorted(SUPPORTED))}).")
-    return L("Impossible de déterminer le bureau (roudix.desktop.type). Fais un rebuild pour que "
-             "~/.local/share/roudix/desktop-type soit créé.",
-             "Can't determine the desktop (roudix.desktop.type). Rebuild so that "
+        return tr("Roudix Config doesn't support {t} yet (for now: {join}).").format(t=t, join=', '.join(sorted(SUPPORTED)))
+    return tr("Can't determine the desktop (roudix.desktop.type). Rebuild so that "
              "~/.local/share/roudix/desktop-type gets created.")
 
 
@@ -636,7 +650,7 @@ def set_setting_override(sid: str, value) -> None:
     B = backend()
     spec = next((s for s in B.settings_catalog() if s.id == sid), None)
     if spec is None:
-        raise ValueError(L(f"réglage inconnu : {sid}", f"unknown setting: {sid}"))
+        raise ValueError(tr("unknown setting: {sid}").format(sid=sid))
     value = _coerce_setting(spec, value)
     base = B.live_setting(B.load_live(), spec)
     data = load_data()
@@ -669,8 +683,7 @@ def reset_setting(sid: str) -> None:
 def rebuild_argv() -> list[str]:
     nh = shutil.which("nh")
     if not nh:
-        raise ValueError(L("`nh` est introuvable : lance le rebuild à la main (alias `rebuild`).",
-                           "`nh` not found: run the rebuild by hand (the `rebuild` alias)."))
+        raise ValueError(tr("`nh` not found: run the rebuild by hand (the `rebuild` alias)."))
     flake = os.environ.get("NH_FLAKE") or str(repo_root())
     if not flake.startswith(("path:", "github:", "git+")):
         flake = "path:" + flake          # `path:` so the gitignored -custom.nix is part of the build
@@ -687,9 +700,9 @@ def spawn_rebuild() -> str:
     return the terminal's name. The window stays open until Enter so the result can be read."""
     argv = rebuild_argv()
     script = (f'{shlex.join(argv)}; rc=$?; echo; '
-              f'if [ $rc -eq 0 ]; then echo "{L("Rebuild terminé ✔ — recharge la config du compositeur si besoin.", "Rebuild done ✔ — reload the compositor config if needed.")}"; '
-              f'else echo "{L("Rebuild en échec ✘ (code $rc) — lis les messages ci-dessus.", "Rebuild failed ✘ (code $rc) — read the messages above.")}"; fi; '
-              f'printf "%s" "{L("Entrée pour fermer… ", "Press Enter to close… ")}"; read _')
+              f'if [ $rc -eq 0 ]; then echo "{tr("Rebuild done ✔ — reload the compositor config if needed.")}"; '
+              f'else echo "{tr("Rebuild failed ✘ (code $rc) — read the messages above.")}"; fi; '
+              f'printf "%s" "{tr("Press Enter to close… ")}"; read _')
     for t in ([os.environ["TERMINAL"]] if os.environ.get("TERMINAL") else []) + list(_TERMINALS):
         exe = shutil.which(t)
         if not exe:
@@ -698,8 +711,7 @@ def spawn_rebuild() -> str:
         subprocess.Popen([exe, *flag, "sh", "-c", script], start_new_session=True,
                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         return Path(exe).name
-    raise ValueError(L("Aucun terminal trouvé : lance le rebuild à la main (alias `rebuild`).",
-                       "No terminal found: run the rebuild by hand (the `rebuild` alias)."))
+    raise ValueError(tr("No terminal found: run the rebuild by hand (the `rebuild` alias)."))
 
 
 def list_outputs_full() -> dict[str, dict]:
@@ -715,7 +727,7 @@ def nix_parse_check(text: str) -> tuple[bool, str]:
         return False, jerr
     exe = shutil.which("nix-instantiate")
     if not exe:
-        return True, L("syntaxe non vérifiée, nix-instantiate introuvable", "syntax not checked, nix-instantiate not found")
+        return True, tr("syntax not checked, nix-instantiate not found")
     import tempfile
     with tempfile.NamedTemporaryFile("w", suffix=".nix", delete=False) as f:
         f.write(text)
@@ -725,7 +737,7 @@ def nix_parse_check(text: str) -> tuple[bool, str]:
     finally:
         os.unlink(path)
     if r.returncode == 0:
-        return True, L("syntaxe Nix valide", "valid Nix syntax")
-    return False, (r.stderr.strip().splitlines() or [L("erreur de syntaxe", "syntax error")])[-1]
+        return True, tr("valid Nix syntax")
+    return False, (r.stderr.strip().splitlines() or [tr("syntax error")])[-1]
 
 

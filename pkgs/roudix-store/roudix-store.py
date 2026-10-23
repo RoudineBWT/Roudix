@@ -24,8 +24,39 @@ END = "# <<< roudix-store <<<"
 BLOCK_RE = re.compile(r"\n?[ \t]*" + re.escape(BEGIN) + r".*?" + re.escape(END) + r"[ \t]*\n?", re.S)
 
 
-def L(fr, en):
-    return fr if os.environ.get("LANG", "").startswith("fr") else en
+# ── translations (gettext) ───────────────────────────────────────────────────
+# Messages are written in English: tr("…"). Catalogs live in po/<lang>.po and the Nix
+# package compiles them to share/locale/<lang>/LC_MESSAGES/roudix-store.mo. The language comes
+# from LANGUAGE / LC_ALL / LC_MESSAGES / LANG; a missing catalog falls back to English.
+import gettext as _gettext
+import glob as _glob
+
+_DOMAIN = "roudix-store"
+
+
+def _find_localedir(domain):
+    cands = [os.environ.get("ROUDIX_LOCALEDIR", "")]
+    d = os.path.dirname(os.path.realpath(__file__))
+    while True:
+        cands += [os.path.join(d, "share", "locale"), os.path.join(d, "locale")]
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    for c in cands:
+        if c and _glob.glob(os.path.join(c, "*", "LC_MESSAGES", domain + ".mo")):
+            return c
+    return None
+
+
+_translation = _gettext.translation(_DOMAIN, _find_localedir(_DOMAIN), fallback=True)
+tr = _translation.gettext        # tr("text")
+trc = _translation.pgettext      # trc("context", "text")
+
+
+def tr_noop(text):
+    """Mark a string for extraction now, translate it later with tr()."""
+    return text
 
 
 # ── local.nix managed block ───────────────────────────────────────────────
@@ -183,19 +214,19 @@ def main():
             self.results = []
 
             # sidebar: search + results
-            self.entry = Gtk.SearchEntry(placeholder_text=L("Rechercher une app…", "Search apps…"), hexpand=True)
+            self.entry = Gtk.SearchEntry(placeholder_text=tr("Search apps…"), hexpand=True)
             self.entry.connect("search-changed", self.on_search)
             self.listbox = Gtk.ListBox(selection_mode=Gtk.SelectionMode.SINGLE)
             self.listbox.add_css_class("navigation-sidebar")
             self.listbox.connect("row-selected", self.on_row)
-            self.status = Gtk.Label(label=L("Chargement de l'index nixpkgs…", "Loading nixpkgs index…"), wrap=True, margin_top=12, margin_bottom=12)
+            self.status = Gtk.Label(label=tr("Loading nixpkgs index…"), wrap=True, margin_top=12, margin_bottom=12)
             side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
             side.append(self.entry)
             side.append(self.status)
             side.append(Gtk.ScrolledWindow(child=self.listbox, vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER))
             side_tb = Adw.ToolbarView(content=side)
             hb = Adw.HeaderBar()
-            refresh = Gtk.Button(icon_name="view-refresh-symbolic", tooltip_text=L("Mettre à jour l'index", "Refresh index"))
+            refresh = Gtk.Button(icon_name="view-refresh-symbolic", tooltip_text=tr("Refresh index"))
             refresh.connect("clicked", lambda *_: self.fetch_index(True))
             hb.pack_end(refresh)
             side_tb.add_top_bar(hb)
@@ -205,8 +236,8 @@ def main():
             self.sub_l = Gtk.Label(xalign=0, wrap=True); self.sub_l.add_css_class("dim-label")
             self.long_l = Gtk.Label(xalign=0, wrap=True, selectable=True)
             self.meta_l = Gtk.Label(xalign=0, wrap=True, use_markup=True)
-            self.scope = Adw.ComboRow(title=L("Installer pour", "Install for"),
-                                      model=Gtk.StringList.new([L("Utilisateur (home)", "User (home)"), L("Système", "System")]))
+            self.scope = Adw.ComboRow(title=tr("Install for"),
+                                      model=Gtk.StringList.new([tr("User (home)"), tr("System")]))
             self.action_btn = Gtk.Button(halign=Gtk.Align.START); self.action_btn.add_css_class("suggested-action")
             self.action_btn.connect("clicked", self.on_action)
             lst = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE); lst.add_css_class("boxed-list"); lst.append(self.scope)
@@ -215,14 +246,14 @@ def main():
                 box.append(w)
             self.detail_stack = Adw.ViewStack()
             self.detail_stack.add_named(Adw.StatusPage(icon_name="system-software-install-symbolic",
-                                                       title=L("Choisis une application", "Pick an application")), "empty")
+                                                       title=tr("Pick an application")), "empty")
             self.detail_stack.add_named(Gtk.ScrolledWindow(child=Adw.Clamp(child=box, maximum_size=700)), "detail")
 
             # bottom bar: queue + apply + log
             self.queue_l = Gtk.Label(xalign=0, hexpand=True)
-            self.apply_btn = Gtk.Button(label=L("Appliquer", "Apply"), sensitive=False); self.apply_btn.add_css_class("suggested-action")
+            self.apply_btn = Gtk.Button(label=tr("Apply"), sensitive=False); self.apply_btn.add_css_class("suggested-action")
             self.apply_btn.connect("clicked", self.on_apply)
-            self.clear_btn = Gtk.Button(label=L("Vider", "Clear"), sensitive=False)
+            self.clear_btn = Gtk.Button(label=tr("Clear"), sensitive=False)
             self.clear_btn.connect("clicked", self.on_clear)
             bar = Gtk.Box(spacing=8, margin_top=8, margin_bottom=8, margin_start=12, margin_end=12)
             for w in (self.queue_l, self.clear_btn, self.apply_btn):
@@ -242,7 +273,7 @@ def main():
 
         # index / search
         def fetch_index(self, force):
-            self.status.set_label(L("Chargement de l'index nixpkgs…", "Loading nixpkgs index…"))
+            self.status.set_label(tr("Loading nixpkgs index…"))
             def work():
                 try:
                     idx = load_index(force)
@@ -253,10 +284,10 @@ def main():
 
         def index_ready(self, idx, err):
             if err:
-                self.status.set_label(L("Index indisponible : ", "Index unavailable: ") + err)
+                self.status.set_label(tr("Index unavailable: ") + err)
                 return
             self.idx = idx
-            self.status.set_label(L(f"{len(idx)} paquets — tape au moins 2 lettres.", f"{len(idx)} packages — type at least 2 letters."))
+            self.status.set_label(tr("{len} packages — type at least 2 letters.").format(len=len(idx)))
             self.on_search(self.entry)
 
         def on_search(self, entry):
@@ -290,8 +321,8 @@ def main():
             self.long_l.set_label(p["long"])
             self.long_l.set_visible(bool(p["long"]))
             bits = []
-            if p["version"]: bits.append(f"<b>{L('Version','Version')}</b> {GLib.markup_escape_text(p['version'])}")
-            if p["license"]: bits.append(f"<b>{L('Licence','License')}</b> {GLib.markup_escape_text(p['license'])}" + (" (unfree)" if p["unfree"] else ""))
+            if p["version"]: bits.append(f"<b>{tr('Version')}</b> {GLib.markup_escape_text(p['version'])}")
+            if p["license"]: bits.append(f"<b>{tr('License')}</b> {GLib.markup_escape_text(p['license'])}" + (" (unfree)" if p["unfree"] else ""))
             if p["home"]: bits.append(f"<a href=\"{GLib.markup_escape_text(p['home'])}\">{GLib.markup_escape_text(p['home'])}</a>")
             self.meta_l.set_markup("\n".join(bits))
             self.detail_stack.set_visible_child_name("detail")
@@ -310,11 +341,11 @@ def main():
             pend = self.pending.get(self.current)
             self.scope.set_sensitive(sc is None and pend is None)
             if pend:
-                self.action_btn.set_label(L("Annuler la file", "Remove from queue"))
+                self.action_btn.set_label(tr("Remove from queue"))
             elif sc:
-                self.action_btn.set_label(L("Désinstaller", "Uninstall"))
+                self.action_btn.set_label(tr("Uninstall"))
             else:
-                self.action_btn.set_label(L("Ajouter à la file", "Add to queue"))
+                self.action_btn.set_label(tr("Add to queue"))
 
         def on_action(self, _b):
             a = self.current
@@ -337,7 +368,7 @@ def main():
             parts = []
             if adds: parts.append("+ " + ", ".join(adds))
             if rms: parts.append("− " + ", ".join(rms))
-            self.queue_l.set_label("   ".join(parts) if parts else L("File vide", "Queue empty"))
+            self.queue_l.set_label("   ".join(parts) if parts else tr("Queue empty"))
 
         # apply
         def log_append(self, line):
@@ -354,7 +385,7 @@ def main():
                     res = write_block(path, key, sorted(new[sc]))
                     if res is not True:
                         restore_files(saved)
-                        self.status.set_label(L("Écriture impossible : ", "Write failed: ") + res)
+                        self.status.set_label(tr("Write failed: ") + res)
                         return
             self.apply_btn.set_sensitive(False); self.clear_btn.set_sensitive(False)
             self.log_sw.set_visible(True)
@@ -376,10 +407,10 @@ def main():
         def rebuild_done(self, ok, saved, new):
             if ok:
                 self.installed = new; self.pending.clear()
-                self.status.set_label(L("✓ Appliqué.", "✓ Applied."))
+                self.status.set_label(tr("✓ Applied."))
             else:
                 restore_files(saved)
-                self.status.set_label(L("✗ Échec — local.nix restauré.", "✗ Failed — local.nix restored."))
+                self.status.set_label(tr("✗ Failed — local.nix restored."))
             self.refresh_action(); self.refresh_queue()
 
     class App(Adw.Application):

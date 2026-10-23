@@ -21,6 +21,7 @@ pkgs.stdenv.mkDerivation {
   nativeBuildInputs = with pkgs; [
     wrapGAppsHook4
     gobject-introspection
+    gettext
   ];
   buildInputs = with pkgs; [
     gtk4
@@ -58,6 +59,13 @@ pkgs.stdenv.mkDerivation {
     [Desktop Entry]
     Name=Roudix Customizer
     Comment=Customize your desktop, apps and system tweaks on Roudix
+    Comment[fr]=Personnalise ton bureau, tes applications et les réglages système sur Roudix
+    Comment[es]=Personaliza tu escritorio, tus aplicaciones y los ajustes del sistema en Roudix
+    Comment[pt_BR]=Personalize seu desktop, seus aplicativos e os ajustes do sistema no Roudix
+    Comment[ru]=Настройка рабочего стола, приложений и системных параметров Roudix
+    Comment[zh_CN]=在 Roudix 上定制你的桌面、应用和系统调整项
+    Comment[hi]=Roudix पर अपना डेस्कटॉप, ऐप्स और सिस्टम ट्वीक कस्टमाइज़ करें
+    Comment[ar]=خصّص سطح المكتب والتطبيقات وتعديلات النظام في Roudix
     Exec=roudix-switcher
     Icon=io.roudix.switcher
     Terminal=false
@@ -65,6 +73,15 @@ pkgs.stdenv.mkDerivation {
     Categories=System;Settings;X-Roudix;
     Keywords=desktop;environment;switch;niri;hyprland;gnome;kde;cinnamon;customize;browser;editor;terminal;gaming;
     EOF
+
+    # Translations: po/<lang>.po → share/locale/<lang>/LC_MESSAGES/roudix-switcher.mo
+    # (the app looks them up relative to its own install prefix: see tr() in the sources)
+    for po in po/*.po; do
+      [ -e "$po" ] || continue
+      lang=$(basename "$po" .po)
+      mkdir -p "$out/share/locale/$lang/LC_MESSAGES"
+      msgfmt --check -o "$out/share/locale/$lang/LC_MESSAGES/roudix-switcher.mo" "$po"
+    done
   '';
   meta = {
     description = "Customize your desktop, apps and system tweaks on Roudix";

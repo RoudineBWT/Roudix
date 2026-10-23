@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the roudix-welcome package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-welcome\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: roudix-welcome.py
+msgid "Software Store"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Install nixpkgs and Flatpak apps"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Customizer"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Desktop, shell, apps and system tweaks"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Kernel Switcher"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Pick your CachyOS kernel variant"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "SCX Scheduler"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Choose and apply an SCX scheduler"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Welcome to Roudix"
+msgstr ""
+
+#: roudix-welcome.py
+msgid ""
+"<span size='small'>Roudix is your personal NixOS distribution: Wayland "
+"compositors (Niri, Hyprland, MangoWC, Umbriel), GNOME and KDE, a CachyOS "
+"kernel, and a bunch of tweaks built for you — and for the family and friends "
+"you share it with. Use the shortcuts below to customize your system, switch "
+"kernel and scheduler, or install apps from the store.</span>"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Roudix Apps"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Open"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Resources"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Source code & documentation"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Show at startup"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Show this window again on every login"
+msgstr ""
+
+#: roudix-welcome.py
+msgid "Close"
+msgstr ""

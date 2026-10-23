@@ -17,7 +17,7 @@ import time
 from typing import Callable
 
 from . import localnix
-from .i18n import L
+from .i18n import tr
 from .nix_backend import NixBackend
 
 MARKER = os.path.join(
@@ -65,8 +65,7 @@ def update_appstream(say: Callable[[str], None], wait_for_remote: int = 0) -> bo
     deadline = time.monotonic() + wait_for_remote
     while not _has_remote(flatpak):
         if time.monotonic() >= deadline:
-            say(L("Aucun dépôt Flatpak pour l'instant — les métadonnées seront récupérées au prochain démarrage.",
-                  "No Flatpak remote yet — the metadata will be fetched at the next start."))
+            say(tr("No Flatpak remote yet — the metadata will be fetched at the next start."))
             return False
         time.sleep(2)
     code = NixBackend._run_flatpak(flatpak, ["update", "--appstream", "--noninteractive"], say)
@@ -86,8 +85,8 @@ def enable_support(say: Callable[[str], None]) -> tuple[bool, str]:
     res = localnix.set_flatpak_enabled(True)
     if res is not True:
         localnix.restore_files(saved)
-        return False, L(f"Impossible d'écrire local.nix : {res}", f"Could not write local.nix: {res}")
-    say(L("local.nix mis à jour : roudix.flatpak.enable = true", "local.nix updated: roudix.flatpak.enable = true"))
+        return False, tr("Could not write local.nix: {res}").format(res=res)
+    say(tr("local.nix updated: roudix.flatpak.enable = true"))
 
     cmd = ["nh", "os", "switch", "--elevation-strategy", "pkexec",
            "--accept-flake-config", f"path:{localnix.NH_FLAKE}"]
@@ -104,8 +103,8 @@ def enable_support(say: Callable[[str], None]) -> tuple[bool, str]:
         return False, str(exc)
     if not ok:
         localnix.restore_files(saved)
-        return False, L("Échec de la reconstruction — local.nix restauré.", "Rebuild failed — local.nix restored.")
+        return False, tr("Rebuild failed — local.nix restored.")
 
-    say(L("Récupération du catalogue Flathub…", "Fetching the Flathub catalog…"))
+    say(tr("Fetching the Flathub catalog…"))
     update_appstream(say, wait_for_remote=40)
-    return True, L("Support Flatpak activé.", "Flatpak support enabled.")
+    return True, tr("Flatpak support enabled.")

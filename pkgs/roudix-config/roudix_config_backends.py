@@ -25,7 +25,7 @@ import subprocess
 from pathlib import Path
 
 from roudix_config_core import (
-    BEGIN, END, TRANSFORMS, L, _collect, _run_json, config_home, nix_escape,
+    BEGIN, END, TRANSFORMS, _collect, _run_json, config_home, nix_escape, tr, tr_noop,
 )
 
 
@@ -38,20 +38,20 @@ from roudix_config_core import (
 # the repo. Only values that differ from the live config are kept.
 
 class Setting:
-    def __init__(self, id, group, fr, en, kind, path="", lo=None, hi=None, step=1,
+    def __init__(self, id, group, title, kind, path="", lo=None, hi=None, step=1,
                  choices=(), keys=(), kdl=(), invert=False, as_int=False):
         self.id, self.group, self.kind, self.path = id, group, kind, path
-        self.title = L(fr, en)
+        self.title = tr(title)
         self.lo, self.hi, self.step, self.choices = lo, hi, step, tuple(choices)
         self.keys, self.kdl, self.invert, self.as_int = tuple(keys), tuple(kdl), invert, as_int
 
 
 GROUPS = {
-    "look": L("Apparence", "Appearance"),
-    "layout": L("Disposition", "Layout"),
-    "anim": L("Animations", "Animations"),
-    "input": L("Souris, clavier, curseur", "Mouse, keyboard, cursor"),
-    "behavior": L("Comportement", "Behavior"),
+    "look": tr("Appearance"),
+    "layout": tr("Layout"),
+    "anim": tr("Animations"),
+    "input": tr("Mouse, keyboard, cursor"),
+    "behavior": tr("Behavior"),
 }
 
 
@@ -71,11 +71,11 @@ def _coerce_setting(s: "Setting", value):
         return max(s.lo, min(s.hi, v)) if s.lo is not None else v
     if s.kind == "choice":
         if value not in s.choices:
-            raise ValueError(L(f"valeur inconnue : {value}", f"unknown value: {value}"))
+            raise ValueError(tr("unknown value: {value}").format(value=value))
         return value
     value = str(value).strip()
     if not value or any(c in value for c in "\"\n$"):
-        raise ValueError(L("texte vide ou caractères interdits", "empty text or forbidden characters"))
+        raise ValueError(tr("empty text or forbidden characters"))
     return value
 
 
@@ -84,71 +84,71 @@ def _S(*a, **k) -> "Setting":
 
 
 UMBRIEL_SETTINGS = [
-    _S("gap", "look", "Espacement entre fenêtres (px)", "Gap between windows (px)", "int", "layout.gap", 0, 60),
-    _S("corner", "look", "Arrondi des coins (px)", "Corner radius (px)", "int", "appearance.corner_radius", 0, 40),
-    _S("blur", "look", "Flou (blur)", "Blur", "bool", "appearance.blur.enabled"),
-    _S("blur_passes", "look", "Flou : nombre de passes", "Blur: passes", "int", "appearance.blur.passes", 1, 8),
-    _S("shadow", "look", "Ombres des fenêtres", "Window shadows", "bool", "appearance.shadow.enabled"),
-    _S("no_csd", "look", "Forcer les décorations côté serveur", "Prefer server-side decorations", "bool", "appearance.prefer_no_csd"),
-    _S("layout", "layout", "Disposition par défaut", "Default layout", "choice", "layout.mode", choices=("scrolling", "dwindle", "master")),
-    _S("center", "layout", "Centrer la colonne focalisée", "Center the focused column", "choice", "layout.scrolling.center_focused", choices=("never", "always", "on_overflow")),
-    _S("col_width", "layout", "Largeur par défaut des colonnes", "Default column width", "float", "layout.scrolling.default_extent_fraction", 0.2, 1.0, 0.05),
-    _S("master_width", "layout", "Largeur de la zone principale (master)", "Master area width", "float", "layout.master.default_width_fraction", 0.2, 0.8, 0.05),
-    _S("anim", "anim", "Animations", "Animations", "bool", "animation.enabled"),
-    _S("tap", "input", "Toucher pour cliquer (touchpad)", "Tap to click (touchpad)", "bool", "input.touchpad.tap"),
-    _S("natural", "input", "Défilement naturel (touchpad)", "Natural scrolling (touchpad)", "bool", "input.touchpad.natural_scroll"),
-    _S("accel", "input", "Accélération de la souris", "Mouse acceleration", "choice", "input.mouse.accel_profile", choices=("flat", "adaptive")),
-    _S("follow", "input", "Le focus suit la souris", "Focus follows mouse", "bool", "input.focus.follows_mouse"),
-    _S("hide_typing", "input", "Cacher le curseur en tapant", "Hide the cursor while typing", "bool", "input.cursor.hide_when_typing"),
-    _S("cursor_size", "input", "Taille du curseur", "Cursor size", "int", "input.cursor.size", 16, 64),
-    _S("cursor_theme", "input", "Thème du curseur", "Cursor theme", "text", "input.cursor.theme"),
-    _S("activate", "behavior", "Donner le focus à une fenêtre qui le demande", "Focus windows that ask for attention", "bool", "general.focus_on_activate"),
-    _S("back_forth", "behavior", "Revenir au workspace précédent (même touche)", "Workspace back-and-forth", "bool", "workspaces.back_and_forth"),
-    _S("cheatsheet", "behavior", "Aide des raccourcis au démarrage", "Shortcut cheatsheet at startup", "bool", "general.show_cheatsheet"),
+    _S("gap", "look", tr_noop("Gap between windows (px)"), "int", "layout.gap", 0, 60),
+    _S("corner", "look", tr_noop("Corner radius (px)"), "int", "appearance.corner_radius", 0, 40),
+    _S("blur", "look", tr_noop("Blur"), "bool", "appearance.blur.enabled"),
+    _S("blur_passes", "look", tr_noop("Blur: passes"), "int", "appearance.blur.passes", 1, 8),
+    _S("shadow", "look", tr_noop("Window shadows"), "bool", "appearance.shadow.enabled"),
+    _S("no_csd", "look", tr_noop("Prefer server-side decorations"), "bool", "appearance.prefer_no_csd"),
+    _S("layout", "layout", tr_noop("Default layout"), "choice", "layout.mode", choices=("scrolling", "dwindle", "master")),
+    _S("center", "layout", tr_noop("Center the focused column"), "choice", "layout.scrolling.center_focused", choices=("never", "always", "on_overflow")),
+    _S("col_width", "layout", tr_noop("Default column width"), "float", "layout.scrolling.default_extent_fraction", 0.2, 1.0, 0.05),
+    _S("master_width", "layout", tr_noop("Master area width"), "float", "layout.master.default_width_fraction", 0.2, 0.8, 0.05),
+    _S("anim", "anim", tr_noop("Animations"), "bool", "animation.enabled"),
+    _S("tap", "input", tr_noop("Tap to click (touchpad)"), "bool", "input.touchpad.tap"),
+    _S("natural", "input", tr_noop("Natural scrolling (touchpad)"), "bool", "input.touchpad.natural_scroll"),
+    _S("accel", "input", tr_noop("Mouse acceleration"), "choice", "input.mouse.accel_profile", choices=("flat", "adaptive")),
+    _S("follow", "input", tr_noop("Focus follows mouse"), "bool", "input.focus.follows_mouse"),
+    _S("hide_typing", "input", tr_noop("Hide the cursor while typing"), "bool", "input.cursor.hide_when_typing"),
+    _S("cursor_size", "input", tr_noop("Cursor size"), "int", "input.cursor.size", 16, 64),
+    _S("cursor_theme", "input", tr_noop("Cursor theme"), "text", "input.cursor.theme"),
+    _S("activate", "behavior", tr_noop("Focus windows that ask for attention"), "bool", "general.focus_on_activate"),
+    _S("back_forth", "behavior", tr_noop("Workspace back-and-forth"), "bool", "workspaces.back_and_forth"),
+    _S("cheatsheet", "behavior", tr_noop("Shortcut cheatsheet at startup"), "bool", "general.show_cheatsheet"),
 ]
 
 MANGO_SETTINGS = [
-    _S("gap_inner", "look", "Espacement entre fenêtres (px)", "Gap between windows (px)", "int", "", 0, 40, keys=("gap_inner_horizontal", "gap_inner_vertical")),
-    _S("gap_outer", "look", "Marge autour de l'écran (px)", "Outer margin (px)", "int", "", 0, 60, keys=("gap_outer_horizontal", "gap_outer_vertical")),
-    _S("border", "look", "Épaisseur de la bordure (px)", "Border width (px)", "int", "", 0, 10, keys=("border_px",)),
-    _S("corner", "look", "Arrondi des coins (px)", "Corner radius (px)", "int", "", 0, 40, keys=("border_radius",)),
-    _S("blur", "look", "Flou (blur)", "Blur", "bool", "", keys=("blur",), as_int=True),
-    _S("blur_radius", "look", "Flou : rayon", "Blur: radius", "int", "", 1, 30, keys=("blur_params_radius",)),
-    _S("shadows", "look", "Ombres des fenêtres", "Window shadows", "bool", "", keys=("shadows",), as_int=True),
-    _S("unfocused", "look", "Opacité des fenêtres non focalisées", "Unfocused window opacity", "float", "", 0.3, 1.0, 0.05, keys=("unfocused_opacity",)),
-    _S("focused", "look", "Opacité de la fenêtre focalisée", "Focused window opacity", "float", "", 0.3, 1.0, 0.05, keys=("focused_opacity",)),
-    _S("smart_gaps", "layout", "Pas d'espacement quand une seule fenêtre", "No gaps with a single window", "bool", "", keys=("smart_gaps",), as_int=True),
-    _S("no_border_single", "layout", "Pas de bordure quand une seule fenêtre", "No border with a single window", "bool", "", keys=("no_border_when_single",), as_int=True),
-    _S("master_factor", "layout", "Largeur de la zone principale (master)", "Master area width", "float", "", 0.2, 0.8, 0.05, keys=("default_master_factor",)),
-    _S("scroller_width", "layout", "Largeur par défaut en mode scroller", "Default scroller width", "float", "", 0.2, 1.0, 0.05, keys=("scroller_default_proportion",)),
-    _S("anim", "anim", "Animations", "Animations", "bool", "", keys=("animations",), as_int=True),
-    _S("tap", "input", "Toucher pour cliquer (touchpad)", "Tap to click (touchpad)", "bool", "", keys=("tap_to_click",), as_int=True),
-    _S("natural", "input", "Défilement naturel (touchpad)", "Natural scrolling (touchpad)", "bool", "", keys=("trackpad_natural_scrolling",), as_int=True),
-    _S("follow", "input", "Le focus suit la souris", "Focus follows mouse", "bool", "", keys=("sloppy_focus",), as_int=True),
-    _S("warp", "input", "Le curseur suit le focus", "Cursor follows focus", "bool", "", keys=("warp_cursor",), as_int=True),
-    _S("numlock", "input", "Verrouillage numérique au démarrage", "Num Lock on at startup", "bool", "", keys=("numlock_on",), as_int=True),
-    _S("repeat_rate", "input", "Répétition des touches (par seconde)", "Key repeat rate (per second)", "int", "", 10, 80, keys=("repeat_rate",)),
-    _S("repeat_delay", "input", "Délai avant répétition (ms)", "Key repeat delay (ms)", "int", "", 150, 1000, 50, keys=("repeat_delay",)),
-    _S("cursor_size", "input", "Taille du curseur", "Cursor size", "int", "", 16, 64, keys=("cursor_size",)),
-    _S("cursor_theme", "input", "Thème du curseur", "Cursor theme", "text", "", keys=("cursor_theme",)),
+    _S("gap_inner", "look", tr_noop("Gap between windows (px)"), "int", "", 0, 40, keys=("gap_inner_horizontal", "gap_inner_vertical")),
+    _S("gap_outer", "look", tr_noop("Outer margin (px)"), "int", "", 0, 60, keys=("gap_outer_horizontal", "gap_outer_vertical")),
+    _S("border", "look", tr_noop("Border width (px)"), "int", "", 0, 10, keys=("border_px",)),
+    _S("corner", "look", tr_noop("Corner radius (px)"), "int", "", 0, 40, keys=("border_radius",)),
+    _S("blur", "look", tr_noop("Blur"), "bool", "", keys=("blur",), as_int=True),
+    _S("blur_radius", "look", tr_noop("Blur: radius"), "int", "", 1, 30, keys=("blur_params_radius",)),
+    _S("shadows", "look", tr_noop("Window shadows"), "bool", "", keys=("shadows",), as_int=True),
+    _S("unfocused", "look", tr_noop("Unfocused window opacity"), "float", "", 0.3, 1.0, 0.05, keys=("unfocused_opacity",)),
+    _S("focused", "look", tr_noop("Focused window opacity"), "float", "", 0.3, 1.0, 0.05, keys=("focused_opacity",)),
+    _S("smart_gaps", "layout", tr_noop("No gaps with a single window"), "bool", "", keys=("smart_gaps",), as_int=True),
+    _S("no_border_single", "layout", tr_noop("No border with a single window"), "bool", "", keys=("no_border_when_single",), as_int=True),
+    _S("master_factor", "layout", tr_noop("Master area width"), "float", "", 0.2, 0.8, 0.05, keys=("default_master_factor",)),
+    _S("scroller_width", "layout", tr_noop("Default scroller width"), "float", "", 0.2, 1.0, 0.05, keys=("scroller_default_proportion",)),
+    _S("anim", "anim", tr_noop("Animations"), "bool", "", keys=("animations",), as_int=True),
+    _S("tap", "input", tr_noop("Tap to click (touchpad)"), "bool", "", keys=("tap_to_click",), as_int=True),
+    _S("natural", "input", tr_noop("Natural scrolling (touchpad)"), "bool", "", keys=("trackpad_natural_scrolling",), as_int=True),
+    _S("follow", "input", tr_noop("Focus follows mouse"), "bool", "", keys=("sloppy_focus",), as_int=True),
+    _S("warp", "input", tr_noop("Cursor follows focus"), "bool", "", keys=("warp_cursor",), as_int=True),
+    _S("numlock", "input", tr_noop("Num Lock on at startup"), "bool", "", keys=("numlock_on",), as_int=True),
+    _S("repeat_rate", "input", tr_noop("Key repeat rate (per second)"), "int", "", 10, 80, keys=("repeat_rate",)),
+    _S("repeat_delay", "input", tr_noop("Key repeat delay (ms)"), "int", "", 150, 1000, 50, keys=("repeat_delay",)),
+    _S("cursor_size", "input", tr_noop("Cursor size"), "int", "", 16, 64, keys=("cursor_size",)),
+    _S("cursor_theme", "input", tr_noop("Cursor theme"), "text", "", keys=("cursor_theme",)),
 ]
 
 NIRI_SETTINGS = [
-    _S("gaps", "look", "Espacement entre fenêtres (px)", "Gap between windows (px)", "int", "layout.gaps", 0, 60, kdl=("layout", "gaps")),
-    _S("no_csd", "look", "Forcer les décorations côté serveur", "Prefer server-side decorations", "bool", "prefer-no-csd", kdl=("prefer-no-csd",)),
-    _S("center", "layout", "Centrer la colonne focalisée", "Center the focused column", "choice", "layout.center-focused-column", choices=("never", "always", "on-overflow"), kdl=("layout", "center-focused-column")),
-    _S("anim", "anim", "Animations", "Animations", "bool", "animations.enable", kdl=("animations", "off"), invert=True),
-    _S("slowdown", "anim", "Ralentir les animations (×)", "Animation slowdown (×)", "float", "animations.slowdown", 0.1, 5.0, 0.1, kdl=("animations", "slowdown")),
-    _S("tap", "input", "Toucher pour cliquer (touchpad)", "Tap to click (touchpad)", "bool", "input.touchpad.tap", kdl=("input", "touchpad", "tap")),
-    _S("natural", "input", "Défilement naturel (touchpad)", "Natural scrolling (touchpad)", "bool", "input.touchpad.natural-scroll", kdl=("input", "touchpad", "natural-scroll")),
-    _S("accel", "input", "Accélération de la souris", "Mouse acceleration", "choice", "input.mouse.accel-profile", choices=("flat", "adaptive"), kdl=("input", "mouse", "accel-profile")),
-    _S("follow", "input", "Le focus suit la souris", "Focus follows mouse", "bool", "input.focus-follows-mouse.enable", kdl=("input", "focus-follows-mouse")),
-    _S("numlock", "input", "Verrouillage numérique au démarrage", "Num Lock on at startup", "bool", "input.keyboard.numlock", kdl=("input", "keyboard", "numlock")),
-    _S("cursor_size", "input", "Taille du curseur", "Cursor size", "int", "cursor.size", 16, 64, kdl=("cursor", "xcursor-size")),
-    _S("cursor_theme", "input", "Thème du curseur", "Cursor theme", "text", "cursor.theme", kdl=("cursor", "xcursor-theme")),
-    _S("back_forth", "behavior", "Revenir au workspace précédent (même touche)", "Workspace back-and-forth", "bool", "input.workspace-auto-back-and-forth", kdl=("input", "workspace-auto-back-and-forth")),
-    _S("hot_corner", "behavior", "Coin actif (overview)", "Hot corner (overview)", "bool", "gestures.hot-corners.enable", kdl=("gestures", "hot-corners", "off"), invert=True),
-    _S("hotkey_overlay", "behavior", "Masquer l'aide des raccourcis au démarrage", "Hide the shortcut overlay at startup", "bool", "hotkey-overlay.skip-at-startup", kdl=("hotkey-overlay", "skip-at-startup")),
+    _S("gaps", "look", tr_noop("Gap between windows (px)"), "int", "layout.gaps", 0, 60, kdl=("layout", "gaps")),
+    _S("no_csd", "look", tr_noop("Prefer server-side decorations"), "bool", "prefer-no-csd", kdl=("prefer-no-csd",)),
+    _S("center", "layout", tr_noop("Center the focused column"), "choice", "layout.center-focused-column", choices=("never", "always", "on-overflow"), kdl=("layout", "center-focused-column")),
+    _S("anim", "anim", tr_noop("Animations"), "bool", "animations.enable", kdl=("animations", "off"), invert=True),
+    _S("slowdown", "anim", tr_noop("Animation slowdown (×)"), "float", "animations.slowdown", 0.1, 5.0, 0.1, kdl=("animations", "slowdown")),
+    _S("tap", "input", tr_noop("Tap to click (touchpad)"), "bool", "input.touchpad.tap", kdl=("input", "touchpad", "tap")),
+    _S("natural", "input", tr_noop("Natural scrolling (touchpad)"), "bool", "input.touchpad.natural-scroll", kdl=("input", "touchpad", "natural-scroll")),
+    _S("accel", "input", tr_noop("Mouse acceleration"), "choice", "input.mouse.accel-profile", choices=("flat", "adaptive"), kdl=("input", "mouse", "accel-profile")),
+    _S("follow", "input", tr_noop("Focus follows mouse"), "bool", "input.focus-follows-mouse.enable", kdl=("input", "focus-follows-mouse")),
+    _S("numlock", "input", tr_noop("Num Lock on at startup"), "bool", "input.keyboard.numlock", kdl=("input", "keyboard", "numlock")),
+    _S("cursor_size", "input", tr_noop("Cursor size"), "int", "cursor.size", 16, 64, kdl=("cursor", "xcursor-size")),
+    _S("cursor_theme", "input", tr_noop("Cursor theme"), "text", "cursor.theme", kdl=("cursor", "xcursor-theme")),
+    _S("back_forth", "behavior", tr_noop("Workspace back-and-forth"), "bool", "input.workspace-auto-back-and-forth", kdl=("input", "workspace-auto-back-and-forth")),
+    _S("hot_corner", "behavior", tr_noop("Hot corner (overview)"), "bool", "gestures.hot-corners.enable", kdl=("gestures", "hot-corners", "off"), invert=True),
+    _S("hotkey_overlay", "behavior", tr_noop("Hide the shortcut overlay at startup"), "bool", "hotkey-overlay.skip-at-startup", kdl=("hotkey-overlay", "skip-at-startup")),
 ]
 
 
@@ -366,7 +366,7 @@ def _fmt_refresh(mhz: float) -> str:
 def mode_from_string(mode: str) -> tuple[int, int, float | None]:
     m = re.fullmatch(r"(\d+)x(\d+)(?:@(\d+(?:\.\d+)?))?", mode.strip())
     if not m:
-        raise ValueError(L("Mode : format 2560x1440 ou 2560x1440@240", "Mode: use 2560x1440 or 2560x1440@240"))
+        raise ValueError(tr("Mode: use 2560x1440 or 2560x1440@240"))
     return int(m.group(1)), int(m.group(2)), float(m.group(3)) if m.group(3) else None
 
 
@@ -409,7 +409,7 @@ class Backend:
 
     # ── what the UIs show ──
     def key_help(self) -> str:
-        return L("Ex. Mod+Q, Mod+Shift+Return, XF86AudioMute", "e.g. Mod+Q, Mod+Shift+Return, XF86AudioMute")
+        return tr("e.g. Mod+Q, Mod+Shift+Return, XF86AudioMute")
 
     def action_help(self) -> str:
         return ""
@@ -426,7 +426,7 @@ class Backend:
 
     def validate_bind(self, key: str, action: str) -> None:
         if not key.strip() or not action.strip():
-            raise ValueError(L("raccourci et action requis", "shortcut and action required"))
+            raise ValueError(tr("shortcut and action required"))
 
     def workspace_choices(self) -> list[tuple[str, object]]:
         return [(str(i), i) for i in range(1, 11)]
@@ -591,8 +591,7 @@ class Umbriel(Backend):
     def render_block(self, data: dict) -> str:
         nat = self.native_settings((data.get("overrides") or {}).get("settings") or {})
         full = dict(data, native={"settings": nat}) if nat else data
-        return _render(self.TEMPLATE, L("généré par Roudix Config — modifie-le via l'app",
-                                        "generated by Roudix Config — edit it through the app"), full)
+        return _render(self.TEMPLATE, tr("generated by Roudix Config — edit it through the app"), full)
 
 
 # ───────────────────────── MangoWC ─────────────────────────
@@ -655,8 +654,7 @@ class Mango(Backend):
 """
 
     def key_help(self) -> str:
-        return L("Ex. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modificateurs, touche)",
-                 "e.g. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modifiers, key)")
+        return tr("e.g. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modifiers, key)")
 
     def action_help(self) -> str:
         return "killclient · spawn,ghostty · togglefloating · view,3"
@@ -674,7 +672,7 @@ class Mango(Backend):
     def validate_bind(self, key: str, action: str) -> None:
         super().validate_bind(key, action)
         if "," not in key:
-            raise ValueError(L("Raccourci Mango : « MODS,TOUCHE » (ex. SUPER,Q)", "Mango shortcut: “MODS,KEY” (e.g. SUPER,Q)"))
+            raise ValueError(tr("Mango shortcut: “MODS,KEY” (e.g. SUPER,Q)"))
 
     def workspace_choices(self) -> list[tuple[str, object]]:
         return [(str(i), i) for i in range(1, 10)]
@@ -857,8 +855,7 @@ class Mango(Backend):
 
     def render_block(self, data: dict) -> str:
         full = dict(data, native=self.native(data))
-        return _render(self.TEMPLATE, L("généré par Roudix Config — modifie-le via l'app",
-                                        "generated by Roudix Config — edit it through the app"), full)
+        return _render(self.TEMPLATE, tr("generated by Roudix Config — edit it through the app"), full)
 
 
 # ───────────────────────── Niri ─────────────────────────
@@ -884,9 +881,9 @@ def parse_niri_action(text: str) -> tuple[str, list]:
     try:
         toks = shlex.split(text.strip())
     except ValueError as e:
-        raise ValueError(L("Action : guillemets mal fermés", "Action: unbalanced quotes")) from e
+        raise ValueError(tr("Action: unbalanced quotes")) from e
     if not toks:
-        raise ValueError(L("Action vide", "Empty action"))
+        raise ValueError(tr("Empty action"))
     name, args, props = toks[0], [], {}
 
     def conv(w: str):
@@ -904,8 +901,7 @@ def parse_niri_action(text: str) -> tuple[str, list]:
         else:
             args.append(conv(t))
     if not re.fullmatch(r"[a-z][a-z0-9-]*", name):
-        raise ValueError(L("Nom d'action invalide (ex. spawn, close-window, focus-workspace)",
-                           "Invalid action name (e.g. spawn, close-window, focus-workspace)"))
+        raise ValueError(tr("Invalid action name (e.g. spawn, close-window, focus-workspace)"))
     return name, args + ([props] if props else [])
 
 
@@ -1051,8 +1047,7 @@ class Niri(Backend):
     def set_bind(self, table: dict, key: str, action: str, old_key: str | None = None) -> dict:
         self.validate_bind(key, action)
         if old_key and old_key != key:
-            raise ValueError(L("Niri : déplacer un raccourci n'est pas pris en charge (utilise l'onglet Fichier).",
-                               "Niri: moving a shortcut isn't supported (use the File tab)."))
+            raise ValueError(tr("Niri: moving a shortcut isn't supported (use the File tab)."))
         # overrides.keybinds only holds what changed
         new = dict(table)
         new[key.strip()] = action.strip()
@@ -1133,8 +1128,7 @@ class Niri(Backend):
 
     def render_block(self, data: dict) -> str:
         full = dict(data, native=self.native(data))
-        return _render(self.TEMPLATE, L("généré par Roudix Config — modifie-le via l'app",
-                                        "generated by Roudix Config — edit it through the app"), full)
+        return _render(self.TEMPLATE, tr("generated by Roudix Config — edit it through the app"), full)
 
 
 BACKENDS: dict[str, Backend] = {b.id: b for b in (Umbriel(), Niri(), Mango())}

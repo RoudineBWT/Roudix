@@ -57,7 +57,7 @@ def save_updater_settings(settings: dict) -> None:
     }
     _UPDATER_CONFIG_PATH.write_text(json.dumps(payload, indent=2))
 
-from .i18n import L, action_word, status_word
+from .i18n import _sentence, action_word, status_word, tr
 from .updater_config import load_updater_settings, save_updater_settings, VALID_UNITS, save_view_mode, get_view_mode
 from .models import AppEntry, should_hide_from_standard_catalog
 
@@ -148,7 +148,7 @@ class _NewsHTMLToMarkupParser(HTMLParser):
 def _markup_blocks_from_text(raw_text: str) -> list[str]:
     text = (raw_text or '').strip()
     if not text:
-        return [L("Aucune actualité disponible.", "No news available.")]
+        return [tr("No news available.")]
     if '<' in text and '>' in text:
         parser = _NewsHTMLToMarkupParser()
         try:
@@ -159,7 +159,7 @@ def _markup_blocks_from_text(raw_text: str) -> list[str]:
         if parser.blocks:
             return parser.blocks
     sections = [GLib.markup_escape_text(part.strip()) for part in text.replace('\r\n', '\n').split('\n\n') if part.strip()]
-    return sections or [L("Aucune actualité disponible.", "No news available.")]
+    return sections or [tr("No news available.")]
 
 
 @dataclass
@@ -167,7 +167,7 @@ class QueueItem:
     app: AppEntry
     action: str
     status: str = "queued"
-    message: str = L("En attente", "Waiting")
+    message: str = tr("Waiting")
     pkg_names: list[str] = field(default_factory=list)
     file_paths: list[str] = field(default_factory=list)
     label: str | None = None
@@ -187,27 +187,27 @@ class QueueItem:
         if self.label:
             return self.label
         if len(self.file_paths) > 1:
-            return L(f"{len(self.file_paths)} fichiers RPM", f"{len(self.file_paths)} RPM files")
+            return tr("{len} RPM files").format(len=len(self.file_paths))
         if len(self.pkg_names) > 1:
-            return L(f"{len(self.pkg_names)} paquets", f"{len(self.pkg_names)} packages")
+            return tr("{len} packages").format(len=len(self.pkg_names))
         return self.app.name
 
 CATEGORY_GROUPS = {
     "system": {
-        "installed": L("Installées", "Installed"),
-        "queue": L("File d'attente", "Queue"),
+        "installed": tr("Installed"),
+        "queue": tr("Queue"),
     },
     "categories": {
-        "office": L("Bureautique", "Productivity"),
-        "graphics": L("Graphisme & photo", "Graphics & Photography"),
-        "audiovideo": L("Audio & vidéo", "Audio & Video"),
-        "education": L("Éducation", "Education"),
-        "network": L("Réseau", "Networking"),
-        "game": L("Jeux", "Games"),
-        "development": L("Outils de développement", "Developer Tools"),
-        "science": L("Sciences", "Science"),
-        "system": L("Système", "System"),
-        "utility": L("Utilitaires", "Utilities"),
+        "office": tr("Productivity"),
+        "graphics": tr("Graphics & Photography"),
+        "audiovideo": tr("Audio & Video"),
+        "education": tr("Education"),
+        "network": tr("Networking"),
+        "game": tr("Games"),
+        "development": tr("Developer Tools"),
+        "science": tr("Science"),
+        "system": tr("System"),
+        "utility": tr("Utilities"),
     },
 }
 
@@ -232,105 +232,105 @@ CATEGORY_ICONS = {
 
 SUBCATEGORY_GROUPS = {
     "audiovideo": {
-        "audiovideoediting": L("Montage audio & vidéo", "Audio & Video Editing"),
-        "discburning": L("Gravure de disques", "Disc Burning"),
-        "midi": L("Midi", "Midi"),
-        "mixer": L("Mixage", "Mixer"),
-        "player": L("Lecteurs", "Player"),
-        "recorder": L("Enregistrement", "Recorder"),
-        "sequencer": L("Séquenceurs", "Sequencer"),
-        "tuner": L("Tuner", "Tuner"),
-        "tv": L("TV", "TV"),
+        "audiovideoediting": tr("Audio & Video Editing"),
+        "discburning": tr("Disc Burning"),
+        "midi": tr("Midi"),
+        "mixer": tr("Mixer"),
+        "player": tr("Player"),
+        "recorder": tr("Recorder"),
+        "sequencer": tr("Sequencer"),
+        "tuner": tr("Tuner"),
+        "tv": tr("TV"),
     },
     "development": {
-        "building": L("Compilation", "Building"),
-        "database": L("Bases de données", "Database"),
-        "debugger": L("Débogage", "Debugger"),
-        "guidesigner": L("Concepteurs d'interface", "GUI Designer"),
-        "ide": L("IDE", "IDE"),
-        "profiling": L("Profilage", "Profiling"),
-        "revisioncontrol": L("Gestion de versions", "Revision Control"),
-        "translation": L("Traduction", "Translation"),
-        "webdevelopment": L("Développement web", "Web Development"),
+        "building": tr("Building"),
+        "database": tr("Database"),
+        "debugger": tr("Debugger"),
+        "guidesigner": tr("GUI Designer"),
+        "ide": tr("IDE"),
+        "profiling": tr("Profiling"),
+        "revisioncontrol": tr("Revision Control"),
+        "translation": tr("Translation"),
+        "webdevelopment": tr("Web Development"),
     },
     "game": {
-        "actiongame": L("Jeux d'action", "Action Games"),
-        "adventuregame": L("Jeux d'aventure", "Adventure Games"),
-        "arcadegame": L("Jeux d'arcade", "Arcade Games"),
-        "blocksgame": L("Jeux de blocs", "Blocks Games"),
-        "boardgame": L("Jeux de plateau", "Board Games"),
-        "cardgame": L("Jeux de cartes", "Card Games"),
-        "emulator": L("Émulateurs", "Emulators"),
-        "kidsgame": L("Jeux pour enfants", "Kids' Games"),
-        "logicgame": L("Jeux de logique", "Logic Games"),
-        "roleplaying": L("Jeux de rôle", "Role Playing"),
-        "shooter": L("Jeux de tir", "Shooter"),
-        "simulation": L("Simulation", "Simulation"),
-        "sportsgame": L("Jeux de sport", "Sports Games"),
-        "strategygame": L("Jeux de stratégie", "Strategy Games"),
+        "actiongame": tr("Action Games"),
+        "adventuregame": tr("Adventure Games"),
+        "arcadegame": tr("Arcade Games"),
+        "blocksgame": tr("Blocks Games"),
+        "boardgame": tr("Board Games"),
+        "cardgame": tr("Card Games"),
+        "emulator": tr("Emulators"),
+        "kidsgame": tr("Kids' Games"),
+        "logicgame": tr("Logic Games"),
+        "roleplaying": tr("Role Playing"),
+        "shooter": tr("Shooter"),
+        "simulation": tr("Simulation"),
+        "sportsgame": tr("Sports Games"),
+        "strategygame": tr("Strategy Games"),
     },
     "graphics": {
-        "2dgraphics": L("Graphisme 2D", "2D Graphics"),
-        "3dgraphics": L("Graphisme 3D", "3D Graphics"),
-        "ocr": L("OCR", "OCR"),
-        "photography": L("Photographie", "Photography"),
-        "publishing": L("Édition / PAO", "Publishing"),
-        "rastergraphics": L("Images matricielles", "Raster Graphics"),
-        "scanning": L("Numérisation", "Scanning"),
-        "vectorgraphics": L("Graphisme vectoriel", "Vector Graphics"),
-        "viewer": L("Visionneuses", "Viewer"),
+        "2dgraphics": tr("2D Graphics"),
+        "3dgraphics": tr("3D Graphics"),
+        "ocr": tr("OCR"),
+        "photography": tr("Photography"),
+        "publishing": tr("Publishing"),
+        "rastergraphics": tr("Raster Graphics"),
+        "scanning": tr("Scanning"),
+        "vectorgraphics": tr("Vector Graphics"),
+        "viewer": tr("Viewer"),
     },
     "network": {
-        "chat": L("Discussion", "Chat"),
-        "email": L("Courriel", "Email"),
-        "feed": L("Flux", "Feed"),
-        "filetransfer": L("Transfert de fichiers", "File Transfer"),
-        "hamradio": L("Radioamateur", "Ham Radio"),
-        "instantmessaging": L("Messagerie instantanée", "Instant Messaging"),
-        "ircclient": L("Clients IRC", "IRC Client"),
-        "monitor": L("Surveillance", "Monitor"),
-        "news": L("Actualités", "News"),
-        "p2p": L("P2P", "P2P"),
-        "remoteaccess": L("Accès à distance", "Remote Access"),
-        "telephony": L("Téléphonie", "Telephony"),
-        "videoconference": L("Visioconférence", "Video Conference"),
-        "webbrowser": L("Navigateurs web", "Web Browser"),
-        "webdevelopment": L("Développement web", "Web Development"),
+        "chat": tr("Chat"),
+        "email": tr("Email"),
+        "feed": tr("Feed"),
+        "filetransfer": tr("File Transfer"),
+        "hamradio": tr("Ham Radio"),
+        "instantmessaging": tr("Instant Messaging"),
+        "ircclient": tr("IRC Client"),
+        "monitor": tr("Monitor"),
+        "news": tr("News"),
+        "p2p": tr("P2P"),
+        "remoteaccess": tr("Remote Access"),
+        "telephony": tr("Telephony"),
+        "videoconference": tr("Video Conference"),
+        "webbrowser": tr("Web Browser"),
+        "webdevelopment": tr("Web Development"),
     },
     "office": {
-        "calendar": L("Agenda", "Calendar"),
-        "chart": L("Diagrammes", "Chart"),
-        "contactmanagement": L("Contacts", "Contact Management"),
-        "database": L("Bases de données", "Database"),
-        "dictionary": L("Dictionnaires", "Dictionary"),
-        "email": L("Courriel", "Email"),
-        "finance": L("Finance", "Finance"),
-        "presentation": L("Présentation", "Presentation"),
-        "projectmanagement": L("Gestion de projet", "Project Management"),
-        "publishing": L("Édition / PAO", "Publishing"),
-        "spreadsheet": L("Tableurs", "Spreadsheet"),
-        "viewer": L("Visionneuses", "Viewer"),
-        "wordprocessor": L("Traitement de texte", "Word Processor"),
+        "calendar": tr("Calendar"),
+        "chart": tr("Chart"),
+        "contactmanagement": tr("Contact Management"),
+        "database": tr("Database"),
+        "dictionary": tr("Dictionary"),
+        "email": tr("Email"),
+        "finance": tr("Finance"),
+        "presentation": tr("Presentation"),
+        "projectmanagement": tr("Project Management"),
+        "publishing": tr("Publishing"),
+        "spreadsheet": tr("Spreadsheet"),
+        "viewer": tr("Viewer"),
+        "wordprocessor": tr("Word Processor"),
     },
     "system": {
-        "emulator": L("Émulateurs", "Emulators"),
-        "filemanager": L("Gestionnaires de fichiers", "File Manager"),
-        "filesystem": L("Systèmes de fichiers", "Filesystem"),
-        "filetools": L("Outils de fichiers", "File Tools"),
-        "monitor": L("Surveillance", "Monitor"),
-        "security": L("Sécurité", "Security"),
-        "terminalemulator": L("Émulateurs de terminal", "Terminal Emulator"),
+        "emulator": tr("Emulators"),
+        "filemanager": tr("File Manager"),
+        "filesystem": tr("Filesystem"),
+        "filetools": tr("File Tools"),
+        "monitor": tr("Monitor"),
+        "security": tr("Security"),
+        "terminalemulator": tr("Terminal Emulator"),
     },
     "utility": {
-        "accessibility": L("Accessibilité", "Accessibility"),
-        "archiving": L("Archivage", "Archiving"),
-        "calculator": L("Calculatrices", "Calculator"),
-        "clock": L("Horloge", "Clock"),
-        "compression": L("Compression", "Compression"),
-        "filetools": L("Outils de fichiers", "File Tools"),
-        "telephonytools": L("Outils de téléphonie", "Telephony Tools"),
-        "texteditor": L("Éditeurs de texte", "Text Editor"),
-        "texttools": L("Outils de texte", "Text Tools"),
+        "accessibility": tr("Accessibility"),
+        "archiving": tr("Archiving"),
+        "calculator": tr("Calculator"),
+        "clock": tr("Clock"),
+        "compression": tr("Compression"),
+        "filetools": tr("File Tools"),
+        "telephonytools": tr("Telephony Tools"),
+        "texteditor": tr("Text Editor"),
+        "texttools": tr("Text Tools"),
     },
 }
 
@@ -1008,14 +1008,14 @@ class AppCardRow(Gtk.ListBoxRow):
             self.action_button.set_sensitive(True)
             if self._page_mode == "updates":
                 self.action_button.set_icon_name("software-update-available-symbolic")
-                self.action_button.set_tooltip_text(L("Mettre à jour", "Update"))
+                self.action_button.set_tooltip_text(tr("Update"))
             else:
                 if self.app.installed:
                     self.action_button.set_icon_name("list-remove-symbolic")
-                    self.action_button.set_tooltip_text(L("Supprimer", "Remove"))
+                    self.action_button.set_tooltip_text(tr("Remove"))
                 else:
                     self.action_button.set_icon_name("list-add-symbolic")
-                    self.action_button.set_tooltip_text(L("Installer", "Install"))
+                    self.action_button.set_tooltip_text(tr("Install"))
         self.action_button.remove_css_class("destructive-action")
         self.action_button.remove_css_class("suggested-action")
         if self._page_mode == "updates":
@@ -1107,14 +1107,14 @@ class AppCardTile(Gtk.Box):
             self.action_button.set_sensitive(True)
             if self._page_mode == "updates":
                 self.action_button.set_icon_name("software-update-available-symbolic")
-                self.action_button.set_tooltip_text(L("Mettre à jour", "Update"))
+                self.action_button.set_tooltip_text(tr("Update"))
             else:
                 if self.app.installed:
                     self.action_button.set_icon_name("list-remove-symbolic")
-                    self.action_button.set_tooltip_text(L("Supprimer", "Remove"))
+                    self.action_button.set_tooltip_text(tr("Remove"))
                 else:
                     self.action_button.set_icon_name("list-add-symbolic")
-                    self.action_button.set_tooltip_text(L("Installer", "Install"))
+                    self.action_button.set_tooltip_text(tr("Install"))
         self.action_button.remove_css_class("destructive-action")
         self.action_button.remove_css_class("suggested-action")
         if self._page_mode == "updates":
@@ -1137,7 +1137,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.source = "nix"  # "nix" or "flatpak": the active catalog (sidebar switch)
         self.current_group = "categories"
         self.news_panel_visible = True
-        self.news_text = L("Chargement des actualités…", "Loading news…")
+        self.news_text = tr("Loading news…")
         self.current_subcategory: str | None = None
         self.current_search_text = ""
         self.current_category_filter_text = ""
@@ -1223,7 +1223,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.title_row.append(self.title_row_spacer)
 
         self.category_filter_entry = Gtk.SearchEntry()
-        self.category_filter_entry.set_placeholder_text(L("Filtrer…", "Search filter…"))
+        self.category_filter_entry.set_placeholder_text(tr("Search filter…"))
         self.category_filter_entry.set_hexpand(False)
         self.category_filter_entry.set_halign(Gtk.Align.END)
         self.category_filter_entry.set_valign(Gtk.Align.CENTER)
@@ -1243,14 +1243,14 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.grid_view_button = Gtk.ToggleButton()
         self.grid_view_button.set_icon_name("view-grid-symbolic")
-        self.grid_view_button.set_tooltip_text(L("Vue en grille", "Grid View"))
+        self.grid_view_button.set_tooltip_text(tr("Grid View"))
         self.grid_view_button.set_active(True)
         self.grid_view_button.connect("toggled", self._on_grid_view_toggled)
         self.view_toggle_box.append(self.grid_view_button)
 
         self.list_view_button = Gtk.ToggleButton()
         self.list_view_button.set_icon_name("view-list-symbolic")
-        self.list_view_button.set_tooltip_text(L("Vue en liste", "List View"))
+        self.list_view_button.set_tooltip_text(tr("List View"))
         self.list_view_button.connect("toggled", self._on_list_view_toggled)
         self.view_toggle_box.append(self.list_view_button)
 
@@ -1267,11 +1267,11 @@ class MainWindow(Adw.ApplicationWindow):
         self.updates_selected_label.add_css_class("dim-label")
         self.updates_action_bar.append(self.updates_selected_label)
 
-        self.updates_clear_button = Gtk.Button(label=L("Effacer la sélection", "Clear Selection"))
+        self.updates_clear_button = Gtk.Button(label=tr("Clear Selection"))
         self.updates_clear_button.connect("clicked", lambda *_: self._clear_update_selection())
         self.updates_action_bar.append(self.updates_clear_button)
 
-        self.update_selected_button = Gtk.Button(label=L("Mettre à jour la sélection", "Update Selected"))
+        self.update_selected_button = Gtk.Button(label=tr("Update Selected"))
         self.update_selected_button.add_css_class("suggested-action")
         self.update_selected_button.connect("clicked", lambda *_: self._queue_selected_updates())
         self.updates_action_bar.append(self.update_selected_button)
@@ -1279,16 +1279,16 @@ class MainWindow(Adw.ApplicationWindow):
         self.update_all_button = Gtk.Button()
         update_all_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         update_all_icon = Gtk.Image.new_from_icon_name("software-update-available-symbolic")
-        update_all_label = Gtk.Label(label=L("Tout sélectionner et mettre à jour", "Select All and Update"))
+        update_all_label = Gtk.Label(label=tr("Select All and Update"))
         update_all_box.append(update_all_icon)
         update_all_box.append(update_all_label)
         self.update_all_button.set_child(update_all_box)
         self.update_all_button.connect("clicked", lambda *_: self._queue_system_update())
         self.updates_action_bar.append(self.update_all_button)
 
-        self.update_flatpaks_check = Gtk.CheckButton(label=L("Mettre aussi à jour les flatpaks", "Also update flatpaks"))
+        self.update_flatpaks_check = Gtk.CheckButton(label=tr("Also update flatpaks"))
         self.update_flatpaks_check.set_valign(Gtk.Align.CENTER)
-        self.update_flatpaks_check.set_tooltip_text(L("Ajoute --all à nobara-sync pour cette mise à jour système.", "Append --all to nobara-sync for this system update."))
+        self.update_flatpaks_check.set_tooltip_text(tr("Append --all to nobara-sync for this system update."))
         self.update_flatpaks_check.set_active(bool(self.updater_settings.get("update_flatpaks", False)))
         self.update_flatpaks_check.connect("toggled", self._on_update_flatpaks_toggled)
         self.updates_action_bar.append(self.update_flatpaks_check)
@@ -1296,7 +1296,7 @@ class MainWindow(Adw.ApplicationWindow):
         # News panel toggle button
         self.news_toggle_button = Gtk.ToggleButton()
         self.news_toggle_button.set_icon_name("starred-symbolic")
-        self.news_toggle_button.set_tooltip_text(L("Afficher/masquer le panneau d'actualités", "Toggle News Panel"))
+        self.news_toggle_button.set_tooltip_text(tr("Toggle News Panel"))
         self.news_toggle_button.set_active(True)
         self.news_toggle_button.connect("toggled", self._on_news_toggle)
         self.title_row.append(self.news_toggle_button)
@@ -1355,15 +1355,15 @@ class MainWindow(Adw.ApplicationWindow):
         self.bottom_queue_status.add_css_class("queue-bottom-status")
         bottom_bar.append(self.bottom_queue_status)
 
-        queue_button = Gtk.Button(label=L("Voir la file d'attente", "View Queue"))
+        queue_button = Gtk.Button(label=tr("View Queue"))
         queue_button.connect("clicked", lambda *_: self._switch_page("system", "queue"))
         bottom_bar.append(queue_button)
 
-        self.bottom_clear_button = Gtk.Button(label=L("Vider", "Clear"))
+        self.bottom_clear_button = Gtk.Button(label=tr("Clear"))
         self.bottom_clear_button.connect("clicked", lambda *_: self._clear_pending_queue())
         bottom_bar.append(self.bottom_clear_button)
 
-        self.bottom_apply_button = Gtk.Button(label=L("Appliquer", "Apply"))
+        self.bottom_apply_button = Gtk.Button(label=tr("Apply"))
         self.bottom_apply_button.add_css_class("suggested-action")
         self.bottom_apply_button.connect("clicked", lambda *_: self._apply_queue())
         bottom_bar.append(self.bottom_apply_button)
@@ -1374,7 +1374,7 @@ class MainWindow(Adw.ApplicationWindow):
         self._build_detail_page()
 
         self._refresh_news_page()
-        self._show_loading_page(L("Chargement des métadonnées AppStream et de l'index nixpkgs…", "Loading AppStream metadata and the nixpkgs index…"))
+        self._show_loading_page(tr("Loading AppStream metadata and the nixpkgs index…"))
         self._load_async(force=True)
 
     def _setup_rpm_drop_target(self) -> None:
@@ -1416,7 +1416,7 @@ class MainWindow(Adw.ApplicationWindow):
     def _on_rpm_drop(self, _target, value, _x, _y) -> bool:
         rpm_paths = self._extract_dropped_rpm_paths(value)
         if not rpm_paths:
-            self._show_toast(L("Dépose un ou plusieurs fichiers .rpm pour les installer.", "Drop one or more .rpm files to install them."))
+            self._show_toast(tr("Drop one or more .rpm files to install them."))
             return False
         self._queue_rpm_file_install(rpm_paths)
         return True
@@ -1427,25 +1427,25 @@ class MainWindow(Adw.ApplicationWindow):
     def _queue_rpm_file_install(self, rpm_paths: list[str]) -> None:
         rpm_paths = [str(Path(path)) for path in rpm_paths if str(path).lower().endswith('.rpm')]
         if not rpm_paths:
-            self._show_toast(L("Aucun fichier RPM dans ce que tu as déposé.", "No RPM files were found in the drop."))
+            self._show_toast(tr("No RPM files were found in the drop."))
             return
         queued_files = {path for item in self.queue_items for path in getattr(item, 'file_paths', []) if item.status in {'queued', 'running'}}
         unique_paths = [path for path in rpm_paths if path not in queued_files]
         if not unique_paths:
-            self._show_toast(L("Ces fichiers RPM sont déjà dans la file.", "Those RPM files are already queued."))
+            self._show_toast(tr("Those RPM files are already queued."))
             return
-        label = Path(unique_paths[0]).name if len(unique_paths) == 1 else L(f"{len(unique_paths)} fichiers RPM", f"{len(unique_paths)} RPM files")
+        label = Path(unique_paths[0]).name if len(unique_paths) == 1 else tr("{len} RPM files").format(len=len(unique_paths))
         pseudo_app = AppEntry(
             appstream_id='local-rpm-install',
-            name=L("Installation RPM locale", "Local RPM Install"),
-            summary=L("Installer des fichiers RPM locaux", "Install local RPM files"),
-            description=L("Installer des fichiers RPM locaux", "Install local RPM files"),
+            name=tr("Local RPM Install"),
+            summary=tr("Install local RPM files"),
+            description=tr("Install local RPM files"),
             pkg_names=[],
         )
-        item = QueueItem(app=pseudo_app, action='install-rpms', message=L(f"Installation de {len(unique_paths)} fichier(s) RPM mise en file", f"Queued to install {len(unique_paths)} RPM file(s)"), file_paths=unique_paths, label=label)
+        item = QueueItem(app=pseudo_app, action='install-rpms', message=tr("Queued to install {len} RPM file(s)").format(len=len(unique_paths)), file_paths=unique_paths, label=label)
         self.queue_items.append(item)
         names = ', '.join(Path(path).name for path in unique_paths[:5]) + ('…' if len(unique_paths) > 5 else '')
-        self._append_queue_log(L(f"Installation RPM mise en file : {names}", f"Queued RPM install for {names}"))
+        self._append_queue_log(tr("Queued RPM install for {names}").format(names=names))
         self.status_label.set_text(self._queue_status_text())
         self._refresh_queue_page()
         self._refresh_main_page()
@@ -1461,14 +1461,14 @@ class MainWindow(Adw.ApplicationWindow):
         handle.set_child(bar)
 
         self.search_entry = Gtk.SearchEntry()
-        self.search_entry.set_placeholder_text(L("Rechercher des applications…", "Search applications…"))
+        self.search_entry.set_placeholder_text(tr("Search applications…"))
         self.search_entry.set_hexpand(False)
         self.search_entry.set_size_request(280, -1)
         self.search_entry.connect("activate", self._on_search_changed)
         bar.append(self.search_entry)
 
         self.repo_filter_combo = Gtk.ComboBoxText()
-        self.repo_filter_combo.append("__all__", L("Tous les dépôts", "All repositories"))
+        self.repo_filter_combo.append("__all__", tr("All repositories"))
         self.repo_filter_combo.set_active_id("__all__")
         self.repo_filter_combo.connect("changed", self._on_repo_filter_changed)
         self.repo_filter_combo.set_size_request(220, -1)
@@ -1484,7 +1484,7 @@ class MainWindow(Adw.ApplicationWindow):
         bar.append(refresh_button)
 
         menu_button = Gtk.MenuButton(icon_name="open-menu-symbolic")
-        menu_button.set_tooltip_text(L("Réglages des mises à jour", "Updater settings"))
+        menu_button.set_tooltip_text(tr("Updater settings"))
         menu_button.set_popover(self._build_app_menu_popover())
 
         controls = Gtk.WindowControls()
@@ -1501,22 +1501,22 @@ class MainWindow(Adw.ApplicationWindow):
         box.set_margin_start(12)
         box.set_margin_end(12)
 
-        heading = Gtk.Label(label=L("Vérification des mises à jour", "Update checker"), xalign=0)
+        heading = Gtk.Label(label=tr("Update checker"), xalign=0)
         heading.add_css_class("heading")
         box.append(heading)
 
-        self.updater_enabled_check = Gtk.CheckButton(label=L("Activer la vérification des mises à jour", "Enable update checker"))
+        self.updater_enabled_check = Gtk.CheckButton(label=tr("Enable update checker"))
         self.updater_enabled_check.set_active(bool(self.updater_settings.get("enabled", True)))
         self.updater_enabled_check.connect("toggled", self._on_updater_setting_changed)
         box.append(self.updater_enabled_check)
 
-        self.updater_notifications_check = Gtk.CheckButton(label=L("Activer les notifications", "Enable notifications"))
+        self.updater_notifications_check = Gtk.CheckButton(label=tr("Enable notifications"))
         self.updater_notifications_check.set_active(bool(self.updater_settings.get("notifications", True)))
         self.updater_notifications_check.connect("toggled", self._on_updater_setting_changed)
         box.append(self.updater_notifications_check)
 
         interval_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        interval_label = Gtk.Label(label=L("Vérifier toutes les", "Check every"), xalign=0)
+        interval_label = Gtk.Label(label=tr("Check every"), xalign=0)
         interval_label.set_valign(Gtk.Align.CENTER)
         interval_row.append(interval_label)
 
@@ -1533,7 +1533,7 @@ class MainWindow(Adw.ApplicationWindow):
         interval_row.append(self.updater_interval_unit)
         box.append(interval_row)
 
-        note = Gtk.Label(label=L("Ces réglages concernent le service de mise à jour de la zone de notification.", "These settings affect the tray updater service."), xalign=0)
+        note = Gtk.Label(label=tr("These settings affect the tray updater service."), xalign=0)
         note.add_css_class("dim-label")
         note.set_wrap(True)
         box.append(note)
@@ -1557,7 +1557,7 @@ class MainWindow(Adw.ApplicationWindow):
 
     def _build_sidebar(self) -> None:
         self.sidebar_box.append(self._build_source_switch())
-        self.sidebar_box.append(self._section_label(L("Système", "System")))
+        self.sidebar_box.append(self._section_label(tr("System")))
         for key, title in CATEGORY_GROUPS["system"].items():
             icon = CATEGORY_ICONS["system"].get(key)
             self.sidebar_box.append(self._nav_button(key, title, "system", icon, indent=True))
@@ -1566,7 +1566,7 @@ class MainWindow(Adw.ApplicationWindow):
         separator.set_margin_start(10)
         separator.set_margin_end(10)
         self.sidebar_box.append(separator)
-        self.sidebar_box.append(self._section_label(L("Catégories", "Categories")))
+        self.sidebar_box.append(self._section_label(tr("Categories")))
         for key, title in CATEGORY_GROUPS["categories"].items():
             icon = CATEGORY_ICONS["categories"].get(key)
             self.sidebar_box.append(self._nav_button(key, title, "categories", icon, indent=True))
@@ -1594,11 +1594,10 @@ class MainWindow(Adw.ApplicationWindow):
             icon.set_valign(Gtk.Align.START)
             head.append(icon)
             texts = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-            title = Gtk.Label(label=L("Flatpak n'est pas activé", "Flatpak is not enabled"), xalign=0)
+            title = Gtk.Label(label=tr("Flatpak is not enabled"), xalign=0)
             title.add_css_class("heading")
             title.set_wrap(True)
-            desc = Gtk.Label(label=L("Active-le pour installer des apps depuis Flathub.",
-                                     "Turn it on to install apps from Flathub."), xalign=0)
+            desc = Gtk.Label(label=tr("Turn it on to install apps from Flathub."), xalign=0)
             desc.add_css_class("dim-label")
             desc.add_css_class("caption")
             desc.set_wrap(True)
@@ -1607,14 +1606,13 @@ class MainWindow(Adw.ApplicationWindow):
             texts.set_hexpand(True)
             head.append(texts)
             card.append(head)
-            button = Gtk.Button(label=L("Activer Flatpak", "Enable Flatpak"))
+            button = Gtk.Button(label=tr("Enable Flatpak"))
             button.add_css_class("suggested-action")
             button.add_css_class("pill")
             button.set_margin_start(12)
             button.set_margin_end(12)
             button.set_margin_bottom(12)
-            button.set_tooltip_text(L("Active roudix.flatpak.enable puis reconstruit le système.",
-                                      "Turns on roudix.flatpak.enable, then rebuilds the system."))
+            button.set_tooltip_text(tr("Turns on roudix.flatpak.enable, then rebuilds the system."))
             button.connect("clicked", lambda _b: self._prompt_enable_flatpak())
             card.append(button)
             return card
@@ -1642,20 +1640,17 @@ class MainWindow(Adw.ApplicationWindow):
     # ── Flatpak support on demand ────────────────────────────────────────
     def _prompt_enable_flatpak(self) -> None:
         if self.queue_worker_running or not self.backend:
-            self._show_toast(L("Une opération est déjà en cours.", "An operation is already running."))
+            self._show_toast(tr("An operation is already running."))
             return
         dialog = Adw.MessageDialog(
             transient_for=self,
-            heading=L("Activer le support Flatpak ?", "Enable Flatpak support?"),
-            body=L("Cela écrit « roudix.flatpak.enable = true » dans ton local.nix puis reconstruit le système "
-                   "(quelques minutes). Ensuite, le catalogue Flathub sera récupéré et il faudra redémarrer "
-                   "Roudix Store pour que Flatpak soit pris en charge.",
-                   "This writes “roudix.flatpak.enable = true” to your local.nix, then rebuilds the system "
+            heading=tr("Enable Flatpak support?"),
+            body=tr("This writes “roudix.flatpak.enable = true” to your local.nix, then rebuilds the system "
                    "(a few minutes). The Flathub catalog is then fetched and Roudix Store has to be "
                    "restarted for Flatpak to be picked up."),
         )
-        dialog.add_response("cancel", L("Annuler", "Cancel"))
-        dialog.add_response("enable", L("Activer et reconstruire", "Enable and rebuild"))
+        dialog.add_response("cancel", tr("Cancel"))
+        dialog.add_response("enable", tr("Enable and rebuild"))
         try:
             dialog.set_response_appearance("enable", Adw.ResponseAppearance.SUGGESTED)
         except AttributeError:
@@ -1667,11 +1662,9 @@ class MainWindow(Adw.ApplicationWindow):
         if self.queue_worker_running:
             return
         self.queue_worker_running = True  # blocks installs / reloads while the system is rebuilt
-        self._append_queue_log(L("Activation du support Flatpak…", "Enabling Flatpak support…"))
-        self.status_label.set_text(L("Activation de Flatpak : reconstruction du système en cours…",
-                                     "Enabling Flatpak: rebuilding the system…"))
-        self._show_toast(L("Reconstruction en cours — suis l'avancement dans la file d'attente.",
-                           "Rebuild in progress — follow it in the queue page."))
+        self._append_queue_log(tr("Enabling Flatpak support…"))
+        self.status_label.set_text(tr("Enabling Flatpak: rebuilding the system…"))
+        self._show_toast(tr("Rebuild in progress — follow it in the queue page."))
 
         def worker() -> None:
             ok, message = flatpak_support.enable_support(
@@ -1690,12 +1683,11 @@ class MainWindow(Adw.ApplicationWindow):
             return False
         dialog = Adw.MessageDialog(
             transient_for=self,
-            heading=L("Redémarre Roudix Store", "Restart Roudix Store"),
-            body=L("Le support Flatpak est activé. Redémarre Roudix Store pour que les Flatpaks soient pris en charge.",
-                   "Flatpak support is enabled. Restart Roudix Store so Flatpak apps are picked up."),
+            heading=tr("Restart Roudix Store"),
+            body=tr("Flatpak support is enabled. Restart Roudix Store so Flatpak apps are picked up."),
         )
-        dialog.add_response("later", L("Plus tard", "Later"))
-        dialog.add_response("restart", L("Redémarrer maintenant", "Restart now"))
+        dialog.add_response("later", tr("Later"))
+        dialog.add_response("restart", tr("Restart now"))
         try:
             dialog.set_response_appearance("restart", Adw.ResponseAppearance.SUGGESTED)
         except AttributeError:
@@ -1729,8 +1721,7 @@ class MainWindow(Adw.ApplicationWindow):
         self._appstream_checked = True
         if not flatpak_support.needs_first_appstream():
             return
-        self.status_label.set_text(L("Première utilisation : récupération du catalogue Flathub…",
-                                     "First use: fetching the Flathub catalog…"))
+        self.status_label.set_text(tr("First use: fetching the Flathub catalog…"))
 
         def worker() -> None:
             if flatpak_support.update_appstream(lambda _m: None):
@@ -1752,7 +1743,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.current_group, self.current_page = "categories", "audiovideo"
         self._switch_page(self.current_group, self.current_page)
         if key == "flatpak" and not any(app.source == "flatpak" for app in self.apps):
-            self._show_toast(L("Pas encore de données Flathub. roudix.flatpak.enable est-il activé ? Essaie : flatpak update --appstream", "No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update --appstream"))
+            self._show_toast(tr("No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update --appstream"))
 
     def _section_label(self, text: str) -> Gtk.Widget:
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=7)
@@ -1770,7 +1761,7 @@ class MainWindow(Adw.ApplicationWindow):
     def _build_list_page(self) -> None:
         outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         outer.set_vexpand(True)
-        self.stack.add_titled(outer, "list", L("Liste", "List"))
+        self.stack.add_titled(outer, "list", tr("List"))
 
         # Horizontal box to hold list and news panel side-by-side
         horiz_container = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
@@ -1796,8 +1787,8 @@ class MainWindow(Adw.ApplicationWindow):
         list_container.append(self.list_scroller)
 
         self.empty_status = Adw.StatusPage()
-        self.empty_status.set_title(L("Aucune application trouvée", "No applications found"))
-        self.empty_status.set_description(L("Essaie une autre catégorie ou un autre terme de recherche.", "Try a different category or search term."))
+        self.empty_status.set_title(tr("No applications found"))
+        self.empty_status.set_description(tr("Try a different category or search term."))
         list_container.append(self.empty_status)
         self.empty_status.set_visible(False)
 
@@ -1829,7 +1820,7 @@ class MainWindow(Adw.ApplicationWindow):
         news_title_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         news_title_box.set_margin_top(4)
         news_title_box.set_margin_bottom(8)
-        news_title_label = Gtk.Label(label=L("Annonces importantes", "Important Notices"), xalign=0)
+        news_title_label = Gtk.Label(label=tr("Important Notices"), xalign=0)
         news_title_label.add_css_class("sidebar-section")
         news_title_box.append(news_title_label)
         news_inner_box.append(news_title_box)
@@ -1848,20 +1839,20 @@ class MainWindow(Adw.ApplicationWindow):
         box.set_margin_start(4)
         box.set_margin_end(4)
         box.set_vexpand(True)
-        self.stack.add_titled(box, "queue", L("File d'attente", "Queue"))
+        self.stack.add_titled(box, "queue", tr("Queue"))
 
         self.queue_progress = Gtk.ProgressBar()
         self.queue_progress.add_css_class("queue-progress")
         box.append(self.queue_progress)
 
-        queue_title = Gtk.Label(label=L("Actions en attente", "Queued actions"), xalign=0)
+        queue_title = Gtk.Label(label=tr("Queued actions"), xalign=0)
         queue_title.add_css_class("title-4")
         box.append(queue_title)
 
         self.queue_list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         box.append(self.queue_list_box)
 
-        log_title = Gtk.Label(label=L("Journal des transactions", "Transaction log"), xalign=0)
+        log_title = Gtk.Label(label=tr("Transaction log"), xalign=0)
         log_title.add_css_class("title-4")
         box.append(log_title)
 
@@ -1880,17 +1871,17 @@ class MainWindow(Adw.ApplicationWindow):
 
         queue_actions = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         queue_actions.set_halign(Gtk.Align.START)
-        self.queue_apply_button = Gtk.Button(label=L("Appliquer", "Apply"))
+        self.queue_apply_button = Gtk.Button(label=tr("Apply"))
         self.queue_apply_button.add_css_class("suggested-action")
         self.queue_apply_button.connect("clicked", lambda *_: self._apply_queue())
         queue_actions.append(self.queue_apply_button)
-        self.queue_clear_button = Gtk.Button(label=L("Vider", "Clear"))
+        self.queue_clear_button = Gtk.Button(label=tr("Clear"))
         self.queue_clear_button.connect("clicked", lambda *_: self._clear_pending_queue())
         queue_actions.append(self.queue_clear_button)
-        self.view_log_button = Gtk.Button(label=L("Voir le journal des transactions", "View transaction log"))
+        self.view_log_button = Gtk.Button(label=tr("View transaction log"))
         self.view_log_button.connect("clicked", self._on_view_transaction_log)
         queue_actions.append(self.view_log_button)
-        self.send_paste_button = Gtk.Button(label=L("Envoyer sur un pastebin", "Send to pastebin"))
+        self.send_paste_button = Gtk.Button(label=tr("Send to pastebin"))
         self.send_paste_button.connect("clicked", self._on_send_to_pastebin)
         queue_actions.append(self.send_paste_button)
         box.append(queue_actions)
@@ -1906,12 +1897,12 @@ class MainWindow(Adw.ApplicationWindow):
         self.repo_box.set_margin_start(4)
         self.repo_box.set_margin_end(4)
         self.repo_scroll.set_child(self.repo_box)
-        self.stack.add_titled(self.repo_scroll, "repos", L("Dépôts", "Repositories"))
+        self.stack.add_titled(self.repo_scroll, "repos", tr("Repositories"))
 
     def _build_detail_page(self) -> None:
         scroller = Gtk.ScrolledWindow()
         scroller.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.stack.add_titled(scroller, "details", L("Détails", "Details"))
+        self.stack.add_titled(scroller, "details", tr("Details"))
 
         self.detail_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
         self.detail_box.set_margin_top(8)
@@ -1922,7 +1913,7 @@ class MainWindow(Adw.ApplicationWindow):
 
         top = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
         self.detail_box.append(top)
-        back = Gtk.Button(label=L("← Retour", "← Back"))
+        back = Gtk.Button(label=tr("← Back"))
         back.connect("clicked", lambda *_: self.stack.set_visible_child_name("list"))
         top.append(back)
 
@@ -1960,7 +1951,7 @@ class MainWindow(Adw.ApplicationWindow):
         # Flatpak only: where to install from (Flathub / Flathub Beta, system / user)
         self.detail_source_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         self.detail_source_box.set_visible(False)
-        source_label = Gtk.Label(label=L("Source", "Source"), xalign=0)
+        source_label = Gtk.Label(label=tr("Source"), xalign=0)
         source_label.add_css_class("dim-label")
         self.detail_source_box.append(source_label)
         self.detail_source = Gtk.DropDown.new_from_strings([""])
@@ -1973,11 +1964,11 @@ class MainWindow(Adw.ApplicationWindow):
         action_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hero_text.append(action_box)
 
-        self.detail_action_button = Gtk.Button(label=L("Installer", "Install"))
+        self.detail_action_button = Gtk.Button(label=tr("Install"))
         self.detail_action_button.connect("clicked", lambda *_: self.current_app and self._run_action_for_app(self.current_app, "update" if (self.current_group == "system" and self.current_page == "updates" and self.current_app and self.current_app.installed and self.current_app.candidate_version and self.current_app.candidate_version != self.current_app.installed_version) else None))
         action_box.append(self.detail_action_button)
 
-        self.detail_open_button = Gtk.Button(label=L("Ouvrir", "Open"))
+        self.detail_open_button = Gtk.Button(label=tr("Open"))
         self.detail_open_button.connect("clicked", self._on_open_clicked)
         action_box.append(self.detail_open_button)
 
@@ -2031,7 +2022,7 @@ class MainWindow(Adw.ApplicationWindow):
         spinner = Gtk.Spinner()
         spinner.start()
         self.status_label.set_text(message)
-        self.title_label.set_text(L("Chargement…", "Loading…"))
+        self.title_label.set_text(tr("Loading…"))
         self.news_toggle_button.set_visible(False)
         self.news_panel_revealer.set_reveal_child(False)
         self._clear_listbox()
@@ -2053,7 +2044,7 @@ class MainWindow(Adw.ApplicationWindow):
         if force:
             self._invalidate_page_caches()
         self._is_loading = True
-        self._show_loading_page(L("Chargement des métadonnées AppStream et de l'index nixpkgs…", "Loading AppStream metadata and the nixpkgs index…"))
+        self._show_loading_page(tr("Loading AppStream metadata and the nixpkgs index…"))
 
         def worker() -> None:
             try:
@@ -2093,7 +2084,7 @@ class MainWindow(Adw.ApplicationWindow):
         self._refresh_news_page()
         n_nix = sum(a.source == 'nix' for a in apps)
         n_flatpak = sum(a.source == 'flatpak' for a in apps)
-        self.status_label.set_text(L(f"{len(apps)} applications chargées ({n_nix} nixpkgs, {n_flatpak} Flatpak).", f"Loaded {len(apps)} applications ({n_nix} nixpkgs, {n_flatpak} Flatpak)."))
+        self.status_label.set_text(tr("Loaded {len} applications ({n_nix} nixpkgs, {n_flatpak} Flatpak).").format(len=len(apps), n_nix=n_nix, n_flatpak=n_flatpak))
         self._rebuild_repo_page()
         self._populate_repo_filter_dropdown()
         self._switch_page(self.current_group, self.current_page)
@@ -2105,15 +2096,15 @@ class MainWindow(Adw.ApplicationWindow):
         return ""
         url = ""
         if not url:
-            return L("Aucune URL de flux de mises à jour n'est configurée.", "No update feed URL is configured.")
+            return tr("No update feed URL is configured.")
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "DNF App Center/1.0"})
             with urllib.request.urlopen(req, timeout=5) as response:
                 data = response.read()
             text = data.decode("utf-8", errors="replace").strip()
-            return text or L("Aucune actualité disponible.", "No news available.")
+            return text or tr("No news available.")
         except Exception as exc:
-            return L(f"Impossible de charger les actualités depuis {url}.\n\n{exc}", f"Failed to load news from {url}.\n\n{exc}")
+            return tr("Failed to load news from {url}.\n\n{exc}").format(url=url, exc=exc)
 
     def _refresh_news_page(self) -> None:
         if not hasattr(self, "news_panel_content_box"):
@@ -2124,10 +2115,10 @@ class MainWindow(Adw.ApplicationWindow):
             self.news_panel_content_box.remove(child)
             child = next_child
 
-        raw_text = (getattr(self, "news_text", L("Chargement des actualités…", "Loading news…")) or L("Aucune actualité disponible.", "No news available.")).strip()
+        raw_text = (getattr(self, "news_text", tr("Loading news…")) or tr("No news available.")).strip()
         sections = [part.strip() for part in raw_text.replace("\r\n", "\n").split("\n\n") if part.strip()]
         if not sections:
-            sections = [L("Aucune actualité disponible.", "No news available.")]
+            sections = [tr("No news available.")]
 
         for section in sections:
             label = Gtk.Label(xalign=0, yalign=0)
@@ -2142,9 +2133,9 @@ class MainWindow(Adw.ApplicationWindow):
 
     def _load_failed(self, exc: Exception, tb: str) -> bool:
         self._is_loading = False
-        self.status_label.set_text(L("Échec du chargement des métadonnées.", "Failed to load metadata."))
+        self.status_label.set_text(tr("Failed to load metadata."))
         self._show_toast(str(exc))
-        self.title_label.set_text(L("Échec du démarrage", "Startup failed"))
+        self.title_label.set_text(tr("Startup failed"))
         self._clear_listbox()
         row = Gtk.ListBoxRow()
         label = Gtk.Label(label=f"{exc}\n\n{tb}", xalign=0)
@@ -2172,7 +2163,7 @@ class MainWindow(Adw.ApplicationWindow):
         self._update_nav_buttons()
         self._rebuild_subcategories()
         if self._is_loading:
-            self._show_loading_page(L("Chargement des métadonnées AppStream et de l'index nixpkgs…", "Loading AppStream metadata and the nixpkgs index…"))
+            self._show_loading_page(tr("Loading AppStream metadata and the nixpkgs index…"))
             return
         self._refresh_main_page(preserve_scroll=False)
 
@@ -2207,7 +2198,7 @@ class MainWindow(Adw.ApplicationWindow):
         if not subcats:
             return
 
-        entries: list[tuple[str, str]] = [("__all__", L("Tout", "All"))]
+        entries: list[tuple[str, str]] = [("__all__", tr("All"))]
         entries.extend((key, title) for key, title in subcats.items())
         self.subcategory_pages = self._paginate_subcategories(entries)
 
@@ -2375,7 +2366,7 @@ class MainWindow(Adw.ApplicationWindow):
         current = getattr(self, "current_repo_filter", "__all__") or "__all__"
         combo = self.repo_filter_combo
         combo.remove_all()
-        combo.append("__all__", L("Tous les dépôts", "All repositories"))
+        combo.append("__all__", tr("All repositories"))
         for repo in getattr(self, "repos", []):
             repo_id = repo.get("id", "")
             if not repo_id:
@@ -2453,7 +2444,7 @@ class MainWindow(Adw.ApplicationWindow):
         if not in_search_mode and self.current_group == "system" and self.current_page == "repositories":
             self.title_label.set_text(CATEGORY_GROUPS["system"]["repositories"])
             n_repos = len(getattr(self, 'repos', []))
-            self.status_label.set_text(L(f"{n_repos} dépôts affichés.", f"Showing {n_repos} repositories."))
+            self.status_label.set_text(tr("Showing {n_repos} repositories.").format(n_repos=n_repos))
             self.stack.set_visible_child_name("repos")
             if preserve_scroll:
                 GLib.idle_add(self._restore_scroll_position, visible_before, scroll_before)
@@ -2501,14 +2492,15 @@ class MainWindow(Adw.ApplicationWindow):
         repo_note = ''
         if self.current_repo_filter != '__all__':
             repo_name = next((repo.get('name') or repo.get('id') for repo in getattr(self, 'repos', []) if repo.get('id') == self.current_repo_filter), self.current_repo_filter)
-            repo_note = L(f' dans {repo_name}', f' in {repo_name}')
+            repo_note = tr(" in {repo_name}").format(repo_name=repo_name)
         if in_search_mode:
-            self.status_label.set_text(L(f'Résultats pour « {self.current_search_text} » ({len(items)} applications{repo_note}).', f'Search results for “{self.current_search_text}” ({len(items)} applications{repo_note}).'))
+            self.status_label.set_text(tr("Search results for “{current_search_text}” ({len} "
+                    "applications{repo_note}).").format(current_search_text=self.current_search_text, len=len(items), repo_note=repo_note))
         else:
             extra = ""
             if show_local_filter and self.current_category_filter_text:
-                extra = L(f' correspondant à « {self.current_category_filter_text} »', f' matching “{self.current_category_filter_text}”')
-            self.status_label.set_text(L(f"{len(items)} applications affichées{repo_note}{extra}.", f"Showing {len(items)} applications{repo_note}{extra}."))
+                extra = tr(" matching “{current_category_filter_text}”").format(current_category_filter_text=self.current_category_filter_text)
+            self.status_label.set_text(tr("Showing {len} applications{repo_note}{extra}.").format(len=len(items), repo_note=repo_note, extra=extra))
         self._refresh_updates_action_bar(items)
         self._rebuild_listbox(items)
         self.stack.set_visible_child_name("list")
@@ -2664,7 +2656,7 @@ class MainWindow(Adw.ApplicationWindow):
 
     def _page_title(self) -> str:
         if self.current_search_text:
-            return L("Recherche", "Search")
+            return tr("Search")
         if self.current_group == "system":
             return CATEGORY_GROUPS["system"][self.current_page]
         title = CATEGORY_GROUPS["categories"].get(self.current_page, self.current_page.title())
@@ -2824,15 +2816,15 @@ class MainWindow(Adw.ApplicationWindow):
 
         lines = []
         if app.pkg_names:
-            lines.append(L("Paquets : ", "Packages: ") + ', '.join(app.pkg_names))
+            lines.append(tr("Packages: ") + ', '.join(app.pkg_names))
         if app.installed_version:
-            lines.append(L("Installé : ", "Installed: ") + str(app.installed_version))
+            lines.append(tr("Installed: ") + str(app.installed_version))
         if app.candidate_version:
-            lines.append(L("Disponible : ", "Available: ") + str(app.candidate_version))
+            lines.append(tr("Available: ") + str(app.candidate_version))
         if app.repo_ids:
-            lines.append(L("Dépôts : ", "Repositories: ") + ', '.join(app.repo_ids))
+            lines.append(tr("Repositories: ") + ', '.join(app.repo_ids))
         if app.categories:
-            lines.append(L("Catégories : ", "Categories: ") + ', '.join(app.categories))
+            lines.append(tr("Categories: ") + ', '.join(app.categories))
         self.detail_meta.set_text("\n".join(lines))
 
         self.stack.set_visible_child_name("details")
@@ -2859,21 +2851,21 @@ class MainWindow(Adw.ApplicationWindow):
         self.detail_open_button.set_sensitive(bool(app.launchables) and app.installed)
         if self.backend and app.source == "nix" and self._has_sources(app) and not queued_label \
                 and self._source_state(app, *self._source_target(app)) == "external":
-            self.detail_action_button.set_label(L("Installée (config Roudix)", "Installed (Roudix config)"))
+            self.detail_action_button.set_label(tr("Installed (Roudix config)"))
             self.detail_action_button.set_sensitive(False)
             self.detail_action_button.remove_css_class("destructive-action")
 
     def _detail_button_label(self, app: AppEntry, queued_label: str | None) -> str:
         if queued_label == "Queued":
-            return L("Retirer de la file", "Remove from queue")
+            return tr("Remove from queue")
         if queued_label:
-            return {"Running": L("En cours", "Running")}.get(queued_label, queued_label)
+            return {"Running": tr("Running")}.get(queued_label, queued_label)
         return self._default_action_label(app)
 
     def _default_action_label(self, app: AppEntry) -> str:
         if self.current_group == "system" and self.current_page == "updates" and app.installed and app.candidate_version and app.candidate_version != app.installed_version:
-            return L("Mettre à jour", "Update")
-        return L("Supprimer", "Remove") if self._target_installed(app) else L("Installer", "Install")
+            return tr("Update")
+        return tr("Remove") if self._target_installed(app) else tr("Install")
 
     # ── source chooser (GNOME Software style): Nix user/system, Flatpak remote x user/system ──
     @staticmethod
@@ -2899,9 +2891,9 @@ class MainWindow(Adw.ApplicationWindow):
 
     def _source_label(self, app: AppEntry, remote: str, scope: str) -> str:
         if app.source == "flatpak":
-            where = L("Système", "System") if scope == "system" else L("Utilisateur", "User")
+            where = tr("System") if scope == "system" else tr("User")
             return f"{localnix.FLATPAK_REMOTE_LABELS.get(remote, remote)} · {where}"
-        where = L("Système", "System") if scope == "system" else L("Utilisateur (Home Manager)", "User (Home Manager)")
+        where = tr("System") if scope == "system" else tr("User (Home Manager)")
         return f"{'Nix' if remote == 'nixpkgs' else self.backend.flake_label(remote)} · {where}"
 
     def _source_scope_key(self, app: AppEntry, remote: str, scope: str) -> str:
@@ -2957,9 +2949,9 @@ class MainWindow(Adw.ApplicationWindow):
             label = self._source_label(app, remote, scope)
             state = self._source_state(app, remote, scope)
             if state == "external" and app.source == "nix":
-                label += f"  ({L('installé via la config', 'installed via config')})"
+                label += f"  ({tr('installed via config')})"
             elif state:
-                label += f"  ({L('installé', 'installed')})"
+                label += f"  ({tr('installed')})"
             labels.append(label)
         self._detail_source_populating = True
         try:
@@ -2985,7 +2977,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.detail_links.remove(child)
             child = next_child
         if app.homepage_url:
-            button = Gtk.LinkButton.new_with_label(app.homepage_url, L("Site web", "Homepage"))
+            button = Gtk.LinkButton.new_with_label(app.homepage_url, tr("Homepage"))
             self.detail_links.append(button)
 
     def _rebuild_detail_screenshots(self, app: AppEntry) -> None:
@@ -2997,7 +2989,7 @@ class MainWindow(Adw.ApplicationWindow):
         if not app.screenshots:
             return
 
-        title = Gtk.Label(label=L("Captures d'écran", "Screenshots"), xalign=0)
+        title = Gtk.Label(label=tr("Screenshots"), xalign=0)
         title.add_css_class("title-4")
         self.detail_screenshots.append(title)
 
@@ -3024,7 +3016,7 @@ class MainWindow(Adw.ApplicationWindow):
             flow.insert(child_box, -1)
 
         if not added_any:
-            note = Gtk.Label(label=L("Impossible de charger les captures d'écran en local.", "Screenshots could not be loaded locally."), xalign=0)
+            note = Gtk.Label(label=tr("Screenshots could not be loaded locally."), xalign=0)
             note.add_css_class("dim-label")
             self.detail_screenshots.append(note)
 
@@ -3052,11 +3044,11 @@ class MainWindow(Adw.ApplicationWindow):
             return
         state = self._queued_state_label(app)
         if state == "Running":
-            self._show_toast(L(f"{app.primary_pkg} est en cours d'application.", f"{app.primary_pkg} is being applied right now."))
+            self._show_toast(tr("{primary_pkg} is being applied right now.").format(primary_pkg=app.primary_pkg))
             return
         if state == "Queued":
             self.queue_items = [i for i in self.queue_items if not (i.status == "queued" and self._queue_match(i, app))]
-            self._append_queue_log(L(f"{app.primary_pkg} retiré de la file", f"Removed {app.primary_pkg} from the queue"))
+            self._append_queue_log(tr("Removed {primary_pkg} from the queue").format(primary_pkg=app.primary_pkg))
             self._invalidate_page_caches()
             self.status_label.set_text(self._queue_status_text())
             self._refresh_queue_page()
@@ -3069,10 +3061,8 @@ class MainWindow(Adw.ApplicationWindow):
             remote, where = target = self._source_target(app)
             state = self._source_state(app, remote, where)
             if state == "external" and app.source == "nix":  # comes from the Roudix config / a profile: not ours to remove
-                self._show_toast(L(
-                    f"{app.primary_pkg} vient de la configuration Roudix, pas du store — retire-le de ta config pour le désinstaller.",
-                    f"{app.primary_pkg} comes from the Roudix configuration, not from the store — remove it from your config to uninstall it.",
-                ))
+                self._show_toast(tr("{primary_pkg} comes from the Roudix configuration, not from the store — "
+                        "remove it from your config to uninstall it.").format(primary_pkg=app.primary_pkg))
                 return
             # a Flatpak installed by hand ("external") is removed directly with flatpak, no rebuild
             if preferred_action != "update":
@@ -3083,9 +3073,9 @@ class MainWindow(Adw.ApplicationWindow):
         action = preferred_action or ("remove" if app.installed else "install")
         scope = self._source_scope_key(app, *target) if target else "home"
         recorded = self.backend.source_pkg(app, target[0]) if target and app.source == "nix" else ""
-        item = QueueItem(app=app, action=action, pkg_names=[recorded] if recorded and recorded != app.primary_pkg else [], message=L(f"{action_word(action, True)} de {app.primary_pkg} mise en file", f"Queued to {action} {app.primary_pkg}"), scope=scope)
+        item = QueueItem(app=app, action=action, pkg_names=[recorded] if recorded and recorded != app.primary_pkg else [], message=_sentence(tr("Queued to {action} {pkg}").format(action=action_word(action), pkg=app.primary_pkg)), scope=scope)
         self.queue_items.append(item)
-        self._append_queue_log(L(f"{action_word(action, True)} de {app.primary_pkg} mise en file — appuie sur Appliquer pour la lancer", f"Queued {action} for {app.primary_pkg} — press Apply to run it"))
+        self._append_queue_log(_sentence(tr("Queued {action} for {pkg} — press Apply to run it").format(action=action_word(action), pkg=app.primary_pkg)))
         self._invalidate_page_caches()
         self.status_label.set_text(self._queue_status_text())
         self._refresh_queue_page()
@@ -3115,7 +3105,7 @@ class MainWindow(Adw.ApplicationWindow):
             return
         selectable = [app for app in items if app.primary_pkg]
         selected_count = sum(1 for app in selectable if app.primary_pkg in self.update_selection)
-        self.updates_selected_label.set_text(L(f"{selected_count} sélectionné(s)", f"{selected_count} selected"))
+        self.updates_selected_label.set_text(tr("{selected_count} selected").format(selected_count=selected_count))
         self.updates_clear_button.set_sensitive(selected_count > 0)
         self.update_selected_button.set_sensitive(selected_count > 0)
         self.update_all_button.set_sensitive(bool(selectable))
@@ -3151,22 +3141,22 @@ class MainWindow(Adw.ApplicationWindow):
 
         if self._should_use_nobara_sync():
             if any(item.action == "system-update" and item.status in {"queued", "running"} for item in self.queue_items):
-                self._show_toast(L("La mise à jour système est déjà dans la file.", "System update is already in the queue."))
+                self._show_toast(tr("System update is already in the queue."))
                 return
             base_app = self.current_items[0] if self.current_items else AppEntry(
                 appstream_id="system-update",
-                name=L("Mise à jour système", "System Update"),
+                name=tr("System Update"),
                 summary="",
                 description="",
                 pkg_names=[],
             )
             sync_args = ["--all"] if include_flatpaks else []
-            label = L("Mise à jour système + Flatpaks", "System Update + Flatpaks") if include_flatpaks else L("Mise à jour système", "System Update")
-            message = (L("Mise à jour système avec Flatpaks mise en file", "Queued system update with Flatpaks") if include_flatpaks else L("Mise à jour système mise en file", "Queued system update"))
+            label = tr("System Update + Flatpaks") if include_flatpaks else tr("System Update")
+            message = (tr("Queued system update with Flatpaks") if include_flatpaks else tr("Queued system update"))
             item = QueueItem(base_app, action="system-update", message=message, pkg_names=sync_args, label=label)
             self.queue_items.append(item)
             command_label = "nobara-sync cli --all" if include_flatpaks else "nobara-sync cli"
-            self._append_queue_log(L(f"Mise à jour système mise en file via {command_label}", f"Queued system update via {command_label}"))
+            self._append_queue_log(tr("Queued system update via {command_label}").format(command_label=command_label))
             self.status_label.set_text(self._queue_status_text())
             self._refresh_queue_page()
             self._refresh_main_page()
@@ -3177,7 +3167,7 @@ class MainWindow(Adw.ApplicationWindow):
             return
 
         if not items:
-            self._show_toast(L("Aucune mise à jour disponible.", "No updates are available."))
+            self._show_toast(tr("No updates are available."))
             return
         self._enqueue_update_batch(items)
 
@@ -3195,11 +3185,11 @@ class MainWindow(Adw.ApplicationWindow):
         if not unique:
             return
         pkg_names = [app.primary_pkg for app in unique if app.primary_pkg]
-        label = unique[0].name if len(unique) == 1 else L(f"{len(unique)} mises à jour", f"{len(unique)} updates")
-        item = QueueItem(app=unique[0], action="update", message=L(f"Mise à jour de {len(pkg_names)} paquet(s) mise en file", f"Queued to update {len(pkg_names)} package(s)"), pkg_names=pkg_names, label=label)
+        label = unique[0].name if len(unique) == 1 else tr("{len} updates").format(len=len(unique))
+        item = QueueItem(app=unique[0], action="update", message=tr("Queued to update {len} package(s)").format(len=len(pkg_names)), pkg_names=pkg_names, label=label)
         self.queue_items.append(item)
         names = ', '.join(pkg_names[:5]) + ('…' if len(pkg_names) > 5 else '')
-        self._append_queue_log(L(f"Mise à jour mise en file pour {names}", f"Queued update for {names}"))
+        self._append_queue_log(tr("Queued update for {names}").format(names=names))
         for pkg in pkg_names:
             self.update_selection.discard(pkg)
         self.status_label.set_text(self._queue_status_text())
@@ -3222,7 +3212,7 @@ class MainWindow(Adw.ApplicationWindow):
         if self.queue_worker_running:
             return
         self.queue_items = [i for i in self.queue_items if i.status != "queued"]
-        self._append_queue_log(L("File d'attente vidée", "Cleared the pending queue"))
+        self._append_queue_log(tr("Cleared the pending queue"))
         self._invalidate_page_caches()
         self.status_label.set_text(self._queue_status_text())
         self._refresh_queue_page()
@@ -3262,9 +3252,9 @@ class MainWindow(Adw.ApplicationWindow):
     def _queue_item_started(self, item: QueueItem) -> bool:
         item.status = "running"
         subject = item.display_name if item.action in {"update", "system-update", 'install-rpms'} and (item.action in {'system-update', 'install-rpms'} or len(item.pkg_names) > 1) else item.pkg_name
-        item.message = L(f"{action_word(item.action, True)} de {subject} en cours", f"Running {item.action} for {subject}")
+        item.message = _sentence(tr("Running {action} for {subject}").format(action=action_word(item.action), subject=subject))
         self.current_queue_item = item
-        self._append_queue_log(L(f"Début : {action_word(item.action)} de {subject}", f"Starting {item.action} for {subject}"))
+        self._append_queue_log(tr("Starting {action} for {subject}").format(action=action_word(item.action), subject=subject))
         self._invalidate_page_caches()
         self._refresh_queue_page()
         self._refresh_main_page()
@@ -3286,14 +3276,14 @@ class MainWindow(Adw.ApplicationWindow):
         return False
 
     def _queue_item_finished(self, item: QueueItem, ok: bool, message: str) -> bool:
-        message = update_output.visible_text(message) or (L("Opération terminée.", "Operation completed.") if ok else L("Échec de l'opération.", "Operation failed."))
+        message = update_output.visible_text(message) or (tr("Operation completed.") if ok else tr("Operation failed."))
         item.status = "done" if ok else "failed"
         item.message = message
         self._append_queue_log(f"{item.display_name}: {message}")
         if item.action == "system-update":
             # Refresh actual installed versions when the queue finishes:
             # this result may describe either live installation or staging.
-            self._show_toast(message if ok else L(f"{item.display_name} : échec", f"{item.display_name} failed"))
+            self._show_toast(message if ok else tr("{display_name} failed").format(display_name=item.display_name))
             self._invalidate_page_caches()
             self._refresh_queue_page()
             self._refresh_visible_list()
@@ -3372,7 +3362,7 @@ class MainWindow(Adw.ApplicationWindow):
         if ok:
             self._show_toast(message)
         else:
-            self._show_toast(L(f"{item.display_name} : échec", f"{item.display_name} failed"))
+            self._show_toast(tr("{display_name} failed").format(display_name=item.display_name))
         self._invalidate_page_caches()
         self._refresh_queue_page()
         self._refresh_visible_list()
@@ -3392,12 +3382,10 @@ class MainWindow(Adw.ApplicationWindow):
         if had_items and done_count:
             self.queue_items = failed_items
             if failed_items:
-                self._append_queue_log(L(
-                    f"File terminée. {done_count} élément(s) terminé(s) retiré(s) ; {len(failed_items)} en échec restent.",
-                    f"Queue finished. Cleared {done_count} completed item(s); {len(failed_items)} failed item(s) remain.",
-                ))
+                self._append_queue_log(tr("Queue finished. Cleared {done_count} completed item(s); {len} failed "
+                        "item(s) remain.").format(done_count=done_count, len=len(failed_items)))
             else:
-                self._append_queue_log(L(f"File terminée. {done_count} élément(s) terminé(s) retiré(s).", f"Queue finished. Cleared {done_count} completed item(s)."))
+                self._append_queue_log(tr("Queue finished. Cleared {done_count} completed item(s).").format(done_count=done_count))
 
         self.status_label.set_text(self._queue_status_text())
         self._refresh_queue_page()
@@ -3420,15 +3408,15 @@ class MainWindow(Adw.ApplicationWindow):
 
     def _queue_status_text(self) -> str:
         if not self.queue_items:
-            return L("La file d'attente est vide.", "Queue is empty.")
+            return tr("Queue is empty.")
         done = sum(1 for item in self.queue_items if item.status == "done")
         failed = sum(1 for item in self.queue_items if item.status == "failed")
         running = next((item for item in self.queue_items if item.status == "running"), None)
         queued = sum(1 for item in self.queue_items if item.status == "queued")
         if running is not None:
             target = running.display_name if running.action in {"update", "system-update"} and (running.action == "system-update" or len(running.pkg_names) > 1) else running.pkg_name
-            return L(f"{action_word(running.action, True)} de {target} en cours. {done} terminé(s), {failed} en échec, {queued} en attente.", f"Running {running.action} for {target}. {done} done, {failed} failed, {queued} queued.")
-        return L(f"{done} terminé(s), {failed} en échec, {queued} en attente.", f"{done} completed, {failed} failed, {queued} queued.")
+            return _sentence(tr("Running {action} for {target}. {done} done, {failed} failed, {queued} queued.").format(action=action_word(running.action), target=target, done=done, failed=failed, queued=queued))
+        return tr("{done} completed, {failed} failed, {queued} queued.").format(done=done, failed=failed, queued=queued)
 
     def _append_queue_log(self, line: str) -> None:
         line = update_output.visible_text(line)
@@ -3491,13 +3479,13 @@ class MainWindow(Adw.ApplicationWindow):
         fraction = (resolved_count / total) if total else 0.0
         if total:
             if failed_count and done_count == 0:
-                progress_text = L(f"0/{total} terminé, {failed_count} en échec", f"0/{total} complete, {failed_count} failed")
+                progress_text = tr("0/{total} complete, {failed_count} failed").format(total=total, failed_count=failed_count)
             elif failed_count:
-                progress_text = L(f"{done_count}/{total} terminé(s), {failed_count} en échec", f"{done_count}/{total} complete, {failed_count} failed")
+                progress_text = tr("{done_count}/{total} complete, {failed_count} failed").format(done_count=done_count, total=total, failed_count=failed_count)
             else:
-                progress_text = L(f"{done_count}/{total} terminé(s)", f"{done_count}/{total} complete")
+                progress_text = tr("{done_count}/{total} complete").format(done_count=done_count, total=total)
         else:
-            progress_text = L("File vide", "Queue empty")
+            progress_text = tr("Queue empty")
         self.queue_progress.set_fraction(fraction)
         self.queue_progress.set_show_text(True)
         self.queue_progress.set_text(progress_text)
@@ -3516,7 +3504,7 @@ class MainWindow(Adw.ApplicationWindow):
 
         pending = sum(1 for i in self.queue_items if i.status == "queued")
         can_apply = pending > 0 and not self.queue_worker_running
-        apply_label = L("Appliquer", "Apply") + (f" ({pending})" if pending else "")
+        apply_label = tr("Apply") + (f" ({pending})" if pending else "")
         for name in ("bottom_apply_button", "queue_apply_button"):
             btn = getattr(self, name, None)
             if btn is not None:
@@ -3528,7 +3516,7 @@ class MainWindow(Adw.ApplicationWindow):
                 btn.set_sensitive(can_apply)
 
         if not self.queue_items:
-            empty = Gtk.Label(label=L("Aucune action de paquet en attente.", "No queued package actions yet."), xalign=0)
+            empty = Gtk.Label(label=tr("No queued package actions yet."), xalign=0)
             empty.add_css_class("dim-label")
             self.queue_list_box.append(empty)
 
@@ -3536,10 +3524,10 @@ class MainWindow(Adw.ApplicationWindow):
             card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
             card.add_css_class("queue-item-card")
             title = Gtk.Label(xalign=0)
-            where = {"home": L("utilisateur", "user"), "system": L("système", "system"),
-                     "flatpak": "Flatpak " + L("système", "system"), "flatpak-beta": "Flatpak Beta " + L("système", "system"),
-                     "flatpak-user": "Flatpak " + L("utilisateur", "user"), "flatpak-user-beta": "Flatpak Beta " + L("utilisateur", "user"),
-                     "home-flake": "Flake " + L("utilisateur", "user"), "system-flake": "Flake " + L("système", "system")}.get(item.scope, item.scope)
+            where = {"home": tr("user"), "system": tr("system"),
+                     "flatpak": "Flatpak " + tr("system"), "flatpak-beta": "Flatpak Beta " + tr("system"),
+                     "flatpak-user": "Flatpak " + tr("user"), "flatpak-user-beta": "Flatpak Beta " + tr("user"),
+                     "home-flake": "Flake " + tr("user"), "system-flake": "Flake " + tr("system")}.get(item.scope, item.scope)
             title.set_markup(f"<b>{GLib.markup_escape_text(item.display_name)}</b> — {GLib.markup_escape_text(action_word(item.action))} ({GLib.markup_escape_text(where)}) · {GLib.markup_escape_text(status_word(item.status))}")
             card.append(title)
             self.queue_list_box.append(card)
@@ -3578,7 +3566,7 @@ class MainWindow(Adw.ApplicationWindow):
 
         buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         buttons.set_halign(Gtk.Align.END)
-        close_btn = Gtk.Button(label=L("Fermer", "Close"))
+        close_btn = Gtk.Button(label=tr("Close"))
         close_btn.connect("clicked", lambda *_: window.close())
         buttons.append(close_btn)
         outer.append(buttons)
@@ -3604,16 +3592,16 @@ class MainWindow(Adw.ApplicationWindow):
 
         buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         buttons.set_halign(Gtk.Align.END)
-        copy_btn = Gtk.Button(label=L("Copier", "Copy"))
+        copy_btn = Gtk.Button(label=tr("Copy"))
         def _copy(*_args):
             display = Gdk.Display.get_default()
             if display is not None:
                 clipboard = display.get_clipboard()
                 clipboard.set(text)
-                self._show_toast(L("Copié dans le presse-papiers", "Copied to clipboard"))
+                self._show_toast(tr("Copied to clipboard"))
         copy_btn.connect("clicked", _copy)
         buttons.append(copy_btn)
-        close_btn = Gtk.Button(label=L("Fermer", "Close"))
+        close_btn = Gtk.Button(label=tr("Close"))
         close_btn.connect("clicked", lambda *_: window.close())
         buttons.append(close_btn)
         outer.append(buttons)
@@ -3624,14 +3612,14 @@ class MainWindow(Adw.ApplicationWindow):
     def _on_view_transaction_log(self, _button: Gtk.Button) -> None:
         text = self._get_queue_log_text().strip()
         if not text:
-            self._show_toast(L("Pas encore de journal de transactions.", "No transaction log available yet."))
+            self._show_toast(tr("No transaction log available yet."))
             return
-        self._show_text_popup(L("Journal des transactions", "Transaction log"), text)
+        self._show_text_popup(tr("Transaction log"), text)
 
     def _on_send_to_pastebin(self, _button: Gtk.Button) -> None:
         text = self._get_queue_log_text().strip()
         if not text:
-            self._show_toast(L("Pas encore de journal de transactions.", "No transaction log available yet."))
+            self._show_toast(tr("No transaction log available yet."))
             return
 
         self.send_paste_button.set_sensitive(False)
@@ -3642,13 +3630,13 @@ class MainWindow(Adw.ApplicationWindow):
                 stdout = (result.stdout or "").strip()
                 stderr = (result.stderr or "").strip()
                 if result.returncode != 0 or not stdout:
-                    message = stderr or stdout or L("pbcli n'a pas renvoyé d'URL.", "pbcli did not return a URL.")
+                    message = stderr or stdout or tr("pbcli did not return a URL.")
                     GLib.idle_add(self._pastebin_done, False, message)
                     return
                 url = stdout.splitlines()[-1].strip()
                 GLib.idle_add(self._pastebin_done, True, url)
             except FileNotFoundError:
-                GLib.idle_add(self._pastebin_done, False, L("pbcli est introuvable sur ce système.", "pbcli was not found on this system."))
+                GLib.idle_add(self._pastebin_done, False, tr("pbcli was not found on this system."))
             except Exception as exc:
                 GLib.idle_add(self._pastebin_done, False, str(exc))
 
@@ -3657,9 +3645,9 @@ class MainWindow(Adw.ApplicationWindow):
     def _pastebin_done(self, ok: bool, message: str) -> bool:
         self.send_paste_button.set_sensitive(True)
         if ok:
-            self._show_info_popup(L("URL du pastebin", "Pastebin URL"), message)
+            self._show_info_popup(tr("Pastebin URL"), message)
         else:
-            self._show_info_popup(L("Échec de l'envoi sur le pastebin", "Pastebin upload failed"), message)
+            self._show_info_popup(tr("Pastebin upload failed"), message)
         return False
 
     def _on_open_clicked(self, _button: Gtk.Button) -> None:
@@ -3678,12 +3666,12 @@ class MainWindow(Adw.ApplicationWindow):
 
         dialog = Adw.MessageDialog(
             transient_for=self,
-            heading=L("Confirmer l'installation", "Confirm Installation"),
-            body=L(f"{len(self.queue_items)} paquet(s) prêt(s). Veux-tu les installer ?", f"You have {len(self.queue_items)} package(s) ready. Do you want to install them?"),
+            heading=tr("Confirm Installation"),
+            body=tr("You have {len} package(s) ready. Do you want to install them?").format(len=len(self.queue_items)),
         )
 
-        dialog.add_response("cancel", L("Annuler", "Cancel"))
-        dialog.add_response("install", L("Installer", "Install"))
+        dialog.add_response("cancel", tr("Cancel"))
+        dialog.add_response("install", tr("Install"))
 
         try:
             dialog.set_response_appearance("install", Adw.ResponseAppearance.SUGGESTED)

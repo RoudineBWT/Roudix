@@ -1,0 +1,1244 @@
+# Hindi translation of roudix-store (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-store\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: roudix-store.py
+msgid "Search apps…"
+msgstr "ऐप्स खोजें…"
+
+#: roudix-store.py
+msgid "Loading nixpkgs index…"
+msgstr "nixpkgs इंडेक्स लोड हो रहा है…"
+
+#: roudix-store.py
+msgid "Refresh index"
+msgstr "इंडेक्स रीफ़्रेश करें"
+
+#: roudix-store.py
+msgid "Install for"
+msgstr "इसके लिए इंस्टॉल करें"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "System"
+msgstr "सिस्टम"
+
+#: roudix-store.py
+msgid "User (home)"
+msgstr "उपयोगकर्ता (home)"
+
+#: roudix-store.py
+msgid "Pick an application"
+msgstr "कोई ऐप चुनें"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Apply"
+msgstr "लागू करें"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Clear"
+msgstr "साफ़ करें"
+
+#: roudix-store.py
+msgid "Index unavailable: "
+msgstr "इंडेक्स उपलब्ध नहीं: "
+
+#: roudix-store.py
+#, python-brace-format
+msgid "{len} packages — type at least 2 letters."
+msgstr "{len} पैकेज — कम से कम 2 अक्षर टाइप करें।"
+
+#: roudix-store.py
+msgid "Version"
+msgstr "संस्करण"
+
+#: roudix-store.py
+msgid "License"
+msgstr "लाइसेंस"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Remove from queue"
+msgstr "कतार से हटाएँ"
+
+#: roudix-store.py
+msgid "Uninstall"
+msgstr "अनइंस्टॉल करें"
+
+#: roudix-store.py
+msgid "Add to queue"
+msgstr "कतार में जोड़ें"
+
+#: roudix-store.py roudix_store/ui.py
+msgid "Queue empty"
+msgstr "कतार खाली है"
+
+#: roudix-store.py
+msgid "Write failed: "
+msgstr "लिखना विफल: "
+
+#: roudix-store.py
+msgid "✓ Applied."
+msgstr "✓ लागू किया गया।"
+
+#: roudix-store.py
+msgid "✗ Failed — local.nix restored."
+msgstr "✗ विफल — local.nix पहले जैसा कर दिया गया।"
+
+#: roudix_store/flatpak_support.py
+msgid ""
+"No Flatpak remote yet — the metadata will be fetched at the next start."
+msgstr "अभी कोई Flatpak रिमोट नहीं है — मेटाडेटा अगली शुरुआत पर लाया जाएगा।"
+
+#: roudix_store/flatpak_support.py roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Could not write local.nix: {res}"
+msgstr "local.nix नहीं लिखा जा सका: {res}"
+
+#: roudix_store/flatpak_support.py
+msgid "local.nix updated: roudix.flatpak.enable = true"
+msgstr "local.nix अपडेट हुआ: roudix.flatpak.enable = true"
+
+#: roudix_store/flatpak_support.py roudix_store/nix_backend.py
+msgid "Rebuild failed — local.nix restored."
+msgstr "रीबिल्ड विफल रहा — local.nix पहले जैसा कर दिया गया।"
+
+#: roudix_store/flatpak_support.py
+msgid "Fetching the Flathub catalog…"
+msgstr "Flathub कैटलॉग लाया जा रहा है…"
+
+#: roudix_store/flatpak_support.py
+msgid "Flatpak support enabled."
+msgstr "Flatpak सपोर्ट चालू हो गया।"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Install"
+msgstr "इंस्टॉलेशन"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "install"
+msgstr "इंस्टॉलेशन"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Remove"
+msgstr "हटाना"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "remove"
+msgstr "हटाना"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Update"
+msgstr "अपडेट"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "update"
+msgstr "अपडेट"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "System-update"
+msgstr "सिस्टम अपडेट"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "system-update"
+msgstr "सिस्टम अपडेट"
+
+#: roudix_store/i18n.py
+msgctxt "queue action, capitalised"
+msgid "Install-rpms"
+msgstr "RPM इंस्टॉलेशन"
+
+#: roudix_store/i18n.py
+msgctxt "queue action"
+msgid "install-rpms"
+msgstr "RPM इंस्टॉलेशन"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "queued"
+msgstr "कतार में"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "running"
+msgstr "चल रहा है"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "done"
+msgstr "पूरा हुआ"
+
+#: roudix_store/i18n.py
+msgctxt "queue status"
+msgid "failed"
+msgstr "विफल"
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
+msgstr "रिपॉज़िटरी Roudix flake द्वारा प्रबंधित हैं।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "'{action}' is not supported on Roudix (updates come from the flake)."
+msgstr "Roudix पर “{action}” समर्थित नहीं है (अपडेट flake से आते हैं)।"
+
+#: roudix_store/nix_backend.py
+msgid "Nothing to change."
+msgstr "बदलने के लिए कुछ नहीं।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "local.nix updated ({scope}): {changed}"
+msgstr "local.nix अपडेट हुआ ({scope}): {changed}"
+
+#: roudix_store/nix_backend.py
+msgid ""
+"Flatpak apps are installed/removed by nix-flatpak during the switch — this "
+"can take a while."
+msgstr ""
+"Flatpak ऐप्स switch के दौरान nix-flatpak द्वारा इंस्टॉल/हटाए जाते हैं — "
+"इसमें कुछ समय लग सकता है।"
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr "लागू किया गया।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Unknown Flatpak remote '{remote}'."
+msgstr "अज्ञात Flatpak रिमोट “{remote}”।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Adding the {remote} remote to the {scope} installation…"
+msgstr "{scope} इंस्टॉलेशन में {remote} रिमोट जोड़ा जा रहा है…"
+
+#: roudix_store/nix_backend.py
+msgid "flatpak was not found in PATH."
+msgstr "PATH में flatpak नहीं मिला।"
+
+#: roudix_store/nix_backend.py
+msgid "Flatpak only — applying with flatpak directly, no rebuild."
+msgstr "केवल Flatpak — सीधे flatpak से लागू किया जा रहा है, रीबिल्ड के बिना।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already installed ({where}) — only recording it."
+msgstr "{pkg} पहले से इंस्टॉल है ({where}) — केवल दर्ज किया जा रहा है।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: remote {remote} unavailable"
+msgstr "{pkg}: रिमोट {remote} उपलब्ध नहीं"
+
+#: roudix_store/nix_backend.py
+msgid " (system installs ask for authorization through polkit)"
+msgstr " (सिस्टम इंस्टॉल के लिए polkit के ज़रिए अनुमति माँगी जाती है)"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: flatpak install failed{hint}"
+msgstr "{pkg}: flatpak install विफल{hint}"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: flatpak uninstall failed"
+msgstr "{pkg}: flatpak uninstall विफल"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not installed ({where}) — only dropping it from local.nix."
+msgstr "{pkg} इंस्टॉल नहीं है ({where}) — केवल local.nix से हटाया जा रहा है।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Cleaning unused runtimes ({scope})…"
+msgstr "अनुपयोगी रनटाइम साफ़ किए जा रहे हैं ({scope})…"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "Flatpak changes were applied but local.nix could not be written: {res}"
+msgstr "Flatpak के बदलाव लागू हो गए, पर local.nix नहीं लिखा जा सका: {res}"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "local.nix updated ({key}): {changed}"
+msgstr "local.nix अपडेट हुआ ({key}): {changed}"
+
+#: roudix_store/ui.py
+msgid "No news available."
+msgstr "कोई समाचार उपलब्ध नहीं।"
+
+#: roudix_store/ui.py
+msgid "Waiting"
+msgstr "प्रतीक्षा में"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} RPM files"
+msgstr "{len} RPM फ़ाइलें"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} packages"
+msgstr "{len} पैकेज"
+
+#: roudix_store/ui.py
+msgid "Installed"
+msgstr "इंस्टॉल किए गए"
+
+#: roudix_store/ui.py
+msgid "Queue"
+msgstr "कतार"
+
+#: roudix_store/ui.py
+msgid "Productivity"
+msgstr "उत्पादकता"
+
+#: roudix_store/ui.py
+msgid "Graphics & Photography"
+msgstr "ग्राफ़िक्स और फ़ोटोग्राफ़ी"
+
+#: roudix_store/ui.py
+msgid "Audio & Video"
+msgstr "ऑडियो और वीडियो"
+
+#: roudix_store/ui.py
+msgid "Education"
+msgstr "शिक्षा"
+
+#: roudix_store/ui.py
+msgid "Networking"
+msgstr "नेटवर्किंग"
+
+#: roudix_store/ui.py
+msgid "Games"
+msgstr "गेम्स"
+
+#: roudix_store/ui.py
+msgid "Developer Tools"
+msgstr "डेवलपर टूल्स"
+
+#: roudix_store/ui.py
+msgid "Science"
+msgstr "विज्ञान"
+
+#: roudix_store/ui.py
+msgid "Utilities"
+msgstr "यूटिलिटीज़"
+
+#: roudix_store/ui.py
+msgid "Audio & Video Editing"
+msgstr "ऑडियो और वीडियो एडिटिंग"
+
+#: roudix_store/ui.py
+msgid "Disc Burning"
+msgstr "डिस्क बर्निंग"
+
+#: roudix_store/ui.py
+msgid "Midi"
+msgstr "MIDI"
+
+#: roudix_store/ui.py
+msgid "Mixer"
+msgstr "मिक्सर"
+
+#: roudix_store/ui.py
+msgid "Player"
+msgstr "प्लेयर"
+
+#: roudix_store/ui.py
+msgid "Recorder"
+msgstr "रिकॉर्डर"
+
+#: roudix_store/ui.py
+msgid "Sequencer"
+msgstr "सीक्वेंसर"
+
+#: roudix_store/ui.py
+msgid "Tuner"
+msgstr "ट्यूनर"
+
+#: roudix_store/ui.py
+msgid "TV"
+msgstr "टीवी"
+
+#: roudix_store/ui.py
+msgid "Building"
+msgstr "बिल्डिंग"
+
+#: roudix_store/ui.py
+msgid "Database"
+msgstr "डेटाबेस"
+
+#: roudix_store/ui.py
+msgid "Debugger"
+msgstr "डिबगर"
+
+#: roudix_store/ui.py
+msgid "GUI Designer"
+msgstr "GUI डिज़ाइनर"
+
+#: roudix_store/ui.py
+msgid "IDE"
+msgstr "IDE"
+
+#: roudix_store/ui.py
+msgid "Profiling"
+msgstr "प्रोफ़ाइलिंग"
+
+#: roudix_store/ui.py
+msgid "Revision Control"
+msgstr "रिविज़न कंट्रोल"
+
+#: roudix_store/ui.py
+msgid "Translation"
+msgstr "अनुवाद"
+
+#: roudix_store/ui.py
+msgid "Web Development"
+msgstr "वेब डेवलपमेंट"
+
+#: roudix_store/ui.py
+msgid "Action Games"
+msgstr "एक्शन गेम्स"
+
+#: roudix_store/ui.py
+msgid "Adventure Games"
+msgstr "एडवेंचर गेम्स"
+
+#: roudix_store/ui.py
+msgid "Arcade Games"
+msgstr "आर्केड गेम्स"
+
+#: roudix_store/ui.py
+msgid "Blocks Games"
+msgstr "ब्लॉक गेम्स"
+
+#: roudix_store/ui.py
+msgid "Board Games"
+msgstr "बोर्ड गेम्स"
+
+#: roudix_store/ui.py
+msgid "Card Games"
+msgstr "कार्ड गेम्स"
+
+#: roudix_store/ui.py
+msgid "Emulators"
+msgstr "एमुलेटर"
+
+#: roudix_store/ui.py
+msgid "Kids' Games"
+msgstr "बच्चों के गेम्स"
+
+#: roudix_store/ui.py
+msgid "Logic Games"
+msgstr "लॉजिक गेम्स"
+
+#: roudix_store/ui.py
+msgid "Role Playing"
+msgstr "रोल प्लेइंग"
+
+#: roudix_store/ui.py
+msgid "Shooter"
+msgstr "शूटर"
+
+#: roudix_store/ui.py
+msgid "Simulation"
+msgstr "सिमुलेशन"
+
+#: roudix_store/ui.py
+msgid "Sports Games"
+msgstr "स्पोर्ट्स गेम्स"
+
+#: roudix_store/ui.py
+msgid "Strategy Games"
+msgstr "स्ट्रैटेजी गेम्स"
+
+#: roudix_store/ui.py
+msgid "2D Graphics"
+msgstr "2D ग्राफ़िक्स"
+
+#: roudix_store/ui.py
+msgid "3D Graphics"
+msgstr "3D ग्राफ़िक्स"
+
+#: roudix_store/ui.py
+msgid "OCR"
+msgstr "OCR"
+
+#: roudix_store/ui.py
+msgid "Photography"
+msgstr "फ़ोटोग्राफ़ी"
+
+#: roudix_store/ui.py
+msgid "Publishing"
+msgstr "पब्लिशिंग"
+
+#: roudix_store/ui.py
+msgid "Raster Graphics"
+msgstr "रास्टर ग्राफ़िक्स"
+
+#: roudix_store/ui.py
+msgid "Scanning"
+msgstr "स्कैनिंग"
+
+#: roudix_store/ui.py
+msgid "Vector Graphics"
+msgstr "वेक्टर ग्राफ़िक्स"
+
+#: roudix_store/ui.py
+msgid "Viewer"
+msgstr "व्यूअर"
+
+#: roudix_store/ui.py
+msgid "Chat"
+msgstr "चैट"
+
+#: roudix_store/ui.py
+msgid "Email"
+msgstr "ईमेल"
+
+#: roudix_store/ui.py
+msgid "Feed"
+msgstr "फ़ीड"
+
+#: roudix_store/ui.py
+msgid "File Transfer"
+msgstr "फ़ाइल ट्रांसफ़र"
+
+#: roudix_store/ui.py
+msgid "Ham Radio"
+msgstr "हैम रेडियो"
+
+#: roudix_store/ui.py
+msgid "Instant Messaging"
+msgstr "इंस्टेंट मैसेजिंग"
+
+#: roudix_store/ui.py
+msgid "IRC Client"
+msgstr "IRC क्लाइंट"
+
+#: roudix_store/ui.py
+msgid "Monitor"
+msgstr "मॉनिटर"
+
+#: roudix_store/ui.py
+msgid "News"
+msgstr "समाचार"
+
+#: roudix_store/ui.py
+msgid "P2P"
+msgstr "P2P"
+
+#: roudix_store/ui.py
+msgid "Remote Access"
+msgstr "रिमोट एक्सेस"
+
+#: roudix_store/ui.py
+msgid "Telephony"
+msgstr "टेलीफ़ोनी"
+
+#: roudix_store/ui.py
+msgid "Video Conference"
+msgstr "वीडियो कॉन्फ़्रेंस"
+
+#: roudix_store/ui.py
+msgid "Web Browser"
+msgstr "वेब ब्राउज़र"
+
+#: roudix_store/ui.py
+msgid "Calendar"
+msgstr "कैलेंडर"
+
+#: roudix_store/ui.py
+msgid "Chart"
+msgstr "चार्ट"
+
+#: roudix_store/ui.py
+msgid "Contact Management"
+msgstr "संपर्क प्रबंधन"
+
+#: roudix_store/ui.py
+msgid "Dictionary"
+msgstr "शब्दकोश"
+
+#: roudix_store/ui.py
+msgid "Finance"
+msgstr "वित्त"
+
+#: roudix_store/ui.py
+msgid "Presentation"
+msgstr "प्रेज़ेंटेशन"
+
+#: roudix_store/ui.py
+msgid "Project Management"
+msgstr "प्रोजेक्ट प्रबंधन"
+
+#: roudix_store/ui.py
+msgid "Spreadsheet"
+msgstr "स्प्रेडशीट"
+
+#: roudix_store/ui.py
+msgid "Word Processor"
+msgstr "वर्ड प्रोसेसर"
+
+#: roudix_store/ui.py
+msgid "File Manager"
+msgstr "फ़ाइल मैनेजर"
+
+#: roudix_store/ui.py
+msgid "Filesystem"
+msgstr "फ़ाइलसिस्टम"
+
+#: roudix_store/ui.py
+msgid "File Tools"
+msgstr "फ़ाइल टूल्स"
+
+#: roudix_store/ui.py
+msgid "Security"
+msgstr "सुरक्षा"
+
+#: roudix_store/ui.py
+msgid "Terminal Emulator"
+msgstr "टर्मिनल एमुलेटर"
+
+#: roudix_store/ui.py
+msgid "Accessibility"
+msgstr "सुलभता"
+
+#: roudix_store/ui.py
+msgid "Archiving"
+msgstr "आर्काइविंग"
+
+#: roudix_store/ui.py
+msgid "Calculator"
+msgstr "कैलकुलेटर"
+
+#: roudix_store/ui.py
+msgid "Clock"
+msgstr "घड़ी"
+
+#: roudix_store/ui.py
+msgid "Compression"
+msgstr "कंप्रेशन"
+
+#: roudix_store/ui.py
+msgid "Telephony Tools"
+msgstr "टेलीफ़ोनी टूल्स"
+
+#: roudix_store/ui.py
+msgid "Text Editor"
+msgstr "टेक्स्ट एडिटर"
+
+#: roudix_store/ui.py
+msgid "Text Tools"
+msgstr "टेक्स्ट टूल्स"
+
+#: roudix_store/ui.py
+msgid "Update"
+msgstr "अपडेट करें"
+
+#: roudix_store/ui.py
+msgid "Remove"
+msgstr "हटाएँ"
+
+#: roudix_store/ui.py
+msgid "Install"
+msgstr "इंस्टॉल करें"
+
+#: roudix_store/ui.py
+msgid "Loading news…"
+msgstr "समाचार लोड हो रहे हैं…"
+
+#: roudix_store/ui.py
+msgid "Search filter…"
+msgstr "फ़िल्टर करें…"
+
+#: roudix_store/ui.py
+msgid "Grid View"
+msgstr "ग्रिड व्यू"
+
+#: roudix_store/ui.py
+msgid "List View"
+msgstr "लिस्ट व्यू"
+
+#: roudix_store/ui.py
+msgid "Clear Selection"
+msgstr "चयन साफ़ करें"
+
+#: roudix_store/ui.py
+msgid "Update Selected"
+msgstr "चुने हुए अपडेट करें"
+
+#: roudix_store/ui.py
+msgid "Select All and Update"
+msgstr "सभी चुनें और अपडेट करें"
+
+#: roudix_store/ui.py
+msgid "Also update flatpaks"
+msgstr "flatpak भी अपडेट करें"
+
+#: roudix_store/ui.py
+msgid "Append --all to nobara-sync for this system update."
+msgstr "इस सिस्टम अपडेट के लिए nobara-sync में --all जोड़ें।"
+
+#: roudix_store/ui.py
+msgid "Toggle News Panel"
+msgstr "समाचार पैनल दिखाएँ/छिपाएँ"
+
+#: roudix_store/ui.py
+msgid "View Queue"
+msgstr "कतार देखें"
+
+#: roudix_store/ui.py
+msgid "Loading AppStream metadata and the nixpkgs index…"
+msgstr "AppStream मेटाडेटा और nixpkgs इंडेक्स लोड हो रहे हैं…"
+
+#: roudix_store/ui.py
+msgid "Drop one or more .rpm files to install them."
+msgstr "इंस्टॉल करने के लिए एक या अधिक .rpm फ़ाइलें यहाँ छोड़ें।"
+
+#: roudix_store/ui.py
+msgid "No RPM files were found in the drop."
+msgstr "छोड़ी गई चीज़ों में कोई RPM फ़ाइल नहीं मिली।"
+
+#: roudix_store/ui.py
+msgid "Those RPM files are already queued."
+msgstr "ये RPM फ़ाइलें पहले से कतार में हैं।"
+
+#: roudix_store/ui.py
+msgid "Local RPM Install"
+msgstr "लोकल RPM इंस्टॉलेशन"
+
+#: roudix_store/ui.py
+msgid "Install local RPM files"
+msgstr "लोकल RPM फ़ाइलें इंस्टॉल करें"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to install {len} RPM file(s)"
+msgstr "{len} RPM फ़ाइल(ें) का इंस्टॉलेशन कतार में जोड़ा गया"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued RPM install for {names}"
+msgstr "RPM इंस्टॉलेशन कतार में जोड़ा गया: {names}"
+
+#: roudix_store/ui.py
+msgid "Search applications…"
+msgstr "ऐप्लिकेशन खोजें…"
+
+#: roudix_store/ui.py
+msgid "All repositories"
+msgstr "सभी रिपॉज़िटरी"
+
+#: roudix_store/ui.py
+msgid "Updater settings"
+msgstr "अपडेटर सेटिंग्स"
+
+#: roudix_store/ui.py
+msgid "Update checker"
+msgstr "अपडेट चेकर"
+
+#: roudix_store/ui.py
+msgid "Enable update checker"
+msgstr "अपडेट चेकर चालू करें"
+
+#: roudix_store/ui.py
+msgid "Enable notifications"
+msgstr "सूचनाएँ चालू करें"
+
+#: roudix_store/ui.py
+msgid "Check every"
+msgstr "जाँचने का अंतराल"
+
+#: roudix_store/ui.py
+msgid "These settings affect the tray updater service."
+msgstr "ये सेटिंग्स ट्रे अपडेटर सेवा को प्रभावित करती हैं।"
+
+#: roudix_store/ui.py
+msgid "Categories"
+msgstr "श्रेणियाँ"
+
+#: roudix_store/ui.py
+msgid "Flatpak is not enabled"
+msgstr "Flatpak चालू नहीं है"
+
+#: roudix_store/ui.py
+msgid "Turn it on to install apps from Flathub."
+msgstr "Flathub से ऐप्स इंस्टॉल करने के लिए इसे चालू करें।"
+
+#: roudix_store/ui.py
+msgid "Enable Flatpak"
+msgstr "Flatpak चालू करें"
+
+#: roudix_store/ui.py
+msgid "Turns on roudix.flatpak.enable, then rebuilds the system."
+msgstr "roudix.flatpak.enable चालू करता है, फिर सिस्टम रीबिल्ड करता है।"
+
+#: roudix_store/ui.py
+msgid "An operation is already running."
+msgstr "एक ऑपरेशन पहले से चल रहा है।"
+
+#: roudix_store/ui.py
+msgid "Enable Flatpak support?"
+msgstr "Flatpak सपोर्ट चालू करें?"
+
+#: roudix_store/ui.py
+msgid ""
+"This writes “roudix.flatpak.enable = true” to your local.nix, then rebuilds "
+"the system (a few minutes). The Flathub catalog is then fetched and Roudix "
+"Store has to be restarted for Flatpak to be picked up."
+msgstr ""
+"यह आपकी local.nix में “roudix.flatpak.enable = true” लिखता है, फिर सिस्टम "
+"रीबिल्ड करता है (कुछ मिनट)। इसके बाद Flathub कैटलॉग लाया जाएगा और Flatpak "
+"पहचाने जाने के लिए Roudix Store को रीस्टार्ट करना होगा।"
+
+#: roudix_store/ui.py
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#: roudix_store/ui.py
+msgid "Enable and rebuild"
+msgstr "चालू करें और रीबिल्ड करें"
+
+#: roudix_store/ui.py
+msgid "Enabling Flatpak support…"
+msgstr "Flatpak सपोर्ट चालू किया जा रहा है…"
+
+#: roudix_store/ui.py
+msgid "Enabling Flatpak: rebuilding the system…"
+msgstr "Flatpak चालू किया जा रहा है: सिस्टम रीबिल्ड हो रहा है…"
+
+#: roudix_store/ui.py
+msgid "Rebuild in progress — follow it in the queue page."
+msgstr "रीबिल्ड जारी है — प्रगति कतार वाले पेज पर देखें।"
+
+#: roudix_store/ui.py
+msgid "Restart Roudix Store"
+msgstr "Roudix Store रीस्टार्ट करें"
+
+#: roudix_store/ui.py
+msgid ""
+"Flatpak support is enabled. Restart Roudix Store so Flatpak apps are picked "
+"up."
+msgstr ""
+"Flatpak सपोर्ट चालू है। Flatpak ऐप्स पहचाने जाने के लिए Roudix Store "
+"रीस्टार्ट करें।"
+
+#: roudix_store/ui.py
+msgid "Later"
+msgstr "बाद में"
+
+#: roudix_store/ui.py
+msgid "Restart now"
+msgstr "अभी रीस्टार्ट करें"
+
+#: roudix_store/ui.py
+msgid "First use: fetching the Flathub catalog…"
+msgstr "पहला उपयोग: Flathub कैटलॉग लाया जा रहा है…"
+
+#: roudix_store/ui.py
+msgid ""
+"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update "
+"--appstream"
+msgstr ""
+"अभी तक Flathub डेटा नहीं है। क्या roudix.flatpak.enable चालू है? आज़माएँ: "
+"flatpak update --appstream"
+
+#: roudix_store/ui.py
+msgid "List"
+msgstr "सूची"
+
+#: roudix_store/ui.py
+msgid "No applications found"
+msgstr "कोई ऐप्लिकेशन नहीं मिला"
+
+#: roudix_store/ui.py
+msgid "Try a different category or search term."
+msgstr "कोई दूसरी श्रेणी या खोज शब्द आज़माएँ।"
+
+#: roudix_store/ui.py
+msgid "Important Notices"
+msgstr "महत्वपूर्ण सूचनाएँ"
+
+#: roudix_store/ui.py
+msgid "Queued actions"
+msgstr "कतार में लगी क्रियाएँ"
+
+#: roudix_store/ui.py
+msgid "Transaction log"
+msgstr "ट्रांज़ैक्शन लॉग"
+
+#: roudix_store/ui.py
+msgid "View transaction log"
+msgstr "ट्रांज़ैक्शन लॉग देखें"
+
+#: roudix_store/ui.py
+msgid "Send to pastebin"
+msgstr "pastebin पर भेजें"
+
+#: roudix_store/ui.py
+msgid "Repositories"
+msgstr "रिपॉज़िटरी"
+
+#: roudix_store/ui.py
+msgid "Details"
+msgstr "विवरण"
+
+#: roudix_store/ui.py
+msgid "← Back"
+msgstr "← वापस"
+
+#: roudix_store/ui.py
+msgid "Source"
+msgstr "स्रोत"
+
+#: roudix_store/ui.py
+msgid "Open"
+msgstr "खोलें"
+
+#: roudix_store/ui.py
+msgid "Loading…"
+msgstr "लोड हो रहा है…"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Loaded {len} applications ({n_nix} nixpkgs, {n_flatpak} Flatpak)."
+msgstr "{len} ऐप्लिकेशन लोड हुए ({n_nix} nixpkgs, {n_flatpak} Flatpak)।"
+
+#: roudix_store/ui.py
+msgid "No update feed URL is configured."
+msgstr "कोई अपडेट फ़ीड URL कॉन्फ़िगर नहीं है।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Failed to load news from {url}.\n"
+"\n"
+"{exc}"
+msgstr ""
+"{url} से समाचार लोड नहीं हो सके।\n"
+"\n"
+"{exc}"
+
+#: roudix_store/ui.py
+msgid "Failed to load metadata."
+msgstr "मेटाडेटा लोड नहीं हो सका।"
+
+#: roudix_store/ui.py
+msgid "Startup failed"
+msgstr "शुरू करना विफल"
+
+#: roudix_store/ui.py
+msgid "All"
+msgstr "सभी"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Showing {n_repos} repositories."
+msgstr "{n_repos} रिपॉज़िटरी दिखाई जा रही हैं।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid " in {repo_name}"
+msgstr " {repo_name} में"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Search results for “{current_search_text}” ({len} applications{repo_note})."
+msgstr "“{current_search_text}” के खोज परिणाम ({len} ऐप्लिकेशन{repo_note})।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid " matching “{current_category_filter_text}”"
+msgstr " “{current_category_filter_text}” से मेल खाते"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Showing {len} applications{repo_note}{extra}."
+msgstr "{len} ऐप्लिकेशन दिखाए जा रहे हैं{repo_note}{extra}।"
+
+#: roudix_store/ui.py
+msgid "Search"
+msgstr "खोज"
+
+#: roudix_store/ui.py
+msgid "Packages: "
+msgstr "पैकेज: "
+
+#: roudix_store/ui.py
+msgid "Installed: "
+msgstr "इंस्टॉल किए गए: "
+
+#: roudix_store/ui.py
+msgid "Available: "
+msgstr "उपलब्ध: "
+
+#: roudix_store/ui.py
+msgid "Repositories: "
+msgstr "रिपॉज़िटरी: "
+
+#: roudix_store/ui.py
+msgid "Categories: "
+msgstr "श्रेणियाँ: "
+
+#: roudix_store/ui.py
+msgid "Installed (Roudix config)"
+msgstr "इंस्टॉल (Roudix कॉन्फ़िग)"
+
+#: roudix_store/ui.py
+msgid "Running"
+msgstr "चल रहा है"
+
+#: roudix_store/ui.py
+msgid "User"
+msgstr "उपयोगकर्ता"
+
+#: roudix_store/ui.py
+msgid "User (Home Manager)"
+msgstr "उपयोगकर्ता (Home Manager)"
+
+#: roudix_store/ui.py
+msgid "installed via config"
+msgstr "कॉन्फ़िग के ज़रिए इंस्टॉल"
+
+#: roudix_store/ui.py
+msgid "installed"
+msgstr "इंस्टॉल है"
+
+#: roudix_store/ui.py
+msgid "Homepage"
+msgstr "होमपेज"
+
+#: roudix_store/ui.py
+msgid "Screenshots"
+msgstr "स्क्रीनशॉट"
+
+#: roudix_store/ui.py
+msgid "Screenshots could not be loaded locally."
+msgstr "स्क्रीनशॉट लोकल रूप से लोड नहीं हो सके।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{primary_pkg} is being applied right now."
+msgstr "{primary_pkg} अभी लागू किया जा रहा है।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Removed {primary_pkg} from the queue"
+msgstr "{primary_pkg} कतार से हटाया गया"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"{primary_pkg} comes from the Roudix configuration, not from the store — "
+"remove it from your config to uninstall it."
+msgstr ""
+"{primary_pkg} Roudix कॉन्फ़िगरेशन से आता है, स्टोर से नहीं — इसे अनइंस्टॉल "
+"करने के लिए अपने कॉन्फ़िग से हटाएँ।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to {action} {pkg}"
+msgstr "{pkg} के लिए {action} कतार में जोड़ा गया"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued {action} for {pkg} — press Apply to run it"
+msgstr ""
+"{pkg} के लिए {action} कतार में जोड़ा गया — चलाने के लिए “लागू करें” दबाएँ"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{selected_count} selected"
+msgstr "{selected_count} चुने गए"
+
+#: roudix_store/ui.py
+msgid "System update is already in the queue."
+msgstr "सिस्टम अपडेट पहले से कतार में है।"
+
+#: roudix_store/ui.py
+msgid "System Update"
+msgstr "सिस्टम अपडेट"
+
+#: roudix_store/ui.py
+msgid "System Update + Flatpaks"
+msgstr "सिस्टम अपडेट + Flatpak"
+
+#: roudix_store/ui.py
+msgid "Queued system update"
+msgstr "सिस्टम अपडेट कतार में जोड़ा गया"
+
+#: roudix_store/ui.py
+msgid "Queued system update with Flatpaks"
+msgstr "Flatpak सहित सिस्टम अपडेट कतार में जोड़ा गया"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued system update via {command_label}"
+msgstr "{command_label} के ज़रिए सिस्टम अपडेट कतार में जोड़ा गया"
+
+#: roudix_store/ui.py
+msgid "No updates are available."
+msgstr "कोई अपडेट उपलब्ध नहीं।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{len} updates"
+msgstr "{len} अपडेट"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued to update {len} package(s)"
+msgstr "{len} पैकेज का अपडेट कतार में जोड़ा गया"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queued update for {names}"
+msgstr "{names} के लिए अपडेट कतार में जोड़ा गया"
+
+#: roudix_store/ui.py
+msgid "Cleared the pending queue"
+msgstr "लंबित कतार साफ़ की गई"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Running {action} for {subject}"
+msgstr "{subject} के लिए {action} चल रहा है"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Starting {action} for {subject}"
+msgstr "शुरू: {subject} के लिए {action}"
+
+#: roudix_store/ui.py
+msgid "Operation completed."
+msgstr "ऑपरेशन पूरा हुआ।"
+
+#: roudix_store/ui.py
+msgid "Operation failed."
+msgstr "ऑपरेशन विफल रहा।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{display_name} failed"
+msgstr "{display_name}: विफल"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s)"
+" remain."
+msgstr ""
+"कतार पूरी हुई। {done_count} पूरे हुए आइटम हटाए गए; {len} विफल आइटम बाकी हैं।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "Queue finished. Cleared {done_count} completed item(s)."
+msgstr "कतार पूरी हुई। {done_count} पूरे हुए आइटम हटाए गए।"
+
+#: roudix_store/ui.py
+msgid "Queue is empty."
+msgstr "कतार खाली है।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid ""
+"Running {action} for {target}. {done} done, {failed} failed, {queued} "
+"queued."
+msgstr ""
+"{target} के लिए {action} चल रहा है। {done} पूरे, {failed} विफल, {queued} "
+"कतार में।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done} completed, {failed} failed, {queued} queued."
+msgstr "{done} पूरे, {failed} विफल, {queued} कतार में।"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "0/{total} complete, {failed_count} failed"
+msgstr "0/{total} पूरे, {failed_count} विफल"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done_count}/{total} complete, {failed_count} failed"
+msgstr "{done_count}/{total} पूरे, {failed_count} विफल"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "{done_count}/{total} complete"
+msgstr "{done_count}/{total} पूरे"
+
+#: roudix_store/ui.py
+msgid "No queued package actions yet."
+msgstr "अभी कोई पैकेज क्रिया कतार में नहीं है।"
+
+#: roudix_store/ui.py
+msgid "system"
+msgstr "सिस्टम"
+
+#: roudix_store/ui.py
+msgid "user"
+msgstr "उपयोगकर्ता"
+
+#: roudix_store/ui.py
+msgid "Close"
+msgstr "बंद करें"
+
+#: roudix_store/ui.py
+msgid "Copy"
+msgstr "कॉपी करें"
+
+#: roudix_store/ui.py
+msgid "Copied to clipboard"
+msgstr "क्लिपबोर्ड पर कॉपी किया गया"
+
+#: roudix_store/ui.py
+msgid "No transaction log available yet."
+msgstr "अभी कोई ट्रांज़ैक्शन लॉग उपलब्ध नहीं।"
+
+#: roudix_store/ui.py
+msgid "pbcli did not return a URL."
+msgstr "pbcli ने कोई URL नहीं लौटाया।"
+
+#: roudix_store/ui.py
+msgid "pbcli was not found on this system."
+msgstr "इस सिस्टम पर pbcli नहीं मिला।"
+
+#: roudix_store/ui.py
+msgid "Pastebin URL"
+msgstr "Pastebin URL"
+
+#: roudix_store/ui.py
+msgid "Pastebin upload failed"
+msgstr "Pastebin पर अपलोड विफल"
+
+#: roudix_store/ui.py
+msgid "Confirm Installation"
+msgstr "इंस्टॉलेशन की पुष्टि करें"
+
+#: roudix_store/ui.py
+#, python-brace-format
+msgid "You have {len} package(s) ready. Do you want to install them?"
+msgstr ""
+"आपके पास {len} पैकेज तैयार हैं। क्या आप इन्हें इंस्टॉल करना चाहते हैं?"

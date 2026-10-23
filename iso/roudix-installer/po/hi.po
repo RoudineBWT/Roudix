@@ -3,10 +3,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: roudix-installer\n"
+"Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2026-10-22 00:00+0000\n"
 "Last-Translator: Claude\n"
 "Language-Team: Hindi\n"
-"Report-Msgid-Bugs-To: \n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -231,7 +231,8 @@ msgstr "nixpkgs का नवीनतम mainline — लोकल रूप �
 
 #: src/roudix_installer/pages/options.py
 msgid "nixpkgs testing (RC/mainline) — locally-rebuilt nvidia module"
-msgstr "nixpkgs testing (RC/mainline) — लोकल रूप से दोबारा बनाया गया nvidia मॉड्यूल"
+msgstr ""
+"nixpkgs testing (RC/mainline) — लोकल रूप से दोबारा बनाया गया nvidia मॉड्यूल"
 
 #: src/roudix_installer/pages/options.py
 msgid "XanMod LTS (nixpkgs) — locally-rebuilt nvidia module"
@@ -312,7 +313,8 @@ msgstr "GNOME keyring + xdg-desktop-portal-gtk/-gnome (अनुशंसित)
 
 #: src/roudix_installer/pages/options.py
 msgid "KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)"
-msgstr "KWallet + xdg-desktop-portal-kde (उपयोगी यदि आप ज़्यादातर Qt/KDE ऐप चलाते हैं)"
+msgstr ""
+"KWallet + xdg-desktop-portal-kde (उपयोगी यदि आप ज़्यादातर Qt/KDE ऐप चलाते हैं)"
 
 #: src/roudix_installer/pages/options.py
 msgid "OpenRGB — mixed brands (Razer, ASUS, MSI...)"
@@ -913,7 +915,9 @@ msgstr "लैपटॉप (TLP)"
 msgid ""
 "Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
 "will still launch games normally but without the roudix-gaming CPU profile."
-msgstr "tuned को बंद करके TLP इस्तेमाल करता है: अगर गेमिंग भी चालू है, तो game-performance खेल सामान्य रूप से चलाएगा, लेकिन roudix-gaming CPU प्रोफ़ाइल के बिना।"
+msgstr ""
+"tuned को बंद करके TLP इस्तेमाल करता है: अगर गेमिंग भी चालू है, तो game-performance खेल "
+"सामान्य रूप से चलाएगा, लेकिन roudix-gaming CPU प्रोफ़ाइल के बिना।"
 
 #: src/roudix_installer/pages/options.py
 msgid "ThinkPad (40/80% battery charge thresholds)"
@@ -985,7 +989,11 @@ msgid ""
 "On the nixpkgs version, a configuration error saying that an option, a "
 "setting or a key \"does not exist\" is normal: it was added after the "
 "nixpkgs version. Wait for nixpkgs to catch up, or turn the latest version on."
-msgstr "⚠ Roudix कॉन्फ़िगरेशन पहले flake (नवीनतम) संस्करणों के लिए लिखे जाते हैं। nixpkgs संस्करण पर, यह कहने वाली कॉन्फ़िगरेशन त्रुटि कि कोई विकल्प, सेटिंग या कुंजी \"मौजूद नहीं है\", सामान्य है: उसे nixpkgs संस्करण के बाद जोड़ा गया था। nixpkgs के अपडेट होने तक रुकें, या नवीनतम संस्करण चालू करें।"
+msgstr ""
+"⚠ Roudix कॉन्फ़िगरेशन पहले flake (नवीनतम) संस्करणों के लिए लिखे जाते हैं। nixpkgs संस्करण "
+"पर, यह कहने वाली कॉन्फ़िगरेशन त्रुटि कि कोई विकल्प, सेटिंग या कुंजी \"मौजूद नहीं है\", "
+"सामान्य है: उसे nixpkgs संस्करण के बाद जोड़ा गया था। nixpkgs के अपडेट होने तक रुकें, या "
+"नवीनतम संस्करण चालू करें।"
 
 #: src/roudix_installer/pages/options.py
 msgid "Default shell"
@@ -1103,7 +1111,9 @@ msgstr "RAM SKU (पार्ट नंबर)"
 msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
-msgstr "SMBus / RAM SKU अपने-आप नहीं पहचाने जाते — इन्हें \"i2cdetect -l\" और \"sudo dmidecode -t memory | grep 'Part Number'\" से खोजें।"
+msgstr ""
+"SMBus / RAM SKU अपने-आप नहीं पहचाने जाते — इन्हें \"i2cdetect -l\" और \"sudo "
+"dmidecode -t memory | grep 'Part Number'\" से खोजें।"
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Extras"
@@ -1274,7 +1284,9 @@ msgstr "Kernel (xddxdd)"
 msgid ""
 "This user doesn't exist on this system — run the installer from the account "
 "you want to keep."
-msgstr "यह उपयोगकर्ता इस सिस्टम पर मौजूद नहीं है — इंस्टॉलर को उस खाते से चलाएँ जिसे आप रखना चाहते हैं।"
+msgstr ""
+"यह उपयोगकर्ता इस सिस्टम पर मौजूद नहीं है — इंस्टॉलर को उस खाते से चलाएँ जिसे आप रखना "
+"चाहते हैं।"
 
 #: src/roudix_installer/pages/options.py
 msgid "Password can't be empty."
@@ -1321,7 +1333,8 @@ msgstr "रीबूट हो रहा है…"
 msgid ""
 "Warning: these options were NOT confirmed in local.nix — review the file "
 "before rebooting: {keys}"
-msgstr "चेतावनी: ये विकल्प local.nix में पुष्ट नहीं हुए — रीबूट करने से पहले फ़ाइल जाँच लें: {keys}"
+msgstr ""
+"चेतावनी: ये विकल्प local.nix में पुष्ट नहीं हुए — रीबूट करने से पहले फ़ाइल जाँच लें: {keys}"
 
 #: src/roudix_installer/pages/progress.py
 msgid "✓ every chosen option was written to local.nix."
@@ -1336,7 +1349,9 @@ msgstr "ड्राई रन — डिस्क पर कुछ नहीं
 msgid ""
 "hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the "
 "repo>)"
-msgstr "hosts/{host}/local.nix.example नहीं मिला (ROUDIX_CFG_ROOT=<रिपॉज़िटरी का पाथ> आज़माएँ)"
+msgstr ""
+"hosts/{host}/local.nix.example नहीं मिला (ROUDIX_CFG_ROOT=<रिपॉज़िटरी का पाथ> "
+"आज़माएँ)"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Dry run finished — nothing was changed"
@@ -1429,7 +1444,9 @@ msgstr "ब्रांच '{branch}' {repo_url} पर नहीं मिल�
 msgid ""
 "Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
 "local.nix generation may fail."
-msgstr "चेतावनी: ब्रांच '{branch}' पर hosts/{host}/local.nix.example नहीं मिला — local.nix बनाना विफल हो सकता है।"
+msgstr ""
+"चेतावनी: ब्रांच '{branch}' पर hosts/{host}/local.nix.example नहीं मिला — "
+"local.nix बनाना विफल हो सकता है।"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Copying the configuration…"
@@ -1439,13 +1456,16 @@ msgstr "कॉन्फ़िगरेशन कॉपी हो रहा ह�
 #, python-brace-format
 msgid ""
 "Branch '{branch}' selected — cloning from GitHub (the ISO only embeds main)."
-msgstr "ब्रांच '{branch}' चुनी गई — GitHub से क्लोन हो रहा है (ISO में केवल main शामिल है)।"
+msgstr ""
+"ब्रांच '{branch}' चुनी गई — GitHub से क्लोन हो रहा है (ISO में केवल main शामिल है)।"
 
 #: src/roudix_installer/pages/progress.py
 msgid ""
 "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing "
 "outside an ISO) — cloning straight from GitHub instead."
-msgstr "/iso-cfg नहीं मिला (ISO अभी isoImage.contents के साथ दोबारा नहीं बनी, या ISO के बाहर टेस्ट हो रहा है) — सीधे GitHub से क्लोन हो रहा है।"
+msgstr ""
+"/iso-cfg नहीं मिला (ISO अभी isoImage.contents के साथ दोबारा नहीं बनी, या ISO के "
+"बाहर टेस्ट हो रहा है) — सीधे GitHub से क्लोन हो रहा है।"
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1462,7 +1482,9 @@ msgstr "hosts/{hostname}/local.nix, username.nix और home/local.nix लिख
 msgid ""
 "Warning: only {free} MiB free in /boot ({need} MiB recommended) — nixos-"
 "rebuild may fail on a small EFI partition."
-msgstr "चेतावनी: /boot में केवल {free} MiB खाली हैं ({need} MiB अनुशंसित) — छोटे EFI पार्टिशन पर nixos-rebuild विफल हो सकता है।"
+msgstr ""
+"चेतावनी: /boot में केवल {free} MiB खाली हैं ({need} MiB अनुशंसित) — छोटे EFI पार्टिशन "
+"पर nixos-rebuild विफल हो सकता है।"
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1475,7 +1497,10 @@ msgstr "चेतावनी: Nix स्टोर के लिए केवल
 msgid ""
 "Warning: your configuration uses system.stateVersion {old}, Roudix sets "
 "{new}. Services that keep data (databases…) deserve a look before booting it."
-msgstr "चेतावनी: आपका कॉन्फ़िगरेशन system.stateVersion {old} इस्तेमाल करता है, जबकि Roudix {new} सेट करता है। डेटा रखने वाली सेवाओं (डेटाबेस…) को बूट करने से पहले एक बार देख लेना चाहिए।"
+msgstr ""
+"चेतावनी: आपका कॉन्फ़िगरेशन system.stateVersion {old} इस्तेमाल करता है, जबकि Roudix "
+"{new} सेट करता है। डेटा रखने वाली सेवाओं (डेटाबेस…) को बूट करने से पहले एक बार देख लेना "
+"चाहिए।"
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1483,13 +1508,17 @@ msgid ""
 "Note: Roudix will use the {new} bootloader (yours: {old}). If it ever fails "
 "to start, RESTORE.txt in the backup explains how to put your old "
 "configuration back."
-msgstr "सूचना: Roudix {new} बूटलोडर इस्तेमाल करेगा (आपका: {old})। यदि यह कभी शुरू न हो, तो बैकअप में मौजूद RESTORE.txt बताती है कि अपना पुराना कॉन्फ़िगरेशन कैसे वापस लाएँ।"
+msgstr ""
+"सूचना: Roudix {new} बूटलोडर इस्तेमाल करेगा (आपका: {old})। यदि यह कभी शुरू न हो, तो "
+"बैकअप में मौजूद RESTORE.txt बताती है कि अपना पुराना कॉन्फ़िगरेशन कैसे वापस लाएँ।"
 
 #: src/roudix_installer/pages/progress.py
 msgid ""
 "Reusing /etc/nixos/hardware-configuration.nix (the one that boots this "
 "machine)."
-msgstr "/etc/nixos/hardware-configuration.nix दोबारा इस्तेमाल हो रहा है (वही जिससे यह मशीन बूट होती है)।"
+msgstr ""
+"/etc/nixos/hardware-configuration.nix दोबारा इस्तेमाल हो रहा है (वही जिससे यह "
+"मशीन बूट होती है)।"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Checking this system…"
@@ -1517,7 +1546,9 @@ msgstr "Roudix बनाया जा रहा है — इसमें स�
 msgid ""
 "✓ Roudix is built. Reboot to start it; your previous system stays in the "
 "boot menu."
-msgstr "✓ Roudix बन गया है। इसे शुरू करने के लिए रीबूट करें; आपका पिछला सिस्टम बूट मेनू में बना रहेगा।"
+msgstr ""
+"✓ Roudix बन गया है। इसे शुरू करने के लिए रीबूट करें; आपका पिछला सिस्टम बूट मेनू में बना "
+"रहेगा।"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Installing the system…"
@@ -1547,7 +1578,9 @@ msgstr "सिमुलेट करें (कुछ नहीं लिखा 
 msgid ""
 "Generates the configuration in a temporary folder and checks that it "
 "evaluates. Nothing is partitioned, installed or modified."
-msgstr "एक अस्थायी फ़ोल्डर में कॉन्फ़िगरेशन बनाता है और जाँचता है कि उसका मूल्यांकन होता है। कुछ भी पार्टिशन, इंस्टॉल या संशोधित नहीं किया जाता।"
+msgstr ""
+"एक अस्थायी फ़ोल्डर में कॉन्फ़िगरेशन बनाता है और जाँचता है कि उसका मूल्यांकन होता है। कुछ भी "
+"पार्टिशन, इंस्टॉल या संशोधित नहीं किया जाता।"
 
 #: src/roudix_installer/pages/summary.py
 msgid "Convert this NixOS to Roudix"
@@ -1614,7 +1647,9 @@ msgstr "प्रोफ़ाइल / होस्ट"
 msgid ""
 "/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current system "
 "stays in the boot menu."
-msgstr "/etc/nixos को {dir} में कॉपी किया जाता है (RESTORE.txt के साथ), और आपका मौजूदा सिस्टम बूट मेनू में बना रहता है।"
+msgstr ""
+"/etc/nixos को {dir} में कॉपी किया जाता है (RESTORE.txt के साथ), और आपका मौजूदा "
+"सिस्टम बूट मेनू में बना रहता है।"
 
 #: src/roudix_installer/pages/summary.py
 msgid "Safety net"
@@ -1695,7 +1730,10 @@ msgid ""
 "This machine already runs NixOS. Roudix is built next to your current "
 "system: nothing is wiped, /etc/nixos is backed up first, and your previous "
 "system stays in the boot menu. Two steps: options, then off we go."
-msgstr "यह मशीन पहले से NixOS चला रही है। Roudix आपके मौजूदा सिस्टम के बगल में बनाया जाता है: कुछ भी नहीं मिटाया जाता, पहले /etc/nixos का बैकअप लिया जाता है, और आपका पिछला सिस्टम बूट मेनू में बना रहता है। दो चरण: विकल्प, फिर शुरू।"
+msgstr ""
+"यह मशीन पहले से NixOS चला रही है। Roudix आपके मौजूदा सिस्टम के बगल में बनाया जाता है: "
+"कुछ भी नहीं मिटाया जाता, पहले /etc/nixos का बैकअप लिया जाता है, और आपका पिछला "
+"सिस्टम बूट मेनू में बना रहता है। दो चरण: विकल्प, फिर शुरू।"
 
 #: src/roudix_installer/pages/welcome.py
 msgid ""

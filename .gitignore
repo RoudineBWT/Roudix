@@ -22,3 +22,4 @@ __pycache__/
 
 # Compiled gettext catalogs of the installer (built by scripts/i18n.sh compile / by Nix)
 iso/roudix-installer/src/roudix_installer/locale/
+pkgs/*/locale/

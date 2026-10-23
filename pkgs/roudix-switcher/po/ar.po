@@ -1,0 +1,1097 @@
+# Arabic translation of roudix-switcher (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-switcher\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#: roudix-switcher.py
+msgid "Scrollable tiling Wayland compositor"
+msgstr "مُركِّب Wayland بتبليط قابل للتمرير"
+
+#: roudix-switcher.py
+msgid "Dynamic tiling Wayland compositor"
+msgstr "مُركِّب Wayland بتبليط ديناميكي"
+
+#: roudix-switcher.py
+msgid "GNOME — modern and user-friendly desktop"
+msgstr "GNOME — سطح مكتب حديث وسهل الاستخدام"
+
+#: roudix-switcher.py
+msgid "KDE Plasma — Highly customizable and feature-rich desktop environment"
+msgstr "KDE Plasma — بيئة سطح مكتب قابلة للتخصيص بدرجة كبيرة وغنية بالميزات"
+
+#: roudix-switcher.py
+msgid "Cinnamon — classic X11 desktop, ideal for older PCs"
+msgstr "Cinnamon — سطح مكتب كلاسيكي على X11، مثالي للحواسيب القديمة"
+
+#: roudix-switcher.py
+msgid "Lightweight dynamic tiling Wayland compositor"
+msgstr "مُركِّب Wayland خفيف بتبليط ديناميكي"
+
+#: roudix-switcher.py
+msgid ""
+"a Wayland compositor designed for daily use, with scrolling, dwindle, and "
+"master layouts, per-output workspaces, window rules, blur, shadows, and "
+"fluid animations."
+msgstr ""
+"مُركِّب Wayland مصمم للاستخدام اليومي، يدعم تخطيطات التمرير وdwindle وmaster، "
+"ومساحات عمل لكل مخرج، وقواعد النوافذ، والتمويه، والظلال، والحركات السلسة."
+
+#: roudix-switcher.py
+msgid "Roudix default shell — sleek and feature-complete"
+msgstr "الواجهة الافتراضية في Roudix — أنيقة ومتكاملة"
+
+#: roudix-switcher.py
+msgid "Minimal and lightweight Roudix shell"
+msgstr "واجهة Roudix بسيطة وخفيفة"
+
+#: roudix-switcher.py
+msgid "Elegant Roudix shell with a focus on aesthetics"
+msgstr "واجهة Roudix أنيقة تركّز على الجمالية"
+
+#: roudix-switcher.py
+msgid ""
+"MangoWC only — Discord/Telegram/Element and Spotify live in named "
+"scratchpads (each with its own shortcut) instead of staying tiled on a fixed "
+"tag."
+msgstr ""
+"MangoWC فقط — يعيش Discord/Telegram/Element وSpotify في scratchpads مسمّاة "
+"(لكل منها اختصاره) بدلًا من البقاء مبلّطة على وسم ثابت."
+
+#: roudix-switcher.py
+msgid ""
+"Umbriel only — Discord/Telegram and Spotify live in named scratchpads (shown/"
+"hidden with a shortcut) instead of staying tiled on a fixed output/workspace."
+msgstr ""
+"Umbriel فقط — يعيش Discord/Telegram وSpotify في scratchpads مسمّاة (تُعرض "
+"وتُخفى باختصار) بدلًا من البقاء مبلّطة على مخرج/مساحة عمل ثابتة."
+
+#: roudix-switcher.py
+msgid ""
+"Off (default): nixpkgs version. On: the very latest version, built from the "
+"project's own flake. ⚠ Roudix configurations are written for the flake "
+"versions first: on the nixpkgs version, a configuration error saying that an "
+"option, a setting or a key \"does not exist\" is normal (it was added after "
+"the nixpkgs version). Wait for nixpkgs to catch up, or turn the latest "
+"version on."
+msgstr ""
+"معطّل (افتراضي): إصدار nixpkgs. مفعّل: أحدث إصدار، مبني من flake المشروع نفسه. "
+"⚠ تُكتب إعدادات Roudix أولًا لإصدارات flake: في إصدار nixpkgs، من الطبيعي أن "
+"يظهر خطأ في الإعدادات يفيد بأن خيارًا أو إعدادًا أو مفتاحًا \"غير موجود\" (فقد "
+"أُضيف بعد إصدار nixpkgs). انتظر حتى يلحق nixpkgs بالركب، أو فعّل أحدث إصدار."
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "{name} — latest version (flake)"
+msgstr "{name} — أحدث إصدار (flake)"
+
+#: roudix-switcher.py
+msgid "Fast GPU-accelerated editor"
+msgstr "محرر سريع مسرَّع بوحدة GPU"
+
+#: roudix-switcher.py
+msgid "Microsoft's editor, huge extension ecosystem"
+msgstr "محرر Microsoft، بمنظومة ضخمة من الإضافات"
+
+#: roudix-switcher.py
+msgid "Terminal-based, keyboard-driven"
+msgstr "يعمل في الطرفية ويُتحكَّم فيه بلوحة المفاتيح"
+
+#: roudix-switcher.py
+msgid "Don't install a default editor"
+msgstr "عدم تثبيت محرر افتراضي"
+
+#: roudix-switcher.py
+msgid "None"
+msgstr "بدون"
+
+#: roudix-switcher.py
+msgid "gnome-keyring + xdg-desktop-portal-gtk/-gnome (default)"
+msgstr "gnome-keyring + xdg-desktop-portal-gtk/-gnome (افتراضي)"
+
+#: roudix-switcher.py
+msgid "Fixed theme, Papirus' own blue accent (default)"
+msgstr "سمة ثابتة بلون Papirus الأزرق المميز (افتراضي)"
+
+#: roudix-switcher.py
+msgid ""
+"Auto-recolored to the current Noctalia accent if roudix.desktop.shell = "
+"\"noctalia\"; plain Tela otherwise"
+msgstr ""
+"يُعاد تلوينها تلقائيًا بلون Noctalia المميز الحالي إذا كان "
+"roudix.desktop.shell = \"noctalia\"؛ وإلا فهي Tela العادية"
+
+#: roudix-switcher.py
+msgid "Flat, colorful Material-style set (pkgs.qogir-icon-theme)"
+msgstr "مجموعة مسطّحة وملوّنة بأسلوب Material (pkgs.qogir-icon-theme)"
+
+#: roudix-switcher.py
+msgid "macOS Big Sur-inspired (pkgs.whitesur-icon-theme)"
+msgstr "مستوحاة من macOS Big Sur (pkgs.whitesur-icon-theme)"
+
+#: roudix-switcher.py
+msgid "Flat, soft-toned set (pkgs.colloid-icon-theme)"
+msgstr "مجموعة مسطّحة بألوان هادئة (pkgs.colloid-icon-theme)"
+
+#: roudix-switcher.py
+msgid "GPU-accelerated, Roudix default"
+msgstr "مسرَّعة بوحدة GPU، الافتراضية في Roudix"
+
+#: roudix-switcher.py
+msgid "GPU-accelerated, feature-rich"
+msgstr "مسرَّعة بوحدة GPU وغنية بالميزات"
+
+#: roudix-switcher.py
+msgid "Minimal, GPU-accelerated"
+msgstr "بسيطة ومسرَّعة بوحدة GPU"
+
+#: roudix-switcher.py
+msgid "Lightweight, Wayland-native"
+msgstr "خفيفة وأصلية في Wayland"
+
+#: roudix-switcher.py
+msgid "Cross-platform, Lua-configurable"
+msgstr "متعددة المنصات وقابلة للضبط بلغة Lua"
+
+#: roudix-switcher.py
+msgid "GNOME's container-aware terminal"
+msgstr "طرفية GNOME الواعية بالحاويات"
+
+#: roudix-switcher.py
+msgid "KDE's terminal emulator"
+msgstr "محاكي الطرفية في KDE"
+
+#: roudix-switcher.py
+msgid "Friendly interactive shell (Roudix default)"
+msgstr "صدفة تفاعلية ودودة (الافتراضية في Roudix)"
+
+#: roudix-switcher.py
+msgid "The classic POSIX shell"
+msgstr "صدفة POSIX الكلاسيكية"
+
+#: roudix-switcher.py
+msgid "GNOME's file manager"
+msgstr "مدير ملفات GNOME"
+
+#: roudix-switcher.py
+msgid "KDE's file manager"
+msgstr "مدير ملفات KDE"
+
+#: roudix-switcher.py
+msgid "Cinnamon's file manager"
+msgstr "مدير ملفات Cinnamon"
+
+#: roudix-switcher.py
+msgid "Lightweight, XFCE's file manager"
+msgstr "خفيف، مدير ملفات XFCE"
+
+#: roudix-switcher.py
+msgid "Lightweight, Qt-based"
+msgstr "خفيف، مبني على Qt"
+
+#: roudix-switcher.py
+msgid "Full-featured Matrix client"
+msgstr "عميل Matrix متكامل"
+
+#: roudix-switcher.py
+msgid "Lightweight Matrix client"
+msgstr "عميل Matrix خفيف"
+
+#: roudix-switcher.py
+msgid "Don't install a Matrix client"
+msgstr "عدم تثبيت عميل Matrix"
+
+#: roudix-switcher.py
+msgid "Discord with Vencord already patched in"
+msgstr "Discord مع Vencord مدمج مسبقًا"
+
+#: roudix-switcher.py
+msgid "Discord with no client patches"
+msgstr "Discord دون تعديلات على العميل"
+
+#: roudix-switcher.py
+msgid "Don't install a Discord client"
+msgstr "عدم تثبيت عميل Discord"
+
+#: roudix-switcher.py
+msgid "Official Telegram Desktop client"
+msgstr "عميل Telegram Desktop الرسمي"
+
+#: roudix-switcher.py
+msgid "Unofficial fork: ghost mode, anti-recall..."
+msgstr "نسخة معدّلة غير رسمية: وضع الشبح، منع الحذف..."
+
+#: roudix-switcher.py
+msgid "Don't install a Telegram client"
+msgstr "عدم تثبيت عميل Telegram"
+
+#: roudix-switcher.py
+msgid "Widest format/codec support"
+msgstr "أوسع دعم للصيغ والترميزات"
+
+#: roudix-switcher.py
+msgid "Modern GTK4 player"
+msgstr "مشغّل GTK4 حديث"
+
+#: roudix-switcher.py
+msgid "+ yt-dlp — minimal, URL/streaming support"
+msgstr "+ yt-dlp — بسيط، مع دعم الروابط والبث"
+
+#: roudix-switcher.py
+msgid "GTK front-end for mpv"
+msgstr "واجهة GTK لـ mpv"
+
+#: roudix-switcher.py
+msgid "Don't install a video player"
+msgstr "عدم تثبيت مشغّل فيديو"
+
+#: roudix-switcher.py
+msgid "Feature-rich, Qt-based"
+msgstr "غني بالميزات، مبني على Qt"
+
+#: roudix-switcher.py
+msgid "Minimal GNOME/libadwaita client"
+msgstr "عميل GNOME/libadwaita بسيط"
+
+#: roudix-switcher.py
+msgid "Plugin-based, lightweight"
+msgstr "قائم على الإضافات، خفيف"
+
+#: roudix-switcher.py
+msgid "Don't install a torrent client"
+msgstr "عدم تثبيت عميل تورنت"
+
+#: roudix-switcher.py
+msgid "Stable — updated about every 2 weeks (default)"
+msgstr "مستقر — يُحدَّث كل أسبوعين تقريبًا (افتراضي)"
+
+#: roudix-switcher.py
+msgid "Testing — updated about every 2 days, may occasionally break"
+msgstr "Testing — يُحدَّث كل يومين تقريبًا، وقد يتعطل أحيانًا"
+
+#: roudix-switcher.py
+msgid "Dev — latest changes, least stable"
+msgstr "Dev — أحدث التغييرات، الأقل استقرارًا"
+
+#: roudix-switcher.py
+msgid ""
+"~/.config/roudix is not a git repository — the branch cannot be switched."
+msgstr "~/.config/roudix ليس مستودع git — لا يمكن تبديل الفرع."
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"Local branch '{branch}' has commits origin doesn't have (unpushed?) — kept "
+"as is, not updated."
+msgstr ""
+"الفرع المحلي '{branch}' يحتوي على التزامات غير موجودة في origin (لم تُرفع؟) — "
+"تُرك كما هو دون تحديث."
+
+#: roudix-switcher.py
+msgid "+ Spicetify"
+msgstr "+ Spicetify"
+
+#: roudix-switcher.py
+msgid "Unofficial YouTube Music client"
+msgstr "عميل YouTube Music غير رسمي"
+
+#: roudix-switcher.py
+msgid "A native music streaming client, built with Rust and GPUI"
+msgstr "عميل أصلي لبث الموسيقى، مبني بـ Rust وGPUI"
+
+#: roudix-switcher.py
+msgid "Don't install a music player"
+msgstr "عدم تثبيت مشغّل موسيقى"
+
+#: roudix-switcher.py
+msgid "Full-featured — mail, calendar, RSS, add-ons"
+msgstr "متكامل — بريد وتقويم وRSS وإضافات"
+
+#: roudix-switcher.py
+msgid "Fine-tuned Thunderbird fork"
+msgstr "نسخة معدّلة بدقة من Thunderbird"
+
+#: roudix-switcher.py
+msgid "Lightweight GNOME/libadwaita client"
+msgstr "عميل GNOME/libadwaita خفيف"
+
+#: roudix-switcher.py
+msgid "Don't install a mail client"
+msgstr "عدم تثبيت عميل بريد"
+
+#: roudix-switcher.py
+msgid "For Corsair iCUE-compatible devices"
+msgstr "للأجهزة المتوافقة مع Corsair iCUE"
+
+#: roudix-switcher.py
+msgid "Multi-brand RGB support"
+msgstr "دعم RGB لعدة علامات تجارية"
+
+#: roudix-switcher.py
+msgid "No RGB backend"
+msgstr "بدون واجهة RGB خلفية"
+
+#: roudix-switcher.py
+msgid "Ananicy (process scheduler)"
+msgstr "Ananicy (مجدول العمليات)"
+
+#: roudix-switcher.py
+msgid "GTA Online hosts fix"
+msgstr "إصلاح hosts للعبة GTA Online"
+
+#: roudix-switcher.py
+msgid "Millennium (modded Steam client: themes and plugins)"
+msgstr "Millennium (عميل Steam معدَّل: سمات وإضافات)"
+
+#: roudix-switcher.py
+msgid "“Steam (Gaming Mode)” session (gamescope, niri/umbriel/gnome/kde)"
+msgstr "جلسة “Steam (Gaming Mode)” (gamescope وniri/umbriel/gnome/kde)"
+
+#: roudix-switcher.py
+msgid "Decky Loader (Steam plugins, compiled on first rebuild)"
+msgstr "Decky Loader (إضافات Steam، تُترجَم عند أول إعادة بناء)"
+
+#: roudix-switcher.py
+msgid ""
+"Nightly build of Zen Beta, mirrored by the flake maintainer (Roudix default)"
+msgstr "بناء ليلي من Zen Beta، يعكسه مشرف flake (الافتراضي في Roudix)"
+
+#: roudix-switcher.py
+msgid "Firefox-based (regular release), slower-moving, most stable"
+msgstr "مبني على Firefox (إصدار عادي)، أبطأ في التحديث، الأكثر استقرارًا"
+
+#: roudix-switcher.py
+msgid "Free KDE-based editor"
+msgstr "محرر حر مبني على KDE"
+
+#: roudix-switcher.py
+msgid "Free edition — color grading, VFX, pro-grade"
+msgstr "نسخة مجانية — تصحيح الألوان، المؤثرات البصرية، بمستوى احترافي"
+
+#: roudix-switcher.py
+msgid "Paid edition of the above — requires a Blackmagic license"
+msgstr "النسخة المدفوعة من السابق — تتطلب ترخيص Blackmagic"
+
+#: roudix-switcher.py
+msgid "Lightweight, cross-platform, FFmpeg-based"
+msgstr "خفيف، متعدد المنصات، مبني على FFmpeg"
+
+#: roudix-switcher.py
+msgid "Don't install a default video editor"
+msgstr "عدم تثبيت محرر فيديو افتراضي"
+
+#: roudix-switcher.py
+msgid "VKCapture (Vulkan/OpenGL game capture)"
+msgstr "VKCapture (التقاط ألعاب Vulkan/OpenGL)"
+
+#: roudix-switcher.py
+msgid "Pipewire Audio Capture (per-app audio)"
+msgstr "Pipewire Audio Capture (صوت كل تطبيق على حدة)"
+
+#: roudix-switcher.py
+msgid "Background Removal (AI virtual background)"
+msgstr "Background Removal (خلفية افتراضية بالذكاء الاصطناعي)"
+
+#: roudix-switcher.py
+msgid "Move Transition (source animations)"
+msgstr "Move Transition (حركات المصادر)"
+
+#: roudix-switcher.py
+msgid "Aitum Multistream (multi-platform streaming)"
+msgstr "Aitum Multistream (بث متعدد المنصات)"
+
+#: roudix-switcher.py
+msgid "GStreamer (extra sources/outputs)"
+msgstr "GStreamer (مصادر/مخرجات إضافية)"
+
+#: roudix-switcher.py
+msgid "Composite Blur (blur/glass filters)"
+msgstr "Composite Blur (مرشحات التمويه/الزجاج)"
+
+#: roudix-switcher.py
+msgid "Advanced Scene Switcher (automated scene switching)"
+msgstr "Advanced Scene Switcher (تبديل المشاهد تلقائيًا)"
+
+#: roudix-switcher.py
+msgid "Input Overlay (on-screen keyboard/mouse/gamepad)"
+msgstr "Input Overlay (لوحة المفاتيح/الفأرة/يد التحكم على الشاشة)"
+
+#: roudix-switcher.py
+msgid "Waveform (audio waveform/spectrum)"
+msgstr "Waveform (الموجة/طيف الصوت)"
+
+#: roudix-switcher.py
+msgid "Virtual camera (v4l2loopback)"
+msgstr "كاميرا افتراضية (v4l2loopback)"
+
+#: roudix-switcher.py
+msgid "Chatterino2 (third-party Twitch chat)"
+msgstr "Chatterino2 (دردشة Twitch من جهة خارجية)"
+
+#: roudix-switcher.py
+msgid "Virtualization (QEMU/KVM)"
+msgstr "المحاكاة الافتراضية (QEMU/KVM)"
+
+#: roudix-switcher.py
+msgid "vm-curator (libvirt-free QEMU TUI)"
+msgstr "vm-curator (واجهة طرفية لـ QEMU دون libvirt)"
+
+#: roudix-switcher.py
+msgid "Waydroid (Android apps)"
+msgstr "Waydroid (تطبيقات Android)"
+
+#: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr "Mesa-git (أحدث تعريفات الرسوميات)"
+
+#: roudix-switcher.py
+msgid "Auto-update (scheduled git pull + rebuild)"
+msgstr "تحديث تلقائي (git pull مجدول + إعادة بناء)"
+
+#: roudix-switcher.py
+msgid "Laptop — TLP (disables tuned)"
+msgstr "حاسوب محمول — TLP (يعطّل tuned)"
+
+#: roudix-switcher.py
+msgid "ThinkPad — 40/80% charge thresholds"
+msgstr "ThinkPad — حدود شحن البطارية 40/80%"
+
+#: roudix-switcher.py
+msgid "AMD GPU undervolt (LACT)"
+msgstr "خفض جهد GPU من AMD (LACT)"
+
+#: roudix-switcher.py
+msgid "Roudix fastfetch config"
+msgstr "إعدادات fastfetch الخاصة بـ Roudix"
+
+#: roudix-switcher.py
+msgid "Fstrim (automatic TRIM for SSD/NVMe)"
+msgstr "Fstrim (TRIM تلقائي لأقراص SSD/NVMe)"
+
+#: roudix-switcher.py
+msgid "VM guest (QEMU/Spice agent)"
+msgstr "ضيف آلة افتراضية (وكيل QEMU/Spice)"
+
+#: roudix-switcher.py
+msgid "Roudix — Customizer"
+msgstr "Roudix — أداة التخصيص"
+
+#: roudix-switcher.py
+msgid ""
+"<b>Customize your Roudix</b>\n"
+"<span size='small'>Pick your desktop, shell and tweaks below.\n"
+"The system will rebuild after your selection — this may take a few minutes.</"
+"span>"
+msgstr ""
+"<b>خصّص Roudix الخاص بك</b>\n"
+"<span size='small'>اختر أدناه سطح المكتب والواجهة والتعديلات.\n"
+"سيُعاد بناء النظام بعد اختيارك — وقد يستغرق ذلك بضع دقائق.</span>"
+
+#: roudix-switcher.py
+msgid "Desktop"
+msgstr "سطح المكتب"
+
+#: roudix-switcher.py
+msgid "Content Creation"
+msgstr "صناعة المحتوى"
+
+#: roudix-switcher.py
+msgid "Editor"
+msgstr "المحرر"
+
+#: roudix-switcher.py
+msgid "Browser"
+msgstr "المتصفح"
+
+#: roudix-switcher.py
+msgid "Login Shell"
+msgstr "صدفة تسجيل الدخول"
+
+#: roudix-switcher.py
+msgid "File Manager"
+msgstr "مدير الملفات"
+
+#: roudix-switcher.py
+msgid "Chat Client"
+msgstr "عميل الدردشة"
+
+#: roudix-switcher.py
+msgid "Apps"
+msgstr "التطبيقات"
+
+#: roudix-switcher.py
+msgid "System"
+msgstr "النظام"
+
+#: roudix-switcher.py
+msgid "Integration"
+msgstr "التكامل"
+
+#: roudix-switcher.py
+msgid "Icon Theme"
+msgstr "سمة الأيقونات"
+
+#: roudix-switcher.py
+msgid "Desktop environment"
+msgstr "بيئة سطح المكتب"
+
+#: roudix-switcher.py
+msgid "Graphical shell"
+msgstr "الواجهة الرسومية"
+
+#: roudix-switcher.py
+msgid "Scratchpad apps"
+msgstr "تطبيقات scratchpad"
+
+#: roudix-switcher.py
+msgid "Versions"
+msgstr "الإصدارات"
+
+#: roudix-switcher.py
+msgid "Launchers and tools installed for gaming."
+msgstr "المُشغِّلات والأدوات المثبّتة للألعاب."
+
+#: roudix-switcher.py
+msgid "OBS plugins"
+msgstr "إضافات OBS"
+
+#: roudix-switcher.py
+msgid "Video editor"
+msgstr "محرر الفيديو"
+
+#: roudix-switcher.py
+msgid "Default editor"
+msgstr "المحرر الافتراضي"
+
+#: roudix-switcher.py
+msgid "Default terminal"
+msgstr "الطرفية الافتراضية"
+
+#: roudix-switcher.py
+msgid ""
+"Pick any number — the first one checked below becomes the default (niri's "
+"MOD+B shortcut)."
+msgstr ""
+"اختر ما تشاء — يصبح أول عنصر محدّد أدناه هو الافتراضي (اختصار MOD+B في niri)."
+
+#: roudix-switcher.py
+msgid "Zen channel"
+msgstr "قناة Zen"
+
+#: roudix-switcher.py
+msgid "Sine mod loader"
+msgstr "محمّل تعديلات Sine"
+
+#: roudix-switcher.py
+msgid ""
+"Native Zen mods and Sine mods can't be active at the same time — the list "
+"below always targets whichever is on."
+msgstr ""
+"لا يمكن تفعيل تعديلات Zen الأصلية وتعديلات Sine في الوقت نفسه — القائمة "
+"أدناه تخص دائمًا ما هو مفعّل."
+
+#: roudix-switcher.py
+msgid "Mods"
+msgstr "التعديلات"
+
+#: roudix-switcher.py
+msgid "No mods listed yet — add your mod IDs to ZEN_MODS in the script."
+msgstr ""
+"لا توجد تعديلات في القائمة بعد — أضف معرّفات تعديلاتك إلى ZEN_MODS في السكربت."
+
+#: roudix-switcher.py
+msgid "Login shell"
+msgstr "صدفة تسجيل الدخول"
+
+#: roudix-switcher.py
+msgid ""
+"This is your terminal login shell — not the graphical shell under Desktop "
+"(noctalia/dms/caelestia)."
+msgstr ""
+"هذه هي صدفة تسجيل الدخول في الطرفية — وليست الواجهة الرسومية ضمن «سطح "
+"المكتب» (noctalia/dms/caelestia)."
+
+#: roudix-switcher.py
+msgid "File manager"
+msgstr "مدير الملفات"
+
+#: roudix-switcher.py
+msgid "Matrix client"
+msgstr "عميل Matrix"
+
+#: roudix-switcher.py
+msgid "Optional apps"
+msgstr "تطبيقات اختيارية"
+
+#: roudix-switcher.py
+msgid "Video player"
+msgstr "مشغّل الفيديو"
+
+#: roudix-switcher.py
+msgid "Torrent client"
+msgstr "عميل التورنت"
+
+#: roudix-switcher.py
+msgid "Music player"
+msgstr "مشغّل الموسيقى"
+
+#: roudix-switcher.py
+msgid "Mail client"
+msgstr "عميل البريد"
+
+#: roudix-switcher.py
+msgid "Toggles"
+msgstr "المفاتيح"
+
+#: roudix-switcher.py
+msgid "RGB backend"
+msgstr "واجهة RGB الخلفية"
+
+#: roudix-switcher.py
+msgid "Update branch"
+msgstr "فرع التحديث"
+
+#: roudix-switcher.py
+msgid "Keyring & portal backend"
+msgstr "سلسلة المفاتيح وواجهة البوابة الخلفية"
+
+#: roudix-switcher.py
+msgid ""
+"Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE always "
+"keep their own native stack. With KDE, the GNOME apps (text editor, image "
+"viewer, disk utility, default file manager) are swapped for Kate, Gwenview, "
+"Partition Manager and Dolphin; adw-gtk3 stays installed."
+msgstr ""
+"ينطبق فقط على niri وHyprland وMangoWC وUmbriel — يحتفظ GNOME وKDE دائمًا "
+"بمكدّسهما الأصلي. مع KDE، تُستبدل تطبيقات GNOME (محرر النصوص، عارض الصور، أداة "
+"الأقراص، مدير الملفات الافتراضي) بـ Kate وGwenview وPartition Manager "
+"وDolphin؛ ويبقى adw-gtk3 مثبّتًا."
+
+#: roudix-switcher.py
+msgid "Icon theme"
+msgstr "سمة الأيقونات"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"{len} additional theme(s) detected on the system (a package you added by "
+"hand, or dropped into ~/.icons)."
+msgstr ""
+"تم الكشف عن {len} سمة إضافية على النظام (حزمة أضفتها يدويًا، أو وُضعت في "
+"~/.icons)."
+
+#: roudix-switcher.py
+msgid ""
+"Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE keep "
+"their own native icon picker. With Tela, the first recolor happens on the "
+"next Noctalia theme/accent change."
+msgstr ""
+"ينطبق فقط على niri وHyprland وMangoWC وUmbriel — يحتفظ GNOME وKDE بأداة "
+"اختيار الأيقونات الأصلية الخاصة بهما. مع Tela، تحدث أول إعادة تلوين عند "
+"التغيير التالي لسمة/لون Noctalia المميز."
+
+#: roudix-switcher.py
+msgid "Exit"
+msgstr "خروج"
+
+#: roudix-switcher.py
+msgid "Apply & Rebuild"
+msgstr "تطبيق وإعادة بناء"
+
+#: roudix-switcher.py
+msgid "Gaming disabled"
+msgstr "الألعاب معطّلة"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "{enabled}/{len} gaming apps enabled"
+msgstr "تم تفعيل {enabled}/{len} من تطبيقات الألعاب"
+
+#: roudix-switcher.py
+msgid "<span color='gray'>No changes detected — nothing to do.</span>"
+msgstr "<span color='gray'>لم يتم اكتشاف أي تغييرات — لا شيء لفعله.</span>"
+
+#: roudix-switcher.py
+msgid "enabled"
+msgstr "مفعّل"
+
+#: roudix-switcher.py
+msgid "disabled"
+msgstr "معطّل"
+
+#: roudix-switcher.py
+msgid "none"
+msgstr "بدون"
+
+#: roudix-switcher.py
+msgid "Shell"
+msgstr "الواجهة (Shell)"
+
+#: roudix-switcher.py
+msgid "Keyring/portal"
+msgstr "سلسلة المفاتيح/البوابة"
+
+#: roudix-switcher.py
+msgid "Terminal"
+msgstr "الطرفية"
+
+#: roudix-switcher.py
+msgid "Browsers"
+msgstr "المتصفحات"
+
+#: roudix-switcher.py
+msgid "Zen mods"
+msgstr "تعديلات Zen"
+
+#: roudix-switcher.py
+msgid "latest version (flake)"
+msgstr "أحدث إصدار (flake)"
+
+#: roudix-switcher.py
+msgid "nixpkgs version"
+msgstr "إصدار nixpkgs"
+
+#: roudix-switcher.py
+msgid "Apply changes?"
+msgstr "تطبيق التغييرات؟"
+
+#: roudix-switcher.py
+msgid ""
+"Apply now switches your running session immediately (a few things, like the "
+"desktop/shell, only fully take effect after you log out). Apply at next boot "
+"just prepares the new generation — nothing changes until you restart."
+msgstr ""
+"«التطبيق الآن» يغيّر جلستك الحالية فورًا (بعض الأمور، مثل سطح المكتب أو "
+"الواجهة، لا تظهر آثارها كاملةً إلا بعد تسجيل الخروج). «التطبيق عند الإقلاع "
+"التالي» يجهّز الجيل الجديد فقط — ولا يتغيّر شيء حتى تعيد التشغيل."
+
+#: roudix-switcher.py
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: roudix-switcher.py
+msgid "Apply at Next Boot"
+msgstr "التطبيق عند الإقلاع التالي"
+
+#: roudix-switcher.py
+msgid "Apply Now"
+msgstr "التطبيق الآن"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "<span color='red'>Error writing DE config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات بيئة سطح المكتب: {markup_escape_text}"
+"</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing shell config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات الواجهة (shell): {markup_escape_text}"
+"</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing keyring/portal config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات سلسلة المفاتيح/البوابة: "
+"{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing editor config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات المحرر: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing terminal config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات الطرفية: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing browsers config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات المتصفحات: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Zen Browser config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات Zen Browser: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Zen channel config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات قناة Zen: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Sine config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات Sine: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Zen mods config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات تعديلات Zen: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing scratchpad config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات scratchpad: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing nixpkgs/flake version config: "
+"{markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات إصدار nixpkgs/flake: "
+"{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing login shell config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات صدفة تسجيل الدخول: "
+"{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing file manager config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات مدير الملفات: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Matrix client config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات عميل Matrix: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Discord config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات Discord: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Telegram config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات Telegram: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing RGB backend config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات واجهة RGB الخلفية: "
+"{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing video player config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات مشغّل الفيديو: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing torrent client config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات عميل التورنت: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing music player config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات مشغّل الموسيقى: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing mail client config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات عميل البريد: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing icon theme config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات سمة الأيقونات: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing gaming config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات الألعاب: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing {name} config: {markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات {name}: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Content Creation config: {markup_escape_text}"
+"</span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات صناعة المحتوى: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing video editor config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>خطأ في كتابة إعدادات محرر الفيديو: {markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+msgid "Important Notices:"
+msgstr "إشعارات مهمة:"
+
+#: roudix-switcher.py
+msgid "No issues currently reported."
+msgstr "لا توجد مشكلات مُبلَّغ عنها حاليًا."
+
+#: roudix-switcher.py
+msgid "Running"
+msgstr "قيد التشغيل"
+
+#: roudix-switcher.py
+msgid "Checking repositories..."
+msgstr "جارٍ فحص المستودعات..."
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "Switching to branch {new_branch}…"
+msgstr "جارٍ التبديل إلى الفرع {new_branch}…"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "✗ Could not switch to {new_branch}: {msg}"
+msgstr "✗ تعذّر التبديل إلى {new_branch}: {msg}"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>✗ Branch switch failed — nothing was changed. "
+"{markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>✗ فشل تبديل الفرع — لم يتم تغيير أي شيء. "
+"{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "✓ Repository on branch {new_branch}."
+msgstr "✓ المستودع على الفرع {new_branch}."
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "⚠ Branch not written to local.nix: {res}"
+msgstr "⚠ لم يُكتب الفرع في local.nix: {res}"
+
+#: roudix-switcher.py
+msgid "✓ Rebuild completed and applied to your running session."
+msgstr "✓ اكتملت إعادة البناء وطُبّقت على جلستك الحالية."
+
+#: roudix-switcher.py
+msgid ""
+"<span color='green'>✓ Done! Applied now — some things (desktop/shell) may "
+"still need a logout to fully take effect.</span>"
+msgstr ""
+"<span color='green'>✓ تم! طُبّق الآن — قد تتطلب بعض الأمور (سطح المكتب/"
+"الواجهة) تسجيل الخروج حتى يكتمل أثرها.</span>"
+
+#: roudix-switcher.py
+msgid "✓ Rebuild completed successfully. Reboot to apply changes."
+msgstr "✓ اكتملت إعادة البناء بنجاح. أعد التشغيل لتطبيق التغييرات."
+
+#: roudix-switcher.py
+msgid "<span color='green'>✓ Done! Reboot to apply changes.</span>"
+msgstr "<span color='green'>✓ تم! أعد التشغيل لتطبيق التغييرات.</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit code {returncode})."
+msgstr "✗ فشلت إعادة البناء (رمز الخروج {returncode})."
+
+#: roudix-switcher.py
+msgid ""
+"<span color='red'>✗ Rebuild failed. Check <tt>~/.local/share/roudix-switcher/"
+"switcher.log</tt> for details.</span>"
+msgstr ""
+"<span color='red'>✗ فشلت إعادة البناء. راجع <tt>~/.local/share/roudix-"
+"switcher/switcher.log</tt> للتفاصيل.</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "✗ Unexpected error: {e}"
+msgstr "✗ خطأ غير متوقع: {e}"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "<span color='red'>✗ Unexpected error: {markup_escape_text}</span>"
+msgstr "<span color='red'>✗ خطأ غير متوقع: {markup_escape_text}</span>"

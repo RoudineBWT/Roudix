@@ -3,10 +3,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: roudix-installer\n"
+"Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2026-10-22 00:00+0000\n"
 "Last-Translator: Claude\n"
 "Language-Team: Simplified Chinese\n"
-"Report-Msgid-Bugs-To: \n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -913,7 +913,9 @@ msgstr "笔记本（TLP）"
 msgid ""
 "Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
 "will still launch games normally but without the roudix-gaming CPU profile."
-msgstr "用 TLP 取代 tuned：如果同时启用了游戏功能，game-performance 仍会正常启动游戏，但不会使用 roudix-gaming 的 CPU 配置。"
+msgstr ""
+"用 TLP 取代 tuned：如果同时启用了游戏功能，game-performance 仍会正常启动游"
+"戏，但不会使用 roudix-gaming 的 CPU 配置。"
 
 #: src/roudix_installer/pages/options.py
 msgid "ThinkPad (40/80% battery charge thresholds)"
@@ -985,7 +987,10 @@ msgid ""
 "On the nixpkgs version, a configuration error saying that an option, a "
 "setting or a key \"does not exist\" is normal: it was added after the "
 "nixpkgs version. Wait for nixpkgs to catch up, or turn the latest version on."
-msgstr "⚠ Roudix 的配置优先针对 flake（最新）版本编写。使用 nixpkgs 版本时，出现提示某个选项、设置或键“不存在”的配置错误是正常的：它是在该 nixpkgs 版本之后才加入的。请等待 nixpkgs 更新，或开启最新版本。"
+msgstr ""
+"⚠ Roudix 的配置优先针对 flake（最新）版本编写。使用 nixpkgs 版本时，出现提示"
+"某个选项、设置或键“不存在”的配置错误是正常的：它是在该 nixpkgs 版本之后才加入"
+"的。请等待 nixpkgs 更新，或开启最新版本。"
 
 #: src/roudix_installer/pages/options.py
 msgid "Default shell"
@@ -1103,7 +1108,9 @@ msgstr "内存 SKU（部件编号）"
 msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
-msgstr "SMBus / 内存 SKU 不会自动检测 — 请通过 \"i2cdetect -l\" 和 \"sudo dmidecode -t memory | grep 'Part Number'\" 查找。"
+msgstr ""
+"SMBus / 内存 SKU 不会自动检测 — 请通过 \"i2cdetect -l\" 和 \"sudo dmidecode "
+"-t memory | grep 'Part Number'\" 查找。"
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Extras"
@@ -1336,7 +1343,8 @@ msgstr "试运行 — 不会向磁盘写入任何内容"
 msgid ""
 "hosts/{host}/local.nix.example not found (try ROUDIX_CFG_ROOT=<path to the "
 "repo>)"
-msgstr "未找到 hosts/{host}/local.nix.example（请尝试 ROUDIX_CFG_ROOT=<仓库路径>）"
+msgstr ""
+"未找到 hosts/{host}/local.nix.example（请尝试 ROUDIX_CFG_ROOT=<仓库路径>）"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Dry run finished — nothing was changed"
@@ -1429,7 +1437,9 @@ msgstr "在 {repo_url} 上未找到分支“{branch}” — 回退到“main”�
 msgid ""
 "Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
 "local.nix generation may fail."
-msgstr "警告：在分支“{branch}”上未找到 hosts/{host}/local.nix.example — 生成 local.nix 可能会失败。"
+msgstr ""
+"警告：在分支“{branch}”上未找到 hosts/{host}/local.nix.example — 生成 "
+"local.nix 可能会失败。"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Copying the configuration…"
@@ -1445,7 +1455,9 @@ msgstr "已选择分支“{branch}” — 从 GitHub 克隆（ISO 只内置 main
 msgid ""
 "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing "
 "outside an ISO) — cloning straight from GitHub instead."
-msgstr "未找到 /iso-cfg（ISO 尚未用 isoImage.contents 重新构建，或正在 ISO 之外测试）— 直接从 GitHub 克隆。"
+msgstr ""
+"未找到 /iso-cfg（ISO 尚未用 isoImage.contents 重新构建，或正在 ISO 之外测试）"
+"— 直接从 GitHub 克隆。"
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1462,7 +1474,9 @@ msgstr "已写入 hosts/{hostname}/local.nix、username.nix 和 home/local.nix�
 msgid ""
 "Warning: only {free} MiB free in /boot ({need} MiB recommended) — nixos-"
 "rebuild may fail on a small EFI partition."
-msgstr "警告：/boot 仅剩 {free} MiB 可用空间（建议 {need} MiB）— 在较小的 EFI 分区上 nixos-rebuild 可能会失败。"
+msgstr ""
+"警告：/boot 仅剩 {free} MiB 可用空间（建议 {need} MiB）— 在较小的 EFI 分区上 "
+"nixos-rebuild 可能会失败。"
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1475,7 +1489,9 @@ msgstr "警告：Nix store 仅剩 {free} GiB 可用空间（建议 {need} GiB）
 msgid ""
 "Warning: your configuration uses system.stateVersion {old}, Roudix sets "
 "{new}. Services that keep data (databases…) deserve a look before booting it."
-msgstr "警告：你的配置使用 system.stateVersion {old}，而 Roudix 设置为 {new}。保存数据的服务（数据库等）在启动前值得检查一下。"
+msgstr ""
+"警告：你的配置使用 system.stateVersion {old}，而 Roudix 设置为 {new}。保存数"
+"据的服务（数据库等）在启动前值得检查一下。"
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1483,13 +1499,17 @@ msgid ""
 "Note: Roudix will use the {new} bootloader (yours: {old}). If it ever fails "
 "to start, RESTORE.txt in the backup explains how to put your old "
 "configuration back."
-msgstr "注意：Roudix 将使用 {new} 引导程序（你当前的是 {old}）。如果无法启动，备份中的 RESTORE.txt 说明了如何恢复旧配置。"
+msgstr ""
+"注意：Roudix 将使用 {new} 引导程序（你当前的是 {old}）。如果无法启动，备份中"
+"的 RESTORE.txt 说明了如何恢复旧配置。"
 
 #: src/roudix_installer/pages/progress.py
 msgid ""
 "Reusing /etc/nixos/hardware-configuration.nix (the one that boots this "
 "machine)."
-msgstr "重用 /etc/nixos/hardware-configuration.nix（即让这台机器能够启动的那个文件）。"
+msgstr ""
+"重用 /etc/nixos/hardware-configuration.nix（即让这台机器能够启动的那个文"
+"件）。"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Checking this system…"
@@ -1547,7 +1567,9 @@ msgstr "模拟（不写入任何内容）"
 msgid ""
 "Generates the configuration in a temporary folder and checks that it "
 "evaluates. Nothing is partitioned, installed or modified."
-msgstr "在临时文件夹中生成配置并检查其能否通过评估。不会进行分区、安装或修改任何内容。"
+msgstr ""
+"在临时文件夹中生成配置并检查其能否通过评估。不会进行分区、安装或修改任何内"
+"容。"
 
 #: src/roudix_installer/pages/summary.py
 msgid "Convert this NixOS to Roudix"
@@ -1614,7 +1636,9 @@ msgstr "配置文件 / 主机"
 msgid ""
 "/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current system "
 "stays in the boot menu."
-msgstr "/etc/nixos 会被复制到 {dir}（附带 RESTORE.txt），你当前的系统仍保留在启动菜单中。"
+msgstr ""
+"/etc/nixos 会被复制到 {dir}（附带 RESTORE.txt），你当前的系统仍保留在启动菜单"
+"中。"
 
 #: src/roudix_installer/pages/summary.py
 msgid "Safety net"
@@ -1695,7 +1719,9 @@ msgid ""
 "This machine already runs NixOS. Roudix is built next to your current "
 "system: nothing is wiped, /etc/nixos is backed up first, and your previous "
 "system stays in the boot menu. Two steps: options, then off we go."
-msgstr "这台机器已在运行 NixOS。Roudix 会在你当前系统旁边构建：不会清除任何内容，会先备份 /etc/nixos，你之前的系统仍保留在启动菜单中。两个步骤：选项，然后开始。"
+msgstr ""
+"这台机器已在运行 NixOS。Roudix 会在你当前系统旁边构建：不会清除任何内容，会先"
+"备份 /etc/nixos，你之前的系统仍保留在启动菜单中。两个步骤：选项，然后开始。"
 
 #: src/roudix_installer/pages/welcome.py
 msgid ""

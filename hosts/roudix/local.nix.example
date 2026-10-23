@@ -106,6 +106,12 @@
   # the system), "master" or "staging-next". No effect on cachyos-* kernels.
   # hardware.myKernelSource = "nixpkgs";
 
+  # ── Audio (PipeWire) ──────────────────────────────────────────────────────
+  # PipeWire runs with its upstream defaults (like Fedora). Extras, all OFF:
+  roudix.pipewire.lowLatency.enable       = false; # 48 kHz, quantum 128 (apps may use 128-512): audio work / rhythm games
+  roudix.pipewire.realtimeTweaks.enable   = false; # CachyOS-style: @audio rtprio 99 / nice -11 (PAM) + cpu_dma_latency/rtc0/hpet access (udev); needs the "audio" group
+  roudix.pipewire.usbNoAutosuspend.enable = false; # usbcore.autosuspend=-1: never autosuspend any USB device (costs battery on a laptop)
+
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
   roudix.terminal = "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
