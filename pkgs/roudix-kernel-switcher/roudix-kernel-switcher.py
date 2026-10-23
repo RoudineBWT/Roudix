@@ -51,53 +51,83 @@ def setup_logging():
 
 log = logging.getLogger("roudix-kernel-switcher")
 
+# ── translations (gettext) ───────────────────────────────────────────────────
+# Messages are written in English: tr("…"). Catalogs live in po/<lang>.po and the Nix
+# package compiles them to share/locale/<lang>/LC_MESSAGES/roudix-kernel-switcher.mo. The language
+# comes from LANGUAGE / LC_ALL / LC_MESSAGES / LANG; a missing catalog falls back to English.
+# Kernel names (cachyos-lto-v3, …) are never translated, only their descriptions.
+import gettext as _gettext
+import glob as _glob
+
+_DOMAIN = "roudix-kernel-switcher"
+
+
+def _find_localedir(domain):
+    cands = [os.environ.get("ROUDIX_LOCALEDIR", "")]
+    d = os.path.dirname(os.path.realpath(__file__))
+    while True:
+        cands += [os.path.join(d, "share", "locale"), os.path.join(d, "locale")]
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    for c in cands:
+        if c and _glob.glob(os.path.join(c, "*", "LC_MESSAGES", domain + ".mo")):
+            return c
+    return None
+
+
+_translation = _gettext.translation(_DOMAIN, _find_localedir(_DOMAIN), fallback=True)
+tr = _translation.gettext          # tr("text")
+
+
 # ── Kernel catalogue ──────────────────────────────────────────────────────────
 
 KERNELS = {
     "Nixpkgs": [
-        ("zen",             "linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay"),
-        ("nixpkgs-lts",     "linux LTS — nixpkgs default kernel, cached on cache.nixos.org"),
-        ("nixpkgs-latest",  "linux latest — newest mainline stable, cached on cache.nixos.org"),
-        ("nixpkgs-testing", "linux_testing — mainline RC/testing kernel, cached on cache.nixos.org"),
-        ("xanmod-lts",      "XanMod LTS — nixpkgs, performance governor + lazy preemption + BBRv3"),
-        ("xanmod-latest",   "XanMod main branch — nixpkgs, newest XanMod"),
+        ("zen",             tr("linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay")),
+        ("nixpkgs-lts",     tr("linux LTS — nixpkgs default kernel, cached on cache.nixos.org")),
+        ("nixpkgs-latest",  tr("linux latest — newest mainline stable, cached on cache.nixos.org")),
+        ("nixpkgs-testing", tr("linux_testing — mainline RC/testing kernel, cached on cache.nixos.org")),
+        ("xanmod-lts",      tr("XanMod LTS — nixpkgs, performance governor + lazy preemption + BBRv3")),
+        ("xanmod-latest",   tr("XanMod main branch — nixpkgs, newest XanMod")),
     ],
     "Latest": [
-        ("cachyos-latest",          "Standard latest"),
-        ("cachyos-latest-v3",       "x86_64-v3  —  recommended for modern CPUs"),
+        ("cachyos-latest",          tr("Standard latest")),
+        ("cachyos-latest-v3",       tr("x86_64-v3  —  recommended for modern CPUs")),
         ("cachyos-latest-v4",       "x86_64-v4  —  AVX-512"),
-        ("cachyos-latest-zen4",     "AMD Zen 4 optimised"),
+        ("cachyos-latest-zen4",     tr("AMD Zen 4 optimised")),
         ("cachyos-latest-lto",      "LTO"),
-        ("cachyos-latest-lto-v3",   "LTO + v3  —  best perf on modern CPUs"),
+        ("cachyos-latest-lto-v3",   tr("LTO + v3  —  best perf on modern CPUs")),
         ("cachyos-latest-lto-v4",   "LTO + v4"),
         ("cachyos-latest-lto-zen4", "LTO + Zen 4"),
     ],
     "LTS": [
-        ("cachyos-lts",             "Long-term support"),
+        ("cachyos-lts",             tr("Long-term support")),
         ("cachyos-lts-v3",          "LTS + v3"),
         ("cachyos-lts-v4",          "LTS + v4"),
         ("cachyos-lts-zen4",        "LTS + Zen 4"),
         ("cachyos-lts-lto",         "LTS + LTO"),
-        ("cachyos-lts-lto-v3",      "LTS + LTO + v3  —  stable + performance"),
+        ("cachyos-lts-lto-v3",      tr("LTS + LTO + v3  —  stable + performance")),
         ("cachyos-lts-lto-v4",      "LTS + LTO + v4"),
         ("cachyos-lts-lto-zen4",    "LTS + LTO + Zen 4"),
     ],
     "Variants": [
-        ("cachyos-bore",            "BORE scheduler"),
+        ("cachyos-bore",            tr("BORE scheduler")),
         ("cachyos-bore-lto",        "BORE + LTO"),
-        ("cachyos-bmq",             "BMQ scheduler"),
+        ("cachyos-bmq",             tr("BMQ scheduler")),
         ("cachyos-bmq-lto",         "BMQ + LTO"),
-        ("cachyos-eevdf",           "EEVDF scheduler"),
+        ("cachyos-eevdf",           tr("EEVDF scheduler")),
         ("cachyos-eevdf-lto",       "EEVDF + LTO"),
-        ("cachyos-hardened",        "Security hardened"),
-        ("cachyos-hardened-lto",    "Hardened + LTO"),
-        ("cachyos-rt-bore",         "Real-time + BORE"),
-        ("cachyos-rt-bore-lto",     "Real-time + BORE + LTO"),
-        ("cachyos-deckify",         "Steam Deck optimised"),
+        ("cachyos-hardened",        tr("Security hardened")),
+        ("cachyos-hardened-lto",    tr("Hardened + LTO")),
+        ("cachyos-rt-bore",         tr("Real-time + BORE")),
+        ("cachyos-rt-bore-lto",     tr("Real-time + BORE + LTO")),
+        ("cachyos-deckify",         tr("Steam Deck optimised")),
         ("cachyos-deckify-lto",     "Steam Deck + LTO"),
-        ("cachyos-server",          "Server optimised"),
-        ("cachyos-server-lto",      "Server + LTO"),
-        ("cachyos-rc",              "Release candidate  —  unstable"),
+        ("cachyos-server",          tr("Server optimised")),
+        ("cachyos-server-lto",      tr("Server + LTO")),
+        ("cachyos-rc",              tr("Release candidate  —  unstable")),
         ("cachyos-rc-lto",          "RC + LTO"),
     ],
 }
@@ -107,20 +137,27 @@ KERNELS = {
 # deliberately no LTO here, more fragile on out-of-tree modules like nvidia)
 KERNELS_CHAOTIC = {
     "Nixpkgs": [
-        ("zen",             "linux-zen — nvidia module cached only with the open driver; "
-                             "closed driver compiles locally on every bump"),
-        ("nixpkgs-lts",     "linux LTS — same nvidia module caveat as zen"),
-        ("nixpkgs-latest",  "linux latest — same nvidia module caveat as zen"),
-        ("nixpkgs-testing", "linux_testing — mainline RC/testing kernel, same nvidia module caveat as zen"),
-        ("xanmod-lts",      "XanMod LTS — same nvidia module caveat as zen"),
-        ("xanmod-latest",   "XanMod main branch — same nvidia module caveat as zen"),
+        ("zen",             tr("linux-zen — nvidia module cached only with the open driver; "
+                             "closed driver compiles locally on every bump")),
+        ("nixpkgs-lts",     tr("linux LTS — same nvidia module caveat as zen")),
+        ("nixpkgs-latest",  tr("linux latest — same nvidia module caveat as zen")),
+        ("nixpkgs-testing", tr("linux_testing — mainline RC/testing kernel, same nvidia module caveat as zen")),
+        ("xanmod-lts",      tr("XanMod LTS — same nvidia module caveat as zen")),
+        ("xanmod-latest",   tr("XanMod main branch — same nvidia module caveat as zen")),
     ],
     "Chaotic-Nyx": [
-        ("cachyos",          "Default  —  LTO + BORE, ships nvidia_cachyos"),
-        ("cachyos-lts",      "Long-term support"),
-        ("cachyos-server",   "Server optimised  —  no desktop tuning"),
-        ("cachyos-hardened", "Security hardened"),
+        ("cachyos",          tr("Default  —  LTO + BORE, ships nvidia_cachyos")),
+        ("cachyos-lts",      tr("Long-term support")),
+        ("cachyos-server",   tr("Server optimised  —  no desktop tuning")),
+        ("cachyos-hardened", tr("Security hardened")),
     ],
+}
+
+
+# Group headings (the dict keys above are identifiers and stay English)
+GROUP_TITLES = {
+    "Latest":   tr("Latest"),
+    "Variants": tr("Variants"),
 }
 
 
@@ -192,8 +229,8 @@ class KernelPage(Gtk.Box):
         body.set_margin_end(16)
         scroll.set_child(body)
 
-        source_label = "Chaotic-Nyx (GPU: nvidia)" if self._is_nvidia else "xddxdd"
-        source_note = Gtk.Label(label=f"Kernel source: {source_label}")
+        source_label = tr("Chaotic-Nyx (GPU: nvidia)") if self._is_nvidia else "xddxdd"
+        source_note = Gtk.Label(label=tr("Kernel source: {source}").format(source=source_label))
         source_note.set_halign(Gtk.Align.START)
         source_note.add_css_class("dim-label")
         source_note.add_css_class("caption")
@@ -202,8 +239,8 @@ class KernelPage(Gtk.Box):
 
         if self._is_nvidia:
             nvidia_note = Gtk.Label(
-                label="Nvidia GPU detected — only Chaotic-Nyx variants are shown, "
-                      "so nvidia_cachyos (precompiled driver) stays matched to your kernel."
+                label=tr("Nvidia GPU detected — only Chaotic-Nyx variants are shown, "
+                         "so nvidia_cachyos (precompiled driver) stays matched to your kernel.")
             )
             nvidia_note.set_halign(Gtk.Align.START)
             nvidia_note.set_wrap(True)
@@ -214,14 +251,14 @@ class KernelPage(Gtk.Box):
 
         if self._current:
             banner = Adw.ActionRow()
-            banner.set_title("Active kernel")
+            banner.set_title(tr("Active kernel"))
             banner.set_subtitle(self._current)
             banner.add_css_class("card")
             banner.set_margin_bottom(16)
             body.append(banner)
 
         for group_name, entries in self._catalogue.items():
-            grp_lbl = Gtk.Label(label=group_name.upper())
+            grp_lbl = Gtk.Label(label=GROUP_TITLES.get(group_name, group_name).upper())
             grp_lbl.set_halign(Gtk.Align.START)
             grp_lbl.set_margin_top(8)
             grp_lbl.set_margin_bottom(4)
@@ -258,14 +295,14 @@ class KernelPage(Gtk.Box):
         bar.set_margin_end(16)
         self.append(bar)
 
-        self._status_lbl = Gtk.Label(label="Select a kernel variant above.")
+        self._status_lbl = Gtk.Label(label=tr("Select a kernel variant above."))
         self._status_lbl.set_hexpand(True)
         self._status_lbl.set_halign(Gtk.Align.START)
         self._status_lbl.set_ellipsize(Pango.EllipsizeMode.END)
         self._status_lbl.add_css_class("dim-label")
         bar.append(self._status_lbl)
 
-        self._apply_btn = Gtk.Button(label="Apply & Rebuild")
+        self._apply_btn = Gtk.Button(label=tr("Apply & Rebuild"))
         self._apply_btn.add_css_class("suggested-action")
         self._apply_btn.set_sensitive(False)
         self._apply_btn.connect("clicked", self._on_apply)
@@ -327,20 +364,22 @@ class KernelPage(Gtk.Box):
             changed = variant != self._current
             self._apply_btn.set_sensitive(changed)
             self._status_lbl.set_label(
-                f"Will switch to: {variant}" if changed else "Already the active kernel.")
+                tr("Will switch to: {variant}").format(variant=variant) if changed
+                else tr("Already the active kernel."))
 
     def _on_apply(self, _btn):
         if not self._selected:
             return
         dialog = Adw.AlertDialog()
-        dialog.set_heading("Apply changes?")
+        dialog.set_heading(tr("Apply changes?"))
         dialog.set_body(
-            f"Kernel: <b>{self._current or '?'}</b> → <b>{self._selected}</b>\n\n"
-            "Your NixOS configuration will be rebuilt. This may take a few minutes."
+            tr("Kernel: <b>{current}</b> → <b>{selected}</b>").format(
+                current=self._current or "?", selected=self._selected) + "\n\n" +
+            tr("Your NixOS configuration will be rebuilt. This may take a few minutes.")
         )
         dialog.set_body_use_markup(True)
-        dialog.add_response("cancel", "Cancel")
-        dialog.add_response("confirm", "Apply & Rebuild")
+        dialog.add_response("cancel", tr("Cancel"))
+        dialog.add_response("confirm", tr("Apply & Rebuild"))
         dialog.set_response_appearance("confirm", Adw.ResponseAppearance.SUGGESTED)
         dialog.set_default_response("confirm")
         dialog.connect("response", self._on_confirm)
@@ -351,15 +390,15 @@ class KernelPage(Gtk.Box):
             return
         result = set_kernel(self._selected, self._is_nvidia)
         if result is not True:
-            self._status_lbl.set_label(f"✗ Error writing config: {result}")
+            self._status_lbl.set_label(tr("✗ Error writing config: {error}").format(error=result))
             return
         self._apply_btn.set_sensitive(False)
-        self._status_lbl.set_label("Building…")
+        self._status_lbl.set_label(tr("Building…"))
         self._log_buf.set_text("")
         self._term_line("=" * 50, "section")
-        self._term_line("Important Notices:", "section")
+        self._term_line(tr("Important Notices:"), "section")
         self._term_line("=" * 50, "section")
-        self._term_line("No issues currently reported.", "info")
+        self._term_line(tr("No issues currently reported."), "info")
         self._term_line("", "dim")
         self._term_line("=" * 50, "section")
         if self._pulse_source is None:
@@ -367,10 +406,10 @@ class KernelPage(Gtk.Box):
         threading.Thread(target=self._run_rebuild, daemon=True).start()
 
     def _run_rebuild(self):
-        cmd_str = f"Running: nh os boot --elevation-strategy pkexec --accept-flake-config {NH_FLAKE}"
-        log.info(cmd_str)
-        GLib.idle_add(self._term_line, cmd_str, "dim")
-        GLib.idle_add(self._term_line, "Checking repositories...", "dim")
+        cmd = f"nh os boot --elevation-strategy pkexec --accept-flake-config {NH_FLAKE}"
+        log.info("Running: %s", cmd)   # the log file stays in English
+        GLib.idle_add(self._term_line, tr("Running: {cmd}").format(cmd=cmd), "dim")
+        GLib.idle_add(self._term_line, tr("Checking repositories..."), "dim")
         try:
             proc = subprocess.Popen(
                 ["nh", "os", "boot",
@@ -398,10 +437,10 @@ class KernelPage(Gtk.Box):
             proc.wait()
             rc = proc.returncode
         except FileNotFoundError:
-            GLib.idle_add(self._term_line, "ERROR: 'nh' not found in PATH.", "error")
+            GLib.idle_add(self._term_line, tr("ERROR: 'nh' not found in PATH."), "error")
             rc = 127
         except Exception as e:
-            GLib.idle_add(self._term_line, f"ERROR: {e}", "error")
+            GLib.idle_add(self._term_line, tr("ERROR: {error}").format(error=e), "error")
             rc = 1
         GLib.idle_add(self._finish_rebuild, self._selected, rc)
 
@@ -434,13 +473,13 @@ class KernelPage(Gtk.Box):
             self._pulse_source = None
         if rc == 0:
             self._current = kernel
-            self._status_lbl.set_label(f"✓ Done — reboot to apply {kernel}.")
+            self._status_lbl.set_label(tr("✓ Done — reboot to apply {kernel}.").format(kernel=kernel))
             self._term_line("", "dim")
-            self._term_line("✓ Rebuild completed successfully. Reboot to apply changes.", "ok")
+            self._term_line(tr("✓ Rebuild completed successfully. Reboot to apply changes."), "ok")
         else:
-            self._status_lbl.set_label(f"✗ Build failed (exit {rc}). See log.")
+            self._status_lbl.set_label(tr("✗ Build failed (exit {rc}). See log.").format(rc=rc))
             self._term_line("", "dim")
-            self._term_line(f"✗ Rebuild failed (exit code {rc}).", "error")
+            self._term_line(tr("✗ Rebuild failed (exit code {rc}).").format(rc=rc), "error")
             self._apply_btn.set_sensitive(True)
 
 

@@ -1,0 +1,255 @@
+# Translations of roudix-kernel-switcher (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-kernel-switcher\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-23 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#: roudix-kernel-switcher.py
+msgid "linux-zen — mainline nixpkgs kernel, cached on cache.nixos.org, independent of the xddxdd overlay"
+msgstr "linux-zen — نواة mainline من nixpkgs، مخزّنة مؤقتًا على cache.nixos.org، ومستقلة عن overlay الخاص بـ xddxdd"
+
+#: roudix-kernel-switcher.py
+msgid "linux LTS — nixpkgs default kernel, cached on cache.nixos.org"
+msgstr "linux LTS — النواة الافتراضية في nixpkgs، مخزّنة مؤقتًا على cache.nixos.org"
+
+#: roudix-kernel-switcher.py
+msgid "linux latest — newest mainline stable, cached on cache.nixos.org"
+msgstr "linux latest — أحدث إصدار مستقر من mainline، مخزّن مؤقتًا على cache.nixos.org"
+
+#: roudix-kernel-switcher.py
+msgid "linux_testing — mainline RC/testing kernel, cached on cache.nixos.org"
+msgstr "linux_testing — نواة mainline تجريبية (RC)، مخزّنة مؤقتًا على cache.nixos.org"
+
+#: roudix-kernel-switcher.py
+msgid "XanMod LTS — nixpkgs, performance governor + lazy preemption + BBRv3"
+msgstr "XanMod LTS — من nixpkgs، مُنظِّم performance + استباق كسول (lazy preemption) + BBRv3"
+
+#: roudix-kernel-switcher.py
+msgid "XanMod main branch — nixpkgs, newest XanMod"
+msgstr "الفرع الرئيسي لـ XanMod — من nixpkgs، أحدث إصدار من XanMod"
+
+#: roudix-kernel-switcher.py
+msgid "Standard latest"
+msgstr "قياسية، الأحدث"
+
+#: roudix-kernel-switcher.py
+msgid "x86_64-v3  —  recommended for modern CPUs"
+msgstr "x86_64-v3  —  موصى بها للمعالجات الحديثة"
+
+#: roudix-kernel-switcher.py
+msgid "AMD Zen 4 optimised"
+msgstr "محسّنة لمعالجات AMD Zen 4"
+
+#: roudix-kernel-switcher.py
+msgid "LTO + v3  —  best perf on modern CPUs"
+msgstr "LTO + v3  —  أفضل أداء على المعالجات الحديثة"
+
+#: roudix-kernel-switcher.py
+msgid "Long-term support"
+msgstr "دعم طويل الأمد"
+
+#: roudix-kernel-switcher.py
+msgid "LTS + LTO + v3  —  stable + performance"
+msgstr "LTS + LTO + v3  —  استقرار + أداء"
+
+#: roudix-kernel-switcher.py
+msgid "BORE scheduler"
+msgstr "مُجدوِل BORE"
+
+#: roudix-kernel-switcher.py
+msgid "BMQ scheduler"
+msgstr "مُجدوِل BMQ"
+
+#: roudix-kernel-switcher.py
+msgid "EEVDF scheduler"
+msgstr "مُجدوِل EEVDF"
+
+#: roudix-kernel-switcher.py
+msgid "Security hardened"
+msgstr "معزَّزة أمنيًا"
+
+#: roudix-kernel-switcher.py
+msgid "Hardened + LTO"
+msgstr "معزَّزة + LTO"
+
+#: roudix-kernel-switcher.py
+msgid "Real-time + BORE"
+msgstr "الزمن الحقيقي + BORE"
+
+#: roudix-kernel-switcher.py
+msgid "Real-time + BORE + LTO"
+msgstr "الزمن الحقيقي + BORE + LTO"
+
+#: roudix-kernel-switcher.py
+msgid "Steam Deck optimised"
+msgstr "محسّنة لجهاز Steam Deck"
+
+#: roudix-kernel-switcher.py
+msgid "Server optimised"
+msgstr "محسّنة للخوادم"
+
+#: roudix-kernel-switcher.py
+msgid "Server + LTO"
+msgstr "خادم + LTO"
+
+#: roudix-kernel-switcher.py
+msgid "Release candidate  —  unstable"
+msgstr "نسخة مرشَّحة  —  غير مستقرة"
+
+#: roudix-kernel-switcher.py
+msgid "linux-zen — nvidia module cached only with the open driver; closed driver compiles locally on every bump"
+msgstr "linux-zen — وحدة nvidia مخزّنة مؤقتًا مع التعريف المفتوح فقط؛ أما التعريف المغلق فيُبنى محليًا عند كل تحديث"
+
+#: roudix-kernel-switcher.py
+msgid "linux LTS — same nvidia module caveat as zen"
+msgstr "linux LTS — نفس تحفّظ وحدة nvidia الخاص بـ zen"
+
+#: roudix-kernel-switcher.py
+msgid "linux latest — same nvidia module caveat as zen"
+msgstr "linux latest — نفس تحفّظ وحدة nvidia الخاص بـ zen"
+
+#: roudix-kernel-switcher.py
+msgid "linux_testing — mainline RC/testing kernel, same nvidia module caveat as zen"
+msgstr "linux_testing — نواة mainline تجريبية (RC)، مع نفس تحفّظ وحدة nvidia الخاص بـ zen"
+
+#: roudix-kernel-switcher.py
+msgid "XanMod LTS — same nvidia module caveat as zen"
+msgstr "XanMod LTS — نفس تحفّظ وحدة nvidia الخاص بـ zen"
+
+#: roudix-kernel-switcher.py
+msgid "XanMod main branch — same nvidia module caveat as zen"
+msgstr "الفرع الرئيسي لـ XanMod — نفس تحفّظ وحدة nvidia الخاص بـ zen"
+
+#: roudix-kernel-switcher.py
+msgid "Default  —  LTO + BORE, ships nvidia_cachyos"
+msgstr "الافتراضية  —  LTO + BORE، تأتي مع nvidia_cachyos"
+
+#: roudix-kernel-switcher.py
+msgid "Server optimised  —  no desktop tuning"
+msgstr "محسّنة للخوادم  —  دون ضبط لسطح المكتب"
+
+#. TRANSLATORS: Heading above a list of kernels ("latest kernels").
+#: roudix-kernel-switcher.py
+msgid "Latest"
+msgstr "الأحدث"
+
+#. TRANSLATORS: Heading above a list of kernel variants.
+#: roudix-kernel-switcher.py
+msgid "Variants"
+msgstr "المتغيّرات"
+
+#: roudix-kernel-switcher.py
+msgid "Chaotic-Nyx (GPU: nvidia)"
+msgstr "Chaotic-Nyx (GPU: nvidia)"
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "Kernel source: {source}"
+msgstr "مصدر النواة: {source}"
+
+#: roudix-kernel-switcher.py
+msgid "Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos (precompiled driver) stays matched to your kernel."
+msgstr "تم اكتشاف بطاقة Nvidia — تُعرض متغيّرات Chaotic-Nyx فقط، كي يبقى nvidia_cachyos (التعريف المُجمَّع مسبقًا) متوافقًا مع نواتك."
+
+#: roudix-kernel-switcher.py
+msgid "Active kernel"
+msgstr "النواة الحالية"
+
+#: roudix-kernel-switcher.py
+msgid "Select a kernel variant above."
+msgstr "اختر متغيّر النواة من الأعلى."
+
+#: roudix-kernel-switcher.py
+msgid "Apply & Rebuild"
+msgstr "تطبيق وإعادة البناء"
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "Will switch to: {variant}"
+msgstr "سيتم التبديل إلى: {variant}"
+
+#: roudix-kernel-switcher.py
+msgid "Already the active kernel."
+msgstr "هذه هي النواة الحالية بالفعل."
+
+#: roudix-kernel-switcher.py
+msgid "Apply changes?"
+msgstr "هل تريد تطبيق التغييرات؟"
+
+#. TRANSLATORS: Pango markup: keep the <b> tags and the {placeholders}.
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "Kernel: <b>{current}</b> → <b>{selected}</b>"
+msgstr "النواة: <b>{current}</b> → <b>{selected}</b>"
+
+#: roudix-kernel-switcher.py
+msgid "Your NixOS configuration will be rebuilt. This may take a few minutes."
+msgstr "ستتم إعادة بناء إعدادات NixOS لديك. قد يستغرق ذلك بضع دقائق."
+
+#: roudix-kernel-switcher.py
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "✗ Error writing config: {error}"
+msgstr "✗ خطأ أثناء كتابة الإعدادات: {error}"
+
+#: roudix-kernel-switcher.py
+msgid "Building…"
+msgstr "جارٍ البناء…"
+
+#: roudix-kernel-switcher.py
+msgid "Important Notices:"
+msgstr "إشعارات مهمة:"
+
+#: roudix-kernel-switcher.py
+msgid "No issues currently reported."
+msgstr "لا توجد مشكلات مُبلَّغ عنها حاليًا."
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "Running: {cmd}"
+msgstr "التنفيذ: {cmd}"
+
+#: roudix-kernel-switcher.py
+msgid "Checking repositories..."
+msgstr "جارٍ فحص المستودعات..."
+
+#: roudix-kernel-switcher.py
+msgid "ERROR: 'nh' not found in PATH."
+msgstr "خطأ: لم يتم العثور على 'nh' في PATH."
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "ERROR: {error}"
+msgstr "خطأ: {error}"
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "✓ Done — reboot to apply {kernel}."
+msgstr "✓ تم — أعد التشغيل لتطبيق {kernel}."
+
+#: roudix-kernel-switcher.py
+msgid "✓ Rebuild completed successfully. Reboot to apply changes."
+msgstr "✓ اكتملت إعادة البناء بنجاح. أعد التشغيل لتطبيق التغييرات."
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "✗ Build failed (exit {rc}). See log."
+msgstr "✗ فشل البناء (رمز الخروج {rc}). راجع السجل."
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit code {rc})."
+msgstr "✗ فشلت إعادة البناء (رمز الخروج {rc})."
+

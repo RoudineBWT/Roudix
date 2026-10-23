@@ -1,0 +1,258 @@
+# Translations of roudix-hw-sync (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-hw-sync\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-23 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — modern (RDNA / GCN 3+, RX 400 and newer)"
+msgstr "AMD — moderna (RDNA / GCN 3+, RX 400 y posteriores)"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — integrated (Ryzen APU)"
+msgstr "AMD — integrada (APU Ryzen)"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — legacy (GCN 1.x / 2.x, HD 7xxx, R9 2xx)"
+msgstr "AMD — antigua (GCN 1.x / 2.x, HD 7xxx, R9 2xx)"
+
+#: roudix-hw-sync-gui.py
+msgid "Intel (integrated or Arc)"
+msgstr "Intel (integrada o Arc)"
+
+#: roudix-hw-sync-gui.py
+msgid "Detection failed."
+msgstr "Falló la detección."
+
+#: roudix-hw-sync-gui.py
+msgid "New PC, new graphics card or new processor? Roudix looks at your hardware and updates your configuration to match. Nothing is changed until you press a button below."
+msgstr "¿PC nuevo, tarjeta gráfica nueva o procesador nuevo? Roudix analiza tu hardware y actualiza tu configuración para que coincida. No se cambia nada hasta que pulses un botón de abajo."
+
+#: roudix-hw-sync-gui.py
+msgid "Your hardware"
+msgstr "Tu hardware"
+
+#: roudix-hw-sync-gui.py
+msgid "Processor (CPU)"
+msgstr "Procesador (CPU)"
+
+#: roudix-hw-sync-gui.py
+msgid "Graphics card (GPU)"
+msgstr "Tarjeta gráfica (GPU)"
+
+#: roudix-hw-sync-gui.py
+msgid "Laptop with an NVIDIA graphics card"
+msgstr "Portátil con tarjeta gráfica NVIDIA"
+
+#: roudix-hw-sync-gui.py
+msgid "Hybrid graphics (Optimus): Intel/AMD chip + NVIDIA card"
+msgstr "Gráficos híbridos (Optimus): chip Intel/AMD + tarjeta NVIDIA"
+
+#: roudix-hw-sync-gui.py
+msgid "Checking…"
+msgstr "Comprobando…"
+
+#: roudix-hw-sync-gui.py
+msgid "Preview of the changes"
+msgstr "Vista previa de los cambios"
+
+#: roudix-hw-sync-gui.py
+msgid "Re-detect"
+msgstr "Detectar de nuevo"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply"
+msgstr "Aplicar"
+
+#: roudix-hw-sync-gui.py
+msgid "Only update local.nix, no rebuild"
+msgstr "Solo actualiza local.nix, sin reconstruir"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply & Rebuild"
+msgstr "Aplicar y reconstruir"
+
+#: roudix-hw-sync-gui.py
+msgid "Could not detect your hardware"
+msgstr "No se pudo detectar tu hardware"
+
+#: roudix-hw-sync-gui.py
+msgid "Something went wrong"
+msgstr "Algo salió mal"
+
+#: roudix-hw-sync-gui.py
+msgid "Your configuration already matches this hardware"
+msgstr "Tu configuración ya coincide con este hardware"
+
+#: roudix-hw-sync-gui.py
+#, c-format
+msgid "%d line will be updated in local.nix"
+msgid_plural "%d lines will be updated in local.nix"
+msgstr[0] "Se actualizará %d línea en local.nix"
+msgstr[1] "Se actualizarán %d líneas en local.nix"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply changes?"
+msgstr "¿Aplicar los cambios?"
+
+#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "CPU: <b>{cpu}</b>"
+msgstr "CPU: <b>{cpu}</b>"
+
+#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "GPU: <b>{gpu}</b>"
+msgstr "GPU: <b>{gpu}</b>"
+
+#. TRANSLATORS: {answer} is replaced by the words "yes" / "no" below.
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "Hybrid laptop: <b>{answer}</b>"
+msgstr "Portátil híbrido: <b>{answer}</b>"
+
+#: roudix-hw-sync-gui.py
+msgid "yes"
+msgstr "sí"
+
+#: roudix-hw-sync-gui.py
+msgid "no"
+msgstr "no"
+
+#. TRANSLATORS: Pango markup: keep the <tt> tags.
+#: roudix-hw-sync-gui.py
+msgid "A backup of your settings is kept as <tt>local.nix.bak</tt>."
+msgstr "Se guarda una copia de seguridad de tus ajustes como <tt>local.nix.bak</tt>."
+
+#: roudix-hw-sync-gui.py
+msgid "Your system will then be rebuilt, this can take a few minutes."
+msgstr "Después se reconstruirá tu sistema; esto puede tardar unos minutos."
+
+#: roudix-hw-sync-gui.py
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: roudix-hw-sync-gui.py
+msgid "✗ Could not write local.nix"
+msgstr "✗ No se pudo escribir local.nix"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ local.nix updated — rebuild to apply"
+msgstr "✓ local.nix actualizado — reconstruye para aplicar"
+
+#: roudix-hw-sync-gui.py
+msgid "Backup saved as local.nix.bak"
+msgstr "Copia de seguridad guardada como local.nix.bak"
+
+#: roudix-hw-sync-gui.py
+msgid "Rebuilding…"
+msgstr "Reconstruyendo…"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "Running: {cmd}"
+msgstr "Ejecutando: {cmd}"
+
+#: roudix-hw-sync-gui.py
+msgid "ERROR: 'nh' not found in PATH."
+msgstr "ERROR: no se encontró «nh» en el PATH."
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "ERROR: {error}"
+msgstr "ERROR: {error}"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ Done — reboot to use your new hardware settings"
+msgstr "✓ Listo — reinicia para usar tu nueva configuración de hardware"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ Rebuild completed. Reboot to apply the changes."
+msgstr "✓ Reconstrucción completada. Reinicia para aplicar los cambios."
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit {rc})"
+msgstr "✗ Falló la reconstrucción (código {rc})"
+
+#: roudix-hw-sync-gui.py
+msgid "See the log below. Your local.nix was already updated."
+msgstr "Consulta el registro de abajo. Tu local.nix ya se actualizó."
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit code {rc})."
+msgstr "✗ Falló la reconstrucción (código de salida {rc})."
+
+#: roudix-hw-sync
+#, c-format
+msgid "Unknown option: %s"
+msgstr "Opción desconocida: %s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Invalid --gpu: %s"
+msgstr "Valor de --gpu no válido: %s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Invalid --cpu: %s"
+msgstr "Valor de --cpu no válido: %s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Invalid --laptop: %s"
+msgstr "Valor de --laptop no válido: %s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "local.nix not found: %s"
+msgstr "No se encontró local.nix: %s"
+
+#: roudix-hw-sync
+msgid "CPU vendor not detected, use --cpu amd|intel"
+msgstr "No se detectó el fabricante de la CPU, usa --cpu amd|intel"
+
+#: roudix-hw-sync
+msgid "GPU not detected, use --gpu ..."
+msgstr "No se detectó la GPU, usa --gpu ..."
+
+#. TRANSLATORS: Keep CPU=, GPU= and nvidiaLaptop= as they are (option names), and the three %s in this order.
+#: roudix-hw-sync
+#, c-format
+msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+msgstr "Detectado: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+
+#: roudix-hw-sync
+msgid "warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), module default applies"
+msgstr "aviso: no hay ninguna línea hardware.myKernelChaotic en local.nix (nvidia la usa), se aplica el valor por defecto del módulo"
+
+#: roudix-hw-sync
+msgid "Nothing to change."
+msgstr "No hay nada que cambiar."
+
+#. TRANSLATORS: Must start with an ASCII "(": the GUI uses that to tell this note apart from the diff.
+#: roudix-hw-sync
+msgid "(dry-run: file left untouched)"
+msgstr "(simulación: archivo sin modificar)"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Done. Backup: %s"
+msgstr "Hecho. Copia de seguridad: %s"
+
+#. TRANSLATORS: Keep the command and $NH_FLAKE exactly as they are.
+#: roudix-hw-sync
+msgid "Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)"
+msgstr "Ahora reconstruye: rebuild   (o: nh os boot --accept-flake-config path:$NH_FLAKE)"
+

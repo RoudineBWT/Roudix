@@ -1,0 +1,258 @@
+# Translations of roudix-hw-sync (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-hw-sync\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-23 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — modern (RDNA / GCN 3+, RX 400 and newer)"
+msgstr "AMD — आधुनिक (RDNA / GCN 3+, RX 400 और नए)"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — integrated (Ryzen APU)"
+msgstr "AMD — इंटीग्रेटेड (Ryzen APU)"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — legacy (GCN 1.x / 2.x, HD 7xxx, R9 2xx)"
+msgstr "AMD — पुरानी (GCN 1.x / 2.x, HD 7xxx, R9 2xx)"
+
+#: roudix-hw-sync-gui.py
+msgid "Intel (integrated or Arc)"
+msgstr "Intel (इंटीग्रेटेड या Arc)"
+
+#: roudix-hw-sync-gui.py
+msgid "Detection failed."
+msgstr "पहचान विफल रही।"
+
+#: roudix-hw-sync-gui.py
+msgid "New PC, new graphics card or new processor? Roudix looks at your hardware and updates your configuration to match. Nothing is changed until you press a button below."
+msgstr "नया PC, नया ग्राफ़िक्स कार्ड या नया प्रोसेसर? Roudix आपके हार्डवेयर की जाँच करता है और उसके अनुसार आपका कॉन्फ़िगरेशन अपडेट करता है। नीचे दिया गया कोई बटन दबाने तक कुछ भी नहीं बदला जाएगा।"
+
+#: roudix-hw-sync-gui.py
+msgid "Your hardware"
+msgstr "आपका हार्डवेयर"
+
+#: roudix-hw-sync-gui.py
+msgid "Processor (CPU)"
+msgstr "प्रोसेसर (CPU)"
+
+#: roudix-hw-sync-gui.py
+msgid "Graphics card (GPU)"
+msgstr "ग्राफ़िक्स कार्ड (GPU)"
+
+#: roudix-hw-sync-gui.py
+msgid "Laptop with an NVIDIA graphics card"
+msgstr "NVIDIA ग्राफ़िक्स कार्ड वाला लैपटॉप"
+
+#: roudix-hw-sync-gui.py
+msgid "Hybrid graphics (Optimus): Intel/AMD chip + NVIDIA card"
+msgstr "हाइब्रिड ग्राफ़िक्स (Optimus): Intel/AMD चिप + NVIDIA कार्ड"
+
+#: roudix-hw-sync-gui.py
+msgid "Checking…"
+msgstr "जाँच हो रही है…"
+
+#: roudix-hw-sync-gui.py
+msgid "Preview of the changes"
+msgstr "बदलावों का पूर्वावलोकन"
+
+#: roudix-hw-sync-gui.py
+msgid "Re-detect"
+msgstr "फिर से पहचानें"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply"
+msgstr "लागू करें"
+
+#: roudix-hw-sync-gui.py
+msgid "Only update local.nix, no rebuild"
+msgstr "सिर्फ़ local.nix अपडेट करें, रीबिल्ड नहीं"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply & Rebuild"
+msgstr "लागू करें और रीबिल्ड करें"
+
+#: roudix-hw-sync-gui.py
+msgid "Could not detect your hardware"
+msgstr "आपका हार्डवेयर पहचाना नहीं जा सका"
+
+#: roudix-hw-sync-gui.py
+msgid "Something went wrong"
+msgstr "कुछ गड़बड़ हो गई"
+
+#: roudix-hw-sync-gui.py
+msgid "Your configuration already matches this hardware"
+msgstr "आपका कॉन्फ़िगरेशन पहले से इस हार्डवेयर से मेल खाता है"
+
+#: roudix-hw-sync-gui.py
+#, c-format
+msgid "%d line will be updated in local.nix"
+msgid_plural "%d lines will be updated in local.nix"
+msgstr[0] "local.nix में %d पंक्ति अपडेट की जाएगी"
+msgstr[1] "local.nix में %d पंक्तियाँ अपडेट की जाएँगी"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply changes?"
+msgstr "बदलाव लागू करें?"
+
+#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "CPU: <b>{cpu}</b>"
+msgstr "CPU: <b>{cpu}</b>"
+
+#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "GPU: <b>{gpu}</b>"
+msgstr "GPU: <b>{gpu}</b>"
+
+#. TRANSLATORS: {answer} is replaced by the words "yes" / "no" below.
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "Hybrid laptop: <b>{answer}</b>"
+msgstr "हाइब्रिड लैपटॉप: <b>{answer}</b>"
+
+#: roudix-hw-sync-gui.py
+msgid "yes"
+msgstr "हाँ"
+
+#: roudix-hw-sync-gui.py
+msgid "no"
+msgstr "नहीं"
+
+#. TRANSLATORS: Pango markup: keep the <tt> tags.
+#: roudix-hw-sync-gui.py
+msgid "A backup of your settings is kept as <tt>local.nix.bak</tt>."
+msgstr "आपकी सेटिंग्स का बैकअप <tt>local.nix.bak</tt> के रूप में रखा जाता है।"
+
+#: roudix-hw-sync-gui.py
+msgid "Your system will then be rebuilt, this can take a few minutes."
+msgstr "इसके बाद आपका सिस्टम रीबिल्ड किया जाएगा, इसमें कुछ मिनट लग सकते हैं।"
+
+#: roudix-hw-sync-gui.py
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#: roudix-hw-sync-gui.py
+msgid "✗ Could not write local.nix"
+msgstr "✗ local.nix नहीं लिखा जा सका"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ local.nix updated — rebuild to apply"
+msgstr "✓ local.nix अपडेट हो गया — लागू करने के लिए रीबिल्ड करें"
+
+#: roudix-hw-sync-gui.py
+msgid "Backup saved as local.nix.bak"
+msgstr "बैकअप local.nix.bak के रूप में सहेजा गया"
+
+#: roudix-hw-sync-gui.py
+msgid "Rebuilding…"
+msgstr "रीबिल्ड हो रहा है…"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "Running: {cmd}"
+msgstr "चलाया जा रहा है: {cmd}"
+
+#: roudix-hw-sync-gui.py
+msgid "ERROR: 'nh' not found in PATH."
+msgstr "त्रुटि: 'nh' PATH में नहीं मिला।"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "ERROR: {error}"
+msgstr "त्रुटि: {error}"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ Done — reboot to use your new hardware settings"
+msgstr "✓ हो गया — नई हार्डवेयर सेटिंग्स इस्तेमाल करने के लिए रीबूट करें"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ Rebuild completed. Reboot to apply the changes."
+msgstr "✓ रीबिल्ड पूरा हुआ। बदलाव लागू करने के लिए रीबूट करें।"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit {rc})"
+msgstr "✗ रीबिल्ड विफल रहा (एग्ज़िट कोड {rc})"
+
+#: roudix-hw-sync-gui.py
+msgid "See the log below. Your local.nix was already updated."
+msgstr "नीचे दिया गया लॉग देखें। आपका local.nix पहले ही अपडेट हो चुका है।"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit code {rc})."
+msgstr "✗ रीबिल्ड विफल रहा (एग्ज़िट कोड {rc})।"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Unknown option: %s"
+msgstr "अज्ञात विकल्प: %s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Invalid --gpu: %s"
+msgstr "अमान्य --gpu: %s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Invalid --cpu: %s"
+msgstr "अमान्य --cpu: %s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Invalid --laptop: %s"
+msgstr "अमान्य --laptop: %s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "local.nix not found: %s"
+msgstr "local.nix नहीं मिला: %s"
+
+#: roudix-hw-sync
+msgid "CPU vendor not detected, use --cpu amd|intel"
+msgstr "CPU निर्माता की पहचान नहीं हो सकी, --cpu amd|intel इस्तेमाल करें"
+
+#: roudix-hw-sync
+msgid "GPU not detected, use --gpu ..."
+msgstr "GPU की पहचान नहीं हो सकी, --gpu ... इस्तेमाल करें"
+
+#. TRANSLATORS: Keep CPU=, GPU= and nvidiaLaptop= as they are (option names), and the three %s in this order.
+#: roudix-hw-sync
+#, c-format
+msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+msgstr "पहचाना गया: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+
+#: roudix-hw-sync
+msgid "warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), module default applies"
+msgstr "चेतावनी: local.nix में hardware.myKernelChaotic वाली पंक्ति नहीं है (nvidia इसे इस्तेमाल करता है), मॉड्यूल का डिफ़ॉल्ट लागू होगा"
+
+#: roudix-hw-sync
+msgid "Nothing to change."
+msgstr "बदलने के लिए कुछ नहीं है।"
+
+#. TRANSLATORS: Must start with an ASCII "(": the GUI uses that to tell this note apart from the diff.
+#: roudix-hw-sync
+msgid "(dry-run: file left untouched)"
+msgstr "(ड्राई-रन: फ़ाइल में कोई बदलाव नहीं किया गया)"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Done. Backup: %s"
+msgstr "हो गया। बैकअप: %s"
+
+#. TRANSLATORS: Keep the command and $NH_FLAKE exactly as they are.
+#: roudix-hw-sync
+msgid "Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)"
+msgstr "अब रीबिल्ड करें: rebuild   (या: nh os boot --accept-flake-config path:$NH_FLAKE)"
+

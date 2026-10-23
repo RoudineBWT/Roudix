@@ -28,6 +28,13 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
   shows them all, after the package diff.
 - `roudix-switcher` now exposes options it was missing: password manager (`roudix.passwordManager`), Signal / ZapZap / Fluxer, the Umbriel effects (`roudix.umbriel.effects`), the Zen tweaks (`roudix.zen.tweaks.*`), the Gaming Mode HDR switch (`roudix.gaming.gamescopeSession.hdr.enable`) and the auto-update check interval (`roudix.autoupdate.interval`).
 - Zen tweaks can target a chosen existing profile (`roudix.zen.tweaks.profile`, ~/.zen or ~/.config/zen) and Firefox gets the same tweaks as a user.js in a chosen profile (`roudix.firefox.tweaks.*`, ~/.mozilla/firefox or ~/.config/mozilla/firefox); `roudix-switcher` lists the profiles found. Umbriel effects are shown without icons.
+- `roudix-hw-sync` (app and terminal) is translated like the other Roudix apps, via gettext
+  (`po/<lang>.po`, compiled to `share/locale` by the package): French, Spanish, Brazilian
+  Portuguese, Russian, Simplified Chinese, Hindi and Arabic, with the `.desktop` comment. The CLI's
+  messages are translated too; the `--detect` key=value output stays untouched.
+- `roudix-kernel-switcher` is translated the same way (same seven languages, `.desktop` comment
+  included): kernel descriptions, group headings and every message of the app. Kernel names
+  (`cachyos-lto-v3`, …) and the log file stay in English.
 
 ### Changed
 - Roudix identity moved from Catppuccin Mocha Peach to the Roudix palette: logo

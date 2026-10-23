@@ -1,0 +1,257 @@
+# Translations of roudix-hw-sync (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-hw-sync\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-23 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Simplified Chinese\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — modern (RDNA / GCN 3+, RX 400 and newer)"
+msgstr "AMD — 现代（RDNA / GCN 3+，RX 400 及更新）"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — integrated (Ryzen APU)"
+msgstr "AMD — 集成显卡（Ryzen APU）"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — legacy (GCN 1.x / 2.x, HD 7xxx, R9 2xx)"
+msgstr "AMD — 旧款（GCN 1.x / 2.x，HD 7xxx，R9 2xx）"
+
+#: roudix-hw-sync-gui.py
+msgid "Intel (integrated or Arc)"
+msgstr "Intel（集成显卡或 Arc）"
+
+#: roudix-hw-sync-gui.py
+msgid "Detection failed."
+msgstr "检测失败。"
+
+#: roudix-hw-sync-gui.py
+msgid "New PC, new graphics card or new processor? Roudix looks at your hardware and updates your configuration to match. Nothing is changed until you press a button below."
+msgstr "换了新电脑、新显卡或新处理器？Roudix 会检测你的硬件，并相应更新你的配置。在你点击下方按钮之前，不会更改任何内容。"
+
+#: roudix-hw-sync-gui.py
+msgid "Your hardware"
+msgstr "你的硬件"
+
+#: roudix-hw-sync-gui.py
+msgid "Processor (CPU)"
+msgstr "处理器（CPU）"
+
+#: roudix-hw-sync-gui.py
+msgid "Graphics card (GPU)"
+msgstr "显卡（GPU）"
+
+#: roudix-hw-sync-gui.py
+msgid "Laptop with an NVIDIA graphics card"
+msgstr "配备 NVIDIA 显卡的笔记本电脑"
+
+#: roudix-hw-sync-gui.py
+msgid "Hybrid graphics (Optimus): Intel/AMD chip + NVIDIA card"
+msgstr "混合显卡（Optimus）：Intel/AMD 芯片 + NVIDIA 显卡"
+
+#: roudix-hw-sync-gui.py
+msgid "Checking…"
+msgstr "正在检查…"
+
+#: roudix-hw-sync-gui.py
+msgid "Preview of the changes"
+msgstr "更改预览"
+
+#: roudix-hw-sync-gui.py
+msgid "Re-detect"
+msgstr "重新检测"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply"
+msgstr "应用"
+
+#: roudix-hw-sync-gui.py
+msgid "Only update local.nix, no rebuild"
+msgstr "仅更新 local.nix，不重新构建"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply & Rebuild"
+msgstr "应用并重新构建"
+
+#: roudix-hw-sync-gui.py
+msgid "Could not detect your hardware"
+msgstr "无法检测你的硬件"
+
+#: roudix-hw-sync-gui.py
+msgid "Something went wrong"
+msgstr "出了点问题"
+
+#: roudix-hw-sync-gui.py
+msgid "Your configuration already matches this hardware"
+msgstr "你的配置已与此硬件匹配"
+
+#: roudix-hw-sync-gui.py
+#, c-format
+msgid "%d line will be updated in local.nix"
+msgid_plural "%d lines will be updated in local.nix"
+msgstr[0] "将在 local.nix 中更新 %d 行"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply changes?"
+msgstr "应用更改？"
+
+#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "CPU: <b>{cpu}</b>"
+msgstr "CPU：<b>{cpu}</b>"
+
+#. TRANSLATORS: Shown in a dialog that uses Pango markup: keep the <b> tags and the {placeholder}.
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "GPU: <b>{gpu}</b>"
+msgstr "GPU：<b>{gpu}</b>"
+
+#. TRANSLATORS: {answer} is replaced by the words "yes" / "no" below.
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "Hybrid laptop: <b>{answer}</b>"
+msgstr "混合显卡笔记本：<b>{answer}</b>"
+
+#: roudix-hw-sync-gui.py
+msgid "yes"
+msgstr "是"
+
+#: roudix-hw-sync-gui.py
+msgid "no"
+msgstr "否"
+
+#. TRANSLATORS: Pango markup: keep the <tt> tags.
+#: roudix-hw-sync-gui.py
+msgid "A backup of your settings is kept as <tt>local.nix.bak</tt>."
+msgstr "你的设置会备份为 <tt>local.nix.bak</tt>。"
+
+#: roudix-hw-sync-gui.py
+msgid "Your system will then be rebuilt, this can take a few minutes."
+msgstr "随后会重新构建你的系统，这可能需要几分钟。"
+
+#: roudix-hw-sync-gui.py
+msgid "Cancel"
+msgstr "取消"
+
+#: roudix-hw-sync-gui.py
+msgid "✗ Could not write local.nix"
+msgstr "✗ 无法写入 local.nix"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ local.nix updated — rebuild to apply"
+msgstr "✓ local.nix 已更新 — 重新构建以生效"
+
+#: roudix-hw-sync-gui.py
+msgid "Backup saved as local.nix.bak"
+msgstr "备份已保存为 local.nix.bak"
+
+#: roudix-hw-sync-gui.py
+msgid "Rebuilding…"
+msgstr "正在重新构建…"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "Running: {cmd}"
+msgstr "正在运行：{cmd}"
+
+#: roudix-hw-sync-gui.py
+msgid "ERROR: 'nh' not found in PATH."
+msgstr "错误：在 PATH 中找不到 “nh”。"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "ERROR: {error}"
+msgstr "错误：{error}"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ Done — reboot to use your new hardware settings"
+msgstr "✓ 完成 — 重启后即可使用新的硬件设置"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ Rebuild completed. Reboot to apply the changes."
+msgstr "✓ 重新构建完成。重启以应用更改。"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit {rc})"
+msgstr "✗ 重新构建失败（退出码 {rc}）"
+
+#: roudix-hw-sync-gui.py
+msgid "See the log below. Your local.nix was already updated."
+msgstr "请查看下方日志。你的 local.nix 已经更新。"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit code {rc})."
+msgstr "✗ 重新构建失败（退出码 {rc}）。"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Unknown option: %s"
+msgstr "未知选项：%s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Invalid --gpu: %s"
+msgstr "无效的 --gpu：%s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Invalid --cpu: %s"
+msgstr "无效的 --cpu：%s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Invalid --laptop: %s"
+msgstr "无效的 --laptop：%s"
+
+#: roudix-hw-sync
+#, c-format
+msgid "local.nix not found: %s"
+msgstr "找不到 local.nix：%s"
+
+#: roudix-hw-sync
+msgid "CPU vendor not detected, use --cpu amd|intel"
+msgstr "未检测到 CPU 厂商，请使用 --cpu amd|intel"
+
+#: roudix-hw-sync
+msgid "GPU not detected, use --gpu ..."
+msgstr "未检测到 GPU，请使用 --gpu ..."
+
+#. TRANSLATORS: Keep CPU=, GPU= and nvidiaLaptop= as they are (option names), and the three %s in this order.
+#: roudix-hw-sync
+#, c-format
+msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+msgstr "检测到：CPU=%s  GPU=%s  nvidiaLaptop=%s"
+
+#: roudix-hw-sync
+msgid "warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), module default applies"
+msgstr "警告：local.nix 中没有 hardware.myKernelChaotic 行（nvidia 使用它），将采用模块默认值"
+
+#: roudix-hw-sync
+msgid "Nothing to change."
+msgstr "没有需要更改的内容。"
+
+#. TRANSLATORS: Must start with an ASCII "(": the GUI uses that to tell this note apart from the diff.
+#: roudix-hw-sync
+msgid "(dry-run: file left untouched)"
+msgstr "(试运行：文件未改动)"
+
+#: roudix-hw-sync
+#, c-format
+msgid "Done. Backup: %s"
+msgstr "完成。备份：%s"
+
+#. TRANSLATORS: Keep the command and $NH_FLAKE exactly as they are.
+#: roudix-hw-sync
+msgid "Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)"
+msgstr "现在请重新构建：rebuild   （或：nh os boot --accept-flake-config path:$NH_FLAKE）"
+
