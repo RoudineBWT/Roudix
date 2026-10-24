@@ -103,7 +103,7 @@ let
     };
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
-      icon-theme   = "Papirus-Dark";
+      icon-theme   = config.roudix.iconThemeName;   # Papirus-Roudix by default (icon-theme.nix)
       gtk-theme    = "adw-gtk3-dark";
       cursor-theme = "capitaine-cursors-white";
       cursor-size  = lib.gvariant.mkInt32 (24);

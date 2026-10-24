@@ -255,6 +255,10 @@ msgid "Cinnamon (X11, older PCs)"
 msgstr "Cinnamon (X11، أجهزة قديمة)"
 
 #: src/roudix_installer/pages/options.py
+msgid "COSMIC (System76, Rust)"
+msgstr "COSMIC (System76, Rust)"
+
+#: src/roudix_installer/pages/options.py
 msgid "(detected)"
 msgstr "(تم الكشف)"
 

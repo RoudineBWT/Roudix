@@ -746,6 +746,7 @@ pick "Desktop environment:" DE \
   "gnome|GNOME" \
   "kde|KDE Plasma" \
   "cinnamon|Cinnamon (X11, older PCs)" \
+  "cosmic|COSMIC (System76, Rust)" \
   "hyprland|Hyprland" \
   "mangowc|MangoWC"
 
@@ -781,6 +782,9 @@ elif [[ "$DE" == "kde" ]]; then
 elif [[ "$DE" == "cinnamon" ]]; then
   FILE_MANAGER="nemo"
   info "Desktop = Cinnamon → file manager: Nemo."
+elif [[ "$DE" == "cosmic" ]]; then
+  FILE_MANAGER="nautilus"   # unused: COSMIC Files ships with the desktop
+  info "Desktop = COSMIC → file manager: COSMIC Files."
 else
   pick "File manager:" FILE_MANAGER \
     "nautilus|Nautilus — GNOME Files (recommended)" \

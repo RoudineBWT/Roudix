@@ -13,11 +13,12 @@ Switch desktop at any time with `roudix-switch <de>` or the **Roudix Customizer*
 | `gnome` | GNOME 49.5 | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 | `cinnamon` | Cinnamon | X11 session + LightDM — classic desktop, suited to older hardware (GNOME 49 is Wayland-only) |
+| `cosmic` | COSMIC | System76's Wayland desktop (cosmic-comp), cosmic-greeter |
 
 To change permanently, edit `hosts/roudix/local.nix`:
 
 ```nix
-roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde" or "cinnamon"
+roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde", "cinnamon" or "cosmic"
 ```
 
 Or use the fish function — it edits the config and rebuilds in one step:
@@ -286,3 +287,19 @@ Override the pinned apps in `hosts/roudix/local.nix`:
 ```nix
 roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.desktop" "cinnamon-settings.desktop" ];
 ```
+
+## COSMIC defaults
+
+COSMIC ships the Roudix Kitsune wallpaper by default and the keyboard layout of `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. The dock pins the browser(s) chosen in Roudix (and Zen if enabled), COSMIC Files, your terminal, Roudix Store and COSMIC Settings — the same idea as the GNOME dash and the Plasma task manager. In the app library, every Roudix app (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) is grouped in a **Roudix** folder and no longer listed under System / Utilities. COSMIC Store is not installed: Roudix Store replaces it.
+
+These are defaults, shipped as system-wide cosmic-config files: they only apply to what the user has not changed, and a rebuild never reverts a choice made in COSMIC Settings.
+
+COSMIC's own apps and panel use the Roudix colour scheme by default (`assets/cosmic/`, generated from `assets/palette/Roudix.json`, installed as system defaults by `modules/system/desktop/cosmic.nix`, no Home Manager involved). Picking another theme or accent in Settings > Appearance overrides it, and a rebuild never touches your choice. "Apply current theme to GNOME apps" (Settings > Desktop > Appearance > Icons and toolkit theming) is on by default: COSMIC itself exports its theme, so GTK apps (browsers, the Roudix apps...) get the Roudix colours on top of adw-gtk3, without any CSS written by Roudix. Icons are Papirus-Roudix (see `roudix.iconTheme`), and your terminal gets its Roudix colour scheme like on every other desktop.
+
+`system76-scheduler`, which the nixpkgs COSMIC module enables, is turned off by default because Roudix has its own scheduler stack (SCX). To keep it:
+
+```nix
+services.system76-scheduler.enable = true;
+```
+
+To change the pinned apps, just pin / unpin from the dock: your choice wins over the default.

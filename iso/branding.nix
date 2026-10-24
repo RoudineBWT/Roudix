@@ -10,7 +10,7 @@
   # it directly, to avoid pulling in niri.nix/hyprland.nix/kde.nix/mangowc.nix,
   # which reference flake inputs the ISO's flake doesn't have.
   options.roudix.desktop.type = lib.mkOption {
-    type = lib.types.enum [ "niri" "gnome" "kde" "cinnamon" "hyprland" "mangowc" "umbriel" ];
+    type = lib.types.enum [ "niri" "gnome" "kde" "cinnamon" "cosmic" "hyprland" "mangowc" "umbriel" ];
     default = "gnome";
   };
 

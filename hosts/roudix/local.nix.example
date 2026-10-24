@@ -11,7 +11,7 @@
 { lib, pkgs, ... }:
 {
   # ── Desktop ───────────────────────────────────────────────────────────────
-  roudix.desktop.type = "niri";               # "niri", "gnome", "kde" or "hyprland"
+  roudix.desktop.type = "niri";               # "niri", "gnome", "kde", "cinnamon", "cosmic", "hyprland", "mangowc" or "umbriel"
 
   # ── Desktop shell ─────────────────────────────────────────────────────────
   # Only used when roudix.desktop.type = "niri" or "hyprland"

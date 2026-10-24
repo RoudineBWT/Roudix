@@ -4,22 +4,23 @@
     set config_file "$NH_FLAKE/hosts/"(hostname)"/local.nix"
 
     if test -z "$de"
-      echo "Usage: roudix-switch [niri|gnome|kde|cinnamon|hyprland|mangowc|umbriel]"
+      echo "Usage: roudix-switch [niri|gnome|kde|cinnamon|cosmic|hyprland|mangowc|umbriel]"
       echo ""
       echo "Available desktop environments:"
       echo "  niri     — Niri scrollable tiling compositor + Noctalia"
       echo "  gnome    — GNOME desktop environment"
       echo "  kde      — KDE Plasma"
       echo "  cinnamon — Cinnamon (X11 classic desktop, good for older PCs)"
+      echo "  cosmic   — COSMIC (System76 desktop, Wayland)"
       echo "  hyprland — Dynamic tiling Wayland compositor + Noctalia shell"
       echo "  mangowc  — Lightweight dynamic tiling Wayland compositor"
       echo "  umbriel  — Umbriel scrollable tiling compositor (Noctalia-only)"
       return 1
     end
 
-    if not contains $de niri gnome kde cinnamon hyprland mangowc umbriel
+    if not contains $de niri gnome kde cinnamon cosmic hyprland mangowc umbriel
       echo "Unknown desktop environment: $de"
-      echo "Available: niri, gnome, kde, cinnamon, hyprland, mangowc, umbriel"
+      echo "Available: niri, gnome, kde, cinnamon, cosmic, hyprland, mangowc, umbriel"
       return 1
     end
 
@@ -36,13 +37,14 @@
       local config_file="$NH_FLAKE/hosts/$(hostname)/local.nix"
 
       if [[ -z "$de" ]]; then
-        echo "Usage: roudix-switch [niri|gnome|kde|cinnamon|hyprland|mangowc|umbriel]"
+        echo "Usage: roudix-switch [niri|gnome|kde|cinnamon|cosmic|hyprland|mangowc|umbriel]"
         echo ""
         echo "Available desktop environments:"
         echo "  niri     — Niri scrollable tiling compositor + Noctalia"
         echo "  gnome    — GNOME desktop environment"
         echo "  kde      — KDE Plasma"
         echo "  cinnamon — Cinnamon (X11 classic desktop, good for older PCs)"
+        echo "  cosmic   — COSMIC (System76 desktop, Wayland)"
         echo "  hyprland — Dynamic tiling Wayland compositor + Noctalia shell"
         echo "  mangowc  — Lightweight dynamic tiling Wayland compositor"
         echo "  umbriel  — Umbriel scrollable tiling compositor (Noctalia-only)"
@@ -50,10 +52,10 @@
       fi
 
       case "$de" in
-        niri|gnome|kde|cinnamon|hyprland|mangowc|umbriel) ;;
+        niri|gnome|kde|cinnamon|cosmic|hyprland|mangowc|umbriel) ;;
         *)
           echo "Unknown desktop environment: $de"
-          echo "Available: niri, gnome, kde, cinnamon, hyprland, mangowc, umbriel"
+          echo "Available: niri, gnome, kde, cinnamon, cosmic, hyprland, mangowc, umbriel"
           return 1
           ;;
       esac

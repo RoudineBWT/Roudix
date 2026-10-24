@@ -1,7 +1,7 @@
 { osConfig, ... }:
 {
   # Read by scripts/roudix-config*.py to know which compositor to configure
-  # (and to stay unavailable on GNOME / KDE / Cinnamon). Written under
+  # (and to stay unavailable on GNOME / KDE / Cinnamon / COSMIC). Written under
   # ~/.local/share, NOT ~/.config/roudix: the repo itself usually lives in
   # ~/.config/roudix and this generated symlink would show up in `git status`.
   xdg.dataFile."roudix/desktop-type".text = osConfig.roudix.desktop.type;
