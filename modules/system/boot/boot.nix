@@ -7,6 +7,20 @@
       default = true;
     };
 
+    wallpaperAspect = lib.mkOption {
+      description = ''
+        Aspect ratio of the Limine boot wallpaper. Pick the one closest to your
+        screen so the (stretched) image is not distorted.
+        Run ./scripts/detect-boot-aspect.sh to find out which one to use.
+          16x9  -> 1280x720, 1920x1080, 2560x1440, 3840x2160
+          16x10 -> 1920x1200, 2560x1600, 2880x1800
+          21x9  -> 2560x1080, 3440x1440
+          4x3   -> 1024x768, 1280x1024 (5:4), 1600x1200
+      '';
+      type = lib.types.enum [ "16x9" "16x10" "21x9" "4x3" ];
+      default = "16x9";
+    };
+
     bootloader = lib.mkOption {
       description = "Bootloader to use: \"limine\" or \"systemd-boot\"";
       type = lib.types.enum [ "limine" "systemd-boot" ];
@@ -34,7 +48,7 @@
       style = {
         wallpapers = [
           (builtins.path {
-            path = ./bootloader/wallpaper.png;
+            path = ./bootloader + "/wallpaper-${config.roudix.boot.wallpaperAspect}.png";
             name = "limine-wallpaper";
           })
         ];

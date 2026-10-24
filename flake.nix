@@ -4,7 +4,7 @@
   # ── Binary caches ───────────────────────────────────────
   nixConfig = {
     extra-substituters = [
-      #"https://attic.xuyh0120.win/lantian"
+      "https://cache.lantian.pub/lantian"
       "https://noctalia.cachix.org"
       "https://prismlauncher.cachix.org"
       "https://nix-community.cachix.org"
@@ -17,7 +17,7 @@
     ];
     extra-trusted-public-keys = [
       "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
-      #"lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+      "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "prismlauncher.cachix.org-1:9/n/FGyABA2jLUVfY+DEp4hKds/rwO+SCOtbOkDzd+c="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -85,9 +85,13 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  # nix-cachyos-kernel = {
-  #    url = "github:xddxdd/nix-cachyos-kernel/release";
-  #  };
+    # xddxdd CachyOS kernels (AMD/Intel/VM hosts). `release` = last build
+    # present in the binary cache. No `nixpkgs.follows` on purpose: the
+    # `pinned` overlay must use the nixpkgs revision the kernels were built
+    # with, otherwise cache misses / patch-vs-kernel version mismatches.
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+    };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -172,7 +176,7 @@
     chaotic,
     niri,
     home-manager,
-    #nix-cachyos-kernel,
+    nix-cachyos-kernel,
     zen-browser,
     noctalia,
     noctalia-greeter,

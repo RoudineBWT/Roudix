@@ -114,6 +114,7 @@
 
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
+  roudix.boot.wallpaperAspect = "16x9"; # put your aspects ratio
   roudix.terminal = "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
   roudix.fileManager = "nautilus"; # dolphin, thunar, nautilus, nemo
   roudix.gaming.enable        = false;        # true = Steam, Wine, etc. + the launchers below

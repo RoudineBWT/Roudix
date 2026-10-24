@@ -63,16 +63,36 @@ class WelcomePage(Adw.NavigationPage):
         )
         self.box.append(subtitle)
 
-        flow = Gtk.FlowBox(
-            selection_mode=Gtk.SelectionMode.NONE, homogeneous=True,
-            min_children_per_line=2, max_children_per_line=4,
-            column_spacing=12, row_spacing=12, halign=Gtk.Align.CENTER,
+        # A dropdown scales to any number of languages: adding one to
+        # i18n.LANGUAGES is enough, the welcome page needs no layout change.
+        group = Adw.PreferencesGroup()
+        group.set_size_request(380, -1)
+        group.set_halign(Gtk.Align.CENTER)
+        self.lang_row = Adw.ComboRow(
+            model=Gtk.StringList.new([name for _code, name, _prompt in i18n.LANGUAGES]),
         )
-        for code, name, _prompt in i18n.LANGUAGES:
-            btn = Gtk.Button(label=name, css_classes=["pill"])
-            btn.connect("clicked", lambda _b, c=code: self._choose_lang(c))
-            flow.append(btn)
-        self.box.append(flow)
+        self.lang_row.set_title("\N{GLOBE WITH MERIDIANS}")
+        # Long lists: let the popover be searched by typing.
+        if len(i18n.LANGUAGES) > 8:
+            self.lang_row.set_expression(
+                Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
+            self.lang_row.set_enable_search(True)
+        codes = [code for code, _name, _prompt in i18n.LANGUAGES]
+        if i18n.LANG in codes:
+            self.lang_row.set_selected(codes.index(i18n.LANG))
+        group.add(self.lang_row)
+        self.box.append(group)
+
+        # No text on the button: no language is chosen yet, so any label would
+        # be in the wrong one. The arrow flips by itself in RTL.
+        next_btn = Gtk.Button(icon_name="go-next-symbolic",
+                              css_classes=["suggested-action", "pill"])
+        next_btn.set_halign(Gtk.Align.CENTER)
+        next_btn.connect(
+            "clicked",
+            lambda *_: self._choose_lang(i18n.LANGUAGES[self.lang_row.get_selected()][0]),
+        )
+        self.box.append(next_btn)
 
     def _choose_lang(self, lang: str):
         i18n.set_lang(lang)
