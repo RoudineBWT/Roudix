@@ -41,8 +41,13 @@ msgid "Lightweight dynamic tiling Wayland compositor"
 msgstr "轻量的动态平铺 Wayland 合成器"
 
 #: roudix-switcher.py
-msgid "a Wayland compositor designed for daily use, with scrolling, dwindle, and master layouts, per-output workspaces, window rules, blur, shadows, and fluid animations."
-msgstr "专为日常使用设计的 Wayland 合成器，支持滚动、dwindle 和 master 布局、按输出划分的工作区、窗口规则、模糊、阴影以及流畅的动画。"
+msgid ""
+"a Wayland compositor designed for daily use, with scrolling, dwindle, and "
+"master layouts, per-output workspaces, window rules, blur, shadows, and "
+"fluid animations."
+msgstr ""
+"专为日常使用设计的 Wayland 合成器，支持滚动、dwindle 和 master 布局、按输出划"
+"分的工作区、窗口规则、模糊、阴影以及流畅的动画。"
 
 #: roudix-switcher.py
 msgid "Roudix default shell — sleek and feature-complete"
@@ -57,16 +62,35 @@ msgid "Elegant Roudix shell with a focus on aesthetics"
 msgstr "注重美观的优雅 Roudix shell"
 
 #: roudix-switcher.py
-msgid "MangoWC only — Discord/Telegram/Element and Spotify live in named scratchpads (each with its own shortcut) instead of staying tiled on a fixed tag."
-msgstr "仅限 MangoWC — Discord/Telegram/Element 和 Spotify 位于具名 scratchpad 中（各有自己的快捷键），而不是平铺在固定标签上。"
+msgid ""
+"MangoWC only — Discord/Telegram/Element and Spotify live in named "
+"scratchpads (each with its own shortcut) instead of staying tiled on a fixed "
+"tag."
+msgstr ""
+"仅限 MangoWC — Discord/Telegram/Element 和 Spotify 位于具名 scratchpad 中（各"
+"有自己的快捷键），而不是平铺在固定标签上。"
 
 #: roudix-switcher.py
-msgid "Umbriel only — Discord/Telegram and Spotify live in named scratchpads (shown/hidden with a shortcut) instead of staying tiled on a fixed output/workspace."
-msgstr "仅限 Umbriel — Discord/Telegram 和 Spotify 位于具名 scratchpad 中（通过快捷键显示/隐藏），而不是平铺在固定的输出/工作区上。"
+msgid ""
+"Umbriel only — Discord/Telegram and Spotify live in named scratchpads (shown/"
+"hidden with a shortcut) instead of staying tiled on a fixed output/workspace."
+msgstr ""
+"仅限 Umbriel — Discord/Telegram 和 Spotify 位于具名 scratchpad 中（通过快捷键"
+"显示/隐藏），而不是平铺在固定的输出/工作区上。"
 
 #: roudix-switcher.py
-msgid "Off (default): nixpkgs version. On: the very latest version, built from the project's own flake. ⚠ Roudix configurations are written for the flake versions first: on the nixpkgs version, a configuration error saying that an option, a setting or a key \"does not exist\" is normal (it was added after the nixpkgs version). Wait for nixpkgs to catch up, or turn the latest version on."
-msgstr "关闭（默认）：使用 nixpkgs 版本。开启：使用最新版本，由项目自己的 flake 构建。⚠ Roudix 的配置优先针对 flake 版本编写：使用 nixpkgs 版本时，出现提示某个选项、设置或键“不存在”的配置错误是正常的（它是在该 nixpkgs 版本之后才加入的）。请等待 nixpkgs 更新，或开启最新版本。"
+msgid ""
+"Off (default): nixpkgs version. On: the very latest version, built from the "
+"project's own flake. ⚠ Roudix configurations are written for the flake "
+"versions first: on the nixpkgs version, a configuration error saying that an "
+"option, a setting or a key \"does not exist\" is normal (it was added after "
+"the nixpkgs version). Wait for nixpkgs to catch up, or turn the latest "
+"version on."
+msgstr ""
+"关闭（默认）：使用 nixpkgs 版本。开启：使用最新版本，由项目自己的 flake 构"
+"建。⚠ Roudix 的配置优先针对 flake 版本编写：使用 nixpkgs 版本时，出现提示某个"
+"选项、设置或键“不存在”的配置错误是正常的（它是在该 nixpkgs 版本之后才加入"
+"的）。请等待 nixpkgs 更新，或开启最新版本。"
 
 #: roudix-switcher.py
 #, python-brace-format
@@ -86,12 +110,12 @@ msgid "Terminal-based, keyboard-driven"
 msgstr "基于终端，键盘操作"
 
 #: roudix-switcher.py
-msgid "None"
-msgstr "无"
-
-#: roudix-switcher.py
 msgid "Don't install a default editor"
 msgstr "不安装默认编辑器"
+
+#: roudix-switcher.py
+msgid "None"
+msgstr "无"
 
 #: roudix-switcher.py
 msgid "gnome-keyring + xdg-desktop-portal-gtk/-gnome (default)"
@@ -102,8 +126,12 @@ msgid "Fixed theme, Papirus' own blue accent (default)"
 msgstr "固定主题，使用 Papirus 自带的蓝色强调色（默认）"
 
 #: roudix-switcher.py
-msgid "Auto-recolored to the current Noctalia accent if roudix.desktop.shell = \"noctalia\"; plain Tela otherwise"
-msgstr "当 roudix.desktop.shell = \"noctalia\" 时自动按当前 Noctalia 强调色重新着色；否则为普通 Tela"
+msgid ""
+"Auto-recolored to the current Noctalia accent if roudix.desktop.shell = "
+"\"noctalia\"; plain Tela otherwise"
+msgstr ""
+"当 roudix.desktop.shell = \"noctalia\" 时自动按当前 Noctalia 强调色重新着色；"
+"否则为普通 Tela"
 
 #: roudix-switcher.py
 msgid "Flat, colorful Material-style set (pkgs.qogir-icon-theme)"
@@ -258,13 +286,17 @@ msgid "Dev — latest changes, least stable"
 msgstr "Dev — 最新改动，稳定性最低"
 
 #: roudix-switcher.py
-msgid "~/.config/roudix is not a git repository — the branch cannot be switched."
+msgid ""
+"~/.config/roudix is not a git repository — the branch cannot be switched."
 msgstr "~/.config/roudix 不是 git 仓库 — 无法切换分支。"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid "Local branch '{branch}' has commits origin doesn't have (unpushed?) — kept as is, not updated."
-msgstr "本地分支“{branch}”有 origin 上没有的提交（尚未推送？）— 保持原样，不更新。"
+msgid ""
+"Local branch '{branch}' has commits origin doesn't have (unpushed?) — kept "
+"as is, not updated."
+msgstr ""
+"本地分支“{branch}”有 origin 上没有的提交（尚未推送？）— 保持原样，不更新。"
 
 #: roudix-switcher.py
 msgid "+ Spicetify"
@@ -297,631 +329,6 @@ msgstr "轻量的 GNOME/libadwaita 客户端"
 #: roudix-switcher.py
 msgid "Don't install a mail client"
 msgstr "不安装邮件客户端"
-
-#: roudix-switcher.py
-msgid "For Corsair iCUE-compatible devices"
-msgstr "适用于兼容 Corsair iCUE 的设备"
-
-#: roudix-switcher.py
-msgid "Multi-brand RGB support"
-msgstr "支持多品牌 RGB"
-
-#: roudix-switcher.py
-msgid "No RGB backend"
-msgstr "无 RGB 后端"
-
-#: roudix-switcher.py
-msgid "Ananicy (process scheduler)"
-msgstr "Ananicy（进程调度器）"
-
-#: roudix-switcher.py
-msgid "GTA Online hosts fix"
-msgstr "GTA Online hosts 修复"
-
-#: roudix-switcher.py
-msgid "Millennium (modded Steam client: themes and plugins)"
-msgstr "Millennium（改版 Steam 客户端：主题和插件）"
-
-#: roudix-switcher.py
-msgid "“Steam (Gaming Mode)” session (gamescope, niri/umbriel/gnome/kde)"
-msgstr "“Steam (Gaming Mode)”会话（gamescope，niri/umbriel/gnome/kde）"
-
-#: roudix-switcher.py
-msgid "Decky Loader (Steam plugins, compiled on first rebuild)"
-msgstr "Decky Loader（Steam 插件，首次重新构建时编译）"
-
-#: roudix-switcher.py
-msgid "Nightly build of Zen Beta, mirrored by the flake maintainer (Roudix default)"
-msgstr "Zen Beta 的每日构建，由 flake 维护者镜像（Roudix 默认）"
-
-#: roudix-switcher.py
-msgid "Firefox-based (regular release), slower-moving, most stable"
-msgstr "基于 Firefox（常规发布版），更新较慢，最稳定"
-
-#: roudix-switcher.py
-msgid "Free KDE-based editor"
-msgstr "基于 KDE 的免费编辑器"
-
-#: roudix-switcher.py
-msgid "Free edition — color grading, VFX, pro-grade"
-msgstr "免费版 — 调色、VFX，专业级"
-
-#: roudix-switcher.py
-msgid "Paid edition of the above — requires a Blackmagic license"
-msgstr "上述软件的付费版 — 需要 Blackmagic 许可证"
-
-#: roudix-switcher.py
-msgid "Lightweight, cross-platform, FFmpeg-based"
-msgstr "轻量、跨平台，基于 FFmpeg"
-
-#: roudix-switcher.py
-msgid "Don't install a default video editor"
-msgstr "不安装默认视频编辑器"
-
-#: roudix-switcher.py
-msgid "VKCapture (Vulkan/OpenGL game capture)"
-msgstr "VKCapture（Vulkan/OpenGL 游戏捕获）"
-
-#: roudix-switcher.py
-msgid "Pipewire Audio Capture (per-app audio)"
-msgstr "Pipewire Audio Capture（按应用捕获音频）"
-
-#: roudix-switcher.py
-msgid "Background Removal (AI virtual background)"
-msgstr "Background Removal（AI 虚拟背景）"
-
-#: roudix-switcher.py
-msgid "Move Transition (source animations)"
-msgstr "Move Transition（来源动画）"
-
-#: roudix-switcher.py
-msgid "Aitum Multistream (multi-platform streaming)"
-msgstr "Aitum Multistream（多平台直播）"
-
-#: roudix-switcher.py
-msgid "GStreamer (extra sources/outputs)"
-msgstr "GStreamer（额外的来源/输出）"
-
-#: roudix-switcher.py
-msgid "Composite Blur (blur/glass filters)"
-msgstr "Composite Blur（模糊/玻璃滤镜）"
-
-#: roudix-switcher.py
-msgid "Advanced Scene Switcher (automated scene switching)"
-msgstr "Advanced Scene Switcher（自动切换场景）"
-
-#: roudix-switcher.py
-msgid "Input Overlay (on-screen keyboard/mouse/gamepad)"
-msgstr "Input Overlay（屏幕上显示键盘/鼠标/手柄）"
-
-#: roudix-switcher.py
-msgid "Waveform (audio waveform/spectrum)"
-msgstr "Waveform（音频波形/频谱）"
-
-#: roudix-switcher.py
-msgid "Virtual camera (v4l2loopback)"
-msgstr "虚拟摄像头（v4l2loopback）"
-
-#: roudix-switcher.py
-msgid "Chatterino2 (third-party Twitch chat)"
-msgstr "Chatterino2（第三方 Twitch 聊天）"
-
-#: roudix-switcher.py
-msgid "Virtualization (QEMU/KVM)"
-msgstr "虚拟化（QEMU/KVM）"
-
-#: roudix-switcher.py
-msgid "vm-curator (libvirt-free QEMU TUI)"
-msgstr "vm-curator（不依赖 libvirt 的 QEMU TUI）"
-
-#: roudix-switcher.py
-msgid "Waydroid (Android apps)"
-msgstr "Waydroid（Android 应用）"
-
-#: roudix-switcher.py
-msgid "Mesa-git (bleeding-edge GPU drivers)"
-msgstr "Mesa-git（最新的显卡驱动）"
-
-#: roudix-switcher.py
-msgid "Auto-update (scheduled git pull + rebuild)"
-msgstr "自动更新（定时 git pull + 重新构建）"
-
-#: roudix-switcher.py
-msgid "Laptop — TLP (disables tuned)"
-msgstr "笔记本 — TLP（会禁用 tuned）"
-
-#: roudix-switcher.py
-msgid "ThinkPad — 40/80% charge thresholds"
-msgstr "ThinkPad — 40/80% 充电阈值"
-
-#: roudix-switcher.py
-msgid "AMD GPU undervolt (LACT)"
-msgstr "AMD GPU 降压（LACT）"
-
-#: roudix-switcher.py
-msgid "Roudix fastfetch config"
-msgstr "Roudix 的 fastfetch 配置"
-
-#: roudix-switcher.py
-msgid "Fstrim (automatic TRIM for SSD/NVMe)"
-msgstr "Fstrim（SSD/NVMe 自动 TRIM）"
-
-#: roudix-switcher.py
-msgid "VM guest (QEMU/Spice agent)"
-msgstr "虚拟机客户机（QEMU/Spice 代理）"
-
-#: roudix-switcher.py
-msgid "Roudix — Customizer"
-msgstr "Roudix — 定制器"
-
-#: roudix-switcher.py
-msgid "<b>Customize your Roudix</b>\n<span size='small'>Pick your desktop, shell and tweaks below.\nThe system will rebuild after your selection — this may take a few minutes.</span>"
-msgstr "<b>定制你的 Roudix</b>\n<span size='small'>请在下方选择桌面、shell 和调整项。\n选择完成后系统将重新构建 — 这可能需要几分钟。</span>"
-
-#: roudix-switcher.py
-msgid "Desktop"
-msgstr "桌面"
-
-#: roudix-switcher.py
-msgid "Content Creation"
-msgstr "内容创作"
-
-#: roudix-switcher.py
-msgid "Editor"
-msgstr "编辑器"
-
-#: roudix-switcher.py
-msgid "Browser"
-msgstr "浏览器"
-
-#: roudix-switcher.py
-msgid "Login Shell"
-msgstr "登录 shell"
-
-#: roudix-switcher.py
-msgid "File Manager"
-msgstr "文件管理器"
-
-#: roudix-switcher.py
-msgid "Chat Client"
-msgstr "聊天客户端"
-
-#: roudix-switcher.py
-msgid "Apps"
-msgstr "应用"
-
-#: roudix-switcher.py
-msgid "System"
-msgstr "系统"
-
-#: roudix-switcher.py
-msgid "Integration"
-msgstr "集成"
-
-#: roudix-switcher.py
-msgid "Icon Theme"
-msgstr "图标主题"
-
-#: roudix-switcher.py
-msgid "Desktop environment"
-msgstr "桌面环境"
-
-#: roudix-switcher.py
-msgid "Graphical shell"
-msgstr "图形 shell"
-
-#: roudix-switcher.py
-msgid "Scratchpad apps"
-msgstr "Scratchpad 应用"
-
-#: roudix-switcher.py
-msgid "Versions"
-msgstr "版本"
-
-#: roudix-switcher.py
-msgid "Launchers and tools installed for gaming."
-msgstr "为游戏安装的启动器和工具。"
-
-#: roudix-switcher.py
-msgid "OBS plugins"
-msgstr "OBS 插件"
-
-#: roudix-switcher.py
-msgid "Video editor"
-msgstr "视频编辑器"
-
-#: roudix-switcher.py
-msgid "Default editor"
-msgstr "默认编辑器"
-
-#: roudix-switcher.py
-msgid "Default terminal"
-msgstr "默认终端"
-
-#: roudix-switcher.py
-msgid "Pick any number — the first one checked below becomes the default (niri's MOD+B shortcut)."
-msgstr "可任意多选 — 下方第一个勾选的将成为默认项（niri 的 MOD+B 快捷键）。"
-
-#: roudix-switcher.py
-msgid "Zen channel"
-msgstr "Zen 通道"
-
-#: roudix-switcher.py
-msgid "Sine mod loader"
-msgstr "Sine 模组加载器"
-
-#: roudix-switcher.py
-msgid "Native Zen mods and Sine mods can't be active at the same time — the list below always targets whichever is on."
-msgstr "Zen 原生模组和 Sine 模组不能同时启用 — 下方列表始终针对当前启用的那一种。"
-
-#: roudix-switcher.py
-msgid "Mods"
-msgstr "模组"
-
-#: roudix-switcher.py
-msgid "No mods listed yet — add your mod IDs to ZEN_MODS in the script."
-msgstr "列表中还没有模组 — 请把你的模组 ID 添加到脚本中的 ZEN_MODS。"
-
-#: roudix-switcher.py
-msgid "Login shell"
-msgstr "登录 shell"
-
-#: roudix-switcher.py
-msgid "This is your terminal login shell — not the graphical shell under Desktop (noctalia/dms/caelestia)."
-msgstr "这是你终端的登录 shell — 不是“桌面”下的图形 shell（noctalia/dms/caelestia）。"
-
-#: roudix-switcher.py
-msgid "File manager"
-msgstr "文件管理器"
-
-#: roudix-switcher.py
-msgid "Matrix client"
-msgstr "Matrix 客户端"
-
-#: roudix-switcher.py
-msgid "Optional apps"
-msgstr "可选应用"
-
-#: roudix-switcher.py
-msgid "Video player"
-msgstr "视频播放器"
-
-#: roudix-switcher.py
-msgid "Torrent client"
-msgstr "BT 下载客户端"
-
-#: roudix-switcher.py
-msgid "Music player"
-msgstr "音乐播放器"
-
-#: roudix-switcher.py
-msgid "Mail client"
-msgstr "邮件客户端"
-
-#: roudix-switcher.py
-msgid "Toggles"
-msgstr "开关"
-
-#: roudix-switcher.py
-msgid "RGB backend"
-msgstr "RGB 后端"
-
-#: roudix-switcher.py
-msgid "Update branch"
-msgstr "更新分支"
-
-#: roudix-switcher.py
-msgid "Keyring & portal backend"
-msgstr "密钥环与 portal 后端"
-
-#: roudix-switcher.py
-msgid "Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE always keep their own native stack. With KDE, the GNOME apps (text editor, image viewer, disk utility, default file manager) are swapped for Kate, Gwenview, Partition Manager and Dolphin; adw-gtk3 stays installed."
-msgstr "仅适用于 niri、Hyprland、MangoWC 和 Umbriel — GNOME 和 KDE 始终保留各自的原生栈。使用 KDE 时，GNOME 应用（文本编辑器、图片查看器、磁盘工具、默认文件管理器）会被替换为 Kate、Gwenview、Partition Manager 和 Dolphin；adw-gtk3 仍会保留安装。"
-
-#: roudix-switcher.py
-msgid "Icon theme"
-msgstr "图标主题"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "{len} additional theme(s) detected on the system (a package you added by hand, or dropped into ~/.icons)."
-msgstr "系统上检测到 {len} 个额外主题（手动添加的软件包，或放入 ~/.icons 的主题）。"
-
-#: roudix-switcher.py
-msgid "Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE keep their own native icon picker. With Tela, the first recolor happens on the next Noctalia theme/accent change."
-msgstr "仅适用于 niri、Hyprland、MangoWC 和 Umbriel — GNOME 和 KDE 保留各自的原生图标选择器。使用 Tela 时，首次重新着色会在下一次 Noctalia 主题/强调色更改时发生。"
-
-#: roudix-switcher.py
-msgid "Exit"
-msgstr "退出"
-
-#: roudix-switcher.py
-msgid "Apply & Rebuild"
-msgstr "应用并重新构建"
-
-#: roudix-switcher.py
-msgid "Gaming disabled"
-msgstr "游戏已禁用"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "{enabled}/{len} gaming apps enabled"
-msgstr "已启用 {enabled}/{len} 个游戏应用"
-
-#: roudix-switcher.py
-msgid "<span color='gray'>No changes detected — nothing to do.</span>"
-msgstr "<span color='gray'>未检测到更改 — 无需操作。</span>"
-
-#: roudix-switcher.py
-msgid "enabled"
-msgstr "已启用"
-
-#: roudix-switcher.py
-msgid "disabled"
-msgstr "已禁用"
-
-#: roudix-switcher.py
-msgid "none"
-msgstr "无"
-
-#: roudix-switcher.py
-msgid "Shell"
-msgstr "Shell"
-
-#: roudix-switcher.py
-msgid "Keyring/portal"
-msgstr "密钥环/portal"
-
-#: roudix-switcher.py
-msgid "Terminal"
-msgstr "终端"
-
-#: roudix-switcher.py
-msgid "Browsers"
-msgstr "浏览器"
-
-#: roudix-switcher.py
-msgid "Zen mods"
-msgstr "Zen 模组"
-
-#: roudix-switcher.py
-msgid "latest version (flake)"
-msgstr "最新版本（flake）"
-
-#: roudix-switcher.py
-msgid "nixpkgs version"
-msgstr "nixpkgs 版本"
-
-#: roudix-switcher.py
-msgid "Apply changes?"
-msgstr "应用更改？"
-
-#: roudix-switcher.py
-msgid "Apply now switches your running session immediately (a few things, like the desktop/shell, only fully take effect after you log out). Apply at next boot just prepares the new generation — nothing changes until you restart."
-msgstr "“立即应用”会立刻切换你正在运行的会话（有些内容，例如桌面或 shell，需要注销后才会完全生效）。“下次启动时应用”只是准备好新的系统世代 — 在你重启之前不会有任何改变。"
-
-#: roudix-switcher.py
-msgid "Cancel"
-msgstr "取消"
-
-#: roudix-switcher.py
-msgid "Apply at Next Boot"
-msgstr "下次启动时应用"
-
-#: roudix-switcher.py
-msgid "Apply Now"
-msgstr "立即应用"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing DE config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入桌面环境配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing shell config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入shell配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing keyring/portal config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入密钥环/portal配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing editor config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入编辑器配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing terminal config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入终端配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing browsers config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入浏览器配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing Zen Browser config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入Zen Browser配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing Zen channel config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入Zen 通道配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing Sine config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入Sine配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing Zen mods config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入Zen 模组配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing scratchpad config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入scratchpad配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing nixpkgs/flake version config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入nixpkgs/flake 版本配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing login shell config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入登录 shell配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing file manager config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入文件管理器配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing Matrix client config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入Matrix 客户端配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing Discord config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入Discord配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing Telegram config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入Telegram配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing RGB backend config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入RGB 后端配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing video player config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入视频播放器配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing torrent client config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入BT 下载客户端配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing music player config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入音乐播放器配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing mail client config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入邮件客户端配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing icon theme config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入图标主题配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing gaming config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入游戏配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing {name} config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入{name}配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing Content Creation config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入内容创作配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>Error writing video editor config: {markup_escape_text}</span>"
-msgstr "<span color='red'>写入视频编辑器配置时出错：{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-msgid "Important Notices:"
-msgstr "重要通知："
-
-#: roudix-switcher.py
-msgid "No issues currently reported."
-msgstr "目前没有已报告的问题。"
-
-#: roudix-switcher.py
-msgid "Running"
-msgstr "运行中"
-
-#: roudix-switcher.py
-msgid "Checking repositories..."
-msgstr "正在检查仓库..."
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "Switching to branch {new_branch}…"
-msgstr "正在切换到分支 {new_branch}…"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "✗ Could not switch to {new_branch}: {msg}"
-msgstr "✗ 无法切换到 {new_branch}：{msg}"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>✗ Branch switch failed — nothing was changed. {markup_escape_text}</span>"
-msgstr "<span color='red'>✗ 切换分支失败 — 未作任何更改。{markup_escape_text}</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "✓ Repository on branch {new_branch}."
-msgstr "✓ 仓库已在分支 {new_branch}。"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "⚠ Branch not written to local.nix: {res}"
-msgstr "⚠ 分支未写入 local.nix：{res}"
-
-#: roudix-switcher.py
-msgid "✓ Rebuild completed and applied to your running session."
-msgstr "✓ 重新构建完成，并已应用到你正在运行的会话。"
-
-#: roudix-switcher.py
-msgid "<span color='green'>✓ Done! Applied now — some things (desktop/shell) may still need a logout to fully take effect.</span>"
-msgstr "<span color='green'>✓ 完成！已立即应用 — 有些内容（桌面/shell）可能仍需注销后才能完全生效。</span>"
-
-#: roudix-switcher.py
-msgid "✓ Rebuild completed successfully. Reboot to apply changes."
-msgstr "✓ 重新构建成功完成。请重启以应用更改。"
-
-#: roudix-switcher.py
-msgid "<span color='green'>✓ Done! Reboot to apply changes.</span>"
-msgstr "<span color='green'>✓ 完成！请重启以应用更改。</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "✗ Rebuild failed (exit code {returncode})."
-msgstr "✗ 重新构建失败（退出码 {returncode}）。"
-
-#: roudix-switcher.py
-msgid "<span color='red'>✗ Rebuild failed. Check <tt>~/.local/share/roudix-switcher/switcher.log</tt> for details.</span>"
-msgstr "<span color='red'>✗ 重新构建失败。详情请查看 <tt>~/.local/share/roudix-switcher/switcher.log</tt>。</span>"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "✗ Unexpected error: {e}"
-msgstr "✗ 意外错误：{e}"
-
-#: roudix-switcher.py
-#, python-brace-format
-msgid "<span color='red'>✗ Unexpected error: {markup_escape_text}</span>"
-msgstr "<span color='red'>✗ 意外错误：{markup_escape_text}</span>"
 
 #: roudix-switcher.py
 msgid "Cloud-synced vault"
@@ -1020,12 +427,12 @@ msgid "Scratchpad (show/hide shader)"
 msgstr "Scratchpad（显示/隐藏着色器）"
 
 #: roudix-switcher.py
-msgid "Every hour"
-msgstr "每小时"
-
-#: roudix-switcher.py
 msgid "Default"
 msgstr "默认"
+
+#: roudix-switcher.py
+msgid "Every hour"
+msgstr "每小时"
 
 #: roudix-switcher.py
 msgid "Every 6 hours"
@@ -1048,7 +455,9 @@ msgid "Realtime tweaks (rtprio/nice for the “audio” group — you must be in
 msgstr "实时调优（为“audio”组设置 rtprio/nice — 你必须属于该组）"
 
 #: roudix-switcher.py
-msgid "Never autosuspend USB devices (fixes USB audio dropouts, costs laptop battery)"
+msgid ""
+"Never autosuspend USB devices (fixes USB audio dropouts, costs laptop "
+"battery)"
 msgstr "从不自动挂起 USB 设备（修复 USB 音频中断，会消耗笔记本电量）"
 
 #: roudix-switcher.py
@@ -1056,7 +465,9 @@ msgid "CachyOS-style system tuning"
 msgstr "CachyOS 风格的系统调优"
 
 #: roudix-switcher.py
-msgid "systemd-oomd watches the system and user slices (kills an app instead of freezing)"
+msgid ""
+"systemd-oomd watches the system and user slices (kills an app instead of "
+"freezing)"
 msgstr "systemd-oomd 监控系统和用户 slice（结束某个应用而不是卡死）"
 
 #: roudix-switcher.py
@@ -1064,7 +475,8 @@ msgid "Per-device I/O schedulers (bfq / mq-deadline / kyber)"
 msgstr "按设备选择 I/O 调度器（bfq / mq-deadline / kyber）"
 
 #: roudix-switcher.py
-msgid "Short service timeouts (15 s start / 10 s stop) and higher open-files limit"
+msgid ""
+"Short service timeouts (15 s start / 10 s stop) and higher open-files limit"
 msgstr "缩短服务超时（启动 15 秒 / 停止 10 秒）并提高打开文件数上限"
 
 #: roudix-switcher.py
@@ -1141,8 +553,119 @@ msgid "Firefox — UI (smooth scrolling)"
 msgstr "Firefox — 界面（平滑滚动）"
 
 #: roudix-switcher.py
-msgid "HDR in the Gaming Mode session (turn off without an HDR display, or if games misbehave)"
+msgid "For Corsair iCUE-compatible devices"
+msgstr "适用于兼容 Corsair iCUE 的设备"
+
+#: roudix-switcher.py
+msgid "Multi-brand RGB support"
+msgstr "支持多品牌 RGB"
+
+#: roudix-switcher.py
+msgid "No RGB backend"
+msgstr "无 RGB 后端"
+
+#: roudix-switcher.py
+msgid "Ananicy (process scheduler)"
+msgstr "Ananicy（进程调度器）"
+
+#: roudix-switcher.py
+msgid "GTA Online hosts fix"
+msgstr "GTA Online hosts 修复"
+
+#: roudix-switcher.py
+msgid "Millennium (modded Steam client: themes and plugins)"
+msgstr "Millennium（改版 Steam 客户端：主题和插件）"
+
+#: roudix-switcher.py
+msgid "“Steam (Gaming Mode)” session (gamescope, niri/umbriel/gnome/kde)"
+msgstr "“Steam (Gaming Mode)”会话（gamescope，niri/umbriel/gnome/kde）"
+
+#: roudix-switcher.py
+msgid "Decky Loader (Steam plugins, compiled on first rebuild)"
+msgstr "Decky Loader（Steam 插件，首次重新构建时编译）"
+
+#: roudix-switcher.py
+msgid ""
+"HDR in the Gaming Mode session (turn off without an HDR display, or if games "
+"misbehave)"
 msgstr "Gaming Mode 会话中的 HDR（没有 HDR 显示器或游戏异常时请关闭）"
+
+#: roudix-switcher.py
+msgid ""
+"Nightly build of Zen Beta, mirrored by the flake maintainer (Roudix default)"
+msgstr "Zen Beta 的每日构建，由 flake 维护者镜像（Roudix 默认）"
+
+#: roudix-switcher.py
+msgid "Firefox-based (regular release), slower-moving, most stable"
+msgstr "基于 Firefox（常规发布版），更新较慢，最稳定"
+
+#: roudix-switcher.py
+msgid "Free KDE-based editor"
+msgstr "基于 KDE 的免费编辑器"
+
+#: roudix-switcher.py
+msgid "Free edition — color grading, VFX, pro-grade"
+msgstr "免费版 — 调色、VFX，专业级"
+
+#: roudix-switcher.py
+msgid "Paid edition of the above — requires a Blackmagic license"
+msgstr "上述软件的付费版 — 需要 Blackmagic 许可证"
+
+#: roudix-switcher.py
+msgid "Lightweight, cross-platform, FFmpeg-based"
+msgstr "轻量、跨平台，基于 FFmpeg"
+
+#: roudix-switcher.py
+msgid "Don't install a default video editor"
+msgstr "不安装默认视频编辑器"
+
+#: roudix-switcher.py
+msgid "VKCapture (Vulkan/OpenGL game capture)"
+msgstr "VKCapture（Vulkan/OpenGL 游戏捕获）"
+
+#: roudix-switcher.py
+msgid "Pipewire Audio Capture (per-app audio)"
+msgstr "Pipewire Audio Capture（按应用捕获音频）"
+
+#: roudix-switcher.py
+msgid "Background Removal (AI virtual background)"
+msgstr "Background Removal（AI 虚拟背景）"
+
+#: roudix-switcher.py
+msgid "Move Transition (source animations)"
+msgstr "Move Transition（来源动画）"
+
+#: roudix-switcher.py
+msgid "Aitum Multistream (multi-platform streaming)"
+msgstr "Aitum Multistream（多平台直播）"
+
+#: roudix-switcher.py
+msgid "GStreamer (extra sources/outputs)"
+msgstr "GStreamer（额外的来源/输出）"
+
+#: roudix-switcher.py
+msgid "Composite Blur (blur/glass filters)"
+msgstr "Composite Blur（模糊/玻璃滤镜）"
+
+#: roudix-switcher.py
+msgid "Advanced Scene Switcher (automated scene switching)"
+msgstr "Advanced Scene Switcher（自动切换场景）"
+
+#: roudix-switcher.py
+msgid "Input Overlay (on-screen keyboard/mouse/gamepad)"
+msgstr "Input Overlay（屏幕上显示键盘/鼠标/手柄）"
+
+#: roudix-switcher.py
+msgid "Waveform (audio waveform/spectrum)"
+msgstr "Waveform（音频波形/频谱）"
+
+#: roudix-switcher.py
+msgid "Virtual camera (v4l2loopback)"
+msgstr "虚拟摄像头（v4l2loopback）"
+
+#: roudix-switcher.py
+msgid "Chatterino2 (third-party Twitch chat)"
+msgstr "Chatterino2（第三方 Twitch 聊天）"
 
 #: roudix-switcher.py
 msgid "ZapZap (unofficial WhatsApp client)"
@@ -1153,8 +676,123 @@ msgid "Fluxer (self-hostable Discord alternative)"
 msgstr "Fluxer（可自托管的 Discord 替代品）"
 
 #: roudix-switcher.py
+msgid "Virtualization (QEMU/KVM)"
+msgstr "虚拟化（QEMU/KVM）"
+
+#: roudix-switcher.py
+msgid "vm-curator (libvirt-free QEMU TUI)"
+msgstr "vm-curator（不依赖 libvirt 的 QEMU TUI）"
+
+#: roudix-switcher.py
+msgid "Waydroid (Android apps)"
+msgstr "Waydroid（Android 应用）"
+
+#: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr "Mesa-git（最新的显卡驱动）"
+
+#: roudix-switcher.py
+msgid "Auto-update (scheduled git pull + rebuild)"
+msgstr "自动更新（定时 git pull + 重新构建）"
+
+#: roudix-switcher.py
+msgid "Laptop — TLP (disables tuned)"
+msgstr "笔记本 — TLP（会禁用 tuned）"
+
+#: roudix-switcher.py
+msgid "ThinkPad — 40/80% charge thresholds"
+msgstr "ThinkPad — 40/80% 充电阈值"
+
+#: roudix-switcher.py
+msgid "AMD GPU undervolt (LACT)"
+msgstr "AMD GPU 降压（LACT）"
+
+#: roudix-switcher.py
+msgid "Roudix fastfetch config"
+msgstr "Roudix 的 fastfetch 配置"
+
+#: roudix-switcher.py
 msgid "Roudix Welcome (shown at session start)"
 msgstr "Roudix Welcome（会话启动时显示）"
+
+#: roudix-switcher.py
+msgid "Fstrim (automatic TRIM for SSD/NVMe)"
+msgstr "Fstrim（SSD/NVMe 自动 TRIM）"
+
+#: roudix-switcher.py
+msgid "VM guest (QEMU/Spice agent)"
+msgstr "虚拟机客户机（QEMU/Spice 代理）"
+
+#: roudix-switcher.py
+msgid "Roudix — Customizer"
+msgstr "Roudix — 定制器"
+
+#: roudix-switcher.py
+msgid ""
+"<b>Customize your Roudix</b>\n"
+"<span size='small'>Pick your desktop, shell and tweaks below.\n"
+"The system will rebuild after your selection — this may take a few minutes.</"
+"span>"
+msgstr ""
+"<b>定制你的 Roudix</b>\n"
+"<span size='small'>请在下方选择桌面、shell 和调整项。\n"
+"选择完成后系统将重新构建 — 这可能需要几分钟。</span>"
+
+#: roudix-switcher.py
+msgid "Desktop"
+msgstr "桌面"
+
+#: roudix-switcher.py
+msgid "Content Creation"
+msgstr "内容创作"
+
+#: roudix-switcher.py
+msgid "Editor"
+msgstr "编辑器"
+
+#: roudix-switcher.py
+msgid "Browser"
+msgstr "浏览器"
+
+#: roudix-switcher.py
+msgid "Login Shell"
+msgstr "登录 shell"
+
+#: roudix-switcher.py
+msgid "File Manager"
+msgstr "文件管理器"
+
+#: roudix-switcher.py
+msgid "Chat Client"
+msgstr "聊天客户端"
+
+#: roudix-switcher.py
+msgid "Apps"
+msgstr "应用"
+
+#: roudix-switcher.py
+msgid "System"
+msgstr "系统"
+
+#: roudix-switcher.py
+msgid "Integration"
+msgstr "集成"
+
+#: roudix-switcher.py
+msgid "Icon Theme"
+msgstr "图标主题"
+
+#: roudix-switcher.py
+msgid "Desktop environment"
+msgstr "桌面环境"
+
+#: roudix-switcher.py
+msgid "Graphical shell"
+msgstr "图形 shell"
+
+#: roudix-switcher.py
+msgid "Scratchpad apps"
+msgstr "Scratchpad 应用"
 
 #: roudix-switcher.py
 msgid "Umbriel effects"
@@ -1165,8 +803,65 @@ msgid "Umbriel — disable effects"
 msgstr "Umbriel — 禁用效果"
 
 #: roudix-switcher.py
-msgid "Checked = switched off, on top of the effects chosen above. If a game flips between composition and direct scanout, turn off “Screen” and “Cursor”."
-msgstr "勾选 = 关闭，在上方所选效果的基础上生效。如果游戏在合成和 direct scanout 之间来回切换，请关闭“屏幕”和“光标”。"
+msgid ""
+"Checked = switched off, on top of the effects chosen above. If a game flips "
+"between composition and direct scanout, turn off “Screen” and “Cursor”."
+msgstr ""
+"勾选 = 关闭，在上方所选效果的基础上生效。如果游戏在合成和 direct scanout 之间"
+"来回切换，请关闭“屏幕”和“光标”。"
+
+#: roudix-switcher.py
+msgid "Versions"
+msgstr "版本"
+
+#: roudix-switcher.py
+msgid "Launchers and tools installed for gaming."
+msgstr "为游戏安装的启动器和工具。"
+
+#: roudix-switcher.py
+msgid "OBS plugins"
+msgstr "OBS 插件"
+
+#: roudix-switcher.py
+msgid "Video editor"
+msgstr "视频编辑器"
+
+#: roudix-switcher.py
+msgid "Default editor"
+msgstr "默认编辑器"
+
+#: roudix-switcher.py
+msgid "Default terminal"
+msgstr "默认终端"
+
+#: roudix-switcher.py
+msgid ""
+"Pick any number — the first one checked below becomes the default (niri's "
+"MOD+B shortcut)."
+msgstr "可任意多选 — 下方第一个勾选的将成为默认项（niri 的 MOD+B 快捷键）。"
+
+#: roudix-switcher.py
+msgid "Zen channel"
+msgstr "Zen 通道"
+
+#: roudix-switcher.py
+msgid "Sine mod loader"
+msgstr "Sine 模组加载器"
+
+#: roudix-switcher.py
+msgid ""
+"Native Zen mods and Sine mods can't be active at the same time — the list "
+"below always targets whichever is on."
+msgstr ""
+"Zen 原生模组和 Sine 模组不能同时启用 — 下方列表始终针对当前启用的那一种。"
+
+#: roudix-switcher.py
+msgid "Mods"
+msgstr "模组"
+
+#: roudix-switcher.py
+msgid "No mods listed yet — add your mod IDs to ZEN_MODS in the script."
+msgstr "列表中还没有模组 — 请把你的模组 ID 添加到脚本中的 ZEN_MODS。"
 
 #: roudix-switcher.py
 msgid "Zen tweaks"
@@ -1193,6 +888,41 @@ msgid "None: the Firefox tweaks are written nowhere"
 msgstr "无：Firefox 调优不会写入任何位置"
 
 #: roudix-switcher.py
+msgid "Login shell"
+msgstr "登录 shell"
+
+#: roudix-switcher.py
+msgid ""
+"This is your terminal login shell — not the graphical shell under Desktop "
+"(noctalia/dms/caelestia)."
+msgstr ""
+"这是你终端的登录 shell — 不是“桌面”下的图形 shell（noctalia/dms/caelestia）。"
+
+#: roudix-switcher.py
+msgid "File manager"
+msgstr "文件管理器"
+
+#: roudix-switcher.py
+msgid "Matrix client"
+msgstr "Matrix 客户端"
+
+#: roudix-switcher.py
+msgid "Optional apps"
+msgstr "可选应用"
+
+#: roudix-switcher.py
+msgid "Video player"
+msgstr "视频播放器"
+
+#: roudix-switcher.py
+msgid "Torrent client"
+msgstr "BT 下载客户端"
+
+#: roudix-switcher.py
+msgid "Music player"
+msgstr "音乐播放器"
+
+#: roudix-switcher.py
 msgid "Spicetify theme"
 msgstr "Spicetify 主题"
 
@@ -1201,8 +931,24 @@ msgid "Spicetify"
 msgstr "Spicetify"
 
 #: roudix-switcher.py
+msgid "Mail client"
+msgstr "邮件客户端"
+
+#: roudix-switcher.py
 msgid "Password manager"
 msgstr "密码管理器"
+
+#: roudix-switcher.py
+msgid "Toggles"
+msgstr "开关"
+
+#: roudix-switcher.py
+msgid "RGB backend"
+msgstr "RGB 后端"
+
+#: roudix-switcher.py
+msgid "Update branch"
+msgstr "更新分支"
 
 #: roudix-switcher.py
 msgid "Update check interval"
@@ -1215,6 +961,43 @@ msgstr "音频（PipeWire）"
 #: roudix-switcher.py
 msgid "System tuning"
 msgstr "系统调优"
+
+#: roudix-switcher.py
+msgid "Keyring & portal backend"
+msgstr "密钥环与 portal 后端"
+
+#: roudix-switcher.py
+msgid ""
+"Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE always "
+"keep their own native stack. With KDE, the GNOME apps (text editor, image "
+"viewer, disk utility, default file manager) are swapped for Kate, Gwenview, "
+"Partition Manager and Dolphin; adw-gtk3 stays installed."
+msgstr ""
+"仅适用于 niri、Hyprland、MangoWC 和 Umbriel — GNOME 和 KDE 始终保留各自的原生"
+"栈。使用 KDE 时，GNOME 应用（文本编辑器、图片查看器、磁盘工具、默认文件管理"
+"器）会被替换为 Kate、Gwenview、Partition Manager 和 Dolphin；adw-gtk3 仍会保"
+"留安装。"
+
+#: roudix-switcher.py
+msgid "Icon theme"
+msgstr "图标主题"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"{len} additional theme(s) detected on the system (a package you added by "
+"hand, or dropped into ~/.icons)."
+msgstr ""
+"系统上检测到 {len} 个额外主题（手动添加的软件包，或放入 ~/.icons 的主题）。"
+
+#: roudix-switcher.py
+msgid ""
+"Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE keep "
+"their own native icon picker. With Tela, the first recolor happens on the "
+"next Noctalia theme/accent change."
+msgstr ""
+"仅适用于 niri、Hyprland、MangoWC 和 Umbriel — GNOME 和 KDE 保留各自的原生图标"
+"选择器。使用 Tela 时，首次重新着色会在下一次 Noctalia 主题/强调色更改时发生。"
 
 #: roudix-switcher.py
 msgid "Update interval"
@@ -1231,3 +1014,367 @@ msgstr "Firefox 配置文件（调优）"
 #: roudix-switcher.py
 msgid "Umbriel — disabled effects"
 msgstr "Umbriel — 已禁用的效果"
+
+#: roudix-switcher.py
+msgid "Exit"
+msgstr "退出"
+
+#: roudix-switcher.py
+msgid "Apply & Rebuild"
+msgstr "应用并重新构建"
+
+#: roudix-switcher.py
+msgid "Gaming disabled"
+msgstr "游戏已禁用"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "{enabled}/{len} gaming apps enabled"
+msgstr "已启用 {enabled}/{len} 个游戏应用"
+
+#: roudix-switcher.py
+msgid "<span color='gray'>No changes detected — nothing to do.</span>"
+msgstr "<span color='gray'>未检测到更改 — 无需操作。</span>"
+
+#: roudix-switcher.py
+msgid "enabled"
+msgstr "已启用"
+
+#: roudix-switcher.py
+msgid "disabled"
+msgstr "已禁用"
+
+#: roudix-switcher.py
+msgid "none"
+msgstr "无"
+
+#: roudix-switcher.py
+msgid "Shell"
+msgstr "Shell"
+
+#: roudix-switcher.py
+msgid "Keyring/portal"
+msgstr "密钥环/portal"
+
+#: roudix-switcher.py
+msgid "Terminal"
+msgstr "终端"
+
+#: roudix-switcher.py
+msgid "Browsers"
+msgstr "浏览器"
+
+#: roudix-switcher.py
+msgid "Zen mods"
+msgstr "Zen 模组"
+
+#: roudix-switcher.py
+msgid "latest version (flake)"
+msgstr "最新版本（flake）"
+
+#: roudix-switcher.py
+msgid "nixpkgs version"
+msgstr "nixpkgs 版本"
+
+#: roudix-switcher.py
+msgid "Apply changes?"
+msgstr "应用更改？"
+
+#: roudix-switcher.py
+msgid ""
+"Apply now switches your running session immediately (a few things, like the "
+"desktop/shell, only fully take effect after you log out). Apply at next boot "
+"just prepares the new generation — nothing changes until you restart."
+msgstr ""
+"“立即应用”会立刻切换你正在运行的会话（有些内容，例如桌面或 shell，需要注销后"
+"才会完全生效）。“下次启动时应用”只是准备好新的系统世代 — 在你重启之前不会有任"
+"何改变。"
+
+#: roudix-switcher.py
+msgid "Cancel"
+msgstr "取消"
+
+#: roudix-switcher.py
+msgid "Apply at Next Boot"
+msgstr "下次启动时应用"
+
+#: roudix-switcher.py
+msgid "Apply Now"
+msgstr "立即应用"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "<span color='red'>Error writing DE config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入桌面环境配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing shell config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入shell配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing keyring/portal config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入密钥环/portal配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing editor config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入编辑器配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing terminal config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入终端配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing browsers config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入浏览器配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Zen Browser config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入Zen Browser配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Zen channel config: {markup_escape_text}</"
+"span>"
+msgstr "<span color='red'>写入Zen 通道配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Sine config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入Sine配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Zen mods config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入Zen 模组配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing scratchpad config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入scratchpad配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing nixpkgs/flake version config: "
+"{markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>写入nixpkgs/flake 版本配置时出错：{markup_escape_text}</"
+"span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing login shell config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入登录 shell配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing file manager config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入文件管理器配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Matrix client config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入Matrix 客户端配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Discord config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入Discord配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Telegram config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入Telegram配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing RGB backend config: {markup_escape_text}</"
+"span>"
+msgstr "<span color='red'>写入RGB 后端配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing video player config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入视频播放器配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing torrent client config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入BT 下载客户端配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing music player config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入音乐播放器配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing mail client config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入邮件客户端配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing icon theme config: {markup_escape_text}</"
+"span>"
+msgstr "<span color='red'>写入图标主题配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing gaming config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入游戏配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing {name} config: {markup_escape_text}</span>"
+msgstr "<span color='red'>写入{name}配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing Content Creation config: {markup_escape_text}"
+"</span>"
+msgstr "<span color='red'>写入内容创作配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>Error writing video editor config: {markup_escape_text}</"
+"span>"
+msgstr ""
+"<span color='red'>写入视频编辑器配置时出错：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+msgid "Important Notices:"
+msgstr "重要通知："
+
+#: roudix-switcher.py
+msgid "No issues currently reported."
+msgstr "目前没有已报告的问题。"
+
+#: roudix-switcher.py
+msgid "Running"
+msgstr "运行中"
+
+#: roudix-switcher.py
+msgid "Checking repositories..."
+msgstr "正在检查仓库..."
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "Switching to branch {new_branch}…"
+msgstr "正在切换到分支 {new_branch}…"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "✗ Could not switch to {new_branch}: {msg}"
+msgstr "✗ 无法切换到 {new_branch}：{msg}"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"<span color='red'>✗ Branch switch failed — nothing was changed. "
+"{markup_escape_text}</span>"
+msgstr ""
+"<span color='red'>✗ 切换分支失败 — 未作任何更改。{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "✓ Repository on branch {new_branch}."
+msgstr "✓ 仓库已在分支 {new_branch}。"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "⚠ Branch not written to local.nix: {res}"
+msgstr "⚠ 分支未写入 local.nix：{res}"
+
+#: roudix-switcher.py
+msgid "✓ Rebuild completed and applied to your running session."
+msgstr "✓ 重新构建完成，并已应用到你正在运行的会话。"
+
+#: roudix-switcher.py
+msgid ""
+"<span color='green'>✓ Done! Applied now — some things (desktop/shell) may "
+"still need a logout to fully take effect.</span>"
+msgstr ""
+"<span color='green'>✓ 完成！已立即应用 — 有些内容（桌面/shell）可能仍需注销后"
+"才能完全生效。</span>"
+
+#: roudix-switcher.py
+msgid "✓ Rebuild completed successfully. Reboot to apply changes."
+msgstr "✓ 重新构建成功完成。请重启以应用更改。"
+
+#: roudix-switcher.py
+msgid "<span color='green'>✓ Done! Reboot to apply changes.</span>"
+msgstr "<span color='green'>✓ 完成！请重启以应用更改。</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit code {returncode})."
+msgstr "✗ 重新构建失败（退出码 {returncode}）。"
+
+#: roudix-switcher.py
+msgid ""
+"<span color='red'>✗ Rebuild failed. Check <tt>~/.local/share/roudix-switcher/"
+"switcher.log</tt> for details.</span>"
+msgstr ""
+"<span color='red'>✗ 重新构建失败。详情请查看 <tt>~/.local/share/roudix-"
+"switcher/switcher.log</tt>。</span>"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "✗ Unexpected error: {e}"
+msgstr "✗ 意外错误：{e}"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "<span color='red'>✗ Unexpected error: {markup_escape_text}</span>"
+msgstr "<span color='red'>✗ 意外错误：{markup_escape_text}</span>"
