@@ -294,7 +294,7 @@ COSMIC utilise le wallpaper Roudix Kitsune par défaut et la disposition clavier
 
 Ce sont des valeurs par défaut, livrées sous forme de fichiers cosmic-config système : elles ne s'appliquent qu'à ce que l'utilisateur n'a pas modifié, et une reconstruction ne revient jamais sur un choix fait dans les Paramètres COSMIC.
 
-Les apps GTK (navigateurs, apps Roudix...) reçoivent la palette Roudix (`assets/palette/Roudix.json`) par-dessus adw-gtk3 / libadwaita, et ton terminal reçoit son schéma de couleurs Roudix comme sur les autres bureaux. Les apps et le panneau propres à COSMIC suivent le thème choisi dans Paramètres > Apparence ; la palette Roudix n'y est **pas** appliquée automatiquement (voir la note dans `modules/home/desktop/cosmic/default.nix`).
+Les apps et le panneau propres à COSMIC utilisent par défaut le schéma de couleurs Roudix (`assets/cosmic/`, généré depuis `assets/palette/Roudix.json`, installé comme défauts système par `modules/system/desktop/cosmic.nix`, sans Home Manager). Choisir un autre thème ou accent dans Paramètres > Apparence le remplace, et un rebuild ne touche jamais à ton choix. Les apps GTK (navigateurs, apps Roudix...) utilisent adw-gtk3-dark tel quel, sans CSS supplémentaire, et ton terminal reçoit son schéma de couleurs Roudix comme sur les autres bureaux.
 
 `system76-scheduler`, activé par le module COSMIC de nixpkgs, est désactivé par défaut car Roudix a son propre ordonnanceur (SCX). Pour le garder :
 

@@ -1,0 +1,11 @@
+[package]
+name = "roudix-cosmic-gen"
+version = "0.1.0"
+edition = "2021"
+
+# Same libcosmic revision as the COSMIC epoch shipped by the pinned nixpkgs
+# (cosmic-settings epoch-1.10.0 -> libcosmic 5a8bd94). Bump it together with
+# the COSMIC epoch, then regenerate assets/cosmic (see README.md).
+[dependencies]
+cosmic-theme  = { git = "https://github.com/pop-os/libcosmic", rev = "5a8bd9482a35ae94c1e54edf77b331c6b970f170" }
+cosmic-config = { git = "https://github.com/pop-os/libcosmic", rev = "5a8bd9482a35ae94c1e54edf77b331c6b970f170", default-features = false, features = ["macro"] }

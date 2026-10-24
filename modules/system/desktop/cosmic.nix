@@ -122,9 +122,44 @@ let
   xkbConfig =
     ''(rules: "", model: "pc104", layout: ${ron.str config.roudix.keyboardLayout}, variant: ${ron.str config.roudix.keyboardVariant}, options: ${if kbOptions == "" then "None" else ''Some(${ron.str kbOptions})''}, repeat_delay: 600, repeat_rate: 25)'';
 
+  # ── Roudix colour scheme (COSMIC theme) ─────────────────────────────────
+  # assets/cosmic/ holds the Roudix theme as cosmic-config files, generated
+  # from assets/palette/Roudix.json by scripts/gen-cosmic-theme (libcosmic's
+  # own ThemeBuilder, so the derived colours are exactly what Settings >
+  # Appearance would produce). Same mechanism as the rest of this file: they
+  # land in share/cosmic/<id>/v2/ as DEFAULTS, so the first login is Roudix
+  # orange on warm dark, and picking another accent/theme in COSMIC Settings
+  # writes the user's own file, which wins. No Home Manager involved.
+  themeDefaults = pkgs.runCommand "roudix-cosmic-theme" { } ''
+    mkdir -p $out/share
+    cp -r ${../../../assets/cosmic} $out/share/cosmic
+  '';
+
+  # ── Login screen wallpaper ────────────────────────────────────────────
+  # cosmic-greeter has no system-wide wallpaper setting: it shows the
+  # wallpaper cosmic-bg last applied for each user (~/.local/state/cosmic/
+  # com.system76.CosmicBackground), and when there is none yet (fresh install,
+  # first boot) it falls back to a picture compiled into the binary
+  # (res/background.jpg). Roudix's Kitsune is already the default desktop
+  # wallpaper above, so after the first login the greeter follows it; this
+  # replaces the compiled-in fallback so the very first greeter matches too.
+  # It rebuilds cosmic-greeter from source (not in the binary cache).
+  greeterBackground = pkgs.runCommand "roudix-greeter-background.jpg"
+    { nativeBuildInputs = [ pkgs.imagemagick ]; }
+    ''
+      magick ${../../../assets/wallpapers/roudix-kitsune.png} -quality 90 $out
+    '';
+
+  greeterPackage = pkgs.cosmic-greeter.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      install -Dm644 ${greeterBackground} res/background.jpg
+    '';
+  });
+
   cosmicDefaults = pkgs.symlinkJoin {
     name  = "roudix-cosmic-defaults";
     paths = [
+      themeDefaults
       (mkDefault "com.system76.CosmicAppList" "favorites" (ron.list (map ron.str favoriteApps)))
       (mkDefault "com.system76.CosmicAppLibrary" "groups" appLibraryGroups)
       (mkDefault "com.system76.CosmicComp" "xkb_config" xkbConfig)
@@ -141,6 +176,13 @@ in
     # COSMIC is a Wayland desktop (cosmic-comp), with its own greeter.
     services.desktopManager.cosmic.enable = true;
     services.displayManager.cosmic-greeter.enable = true;
+    services.displayManager.cosmic-greeter.package = greeterPackage;
+
+    # cosmic-greeter-daemon reads each user's COSMIC config to paint the
+    # greeter (theme, wallpaper). Without XDG_DATA_DIRS a systemd service only
+    # looks in /usr/share, so it would never see the Roudix defaults above.
+    systemd.services.cosmic-greeter-daemon.environment.XDG_DATA_DIRS =
+      "/run/current-system/sw/share";
     services.displayManager.defaultSession = "cosmic";
 
     # ── Keyring ───────────────────────────────────────────────────────────

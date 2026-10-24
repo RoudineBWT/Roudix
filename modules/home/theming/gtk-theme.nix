@@ -12,8 +12,8 @@ let
   #
   # COSMIC is deliberately NOT in the exclusion list below: it themes its own
   # libcosmic apps, but has no GTK theming of its own, so GTK apps get the
-  # same adw-gtk3 / dconf / icon / cursor setup as on the bare compositors
-  # (their Roudix colours are added by modules/home/desktop/cosmic).
+  # same adw-gtk3 / dconf / icon / cursor setup as on the bare compositors.
+  # No extra GTK CSS is layered on top: adw-gtk3-dark is left as is.
   needsGtkTheme = desktopType != "gnome" && desktopType != "kde" && desktopType != "cinnamon";
 
   # roudix.iconTheme (modules/system/desktop/icon-theme.nix), set via roudix-switcher

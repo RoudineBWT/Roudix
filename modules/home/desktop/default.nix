@@ -16,7 +16,6 @@
     ./gnome/default.nix
     ./kde/default.nix
     ./cinnamon/default.nix
-    ./cosmic/default.nix
     ./hyprland/default.nix
     ./mangowc/default.nix
     ./umbriel/default.nix
