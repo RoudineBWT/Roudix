@@ -37,7 +37,7 @@
 | परत | चुनाव |
 |-------|--------|
 | OS | Roudix (NixOS unstable) |
-| Kernel | CachyOS (कर्नेल वैरिएंट [सुविधाएँ](docs/features.md) या [इंस्टॉलेशन](docs/installation.md) में देखें) |
+| Kernel | CachyOS (कर्नेल वैरिएंट [सुविधाएँ](docs/features.md) या [इंस्टॉलेशन](docs/installation.hi.md) में देखें) |
 | Bootloader | Limine (डिफ़ॉल्ट) · systemd-boot |
 | Compositor | Niri (स्क्रोल होने वाली टाइलिंग) · Hyprland (डायनामिक टाइलिंग) · MangoWC · Umbriel (स्क्रोल होने वाली टाइलिंग, Noctalia-नेटिव) |
 | ग्राफ़िकल शेल | Noctalia · DankMaterialShell · Caelestia |
@@ -59,7 +59,7 @@
 |-|-|
 | 🖥️ [डेस्कटॉप और शेल](docs/desktop.md) | कंपोज़िटर और ग्राफ़िकल शेल बदलें, निजी ओवरराइड (Niri, Hyprland, GNOME, KDE) |
 | ⚡ [एलियास और फ़ंक्शन](docs/aliases.hi.md) | सभी शेल एलियास और फ़ंक्शन — `roudix-switch`, `roudix-shell-switch`, `rebuild`… |
-| 🚀 [इंस्टॉलेशन](docs/installation.md) | स्वचालित और मैनुअल इंस्टॉलेशन गाइड |
+| 🚀 [इंस्टॉलेशन](docs/installation.hi.md) | स्वचालित और मैनुअल इंस्टॉलेशन गाइड |
 | ✨ [सुविधाएँ](docs/features.md) | डेस्कटॉप एनवायरनमेंट के अनुसार सुविधाओं की पूरी सूची |
 | 🔄 [ऑटो-अपडेट](docs/autoupdate.hi.md) | स्वचालित git pull + रीबिल्ड का कॉन्फ़िगरेशन |
 

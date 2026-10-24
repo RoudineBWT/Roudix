@@ -37,7 +37,7 @@
 | Слой | Выбор |
 |-------|--------|
 | ОС | Roudix (NixOS unstable) |
-| Kernel | CachyOS (выберите вариант ядра в разделе [Возможности](docs/features.md) или [Установка](docs/installation.md)) |
+| Kernel | CachyOS (выберите вариант ядра в разделе [Возможности](docs/features.md) или [Установка](docs/installation.ru.md)) |
 | Bootloader | Limine (по умолчанию) · systemd-boot |
 | Compositor | Niri (прокручиваемая мозаика) · Hyprland (динамическая мозаика) · MangoWC · Umbriel (прокручиваемая мозаика, нативный для Noctalia) |
 | Графическая оболочка | Noctalia · DankMaterialShell · Caelestia |
@@ -59,7 +59,7 @@
 |-|-|
 | 🖥️ [Рабочий стол и оболочки](docs/desktop.md) | Смена композиторов и графических оболочек, личные настройки (Niri, Hyprland, GNOME, KDE) |
 | ⚡ [Алиасы и функции](docs/aliases.ru.md) | Все алиасы и функции оболочки — `roudix-switch`, `roudix-shell-switch`, `rebuild`… |
-| 🚀 [Установка](docs/installation.md) | Руководство по автоматической и ручной установке |
+| 🚀 [Установка](docs/installation.ru.md) | Руководство по автоматической и ручной установке |
 | ✨ [Возможности](docs/features.md) | Полный список возможностей по окружениям рабочего стола |
 | 🔄 [Автообновление](docs/autoupdate.ru.md) | Настройка автоматического git pull + пересборки |
 

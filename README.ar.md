@@ -37,7 +37,7 @@
 | الطبقة | الاختيار |
 |-------|--------|
 | نظام التشغيل | Roudix (NixOS unstable) |
-| Kernel | CachyOS (اختر نسخة النواة من [الميزات](docs/features.md) أو [التثبيت](docs/installation.md)) |
+| Kernel | CachyOS (اختر نسخة النواة من [الميزات](docs/features.md) أو [التثبيت](docs/installation.ar.md)) |
 | Bootloader | Limine (افتراضي) · systemd-boot |
 | Compositor | Niri (تبليط قابل للتمرير) · Hyprland (تبليط ديناميكي) · MangoWC · Umbriel (تبليط قابل للتمرير، أصلي في Noctalia) |
 | الواجهة الرسومية (shell) | Noctalia · DankMaterialShell · Caelestia |
@@ -59,7 +59,7 @@
 |-|-|
 | 🖥️ [سطح المكتب والواجهات](docs/desktop.md) | تبديل المُركِّبات والواجهات الرسومية، والتخصيصات الشخصية (Niri, Hyprland, GNOME, KDE) |
 | ⚡ [الأسماء المستعارة والدوال](docs/aliases.ar.md) | جميع الأسماء المستعارة والدوال في الصدفة — `roudix-switch`, `roudix-shell-switch`, `rebuild`… |
-| 🚀 [التثبيت](docs/installation.md) | دليل التثبيت التلقائي واليدوي |
+| 🚀 [التثبيت](docs/installation.ar.md) | دليل التثبيت التلقائي واليدوي |
 | ✨ [الميزات](docs/features.md) | قائمة الميزات الكاملة حسب بيئة سطح المكتب |
 | 🔄 [التحديث التلقائي](docs/autoupdate.ar.md) | إعداد git pull + إعادة البناء التلقائيين |
 

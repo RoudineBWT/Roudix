@@ -1,4 +1,4 @@
-*[English version](features.md)*
+[English](features.md) · **Français** · [Español](features.es.md) · [Português (Brasil)](features.pt_BR.md) · [Русский](features.ru.md) · [简体中文](features.zh_CN.md) · [हिन्दी](features.hi.md) · [العربية](features.ar.md)
 
 # Fonctionnalités
 
@@ -126,14 +126,19 @@
 
 ## Musique
 
-À choisir via `roudix.musicPlayer` — `"spotify"` (défaut), `"ytmdesktop"` ou
-`"none"`.
+À choisir via `roudix.musicPlayer` — `"spotify"` (défaut), `"ytmdesktop"`,
+`"sonora"` ou `"none"`.
 
 - `"spotify"` — Spotify patché avec Spicetify. Thème local, "colorful" par
   défaut (ou "comfy"), plus extensions adblock + masquage des podcasts —
   voir options ci-dessous.
 - `"ytmdesktop"` — YouTube Music Desktop App (client YouTube Music non
   officiel, basé sur Electron).
+- `"sonora"` — [Sonora](https://github.com/sonorahq/sonora), un client natif
+  (Rust/GPUI) pour Spotify, YouTube Music, Apple Music, Deezer et
+  Subsonic dans une seule app. L'option `roudix.sonora.provider` choisit le
+  fournisseur sur lequel il démarre (`"youtube"` = YouTube Music). Il ne
+  contourne pas les abonnements : si un service en exige un, Sonora aussi.
 
 ## Apps communes optionnelles
 

@@ -26,30 +26,19 @@ msgstr "GNOME — desktop moderno e fácil de usar"
 
 #: roudix-switcher.py
 msgid "KDE Plasma — Highly customizable and feature-rich desktop environment"
-msgstr ""
-"KDE Plasma — ambiente de desktop muito personalizável e repleto de recursos"
+msgstr "KDE Plasma — ambiente de desktop muito personalizável e repleto de recursos"
 
 #: roudix-switcher.py
 msgid "Cinnamon — classic X11 desktop, ideal for older PCs"
 msgstr "Cinnamon — desktop clássico em X11, ideal para PCs antigos"
 
 #: roudix-switcher.py
-msgid "COSMIC — modern Wayland desktop by System76, written in Rust"
-msgstr "COSMIC — desktop Wayland moderno da System76, escrito em Rust"
-
-#: roudix-switcher.py
 msgid "Lightweight dynamic tiling Wayland compositor"
 msgstr "Compositor Wayland de tiling dinâmico e leve"
 
 #: roudix-switcher.py
-msgid ""
-"a Wayland compositor designed for daily use, with scrolling, dwindle, and "
-"master layouts, per-output workspaces, window rules, blur, shadows, and "
-"fluid animations."
-msgstr ""
-"um compositor Wayland pensado para o uso diário, com layouts de rolagem, "
-"dwindle e master, workspaces por saída, regras de janelas, desfoque, sombras "
-"e animações fluidas."
+msgid "a Wayland compositor designed for daily use, with scrolling, dwindle, and master layouts, per-output workspaces, window rules, blur, shadows, and fluid animations."
+msgstr "um compositor Wayland pensado para o uso diário, com layouts de rolagem, dwindle e master, workspaces por saída, regras de janelas, desfoque, sombras e animações fluidas."
 
 #: roudix-switcher.py
 msgid "Roudix default shell — sleek and feature-complete"
@@ -64,39 +53,16 @@ msgid "Elegant Roudix shell with a focus on aesthetics"
 msgstr "Shell do Roudix elegante, focado na estética"
 
 #: roudix-switcher.py
-msgid ""
-"MangoWC only — Discord/Telegram/Element and Spotify live in named "
-"scratchpads (each with its own shortcut) instead of staying tiled on a fixed "
-"tag."
-msgstr ""
-"Somente MangoWC — Discord/Telegram/Element e Spotify ficam em scratchpads "
-"nomeados (cada um com seu atalho) em vez de ficarem em tiling em uma tag "
-"fixa."
+msgid "MangoWC only — Discord/Telegram/Element and Spotify live in named scratchpads (each with its own shortcut) instead of staying tiled on a fixed tag."
+msgstr "Somente MangoWC — Discord/Telegram/Element e Spotify ficam em scratchpads nomeados (cada um com seu atalho) em vez de ficarem em tiling em uma tag fixa."
 
 #: roudix-switcher.py
-msgid ""
-"Umbriel only — Discord/Telegram and Spotify live in named scratchpads (shown/"
-"hidden with a shortcut) instead of staying tiled on a fixed output/workspace."
-msgstr ""
-"Somente Umbriel — Discord/Telegram e Spotify ficam em scratchpads nomeados "
-"(exibidos/ocultados com um atalho) em vez de ficarem em tiling em uma saída/"
-"workspace fixos."
+msgid "Umbriel only — Discord/Telegram and Spotify live in named scratchpads (shown/hidden with a shortcut) instead of staying tiled on a fixed output/workspace."
+msgstr "Somente Umbriel — Discord/Telegram e Spotify ficam em scratchpads nomeados (exibidos/ocultados com um atalho) em vez de ficarem em tiling em uma saída/workspace fixos."
 
 #: roudix-switcher.py
-msgid ""
-"Off (default): nixpkgs version. On: the very latest version, built from the "
-"project's own flake. ⚠ Roudix configurations are written for the flake "
-"versions first: on the nixpkgs version, a configuration error saying that an "
-"option, a setting or a key \"does not exist\" is normal (it was added after "
-"the nixpkgs version). Wait for nixpkgs to catch up, or turn the latest "
-"version on."
-msgstr ""
-"Desativado (padrão): versão do nixpkgs. Ativado: a versão mais recente, "
-"compilada a partir do flake do próprio projeto. ⚠ As configurações do Roudix "
-"são escritas primeiro para as versões flake: na versão do nixpkgs, é normal "
-"que um erro de configuração diga que uma opção, um ajuste ou uma chave \"não "
-"existe\" (ela foi adicionada depois da versão do nixpkgs). Espere o nixpkgs "
-"se atualizar ou ative a versão mais recente."
+msgid "Off (default): nixpkgs version. On: the very latest version, built from the project's own flake. ⚠ Roudix configurations are written for the flake versions first: on the nixpkgs version, a configuration error saying that an option, a setting or a key \"does not exist\" is normal (it was added after the nixpkgs version). Wait for nixpkgs to catch up, or turn the latest version on."
+msgstr "Desativado (padrão): versão do nixpkgs. Ativado: a versão mais recente, compilada a partir do flake do próprio projeto. ⚠ As configurações do Roudix são escritas primeiro para as versões flake: na versão do nixpkgs, é normal que um erro de configuração diga que uma opção, um ajuste ou uma chave \"não existe\" (ela foi adicionada depois da versão do nixpkgs). Espere o nixpkgs se atualizar ou ative a versão mais recente."
 
 #: roudix-switcher.py
 #, python-brace-format
@@ -116,12 +82,12 @@ msgid "Terminal-based, keyboard-driven"
 msgstr "No terminal, controlado pelo teclado"
 
 #: roudix-switcher.py
-msgid "Don't install a default editor"
-msgstr "Não instalar um editor padrão"
-
-#: roudix-switcher.py
 msgid "None"
 msgstr "Nenhum"
+
+#: roudix-switcher.py
+msgid "Don't install a default editor"
+msgstr "Não instalar um editor padrão"
 
 #: roudix-switcher.py
 msgid "gnome-keyring + xdg-desktop-portal-gtk/-gnome (default)"
@@ -132,12 +98,8 @@ msgid "Fixed theme, Papirus' own blue accent (default)"
 msgstr "Tema fixo, com o destaque azul próprio do Papirus (padrão)"
 
 #: roudix-switcher.py
-msgid ""
-"Auto-recolored to the current Noctalia accent if roudix.desktop.shell = "
-"\"noctalia\"; plain Tela otherwise"
-msgstr ""
-"Recolorido automaticamente com o destaque atual do Noctalia se "
-"roudix.desktop.shell = \"noctalia\"; Tela comum nos outros casos"
+msgid "Auto-recolored to the current Noctalia accent if roudix.desktop.shell = \"noctalia\"; plain Tela otherwise"
+msgstr "Recolorido automaticamente com o destaque atual do Noctalia se roudix.desktop.shell = \"noctalia\"; Tela comum nos outros casos"
 
 #: roudix-switcher.py
 msgid "Flat, colorful Material-style set (pkgs.qogir-icon-theme)"
@@ -285,28 +247,20 @@ msgstr "Estável — atualizado a cada 2 semanas, aproximadamente (padrão)"
 
 #: roudix-switcher.py
 msgid "Testing — updated about every 2 days, may occasionally break"
-msgstr ""
-"Testing — atualizado a cada 2 dias, aproximadamente, pode quebrar de vez em "
-"quando"
+msgstr "Testing — atualizado a cada 2 dias, aproximadamente, pode quebrar de vez em quando"
 
 #: roudix-switcher.py
 msgid "Dev — latest changes, least stable"
 msgstr "Dev — últimas mudanças, a menos estável"
 
 #: roudix-switcher.py
-msgid ""
-"~/.config/roudix is not a git repository — the branch cannot be switched."
-msgstr ""
-"~/.config/roudix não é um repositório git — não é possível trocar de branch."
+msgid "~/.config/roudix is not a git repository — the branch cannot be switched."
+msgstr "~/.config/roudix não é um repositório git — não é possível trocar de branch."
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"Local branch '{branch}' has commits origin doesn't have (unpushed?) — kept "
-"as is, not updated."
-msgstr ""
-"O branch local '{branch}' tem commits que o origin não tem (sem push?) — "
-"mantido como está, sem atualizar."
+msgid "Local branch '{branch}' has commits origin doesn't have (unpushed?) — kept as is, not updated."
+msgstr "O branch local '{branch}' tem commits que o origin não tem (sem push?) — mantido como está, sem atualizar."
 
 #: roudix-switcher.py
 msgid "+ Spicetify"
@@ -373,16 +327,12 @@ msgid "Decky Loader (Steam plugins, compiled on first rebuild)"
 msgstr "Decky Loader (plugins do Steam, compilado no primeiro rebuild)"
 
 #: roudix-switcher.py
-msgid ""
-"Nightly build of Zen Beta, mirrored by the flake maintainer (Roudix default)"
-msgstr ""
-"Build nightly do Zen Beta, espelhado pelo mantenedor do flake (padrão do "
-"Roudix)"
+msgid "Nightly build of Zen Beta, mirrored by the flake maintainer (Roudix default)"
+msgstr "Build nightly do Zen Beta, espelhado pelo mantenedor do flake (padrão do Roudix)"
 
 #: roudix-switcher.py
 msgid "Firefox-based (regular release), slower-moving, most stable"
-msgstr ""
-"Baseado no Firefox (versão regular), de evolução mais lenta, o mais estável"
+msgstr "Baseado no Firefox (versão regular), de evolução mais lenta, o mais estável"
 
 #: roudix-switcher.py
 msgid "Free KDE-based editor"
@@ -501,16 +451,8 @@ msgid "Roudix — Customizer"
 msgstr "Roudix — Personalizador"
 
 #: roudix-switcher.py
-msgid ""
-"<b>Customize your Roudix</b>\n"
-"<span size='small'>Pick your desktop, shell and tweaks below.\n"
-"The system will rebuild after your selection — this may take a few minutes.</"
-"span>"
-msgstr ""
-"<b>Personalize seu Roudix</b>\n"
-"<span size='small'>Escolha abaixo seu desktop, shell e ajustes.\n"
-"O sistema será reconstruído após a sua seleção — isso pode levar alguns "
-"minutos.</span>"
+msgid "<b>Customize your Roudix</b>\n<span size='small'>Pick your desktop, shell and tweaks below.\nThe system will rebuild after your selection — this may take a few minutes.</span>"
+msgstr "<b>Personalize seu Roudix</b>\n<span size='small'>Escolha abaixo seu desktop, shell e ajustes.\nO sistema será reconstruído após a sua seleção — isso pode levar alguns minutos.</span>"
 
 #: roudix-switcher.py
 msgid "Desktop"
@@ -593,12 +535,8 @@ msgid "Default terminal"
 msgstr "Terminal padrão"
 
 #: roudix-switcher.py
-msgid ""
-"Pick any number — the first one checked below becomes the default (niri's "
-"MOD+B shortcut)."
-msgstr ""
-"Escolha quantos quiser — o primeiro marcado abaixo passa a ser o padrão "
-"(atalho MOD+B do niri)."
+msgid "Pick any number — the first one checked below becomes the default (niri's MOD+B shortcut)."
+msgstr "Escolha quantos quiser — o primeiro marcado abaixo passa a ser o padrão (atalho MOD+B do niri)."
 
 #: roudix-switcher.py
 msgid "Zen channel"
@@ -609,12 +547,8 @@ msgid "Sine mod loader"
 msgstr "Carregador de mods Sine"
 
 #: roudix-switcher.py
-msgid ""
-"Native Zen mods and Sine mods can't be active at the same time — the list "
-"below always targets whichever is on."
-msgstr ""
-"Os mods nativos do Zen e os do Sine não podem estar ativos ao mesmo tempo — "
-"a lista abaixo sempre se refere ao que estiver ativado."
+msgid "Native Zen mods and Sine mods can't be active at the same time — the list below always targets whichever is on."
+msgstr "Os mods nativos do Zen e os do Sine não podem estar ativos ao mesmo tempo — a lista abaixo sempre se refere ao que estiver ativado."
 
 #: roudix-switcher.py
 msgid "Mods"
@@ -622,21 +556,15 @@ msgstr "Mods"
 
 #: roudix-switcher.py
 msgid "No mods listed yet — add your mod IDs to ZEN_MODS in the script."
-msgstr ""
-"Ainda não há mods na lista — adicione os IDs dos seus mods a ZEN_MODS no "
-"script."
+msgstr "Ainda não há mods na lista — adicione os IDs dos seus mods a ZEN_MODS no script."
 
 #: roudix-switcher.py
 msgid "Login shell"
 msgstr "Shell de login"
 
 #: roudix-switcher.py
-msgid ""
-"This is your terminal login shell — not the graphical shell under Desktop "
-"(noctalia/dms/caelestia)."
-msgstr ""
-"Este é o shell de login do seu terminal — não o shell gráfico em Desktop "
-"(noctalia/dms/caelestia)."
+msgid "This is your terminal login shell — not the graphical shell under Desktop (noctalia/dms/caelestia)."
+msgstr "Este é o shell de login do seu terminal — não o shell gráfico em Desktop (noctalia/dms/caelestia)."
 
 #: roudix-switcher.py
 msgid "File manager"
@@ -683,17 +611,8 @@ msgid "Keyring & portal backend"
 msgstr "Chaveiro e backend de portal"
 
 #: roudix-switcher.py
-msgid ""
-"Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE always "
-"keep their own native stack. With KDE, the GNOME apps (text editor, image "
-"viewer, disk utility, default file manager) are swapped for Kate, Gwenview, "
-"Partition Manager and Dolphin; adw-gtk3 stays installed."
-msgstr ""
-"Aplica-se somente a niri, Hyprland, MangoWC e Umbriel — GNOME e KDE sempre "
-"mantêm a sua própria pilha nativa. Com o KDE, os aplicativos do GNOME "
-"(editor de texto, visualizador de imagens, utilitário de discos, gerenciador "
-"de arquivos padrão) são trocados por Kate, Gwenview, Partition Manager e "
-"Dolphin; o adw-gtk3 continua instalado."
+msgid "Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE always keep their own native stack. With KDE, the GNOME apps (text editor, image viewer, disk utility, default file manager) are swapped for Kate, Gwenview, Partition Manager and Dolphin; adw-gtk3 stays installed."
+msgstr "Aplica-se somente a niri, Hyprland, MangoWC e Umbriel — GNOME e KDE sempre mantêm a sua própria pilha nativa. Com o KDE, os aplicativos do GNOME (editor de texto, visualizador de imagens, utilitário de discos, gerenciador de arquivos padrão) são trocados por Kate, Gwenview, Partition Manager e Dolphin; o adw-gtk3 continua instalado."
 
 #: roudix-switcher.py
 msgid "Icon theme"
@@ -701,22 +620,12 @@ msgstr "Tema de ícones"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"{len} additional theme(s) detected on the system (a package you added by "
-"hand, or dropped into ~/.icons)."
-msgstr ""
-"{len} tema(s) adicional(is) detectado(s) no sistema (um pacote adicionado "
-"manualmente ou colocado em ~/.icons)."
+msgid "{len} additional theme(s) detected on the system (a package you added by hand, or dropped into ~/.icons)."
+msgstr "{len} tema(s) adicional(is) detectado(s) no sistema (um pacote adicionado manualmente ou colocado em ~/.icons)."
 
 #: roudix-switcher.py
-msgid ""
-"Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE keep "
-"their own native icon picker. With Tela, the first recolor happens on the "
-"next Noctalia theme/accent change."
-msgstr ""
-"Aplica-se somente a niri, Hyprland, MangoWC e Umbriel — GNOME e KDE mantêm o "
-"seu próprio seletor de ícones nativo. Com o Tela, a primeira recoloração "
-"acontece na próxima mudança de tema/destaque do Noctalia."
+msgid "Only applies to niri, Hyprland, MangoWC and Umbriel — GNOME and KDE keep their own native icon picker. With Tela, the first recolor happens on the next Noctalia theme/accent change."
+msgstr "Aplica-se somente a niri, Hyprland, MangoWC e Umbriel — GNOME e KDE mantêm o seu próprio seletor de ícones nativo. Com o Tela, a primeira recoloração acontece na próxima mudança de tema/destaque do Noctalia."
 
 #: roudix-switcher.py
 msgid "Exit"
@@ -784,15 +693,8 @@ msgid "Apply changes?"
 msgstr "Aplicar as mudanças?"
 
 #: roudix-switcher.py
-msgid ""
-"Apply now switches your running session immediately (a few things, like the "
-"desktop/shell, only fully take effect after you log out). Apply at next boot "
-"just prepares the new generation — nothing changes until you restart."
-msgstr ""
-"“Aplicar agora” altera imediatamente a sua sessão em execução (algumas "
-"coisas, como o desktop ou o shell, só fazem efeito por completo depois de "
-"você sair da sessão). “Aplicar na próxima inicialização” apenas prepara a "
-"nova geração — nada muda até você reiniciar."
+msgid "Apply now switches your running session immediately (a few things, like the desktop/shell, only fully take effect after you log out). Apply at next boot just prepares the new generation — nothing changes until you restart."
+msgstr "“Aplicar agora” altera imediatamente a sua sessão em execução (algumas coisas, como o desktop ou o shell, só fazem efeito por completo depois de você sair da sessão). “Aplicar na próxima inicialização” apenas prepara a nova geração — nada muda até você reiniciar."
 
 #: roudix-switcher.py
 msgid "Cancel"
@@ -809,233 +711,137 @@ msgstr "Aplicar agora"
 #: roudix-switcher.py
 #, python-brace-format
 msgid "<span color='red'>Error writing DE config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do DE: {markup_escape_text}</"
-"span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do DE: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing shell config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do shell: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing shell config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do shell: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing keyring/portal config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do chaveiro/portal: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing keyring/portal config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do chaveiro/portal: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing editor config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do editor: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing editor config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do editor: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing terminal config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do terminal: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing terminal config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do terminal: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing browsers config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração dos navegadores: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing browsers config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração dos navegadores: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing Zen Browser config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do Zen Browser: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing Zen Browser config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do Zen Browser: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing Zen channel config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do canal do Zen: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing Zen channel config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do canal do Zen: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing Sine config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do Sine: {markup_escape_text}"
-"</span>"
+msgid "<span color='red'>Error writing Sine config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do Sine: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing Zen mods config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração dos mods do Zen: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing Zen mods config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração dos mods do Zen: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing scratchpad config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração dos scratchpads: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing scratchpad config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração dos scratchpads: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing nixpkgs/flake version config: "
-"{markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração da versão nixpkgs/flake: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing nixpkgs/flake version config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração da versão nixpkgs/flake: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing login shell config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do shell de login: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing login shell config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do shell de login: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing file manager config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do gerenciador de arquivos: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing file manager config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do gerenciador de arquivos: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing Matrix client config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do cliente Matrix: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing Matrix client config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do cliente Matrix: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing Discord config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do Discord: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing Discord config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do Discord: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing Telegram config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do Telegram: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing Telegram config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do Telegram: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing RGB backend config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do backend de RGB: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing RGB backend config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do backend de RGB: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing video player config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do reprodutor de vídeo: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing video player config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do reprodutor de vídeo: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing torrent client config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do cliente de torrent: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing torrent client config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do cliente de torrent: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing music player config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do reprodutor de música: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing music player config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do reprodutor de música: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing mail client config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do cliente de e-mail: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing mail client config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do cliente de e-mail: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing icon theme config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do tema de ícones: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing icon theme config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do tema de ícones: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing gaming config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração de jogos: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing gaming config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração de jogos: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing {name} config: {markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração de {name}: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing {name} config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração de {name}: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing Content Creation config: {markup_escape_text}"
-"</span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração de Criação de conteúdo: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing Content Creation config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração de Criação de conteúdo: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>Error writing video editor config: {markup_escape_text}</"
-"span>"
-msgstr ""
-"<span color='red'>Erro ao gravar a configuração do editor de vídeo: "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>Error writing video editor config: {markup_escape_text}</span>"
+msgstr "<span color='red'>Erro ao gravar a configuração do editor de vídeo: {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 msgid "Important Notices:"
@@ -1065,12 +871,8 @@ msgstr "✗ Não foi possível mudar para {new_branch}: {msg}"
 
 #: roudix-switcher.py
 #, python-brace-format
-msgid ""
-"<span color='red'>✗ Branch switch failed — nothing was changed. "
-"{markup_escape_text}</span>"
-msgstr ""
-"<span color='red'>✗ Falha ao trocar de branch — nada foi alterado. "
-"{markup_escape_text}</span>"
+msgid "<span color='red'>✗ Branch switch failed — nothing was changed. {markup_escape_text}</span>"
+msgstr "<span color='red'>✗ Falha ao trocar de branch — nada foi alterado. {markup_escape_text}</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
@@ -1087,23 +889,16 @@ msgid "✓ Rebuild completed and applied to your running session."
 msgstr "✓ Reconstrução concluída e aplicada à sua sessão em execução."
 
 #: roudix-switcher.py
-msgid ""
-"<span color='green'>✓ Done! Applied now — some things (desktop/shell) may "
-"still need a logout to fully take effect.</span>"
-msgstr ""
-"<span color='green'>✓ Pronto! Aplicado agora — algumas coisas (desktop/"
-"shell) ainda podem exigir sair da sessão para fazer efeito por completo.</"
-"span>"
+msgid "<span color='green'>✓ Done! Applied now — some things (desktop/shell) may still need a logout to fully take effect.</span>"
+msgstr "<span color='green'>✓ Pronto! Aplicado agora — algumas coisas (desktop/shell) ainda podem exigir sair da sessão para fazer efeito por completo.</span>"
 
 #: roudix-switcher.py
 msgid "✓ Rebuild completed successfully. Reboot to apply changes."
-msgstr ""
-"✓ Reconstrução concluída com sucesso. Reinicie para aplicar as mudanças."
+msgstr "✓ Reconstrução concluída com sucesso. Reinicie para aplicar as mudanças."
 
 #: roudix-switcher.py
 msgid "<span color='green'>✓ Done! Reboot to apply changes.</span>"
-msgstr ""
-"<span color='green'>✓ Pronto! Reinicie para aplicar as mudanças.</span>"
+msgstr "<span color='green'>✓ Pronto! Reinicie para aplicar as mudanças.</span>"
 
 #: roudix-switcher.py
 #, python-brace-format
@@ -1111,12 +906,8 @@ msgid "✗ Rebuild failed (exit code {returncode})."
 msgstr "✗ Falha na reconstrução (código de saída {returncode})."
 
 #: roudix-switcher.py
-msgid ""
-"<span color='red'>✗ Rebuild failed. Check <tt>~/.local/share/roudix-switcher/"
-"switcher.log</tt> for details.</span>"
-msgstr ""
-"<span color='red'>✗ Falha na reconstrução. Veja <tt>~/.local/share/roudix-"
-"switcher/switcher.log</tt> para detalhes.</span>"
+msgid "<span color='red'>✗ Rebuild failed. Check <tt>~/.local/share/roudix-switcher/switcher.log</tt> for details.</span>"
+msgstr "<span color='red'>✗ Falha na reconstrução. Veja <tt>~/.local/share/roudix-switcher/switcher.log</tt> para detalhes.</span>"
 
 #: roudix-switcher.py
 #, python-brace-format

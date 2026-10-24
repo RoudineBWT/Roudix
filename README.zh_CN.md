@@ -37,7 +37,7 @@
 | 层 | 选择 |
 |-------|--------|
 | 操作系统 | Roudix (NixOS unstable) |
-| Kernel | CachyOS (内核变体请参见[功能](docs/features.md)或[安装](docs/installation.md)) |
+| Kernel | CachyOS (内核变体请参见[功能](docs/features.md)或[安装](docs/installation.zh_CN.md)) |
 | Bootloader | Limine（默认） · systemd-boot |
 | Compositor | Niri （可滚动平铺） · Hyprland （动态平铺） · MangoWC · Umbriel （可滚动平铺，Noctalia 原生） |
 | 图形 shell | Noctalia · DankMaterialShell · Caelestia |
@@ -59,7 +59,7 @@
 |-|-|
 | 🖥️ [桌面与 shell](docs/desktop.md) | 切换合成器和图形 shell，个人覆盖配置 (Niri, Hyprland, GNOME, KDE) |
 | ⚡ [别名与函数](docs/aliases.zh_CN.md) | 所有 shell 别名和函数 — `roudix-switch`, `roudix-shell-switch`, `rebuild`… |
-| 🚀 [安装](docs/installation.md) | 自动与手动安装指南 |
+| 🚀 [安装](docs/installation.zh_CN.md) | 自动与手动安装指南 |
 | ✨ [功能](docs/features.md) | 按桌面环境划分的完整功能列表 |
 | 🔄 [自动更新](docs/autoupdate.zh_CN.md) | 自动 git pull + 重新构建的配置 |
 

@@ -1,6 +1,6 @@
-# Features
+**English** · [Français](features.fr.md) · [Español](features.es.md) · [Português (Brasil)](features.pt_BR.md) · [Русский](features.ru.md) · [简体中文](features.zh_CN.md) · [हिन्दी](features.hi.md) · [العربية](features.ar.md)
 
-*[Version française](features.fr.md)*
+# Features
 
 ## Kernel & Performance
 

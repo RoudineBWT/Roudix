@@ -37,7 +37,7 @@
 | Camada | Escolha |
 |-------|--------|
 | SO | Roudix (NixOS unstable) |
-| Kernel | CachyOS (escolha sua variante em [Funcionalidades](docs/features.md) ou em [Instalação](docs/installation.md)) |
+| Kernel | CachyOS (escolha sua variante em [Funcionalidades](docs/features.md) ou em [Instalação](docs/installation.pt_BR.md)) |
 | Bootloader | Limine (padrão) · systemd-boot |
 | Compositor | Niri (tiling com rolagem) · Hyprland (tiling dinâmico) · MangoWC · Umbriel (tiling com rolagem, nativo do Noctalia) |
 | Shell gráfico | Noctalia · DankMaterialShell · Caelestia |
@@ -59,7 +59,7 @@
 |-|-|
 | 🖥️ [Desktop e shells](docs/desktop.md) | Troque de compositor e de shell gráfico, ajustes pessoais (Niri, Hyprland, GNOME, KDE) |
 | ⚡ [Aliases e funções](docs/aliases.pt_BR.md) | Todos os aliases e funções de shell — `roudix-switch`, `roudix-shell-switch`, `rebuild`… |
-| 🚀 [Instalação](docs/installation.md) | Guia de instalação automatizada e manual |
+| 🚀 [Instalação](docs/installation.pt_BR.md) | Guia de instalação automatizada e manual |
 | ✨ [Funcionalidades](docs/features.md) | Lista completa de funcionalidades por ambiente de desktop |
 | 🔄 [Atualização automática](docs/autoupdate.pt_BR.md) | Configuração do git pull + rebuild automáticos |
 

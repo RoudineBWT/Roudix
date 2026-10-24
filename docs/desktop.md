@@ -1,4 +1,4 @@
-*[Version française](desktop.fr.md)*
+**English** · [Français](desktop.fr.md) · [Español](desktop.es.md) · [Português (Brasil)](desktop.pt_BR.md) · [Русский](desktop.ru.md) · [简体中文](desktop.zh_CN.md) · [हिन्दी](desktop.hi.md) · [العربية](desktop.ar.md)
 
 # Desktop environments
 
