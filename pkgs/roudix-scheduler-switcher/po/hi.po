@@ -1,0 +1,227 @@
+# Hindi translation of roudix-scheduler (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-scheduler\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: roudix-scheduler.py
+msgid "Auto"
+msgstr "ऑटो"
+
+#: roudix-scheduler.py
+msgid "Gaming"
+msgstr "गेमिंग"
+
+#. TRANSLATORS: Profile name written as one word in scx_loader (shown in a dropdown);
+#. translate it as a normal phrase, e.g. "Low latency".
+#: roudix-scheduler.py
+msgid "LowLatency"
+msgstr "कम लेटेंसी"
+
+#. TRANSLATORS: Profile name written as one word in scx_loader (shown in a dropdown);
+#. translate it as a normal phrase, e.g. "Power saving".
+#: roudix-scheduler.py
+msgid "PowerSave"
+msgstr "पावर सेविंग"
+
+#: roudix-scheduler.py
+msgid "Server"
+msgstr "सर्वर"
+
+#: roudix-scheduler.py
+msgid "Default kernel scheduler — CFS/EEVDF"
+msgstr "डिफ़ॉल्ट कर्नल शेड्यूलर — CFS/EEVDF"
+
+#: roudix-scheduler.py
+msgid "None"
+msgstr "कोई नहीं"
+
+#: roudix-scheduler.py
+msgid ""
+"vruntime-based, interactive-first — best all-around (gaming, desktop, heavy "
+"load); cache-topology aware"
+msgstr ""
+"vruntime पर आधारित, इंटरैक्टिव को प्राथमिकता — सबसे अच्छा सर्वांगीण विकल्प (गेमिंग, "
+"डेस्कटॉप, भारी लोड); कैश टोपोलॉजी के प्रति सजग"
+
+#: roudix-scheduler.py
+msgid ""
+"Latency-Aware Virtual Deadline — gaming + interactive; core compaction at "
+"low load; autopilot adjusts mode automatically"
+msgstr ""
+"Latency-Aware Virtual Deadline — गेमिंग + इंटरैक्टिव; कम लोड पर कोर कॉम्पैक्शन; "
+"ऑटोपायलट मोड अपने आप समायोजित करता है"
+
+#: roudix-scheduler.py
+msgid ""
+"Fairness-focused, low-latency — good for mixed desktop + compile workloads"
+msgstr ""
+"निष्पक्षता और कम लेटेंसी पर केंद्रित — मिश्रित डेस्कटॉप + कम्पाइल वर्कलोड के लिए अच्छा"
+
+#: roudix-scheduler.py
+msgid ""
+"Pick-2 load balancing, two-level queue — general purpose; good cache locality"
+msgstr "Pick-2 लोड बैलेंसिंग, दो-स्तरीय क्यू — सामान्य उपयोग; अच्छी कैश लोकैलिटी"
+
+#: roudix-scheduler.py
+msgid ""
+"Multi-domain load balancer — scales well on large/NUMA systems; no per-mode "
+"tuning"
+msgstr ""
+"मल्टी-डोमेन लोड बैलेंसर — बड़े/NUMA सिस्टम पर अच्छी तरह स्केल होता है; प्रति-मोड ट्यूनिंग नहीं"
+
+#: roudix-scheduler.py
+msgid "Userspace Rust scheduler (proof-of-concept) — no per-mode tuning"
+msgstr "यूज़रस्पेस Rust शेड्यूलर (प्रूफ़-ऑफ़-कॉन्सेप्ट) — प्रति-मोड ट्यूनिंग नहीं"
+
+#: roudix-scheduler.py
+msgid ""
+"Lightweight locality-first — successor to bpfland, in active development"
+msgstr "हल्का, लोकैलिटी-प्रथम — bpfland का उत्तराधिकारी, सक्रिय विकास में"
+
+#: roudix-scheduler.py
+msgid "Experimental — in active development; no per-mode tuning"
+msgstr "प्रायोगिक — सक्रिय विकास में; प्रति-मोड ट्यूनिंग नहीं"
+
+#: roudix-scheduler.py
+msgid ""
+"Server/HPC-oriented — reduces OS noise via tick suppression; requires "
+"nohz_full kernel param; NOT for desktop/gaming"
+msgstr ""
+"सर्वर/HPC के लिए — टिक सप्रेशन से OS शोर घटाता है; nohz_full कर्नल पैरामीटर ज़रूरी; "
+"डेस्कटॉप/गेमिंग के लिए नहीं"
+
+#: roudix-scheduler.py
+msgid ""
+"Layer-based — classify tasks into cgroups and apply a different policy per "
+"layer; highly configurable via TOML"
+msgstr ""
+"लेयर-आधारित — कार्यों को cgroups में वर्गीकृत करता है और हर लेयर पर अलग नीति लागू करता "
+"है; TOML से अत्यधिक कॉन्फ़िगर करने योग्य"
+
+#: roudix-scheduler.py
+msgid ""
+"Profile-driven — simple Gaming/Esports/Battery profiles; in active "
+"development"
+msgstr "प्रोफ़ाइल-संचालित — सरल Gaming/Esports/Battery प्रोफ़ाइल; सक्रिय विकास में"
+
+#: roudix-scheduler.py
+msgid ""
+"Stress-test / debugging only — amplifies race conditions; NOT for production "
+"use"
+msgstr "केवल स्ट्रेस-टेस्ट / डिबगिंग के लिए — रेस कंडीशन बढ़ाता है; प्रोडक्शन के लिए नहीं"
+
+#: roudix-scheduler.py
+msgid "Experimental cell-division scheduler — in active development"
+msgstr "प्रायोगिक कोशिका-विभाजन शेड्यूलर — सक्रिय विकास में"
+
+#: roudix-scheduler.py
+msgid "Round-robin FIFO userspace scheduler — educational / proof-of-concept"
+msgstr "यूज़रस्पेस राउंड-रॉबिन FIFO शेड्यूलर — शैक्षिक / प्रूफ़-ऑफ़-कॉन्सेप्ट"
+
+#: roudix-scheduler.py
+msgid "Experimental fork of rusty using BPF arenas — in active development"
+msgstr "BPF arenas इस्तेमाल करने वाला rusty का प्रायोगिक फ़ोर्क — सक्रिय विकास में"
+
+#: roudix-scheduler.py
+msgid ""
+"Task-budget driven — every decision derived directly from budget, no Gaming/"
+"PowerSave/etc. profiles"
+msgstr ""
+"टास्क-बजट संचालित — हर निर्णय सीधे बजट से निकलता है, Gaming/PowerSave आदि प्रोफ़ाइल "
+"नहीं"
+
+#: roudix-scheduler.py
+msgid ""
+"AI-agent-oriented — tuned via scx_forge_agent and a spec.toml optimization "
+"loop rather than manual profiles"
+msgstr ""
+"AI-एजेंट केंद्रित — मैन्युअल प्रोफ़ाइल के बजाय scx_forge_agent और spec.toml ऑप्टिमाइज़ेशन "
+"लूप से ट्यून किया जाता है"
+
+#: roudix-scheduler.py
+msgid "scx-switch not found in PATH (scx.nix module not loaded?)."
+msgstr "PATH में scx-switch नहीं मिला (scx.nix मॉड्यूल लोड नहीं हुआ?)।"
+
+#: roudix-scheduler.py
+msgid "SCX disabled — back to the default scheduler (CFS/EEVDF)."
+msgstr "SCX बंद किया गया — डिफ़ॉल्ट शेड्यूलर (CFS/EEVDF) पर वापसी।"
+
+#: roudix-scheduler.py
+#, python-brace-format
+msgid "flags: {extra}"
+msgstr "flags: {extra}"
+
+#: roudix-scheduler.py
+#, python-brace-format
+msgid "scx_{scheduler} active ({profile}){extra_note}."
+msgstr "scx_{scheduler} सक्रिय ({profile}){extra_note}।"
+
+#: roudix-scheduler.py
+#, python-brace-format
+msgid "scx-switch failed (code {code})"
+msgstr "scx-switch विफल रहा (कोड {code})"
+
+#: roudix-scheduler.py
+msgid "pkexec not found."
+msgstr "pkexec नहीं मिला।"
+
+#: roudix-scheduler.py
+msgid "Running scheduler"
+msgstr "चल रहा शेड्यूलर"
+
+#: roudix-scheduler.py
+msgid "Select scheduler"
+msgstr "शेड्यूलर चुनें"
+
+#: roudix-scheduler.py
+msgid "Select profile"
+msgstr "प्रोफ़ाइल चुनें"
+
+#: roudix-scheduler.py
+msgid "Extra scheduler flags"
+msgstr "शेड्यूलर के अतिरिक्त flags"
+
+#: roudix-scheduler.py
+msgid "Disable"
+msgstr "बंद करें"
+
+#: roudix-scheduler.py
+msgid "Apply"
+msgstr "लागू करें"
+
+#: roudix-scheduler.py
+msgid "⚠ scx-switch not found — check that scx.nix is applied."
+msgstr "⚠ scx-switch नहीं मिला — जाँचें कि scx.nix लागू है।"
+
+#: roudix-scheduler.py
+msgid "None — CFS/EEVDF"
+msgstr "कोई नहीं — CFS/EEVDF"
+
+#: roudix-scheduler.py
+msgid "Disabled — your scheduler choice will persist after reboot"
+msgstr "बंद — आपका शेड्यूलर चयन रीबूट के बाद भी बना रहेगा"
+
+#: roudix-scheduler.py
+msgid "Running — will be stopped automatically when a scheduler is applied"
+msgstr "चल रहा है — शेड्यूलर लागू होने पर अपने आप रुक जाएगा"
+
+#: roudix-scheduler.py
+msgid "Stopped — will be restarted automatically when switching back to None"
+msgstr "रुका हुआ — “कोई नहीं” पर लौटने पर अपने आप फिर शुरू होगा"
+
+#: roudix-scheduler.py
+msgid "Disabling..."
+msgstr "बंद किया जा रहा है…"
+
+#: roudix-scheduler.py
+msgid "Applying..."
+msgstr "लागू किया जा रहा है…"

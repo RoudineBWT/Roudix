@@ -54,6 +54,36 @@ def strip_ansi(text: str) -> str:
     return ANSI_ESCAPE.sub('', text)
 
 
+# ── translations (gettext) ───────────────────────────────────────────────────
+# Messages are written in English: tr("…"). Catalogs live in po/<lang>.po and the Nix
+# package compiles them to share/locale/<lang>/LC_MESSAGES/roudix-scheduler.mo. The language
+# comes from LANGUAGE / LC_ALL / LC_MESSAGES / LANG; a missing catalog falls back to English.
+# Scheduler names (bpfland, lavd, …) are never translated, only their descriptions.
+import gettext as _gettext
+import glob as _glob
+
+_DOMAIN = "roudix-scheduler"
+
+
+def _find_localedir(domain):
+    cands = [os.environ.get("ROUDIX_LOCALEDIR", "")]
+    d = os.path.dirname(os.path.realpath(__file__))
+    while True:
+        cands += [os.path.join(d, "share", "locale"), os.path.join(d, "locale")]
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    for c in cands:
+        if c and _glob.glob(os.path.join(c, "*", "LC_MESSAGES", domain + ".mo")):
+            return c
+    return None
+
+
+_translation = _gettext.translation(_DOMAIN, _find_localedir(_DOMAIN), fallback=True)
+tr = _translation.gettext          # tr("text")
+
+
 # ── Scheduler catalogue ────────────────────────────────────────────────────────
 # (identical to roudix-kernel-switcher — source: nixpkgs scx.rustscheds
 #  passthru.schedulers + scx-loader configuration.md)
@@ -68,62 +98,80 @@ PROFILE_MODE = {
     "Server":     "server",
 }
 
+# What the dropdown and the messages show; the English names above remain the keys.
+PROFILE_LABEL = {
+    "Auto":       tr("Auto"),
+    "Gaming":     tr("Gaming"),
+    # TRANSLATORS: Profile name written as one word in scx_loader (shown in a dropdown);
+    # translate it as a normal phrase, e.g. "Low latency".
+    "LowLatency": tr("LowLatency"),
+    # TRANSLATORS: Profile name written as one word in scx_loader (shown in a dropdown);
+    # translate it as a normal phrase, e.g. "Power saving".
+    "PowerSave":  tr("PowerSave"),
+    "Server":     tr("Server"),
+}
+
+
+def profile_label(profile: str) -> str:
+    return PROFILE_LABEL.get(profile, profile)
+
+
 SCX_SCHEDULERS = {
-    "none":       ("None",       "Default kernel scheduler — CFS/EEVDF",
+    "none":       (tr("None"),   tr("Default kernel scheduler — CFS/EEVDF"),
                    SCX_PROFILES[:1]),
-    "bpfland":    ("bpfland",    ("vruntime-based, interactive-first — best all-around "
-                                  "(gaming, desktop, heavy load); cache-topology aware"),
+    "bpfland":    ("bpfland",    tr("vruntime-based, interactive-first — best all-around "
+                                     "(gaming, desktop, heavy load); cache-topology aware"),
                    SCX_PROFILES),
-    "lavd":       ("lavd",       ("Latency-Aware Virtual Deadline — gaming + interactive; "
-                                  "core compaction at low load; autopilot adjusts mode automatically"),
+    "lavd":       ("lavd",       tr("Latency-Aware Virtual Deadline — gaming + interactive; "
+                                     "core compaction at low load; autopilot adjusts mode automatically"),
                    SCX_PROFILES[:4]),
-    "flash":      ("flash",      ("Fairness-focused, low-latency — good for mixed "
-                                  "desktop + compile workloads"),
+    "flash":      ("flash",      tr("Fairness-focused, low-latency — good for mixed "
+                                     "desktop + compile workloads"),
                    SCX_PROFILES),
-    "p2dq":       ("p2dq",      ("Pick-2 load balancing, two-level queue — "
-                                  "general purpose; good cache locality"),
+    "p2dq":       ("p2dq",      tr("Pick-2 load balancing, two-level queue — "
+                                     "general purpose; good cache locality"),
                    SCX_PROFILES),
-    "rusty":      ("rusty",     ("Multi-domain load balancer — scales well on large/NUMA systems; "
-                                  "no per-mode tuning"),
+    "rusty":      ("rusty",     tr("Multi-domain load balancer — scales well on large/NUMA systems; "
+                                     "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "rustland":   ("rustland",   ("Userspace Rust scheduler (proof-of-concept) — "
-                                  "no per-mode tuning"),
+    "rustland":   ("rustland",   tr("Userspace Rust scheduler (proof-of-concept) — "
+                                     "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "cosmos":     ("cosmos",     ("Lightweight locality-first — successor to bpfland, "
-                                  "in active development"),
+    "cosmos":     ("cosmos",     tr("Lightweight locality-first — successor to bpfland, "
+                                     "in active development"),
                    SCX_PROFILES),
-    "beerland":   ("beerland",   ("Experimental — in active development; "
-                                  "no per-mode tuning"),
+    "beerland":   ("beerland",   tr("Experimental — in active development; "
+                                     "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "tickless":   ("tickless",   ("Server/HPC-oriented — reduces OS noise via tick suppression; "
-                                  "requires nohz_full kernel param; NOT for desktop/gaming"),
+    "tickless":   ("tickless",   tr("Server/HPC-oriented — reduces OS noise via tick suppression; "
+                                     "requires nohz_full kernel param; NOT for desktop/gaming"),
                    SCX_PROFILES),
-    "layered":    ("layered",    ("Layer-based — classify tasks into cgroups and apply a "
-                                  "different policy per layer; highly configurable via TOML"),
+    "layered":    ("layered",    tr("Layer-based — classify tasks into cgroups and apply a "
+                                     "different policy per layer; highly configurable via TOML"),
                    SCX_PROFILES[:1]),
-    "cake":       ("cake",       ("Profile-driven — simple Gaming/Esports/Battery profiles; "
-                                  "in active development"),
+    "cake":       ("cake",       tr("Profile-driven — simple Gaming/Esports/Battery profiles; "
+                                     "in active development"),
                    SCX_PROFILES),
-    "chaos":      ("chaos",      ("Stress-test / debugging only — amplifies race conditions; "
-                                  "NOT for production use"),
+    "chaos":      ("chaos",      tr("Stress-test / debugging only — amplifies race conditions; "
+                                     "NOT for production use"),
                    SCX_PROFILES[:1]),
-    "mitosis":    ("mitosis",    ("Experimental cell-division scheduler — "
-                                  "in active development"),
+    "mitosis":    ("mitosis",    tr("Experimental cell-division scheduler — "
+                                     "in active development"),
                    SCX_PROFILES[:1]),
-    "pandemonium": ("pandemonium", ("Experimental — in active development; "
-                                    "no per-mode tuning"),
+    "pandemonium": ("pandemonium", tr("Experimental — in active development; "
+                                       "no per-mode tuning"),
                    SCX_PROFILES[:1]),
-    "rlfifo":     ("rlfifo",     ("Round-robin FIFO userspace scheduler — "
-                                  "educational / proof-of-concept"),
+    "rlfifo":     ("rlfifo",     tr("Round-robin FIFO userspace scheduler — "
+                                     "educational / proof-of-concept"),
                    SCX_PROFILES[:1]),
-    "wd40":       ("wd40",       ("Experimental fork of rusty using BPF arenas — "
-                                  "in active development"),
+    "wd40":       ("wd40",       tr("Experimental fork of rusty using BPF arenas — "
+                                     "in active development"),
                    SCX_PROFILES[:1]),
-    "flow":       ("flow",       ("Task-budget driven — every decision derived directly "
-                                  "from budget, no Gaming/PowerSave/etc. profiles"),
+    "flow":       ("flow",       tr("Task-budget driven — every decision derived directly "
+                                     "from budget, no Gaming/PowerSave/etc. profiles"),
                    SCX_PROFILES[:1]),
-    "forge":      ("forge",      ("AI-agent-oriented — tuned via scx_forge_agent and a "
-                                  "spec.toml optimization loop rather than manual profiles"),
+    "forge":      ("forge",      tr("AI-agent-oriented — tuned via scx_forge_agent and a "
+                                     "spec.toml optimization loop rather than manual profiles"),
                    SCX_PROFILES[:1]),
 }
 
@@ -323,7 +371,7 @@ def is_ananicy_active() -> bool:
 
 def apply_scx(scheduler: str, profile: str, extra: str) -> tuple[bool, str]:
     if not has_scx_switch():
-        return False, "scx-switch introuvable dans le PATH (module scx.nix non chargé ?)."
+        return False, tr("scx-switch not found in PATH (scx.nix module not loaded?).")
     try:
         if scheduler == "none":
             cmd = ["pkexec", "scx-switch", "unset"]
@@ -334,14 +382,15 @@ def apply_scx(scheduler: str, profile: str, extra: str) -> tuple[bool, str]:
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode == 0:
             if scheduler == "none":
-                return True, "SCX désactivé — retour au scheduler par défaut (CFS/EEVDF)."
-            extra_note = f" · flags: {extra}" if extra.strip() else ""
-            return True, f"scx_{scheduler} actif ({profile}){extra_note}."
+                return True, tr("SCX disabled — back to the default scheduler (CFS/EEVDF).")
+            extra_note = " · " + tr("flags: {extra}").format(extra=extra) if extra.strip() else ""
+            return True, tr("scx_{scheduler} active ({profile}){extra_note}.").format(
+                scheduler=scheduler, profile=profile_label(profile), extra_note=extra_note)
         err = strip_ansi((r.stderr or r.stdout).strip())
         log.error("scx-switch failed: %s", err)
-        return False, err or f"scx-switch a échoué (code {r.returncode})"
+        return False, err or tr("scx-switch failed (code {code})").format(code=r.returncode)
     except FileNotFoundError:
-        return False, "pkexec introuvable."
+        return False, tr("pkexec not found.")
     except Exception as e:
         return False, str(e)
 
@@ -383,7 +432,7 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
         # ── Running scheduler (live, read-only) ──
         self._running_row = Adw.ActionRow()
-        self._running_row.set_title("Running scheduler")
+        self._running_row.set_title(tr("Running scheduler"))
         self._running_row.add_css_class("card")
         refresh_btn = Gtk.Button(icon_name="view-refresh-symbolic")
         refresh_btn.set_valign(Gtk.Align.CENTER)
@@ -399,7 +448,7 @@ class SchedulerWindow(Adw.ApplicationWindow):
         body.append(select_lb)
 
         sched_row = Adw.ActionRow()
-        sched_row.set_title("Select scheduler")
+        sched_row.set_title(tr("Select scheduler"))
         sched_labels = [SCX_SCHEDULERS[s][0] for s in self._sched_ids]
         self._sched_combo = Gtk.DropDown.new_from_strings(sched_labels)
         self._sched_combo.set_valign(Gtk.Align.CENTER)
@@ -421,9 +470,9 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
         # ── Profile dropdown ──
         profile_row = Adw.ActionRow()
-        profile_row.set_title("Select profile")
+        profile_row.set_title(tr("Select profile"))
         self._profile_combo = Gtk.DropDown()
-        self._profile_combo.set_model(Gtk.StringList.new(SCX_PROFILES))
+        self._profile_combo.set_model(Gtk.StringList.new([profile_label(p) for p in SCX_PROFILES]))
         self._profile_combo.set_valign(Gtk.Align.CENTER)
         self._profile_combo.set_selected(SCX_PROFILES.index(self._profile))
         self._profile_combo.connect("notify::selected", self._on_profile_changed)
@@ -432,7 +481,7 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
         # ── Extra flags ──
         extra_row = Adw.EntryRow()
-        extra_row.set_title("Extra scheduler flags")
+        extra_row.set_title(tr("Extra scheduler flags"))
         extra_row.set_text(self._extra)
         extra_row.connect("changed", self._on_extra_changed)
         self._extra_row = extra_row
@@ -457,12 +506,12 @@ class SchedulerWindow(Adw.ApplicationWindow):
         self._status_lbl.add_css_class("dim-label")
         bar.append(self._status_lbl)
 
-        disable_btn = Gtk.Button(label="Disable")
+        disable_btn = Gtk.Button(label=tr("Disable"))
         disable_btn.add_css_class("destructive-action")
         disable_btn.connect("clicked", self._on_disable)
         bar.append(disable_btn)
 
-        self._apply_btn = Gtk.Button(label="Apply")
+        self._apply_btn = Gtk.Button(label=tr("Apply"))
         self._apply_btn.add_css_class("suggested-action")
         self._apply_btn.connect("clicked", self._on_apply)
         bar.append(self._apply_btn)
@@ -474,7 +523,7 @@ class SchedulerWindow(Adw.ApplicationWindow):
 
         if not has_scx_switch():
             self._status_lbl.set_label(
-                "⚠ scx-switch introuvable — vérifie que scx.nix est bien appliqué."
+                tr("⚠ scx-switch not found — check that scx.nix is applied.")
             )
             self._apply_btn.set_sensitive(False)
             disable_btn.set_sensitive(False)
@@ -484,24 +533,24 @@ class SchedulerWindow(Adw.ApplicationWindow):
     def _refresh_running(self):
         sched, profile = get_current_scx()
         if sched == "none":
-            self._running_row.set_subtitle("None — CFS/EEVDF")
+            self._running_row.set_subtitle(tr("None — CFS/EEVDF"))
         else:
             label = SCX_SCHEDULERS.get(sched, (sched, "", []))[0]
-            self._running_row.set_subtitle(f"{label} · {profile}")
+            self._running_row.set_subtitle(f"{label} · {profile_label(profile)}")
 
     def _refresh_ananicy(self):
         if not is_ananicy_enabled():
             self._ananicy_row.set_subtitle(
-                "Disabled — your scheduler choice will persist after reboot"
+                tr("Disabled — your scheduler choice will persist after reboot")
             )
             return
         if is_ananicy_active():
             self._ananicy_row.set_subtitle(
-                "Running — will be stopped automatically when a scheduler is applied"
+                tr("Running — will be stopped automatically when a scheduler is applied")
             )
         else:
             self._ananicy_row.set_subtitle(
-                "Stopped — will be restarted automatically when switching back to None"
+                tr("Stopped — will be restarted automatically when switching back to None")
             )
 
     def _update_sched_desc(self):
@@ -551,11 +600,11 @@ class SchedulerWindow(Adw.ApplicationWindow):
         save_state(self._scheduler, self._profile, self._extra)
 
     def _on_disable(self, _btn):
-        self._set_busy("Disabling...")
+        self._set_busy(tr("Disabling..."))
         threading.Thread(target=self._run_apply, args=("none", "Auto", ""), daemon=True).start()
 
     def _on_apply(self, _btn):
-        self._set_busy("Applying...")
+        self._set_busy(tr("Applying..."))
         threading.Thread(
             target=self._run_apply, args=(self._scheduler, self._profile, self._extra), daemon=True
         ).start()
@@ -580,10 +629,10 @@ class SchedulerWindow(Adw.ApplicationWindow):
             # reliable at updating CurrentScheduler than the classic
             # --mode).
             if scheduler == "none":
-                self._running_row.set_subtitle("None — CFS/EEVDF")
+                self._running_row.set_subtitle(tr("None — CFS/EEVDF"))
             else:
                 label = SCX_SCHEDULERS.get(scheduler, (scheduler, "", []))[0]
-                self._running_row.set_subtitle(f"{label} · {profile}")
+                self._running_row.set_subtitle(f"{label} · {profile_label(profile)}")
         else:
             self._refresh_running()
         self._refresh_ananicy()
