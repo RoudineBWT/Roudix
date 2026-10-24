@@ -33,6 +33,10 @@ msgid "Cinnamon — classic X11 desktop, ideal for older PCs"
 msgstr "Cinnamon — escritorio clásico en X11, ideal para PC antiguos"
 
 #: roudix-switcher.py
+msgid "COSMIC — modern Wayland desktop by System76, written in Rust"
+msgstr "COSMIC — escritorio Wayland moderno de System76, escrito en Rust"
+
+#: roudix-switcher.py
 msgid "Lightweight dynamic tiling Wayland compositor"
 msgstr "Compositor Wayland de mosaico dinámico y ligero"
 
