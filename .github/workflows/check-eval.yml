@@ -73,10 +73,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install gettext
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq gettext
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
 
-      # po/roudix-installer.pot and po/*.po must match the tr("…") calls in the
-      # sources, with nothing untranslated or fuzzy (scripts/i18n.sh check).
-      - name: Installer translations are complete and up to date
-        run: scripts/i18n.sh check
+      # The .pot files are generated with the gettext of `nix develop` (the one pinned by
+      # flake.lock). Ubuntu's apt gettext (0.21) does not see tr("…") nested in f-strings,
+      # so it would always report those catalogs as out of date: use the same version here.
+      # `bash` rather than executing the file: does not depend on its mode bits.
+      #
+      # po/*.pot and po/*.po must match the tr("…") calls in the sources, with nothing
+      # untranslated or fuzzy (scripts/i18n.sh check).
+      - name: Translations are complete and up to date
+        run: nix shell --inputs-from . nixpkgs#gettext --command bash scripts/i18n.sh check
