@@ -922,3 +922,312 @@ msgstr "✗ 意外错误：{e}"
 #, python-brace-format
 msgid "<span color='red'>✗ Unexpected error: {markup_escape_text}</span>"
 msgstr "<span color='red'>✗ 意外错误：{markup_escape_text}</span>"
+
+#: roudix-switcher.py
+msgid "Cloud-synced vault"
+msgstr "云同步密码库"
+
+#: roudix-switcher.py
+msgid "Local, offline vault file, no account"
+msgstr "本地离线密码库文件，无需账户"
+
+#: roudix-switcher.py
+msgid "Cloud vault tied to a Proton account"
+msgstr "绑定 Proton 账户的云端密码库"
+
+#: roudix-switcher.py
+msgid "Don't install a password manager"
+msgstr "不安装密码管理器"
+
+#: roudix-switcher.py
+msgid "Clean: no shaders, no animated effects"
+msgstr "简洁：无着色器，无动画效果"
+
+#: roudix-switcher.py
+msgid "Subtle window in/out + scratchpad shaders (default)"
+msgstr "轻柔的窗口进出 + scratchpad 着色器（默认）"
+
+#: roudix-switcher.py
+msgid "+ accent border, cursor halo, transitions (Noctalia palette)"
+msgstr "+ 强调色边框、光标光晕、过渡动画（Noctalia 配色）"
+
+#: roudix-switcher.py
+msgid "Same, fixed Roudix palette"
+msgstr "同上，固定使用 Roudix 配色"
+
+#: roudix-switcher.py
+msgid "+ flowing light around the border (Noctalia palette)"
+msgstr "+ 沿边框流动的光效（Noctalia 配色）"
+
+#: roudix-switcher.py
+msgid "+ jelly wobble on window move (Noctalia palette)"
+msgstr "+ 移动窗口时的果冻晃动（Noctalia 配色）"
+
+#: roudix-switcher.py
+msgid "Windows open/close through the Roudix logo shape"
+msgstr "窗口通过 Roudix 徽标形状打开/关闭"
+
+#: roudix-switcher.py
+msgid "Same + jelly wobble and drag physics"
+msgstr "同上，另加果冻晃动和拖拽物理效果"
+
+#: roudix-switcher.py
+msgid "\"Snowflake braid\" border + comet (Noctalia palette)"
+msgstr "“雪花辫”边框 + 彗星（Noctalia 配色）"
+
+#: roudix-switcher.py
+msgid "Everything: logo, wobble, aurora (fixed Roudix palette)"
+msgstr "全部：徽标、晃动、极光（固定 Roudix 配色）"
+
+#: roudix-switcher.py
+msgid "Like roudix-full, Noctalia colors"
+msgstr "同 roudix-full，使用 Noctalia 配色"
+
+#: roudix-switcher.py
+msgid "Ly-sec's sakura suite — Noctalia colors"
+msgstr "Ly-sec 的樱花套装 — Noctalia 配色"
+
+#: roudix-switcher.py
+msgid "Sakura suite, fixed Roudix palette"
+msgstr "樱花套装，固定 Roudix 配色"
+
+#: roudix-switcher.py
+msgid "Border (animated border effect)"
+msgstr "边框（动画边框效果）"
+
+#: roudix-switcher.py
+msgid "Window (per-window overlay effect)"
+msgstr "窗口（每个窗口的叠加效果）"
+
+#: roudix-switcher.py
+msgid "Screen (full-screen effect)"
+msgstr "屏幕（全屏效果）"
+
+#: roudix-switcher.py
+msgid "Cursor (halo around the pointer)"
+msgstr "光标（指针周围的光晕）"
+
+#: roudix-switcher.py
+msgid "Transitions (workspace, layer and focus-border animations)"
+msgstr "过渡（工作区、图层和焦点边框动画）"
+
+#: roudix-switcher.py
+msgid "Window motion (open/close/move shaders, drag physics)"
+msgstr "窗口运动（打开/关闭/移动着色器，拖拽物理）"
+
+#: roudix-switcher.py
+msgid "Scratchpad (show/hide shader)"
+msgstr "Scratchpad（显示/隐藏着色器）"
+
+#: roudix-switcher.py
+msgid "Every hour"
+msgstr "每小时"
+
+#: roudix-switcher.py
+msgid "Default"
+msgstr "默认"
+
+#: roudix-switcher.py
+msgid "Every 6 hours"
+msgstr "每 6 小时"
+
+#: roudix-switcher.py
+msgid "Every 12 hours"
+msgstr "每 12 小时"
+
+#: roudix-switcher.py
+msgid "Every day"
+msgstr "每天"
+
+#: roudix-switcher.py
+msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
+msgstr "低延迟（48 kHz，quantum 128）— 音频制作、节奏游戏"
+
+#: roudix-switcher.py
+msgid "Realtime tweaks (rtprio/nice for the “audio” group — you must be in it)"
+msgstr "实时调优（为“audio”组设置 rtprio/nice — 你必须属于该组）"
+
+#: roudix-switcher.py
+msgid "Never autosuspend USB devices (fixes USB audio dropouts, costs laptop battery)"
+msgstr "从不自动挂起 USB 设备（修复 USB 音频中断，会消耗笔记本电量）"
+
+#: roudix-switcher.py
+msgid "CachyOS-style system tuning"
+msgstr "CachyOS 风格的系统调优"
+
+#: roudix-switcher.py
+msgid "systemd-oomd watches the system and user slices (kills an app instead of freezing)"
+msgstr "systemd-oomd 监控系统和用户 slice（结束某个应用而不是卡死）"
+
+#: roudix-switcher.py
+msgid "Per-device I/O schedulers (bfq / mq-deadline / kyber)"
+msgstr "按设备选择 I/O 调度器（bfq / mq-deadline / kyber）"
+
+#: roudix-switcher.py
+msgid "Short service timeouts (15 s start / 10 s stop) and higher open-files limit"
+msgstr "缩短服务超时（启动 15 秒 / 停止 10 秒）并提高打开文件数上限"
+
+#: roudix-switcher.py
+msgid "Many color schemes, follows Noctalia by default (default)"
+msgstr "多种配色方案，默认跟随 Noctalia（默认）"
+
+#: roudix-switcher.py
+msgid "The bundled Comfy theme"
+msgstr "内置的 Comfy 主题"
+
+#: roudix-switcher.py
+msgid "Marketplace (browse extensions and themes inside Spotify)"
+msgstr "Marketplace（在 Spotify 内浏览扩展和主题）"
+
+#: roudix-switcher.py
+msgid "Ad blocker extension"
+msgstr "广告拦截扩展"
+
+#: roudix-switcher.py
+msgid "Hide podcasts extension"
+msgstr "隐藏播客扩展"
+
+#: roudix-switcher.py
+msgid "Roudix Zen tweaks (user.js + policies.json)"
+msgstr "Roudix 的 Zen 调优（user.js + policies.json）"
+
+#: roudix-switcher.py
+msgid "Performance (HW decoding, GPU, caches)"
+msgstr "性能（硬件解码、GPU、缓存）"
+
+#: roudix-switcher.py
+msgid "Privacy (no telemetry or Mozilla extras)"
+msgstr "隐私（无遥测，无 Mozilla 附加功能）"
+
+#: roudix-switcher.py
+msgid "Disable Google Safe Browsing"
+msgstr "禁用 Google Safe Browsing"
+
+#: roudix-switcher.py
+msgid "UI (smooth scrolling, masonry)"
+msgstr "界面（平滑滚动、masonry）"
+
+#: roudix-switcher.py
+msgid "Install policies.json (uBlock, DoH...)"
+msgstr "安装 policies.json（uBlock、DoH……）"
+
+#: roudix-switcher.py
+msgid "No profile chosen (default)"
+msgstr "未选择配置文件（默认）"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "~/{path} — not found on disk"
+msgstr "~/{path} — 在磁盘上未找到"
+
+#: roudix-switcher.py
+msgid "Firefox — Roudix tweaks (user.js of the chosen profile)"
+msgstr "Firefox — Roudix 调优（所选配置文件的 user.js）"
+
+#: roudix-switcher.py
+msgid "Firefox — Performance"
+msgstr "Firefox — 性能"
+
+#: roudix-switcher.py
+msgid "Firefox — Privacy"
+msgstr "Firefox — 隐私"
+
+#: roudix-switcher.py
+msgid "Firefox — Disable Google Safe Browsing"
+msgstr "Firefox — 禁用 Google Safe Browsing"
+
+#: roudix-switcher.py
+msgid "Firefox — UI (smooth scrolling)"
+msgstr "Firefox — 界面（平滑滚动）"
+
+#: roudix-switcher.py
+msgid "HDR in the Gaming Mode session (turn off without an HDR display, or if games misbehave)"
+msgstr "Gaming Mode 会话中的 HDR（没有 HDR 显示器或游戏异常时请关闭）"
+
+#: roudix-switcher.py
+msgid "ZapZap (unofficial WhatsApp client)"
+msgstr "ZapZap（非官方 WhatsApp 客户端）"
+
+#: roudix-switcher.py
+msgid "Fluxer (self-hostable Discord alternative)"
+msgstr "Fluxer（可自托管的 Discord 替代品）"
+
+#: roudix-switcher.py
+msgid "Roudix Welcome (shown at session start)"
+msgstr "Roudix Welcome（会话启动时显示）"
+
+#: roudix-switcher.py
+msgid "Umbriel effects"
+msgstr "Umbriel 效果"
+
+#: roudix-switcher.py
+msgid "Umbriel — disable effects"
+msgstr "Umbriel — 禁用效果"
+
+#: roudix-switcher.py
+msgid "Checked = switched off, on top of the effects chosen above. If a game flips between composition and direct scanout, turn off “Screen” and “Cursor”."
+msgstr "勾选 = 关闭，在上方所选效果的基础上生效。如果游戏在合成和 direct scanout 之间来回切换，请关闭“屏幕”和“光标”。"
+
+#: roudix-switcher.py
+msgid "Zen tweaks"
+msgstr "Zen 调优"
+
+#: roudix-switcher.py
+msgid "Zen profile for the tweaks"
+msgstr "应用调优的 Zen 配置文件"
+
+#: roudix-switcher.py
+msgid "The profile Roudix manages"
+msgstr "由 Roudix 管理的配置文件"
+
+#: roudix-switcher.py
+msgid "Firefox tweaks"
+msgstr "Firefox 调优"
+
+#: roudix-switcher.py
+msgid "Firefox profile for the tweaks"
+msgstr "应用调优的 Firefox 配置文件"
+
+#: roudix-switcher.py
+msgid "None: the Firefox tweaks are written nowhere"
+msgstr "无：Firefox 调优不会写入任何位置"
+
+#: roudix-switcher.py
+msgid "Spicetify theme"
+msgstr "Spicetify 主题"
+
+#: roudix-switcher.py
+msgid "Spicetify"
+msgstr "Spicetify"
+
+#: roudix-switcher.py
+msgid "Password manager"
+msgstr "密码管理器"
+
+#: roudix-switcher.py
+msgid "Update check interval"
+msgstr "更新检查间隔"
+
+#: roudix-switcher.py
+msgid "Audio (PipeWire)"
+msgstr "音频（PipeWire）"
+
+#: roudix-switcher.py
+msgid "System tuning"
+msgstr "系统调优"
+
+#: roudix-switcher.py
+msgid "Update interval"
+msgstr "更新间隔"
+
+#: roudix-switcher.py
+msgid "Zen profile (tweaks)"
+msgstr "Zen 配置文件（调优）"
+
+#: roudix-switcher.py
+msgid "Firefox profile (tweaks)"
+msgstr "Firefox 配置文件（调优）"
+
+#: roudix-switcher.py
+msgid "Umbriel — disabled effects"
+msgstr "Umbriel — 已禁用的效果"

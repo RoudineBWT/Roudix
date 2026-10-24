@@ -1125,3 +1125,312 @@ msgstr "✗ Erreur inattendue : {e}"
 #, python-brace-format
 msgid "<span color='red'>✗ Unexpected error: {markup_escape_text}</span>"
 msgstr "<span color='red'>✗ Erreur inattendue : {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+msgid "Cloud-synced vault"
+msgstr "Coffre synchronisé dans le cloud"
+
+#: roudix-switcher.py
+msgid "Local, offline vault file, no account"
+msgstr "Fichier de coffre local, hors ligne, sans compte"
+
+#: roudix-switcher.py
+msgid "Cloud vault tied to a Proton account"
+msgstr "Coffre cloud lié à un compte Proton"
+
+#: roudix-switcher.py
+msgid "Don't install a password manager"
+msgstr "N'installer aucun gestionnaire de mots de passe"
+
+#: roudix-switcher.py
+msgid "Clean: no shaders, no animated effects"
+msgstr "Propre : aucun shader ni effet animé"
+
+#: roudix-switcher.py
+msgid "Subtle window in/out + scratchpad shaders (default)"
+msgstr "Ouverture/fermeture discrètes + scratchpad (défaut)"
+
+#: roudix-switcher.py
+msgid "+ accent border, cursor halo, transitions (Noctalia palette)"
+msgstr "+ bordure d'accent, halo de curseur, transitions (palette Noctalia)"
+
+#: roudix-switcher.py
+msgid "Same, fixed Roudix palette"
+msgstr "Idem, palette Roudix fixe"
+
+#: roudix-switcher.py
+msgid "+ flowing light around the border (Noctalia palette)"
+msgstr "+ lumière qui coule autour de la bordure (palette Noctalia)"
+
+#: roudix-switcher.py
+msgid "+ jelly wobble on window move (Noctalia palette)"
+msgstr "+ fenêtres gélatineuses au déplacement (palette Noctalia)"
+
+#: roudix-switcher.py
+msgid "Windows open/close through the Roudix logo shape"
+msgstr "Ouverture/fermeture en forme de logo Roudix"
+
+#: roudix-switcher.py
+msgid "Same + jelly wobble and drag physics"
+msgstr "Idem + effet gélatine et physique du glisser"
+
+#: roudix-switcher.py
+msgid "\"Snowflake braid\" border + comet (Noctalia palette)"
+msgstr "Bordure « tresse de flocon » + comète (palette Noctalia)"
+
+#: roudix-switcher.py
+msgid "Everything: logo, wobble, aurora (fixed Roudix palette)"
+msgstr "Tout : logo, gélatine, aurora (palette Roudix fixe)"
+
+#: roudix-switcher.py
+msgid "Like roudix-full, Noctalia colors"
+msgstr "Comme roudix-full, couleurs de Noctalia"
+
+#: roudix-switcher.py
+msgid "Ly-sec's sakura suite — Noctalia colors"
+msgstr "Suite sakura de Ly-sec — couleurs Noctalia"
+
+#: roudix-switcher.py
+msgid "Sakura suite, fixed Roudix palette"
+msgstr "Suite sakura, palette Roudix fixe"
+
+#: roudix-switcher.py
+msgid "Border (animated border effect)"
+msgstr "Bordure (effet de bordure animé)"
+
+#: roudix-switcher.py
+msgid "Window (per-window overlay effect)"
+msgstr "Fenêtre (effet de superposition par fenêtre)"
+
+#: roudix-switcher.py
+msgid "Screen (full-screen effect)"
+msgstr "Écran (effet plein écran)"
+
+#: roudix-switcher.py
+msgid "Cursor (halo around the pointer)"
+msgstr "Curseur (halo autour du pointeur)"
+
+#: roudix-switcher.py
+msgid "Transitions (workspace, layer and focus-border animations)"
+msgstr "Transitions (animations des espaces de travail, des couches et de la bordure de focus)"
+
+#: roudix-switcher.py
+msgid "Window motion (open/close/move shaders, drag physics)"
+msgstr "Mouvement des fenêtres (shaders d'ouverture/fermeture/déplacement, physique du glisser)"
+
+#: roudix-switcher.py
+msgid "Scratchpad (show/hide shader)"
+msgstr "Scratchpad (shader d'affichage/masquage)"
+
+#: roudix-switcher.py
+msgid "Every hour"
+msgstr "Toutes les heures"
+
+#: roudix-switcher.py
+msgid "Default"
+msgstr "Défaut"
+
+#: roudix-switcher.py
+msgid "Every 6 hours"
+msgstr "Toutes les 6 heures"
+
+#: roudix-switcher.py
+msgid "Every 12 hours"
+msgstr "Toutes les 12 heures"
+
+#: roudix-switcher.py
+msgid "Every day"
+msgstr "Tous les jours"
+
+#: roudix-switcher.py
+msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
+msgstr "Faible latence (48 kHz, quantum 128) — travail audio, jeux de rythme"
+
+#: roudix-switcher.py
+msgid "Realtime tweaks (rtprio/nice for the “audio” group — you must be in it)"
+msgstr "Réglages temps réel (rtprio/nice pour le groupe « audio » — tu dois en faire partie)"
+
+#: roudix-switcher.py
+msgid "Never autosuspend USB devices (fixes USB audio dropouts, costs laptop battery)"
+msgstr "Ne jamais mettre en veille automatique les périphériques USB (corrige les coupures audio USB, coûte de la batterie sur portable)"
+
+#: roudix-switcher.py
+msgid "CachyOS-style system tuning"
+msgstr "Optimisations système façon CachyOS"
+
+#: roudix-switcher.py
+msgid "systemd-oomd watches the system and user slices (kills an app instead of freezing)"
+msgstr "systemd-oomd surveille les tranches système et utilisateur (ferme une appli plutôt que de geler)"
+
+#: roudix-switcher.py
+msgid "Per-device I/O schedulers (bfq / mq-deadline / kyber)"
+msgstr "Ordonnanceurs d'E/S par périphérique (bfq / mq-deadline / kyber)"
+
+#: roudix-switcher.py
+msgid "Short service timeouts (15 s start / 10 s stop) and higher open-files limit"
+msgstr "Délais de service courts (15 s au démarrage / 10 s à l'arrêt) et limite de fichiers ouverts plus haute"
+
+#: roudix-switcher.py
+msgid "Many color schemes, follows Noctalia by default (default)"
+msgstr "Nombreux jeux de couleurs, suit Noctalia par défaut (défaut)"
+
+#: roudix-switcher.py
+msgid "The bundled Comfy theme"
+msgstr "Le thème Comfy fourni"
+
+#: roudix-switcher.py
+msgid "Marketplace (browse extensions and themes inside Spotify)"
+msgstr "Marketplace (parcourir extensions et thèmes depuis Spotify)"
+
+#: roudix-switcher.py
+msgid "Ad blocker extension"
+msgstr "Extension de blocage des pubs"
+
+#: roudix-switcher.py
+msgid "Hide podcasts extension"
+msgstr "Extension pour masquer les podcasts"
+
+#: roudix-switcher.py
+msgid "Roudix Zen tweaks (user.js + policies.json)"
+msgstr "Tweaks Zen Roudix (user.js + policies.json)"
+
+#: roudix-switcher.py
+msgid "Performance (HW decoding, GPU, caches)"
+msgstr "Performance (décodage matériel, GPU, caches)"
+
+#: roudix-switcher.py
+msgid "Privacy (no telemetry or Mozilla extras)"
+msgstr "Vie privée (sans télémétrie ni extras Mozilla)"
+
+#: roudix-switcher.py
+msgid "Disable Google Safe Browsing"
+msgstr "Désactiver Google Safe Browsing"
+
+#: roudix-switcher.py
+msgid "UI (smooth scrolling, masonry)"
+msgstr "Interface (défilement fluide, masonry)"
+
+#: roudix-switcher.py
+msgid "Install policies.json (uBlock, DoH...)"
+msgstr "Installer policies.json (uBlock, DoH...)"
+
+#: roudix-switcher.py
+msgid "No profile chosen (default)"
+msgstr "Aucun profil choisi (défaut)"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "~/{path} — not found on disk"
+msgstr "~/{path} — introuvable sur le disque"
+
+#: roudix-switcher.py
+msgid "Firefox — Roudix tweaks (user.js of the chosen profile)"
+msgstr "Firefox — Tweaks Roudix (user.js du profil choisi)"
+
+#: roudix-switcher.py
+msgid "Firefox — Performance"
+msgstr "Firefox — Performance"
+
+#: roudix-switcher.py
+msgid "Firefox — Privacy"
+msgstr "Firefox — Vie privée"
+
+#: roudix-switcher.py
+msgid "Firefox — Disable Google Safe Browsing"
+msgstr "Firefox — Désactiver Google Safe Browsing"
+
+#: roudix-switcher.py
+msgid "Firefox — UI (smooth scrolling)"
+msgstr "Firefox — Interface (défilement fluide)"
+
+#: roudix-switcher.py
+msgid "HDR in the Gaming Mode session (turn off without an HDR display, or if games misbehave)"
+msgstr "HDR dans la session Gaming Mode (désactiver si écran sans HDR ou jeux qui plantent)"
+
+#: roudix-switcher.py
+msgid "ZapZap (unofficial WhatsApp client)"
+msgstr "ZapZap (client WhatsApp non officiel)"
+
+#: roudix-switcher.py
+msgid "Fluxer (self-hostable Discord alternative)"
+msgstr "Fluxer (alternative Discord auto-hébergeable)"
+
+#: roudix-switcher.py
+msgid "Roudix Welcome (shown at session start)"
+msgstr "Roudix Welcome (affiché au démarrage de la session)"
+
+#: roudix-switcher.py
+msgid "Umbriel effects"
+msgstr "Effets Umbriel"
+
+#: roudix-switcher.py
+msgid "Umbriel — disable effects"
+msgstr "Umbriel — désactiver des effets"
+
+#: roudix-switcher.py
+msgid "Checked = switched off, on top of the effects chosen above. If a game flips between composition and direct scanout, turn off “Screen” and “Cursor”."
+msgstr "Coché = désactivé, en plus des effets choisis ci-dessus. Si un jeu alterne entre composition et direct scanout, désactive « Écran » et « Curseur »."
+
+#: roudix-switcher.py
+msgid "Zen tweaks"
+msgstr "Tweaks Zen"
+
+#: roudix-switcher.py
+msgid "Zen profile for the tweaks"
+msgstr "Profil Zen pour les tweaks"
+
+#: roudix-switcher.py
+msgid "The profile Roudix manages"
+msgstr "Le profil géré par Roudix"
+
+#: roudix-switcher.py
+msgid "Firefox tweaks"
+msgstr "Tweaks Firefox"
+
+#: roudix-switcher.py
+msgid "Firefox profile for the tweaks"
+msgstr "Profil Firefox pour les tweaks"
+
+#: roudix-switcher.py
+msgid "None: the Firefox tweaks are written nowhere"
+msgstr "Aucun : les tweaks Firefox ne sont écrits nulle part"
+
+#: roudix-switcher.py
+msgid "Spicetify theme"
+msgstr "Thème Spicetify"
+
+#: roudix-switcher.py
+msgid "Spicetify"
+msgstr "Spicetify"
+
+#: roudix-switcher.py
+msgid "Password manager"
+msgstr "Gestionnaire de mots de passe"
+
+#: roudix-switcher.py
+msgid "Update check interval"
+msgstr "Fréquence de vérification des mises à jour"
+
+#: roudix-switcher.py
+msgid "Audio (PipeWire)"
+msgstr "Audio (PipeWire)"
+
+#: roudix-switcher.py
+msgid "System tuning"
+msgstr "Optimisations système"
+
+#: roudix-switcher.py
+msgid "Update interval"
+msgstr "Fréquence de mise à jour"
+
+#: roudix-switcher.py
+msgid "Zen profile (tweaks)"
+msgstr "Profil Zen (tweaks)"
+
+#: roudix-switcher.py
+msgid "Firefox profile (tweaks)"
+msgstr "Profil Firefox (tweaks)"
+
+#: roudix-switcher.py
+msgid "Umbriel — disabled effects"
+msgstr "Umbriel — effets désactivés"
