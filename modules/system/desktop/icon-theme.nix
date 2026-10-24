@@ -64,6 +64,15 @@ let
       done
       chmod -R u+w "$dest"
 
+      # HiDPI: Papirus lists "<size>@2x" dirs in ScaledDirectories (symlinks to
+      # <size> in the base theme). Without the same links here, a scaled
+      # display (panel icons, KDE with scale > 1) skips our recolored icons
+      # and falls back to the stock blue ones from the base theme.
+      for size in ${lib.concatStringsSep " " sizes}; do
+        [ -e "$src/$size@2x" ] && [ -d "$dest/$size" ] || continue
+        ln -s "$size" "$dest/$size@2x"
+      done
+
       find "$dest" -path '*/places/*.svg' -print0 | xargs -0 -r sed -i \
         -e "s/#5294e2/${primary}/Ig" \
         ${extraSed}
@@ -80,9 +89,11 @@ let
     baseName = "Papirus-Dark";
     sizes    = [ "16x16" "22x22" "24x24" "32x32" "48x48" "64x64" "96x96" "128x128" "scalable" "symbolic" ];
     extraSed = ''-e "s/#4877b1/${darker}/Ig"'';
-    # Cabinet tabs: blue (#5294e2, or #5895dc at small sizes) -> primary,
-    # green -> secondary, yellow -> palette's bright yellow.
-    appSed   = ''-e "s/#5294e2/${primary}/Ig" -e "s/#5895dc/${primary}/Ig" -e "s/#89e058/${secondary}/Ig" -e "s/#ffcd54/#FFC878/Ig"'';
+    # system-file-manager (cabinet tabs): blue (#5294e2, or #5895dc at small
+    # sizes) -> primary, green -> secondary, yellow -> palette's bright yellow.
+    # org.kde.dolphin (what the Dolphin launcher uses): body #127bdc -> primary,
+    # back tab #1f6394 -> the darker shade, like the folders.
+    appSed   = ''-e "s/#5294e2/${primary}/Ig" -e "s/#5895dc/${primary}/Ig" -e "s/#89e058/${secondary}/Ig" -e "s/#ffcd54/#FFC878/Ig" -e "s/#127bdc/${primary}/Ig" -e "s/#1f6394/${darker}/Ig"'';
   };
 
   telaRoudix = mkRoudixIcons {
