@@ -156,6 +156,14 @@ in
   };
 
   config = lib.mkIf (builtins.elem config.roudix.desktop.type nativeDesktops) {
-    environment.systemPackages = chosen.packages;
+    # Both Roudix themes (+ their stock base) are always installed on these
+    # desktops, not only the one picked by roudix.iconTheme: the option just
+    # seeds the DEFAULT, and the desktop's own settings app (KDE System
+    # Settings, GNOME Tweaks, Cinnamon...) can only list what is on the system.
+    environment.systemPackages = lib.unique (
+      chosen.packages
+      ++ curated.papirus.packages
+      ++ curated.tela.packages
+    );
   };
 }
