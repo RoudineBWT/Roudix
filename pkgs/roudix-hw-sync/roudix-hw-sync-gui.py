@@ -29,13 +29,44 @@ if not os.path.exists(CORE):
 
 ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
+
+# ── translations (gettext) ───────────────────────────────────────────────────
+# Messages are written in English: tr("…"). Catalogs live in po/<lang>.po and the Nix
+# package compiles them to share/locale/<lang>/LC_MESSAGES/roudix-hw-sync.mo. The language comes
+# from LANGUAGE / LC_ALL / LC_MESSAGES / LANG; a missing catalog falls back to English.
+import gettext as _gettext
+import glob as _glob
+
+_DOMAIN = "roudix-hw-sync"
+
+
+def _find_localedir(domain):
+    cands = [os.environ.get("ROUDIX_LOCALEDIR", "")]
+    d = os.path.dirname(os.path.realpath(__file__))
+    while True:
+        cands += [os.path.join(d, "share", "locale"), os.path.join(d, "locale")]
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    for c in cands:
+        if c and _glob.glob(os.path.join(c, "*", "LC_MESSAGES", domain + ".mo")):
+            return c
+    return None
+
+
+_translation = _gettext.translation(_DOMAIN, _find_localedir(_DOMAIN), fallback=True)
+tr = _translation.gettext          # tr("text")
+ngettext = _translation.ngettext   # ngettext("one", "many", n)
+
+
 CPUS = [("amd", "AMD"), ("intel", "Intel")]
 GPUS = [
-    ("amd",        "AMD — modern (RDNA / GCN 3+, RX 400 and newer)"),
-    ("amd-igpu",   "AMD — integrated (Ryzen APU)"),
-    ("amd-legacy", "AMD — legacy (GCN 1.x / 2.x, HD 7xxx, R9 2xx)"),
+    ("amd",        tr("AMD — modern (RDNA / GCN 3+, RX 400 and newer)")),
+    ("amd-igpu",   tr("AMD — integrated (Ryzen APU)")),
+    ("amd-legacy", tr("AMD — legacy (GCN 1.x / 2.x, HD 7xxx, R9 2xx)")),
     ("nvidia",     "NVIDIA"),
-    ("intel",      "Intel (integrated or Arc)"),
+    ("intel",      tr("Intel (integrated or Arc)")),
 ]
 
 
@@ -52,7 +83,7 @@ def run_core(*args):
 def detect():
     rc, out, err = run_core("--detect")
     if rc != 0:
-        return None, err or "Detection failed."
+        return None, err or tr("Detection failed.")
     return dict(l.split("=", 1) for l in out.splitlines() if "=" in l), ""
 
 
@@ -80,40 +111,40 @@ class HwSyncWindow(Adw.ApplicationWindow):
         scroll.set_child(body)
 
         intro = Gtk.Label(
-            label="New PC, new graphics card or new processor? Roudix looks at your "
-                  "hardware and updates your configuration to match. "
-                  "Nothing is changed until you press a button below.")
+            label=tr("New PC, new graphics card or new processor? Roudix looks at your "
+                     "hardware and updates your configuration to match. "
+                     "Nothing is changed until you press a button below."))
         intro.set_wrap(True)
         intro.set_halign(Gtk.Align.START)
         intro.add_css_class("dim-label")
         body.append(intro)
 
         # ── Hardware rows ─────────────────────────────────────────────────
-        group = Adw.PreferencesGroup(title="Your hardware")
+        group = Adw.PreferencesGroup(title=tr("Your hardware"))
         body.append(group)
 
-        self._cpu_row = Adw.ComboRow(title="Processor (CPU)")
+        self._cpu_row = Adw.ComboRow(title=tr("Processor (CPU)"))
         self._cpu_row.set_model(Gtk.StringList.new([l for _, l in CPUS]))
         self._cpu_row.connect("notify::selected", self._on_changed)
         group.add(self._cpu_row)
 
-        self._gpu_row = Adw.ComboRow(title="Graphics card (GPU)")
+        self._gpu_row = Adw.ComboRow(title=tr("Graphics card (GPU)"))
         self._gpu_row.set_model(Gtk.StringList.new([l for _, l in GPUS]))
         self._gpu_row.connect("notify::selected", self._on_changed)
         group.add(self._gpu_row)
 
         self._laptop_row = Adw.SwitchRow(
-            title="Laptop with an NVIDIA graphics card",
-            subtitle="Hybrid graphics (Optimus): Intel/AMD chip + NVIDIA card")
+            title=tr("Laptop with an NVIDIA graphics card"),
+            subtitle=tr("Hybrid graphics (Optimus): Intel/AMD chip + NVIDIA card"))
         self._laptop_row.connect("notify::active", self._on_changed)
         group.add(self._laptop_row)
 
         # ── Status + preview ──────────────────────────────────────────────
-        self._status = Adw.ActionRow(title="Checking…")
+        self._status = Adw.ActionRow(title=tr("Checking…"))
         self._status.add_css_class("card")
         body.append(self._status)
 
-        self._expander = Adw.ExpanderRow(title="Preview of the changes")
+        self._expander = Adw.ExpanderRow(title=tr("Preview of the changes"))
         self._expander.add_css_class("card")
         self._diff_lbl = Gtk.Label(xalign=0, selectable=True)
         self._diff_lbl.set_wrap(False)
@@ -161,18 +192,18 @@ class HwSyncWindow(Adw.ApplicationWindow):
             getattr(bar, f"set_margin_{side}")(12)
         root.append(bar)
 
-        self._rescan_btn = Gtk.Button(label="Re-detect")
+        self._rescan_btn = Gtk.Button(label=tr("Re-detect"))
         self._rescan_btn.connect("clicked", lambda _b: self._load())
         bar.append(self._rescan_btn)
 
         spacer = Gtk.Box(); spacer.set_hexpand(True); bar.append(spacer)
 
-        self._save_btn = Gtk.Button(label="Apply")
-        self._save_btn.set_tooltip_text("Only update local.nix, no rebuild")
+        self._save_btn = Gtk.Button(label=tr("Apply"))
+        self._save_btn.set_tooltip_text(tr("Only update local.nix, no rebuild"))
         self._save_btn.connect("clicked", lambda _b: self._confirm(rebuild=False))
         bar.append(self._save_btn)
 
-        self._build_btn = Gtk.Button(label="Apply & Rebuild")
+        self._build_btn = Gtk.Button(label=tr("Apply & Rebuild"))
         self._build_btn.add_css_class("suggested-action")
         self._build_btn.connect("clicked", lambda _b: self._confirm(rebuild=True))
         bar.append(self._build_btn)
@@ -192,7 +223,7 @@ class HwSyncWindow(Adw.ApplicationWindow):
         d, err = detect()
         if d is None:
             self._error = True
-            self._status.set_title("Could not detect your hardware")
+            self._status.set_title(tr("Could not detect your hardware"))
             self._status.set_subtitle(err)
             self._diff_lbl.set_label("")
             self._expander.set_visible(False)
@@ -219,7 +250,7 @@ class HwSyncWindow(Adw.ApplicationWindow):
         rc, out, err = run_core("-n", "--cpu", cpu, "--gpu", gpu, "--laptop", laptop)
         if rc != 0:
             self._error = True
-            self._status.set_title("Something went wrong")
+            self._status.set_title(tr("Something went wrong"))
             self._status.set_subtitle(err or out)
             self._update_buttons()
             return
@@ -227,16 +258,17 @@ class HwSyncWindow(Adw.ApplicationWindow):
         lines = out.splitlines()
         start = next((i for i, l in enumerate(lines) if l.startswith("---")), None)
         diff = lines[start:] if start is not None else []
-        diff = [l for l in diff if not l.startswith("(dry-run")]
+        diff = [l for l in diff if not l.startswith("(")]   # drop the CLI's "(dry-run: …)" note
         self._changes = sum(1 for l in diff if l.startswith("+") and not l.startswith("+++"))
         self._diff_lbl.set_label("\n".join(diff))
         self._expander.set_sensitive(bool(diff))
         if self._changes == 0:
-            self._status.set_title("Your configuration already matches this hardware")
+            self._status.set_title(tr("Your configuration already matches this hardware"))
             self._expander.set_expanded(False)
         else:
             n = self._changes
-            self._status.set_title(f"{n} line{'s' if n > 1 else ''} will be updated in local.nix")
+            self._status.set_title(ngettext("%d line will be updated in local.nix",
+                                            "%d lines will be updated in local.nix", n) % n)
         # surface CLI warnings (e.g. missing kernel line, undervolt note)
         self._status.set_subtitle(err)
         self._update_buttons()
@@ -253,17 +285,19 @@ class HwSyncWindow(Adw.ApplicationWindow):
     def _confirm(self, rebuild):
         cpu, gpu, laptop = self._selection()
         dialog = Adw.AlertDialog()
-        dialog.set_heading("Apply changes?")
-        body = f"CPU: <b>{cpu}</b>\nGPU: <b>{gpu}</b>"
+        dialog.set_heading(tr("Apply changes?"))
+        body = tr("CPU: <b>{cpu}</b>").format(cpu=cpu) + "\n" + \
+               tr("GPU: <b>{gpu}</b>").format(gpu=gpu)
         if gpu == "nvidia":
-            body += f"\nHybrid laptop: <b>{'yes' if laptop == 'true' else 'no'}</b>"
-        body += "\n\nA backup of your settings is kept as <tt>local.nix.bak</tt>."
+            answer = tr("yes") if laptop == "true" else tr("no")
+            body += "\n" + tr("Hybrid laptop: <b>{answer}</b>").format(answer=answer)
+        body += "\n\n" + tr("A backup of your settings is kept as <tt>local.nix.bak</tt>.")
         if rebuild:
-            body += "\nYour system will then be rebuilt, this can take a few minutes."
+            body += "\n" + tr("Your system will then be rebuilt, this can take a few minutes.")
         dialog.set_body(body)
         dialog.set_body_use_markup(True)
-        dialog.add_response("cancel", "Cancel")
-        dialog.add_response("confirm", "Apply & Rebuild" if rebuild else "Apply")
+        dialog.add_response("cancel", tr("Cancel"))
+        dialog.add_response("confirm", tr("Apply & Rebuild") if rebuild else tr("Apply"))
         dialog.set_response_appearance("confirm", Adw.ResponseAppearance.SUGGESTED)
         dialog.set_default_response("confirm")
         dialog.connect("response", self._on_confirm, rebuild)
@@ -276,17 +310,17 @@ class HwSyncWindow(Adw.ApplicationWindow):
         if self._changes > 0:
             rc, out, err = run_core("--cpu", cpu, "--gpu", gpu, "--laptop", laptop)
             if rc != 0:
-                self._status.set_title("✗ Could not write local.nix")
+                self._status.set_title(tr("✗ Could not write local.nix"))
                 self._status.set_subtitle(err or out)
                 return
         if not rebuild:
             self._refresh_preview()
-            self._status.set_title("✓ local.nix updated — rebuild to apply")
-            self._status.set_subtitle("Backup saved as local.nix.bak")
+            self._status.set_title(tr("✓ local.nix updated — rebuild to apply"))
+            self._status.set_subtitle(tr("Backup saved as local.nix.bak"))
             return
         self._busy = True
         self._update_buttons()
-        self._status.set_title("Rebuilding…")
+        self._status.set_title(tr("Rebuilding…"))
         self._status.set_subtitle("")
         self._log_buf.set_text("")
         self._log_scroll.set_visible(True)
@@ -296,7 +330,7 @@ class HwSyncWindow(Adw.ApplicationWindow):
         # "boot", not "switch": a GPU/driver change takes effect after a reboot.
         cmd = ["nh", "os", "boot", "--elevation-strategy", "pkexec",
                "--accept-flake-config", f"path:{NH_FLAKE}"]
-        GLib.idle_add(self._log, "Running: " + " ".join(cmd), "dim")
+        GLib.idle_add(self._log, tr("Running: {cmd}").format(cmd=" ".join(cmd)), "dim")
         try:
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT, text=True)
@@ -314,10 +348,10 @@ class HwSyncWindow(Adw.ApplicationWindow):
             proc.wait()
             rc = proc.returncode
         except FileNotFoundError:
-            GLib.idle_add(self._log, "ERROR: 'nh' not found in PATH.", "error")
+            GLib.idle_add(self._log, tr("ERROR: 'nh' not found in PATH."), "error")
             rc = 127
         except Exception as e:
-            GLib.idle_add(self._log, f"ERROR: {e}", "error")
+            GLib.idle_add(self._log, tr("ERROR: {error}").format(error=e), "error")
             rc = 1
         GLib.idle_add(self._finish, rc)
 
@@ -343,13 +377,13 @@ class HwSyncWindow(Adw.ApplicationWindow):
     def _finish(self, rc):
         self._busy = False
         if rc == 0:
-            self._status.set_title("✓ Done — reboot to use your new hardware settings")
+            self._status.set_title(tr("✓ Done — reboot to use your new hardware settings"))
             self._log("", "dim")
-            self._log("✓ Rebuild completed. Reboot to apply the changes.", "ok")
+            self._log(tr("✓ Rebuild completed. Reboot to apply the changes."), "ok")
         else:
-            self._status.set_title(f"✗ Rebuild failed (exit {rc})")
-            self._status.set_subtitle("See the log below. Your local.nix was already updated.")
-            self._log(f"✗ Rebuild failed (exit code {rc}).", "error")
+            self._status.set_title(tr("✗ Rebuild failed (exit {rc})").format(rc=rc))
+            self._status.set_subtitle(tr("See the log below. Your local.nix was already updated."))
+            self._log(tr("✗ Rebuild failed (exit code {rc}).").format(rc=rc), "error")
         self._refresh_preview()
 
 

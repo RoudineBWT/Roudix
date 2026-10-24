@@ -12,6 +12,17 @@
 # Never rebuilds. Writes <file>.bak before changing anything.
 set -uo pipefail
 
+# ── i18n ─────────────────────────────────────────────────────────────────
+# Messages are written in English: _t 'text'. Catalogs live in po/<lang>.po; the Nix package
+# compiles them to share/locale/<lang>/LC_MESSAGES/roudix-hw-sync.mo and fills in the two
+# @placeholders@ below. Run from the sources, there is no catalog: English is printed.
+# Only human-readable messages are translated, never the --detect key=value lines.
+TEXTDOMAIN=roudix-hw-sync
+TEXTDOMAINDIR="$(printenv ROUDIX_LOCALEDIR)"; [ -n "$TEXTDOMAINDIR" ] || TEXTDOMAINDIR="@localedir@"
+export TEXTDOMAIN TEXTDOMAINDIR
+gt="@gettext@"; [ -x "$gt" ] || gt="$(command -v gettext 2>/dev/null || true)"
+_t() { if [ -n "$gt" ]; then "$gt" "$1"; else printf %s "$1"; fi; }
+
 dry=0; detect_only=0; force_gpu=""; force_cpu=""; force_laptop=""
 nh_flake="$(printenv NH_FLAKE)"; [ -n "$nh_flake" ] || nh_flake="$HOME/.config/roudix"
 host="$(printenv ROUDIX_HOST)"; [ -n "$host" ] || host="$(uname -n)"
@@ -27,16 +38,16 @@ while [ $# -gt 0 ]; do
     --laptop)     force_laptop="${2:-}"; shift ;;
     -f)           file="${2:-}"; shift ;;
     -h|--help)    sed -n 2,12p "$0"; exit 0 ;;
-    *) echo "Unknown option: $1" >&2; exit 1 ;;
+    *) printf "$(_t 'Unknown option: %s')\n" "$1" >&2; exit 1 ;;
   esac
   shift
 done
 
-case "$force_gpu" in ""|amd|amd-igpu|amd-legacy|nvidia|intel) ;; *) echo "Invalid --gpu: $force_gpu" >&2; exit 1 ;; esac
-case "$force_cpu" in ""|amd|intel) ;; *) echo "Invalid --cpu: $force_cpu" >&2; exit 1 ;; esac
-case "$force_laptop" in ""|true|false) ;; *) echo "Invalid --laptop: $force_laptop" >&2; exit 1 ;; esac
+case "$force_gpu" in ""|amd|amd-igpu|amd-legacy|nvidia|intel) ;; *) printf "$(_t 'Invalid --gpu: %s')\n" "$force_gpu" >&2; exit 1 ;; esac
+case "$force_cpu" in ""|amd|intel) ;; *) printf "$(_t 'Invalid --cpu: %s')\n" "$force_cpu" >&2; exit 1 ;; esac
+case "$force_laptop" in ""|true|false) ;; *) printf "$(_t 'Invalid --laptop: %s')\n" "$force_laptop" >&2; exit 1 ;; esac
 
-[ -f "$file" ] || { echo "local.nix not found: $file" >&2; exit 1; }
+[ -f "$file" ] || { printf "$(_t 'local.nix not found: %s')\n" "$file" >&2; exit 1; }
 orig="$file"; file="$(mktemp)"; cp "$orig" "$file"   # work on a copy, write back at the end
 trap 'rm -f "$file"' EXIT
 
@@ -68,7 +79,7 @@ cpu="$force_cpu"
 if [ -z "$cpu" ]; then
   if   grep -q AuthenticAMD /proc/cpuinfo 2>/dev/null; then cpu=amd
   elif grep -q GenuineIntel /proc/cpuinfo 2>/dev/null; then cpu=intel
-  else echo "CPU vendor not detected, use --cpu amd|intel" >&2; exit 1; fi
+  else echo "$(_t 'CPU vendor not detected, use --cpu amd|intel')" >&2; exit 1; fi
 fi
 
 declare -A ids=()
@@ -91,7 +102,7 @@ if [ -z "$gpu" ]; then
   if   [ $n_nv = 1 ];    then gpu=nvidia
   elif [ $n_amd = 1 ];   then gpu=amd
   elif [ $n_intel = 1 ]; then gpu=intel
-  else echo "GPU not detected, use --gpu ..." >&2; exit 1; fi
+  else echo "$(_t 'GPU not detected, use --gpu ...')" >&2; exit 1; fi
   # keep the AMD flavour already chosen (amd-igpu / amd-legacy)
   case "$(cur hardware.myGpu)" in
     amd-igpu)   [ "$gpu" = amd ] && gpu=amd-igpu ;;
@@ -113,7 +124,7 @@ if [ $detect_only -eq 1 ]; then
   exit 0
 fi
 
-echo "Detected: CPU=$cpu  GPU=$gpu  nvidiaLaptop=$laptop"
+printf "$(_t 'Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s')\n" "$cpu" "$gpu" "$laptop"
 
 # ── Patch ────────────────────────────────────────────────────────────────
 set_str  hardware.myGpu "$gpu"
@@ -132,7 +143,7 @@ if [ "$gpu" = nvidia ]; then
   if has hardware.myKernelChaotic; then
     set_active hardware.myKernelChaotic true; set_active hardware.myKernel false
   else
-    echo "warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), module default applies" >&2
+    echo "$(_t 'warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), module default applies')" >&2
   fi
 elif has hardware.myKernel; then
   set_active hardware.myKernel true; set_active hardware.myKernelChaotic false
@@ -144,16 +155,16 @@ if [ "$gpu" != amd ] && [ "$gpu" != amd-legacy ]; then
 fi
 
 if diff -q "$orig" "$file" >/dev/null; then
-  echo "Nothing to change."; exit 0
+  echo "$(_t 'Nothing to change.')"; exit 0
 fi
 
 diff -u --label "$orig (before)" --label "$orig (after)" "$orig" "$file"
 
 if [ $dry -eq 1 ]; then
-  echo "(dry-run: file left untouched)"; exit 0
+  echo "$(_t '(dry-run: file left untouched)')"; exit 0
 fi
 
 cp "$orig" "$orig.bak"
 cat "$file" > "$orig"
-echo "Done. Backup: $orig.bak"
-echo "Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:\$NH_FLAKE)"
+printf "$(_t 'Done. Backup: %s')\n" "$orig.bak"
+echo "$(_t 'Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)')"

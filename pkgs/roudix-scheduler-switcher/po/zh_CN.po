@@ -1,0 +1,220 @@
+# Simplified Chinese translation of roudix-scheduler (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-scheduler\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Simplified Chinese\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: roudix-scheduler.py
+msgid "Auto"
+msgstr "自动"
+
+#: roudix-scheduler.py
+msgid "Gaming"
+msgstr "游戏"
+
+#. TRANSLATORS: Profile name written as one word in scx_loader (shown in a dropdown);
+#. translate it as a normal phrase, e.g. "Low latency".
+#: roudix-scheduler.py
+msgid "LowLatency"
+msgstr "低延迟"
+
+#. TRANSLATORS: Profile name written as one word in scx_loader (shown in a dropdown);
+#. translate it as a normal phrase, e.g. "Power saving".
+#: roudix-scheduler.py
+msgid "PowerSave"
+msgstr "节能"
+
+#: roudix-scheduler.py
+msgid "Server"
+msgstr "服务器"
+
+#: roudix-scheduler.py
+msgid "Default kernel scheduler — CFS/EEVDF"
+msgstr "默认内核调度器 — CFS/EEVDF"
+
+#: roudix-scheduler.py
+msgid "None"
+msgstr "无"
+
+#: roudix-scheduler.py
+msgid ""
+"vruntime-based, interactive-first — best all-around (gaming, desktop, heavy "
+"load); cache-topology aware"
+msgstr ""
+"基于 vruntime，交互优先 — 综合表现最佳（游戏、桌面、高负载）；感知缓存拓扑"
+
+#: roudix-scheduler.py
+msgid ""
+"Latency-Aware Virtual Deadline — gaming + interactive; core compaction at "
+"low load; autopilot adjusts mode automatically"
+msgstr ""
+"Latency-Aware Virtual Deadline — 游戏 + 交互；低负载时合并核心；自动驾驶会自"
+"动调整模式"
+
+#: roudix-scheduler.py
+msgid ""
+"Fairness-focused, low-latency — good for mixed desktop + compile workloads"
+msgstr "注重公平与低延迟 — 适合桌面 + 编译混合负载"
+
+#: roudix-scheduler.py
+msgid ""
+"Pick-2 load balancing, two-level queue — general purpose; good cache locality"
+msgstr "Pick-2 负载均衡，两级队列 — 通用；缓存局部性良好"
+
+#: roudix-scheduler.py
+msgid ""
+"Multi-domain load balancer — scales well on large/NUMA systems; no per-mode "
+"tuning"
+msgstr "多域负载均衡器 — 在大型/NUMA 系统上扩展良好；无按模式调优"
+
+#: roudix-scheduler.py
+msgid "Userspace Rust scheduler (proof-of-concept) — no per-mode tuning"
+msgstr "用户空间 Rust 调度器（概念验证）— 无按模式调优"
+
+#: roudix-scheduler.py
+msgid ""
+"Lightweight locality-first — successor to bpfland, in active development"
+msgstr "轻量级，局部性优先 — bpfland 的继任者，积极开发中"
+
+#: roudix-scheduler.py
+msgid "Experimental — in active development; no per-mode tuning"
+msgstr "实验性 — 积极开发中；无按模式调优"
+
+#: roudix-scheduler.py
+msgid ""
+"Server/HPC-oriented — reduces OS noise via tick suppression; requires "
+"nohz_full kernel param; NOT for desktop/gaming"
+msgstr ""
+"面向服务器/HPC — 通过抑制 tick 降低系统噪声；需要内核参数 nohz_full；不适用于"
+"桌面/游戏"
+
+#: roudix-scheduler.py
+msgid ""
+"Layer-based — classify tasks into cgroups and apply a different policy per "
+"layer; highly configurable via TOML"
+msgstr ""
+"分层 — 将任务归入 cgroups，并为每一层应用不同的策略；可通过 TOML 高度配置"
+
+#: roudix-scheduler.py
+msgid ""
+"Profile-driven — simple Gaming/Esports/Battery profiles; in active "
+"development"
+msgstr "由配置文件驱动 — 简单的 Gaming/Esports/Battery 配置；积极开发中"
+
+#: roudix-scheduler.py
+msgid ""
+"Stress-test / debugging only — amplifies race conditions; NOT for production "
+"use"
+msgstr "仅用于压力测试 / 调试 — 放大竞态条件；不可用于生产环境"
+
+#: roudix-scheduler.py
+msgid "Experimental cell-division scheduler — in active development"
+msgstr "实验性细胞分裂调度器 — 积极开发中"
+
+#: roudix-scheduler.py
+msgid "Round-robin FIFO userspace scheduler — educational / proof-of-concept"
+msgstr "用户空间轮转 FIFO 调度器 — 教学 / 概念验证"
+
+#: roudix-scheduler.py
+msgid "Experimental fork of rusty using BPF arenas — in active development"
+msgstr "使用 BPF arena 的 rusty 实验性分支 — 积极开发中"
+
+#: roudix-scheduler.py
+msgid ""
+"Task-budget driven — every decision derived directly from budget, no Gaming/"
+"PowerSave/etc. profiles"
+msgstr "任务预算驱动 — 每个决策都直接源自预算，没有 Gaming/PowerSave 等配置"
+
+#: roudix-scheduler.py
+msgid ""
+"AI-agent-oriented — tuned via scx_forge_agent and a spec.toml optimization "
+"loop rather than manual profiles"
+msgstr ""
+"面向 AI 智能体 — 通过 scx_forge_agent 和 spec.toml 优化循环调优，而非手动配置"
+
+#: roudix-scheduler.py
+msgid "scx-switch not found in PATH (scx.nix module not loaded?)."
+msgstr "在 PATH 中找不到 scx-switch（scx.nix 模块未加载？）。"
+
+#: roudix-scheduler.py
+msgid "SCX disabled — back to the default scheduler (CFS/EEVDF)."
+msgstr "SCX 已禁用 — 已恢复默认调度器（CFS/EEVDF）。"
+
+#: roudix-scheduler.py
+#, python-brace-format
+msgid "flags: {extra}"
+msgstr "flags：{extra}"
+
+#: roudix-scheduler.py
+#, python-brace-format
+msgid "scx_{scheduler} active ({profile}){extra_note}."
+msgstr "scx_{scheduler} 已启用（{profile}）{extra_note}。"
+
+#: roudix-scheduler.py
+#, python-brace-format
+msgid "scx-switch failed (code {code})"
+msgstr "scx-switch 失败（代码 {code}）"
+
+#: roudix-scheduler.py
+msgid "pkexec not found."
+msgstr "未找到 pkexec。"
+
+#: roudix-scheduler.py
+msgid "Running scheduler"
+msgstr "正在运行的调度器"
+
+#: roudix-scheduler.py
+msgid "Select scheduler"
+msgstr "选择调度器"
+
+#: roudix-scheduler.py
+msgid "Select profile"
+msgstr "选择配置"
+
+#: roudix-scheduler.py
+msgid "Extra scheduler flags"
+msgstr "额外的调度器 flags"
+
+#: roudix-scheduler.py
+msgid "Disable"
+msgstr "禁用"
+
+#: roudix-scheduler.py
+msgid "Apply"
+msgstr "应用"
+
+#: roudix-scheduler.py
+msgid "⚠ scx-switch not found — check that scx.nix is applied."
+msgstr "⚠ 未找到 scx-switch — 请检查 scx.nix 是否已应用。"
+
+#: roudix-scheduler.py
+msgid "None — CFS/EEVDF"
+msgstr "无 — CFS/EEVDF"
+
+#: roudix-scheduler.py
+msgid "Disabled — your scheduler choice will persist after reboot"
+msgstr "已禁用 — 你选择的调度器将在重启后保留"
+
+#: roudix-scheduler.py
+msgid "Running — will be stopped automatically when a scheduler is applied"
+msgstr "运行中 — 应用调度器时将自动停止"
+
+#: roudix-scheduler.py
+msgid "Stopped — will be restarted automatically when switching back to None"
+msgstr "已停止 — 切换回“无”时将自动重新启动"
+
+#: roudix-scheduler.py
+msgid "Disabling..."
+msgstr "正在禁用…"
+
+#: roudix-scheduler.py
+msgid "Applying..."
+msgstr "正在应用…"

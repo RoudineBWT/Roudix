@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # i18n.sh — gettext workflow for the installer (iso/roudix-installer) and the Roudix apps
-# (pkgs/roudix-welcome, roudix-switcher, roudix-store, roudix-config).
+# (pkgs/roudix-welcome, roudix-switcher, roudix-store, roudix-config, roudix-kernel-switcher, roudix-hw-sync, roudix-scheduler).
 #
 #   scripts/i18n.sh update  [component…]   re-extract strings -> po/<domain>.pot, merge into every po/*.po
 #   scripts/i18n.sh compile [component…]   po/*.po -> <locale dir>/<lang>/LC_MESSAGES/<domain>.mo
@@ -8,14 +8,14 @@
 #   scripts/i18n.sh check   [component…]   fail if a .po is out of date, has untranslated/fuzzy entries, or is invalid
 #   scripts/i18n.sh new <lang> [component…] start a new translation, e.g. `new de`
 #
-# Components: installer welcome switcher store config (default: all of them).
+# Components: installer welcome switcher store config kernel-switcher hw-sync scheduler (default: all of them).
 # Needs GNU gettext (xgettext, msgmerge, msgfmt, msgcmp): `nix develop` provides it.
 set -euo pipefail
 
 command -v xgettext >/dev/null || { echo "i18n.sh: GNU gettext not found (use \`nix develop\`)" >&2; exit 127; }
 
 ROOT="$(git rev-parse --show-toplevel)"
-ALL_COMPONENTS="installer welcome switcher store config"
+ALL_COMPONENTS="installer welcome switcher store config kernel-switcher hw-sync scheduler"
 
 # Languages that must be 100% translated for `check` to pass. Any other language is
 # only checked for validity and for being in sync with the sources, so a contributor
@@ -31,6 +31,9 @@ select_component() {
         switcher)  DIR=pkgs/roudix-switcher; DOMAIN=roudix-switcher;  LOCALE_DIR=locale ;;
         store)     DIR=pkgs/roudix-store;    DOMAIN=roudix-store;     LOCALE_DIR=locale ;;
         config)    DIR=pkgs/roudix-config;   DOMAIN=roudix-config;    LOCALE_DIR=locale ;;
+        kernel-switcher) DIR=pkgs/roudix-kernel-switcher; DOMAIN=roudix-kernel-switcher; LOCALE_DIR=locale ;;
+        hw-sync)   DIR=pkgs/roudix-hw-sync;  DOMAIN=roudix-hw-sync;   LOCALE_DIR=locale ;;
+        scheduler) DIR=pkgs/roudix-scheduler-switcher; DOMAIN=roudix-scheduler; LOCALE_DIR=locale ;;
         *) echo "i18n.sh: unknown component '$COMP' (one of: $ALL_COMPONENTS)" >&2; exit 2 ;;
     esac
     cd "$ROOT/$DIR"
@@ -46,7 +49,16 @@ sources() {
     esac | LC_ALL=C sort
 }
 
-# Strings come from tr("…"), trc("context", "…") and tr_noop("…") — all in English.
+# Shell scripts of the current component whose messages are marked _t 'text' (extracted
+# on top of the Python sources). Only roudix-hw-sync, the CLI next to its GUI, has one.
+shell_sources() {
+    case "$COMP" in
+        hw-sync) echo roudix-hw-sync ;;
+    esac
+}
+
+# Strings come from tr("…"), trc("context", "…") and tr_noop("…") — all in English —
+# plus ngettext("one", "many", n), which xgettext knows by default, and _t '…' in shell scripts.
 extract() {  # $1 = output .pot
     sources | xargs xgettext \
         --language=Python --from-code=UTF-8 \
@@ -54,6 +66,14 @@ extract() {  # $1 = output .pot
         --add-comments=TRANSLATORS \
         --add-location=file --sort-by-file \
         --package-name="$DOMAIN" --output="$1"
+    local sh; sh=$(shell_sources)
+    if [ -n "$sh" ]; then
+        # No --sort-by-file here: the shell messages go after the Python ones.
+        # shellcheck disable=SC2086  # $sh is a short list of file names without spaces
+        xgettext --language=Shell --from-code=UTF-8 --keyword=_t \
+            --add-comments=TRANSLATORS --add-location=file \
+            --join-existing --output="$1" $sh
+    fi
     # The creation date changes on every run and would make every diff noisy.
     sed -i '/^"POT-Creation-Date:/d' "$1"
 }

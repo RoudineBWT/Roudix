@@ -1,0 +1,242 @@
+# Russian translation of roudix-scheduler (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-scheduler\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-22 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: roudix-scheduler.py
+msgid "Auto"
+msgstr "Авто"
+
+#: roudix-scheduler.py
+msgid "Gaming"
+msgstr "Игры"
+
+#. TRANSLATORS: Profile name written as one word in scx_loader (shown in a dropdown);
+#. translate it as a normal phrase, e.g. "Low latency".
+#: roudix-scheduler.py
+msgid "LowLatency"
+msgstr "Низкая задержка"
+
+#. TRANSLATORS: Profile name written as one word in scx_loader (shown in a dropdown);
+#. translate it as a normal phrase, e.g. "Power saving".
+#: roudix-scheduler.py
+msgid "PowerSave"
+msgstr "Энергосбережение"
+
+#: roudix-scheduler.py
+msgid "Server"
+msgstr "Сервер"
+
+#: roudix-scheduler.py
+msgid "Default kernel scheduler — CFS/EEVDF"
+msgstr "Планировщик ядра по умолчанию — CFS/EEVDF"
+
+#: roudix-scheduler.py
+msgid "None"
+msgstr "Нет"
+
+#: roudix-scheduler.py
+msgid ""
+"vruntime-based, interactive-first — best all-around (gaming, desktop, heavy "
+"load); cache-topology aware"
+msgstr ""
+"На основе vruntime, приоритет интерактивности — лучший универсальный вариант "
+"(игры, рабочий стол, высокая нагрузка); учитывает топологию кэшей"
+
+#: roudix-scheduler.py
+msgid ""
+"Latency-Aware Virtual Deadline — gaming + interactive; core compaction at "
+"low load; autopilot adjusts mode automatically"
+msgstr ""
+"Latency-Aware Virtual Deadline — игры + интерактивность; уплотнение ядер при "
+"низкой нагрузке; автопилот сам подбирает режим"
+
+#: roudix-scheduler.py
+msgid ""
+"Fairness-focused, low-latency — good for mixed desktop + compile workloads"
+msgstr ""
+"Упор на справедливость и низкую задержку — хорош для смешанных нагрузок: "
+"рабочий стол + компиляция"
+
+#: roudix-scheduler.py
+msgid ""
+"Pick-2 load balancing, two-level queue — general purpose; good cache locality"
+msgstr ""
+"Балансировка нагрузки Pick-2, двухуровневая очередь — общего назначения; "
+"хорошая локальность кэша"
+
+#: roudix-scheduler.py
+msgid ""
+"Multi-domain load balancer — scales well on large/NUMA systems; no per-mode "
+"tuning"
+msgstr ""
+"Многодоменный балансировщик нагрузки — хорошо масштабируется на больших/NUMA-"
+"системах; без настройки по режимам"
+
+#: roudix-scheduler.py
+msgid "Userspace Rust scheduler (proof-of-concept) — no per-mode tuning"
+msgstr ""
+"Планировщик на Rust в пространстве пользователя (концепт) — без настройки по "
+"режимам"
+
+#: roudix-scheduler.py
+msgid ""
+"Lightweight locality-first — successor to bpfland, in active development"
+msgstr ""
+"Лёгкий, приоритет локальности — преемник bpfland, в активной разработке"
+
+#: roudix-scheduler.py
+msgid "Experimental — in active development; no per-mode tuning"
+msgstr "Экспериментальный — в активной разработке; без настройки по режимам"
+
+#: roudix-scheduler.py
+msgid ""
+"Server/HPC-oriented — reduces OS noise via tick suppression; requires "
+"nohz_full kernel param; NOT for desktop/gaming"
+msgstr ""
+"Для серверов/HPC — снижает шум ОС за счёт подавления тиков; требуется "
+"параметр ядра nohz_full; НЕ для рабочего стола/игр"
+
+#: roudix-scheduler.py
+msgid ""
+"Layer-based — classify tasks into cgroups and apply a different policy per "
+"layer; highly configurable via TOML"
+msgstr ""
+"Послойный — распределяет задачи по cgroups и применяет разную политику для "
+"каждого слоя; гибко настраивается через TOML"
+
+#: roudix-scheduler.py
+msgid ""
+"Profile-driven — simple Gaming/Esports/Battery profiles; in active "
+"development"
+msgstr ""
+"Управляется профилями — простые профили Gaming/Esports/Battery; в активной "
+"разработке"
+
+#: roudix-scheduler.py
+msgid ""
+"Stress-test / debugging only — amplifies race conditions; NOT for production "
+"use"
+msgstr ""
+"Только для стресс-тестов / отладки — усиливает гонки; НЕ для production"
+
+#: roudix-scheduler.py
+msgid "Experimental cell-division scheduler — in active development"
+msgstr ""
+"Экспериментальный планировщик с клеточным делением — в активной разработке"
+
+#: roudix-scheduler.py
+msgid "Round-robin FIFO userspace scheduler — educational / proof-of-concept"
+msgstr ""
+"Планировщик Round-robin FIFO в пространстве пользователя — учебный / концепт"
+
+#: roudix-scheduler.py
+msgid "Experimental fork of rusty using BPF arenas — in active development"
+msgstr ""
+"Экспериментальный форк rusty с использованием BPF-арен — в активной "
+"разработке"
+
+#: roudix-scheduler.py
+msgid ""
+"Task-budget driven — every decision derived directly from budget, no Gaming/"
+"PowerSave/etc. profiles"
+msgstr ""
+"На основе бюджета задач — каждое решение выводится напрямую из бюджета, без "
+"профилей Gaming/PowerSave и т. п."
+
+#: roudix-scheduler.py
+msgid ""
+"AI-agent-oriented — tuned via scx_forge_agent and a spec.toml optimization "
+"loop rather than manual profiles"
+msgstr ""
+"Для ИИ-агентов — настраивается через scx_forge_agent и цикл оптимизации "
+"spec.toml вместо ручных профилей"
+
+#: roudix-scheduler.py
+msgid "scx-switch not found in PATH (scx.nix module not loaded?)."
+msgstr "scx-switch не найден в PATH (модуль scx.nix не загружен?)."
+
+#: roudix-scheduler.py
+msgid "SCX disabled — back to the default scheduler (CFS/EEVDF)."
+msgstr "SCX отключён — возврат к планировщику по умолчанию (CFS/EEVDF)."
+
+#: roudix-scheduler.py
+#, python-brace-format
+msgid "flags: {extra}"
+msgstr "flags: {extra}"
+
+#: roudix-scheduler.py
+#, python-brace-format
+msgid "scx_{scheduler} active ({profile}){extra_note}."
+msgstr "scx_{scheduler} активен ({profile}){extra_note}."
+
+#: roudix-scheduler.py
+#, python-brace-format
+msgid "scx-switch failed (code {code})"
+msgstr "scx-switch завершился с ошибкой (код {code})"
+
+#: roudix-scheduler.py
+msgid "pkexec not found."
+msgstr "pkexec не найден."
+
+#: roudix-scheduler.py
+msgid "Running scheduler"
+msgstr "Работающий планировщик"
+
+#: roudix-scheduler.py
+msgid "Select scheduler"
+msgstr "Выберите планировщик"
+
+#: roudix-scheduler.py
+msgid "Select profile"
+msgstr "Выберите профиль"
+
+#: roudix-scheduler.py
+msgid "Extra scheduler flags"
+msgstr "Дополнительные флаги планировщика"
+
+#: roudix-scheduler.py
+msgid "Disable"
+msgstr "Отключить"
+
+#: roudix-scheduler.py
+msgid "Apply"
+msgstr "Применить"
+
+#: roudix-scheduler.py
+msgid "⚠ scx-switch not found — check that scx.nix is applied."
+msgstr "⚠ scx-switch не найден — проверьте, что scx.nix применён."
+
+#: roudix-scheduler.py
+msgid "None — CFS/EEVDF"
+msgstr "Нет — CFS/EEVDF"
+
+#: roudix-scheduler.py
+msgid "Disabled — your scheduler choice will persist after reboot"
+msgstr "Отключён — выбранный планировщик сохранится после перезагрузки"
+
+#: roudix-scheduler.py
+msgid "Running — will be stopped automatically when a scheduler is applied"
+msgstr "Работает — будет автоматически остановлен при применении планировщика"
+
+#: roudix-scheduler.py
+msgid "Stopped — will be restarted automatically when switching back to None"
+msgstr "Остановлен — будет автоматически запущен снова при возврате к «Нет»"
+
+#: roudix-scheduler.py
+msgid "Disabling..."
+msgstr "Отключение…"
+
+#: roudix-scheduler.py
+msgid "Applying..."
+msgstr "Применение…"
