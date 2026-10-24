@@ -135,27 +135,6 @@ let
     cp -r ${../../../assets/cosmic} $out/share/cosmic
   '';
 
-  # ── Login screen wallpaper ────────────────────────────────────────────
-  # cosmic-greeter has no system-wide wallpaper setting: it shows the
-  # wallpaper cosmic-bg last applied for each user (~/.local/state/cosmic/
-  # com.system76.CosmicBackground), and when there is none yet (fresh install,
-  # first boot) it falls back to a picture compiled into the binary
-  # (res/background.jpg). Roudix's Kitsune is already the default desktop
-  # wallpaper above, so after the first login the greeter follows it; this
-  # replaces the compiled-in fallback so the very first greeter matches too.
-  # It rebuilds cosmic-greeter from source (not in the binary cache).
-  greeterBackground = pkgs.runCommand "roudix-greeter-background.jpg"
-    { nativeBuildInputs = [ pkgs.imagemagick ]; }
-    ''
-      magick ${../../../assets/wallpapers/roudix-kitsune.png} -quality 90 $out
-    '';
-
-  greeterPackage = pkgs.cosmic-greeter.overrideAttrs (old: {
-    postPatch = (old.postPatch or "") + ''
-      install -Dm644 ${greeterBackground} res/background.jpg
-    '';
-  });
-
   cosmicDefaults = pkgs.symlinkJoin {
     name  = "roudix-cosmic-defaults";
     paths = [
@@ -176,10 +155,11 @@ in
     # COSMIC is a Wayland desktop (cosmic-comp), with its own greeter.
     services.desktopManager.cosmic.enable = true;
     services.displayManager.cosmic-greeter.enable = true;
-    services.displayManager.cosmic-greeter.package = greeterPackage;
 
-    # cosmic-greeter-daemon reads each user's COSMIC config to paint the
-    # greeter (theme, wallpaper). Without XDG_DATA_DIRS a systemd service only
+    # The greeter shows each user's last wallpaper (Roudix Kitsune by default,
+    # see cosmicDefaults) and theme; its built-in fallback image is only used
+    # before the very first login. cosmic-greeter-daemon reads each user's
+    # COSMIC config to paint it. Without XDG_DATA_DIRS a systemd service only
     # looks in /usr/share, so it would never see the Roudix defaults above.
     systemd.services.cosmic-greeter-daemon.environment.XDG_DATA_DIRS =
       "/run/current-system/sw/share";
