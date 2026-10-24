@@ -145,6 +145,12 @@ ENVIRONMENTS = [
         "icon":     "cinnamon.svg",
     },
     {
+        "id":       "cosmic",
+        "name":     "COSMIC",
+        "subtitle": tr("COSMIC — modern Wayland desktop by System76, written in Rust"),
+        "icon":     "cosmic.svg",
+    },
+    {
         "id":       "mangowc",
         "name":     "MangoWC",
         "subtitle": tr("Lightweight dynamic tiling Wayland compositor"),
@@ -528,6 +534,186 @@ MAIL_CLIENTS = [
     {"id": "none",        "name": tr("None"), "subtitle": tr("Don't install a mail client"), "icon": "none.svg"},
 ]
 
+# roudix.passwordManager (modules/system/apps/utilities/password-manager.nix)
+# — enum, exposed as a SelectorGroup. No bundled art for these: the active
+# icon theme's own icon is used when it ships one (APP_ICON_THEME_NAMES),
+# else the generic "password" icon.
+PASSWORD_MANAGERS = [
+    {"id": "bitwarden",  "name": "Bitwarden",  "subtitle": tr("Cloud-synced vault"),                         "icon": "dialog-password-symbolic"},
+    {"id": "keepassxc",  "name": "KeePassXC",  "subtitle": tr("Local, offline vault file, no account"),      "icon": "dialog-password-symbolic"},
+    {"id": "protonpass", "name": "Proton Pass","subtitle": tr("Cloud vault tied to a Proton account"),       "icon": "dialog-password-symbolic"},
+    {"id": "none",       "name": tr("None"),    "subtitle": tr("Don't install a password manager"),          "icon": "none.svg"},
+]
+
+# roudix.umbriel.effects (modules/system/desktop/umbriel.nix) — shader /
+# animation setup, Umbriel only. "*-mocha" = fixed Roudix palette, the others
+# follow the Noctalia palette. No icons: plain text rows.
+UMBRIEL_EFFECTS = [
+    {"id": "none",                 "name": tr("None"),             "subtitle": tr("Clean: no shaders, no animated effects")},
+    {"id": "roudix",               "name": "roudix",               "subtitle": tr("Subtle window in/out + scratchpad shaders (default)")},
+    {"id": "roudix-plus",          "name": "roudix-plus",          "subtitle": tr("+ accent border, cursor halo, transitions (Noctalia palette)")},
+    {"id": "roudix-plus-mocha",    "name": "roudix-plus-mocha",    "subtitle": tr("Same, fixed Roudix palette")},
+    {"id": "roudix-aurora",        "name": "roudix-aurora",        "subtitle": tr("+ flowing light around the border (Noctalia palette)")},
+    {"id": "roudix-aurora-mocha",  "name": "roudix-aurora-mocha",  "subtitle": tr("Same, fixed Roudix palette")},
+    {"id": "roudix-wobbly",        "name": "roudix-wobbly",        "subtitle": tr("+ jelly wobble on window move (Noctalia palette)")},
+    {"id": "roudix-wobbly-mocha",  "name": "roudix-wobbly-mocha",  "subtitle": tr("Same, fixed Roudix palette")},
+    {"id": "roudix-logo",          "name": "roudix-logo",          "subtitle": tr("Windows open/close through the Roudix logo shape")},
+    {"id": "roudix-logo-wobbly",   "name": "roudix-logo-wobbly",   "subtitle": tr("Same + jelly wobble and drag physics")},
+    {"id": "roudix-orbit",         "name": "roudix-orbit",         "subtitle": tr("\"Snowflake braid\" border + comet (Noctalia palette)")},
+    {"id": "roudix-orbit-mocha",   "name": "roudix-orbit-mocha",   "subtitle": tr("Same, fixed Roudix palette")},
+    {"id": "roudix-full",          "name": "roudix-full",          "subtitle": tr("Everything: logo, wobble, aurora (fixed Roudix palette)")},
+    {"id": "roudix-full-noctalia", "name": "roudix-full-noctalia", "subtitle": tr("Like roudix-full, Noctalia colors")},
+    {"id": "sakura-overdrive",     "name": "sakura-overdrive",     "subtitle": tr("Ly-sec's sakura suite — Noctalia colors")},
+    {"id": "sakura-roudix",        "name": "sakura-roudix",        "subtitle": tr("Sakura suite, fixed Roudix palette")},
+]
+
+# roudix.umbriel.disabledEffects (umbriel.nix) — parts of the chosen effects
+# setup to switch off without changing the setup itself. A LIST option: one
+# checkbox per allowed value.
+UMBRIEL_DISABLED_EFFECTS = [
+    {"id": "border",        "name": tr("Border (animated border effect)")},
+    {"id": "window",        "name": tr("Window (per-window overlay effect)")},
+    {"id": "screen",        "name": tr("Screen (full-screen effect)")},
+    {"id": "cursor",        "name": tr("Cursor (halo around the pointer)")},
+    {"id": "transitions",   "name": tr("Transitions (workspace, layer and focus-border animations)")},
+    {"id": "window-motion", "name": tr("Window motion (open/close/move shaders, drag physics)")},
+    {"id": "scratchpad",    "name": tr("Scratchpad (show/hide shader)")},
+]
+
+# roudix.autoupdate.interval (modules/system/nix/autoupdate.nix) — free
+# string on the Nix side (systemd OnUnitActiveSec), offered as a few presets.
+AUTOUPDATE_INTERVALS = [
+    {"id": "1h",  "name": tr("Every hour"),     "subtitle": tr("Default")},
+    {"id": "6h",  "name": tr("Every 6 hours"),  "subtitle": ""},
+    {"id": "12h", "name": tr("Every 12 hours"), "subtitle": ""},
+    {"id": "24h", "name": tr("Every day"),      "subtitle": ""},
+]
+
+# roudix.pipewire.* (modules/system/audio/pipewire.nix) — all off by default:
+# PipeWire runs with its upstream defaults unless one of these is turned on.
+PIPEWIRE_TOGGLES = [
+    {"id": "lowLatency",       "name": tr("Low latency (48 kHz, quantum 128) — audio work, rhythm games"),
+     "key": "roudix.pipewire.lowLatency.enable",       "default": False},
+    {"id": "realtimeTweaks",   "name": tr("Realtime tweaks (rtprio/nice for the “audio” group — you must be in it)"),
+     "key": "roudix.pipewire.realtimeTweaks.enable",   "default": False},
+    {"id": "usbNoAutosuspend", "name": tr("Never autosuspend USB devices (fixes USB audio dropouts, costs laptop battery)"),
+     "key": "roudix.pipewire.usbNoAutosuspend.enable", "default": False},
+]
+
+# roudix.tuning.* (modules/system/core/tuning.nix) — CachyOS-Settings-style
+# tuning, ON by default. One master switch, and one switch per block (only
+# meaningful while the master is on).
+TUNING_MASTER = [
+    {"id": "enable", "name": tr("CachyOS-style system tuning"), "key": "roudix.tuning.enable", "default": True},
+]
+TUNING_TOGGLES = [
+    {"id": "oomd",          "name": tr("systemd-oomd watches the system and user slices (kills an app instead of freezing)"),
+     "key": "roudix.tuning.oomd.enable",          "default": True},
+    {"id": "ioSchedulers",  "name": tr("Per-device I/O schedulers (bfq / mq-deadline / kyber)"),
+     "key": "roudix.tuning.ioSchedulers.enable",  "default": True},
+    {"id": "shortTimeouts", "name": tr("Short service timeouts (15 s start / 10 s stop) and higher open-files limit"),
+     "key": "roudix.tuning.shortTimeouts.enable", "default": True},
+]
+
+# roudix.spicetify.* (modules/system/apps/media/spicetify.nix) — only used
+# when roudix.musicPlayer = "spotify".
+SPICETIFY_THEMES = [
+    {"id": "colorful", "name": "Colorful", "subtitle": tr("Many color schemes, follows Noctalia by default (default)")},
+    {"id": "comfy",    "name": "Comfy",    "subtitle": tr("The bundled Comfy theme")},
+]
+SPICETIFY_TOGGLES = [
+    {"id": "marketplace",  "name": tr("Marketplace (browse extensions and themes inside Spotify)"),
+     "key": "roudix.spicetify.marketplace.enable",            "default": True},
+    {"id": "adblock",      "name": tr("Ad blocker extension"),
+     "key": "roudix.spicetify.extensions.adblock.enable",     "default": True},
+    {"id": "hidePodcasts", "name": tr("Hide podcasts extension"),
+     "key": "roudix.spicetify.extensions.hidePodcasts.enable", "default": True},
+]
+
+# roudix.zen.tweaks.* (modules/system/apps/browser/browser.nix) — only used
+# when Zen is enabled. "tweaks" is the master switch, the others only matter
+# once it is on (all default true on the Nix side).
+ZEN_TWEAKS = [
+    {"id": "tweaks",              "name": tr("Roudix Zen tweaks (user.js + policies.json)"),     "key": "roudix.zen.tweaks.enable",              "default": False},
+    {"id": "performance",         "name": tr("Performance (HW decoding, GPU, caches)"),          "key": "roudix.zen.tweaks.performance",         "default": True},
+    {"id": "privacy",             "name": tr("Privacy (no telemetry or Mozilla extras)"),        "key": "roudix.zen.tweaks.privacy",             "default": True},
+    {"id": "disableSafeBrowsing", "name": tr("Disable Google Safe Browsing"),                    "key": "roudix.zen.tweaks.disableSafeBrowsing", "default": True},
+    {"id": "ui",                  "name": tr("UI (smooth scrolling, masonry)"),                  "key": "roudix.zen.tweaks.ui",                  "default": True},
+    {"id": "policies",            "name": tr("Install policies.json (uBlock, DoH...)"),          "key": "roudix.zen.tweaks.policies",            "default": True},
+]
+
+# ── Browser profiles (Zen / Firefox) ──────────────────────────────────────
+# Both browsers keep their profiles in a directory listed by a profiles.ini.
+# The location depends on the version/packaging, so every known one is read
+# (paths are relative to $HOME).
+ZEN_PROFILE_BASES     = [".zen", ".config/zen"]
+FIREFOX_PROFILE_BASES = [".mozilla/firefox", ".config/mozilla/firefox"]
+
+# Sentinel id = "no profile chosen" (Nix side: `profile = null;`).
+PROFILE_AUTO = "auto"
+
+
+def scan_browser_profiles(bases: list) -> list:
+    """Profiles found in the profiles.ini of each base dir, as selector items.
+    id = profile directory relative to $HOME (what roudix.*.tweaks.profile
+    stores). Missing/unreadable files and unsafe paths are skipped."""
+    home = os.path.expanduser("~")
+    items, seen = [], set()
+    for base in bases:
+        ini = os.path.join(home, base, "profiles.ini")
+        if not os.path.isfile(ini):
+            continue
+        cp = configparser.ConfigParser(interpolation=None)
+        try:
+            cp.read(ini, encoding="utf-8")
+        except Exception as e:
+            log.warning("Could not read %s: %s", ini, e)
+            continue
+        for section in cp.sections():
+            if not section.startswith("Profile"):
+                continue
+            path = cp.get(section, "path", fallback="").strip()
+            if not path:
+                continue
+            if cp.get(section, "isrelative", fallback="1").strip() == "1":
+                full = os.path.join(home, base, path)
+            else:
+                full = path
+            rel = os.path.relpath(full, home)
+            if rel.startswith("..") or any(c in rel for c in '"\\$\n') or not os.path.isdir(full):
+                continue
+            if rel in seen:
+                continue
+            seen.add(rel)
+            items.append({
+                "id": rel,
+                "name": cp.get(section, "name", fallback=os.path.basename(rel)),
+                "subtitle": f"~/{rel}",
+            })
+    return items
+
+
+def profile_selector_items(bases: list, current: str, auto_subtitle: str) -> list:
+    """[auto] + the profiles found on disk (+ the configured one if it is gone)."""
+    items = [{"id": PROFILE_AUTO, "name": tr("No profile chosen (default)"), "subtitle": auto_subtitle}]
+    items += scan_browser_profiles(bases)
+    if current != PROFILE_AUTO and current not in {i["id"] for i in items}:
+        items.append({"id": current, "name": os.path.basename(current),
+                      "subtitle": tr("~/{path} — not found on disk").format(path=current)})
+    return items
+
+
+# roudix.firefox.tweaks.* — same categories as the Zen tweaks, written as a
+# user.js in the chosen Firefox profile (no policies.json: Firefox's is
+# install-wide, not per profile).
+FIREFOX_TWEAKS = [
+    {"id": "ff_tweaks",              "name": tr("Firefox — Roudix tweaks (user.js of the chosen profile)"), "key": "roudix.firefox.tweaks.enable",              "default": False},
+    {"id": "ff_performance",         "name": tr("Firefox — Performance"),                                    "key": "roudix.firefox.tweaks.performance",         "default": True},
+    {"id": "ff_privacy",             "name": tr("Firefox — Privacy"),                                        "key": "roudix.firefox.tweaks.privacy",             "default": True},
+    {"id": "ff_disableSafeBrowsing", "name": tr("Firefox — Disable Google Safe Browsing"),                   "key": "roudix.firefox.tweaks.disableSafeBrowsing", "default": True},
+    {"id": "ff_ui",                  "name": tr("Firefox — UI (smooth scrolling)"),                          "key": "roudix.firefox.tweaks.ui",                  "default": True},
+]
+
 RGB_BACKENDS = [
     {"id": "openlinkhub", "name": "OpenLinkHub", "subtitle": tr("For Corsair iCUE-compatible devices"), "icon": "openlinkhub.svg"},
     {"id": "openrgb",     "name": "OpenRGB",      "subtitle": tr("Multi-brand RGB support"),                   "icon": "openrgb.svg"},
@@ -563,6 +749,7 @@ GAMING_EXTRAS = [
     {"id": "millennium", "name": tr("Millennium (modded Steam client: themes and plugins)"), "key": "roudix.gaming.steam.millennium.enable", "default": False},
     {"id": "gamescopeSession", "name": tr("“Steam (Gaming Mode)” session (gamescope, niri/umbriel/gnome/kde)"), "key": "roudix.gaming.gamescopeSession.enable", "default": False},
     {"id": "decky", "name": tr("Decky Loader (Steam plugins, compiled on first rebuild)"), "key": "roudix.gaming.gamescopeSession.decky.enable", "default": False},
+    {"id": "gamescopeHdr", "name": tr("HDR in the Gaming Mode session (turn off without an HDR display, or if games misbehave)"), "key": "roudix.gaming.gamescopeSession.hdr.enable", "default": True},
 ]
 
 # roudix.zen.variant — enum, exposed as a SelectorGroup (like EDITORS).
@@ -617,6 +804,9 @@ APPS_TOGGLES = [
     {"id": "inkscape",    "name": "Inkscape",                         "key": "roudix.apps.inkscape.enable",   "default": False},
     {"id": "songrec",     "name": "SongRec",                          "key": "roudix.apps.songrec.enable",    "default": False},
     {"id": "easyeffects", "name": "EasyEffects",                      "key": "roudix.apps.easyeffects.enable","default": False},
+    {"id": "signal",      "name": "Signal",                           "key": "roudix.apps.signal.enable",     "default": False},
+    {"id": "zapzap",      "name": tr("ZapZap (unofficial WhatsApp client)"), "key": "roudix.apps.zapzap.enable", "default": False},
+    {"id": "fluxer",      "name": tr("Fluxer (self-hostable Discord alternative)"), "key": "roudix.apps.fluxer.enable", "default": False},
 ]
 
 
@@ -636,6 +826,9 @@ SYSTEM_TOGGLES = [
     # modules/home/shell/fastfetch.nix), not a system option — so it must be
     # written to HOME_CONFIG_FILE, not CONFIG_FILE.
     {"id": "fastfetchNix",   "name": tr("Roudix fastfetch config"),          "key": "roudix.fastfetch.useNix",       "default": True, "file": HOME_CONFIG_FILE},
+    # roudix.welcome.enable (modules/home/roudix-welcome.nix) is a Home
+    # Manager option too: same story as fastfetch above.
+    {"id": "welcome",        "name": tr("Roudix Welcome (shown at session start)"), "key": "roudix.welcome.enable", "default": True, "file": HOME_CONFIG_FILE},
     {"id": "fstrim",         "name": tr("Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
     {"id": "vmGuest",        "name": tr("VM guest (QEMU/Spice agent)"),     "key": "roudix.vmGuest.enable",         "default": False},
     {"id": "podman",         "name": "Podman",                          "key": "roudix.podman.enable",          "default": False},
@@ -742,6 +935,84 @@ def set_string_option(key: str, value: str):
         with open(CONFIG_FILE, "w") as f:
             f.write(new)
         log.info("Configuration updated: %s set to '%s'.", key, value)
+        return True
+    except Exception as e:
+        log.error("Failed to write configuration: %s", e)
+        return str(e)
+
+
+def get_active_string_option(key: str, default: str, path: str = None) -> str:
+    """Like get_string_option(), but ignores commented-out lines. Needed for
+    options that local.nix.example ships as a `# key = "value";` example
+    (roudix.umbriel.effects...): reading the comment would show a value the
+    machine doesn't actually use. `path` targets another config file (e.g.
+    HOME_CONFIG_FILE for Home Manager options)."""
+    try:
+        with open(path or CONFIG_FILE) as f:
+            for line in f:
+                if line.lstrip().startswith("#"):
+                    continue
+                m = re.search(r"(?<![\w.\-])" + re.escape(key) + r'\s*=\s*"([^"]*)"', line)
+                if m:
+                    return m.group(1)
+    except Exception:
+        pass
+    return default
+
+
+def set_active_string_option(key: str, value, path: str = None):
+    """Like set_string_option(), but anchored to an ACTIVE line: a
+    commented-out `# key = "..."` example is left alone and a real line is
+    added instead (updating the comment in place would silently do nothing).
+    value=None writes `key = null;` (nullOr options such as the browser profile)."""
+    path = path or CONFIG_FILE
+    try:
+        with open(path) as f:
+            content = f.read()
+        literal = "null" if value is None else f'"{value}"'
+        pattern = re.compile(r'^([ \t]*)' + re.escape(key) + r'\s*=\s*(?:null|"[^"]*")', re.MULTILINE)
+        if pattern.search(content):
+            new = pattern.sub(lambda m: f'{m.group(1)}{key} = {literal}', content)
+        else:
+            new = _insert_before_closing_brace(content, f'{key} = {literal};')
+        with open(path, "w") as f:
+            f.write(new)
+        log.info("Configuration updated: %s set to %s.", key, literal)
+        return True
+    except Exception as e:
+        log.error("Failed to write configuration: %s", e)
+        return str(e)
+
+
+def get_active_list_option(key: str, default: list) -> list:
+    """Like get_list_option(), but anchored to an ACTIVE line (a commented-out
+    `# key = [ ... ];` example in local.nix is ignored)."""
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+        m = re.search(r"(?m)^[ \t]*" + re.escape(key) + r"\s*=\s*\[([^\]]*)\]", content)
+        if m:
+            return re.findall(r'"([^"]*)"', m.group(1))
+    except Exception:
+        pass
+    return default
+
+
+def set_active_list_option(key: str, values: list):
+    """Like set_list_option(), but anchored to an ACTIVE line: a commented-out
+    example is left alone and a real line is added instead."""
+    try:
+        with open(CONFIG_FILE) as f:
+            content = f.read()
+        rendered = "[ " + " ".join(f'"{v}"' for v in values) + " ]" if values else "[ ]"
+        pattern = re.compile(r"^([ \t]*)" + re.escape(key) + r"\s*=\s*\[[^\]]*\]", re.MULTILINE)
+        if pattern.search(content):
+            new = pattern.sub(lambda m: f"{m.group(1)}{key} = {rendered}", content)
+        else:
+            new = _insert_before_closing_brace(content, f"{key} = {rendered};")
+        with open(CONFIG_FILE, "w") as f:
+            f.write(new)
+        log.info("Configuration updated: %s set to %s.", key, rendered)
         return True
     except Exception as e:
         log.error("Failed to write configuration: %s", e)
@@ -947,6 +1218,10 @@ APP_ICON_THEME_NAMES = {
     "geary":       "org.gnome.Geary",
     # "betterbird" deliberately excluded: same situation as ytmdesktop —
     # not in any mainstream icon theme, needs real art of its own.
+    # Password managers (generic "password" icon when the theme lacks them)
+    "bitwarden":   "bitwarden",
+    "keepassxc":   "keepassxc",
+    "protonpass":  "proton-pass",
 }
 
 
@@ -1204,7 +1479,7 @@ class SelectorGroup(Gtk.Box):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         label = Gtk.Label()
-        label.set_markup(f"<b>{title}</b>")
+        label.set_markup(f"<b>{GLib.markup_escape_text(title)}</b>")
         label.set_halign(Gtk.Align.START)
         self.append(label)
 
@@ -1230,9 +1505,12 @@ class SelectorGroup(Gtk.Box):
         row.set_title(item["name"])
         row.set_subtitle(item["subtitle"])
 
-        icon = load_icon(item["icon"], self._dark, APP_ICON_THEME_NAMES.get(item["id"]))
-        self.icon_widgets[item["id"]] = (icon, item["icon"])
-        row.add_prefix(icon)
+        # "icon" is optional: rows without one (Umbriel effects, profiles,
+        # bootloader...) are plain text rows.
+        if item.get("icon"):
+            icon = load_icon(item["icon"], self._dark, APP_ICON_THEME_NAMES.get(item["id"]))
+            self.icon_widgets[item["id"]] = (icon, item["icon"])
+            row.add_prefix(icon)
 
         if item.get("disabled"):
             row.set_sensitive(False)
@@ -1323,7 +1601,7 @@ class ToggleListGroup(Gtk.Box):
 
         if title:
             label = Gtk.Label()
-            label.set_markup(f"<b>{title}</b>")
+            label.set_markup(f"<b>{GLib.markup_escape_text(title)}</b>")
             label.set_halign(Gtk.Align.START)
             self.append(label)
 
@@ -1581,6 +1859,36 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.scratchpad_note.set_visible(current_de in SCRATCHPAD_SUPPORTED_DE)
         desktop_page.append(self.scratchpad_note)
 
+        # roudix.umbriel.effects — shader/animation setup, Umbriel only.
+        self.umbriel_effects_selector = SelectorGroup(
+            tr("Umbriel effects"),
+            UMBRIEL_EFFECTS,
+            get_active_string_option("roudix.umbriel.effects", "roudix"),
+            dark,
+        )
+        self.umbriel_effects_selector.set_visible(current_de == "umbriel")
+        desktop_page.append(self.umbriel_effects_selector)
+
+        # roudix.umbriel.disabledEffects — switch parts of the setup above off.
+        disabled_now = set(get_active_list_option("roudix.umbriel.disabledEffects", []))
+        self.umbriel_disabled_group = ToggleListGroup(
+            tr("Umbriel — disable effects"),
+            UMBRIEL_DISABLED_EFFECTS,
+            {e["id"]: e["id"] in disabled_now for e in UMBRIEL_DISABLED_EFFECTS},
+        )
+        self.umbriel_disabled_group.set_visible(current_de == "umbriel")
+        desktop_page.append(self.umbriel_disabled_group)
+
+        self.umbriel_disabled_note = Gtk.Label(
+            label=tr("Checked = switched off, on top of the effects chosen above. If a game "
+                "flips between composition and direct scanout, turn off “Screen” and “Cursor”."),
+        )
+        self.umbriel_disabled_note.add_css_class("dim-label")
+        self.umbriel_disabled_note.set_wrap(True)
+        self.umbriel_disabled_note.set_halign(Gtk.Align.START)
+        self.umbriel_disabled_note.set_visible(current_de == "umbriel")
+        desktop_page.append(self.umbriel_disabled_note)
+
         # roudix.desktop.latest.<id> — nixpkgs (default) or latest (flake)
         # version of the selected compositor and of the selected shell.
         self.latest_group = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
@@ -1818,11 +2126,50 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             self.zen_mods_placeholder.set_halign(Gtk.Align.START)
             browser_page.append(self.zen_mods_placeholder)
 
+        # roudix.zen.tweaks.* — only meaningful while Zen is enabled.
+        self.zen_tweaks = host_filter_items(ZEN_TWEAKS)
+        zen_tweaks_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.zen_tweaks}
+        self.zen_tweaks_group = ToggleListGroup(tr("Zen tweaks"), self.zen_tweaks, zen_tweaks_current)
+        browser_page.append(self.zen_tweaks_group)
+
+        # roudix.zen.tweaks.profile — which Zen profile receives the tweaks.
+        current_zen_profile = get_active_string_option("roudix.zen.tweaks.profile", PROFILE_AUTO)
+        self.zen_profile_selector = SelectorGroup(
+            tr("Zen profile for the tweaks"),
+            profile_selector_items(
+                ZEN_PROFILE_BASES, current_zen_profile,
+                tr("The profile Roudix manages"),
+            ),
+            current_zen_profile,
+            dark,
+        )
+        browser_page.append(self.zen_profile_selector)
+
+        # Firefox: tweaks + profile, only shown while Firefox is ticked above.
+        self.firefox_tweaks = host_filter_items(FIREFOX_TWEAKS)
+        firefox_tweaks_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.firefox_tweaks}
+        self.firefox_tweaks_group = ToggleListGroup(tr("Firefox tweaks"), self.firefox_tweaks, firefox_tweaks_current)
+        browser_page.append(self.firefox_tweaks_group)
+
+        current_firefox_profile = get_active_string_option("roudix.firefox.tweaks.profile", PROFILE_AUTO)
+        self.firefox_profile_selector = SelectorGroup(
+            tr("Firefox profile for the tweaks"),
+            profile_selector_items(
+                FIREFOX_PROFILE_BASES, current_firefox_profile,
+                tr("None: the Firefox tweaks are written nowhere"),
+            ),
+            current_firefox_profile,
+            dark,
+        )
+        browser_page.append(self.firefox_profile_selector)
+
         def _update_zen_cascade(*_):
             zen_on = self.zen_switch.get_active()
             sine_on = self.sine_switch.get_active()
             self.zen_variant_selector.set_visible(zen_on)
             self.sine_row.set_visible(zen_on)
+            self.zen_tweaks_group.set_visible(zen_on)
+            self.zen_profile_selector.set_visible(zen_on)
             show_mods = zen_on and sine_on
             self.sine_note.set_visible(show_mods)
             self.zen_mods_group.set_visible(show_mods)
@@ -1838,6 +2185,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.zen_switch.connect("notify::active", _update_zen_cascade)
         self.sine_switch.connect("notify::active", _on_sine_toggled)
         _update_zen_cascade()
+
+        def _update_firefox_cascade(*_):
+            ff_on = self.browser_group.switches["firefox"].get_active()
+            self.firefox_tweaks_group.set_visible(ff_on)
+            self.firefox_profile_selector.set_visible(ff_on)
+
+        self.browser_group.switches["firefox"].connect("notify::active", _update_firefox_cascade)
+        _update_firefox_cascade()
 
         self.content_stack.add_named(browser_page, "browser")
 
@@ -1925,9 +2280,34 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.music_player_selector = SelectorGroup(tr("Music player"), MUSIC_PLAYERS, current_music_player, dark)
         apps_page.append(self.music_player_selector)
 
+        # roudix.spicetify.* — only used when the music player is Spotify.
+        self.spicetify_theme_selector = SelectorGroup(
+            tr("Spicetify theme"),
+            SPICETIFY_THEMES,
+            get_active_string_option("roudix.spicetify.theme", "colorful"),
+            dark,
+        )
+        apps_page.append(self.spicetify_theme_selector)
+
+        self.spicetify_toggles = host_filter_items(SPICETIFY_TOGGLES)
+        spicetify_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.spicetify_toggles}
+        self.spicetify_group = ToggleListGroup(tr("Spicetify"), self.spicetify_toggles, spicetify_current)
+        apps_page.append(self.spicetify_group)
+
+        self.music_player_selector.on_selected = lambda _id: self._update_spicetify_visibility()
+        self._update_spicetify_visibility()
+
         current_mail_client = get_string_option("roudix.mailClient", "none")
         self.mail_client_selector = SelectorGroup(tr("Mail client"), MAIL_CLIENTS, current_mail_client, dark)
         apps_page.append(self.mail_client_selector)
+
+        self.password_manager_selector = SelectorGroup(
+            tr("Password manager"),
+            PASSWORD_MANAGERS,
+            get_active_string_option("roudix.passwordManager", "none"),
+            dark,
+        )
+        apps_page.append(self.password_manager_selector)
 
         self.content_stack.add_named(apps_page, "apps")
 
@@ -1961,6 +2341,37 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         current_branch = current_repo_branch()
         self.branch_selector = SelectorGroup(tr("Update branch"), BRANCHES, current_branch, dark)
         system_page.append(self.branch_selector)
+
+        self.autoupdate_interval_selector = SelectorGroup(
+            tr("Update check interval"),
+            AUTOUPDATE_INTERVALS,
+            get_active_string_option("roudix.autoupdate.interval", "1h"),
+            dark,
+        )
+        system_page.append(self.autoupdate_interval_selector)
+
+        # roudix.pipewire.* — extras, all off by default.
+        self.pipewire_toggles = host_filter_items(PIPEWIRE_TOGGLES)
+        pipewire_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.pipewire_toggles}
+        self.pipewire_group = ToggleListGroup(tr("Audio (PipeWire)"), self.pipewire_toggles, pipewire_current)
+        system_page.append(self.pipewire_group)
+
+        # roudix.tuning.* — CachyOS-style tuning, on by default: a master
+        # switch, and one per block (greyed out while the master is off).
+        self.tuning_master_items = host_filter_items(TUNING_MASTER)
+        tuning_master_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.tuning_master_items}
+        self.tuning_master_group = ToggleListGroup(tr("System tuning"), self.tuning_master_items, tuning_master_current)
+        system_page.append(self.tuning_master_group)
+
+        self.tuning_items = host_filter_items(TUNING_TOGGLES)
+        tuning_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.tuning_items}
+        self.tuning_group = ToggleListGroup("", self.tuning_items, tuning_current)
+        system_page.append(self.tuning_group)
+
+        tuning_master_switch = self.tuning_master_group.switches.get("enable")
+        if tuning_master_switch is not None:
+            tuning_master_switch.connect("notify::active", lambda *_: self._update_tuning_cascade())
+        self._update_tuning_cascade()
 
         self.content_stack.add_named(system_page, "system")
 
@@ -2052,6 +2463,48 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self._update_integration_visibility(current_de)
         self._update_filemanager_visibility(current_de)
         self._update_icon_theme_visibility(current_de)
+
+        # Options added after the original pages, handled by generic loops in
+        # on_apply()/on_confirm_response() instead of one hand-written block
+        # each. `relevant(de)` = only compared/written when it means something
+        # for what is being applied (Umbriel effects mean nothing on GNOME,
+        # Spicetify nothing without Spotify, a hidden Zen profile nothing
+        # without Zen...). "null_value": the selector id written as `null`.
+        self.extra_selectors = [
+            {"widget": self.umbriel_effects_selector,     "key": "roudix.umbriel.effects",     "default": "roudix",
+             "label": tr("Umbriel effects"),              "relevant": lambda de: de == "umbriel"},
+            {"widget": self.password_manager_selector,    "key": "roudix.passwordManager",     "default": "none",
+             "label": tr("Password manager"),             "relevant": lambda de: True},
+            {"widget": self.autoupdate_interval_selector, "key": "roudix.autoupdate.interval", "default": "1h",
+             "label": tr("Update interval"),              "relevant": lambda de: True},
+            {"widget": self.spicetify_theme_selector,     "key": "roudix.spicetify.theme",     "default": "colorful",
+             "label": tr("Spicetify theme"),              "relevant": lambda de: self.music_player_selector.selected_id == "spotify"},
+            {"widget": self.zen_profile_selector,         "key": "roudix.zen.tweaks.profile",  "default": PROFILE_AUTO,
+             "label": tr("Zen profile (tweaks)"),         "relevant": lambda de: self.zen_switch.get_active(),
+             "null_value": PROFILE_AUTO},
+            {"widget": self.firefox_profile_selector,     "key": "roudix.firefox.tweaks.profile", "default": PROFILE_AUTO,
+             "label": tr("Firefox profile (tweaks)"),     "relevant": lambda de: self.browser_group.switches["firefox"].get_active(),
+             "null_value": PROFILE_AUTO},
+        ]
+
+        # (tag, items, group, relevant) — independent booleans. The tag keeps
+        # ids unique when the groups are merged into one dict.
+        self.extra_bool_groups = [
+            ("zen",   self.zen_tweaks,          self.zen_tweaks_group,      lambda de: self.zen_switch.get_active()),
+            ("ff",    self.firefox_tweaks,      self.firefox_tweaks_group,  lambda de: self.browser_group.switches["firefox"].get_active()),
+            ("pw",    self.pipewire_toggles,    self.pipewire_group,        lambda de: True),
+            ("tune0", self.tuning_master_items, self.tuning_master_group,   lambda de: True),
+            ("tune",  self.tuning_items,        self.tuning_group,          lambda de: self._tuning_master_on()),
+            ("spice", self.spicetify_toggles,   self.spicetify_group,       lambda de: self.music_player_selector.selected_id == "spotify"),
+        ]
+
+        # List options shown as one checkbox per allowed value.
+        self.extra_list_groups = [
+            {"items": UMBRIEL_DISABLED_EFFECTS, "group": self.umbriel_disabled_group,
+             "key": "roudix.umbriel.disabledEffects", "label": tr("Umbriel — disabled effects"),
+             "relevant": lambda de: de == "umbriel"},
+        ]
+
         self._apply_host_filter()
 
         # ── Integrated terminal ───────────────────────────────────────────
@@ -2233,6 +2686,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.scratchpad_row,  host_lists(*scratchpad_keys)),
                 (self.scratchpad_note, host_lists(*scratchpad_keys)),
                 (self.latest_group,    host_lists(*latest_keys)),
+                (self.umbriel_effects_selector, host_lists("roudix.umbriel.effects")),
+                (self.umbriel_disabled_group,   host_lists("roudix.umbriel.disabledEffects")),
+                (self.umbriel_disabled_note,    host_lists("roudix.umbriel.disabledEffects")),
             ],
             "gaming": [
                 (self.gaming_header,       host_lists("roudix.gaming.enable")),
@@ -2257,6 +2713,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.sine_note,             host_lists(*zen_mod_keys)),
                 (self.zen_mods_group,        host_lists(*zen_mod_keys)),
                 (self.zen_mods_placeholder,  host_lists(*zen_mod_keys)),
+                (self.zen_tweaks_group,      bool(self.zen_tweaks)),
+                (self.zen_profile_selector,  host_lists("roudix.zen.tweaks.profile")),
+                (self.firefox_tweaks_group,  bool(self.firefox_tweaks)),
+                (self.firefox_profile_selector, host_lists("roudix.firefox.tweaks.profile")),
             ],
             "login_shell": [(self.login_shell_selector, host_lists("roudix.shell"))],
             "filemanager": [(self.filemanager_selector, host_lists("roudix.fileManager"))],
@@ -2271,11 +2731,18 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.torrent_client_selector, host_lists("roudix.torrentClient")),
                 (self.music_player_selector,  host_lists("roudix.musicPlayer")),
                 (self.mail_client_selector,   host_lists("roudix.mailClient")),
+                (self.password_manager_selector, host_lists("roudix.passwordManager")),
+                (self.spicetify_theme_selector,  host_lists("roudix.spicetify.theme")),
+                (self.spicetify_group,           bool(self.spicetify_toggles)),
             ],
             "system": [
                 (self.system_group,     bool(self.system_toggles)),
                 (self.rgb_selector,     host_lists("roudix.rgb")),
                 (self.branch_selector,  host_lists("roudix.autoupdate.branch")),
+                (self.autoupdate_interval_selector, host_lists("roudix.autoupdate.interval")),
+                (self.pipewire_group,      bool(self.pipewire_toggles)),
+                (self.tuning_master_group, bool(self.tuning_master_items)),
+                (self.tuning_group,        bool(self.tuning_items)),
             ],
             "integration": [(self.integration_selector, host_lists("roudix.desktopIntegration"))],
             "icon_theme":  [(self.icon_theme_selector,  host_lists("roudix.iconTheme"))],
@@ -2350,6 +2817,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if not supported and self.category_list.get_selected_row() is row:
             self.category_list.select_row(self._category_rows["desktop"])
 
+    def _update_spicetify_visibility(self):
+        """Spicetify settings only mean something with Spotify as music player."""
+        show = self.music_player_selector.selected_id == "spotify"
+        self.spicetify_theme_selector.set_visible(show)
+        self.spicetify_group.set_visible(show)
+
+    def _tuning_master_on(self) -> bool:
+        sw = self.tuning_master_group.switches.get("enable")
+        return True if sw is None else sw.get_active()
+
+    def _update_tuning_cascade(self):
+        """The per-block tuning switches only act while the master is on."""
+        self.tuning_group.set_sensitive(self._tuning_master_on())
+
     def _update_latest_group_visibility(self):
         self.latest_group.set_visible(
             self.latest_de_row.get_visible() or self.latest_shell_row.get_visible()
@@ -2397,6 +2878,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             self.scratchpad_note.set_label(SCRATCHPAD_NOTE[new_de])
             self.scratchpad_switch.set_active(get_bool_option(scratchpad_option_key(new_de), False))
 
+        umbriel_on = new_de == "umbriel"
+        self.umbriel_effects_selector.set_visible(umbriel_on)
+        self.umbriel_disabled_group.set_visible(umbriel_on)
+        self.umbriel_disabled_note.set_visible(umbriel_on)
+
         self._update_latest_de_row()
 
         if not visible:
@@ -2434,6 +2920,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.torrent_client_selector.update_icons(dark)
         self.music_player_selector.update_icons(dark)
         self.mail_client_selector.update_icons(dark)
+        self.umbriel_effects_selector.update_icons(dark)
+        self.password_manager_selector.update_icons(dark)
+        self.autoupdate_interval_selector.update_icons(dark)
+        self.spicetify_theme_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 
@@ -2606,6 +3096,38 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         new_icon_theme = self.icon_theme_selector.selected_id
         icon_theme_changed = new_icon_theme != cur_icon_theme
 
+        # Independent booleans of the extra groups (Zen/Firefox tweaks,
+        # PipeWire, tuning, Spicetify). Only the groups that mean something
+        # for what is being applied are compared.
+        extra_bool_changes = {}
+        for tag, items, group, relevant in self.extra_bool_groups:
+            if not relevant(new_de):
+                continue
+            for item_id, change in _diff_bool_items(items, group.get_states()).items():
+                extra_bool_changes[f"{tag}:{item_id}"] = change
+
+        # String-valued extras (Umbriel effects, password manager, interval,
+        # bootloader, Spicetify theme, browser profiles)
+        extra_sel_changes = {}
+        for ex in self.extra_selectors:
+            if not ex["relevant"](new_de):
+                continue
+            cur_val = get_active_string_option(ex["key"], ex["default"], path=ex.get("file"))
+            new_val = ex["widget"].selected_id
+            if new_val != cur_val:
+                extra_sel_changes[ex["key"]] = (new_val, ex["label"], cur_val, ex.get("null_value"), ex.get("file"))
+
+        # List-valued extras (Umbriel disabled effects)
+        extra_list_changes = {}
+        for ex in self.extra_list_groups:
+            if not ex["relevant"](new_de):
+                continue
+            cur_list = get_active_list_option(ex["key"], [])
+            states = ex["group"].get_states()
+            new_list = [i["id"] for i in ex["items"] if states[i["id"]]]
+            if set(new_list) != set(cur_list):
+                extra_list_changes[ex["key"]] = (new_list, ex["label"])
+
         if not any([de_changed, shell_changed, integration_changed, editor_changed,
                     terminal_changed, browsers_changed, zen_changed, zen_variant_changed, sine_changed,
                     zen_mods_changed, scratchpad_changed,
@@ -2618,7 +3140,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                     mail_client_changed,
                     icon_theme_changed,
                     gaming_changes, gaming_extras_changes, gaming_master_changed,
-                    cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed]):
+                    cc_master_changed, cc_changes, obs_plugins_changes, video_editor_changed,
+                    extra_bool_changes, extra_sel_changes, extra_list_changes]):
             log.info("No changes detected — nothing to do.")
             self.status.set_markup(
                 tr("<span color='gray'>No changes detected — nothing to do.</span>")
@@ -2700,6 +3223,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
         for _key, new_val, name, _file in system_changes.values():
             changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
+        for _key, new_val, name, _file in extra_bool_changes.values():
+            changes.append(f"{name}: <b>{_en if new_val else _dis}</b>")
+        for _new, _label, _cur, _null, _file in extra_sel_changes.values():
+            changes.append(
+                f"{_label}: <b>{GLib.markup_escape_text(_cur)}</b> → <b>{GLib.markup_escape_text(_new)}</b>"
+            )
+        for _new_list, _label in extra_list_changes.values():
+            changes.append(f"{_label}: <b>{', '.join(_new_list) or _none}</b>")
         body_changes = "\n".join(changes)
 
         pending = {
@@ -2737,6 +3268,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             "cc_changes": cc_changes,
             "obs_plugins_changes": obs_plugins_changes,
             "video_editor_changed": video_editor_changed, "new_video_editor": new_video_editor,
+            "extra_bool_changes": extra_bool_changes,
+            "extra_sel_changes": extra_sel_changes,
+            "extra_list_changes": extra_list_changes,
         }
 
         dialog = Adw.AlertDialog()
@@ -3054,6 +3588,33 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 self.status.set_markup(
                     tr("<span color='red'>Error writing {name} config: "
                             "{markup_escape_text}</span>").format(name=name, markup_escape_text=GLib.markup_escape_text(result))
+                )
+                return
+
+        for key, new_val, name, file in pending["extra_bool_changes"].values():
+            result = set_bool_option(key, new_val, path=file)
+            if result is not True:
+                self.status.set_markup(
+                    tr("<span color='red'>Error writing {name} config: "
+                            "{markup_escape_text}</span>").format(name=name, markup_escape_text=GLib.markup_escape_text(result))
+                )
+                return
+
+        for key, (new_val, label, _cur, null_value, file) in pending["extra_sel_changes"].items():
+            result = set_active_string_option(key, None if new_val == null_value else new_val, path=file)
+            if result is not True:
+                self.status.set_markup(
+                    tr("<span color='red'>Error writing {name} config: "
+                            "{markup_escape_text}</span>").format(name=label, markup_escape_text=GLib.markup_escape_text(result))
+                )
+                return
+
+        for key, (new_list, label) in pending["extra_list_changes"].items():
+            result = set_active_list_option(key, new_list)
+            if result is not True:
+                self.status.set_markup(
+                    tr("<span color='red'>Error writing {name} config: "
+                            "{markup_escape_text}</span>").format(name=label, markup_escape_text=GLib.markup_escape_text(result))
                 )
                 return
 

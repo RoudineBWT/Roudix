@@ -34,6 +34,10 @@ msgid "Cinnamon — classic X11 desktop, ideal for older PCs"
 msgstr "Cinnamon — سطح مكتب كلاسيكي على X11، مثالي للحواسيب القديمة"
 
 #: roudix-switcher.py
+msgid "COSMIC — modern Wayland desktop by System76, written in Rust"
+msgstr "COSMIC — سطح مكتب Wayland حديث من System76، مكتوب بلغة Rust"
+
+#: roudix-switcher.py
 msgid "Lightweight dynamic tiling Wayland compositor"
 msgstr "مُركِّب Wayland خفيف بتبليط ديناميكي"
 
@@ -329,6 +333,234 @@ msgid "Don't install a mail client"
 msgstr "عدم تثبيت عميل بريد"
 
 #: roudix-switcher.py
+msgid "Cloud-synced vault"
+msgstr "خزنة متزامنة عبر السحابة"
+
+#: roudix-switcher.py
+msgid "Local, offline vault file, no account"
+msgstr "ملف خزنة محلي دون اتصال ودون حساب"
+
+#: roudix-switcher.py
+msgid "Cloud vault tied to a Proton account"
+msgstr "خزنة سحابية مرتبطة بحساب Proton"
+
+#: roudix-switcher.py
+msgid "Don't install a password manager"
+msgstr "عدم تثبيت مدير كلمات مرور"
+
+#: roudix-switcher.py
+msgid "Clean: no shaders, no animated effects"
+msgstr "نظيف: بدون شيدرز ولا مؤثرات متحركة"
+
+#: roudix-switcher.py
+msgid "Subtle window in/out + scratchpad shaders (default)"
+msgstr "شيدرز خفيفة لدخول/خروج النوافذ + scratchpad (افتراضي)"
+
+#: roudix-switcher.py
+msgid "+ accent border, cursor halo, transitions (Noctalia palette)"
+msgstr "+ حد بلون التمييز، هالة المؤشر، انتقالات (لوحة Noctalia)"
+
+#: roudix-switcher.py
+msgid "Same, fixed Roudix palette"
+msgstr "نفسه، بلوحة Roudix ثابتة"
+
+#: roudix-switcher.py
+msgid "+ flowing light around the border (Noctalia palette)"
+msgstr "+ ضوء متدفق حول الحد (لوحة Noctalia)"
+
+#: roudix-switcher.py
+msgid "+ jelly wobble on window move (Noctalia palette)"
+msgstr "+ اهتزاز هلامي عند تحريك النوافذ (لوحة Noctalia)"
+
+#: roudix-switcher.py
+msgid "Windows open/close through the Roudix logo shape"
+msgstr "تُفتح النوافذ وتُغلق عبر شكل شعار Roudix"
+
+#: roudix-switcher.py
+msgid "Same + jelly wobble and drag physics"
+msgstr "نفسه + اهتزاز هلامي وفيزياء السحب"
+
+#: roudix-switcher.py
+msgid "\"Snowflake braid\" border + comet (Noctalia palette)"
+msgstr "حد «جديلة ندف الثلج» + مذنّب (لوحة Noctalia)"
+
+#: roudix-switcher.py
+msgid "Everything: logo, wobble, aurora (fixed Roudix palette)"
+msgstr "كل شيء: الشعار، الاهتزاز، الشفق (لوحة Roudix ثابتة)"
+
+#: roudix-switcher.py
+msgid "Like roudix-full, Noctalia colors"
+msgstr "مثل roudix-full بألوان Noctalia"
+
+#: roudix-switcher.py
+msgid "Ly-sec's sakura suite — Noctalia colors"
+msgstr "مجموعة ساكورا من Ly-sec — ألوان Noctalia"
+
+#: roudix-switcher.py
+msgid "Sakura suite, fixed Roudix palette"
+msgstr "مجموعة ساكورا بلوحة Roudix ثابتة"
+
+#: roudix-switcher.py
+msgid "Border (animated border effect)"
+msgstr "الحد (مؤثر حد متحرك)"
+
+#: roudix-switcher.py
+msgid "Window (per-window overlay effect)"
+msgstr "النافذة (مؤثر تراكب لكل نافذة)"
+
+#: roudix-switcher.py
+msgid "Screen (full-screen effect)"
+msgstr "الشاشة (مؤثر ملء الشاشة)"
+
+#: roudix-switcher.py
+msgid "Cursor (halo around the pointer)"
+msgstr "المؤشر (هالة حول المؤشر)"
+
+#: roudix-switcher.py
+msgid "Transitions (workspace, layer and focus-border animations)"
+msgstr "الانتقالات (حركات مساحات العمل والطبقات وحد التركيز)"
+
+#: roudix-switcher.py
+msgid "Window motion (open/close/move shaders, drag physics)"
+msgstr "حركة النوافذ (شيدرز الفتح/الإغلاق/التحريك، فيزياء السحب)"
+
+#: roudix-switcher.py
+msgid "Scratchpad (show/hide shader)"
+msgstr "Scratchpad (شيدر الإظهار/الإخفاء)"
+
+#: roudix-switcher.py
+msgid "Default"
+msgstr "افتراضي"
+
+#: roudix-switcher.py
+msgid "Every hour"
+msgstr "كل ساعة"
+
+#: roudix-switcher.py
+msgid "Every 6 hours"
+msgstr "كل 6 ساعات"
+
+#: roudix-switcher.py
+msgid "Every 12 hours"
+msgstr "كل 12 ساعة"
+
+#: roudix-switcher.py
+msgid "Every day"
+msgstr "كل يوم"
+
+#: roudix-switcher.py
+msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
+msgstr ""
+"زمن استجابة منخفض (48 كيلوهرتز، quantum 128) — العمل الصوتي وألعاب الإيقاع"
+
+#: roudix-switcher.py
+msgid "Realtime tweaks (rtprio/nice for the “audio” group — you must be in it)"
+msgstr ""
+"تحسينات الزمن الحقيقي (rtprio/nice لمجموعة «audio» — يجب أن تكون عضوًا فيها)"
+
+#: roudix-switcher.py
+msgid ""
+"Never autosuspend USB devices (fixes USB audio dropouts, costs laptop "
+"battery)"
+msgstr ""
+"عدم تعليق أجهزة USB تلقائيًا (يعالج انقطاع صوت USB، ويستهلك بطارية الحاسوب "
+"المحمول)"
+
+#: roudix-switcher.py
+msgid "CachyOS-style system tuning"
+msgstr "ضبط النظام على طريقة CachyOS"
+
+#: roudix-switcher.py
+msgid ""
+"systemd-oomd watches the system and user slices (kills an app instead of "
+"freezing)"
+msgstr ""
+"يراقب systemd-oomd شرائح النظام والمستخدم (يُنهي تطبيقًا بدل تجمّد النظام)"
+
+#: roudix-switcher.py
+msgid "Per-device I/O schedulers (bfq / mq-deadline / kyber)"
+msgstr "جدولة الإدخال/الإخراج لكل جهاز (bfq / mq-deadline / kyber)"
+
+#: roudix-switcher.py
+msgid ""
+"Short service timeouts (15 s start / 10 s stop) and higher open-files limit"
+msgstr ""
+"مهل خدمات قصيرة (15 ثانية للبدء / 10 للإيقاف) وحد أعلى للملفات المفتوحة"
+
+#: roudix-switcher.py
+msgid "Many color schemes, follows Noctalia by default (default)"
+msgstr "مخططات ألوان كثيرة، يتبع Noctalia افتراضيًا (افتراضي)"
+
+#: roudix-switcher.py
+msgid "The bundled Comfy theme"
+msgstr "سمة Comfy المضمّنة"
+
+#: roudix-switcher.py
+msgid "Marketplace (browse extensions and themes inside Spotify)"
+msgstr "Marketplace (تصفح الإضافات والسمات داخل Spotify)"
+
+#: roudix-switcher.py
+msgid "Ad blocker extension"
+msgstr "إضافة حظر الإعلانات"
+
+#: roudix-switcher.py
+msgid "Hide podcasts extension"
+msgstr "إضافة إخفاء البودكاست"
+
+#: roudix-switcher.py
+msgid "Roudix Zen tweaks (user.js + policies.json)"
+msgstr "تحسينات Roudix لـ Zen (user.js + policies.json)"
+
+#: roudix-switcher.py
+msgid "Performance (HW decoding, GPU, caches)"
+msgstr "الأداء (فك الترميز بالعتاد، GPU، ذاكرات التخزين المؤقت)"
+
+#: roudix-switcher.py
+msgid "Privacy (no telemetry or Mozilla extras)"
+msgstr "الخصوصية (بدون قياس عن بُعد أو إضافات Mozilla)"
+
+#: roudix-switcher.py
+msgid "Disable Google Safe Browsing"
+msgstr "تعطيل Google Safe Browsing"
+
+#: roudix-switcher.py
+msgid "UI (smooth scrolling, masonry)"
+msgstr "الواجهة (تمرير سلس، masonry)"
+
+#: roudix-switcher.py
+msgid "Install policies.json (uBlock, DoH...)"
+msgstr "تثبيت policies.json (uBlock، DoH...)"
+
+#: roudix-switcher.py
+msgid "No profile chosen (default)"
+msgstr "لم يتم اختيار ملف تعريف (افتراضي)"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "~/{path} — not found on disk"
+msgstr "~/{path} — غير موجود على القرص"
+
+#: roudix-switcher.py
+msgid "Firefox — Roudix tweaks (user.js of the chosen profile)"
+msgstr "Firefox — تحسينات Roudix (ملف user.js للملف الشخصي المختار)"
+
+#: roudix-switcher.py
+msgid "Firefox — Performance"
+msgstr "Firefox — الأداء"
+
+#: roudix-switcher.py
+msgid "Firefox — Privacy"
+msgstr "Firefox — الخصوصية"
+
+#: roudix-switcher.py
+msgid "Firefox — Disable Google Safe Browsing"
+msgstr "Firefox — تعطيل Google Safe Browsing"
+
+#: roudix-switcher.py
+msgid "Firefox — UI (smooth scrolling)"
+msgstr "Firefox — الواجهة (تمرير سلس)"
+
+#: roudix-switcher.py
 msgid "For Corsair iCUE-compatible devices"
 msgstr "للأجهزة المتوافقة مع Corsair iCUE"
 
@@ -359,6 +591,13 @@ msgstr "جلسة “Steam (Gaming Mode)” (gamescope وniri/umbriel/gnome/kde)"
 #: roudix-switcher.py
 msgid "Decky Loader (Steam plugins, compiled on first rebuild)"
 msgstr "Decky Loader (إضافات Steam، تُترجَم عند أول إعادة بناء)"
+
+#: roudix-switcher.py
+msgid ""
+"HDR in the Gaming Mode session (turn off without an HDR display, or if games "
+"misbehave)"
+msgstr ""
+"HDR في جلسة Gaming Mode (عطّله إن لم تكن لديك شاشة HDR أو إذا تعطلت الألعاب)"
 
 #: roudix-switcher.py
 msgid ""
@@ -438,6 +677,14 @@ msgid "Chatterino2 (third-party Twitch chat)"
 msgstr "Chatterino2 (دردشة Twitch من جهة خارجية)"
 
 #: roudix-switcher.py
+msgid "ZapZap (unofficial WhatsApp client)"
+msgstr "ZapZap (عميل WhatsApp غير رسمي)"
+
+#: roudix-switcher.py
+msgid "Fluxer (self-hostable Discord alternative)"
+msgstr "Fluxer (بديل Discord قابل للاستضافة الذاتية)"
+
+#: roudix-switcher.py
 msgid "Virtualization (QEMU/KVM)"
 msgstr "المحاكاة الافتراضية (QEMU/KVM)"
 
@@ -472,6 +719,10 @@ msgstr "خفض جهد GPU من AMD (LACT)"
 #: roudix-switcher.py
 msgid "Roudix fastfetch config"
 msgstr "إعدادات fastfetch الخاصة بـ Roudix"
+
+#: roudix-switcher.py
+msgid "Roudix Welcome (shown at session start)"
+msgstr "Roudix Welcome (يظهر عند بدء الجلسة)"
 
 #: roudix-switcher.py
 msgid "Fstrim (automatic TRIM for SSD/NVMe)"
@@ -553,6 +804,22 @@ msgid "Scratchpad apps"
 msgstr "تطبيقات scratchpad"
 
 #: roudix-switcher.py
+msgid "Umbriel effects"
+msgstr "مؤثرات Umbriel"
+
+#: roudix-switcher.py
+msgid "Umbriel — disable effects"
+msgstr "Umbriel — تعطيل المؤثرات"
+
+#: roudix-switcher.py
+msgid ""
+"Checked = switched off, on top of the effects chosen above. If a game flips "
+"between composition and direct scanout, turn off “Screen” and “Cursor”."
+msgstr ""
+"محدد = معطّل، إضافةً إلى المؤثرات المختارة أعلاه. إذا كانت لعبة تتبدل بين "
+"التركيب وdirect scanout فعطّل «الشاشة» و«المؤشر»."
+
+#: roudix-switcher.py
 msgid "Versions"
 msgstr "الإصدارات"
 
@@ -609,6 +876,30 @@ msgstr ""
 "لا توجد تعديلات في القائمة بعد — أضف معرّفات تعديلاتك إلى ZEN_MODS في السكربت."
 
 #: roudix-switcher.py
+msgid "Zen tweaks"
+msgstr "تحسينات Zen"
+
+#: roudix-switcher.py
+msgid "Zen profile for the tweaks"
+msgstr "ملف Zen الشخصي للتحسينات"
+
+#: roudix-switcher.py
+msgid "The profile Roudix manages"
+msgstr "الملف الشخصي الذي يديره Roudix"
+
+#: roudix-switcher.py
+msgid "Firefox tweaks"
+msgstr "تحسينات Firefox"
+
+#: roudix-switcher.py
+msgid "Firefox profile for the tweaks"
+msgstr "ملف Firefox الشخصي للتحسينات"
+
+#: roudix-switcher.py
+msgid "None: the Firefox tweaks are written nowhere"
+msgstr "لا شيء: لا تُكتب تحسينات Firefox في أي مكان"
+
+#: roudix-switcher.py
 msgid "Login shell"
 msgstr "صدفة تسجيل الدخول"
 
@@ -645,8 +936,20 @@ msgid "Music player"
 msgstr "مشغّل الموسيقى"
 
 #: roudix-switcher.py
+msgid "Spicetify theme"
+msgstr "سمة Spicetify"
+
+#: roudix-switcher.py
+msgid "Spicetify"
+msgstr "Spicetify"
+
+#: roudix-switcher.py
 msgid "Mail client"
 msgstr "عميل البريد"
+
+#: roudix-switcher.py
+msgid "Password manager"
+msgstr "مدير كلمات المرور"
 
 #: roudix-switcher.py
 msgid "Toggles"
@@ -659,6 +962,18 @@ msgstr "واجهة RGB الخلفية"
 #: roudix-switcher.py
 msgid "Update branch"
 msgstr "فرع التحديث"
+
+#: roudix-switcher.py
+msgid "Update check interval"
+msgstr "الفاصل الزمني لفحص التحديثات"
+
+#: roudix-switcher.py
+msgid "Audio (PipeWire)"
+msgstr "الصوت (PipeWire)"
+
+#: roudix-switcher.py
+msgid "System tuning"
+msgstr "ضبط النظام"
 
 #: roudix-switcher.py
 msgid "Keyring & portal backend"
@@ -698,6 +1013,22 @@ msgstr ""
 "ينطبق فقط على niri وHyprland وMangoWC وUmbriel — يحتفظ GNOME وKDE بأداة "
 "اختيار الأيقونات الأصلية الخاصة بهما. مع Tela، تحدث أول إعادة تلوين عند "
 "التغيير التالي لسمة/لون Noctalia المميز."
+
+#: roudix-switcher.py
+msgid "Update interval"
+msgstr "الفاصل الزمني للتحديث"
+
+#: roudix-switcher.py
+msgid "Zen profile (tweaks)"
+msgstr "ملف Zen الشخصي (التحسينات)"
+
+#: roudix-switcher.py
+msgid "Firefox profile (tweaks)"
+msgstr "ملف Firefox الشخصي (التحسينات)"
+
+#: roudix-switcher.py
+msgid "Umbriel — disabled effects"
+msgstr "Umbriel — المؤثرات المعطّلة"
 
 #: roudix-switcher.py
 msgid "Exit"

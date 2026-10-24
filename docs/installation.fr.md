@@ -1,4 +1,4 @@
-*[English version](installation.md)*
+[English](installation.md) · **Français** · [Español](installation.es.md) · [Português (Brasil)](installation.pt_BR.md) · [Русский](installation.ru.md) · [简体中文](installation.zh_CN.md) · [हिन्दी](installation.hi.md) · [العربية](installation.ar.md)
 
 # Installation
 

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f4a900"/>
+      <stop offset="0.52" stop-color="#ff8a32"/>
+      <stop offset="1" stop-color="#f56b4b"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded, open loop in the simple bold style of Papirus icons -->
+  <path d="M27 52
+           C18.7 52 13 46.2 13 38.5
+           C13 30.7 18.7 25 27 25
+           H101
+           C109.3 25 115 30.7 115 38.5
+           C115 46.2 109.3 52 101 52
+           H84
+           C79.2 52 76 55 76 59
+           C76 63.2 79.2 66 84 66
+           H96
+           C111.4 66 121 54.7 121 39
+           C121 23.2 110.5 13 95 13
+           H33
+           C17.5 13 7 23.2 7 39
+           C7 54.7 16.6 66 32 66
+           H44
+           C48.8 66 52 63.2 52 59
+           C52 55 48.8 52 44 52 Z"
+        fill="#34302e" transform="translate(0 2)"/>
+  <rect x="18" y="91" width="92" height="14" rx="7" fill="url(#accent)"/>
+</svg>

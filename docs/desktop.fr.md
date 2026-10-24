@@ -1,4 +1,4 @@
-*[English version](desktop.md)*
+[English](desktop.md) · **Français** · [Español](desktop.es.md) · [Português (Brasil)](desktop.pt_BR.md) · [Русский](desktop.ru.md) · [简体中文](desktop.zh_CN.md) · [हिन्दी](desktop.hi.md) · [العربية](desktop.ar.md)
 
 # Environnements de bureau
 
@@ -13,11 +13,12 @@ Changez de bureau à tout moment avec `roudix-switch <de>` ou via l'interface **
 | `gnome` | GNOME 49.5 | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 | `cinnamon` | Cinnamon | Session X11 + LightDM — bureau classique, adapté aux vieux PC (GNOME 49 est Wayland uniquement) |
+| `cosmic` | COSMIC | Bureau Wayland de System76 (cosmic-comp), cosmic-greeter |
 
 Pour changer de façon permanente, modifiez `hosts/roudix/local.nix` :
 
 ```nix
-roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde" ou "cinnamon"
+roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde", "cinnamon" ou "cosmic"
 ```
 
 Ou utilisez la fonction fish — elle modifie la config et rebuild en une seule étape :
@@ -285,4 +286,18 @@ Surcharger les applications épinglées dans `hosts/roudix/local.nix` :
 
 ```nix
 roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.desktop" "cinnamon-settings.desktop" ];
+```
+
+## Défauts COSMIC
+
+COSMIC utilise le wallpaper Roudix Kitsune par défaut et la disposition clavier de `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. Le dock épingle le(s) navigateur(s) choisi(s) dans Roudix (et Zen s'il est activé), COSMIC Files, ton terminal, Roudix Store et les Paramètres COSMIC — même idée que le dash de GNOME et le gestionnaire de tâches de Plasma. Dans la bibliothèque d'applications, toutes les apps Roudix (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) sont regroupées dans un dossier **Roudix** et ne sont plus listées dans Système / Utilitaires. COSMIC Store n'est pas installé : Roudix Store le remplace.
+
+Ce sont des valeurs par défaut, livrées sous forme de fichiers cosmic-config système : elles ne s'appliquent qu'à ce que l'utilisateur n'a pas modifié, et une reconstruction ne revient jamais sur un choix fait dans les Paramètres COSMIC.
+
+Les apps et le panneau propres à COSMIC utilisent par défaut le schéma de couleurs Roudix (`assets/cosmic/`, généré depuis `assets/palette/Roudix.json`, installé comme défauts système par `modules/system/desktop/cosmic.nix`, sans Home Manager). Choisir un autre thème ou accent dans Paramètres > Apparence le remplace, et un rebuild ne touche jamais à ton choix. « Appliquer le thème actuel aux applications GNOME » (Paramètres > Bureau > Apparence > Icônes et thème des toolkits) est activé par défaut : c'est COSMIC lui-même qui exporte son thème, donc les apps GTK (navigateurs, apps Roudix...) reçoivent les couleurs Roudix par-dessus adw-gtk3, sans CSS écrit par Roudix. Les icônes sont Papirus-Roudix (voir `roudix.iconTheme`), et ton terminal reçoit son schéma de couleurs Roudix comme sur les autres bureaux.
+
+`system76-scheduler`, activé par le module COSMIC de nixpkgs, est désactivé par défaut car Roudix a son propre ordonnanceur (SCX). Pour le garder :
+
+```nix
+services.system76-scheduler.enable = true;
 ```
