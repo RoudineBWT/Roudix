@@ -139,6 +139,12 @@ let
     name  = "roudix-cosmic-defaults";
     paths = [
       themeDefaults
+      # Settings > Desktop > Appearance > "Icons and toolkit theming":
+      # "Apply current theme to GNOME apps" ON by default (cosmic-settings-daemon
+      # then exports the COSMIC theme, i.e. the Roudix colours, as GTK 3/4 CSS and
+      # Qt palettes) and the Roudix icon theme (modules/system/desktop/icon-theme.nix).
+      (mkDefault "com.system76.CosmicTk" "apply_theme_global" "true")
+      (mkDefault "com.system76.CosmicTk" "icon_theme" (ron.str config.roudix.iconThemeName))
       (mkDefault "com.system76.CosmicAppList" "favorites" (ron.list (map ron.str favoriteApps)))
       (mkDefault "com.system76.CosmicAppLibrary" "groups" appLibraryGroups)
       (mkDefault "com.system76.CosmicComp" "xkb_config" xkbConfig)
@@ -200,7 +206,6 @@ in
         Name=Roudix
         Icon=roudix-logo
       '')
-      papirus-icon-theme
       capitaine-cursors
     ];
   };

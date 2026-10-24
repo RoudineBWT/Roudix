@@ -43,7 +43,14 @@ let
   # modules/home/local.nix, or dropped into ~/.icons) — just set the name,
   # no package to install. An unknown/mistyped name can't break a rebuild
   # this way: worst case it silently falls back to hicolor at runtime.
-  chosenIcon = iconThemes.${iconThemeChoice} or { name = iconThemeChoice; package = null; };
+  #
+  # COSMIC (like GNOME / KDE / Cinnamon) takes the name resolved on the system
+  # side (modules/system/desktop/icon-theme.nix: Papirus-Roudix / Tela-Roudix,
+  # provided by a system package, hence package = null).
+  chosenIcon =
+    if desktopType == "cosmic"
+    then { name = osConfig.roudix.iconThemeName; package = null; }
+    else iconThemes.${iconThemeChoice} or { name = iconThemeChoice; package = null; };
 
   themeName  = "adw-gtk3-dark";
   cursorName = "capitaine-cursors-white";
@@ -69,6 +76,13 @@ in
         size    = cursorSize;
       };
     };
+
+    # COSMIC: "Apply current theme to GNOME apps" (on by default, see
+    # modules/system/desktop/cosmic.nix) makes cosmic-settings-daemon replace
+    # ~/.config/gtk-{3,4}.0/gtk.css with a symlink to the Roudix COSMIC theme.
+    # Home Manager must therefore not own gtk-4.0/gtk.css (it writes it as soon
+    # as a GTK 4 theme is set, to import the theme from there).
+    gtk.gtk4.theme = lib.mkIf (desktopType == "cosmic") null;
 
     home.pointerCursor = {
       enable  = true;

@@ -294,7 +294,7 @@ COSMIC ships the Roudix Kitsune wallpaper by default and the keyboard layout of 
 
 These are defaults, shipped as system-wide cosmic-config files: they only apply to what the user has not changed, and a rebuild never reverts a choice made in COSMIC Settings.
 
-COSMIC's own apps and panel use the Roudix colour scheme by default (`assets/cosmic/`, generated from `assets/palette/Roudix.json`, installed as system defaults by `modules/system/desktop/cosmic.nix`, no Home Manager involved). Picking another theme or accent in Settings > Appearance overrides it, and a rebuild never touches your choice. GTK apps (browsers, the Roudix apps...) use plain adw-gtk3-dark with no extra CSS, and your terminal gets its Roudix colour scheme like on every other desktop.
+COSMIC's own apps and panel use the Roudix colour scheme by default (`assets/cosmic/`, generated from `assets/palette/Roudix.json`, installed as system defaults by `modules/system/desktop/cosmic.nix`, no Home Manager involved). Picking another theme or accent in Settings > Appearance overrides it, and a rebuild never touches your choice. "Apply current theme to GNOME apps" (Settings > Desktop > Appearance > Icons and toolkit theming) is on by default: COSMIC itself exports its theme, so GTK apps (browsers, the Roudix apps...) get the Roudix colours on top of adw-gtk3, without any CSS written by Roudix. Icons are Papirus-Roudix (see `roudix.iconTheme`), and your terminal gets its Roudix colour scheme like on every other desktop.
 
 `system76-scheduler`, which the nixpkgs COSMIC module enables, is turned off by default because Roudix has its own scheduler stack (SCX). To keep it:
 

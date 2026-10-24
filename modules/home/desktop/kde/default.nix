@@ -59,7 +59,7 @@ in
             # Icons via kwriteconfig6 rather than plasma-manager: keeps
             # kdeglobals a normal, writable file (papirusSync / telaSync
             # patch its [Icons] Theme= key with sed).
-            ${kwriteconfig6} --file kdeglobals --group Icons --key Theme "Papirus-Dark"
+            ${kwriteconfig6} --file kdeglobals --group Icons --key Theme "${osConfig.roudix.iconThemeName}"
             mkdir -p "$(dirname "$marker")" && touch "$marker"
           fi
 
@@ -75,6 +75,17 @@ in
               plasma-apply-colorscheme RoudixDark
             fi
             mkdir -p "$(dirname "$cs_marker")" && touch "$cs_marker"
+          fi
+
+          # Same for icons: users seeded with the stock Papirus-Dark get the
+          # Roudix folders once; anyone who picked another icon theme is
+          # left alone.
+          ic_marker="$HOME/.local/state/roudix/kde-icons-roudix-seeded"
+          if [ ! -f "$ic_marker" ]; then
+            if [ "$(${kreadconfig6} --file kdeglobals --group Icons --key Theme)" = "Papirus-Dark" ]; then
+              ${kwriteconfig6} --file kdeglobals --group Icons --key Theme "${osConfig.roudix.iconThemeName}"
+            fi
+            mkdir -p "$(dirname "$ic_marker")" && touch "$ic_marker"
           fi
         '';
       };
