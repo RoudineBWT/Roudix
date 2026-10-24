@@ -151,6 +151,15 @@ stdenvNoCC.mkDerivation {
       -depth 8 \
       $out/share/backgrounds/roudix/roudix-kitsune.png
 
+    # ── Extra wallpapers PNG (GNOME) ──────────────────────────────────────────
+    for WP in roudix-emberlit-valley roudix-emblem; do
+      convert $src/wallpapers/$WP.png \
+        -strip \
+        -define png:color-type=2 \
+        -depth 8 \
+        $out/share/backgrounds/roudix/$WP.png
+    done
+
     # ── Wallpaper KDE Kitsune (default) ───────────────────────────────────────
     mkdir -p $out/share/wallpapers/RoudixKitsune/contents/images
 
@@ -172,6 +181,54 @@ stdenvNoCC.mkDerivation {
   },
   "KPackageStructure": "Wallpaper/Images",
   "X-KDE-PluginInfo-Name": "RoudixKitsune"
+}
+JSONEOF
+
+    # ── Wallpaper KDE Roudix Emberlit Valley ───────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixEmberlitValley/contents/images
+
+    cp $src/wallpapers/roudix-emberlit-valley.png \
+      $out/share/wallpapers/RoudixEmberlitValley/contents/images/2560x1440.png
+
+    convert $src/wallpapers/roudix-emberlit-valley.png \
+      -resize 400x225 \
+      $out/share/wallpapers/RoudixEmberlitValley/contents/screenshot.png
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixEmberlitValley/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixEmberlitValley",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Emberlit Valley",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixEmberlitValley"
+}
+JSONEOF
+
+    # ── Wallpaper KDE Roudix Emblem ───────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixEmblem/contents/images
+
+    cp $src/wallpapers/roudix-emblem.png \
+      $out/share/wallpapers/RoudixEmblem/contents/images/2560x1440.png
+
+    convert $src/wallpapers/roudix-emblem.png \
+      -resize 400x225 \
+      $out/share/wallpapers/RoudixEmblem/contents/screenshot.png
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixEmblem/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixEmblem",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Emblem",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixEmblem"
 }
 JSONEOF
 
@@ -383,6 +440,22 @@ JSONEOF
   <wallpaper deleted="false">
     <name>Roudix Kitsune</name>
     <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Roudix Emberlit Valley</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-emberlit-valley.png</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Roudix Emblem</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-emblem.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
     <pcolor>#14100D</pcolor>

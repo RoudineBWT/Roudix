@@ -1,27 +1,32 @@
-<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<svg width="400" height="400" viewBox="-190 -190 380 380" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Roudix logo - Roudix</title>
   <defs>
-    <linearGradient id="gem" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffc878"/>
-      <stop offset="55%" stop-color="#f2b05e"/>
-      <stop offset="100%" stop-color="#ff8c42"/>
-    </linearGradient>
-    <linearGradient id="gem-shine" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f5ebdd" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="#f5ebdd" stop-opacity="0"/>
-    </linearGradient>
+    <g id="arm">
+      <polygon points="0,-179.5 19,-157 19,-45 -19,-45 -19,-157" fill="#ff8c42"/>
+      <polygon points="0,-179.5 -19,-157 0,-134.5" fill="#ffc878"/>
+      <polygon points="0,-179.5 19,-157 0,-134.5" fill="#ffc878"/>
+    </g>
+    <g id="chevron">
+      <polygon points="14,-100 37.6,-140.9 34.2,-161 15.1,-153.9 0,-127.8 -15.1,-153.9 -34.2,-161 -37.6,-140.9 -14,-100" fill="#f2b05e"/>
+      <polygon points="34.2,-161 37.6,-140.9 18.5,-133.8 15.1,-153.9" fill="#ffc878"/>
+      <polygon points="-34.2,-161 -37.6,-140.9 -18.5,-133.8 -15.1,-153.9" fill="#ffc878"/>
+    </g>
   </defs>
-
-  <!-- gem body: top table + facets -->
-  <polygon points="100,18 150,55 170,95 140,182 60,182 30,95 50,55"
-           fill="url(#gem)" stroke="#211a15" stroke-width="3" stroke-linejoin="round"/>
-
-  <!-- facet lines -->
-  <polyline points="50,55 100,72 150,55" fill="none" stroke="#211a15" stroke-width="2" stroke-linejoin="round" opacity="0.5"/>
-  <polyline points="30,95 100,72 170,95" fill="none" stroke="#211a15" stroke-width="2" stroke-linejoin="round" opacity="0.5"/>
-  <polyline points="100,72 60,182" fill="none" stroke="#211a15" stroke-width="2" opacity="0.4"/>
-  <polyline points="100,72 100,182" fill="none" stroke="#211a15" stroke-width="2" opacity="0.4"/>
-  <polyline points="100,72 140,182" fill="none" stroke="#211a15" stroke-width="2" opacity="0.4"/>
-
-  <!-- shine -->
-  <polygon points="100,18 150,55 100,72 50,55" fill="url(#gem-shine)"/>
+  <use href="#arm"/>
+  <use href="#arm" transform="rotate(60)"/>
+  <use href="#arm" transform="rotate(120)"/>
+  <use href="#arm" transform="rotate(180)"/>
+  <use href="#arm" transform="rotate(240)"/>
+  <use href="#arm" transform="rotate(300)"/>
+  <use href="#chevron" transform="rotate(30)"/>
+  <use href="#chevron" transform="rotate(90)"/>
+  <use href="#chevron" transform="rotate(150)"/>
+  <use href="#chevron" transform="rotate(210)"/>
+  <use href="#chevron" transform="rotate(270)"/>
+  <use href="#chevron" transform="rotate(330)"/>
+  <circle r="70" fill="#f5ebdd"/>
+  <circle r="51.5" fill="#5c2a12"/>
+  <circle r="46" fill="#f2b05e"/>
+  <circle r="27.5" fill="#5c2a12"/>
+  <circle r="20.5" fill="#ff8c42"/>
 </svg>
