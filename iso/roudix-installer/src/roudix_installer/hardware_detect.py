@@ -8,6 +8,7 @@ entry — it never locks anything in, the user can always override it
 in the UI afterwards, exactly like the "Confirm? [Y/n]" step in the
 bash installer.
 """
+import re
 from pathlib import Path
 
 _PCI_VENDOR_IDS = {
@@ -103,3 +104,59 @@ def detect_prime_bus_ids() -> dict:
         except (OSError, ValueError):
             continue
     return found
+
+
+# ── Screens (Limine boot wallpaper format) ───────────────────────────────────
+# Same algorithm as scripts/detect-boot-aspect.sh (keep them in sync): the MAIN
+# screen is the connected one with the highest resolution, and the wallpaper
+# format is the roudix.boot.wallpaperAspect value whose ratio is the closest.
+_DRM_ROOT = Path("/sys/class/drm")                          # (module-level so tests can point elsewhere)
+_FB_SIZE = Path("/sys/class/graphics/fb0/virtual_size")
+_ASPECT_RATIOS = {"16x9": 16 / 9, "16x10": 16 / 10, "21x9": 21 / 9, "4x3": 4 / 3}
+
+
+def _connected_screens() -> list:
+    """[(width, height)] of every connected screen (first listed DRM mode =
+    preferred / native), falling back to the framebuffer size."""
+    screens = []
+    drm = _DRM_ROOT
+    if drm.is_dir():
+        for card in sorted(drm.glob("card*-*")):
+            try:
+                if (card / "status").read_text().strip() != "connected":
+                    continue
+                first = (card / "modes").read_text().splitlines()[0]
+            except (OSError, IndexError):
+                continue
+            m = re.match(r"(\d+)x(\d+)", first)
+            if m:
+                screens.append((int(m.group(1)), int(m.group(2))))
+    if not screens:
+        try:
+            w, h = _FB_SIZE.read_text().strip().split(",")
+            screens.append((int(w), int(h)))
+        except (OSError, ValueError):
+            pass
+    return screens
+
+
+def aspect_of(width: int, height: int) -> str:
+    """The roudix.boot.wallpaperAspect value closest to width:height."""
+    ratio = width / height
+    return min(_ASPECT_RATIOS, key=lambda k: abs(ratio - _ASPECT_RATIOS[k]))
+
+
+def detect_screen_count() -> int:
+    """How many screens are connected (0 when none could be read)."""
+    return len(_connected_screens())
+
+
+def detect_main_screen():
+    """Returns (resolution, aspect) of the main screen ("2560x1600", "16x10")
+    or (None, None) when no screen could be read. Main = highest resolution
+    (width*height); the first one found wins a tie."""
+    screens = _connected_screens()
+    if not screens:
+        return None, None
+    width, height = max(screens, key=lambda wh: wh[0] * wh[1])
+    return f"{width}x{height}", aspect_of(width, height)

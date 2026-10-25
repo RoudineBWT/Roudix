@@ -1,0 +1,293 @@
+# Translations of roudix-disk (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-disk\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-25 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Simplified Chinese\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: roudix-disk.py
+msgid "Unbalanced braces in the configuration file."
+msgstr "配置文件中的花括号不匹配。"
+
+#: roudix-disk.py
+msgid ""
+"This file uses the `fileSystems = { … }` form, which roudix-disk does not "
+"edit."
+msgstr "此文件使用 `fileSystems = { … }` 形式，roudix-disk 不会编辑这种形式。"
+
+#: roudix-disk.py
+msgid "Two entries share the same mount point."
+msgstr "有两个条目使用相同的挂载点。"
+
+#: roudix-disk.py
+msgid "The configuration file does not end with a closing brace."
+msgstr "配置文件没有以右花括号结尾。"
+
+#: roudix-disk.py
+msgid "Use an absolute path with letters, digits and . _ - @ + only."
+msgstr "请使用仅包含字母、数字和 . _ - @ + 的绝对路径。"
+
+#: roudix-disk.py
+msgid "No trailing slash."
+msgstr "末尾不要加斜杠。"
+
+#: roudix-disk.py
+msgid "Use a clean path (no //, . or ..)."
+msgstr "请使用规范的路径（不含 //、. 或 ..）。"
+
+#: roudix-disk.py
+msgid "This mount point belongs to the system."
+msgstr "此挂载点属于系统。"
+
+#: roudix-disk.py
+msgid "Mounting here could break the system."
+msgstr "在此处挂载可能会破坏系统。"
+
+#: roudix-disk.py
+msgid "This mount point is already used."
+msgstr "此挂载点已被使用。"
+
+#: roudix-disk.py
+msgid "Generated file is not valid Nix:"
+msgstr "生成的文件不是有效的 Nix："
+
+#: roudix-disk.py
+msgid "Close"
+msgstr "关闭"
+
+#: roudix-disk.py
+msgid "Done."
+msgstr "完成。"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Failed (exit code {rc})."
+msgstr "失败（退出码 {rc}）。"
+
+#: roudix-disk.py
+msgid "Roudix Disks"
+msgstr "Roudix 磁盘"
+
+#: roudix-disk.py
+msgid "Rescan disks"
+msgstr "重新扫描磁盘"
+
+#: roudix-disk.py
+msgid "Apply…"
+msgstr "应用…"
+
+#: roudix-disk.py
+msgid "Changes not applied yet"
+msgstr "更改尚未应用"
+
+#: roudix-disk.py
+msgid "Remove"
+msgstr "移除"
+
+#: roudix-disk.py
+msgid "Dismiss"
+msgstr "忽略"
+
+#: roudix-disk.py
+msgid "Configuration not found"
+msgstr "未找到配置"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"Could not find {file}. Set ROUDIX_HOST or NH_FLAKE if your configuration "
+"lives elsewhere."
+msgstr "找不到 {file}。如果你的配置在其他位置，请设置 ROUDIX_HOST 或 NH_FLAKE。"
+
+#: roudix-disk.py
+msgid "This configuration can't be edited here"
+msgstr "此配置无法在这里编辑"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Could not list disks: {err}"
+msgstr "无法列出磁盘：{err}"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "{n} configured disk is not connected"
+msgid_plural "{n} configured disks are not connected"
+msgstr[0] "{n} 个已配置的磁盘未连接"
+
+#: roudix-disk.py
+msgid "No disks found"
+msgstr "未找到磁盘"
+
+#: roudix-disk.py
+msgid "removable"
+msgstr "可移动"
+
+#: roudix-disk.py
+msgid "Unknown disk"
+msgstr "未知磁盘"
+
+#: roudix-disk.py
+msgid "Format…"
+msgstr "格式化…"
+
+#: roudix-disk.py
+msgid "Mounted — unmount it first"
+msgstr "已挂载 — 请先卸载"
+
+#: roudix-disk.py
+msgid "Empty disk"
+msgstr "空磁盘"
+
+#: roudix-disk.py
+msgid "No partition table or filesystem. Use Format… to prepare it."
+msgstr "没有分区表或文件系统。请使用“格式化…”进行准备。"
+
+#: roudix-disk.py
+msgid "unknown filesystem"
+msgstr "未知文件系统"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "mounted at {mp}"
+msgstr "已挂载于 {mp}"
+
+#: roudix-disk.py
+msgid "System"
+msgstr "系统"
+
+#: roudix-disk.py
+msgid "Change mount point"
+msgstr "更改挂载点"
+
+#: roudix-disk.py
+msgid "Remove mount point"
+msgstr "移除挂载点"
+
+#: roudix-disk.py
+msgid "Mount…"
+msgstr "挂载…"
+
+#: roudix-disk.py
+msgid "Not supported"
+msgstr "不支持"
+
+#: roudix-disk.py
+msgid "Mount point"
+msgstr "挂载点"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Where should {device} be mounted?"
+msgstr "应将 {device} 挂载到哪里？"
+
+#: roudix-disk.py
+msgid "Cancel"
+msgstr "取消"
+
+#: roudix-disk.py
+msgid "Save"
+msgstr "保存"
+
+#: roudix-disk.py
+msgid "This disk is in use and can't be formatted."
+msgstr "此磁盘正在使用，无法格式化。"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Format {device}?"
+msgstr "格式化 {device}？"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"All data on {device} ({model}, {size}) will be permanently erased and "
+"replaced by a single GPT partition."
+msgstr "{device}（{model}，{size}）上的所有数据将被永久擦除，并替换为单个 GPT 分区。"
+
+#: roudix-disk.py
+msgid "Filesystem"
+msgstr "文件系统"
+
+#: roudix-disk.py
+msgid "Label"
+msgstr "卷标"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Type {device} to confirm"
+msgstr "输入 {device} 以确认"
+
+#: roudix-disk.py
+msgid "Erase and format"
+msgstr "擦除并格式化"
+
+#: roudix-disk.py
+msgid "Label: 1–16 characters, letters, digits . _ - only."
+msgstr "卷标：1–16 个字符，仅限字母、数字和 . _ -"
+
+#: roudix-disk.py
+msgid "Authentication cancelled."
+msgstr "身份验证已取消。"
+
+#: roudix-disk.py
+msgid "Formatting failed — see the log."
+msgstr "格式化失败 — 请查看日志。"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "{device} formatted."
+msgstr "{device} 已格式化。"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Formatting {device}…"
+msgstr "正在格式化 {device}…"
+
+#: roudix-disk.py
+msgid "Apply changes?"
+msgstr "应用更改？"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"{file} will be updated and Roudix rebuilt. The current file is backed up "
+"first, and restored if the rebuild fails."
+msgstr "将更新 {file} 并重新构建 Roudix。会先备份当前文件，如果重新构建失败则恢复。"
+
+#: roudix-disk.py
+msgid "At next boot"
+msgstr "下次启动时"
+
+#: roudix-disk.py
+msgid "Apply now"
+msgstr "立即应用"
+
+#: roudix-disk.py
+msgid "Changes applied."
+msgstr "更改已应用。"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Rebuild failed and the backup could not be restored: {err}"
+msgstr "重新构建失败，且无法恢复备份：{err}"
+
+#: roudix-disk.py
+msgid "Authentication cancelled — nothing was changed."
+msgstr "身份验证已取消 — 未做任何更改。"
+
+#: roudix-disk.py
+msgid ""
+"Rebuild failed — the previous configuration was restored. Your edits are "
+"still here."
+msgstr "重新构建失败 — 已恢复之前的配置。你的修改仍在这里。"
+
+#: roudix-disk.py
+msgid "Rebuilding Roudix…"
+msgstr "正在重新构建 Roudix…"

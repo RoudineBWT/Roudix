@@ -1,7 +1,7 @@
 from gi.repository import Adw, Gtk
 
 from roudix_installer import existing_nixos, host_defaults, host_profile
-from roudix_installer.hardware_detect import detect_cpu, detect_gpu
+from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_main_screen, detect_screen_count
 from roudix_installer.i18n import tr, trc, tr_noop
 from roudix_installer.ui_helpers import page_with_header
 
@@ -209,6 +209,26 @@ def _bootloaders():
         ("limine", tr("Limine (recommended)")),
         ("systemd-boot", "systemd-boot"),
     ]
+
+
+def _boot_aspects():
+    # roudix.boot.wallpaperAspect — one Limine wallpaper per screen ratio; it is
+    # stretched to the screen, so it has to match the MAIN screen's ratio.
+    return [
+        ("16x9", "16:9 — 1920x1080, 2560x1440, 4K"),
+        ("16x10", "16:10 — 1920x1200, 2560x1600"),
+        ("21x9", "21:9 — 2560x1080, 3440x1440 (ultrawide)"),
+        ("4x3", "4:3 — 1024x768, 1280x1024"),
+    ]
+
+
+def _boot_resolutions(main_res):
+    # roudix.boot.menuResolution — "auto" lets Limine pick; with several screens it
+    # can end up on the smaller one, so the MAIN screen's resolution can be forced.
+    pairs = [("auto", tr("Automatic (Limine decides)"))]
+    if main_res:
+        pairs.append((main_res, tr("Main screen: {res}").format(res=main_res)))
+    return pairs
 
 
 def _branches():
@@ -969,6 +989,40 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.bootloader_row)
 
+        # Limine stretches its wallpaper to the screen: the format must match
+        # the MAIN screen = the connected one with the highest resolution.
+        # Detection only pre-selects an entry, the user can always change it.
+        screen_res, aspect_detected = detect_main_screen()
+        if aspect_detected:
+            state.boot_aspect = aspect_detected
+        self.boot_aspect_row = self._combo(
+            tr("Boot wallpaper format (Limine)"),
+            _mark_detected(_boot_aspects(), aspect_detected),
+            state.boot_aspect,
+        )
+        self.boot_aspect_row.set_subtitle(
+            tr("Main screen detected: {res}").format(res=screen_res) if screen_res
+            else tr("Pick the one closest to your main screen (the biggest one)")
+        )
+        extra_group.add(self.boot_aspect_row)
+
+        # With several screens of different sizes Limine can pick the smaller one
+        # (menu and wallpaper then use that resolution): recommend the main
+        # screen's. With a single screen "auto" is fine, so that stays the default.
+        screen_count = detect_screen_count()
+        if screen_res and screen_count >= 2:
+            state.boot_resolution = screen_res
+        self.boot_resolution_row = self._combo(
+            tr("Limine menu resolution"),
+            _boot_resolutions(screen_res), state.boot_resolution,
+        )
+        self.boot_resolution_row.set_subtitle(
+            tr("{count} screens detected: Limine can use the smaller one — pick your main "
+               "screen's resolution.").format(count=screen_count) if screen_count >= 2
+            else tr("Only useful with several screens of different sizes.")
+        )
+        extra_group.add(self.boot_resolution_row)
+
         self.matrix_row = self._combo(
             tr("Matrix client"), _matrix(), state.matrix_client
         )
@@ -1157,6 +1211,10 @@ class OptionsPage(Adw.NavigationPage):
         # still being constructed — connecting early meant these handlers could
         # run before the widgets they toggle existed yet, throwing a silently-
         # swallowed AttributeError instead of actually syncing visibility.
+        self.bootloader_row.connect("notify::selected", lambda *_: self._sync_boot_aspect_row())
+        self._sync_boot_aspect_row()
+        self.bootloader_row.connect("notify::selected", lambda *_: self._sync_boot_resolution_row())
+        self._sync_boot_resolution_row()
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_undervolt_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
@@ -1231,6 +1289,8 @@ class OptionsPage(Adw.NavigationPage):
         "virt_row": ["roudix.virtualization.enable"], "autoupdate_row": ["roudix.autoupdate.enable"],
         "autoupdate_interval_row": ["roudix.autoupdate.interval"],
         "branch_row": ["roudix.autoupdate.branch"], "bootloader_row": ["roudix.boot.bootloader"],
+        "boot_aspect_row": ["roudix.boot.wallpaperAspect"],
+        "boot_resolution_row": ["roudix.boot.menuResolution"],
         "matrix_row": ["roudix.matrixClient"], "discord_row": ["roudix.discord"],
         "telegram_row": ["roudix.telegram"], "video_player_row": ["roudix.videoPlayer"],
         "torrent_client_row": ["roudix.torrentClient"], "music_player_row": ["roudix.musicPlayer"],
@@ -1257,7 +1317,7 @@ class OptionsPage(Adw.NavigationPage):
         "desktop_group": ["desktop_row", "shell_row", "latest_de_row", "latest_shell_row", "latest_note", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
         "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
         "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
-        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
+        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "boot_aspect_row", "boot_resolution_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
         "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row"],
         "cc_group": ["content_creation_row", "obs_row", "video_editor_row", "virtual_camera_row", "chatterino_row"],
     }
@@ -1283,6 +1343,8 @@ class OptionsPage(Adw.NavigationPage):
             "desktop_integration": vals(_desktop_integrations()),
             "rgb": vals(_rgb_options()),
             "bootloader": vals(_bootloaders()),
+            "boot_aspect": vals(_boot_aspects()),
+            "boot_resolution": lambda st: [v for v, _ in _boot_resolutions(detect_main_screen()[0])],
             "branch": vals(_branches()),
             "matrix_client": vals(_matrix()),
             "discord": vals(_discord()),
@@ -1343,7 +1405,7 @@ class OptionsPage(Adw.NavigationPage):
                      "_sync_brave_row", "_sync_shell_row", "_sync_latest_rows", "_sync_desktop_integration_row",
                      "_sync_file_manager_row", "_sync_memory_rows", "_sync_zen_rows",
                      "_sync_spicetify_rows", "_sync_ananicy_row", "_sync_content_creation_rows",
-                     "_sync_autoupdate_row"):
+                     "_sync_autoupdate_row", "_sync_boot_aspect_row", "_sync_boot_resolution_row"):
             try:
                 getattr(self, name)()
             except Exception:
@@ -1373,6 +1435,19 @@ class OptionsPage(Adw.NavigationPage):
     @staticmethod
     def _split_list(text):
         return [part.strip() for part in text.split(",") if part.strip()]
+
+    def _sync_boot_resolution_row(self):
+        # Only Limine has a menu to size, and only if we could read a screen.
+        self.boot_resolution_row.set_visible(
+            self._selected_value(self.bootloader_row) == "limine"
+            and len(self._rows[id(self.boot_resolution_row)]) > 1
+        )
+
+    def _sync_boot_aspect_row(self):
+        # Only Limine shows a wallpaper (systemd-boot has none).
+        self.boot_aspect_row.set_visible(
+            self._selected_value(self.bootloader_row) == "limine"
+        )
 
     def _sync_nvidia_row(self):
         self.nvidia_laptop_row.set_visible(
@@ -1632,6 +1707,8 @@ class OptionsPage(Adw.NavigationPage):
         s.autoupdate_interval = self.autoupdate_interval_row.get_text()
         s.branch = self._selected_value(self.branch_row)
         s.bootloader = self._selected_value(self.bootloader_row)
+        s.boot_aspect = self._selected_value(self.boot_aspect_row)
+        s.boot_resolution = self._selected_value(self.boot_resolution_row)
         s.matrix_client = self._selected_value(self.matrix_row)
         s.discord = self._selected_value(self.discord_row)
         s.telegram = self._selected_value(self.telegram_row)

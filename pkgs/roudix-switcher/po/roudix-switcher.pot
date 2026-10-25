@@ -278,6 +278,27 @@ msgid "Dev — latest changes, least stable"
 msgstr ""
 
 #: roudix-switcher.py
+#, python-brace-format
+msgid "matches your main screen ({res})"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Automatic"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Limine decides"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Your main screen"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Current setting"
+msgstr ""
+
+#: roudix-switcher.py
 msgid ""
 "~/.config/roudix is not a git repository — the branch cannot be switched."
 msgstr ""
@@ -939,6 +960,45 @@ msgid "Update check interval"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Boot wallpaper format (Limine)"
+msgstr ""
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"Your main screen ({res}) looks like {aspect}, but the boot wallpaper is "
+"{current} — pick {aspect} if you changed screens."
+msgstr ""
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "Main screen detected: {res}."
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"Could not detect your screen — pick the format closest to your main screen "
+"(the biggest one)."
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Limine menu resolution"
+msgstr ""
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"{count} screens detected: Limine can use the smaller one — pick {res} (your "
+"main screen) to force the menu and its wallpaper to it."
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"Only useful with several screens of different sizes. If the firmware doesn't "
+"offer the resolution, Limine falls back to another one."
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Audio (PipeWire)"
 msgstr ""
 
@@ -978,6 +1038,10 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Update interval"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Boot wallpaper format"
 msgstr ""
 
 #: roudix-switcher.py

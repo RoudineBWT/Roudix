@@ -114,7 +114,8 @@
 
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
-  roudix.boot.wallpaperAspect = "16x9"; # put your aspects ratio
+  roudix.boot.wallpaperAspect = "16x9"; # Limine wallpaper format — the one closest to your MAIN screen (the biggest one), so it isn't stretched: "16x9" (1920x1080, 2560x1440, 3840x2160...), "16x10" (1920x1200, 2560x1600...), "21x9" (2560x1080, 3440x1440...) or "4x3" (1024x768, 1280x1024...). Run ./scripts/detect-boot-aspect.sh to find yours; the installers and roudix-switcher suggest it too (change it there if you swap screens). Only used with limine
+  roudix.boot.menuResolution = "auto"; # Limine menu (and wallpaper) resolution: "auto", or "<width>x<height>" e.g. "2560x1440". With several screens of different sizes Limine can pick the SMALLER one: set your MAIN screen's resolution (the highest one) — ./scripts/detect-boot-aspect.sh --resolution prints it, the installers and roudix-switcher suggest it. If the firmware doesn't offer it, Limine falls back by itself. Only used with limine
   roudix.terminal = "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
   roudix.fileManager = "nautilus"; # dolphin, thunar, nautilus, nemo
   roudix.gaming.enable        = false;        # true = Steam, Wine, etc. + the launchers below

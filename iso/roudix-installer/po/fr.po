@@ -337,6 +337,15 @@ msgid "Limine (recommended)"
 msgstr "Limine (recommandé)"
 
 #: src/roudix_installer/pages/options.py
+msgid "Automatic (Limine decides)"
+msgstr "Automatique (Limine décide)"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Main screen: {res}"
+msgstr "Écran principal : {res}"
+
+#: src/roudix_installer/pages/options.py
 msgid "main — stable, ~every 2 weeks (recommended)"
 msgstr "main — stable, ~toutes les 2 semaines (recommandé)"
 
@@ -1153,6 +1162,36 @@ msgstr "Branche (installation + mises à jour)"
 #: src/roudix_installer/pages/options.py
 msgid "Bootloader"
 msgstr "Bootloader"
+
+#: src/roudix_installer/pages/options.py
+msgid "Boot wallpaper format (Limine)"
+msgstr "Format du fond d'écran de démarrage (Limine)"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Main screen detected: {res}"
+msgstr "Écran principal détecté : {res}"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pick the one closest to your main screen (the biggest one)"
+msgstr "Choisis le plus proche de ton écran principal (le plus grand)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Limine menu resolution"
+msgstr "Résolution du menu Limine"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid ""
+"{count} screens detected: Limine can use the smaller one — pick your main "
+"screen's resolution."
+msgstr ""
+"{count} écrans détectés : Limine peut utiliser le plus petit — choisis la "
+"résolution de ton écran principal."
+
+#: src/roudix_installer/pages/options.py
+msgid "Only useful with several screens of different sizes."
+msgstr "Utile seulement avec plusieurs écrans de tailles différentes."
 
 #: src/roudix_installer/pages/options.py
 msgid "Matrix client"

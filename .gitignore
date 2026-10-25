@@ -1,5 +1,7 @@
 hosts/*/local.nix
 hosts/*/local.nix.bak
+hosts/*/firewall.local.nix
+hosts/*/firewall.local.nix.bak
 hosts/*/hardware-configuration.nix
 hosts/*/username.nix
 modules/home/local.nix

@@ -199,6 +199,8 @@
     roudixBranding  = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-branding {};
     roudix-kernel-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-kernel-switcher {};
     roudix-hw-sync = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-hw-sync {};
+    roudix-firewall = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-firewall {};
+    roudix-disk = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-disk {};
     roudix-scheduler-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-scheduler-switcher {
       scxctl = roudix-caches.packages.x86_64-linux.scxctl;
     };
@@ -211,7 +213,7 @@
     # username is NOT here anymore: it's per-host, read from
     # hosts/<hostName>/username.nix (gitignored). Base args shared by
     # every host — each mkHost call adds its own `username`.
-    baseSpecialArgs = { inherit inputs roudixSwitcher roudixBranding roudix-kernel-switcher roudix-hw-sync roudix-scheduler-switcher roudixWelcome roudixConfig roudixStore; dotfiles = self + /dotfiles; };
+    baseSpecialArgs = { inherit inputs roudixSwitcher roudixBranding roudix-kernel-switcher roudix-hw-sync roudix-firewall roudix-disk roudix-scheduler-switcher roudixWelcome roudixConfig roudixStore; dotfiles = self + /dotfiles; };
 
     # ── Host builder ──────────────────────────────────────────────────────
     # One host = one directory under ./hosts/<hostName>/ containing:

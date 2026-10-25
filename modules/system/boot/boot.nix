@@ -10,8 +10,9 @@
     wallpaperAspect = lib.mkOption {
       description = ''
         Aspect ratio of the Limine boot wallpaper. Pick the one closest to your
-        screen so the (stretched) image is not distorted.
-        Run ./scripts/detect-boot-aspect.sh to find out which one to use.
+        MAIN screen (the one with the highest resolution) so the stretched image
+        is not distorted. Run ./scripts/detect-boot-aspect.sh to find out which
+        one to use; the installers and roudix-switcher suggest it too.
           16x9  -> 1280x720, 1920x1080, 2560x1440, 3840x2160
           16x10 -> 1920x1200, 2560x1600, 2880x1800
           21x9  -> 2560x1080, 3440x1440
@@ -19,6 +20,23 @@
       '';
       type = lib.types.enum [ "16x9" "16x10" "21x9" "4x3" ];
       default = "16x9";
+    };
+
+    menuResolution = lib.mkOption {
+      description = ''
+        Resolution of the Limine menu, and so of its wallpaper: "auto" lets
+        Limine pick, or "<width>x<height>" (e.g. "2560x1440") forces it.
+        With several screens of different sizes Limine can end up on the smaller
+        one: set your MAIN screen's resolution (the highest one) here. If the
+        firmware doesn't offer it, Limine falls back to another one by itself.
+        ./scripts/detect-boot-aspect.sh --resolution prints it; the installers
+        and roudix-switcher suggest it too. Only used with limine.
+      '';
+      type = lib.types.either
+        (lib.types.enum [ "auto" ])
+        (lib.types.strMatching "[0-9]+x[0-9]+");
+      default = "auto";
+      example = "2560x1440";
     };
 
     bootloader = lib.mkOption {
@@ -53,6 +71,10 @@
           })
         ];
         wallpaperStyle = "stretched";
+        # null = no `interface_resolution` line, Limine picks by itself
+        interface.resolution =
+          if config.roudix.boot.menuResolution == "auto" then null
+          else config.roudix.boot.menuResolution;
         # ── Roudix Roux ──────────────────────────────────────────────
         graphicalTerminal = {
           foreground       = "eab676"; # tan (logo)

@@ -1,0 +1,299 @@
+# Translations of roudix-disk (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-disk\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-25 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#: roudix-disk.py
+msgid "Unbalanced braces in the configuration file."
+msgstr "أقواس غير متوازنة في ملف الإعدادات."
+
+#: roudix-disk.py
+msgid ""
+"This file uses the `fileSystems = { … }` form, which roudix-disk does not "
+"edit."
+msgstr "يستخدم هذا الملف الصيغة `fileSystems = { … }` التي لا يعدّلها roudix-disk."
+
+#: roudix-disk.py
+msgid "Two entries share the same mount point."
+msgstr "هناك إدخالان يشتركان في نقطة التركيب نفسها."
+
+#: roudix-disk.py
+msgid "The configuration file does not end with a closing brace."
+msgstr "ملف الإعدادات لا ينتهي بقوس إغلاق."
+
+#: roudix-disk.py
+msgid "Use an absolute path with letters, digits and . _ - @ + only."
+msgstr "استخدم مسارًا مطلقًا يحتوي على حروف وأرقام والرموز . _ - @ + فقط."
+
+#: roudix-disk.py
+msgid "No trailing slash."
+msgstr "بدون شرطة مائلة في النهاية."
+
+#: roudix-disk.py
+msgid "Use a clean path (no //, . or ..)."
+msgstr "استخدم مسارًا نظيفًا (بدون // أو . أو ..)."
+
+#: roudix-disk.py
+msgid "This mount point belongs to the system."
+msgstr "نقطة التركيب هذه تخص النظام."
+
+#: roudix-disk.py
+msgid "Mounting here could break the system."
+msgstr "قد يؤدي التركيب هنا إلى تعطل النظام."
+
+#: roudix-disk.py
+msgid "This mount point is already used."
+msgstr "نقطة التركيب هذه مستخدمة بالفعل."
+
+#: roudix-disk.py
+msgid "Generated file is not valid Nix:"
+msgstr "الملف المُنشأ ليس Nix صالحًا:"
+
+#: roudix-disk.py
+msgid "Close"
+msgstr "إغلاق"
+
+#: roudix-disk.py
+msgid "Done."
+msgstr "تم."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Failed (exit code {rc})."
+msgstr "فشل (رمز الخروج {rc})."
+
+#: roudix-disk.py
+msgid "Roudix Disks"
+msgstr "أقراص Roudix"
+
+#: roudix-disk.py
+msgid "Rescan disks"
+msgstr "إعادة فحص الأقراص"
+
+#: roudix-disk.py
+msgid "Apply…"
+msgstr "تطبيق…"
+
+#: roudix-disk.py
+msgid "Changes not applied yet"
+msgstr "لم تُطبَّق التغييرات بعد"
+
+#: roudix-disk.py
+msgid "Remove"
+msgstr "إزالة"
+
+#: roudix-disk.py
+msgid "Dismiss"
+msgstr "تجاهل"
+
+#: roudix-disk.py
+msgid "Configuration not found"
+msgstr "لم يتم العثور على الإعدادات"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"Could not find {file}. Set ROUDIX_HOST or NH_FLAKE if your configuration "
+"lives elsewhere."
+msgstr "تعذّر العثور على {file}. عيّن ROUDIX_HOST أو NH_FLAKE إذا كانت إعداداتك في مكان آخر."
+
+#: roudix-disk.py
+msgid "This configuration can't be edited here"
+msgstr "لا يمكن تعديل هذه الإعدادات هنا"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Could not list disks: {err}"
+msgstr "تعذّر سرد الأقراص: {err}"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "{n} configured disk is not connected"
+msgid_plural "{n} configured disks are not connected"
+msgstr[0] "{n} قرص مُعدّ غير متصل"
+msgstr[1] "قرص واحد ({n}) مُعدّ غير متصل"
+msgstr[2] "قرصان ({n}) مُعدّان غير متصلين"
+msgstr[3] "{n} أقراص مُعدّة غير متصلة"
+msgstr[4] "{n} قرصًا مُعدًّا غير متصل"
+msgstr[5] "{n} قرص مُعدّ غير متصل"
+
+#: roudix-disk.py
+msgid "No disks found"
+msgstr "لم يتم العثور على أقراص"
+
+#: roudix-disk.py
+msgid "removable"
+msgstr "قابل للإزالة"
+
+#: roudix-disk.py
+msgid "Unknown disk"
+msgstr "قرص غير معروف"
+
+#: roudix-disk.py
+msgid "Format…"
+msgstr "تهيئة…"
+
+#: roudix-disk.py
+msgid "Mounted — unmount it first"
+msgstr "مُركَّب — ألغِ تركيبه أولًا"
+
+#: roudix-disk.py
+msgid "Empty disk"
+msgstr "قرص فارغ"
+
+#: roudix-disk.py
+msgid "No partition table or filesystem. Use Format… to prepare it."
+msgstr "لا يوجد جدول أقسام ولا نظام ملفات. استخدم «تهيئة…» لإعداده."
+
+#: roudix-disk.py
+msgid "unknown filesystem"
+msgstr "نظام ملفات غير معروف"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "mounted at {mp}"
+msgstr "مُركَّب على {mp}"
+
+#: roudix-disk.py
+msgid "System"
+msgstr "النظام"
+
+#: roudix-disk.py
+msgid "Change mount point"
+msgstr "تغيير نقطة التركيب"
+
+#: roudix-disk.py
+msgid "Remove mount point"
+msgstr "إزالة نقطة التركيب"
+
+#: roudix-disk.py
+msgid "Mount…"
+msgstr "تركيب…"
+
+#: roudix-disk.py
+msgid "Not supported"
+msgstr "غير مدعوم"
+
+#: roudix-disk.py
+msgid "Mount point"
+msgstr "نقطة التركيب"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Where should {device} be mounted?"
+msgstr "أين يجب تركيب {device}؟"
+
+#: roudix-disk.py
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: roudix-disk.py
+msgid "Save"
+msgstr "حفظ"
+
+#: roudix-disk.py
+msgid "This disk is in use and can't be formatted."
+msgstr "هذا القرص قيد الاستخدام ولا يمكن تهيئته."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Format {device}?"
+msgstr "تهيئة {device}؟"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"All data on {device} ({model}, {size}) will be permanently erased and "
+"replaced by a single GPT partition."
+msgstr "ستُمسح كل البيانات على {device} ({model}، {size}) نهائيًا وتُستبدل بقسم GPT واحد."
+
+#: roudix-disk.py
+msgid "Filesystem"
+msgstr "نظام الملفات"
+
+#: roudix-disk.py
+msgid "Label"
+msgstr "التسمية"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Type {device} to confirm"
+msgstr "اكتب {device} للتأكيد"
+
+#: roudix-disk.py
+msgid "Erase and format"
+msgstr "مسح وتهيئة"
+
+#: roudix-disk.py
+msgid "Label: 1–16 characters, letters, digits . _ - only."
+msgstr "التسمية: من 1 إلى 16 حرفًا، أحرف وأرقام و . _ - فقط."
+
+#: roudix-disk.py
+msgid "Authentication cancelled."
+msgstr "تم إلغاء المصادقة."
+
+#: roudix-disk.py
+msgid "Formatting failed — see the log."
+msgstr "فشلت التهيئة — راجع السجل."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "{device} formatted."
+msgstr "تمت تهيئة {device}."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Formatting {device}…"
+msgstr "جارٍ تهيئة {device}…"
+
+#: roudix-disk.py
+msgid "Apply changes?"
+msgstr "تطبيق التغييرات؟"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"{file} will be updated and Roudix rebuilt. The current file is backed up "
+"first, and restored if the rebuild fails."
+msgstr "سيتم تحديث {file} وإعادة بناء Roudix. يُنسخ الملف الحالي احتياطيًا أولًا ويُستعاد إذا فشلت إعادة البناء."
+
+#: roudix-disk.py
+msgid "At next boot"
+msgstr "عند الإقلاع التالي"
+
+#: roudix-disk.py
+msgid "Apply now"
+msgstr "تطبيق الآن"
+
+#: roudix-disk.py
+msgid "Changes applied."
+msgstr "تم تطبيق التغييرات."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Rebuild failed and the backup could not be restored: {err}"
+msgstr "فشلت إعادة البناء وتعذّرت استعادة النسخة الاحتياطية: {err}"
+
+#: roudix-disk.py
+msgid "Authentication cancelled — nothing was changed."
+msgstr "تم إلغاء المصادقة — لم يتغير شيء."
+
+#: roudix-disk.py
+msgid ""
+"Rebuild failed — the previous configuration was restored. Your edits are "
+"still here."
+msgstr "فشلت إعادة البناء — تمت استعادة الإعدادات السابقة. تعديلاتك ما زالت هنا."
+
+#: roudix-disk.py
+msgid "Rebuilding Roudix…"
+msgstr "جارٍ إعادة بناء Roudix…"

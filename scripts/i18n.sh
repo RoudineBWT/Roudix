@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # i18n.sh — gettext workflow for the installer (iso/roudix-installer) and the Roudix apps
-# (pkgs/roudix-welcome, roudix-switcher, roudix-store, roudix-config, roudix-kernel-switcher, roudix-hw-sync, roudix-scheduler).
+# (pkgs/roudix-welcome, roudix-switcher, roudix-store, roudix-config, roudix-kernel-switcher, roudix-hw-sync, roudix-scheduler, roudix-firewall).
 #
 #   scripts/i18n.sh update  [component…]   re-extract strings -> po/<domain>.pot, merge into every po/*.po
 #   scripts/i18n.sh compile [component…]   po/*.po -> <locale dir>/<lang>/LC_MESSAGES/<domain>.mo
@@ -8,14 +8,14 @@
 #   scripts/i18n.sh check   [component…]   fail if a .po is out of date, has untranslated/fuzzy entries, or is invalid
 #   scripts/i18n.sh new <lang> [component…] start a new translation, e.g. `new de`
 #
-# Components: installer welcome switcher store config kernel-switcher hw-sync scheduler (default: all of them).
+# Components: installer welcome switcher store config kernel-switcher hw-sync scheduler firewall (default: all of them).
 # Needs GNU gettext (xgettext, msgmerge, msgfmt, msgcmp): `nix develop` provides it.
 set -euo pipefail
 
 command -v xgettext >/dev/null || { echo "i18n.sh: GNU gettext not found (use \`nix develop\`)" >&2; exit 127; }
 
 ROOT="$(git rev-parse --show-toplevel)"
-ALL_COMPONENTS="installer welcome switcher store config kernel-switcher hw-sync scheduler"
+ALL_COMPONENTS="installer welcome switcher store config kernel-switcher hw-sync scheduler firewall disk"
 
 # Languages that must be 100% translated for `check` to pass. Any other language is
 # only checked for validity and for being in sync with the sources, so a contributor
@@ -34,6 +34,8 @@ select_component() {
         kernel-switcher) DIR=pkgs/roudix-kernel-switcher; DOMAIN=roudix-kernel-switcher; LOCALE_DIR=locale ;;
         hw-sync)   DIR=pkgs/roudix-hw-sync;  DOMAIN=roudix-hw-sync;   LOCALE_DIR=locale ;;
         scheduler) DIR=pkgs/roudix-scheduler-switcher; DOMAIN=roudix-scheduler; LOCALE_DIR=locale ;;
+        firewall)  DIR=pkgs/roudix-firewall; DOMAIN=roudix-firewall; LOCALE_DIR=locale ;;
+        disk)  DIR=pkgs/roudix-disk; DOMAIN=roudix-disk; LOCALE_DIR=locale ;;
         *) echo "i18n.sh: unknown component '$COMP' (one of: $ALL_COMPONENTS)" >&2; exit 2 ;;
     esac
     cd "$ROOT/$DIR"

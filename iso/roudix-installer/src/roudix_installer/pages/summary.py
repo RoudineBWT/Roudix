@@ -141,7 +141,7 @@ class SummaryPage(Adw.NavigationPage):
                 tr("Virtualization") if s.virtualization else "",
                 f"autoupdate {s.autoupdate_interval}" if s.autoupdate else "",
             ])) or trc("summary, Extras row: nothing selected", "none")),
-            ("Bootloader", s.bootloader),
+            ("Bootloader", s.bootloader + (f" ({s.boot_aspect} · {s.boot_resolution})" if s.bootloader == "limine" else "")),
             ("Matrix", s.matrix_client),
             ("Discord", s.discord),
             ("Telegram", s.telegram),

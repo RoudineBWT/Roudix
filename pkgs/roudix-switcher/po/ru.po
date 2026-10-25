@@ -295,6 +295,27 @@ msgid "Dev — latest changes, least stable"
 msgstr "Dev — самые свежие изменения, наименее стабильная"
 
 #: roudix-switcher.py
+#, python-brace-format
+msgid "matches your main screen ({res})"
+msgstr "соответствует вашему основному экрану ({res})"
+
+#: roudix-switcher.py
+msgid "Automatic"
+msgstr "Автоматически"
+
+#: roudix-switcher.py
+msgid "Limine decides"
+msgstr "Limine решает сам"
+
+#: roudix-switcher.py
+msgid "Your main screen"
+msgstr "Ваш основной экран"
+
+#: roudix-switcher.py
+msgid "Current setting"
+msgstr "Текущая настройка"
+
+#: roudix-switcher.py
 msgid ""
 "~/.config/roudix is not a git repository — the branch cannot be switched."
 msgstr ""
@@ -989,6 +1010,53 @@ msgid "Update check interval"
 msgstr "Интервал проверки обновлений"
 
 #: roudix-switcher.py
+msgid "Boot wallpaper format (Limine)"
+msgstr "Формат обоев загрузчика (Limine)"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"Your main screen ({res}) looks like {aspect}, but the boot wallpaper is "
+"{current} — pick {aspect} if you changed screens."
+msgstr ""
+"Ваш основной экран ({res}) имеет формат {aspect}, а обои загрузчика — "
+"{current}. Выберите {aspect}, если вы сменили экран."
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "Main screen detected: {res}."
+msgstr "Обнаружен основной экран: {res}."
+
+#: roudix-switcher.py
+msgid ""
+"Could not detect your screen — pick the format closest to your main screen "
+"(the biggest one)."
+msgstr ""
+"Не удалось определить экран — выберите формат, ближайший к основному экрану "
+"(самому большому)."
+
+#: roudix-switcher.py
+msgid "Limine menu resolution"
+msgstr "Разрешение меню Limine"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"{count} screens detected: Limine can use the smaller one — pick {res} (your "
+"main screen) to force the menu and its wallpaper to it."
+msgstr ""
+"Обнаружено экранов: {count}. Limine может выбрать меньший — выберите {res} "
+"(ваш основной экран), чтобы меню и обои использовали это разрешение."
+
+#: roudix-switcher.py
+msgid ""
+"Only useful with several screens of different sizes. If the firmware doesn't "
+"offer the resolution, Limine falls back to another one."
+msgstr ""
+"Нужно только при нескольких экранах разного размера. Если прошивка не "
+"поддерживает это разрешение, Limine выберет другое."
+
+#: roudix-switcher.py
 msgid "Audio (PipeWire)"
 msgstr "Звук (PipeWire)"
 
@@ -1039,6 +1107,10 @@ msgstr ""
 #: roudix-switcher.py
 msgid "Update interval"
 msgstr "Интервал обновления"
+
+#: roudix-switcher.py
+msgid "Boot wallpaper format"
+msgstr "Формат обоев загрузчика"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

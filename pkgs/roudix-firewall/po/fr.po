@@ -1,0 +1,377 @@
+# French translation of roudix-firewall (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-firewall\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-25 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: roudix-firewall.py
+msgid "Enter at least one port."
+msgstr "Saisissez au moins un port."
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "Not a valid port or range: {token} (ports go from 1 to 65535)."
+msgstr "Port ou plage invalide : {token} (les ports vont de 1 à 65535)."
+
+#: roudix-firewall.py
+msgid "Edit rule"
+msgstr "Modifier la règle"
+
+#: roudix-firewall.py
+msgid "New rule"
+msgstr "Nouvelle règle"
+
+#: roudix-firewall.py
+msgid "Name"
+msgstr "Nom"
+
+#: roudix-firewall.py
+msgid "Protocol"
+msgstr "Protocole"
+
+#: roudix-firewall.py
+msgid "Ports (e.g. 80, 443, 8000-8010)"
+msgstr "Ports (ex. 80, 443, 8000-8010)"
+
+#: roudix-firewall.py
+msgid "Cancel"
+msgstr "Annuler"
+
+#: roudix-firewall.py
+msgid "Save"
+msgstr "Enregistrer"
+
+#: roudix-firewall.py
+msgid "Give the rule a name."
+msgstr "Donnez un nom à la règle."
+
+#: roudix-firewall.py
+msgid "Another rule already uses this protocol and these ports."
+msgstr "Une autre règle utilise déjà ce protocole et ces ports."
+
+#: roudix-firewall.py
+msgid "Presets"
+msgstr "Préréglages"
+
+#: roudix-firewall.py
+msgid "Added"
+msgstr "Ajouté"
+
+#: roudix-firewall.py
+msgid "Add"
+msgstr "Ajouter"
+
+#: roudix-firewall.py
+msgid "Applying the firewall"
+msgstr "Application du pare-feu"
+
+#: roudix-firewall.py
+msgid "Rebuilding… this can take a few minutes."
+msgstr "Reconstruction… cela peut prendre quelques minutes."
+
+#: roudix-firewall.py
+msgid "Close"
+msgstr "Fermer"
+
+#: roudix-firewall.py
+msgid "ERROR: 'nh' not found in PATH."
+msgstr "ERREUR : « nh » est introuvable dans le PATH."
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "ERROR: {error}"
+msgstr "ERREUR : {error}"
+
+#: roudix-firewall.py
+msgid "✓ Firewall applied."
+msgstr "✓ Pare-feu appliqué."
+
+#: roudix-firewall.py
+msgid "✓ Rebuild completed successfully."
+msgstr "✓ Reconstruction terminée avec succès."
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid ""
+"✗ The rebuild failed (exit {rc}). Your previous firewall file was restored."
+msgstr ""
+"✗ La reconstruction a échoué (code {rc}). Votre ancien fichier de pare-feu a "
+"été restauré."
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit code {rc})."
+msgstr "✗ La reconstruction a échoué (code de sortie {rc})."
+
+#: roudix-firewall.py
+msgid "Roudix Firewall"
+msgstr "Pare-feu Roudix"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid ""
+"Host directory not found: {path}. Set ROUDIX_HOST to the name of your hosts/ "
+"directory."
+msgstr ""
+"Dossier de l'hôte introuvable : {path}. Définissez ROUDIX_HOST avec le nom "
+"de votre dossier hosts/."
+
+#: roudix-firewall.py
+msgid ""
+"This host's configuration.nix does not import firewall.local.nix yet: "
+"nothing saved here will apply. Update Roudix first."
+msgstr ""
+"Le configuration.nix de cet hôte n'importe pas encore firewall.local.nix : "
+"rien de ce qui est enregistré ici ne s'appliquera. Mettez d'abord Roudix à "
+"jour."
+
+#: roudix-firewall.py
+msgid ""
+"This file was edited by hand and has been read back from its Nix. Saving "
+"will regenerate it."
+msgstr ""
+"Ce fichier a été modifié à la main et relu depuis son Nix. L'enregistrement "
+"le régénérera."
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid ""
+"Saved in {path}, which git ignores: git pull and the auto-update never "
+"overwrite it."
+msgstr ""
+"Enregistré dans {path}, ignoré par git : git pull et la mise à jour "
+"automatique ne l'écrasent jamais."
+
+#: roudix-firewall.py
+msgid "Firewall"
+msgstr "Pare-feu"
+
+#: roudix-firewall.py
+msgid "Block incoming connections that are not allowed below"
+msgstr "Bloquer les connexions entrantes non autorisées ci-dessous"
+
+#: roudix-firewall.py
+msgid "Allowed ports"
+msgstr "Ports autorisés"
+
+#: roudix-firewall.py
+msgid "Incoming connections on these ports are allowed."
+msgstr "Les connexions entrantes sur ces ports sont autorisées."
+
+#: roudix-firewall.py
+msgid "Add rule"
+msgstr "Ajouter une règle"
+
+#: roudix-firewall.py
+msgid "Trusted interfaces"
+msgstr "Interfaces de confiance"
+
+#: roudix-firewall.py
+msgid ""
+"All traffic coming in on these interfaces is allowed (containers, VMs, VPN…)."
+msgstr ""
+"Tout le trafic entrant sur ces interfaces est autorisé (conteneurs, VM, "
+"VPN…)."
+
+#: roudix-firewall.py
+msgid "Add an interface (e.g. docker0)"
+msgstr "Ajouter une interface (ex. docker0)"
+
+#: roudix-firewall.py
+msgid "Suggestions"
+msgstr "Suggestions"
+
+#: roudix-firewall.py
+msgid "Save & apply"
+msgstr "Enregistrer et appliquer"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid ""
+"local.nix also sets networking.firewall options ({n} line(s)). They keep "
+"working and add up to the ones below, but cannot be edited here."
+msgstr ""
+"local.nix définit aussi des options networking.firewall ({n} ligne(s)). "
+"Elles continuent de fonctionner et s'ajoutent à celles ci-dessous, mais ne "
+"sont pas modifiables ici."
+
+#: roudix-firewall.py
+msgid "Unsaved changes"
+msgstr "Modifications non enregistrées"
+
+#: roudix-firewall.py
+msgid "Add a rule or pick a preset."
+msgstr "Ajoutez une règle ou choisissez un préréglage."
+
+#: roudix-firewall.py
+msgid "No rules yet"
+msgstr "Aucune règle pour l'instant"
+
+#: roudix-firewall.py
+msgid "disabled"
+msgstr "désactivée"
+
+#: roudix-firewall.py
+msgid "Enable or disable this rule"
+msgstr "Activer ou désactiver cette règle"
+
+#: roudix-firewall.py
+msgid "Edit"
+msgstr "Modifier"
+
+#: roudix-firewall.py
+msgid "Delete"
+msgstr "Supprimer"
+
+#: roudix-firewall.py
+msgid "Remove"
+msgstr "Retirer"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "Invalid interface name: {name}"
+msgstr "Nom d'interface invalide : {name}"
+
+#: roudix-firewall.py
+msgid "Turn the firewall off?"
+msgstr "Désactiver le pare-feu ?"
+
+#: roudix-firewall.py
+msgid ""
+"With the firewall off, every port of this machine is reachable from the "
+"network."
+msgstr ""
+"Sans pare-feu, tous les ports de cette machine sont accessibles depuis le "
+"réseau."
+
+#: roudix-firewall.py
+msgid "Turn off"
+msgstr "Désactiver"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "Could not save: {error}"
+msgstr "Impossible d'enregistrer : {error}"
+
+#: roudix-firewall.py
+msgid "Saved. It takes effect at the next rebuild (or use Save & apply)."
+msgstr ""
+"Enregistré. Pris en compte à la prochaine reconstruction (ou via "
+"« Enregistrer et appliquer »)."
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "Could not restore the previous file: {error}"
+msgstr "Impossible de restaurer l'ancien fichier : {error}"
+
+#: roudix-firewall.py
+msgid "Discard unsaved changes?"
+msgstr "Abandonner les modifications non enregistrées ?"
+
+#: roudix-firewall.py
+msgid "Your changes have not been saved."
+msgstr "Vos modifications n'ont pas été enregistrées."
+
+#: roudix-firewall.py
+msgid "Discard"
+msgstr "Abandonner"
+
+#: roudix_firewall_core.py
+msgid "Common services"
+msgstr "Services courants"
+
+#: roudix_firewall_core.py
+msgid "SSH"
+msgstr "SSH"
+
+#: roudix_firewall_core.py
+msgid "HTTP / HTTPS"
+msgstr "HTTP / HTTPS"
+
+#: roudix_firewall_core.py
+msgid "DNS"
+msgstr "DNS"
+
+#: roudix_firewall_core.py
+msgid "Gaming"
+msgstr "Jeu"
+
+#: roudix_firewall_core.py
+msgid "Steam (game server)"
+msgstr "Steam (serveur de jeu)"
+
+#: roudix_firewall_core.py
+msgid "Sunshine (TCP)"
+msgstr "Sunshine (TCP)"
+
+#: roudix_firewall_core.py
+msgid "Sunshine (UDP)"
+msgstr "Sunshine (UDP)"
+
+#: roudix_firewall_core.py
+msgid "Minecraft Java server"
+msgstr "Serveur Minecraft Java"
+
+#: roudix_firewall_core.py
+msgid "Minecraft Bedrock server"
+msgstr "Serveur Minecraft Bedrock"
+
+#: roudix_firewall_core.py
+msgid "Connectivity"
+msgstr "Connectivité"
+
+#: roudix_firewall_core.py
+msgid "KDE Connect / GSConnect"
+msgstr "KDE Connect / GSConnect"
+
+#: roudix_firewall_core.py
+msgid "Syncthing (TCP)"
+msgstr "Syncthing (TCP)"
+
+#: roudix_firewall_core.py
+msgid "Syncthing (UDP)"
+msgstr "Syncthing (UDP)"
+
+#: roudix_firewall_core.py
+msgid "Samba (TCP)"
+msgstr "Samba (TCP)"
+
+#: roudix_firewall_core.py
+msgid "Samba (UDP)"
+msgstr "Samba (UDP)"
+
+#: roudix_firewall_core.py
+msgid "LocalSend"
+msgstr "LocalSend"
+
+#: roudix_firewall_core.py
+msgid "Docker"
+msgstr "Docker"
+
+#: roudix_firewall_core.py
+msgid "Podman"
+msgstr "Podman"
+
+#: roudix_firewall_core.py
+msgid "Libvirt / QEMU"
+msgstr "Libvirt / QEMU"
+
+#: roudix_firewall_core.py
+msgid "Network bridge"
+msgstr "Pont réseau"
+
+#: roudix_firewall_core.py
+msgid "Tailscale"
+msgstr "Tailscale"
+
+#: roudix_firewall_core.py
+msgid "WireGuard"
+msgstr "WireGuard"

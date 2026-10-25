@@ -1,0 +1,357 @@
+# Translations of roudix-firewall (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-firewall\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-25 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Simplified Chinese\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: roudix-firewall.py
+msgid "Enter at least one port."
+msgstr "请至少输入一个端口。"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "Not a valid port or range: {token} (ports go from 1 to 65535)."
+msgstr "无效的端口或范围：{token}（端口范围为 1 到 65535）。"
+
+#: roudix-firewall.py
+msgid "Edit rule"
+msgstr "编辑规则"
+
+#: roudix-firewall.py
+msgid "New rule"
+msgstr "新建规则"
+
+#: roudix-firewall.py
+msgid "Name"
+msgstr "名称"
+
+#: roudix-firewall.py
+msgid "Protocol"
+msgstr "协议"
+
+#: roudix-firewall.py
+msgid "Ports (e.g. 80, 443, 8000-8010)"
+msgstr "端口（例如 80, 443, 8000-8010）"
+
+#: roudix-firewall.py
+msgid "Cancel"
+msgstr "取消"
+
+#: roudix-firewall.py
+msgid "Save"
+msgstr "保存"
+
+#: roudix-firewall.py
+msgid "Give the rule a name."
+msgstr "请为规则命名。"
+
+#: roudix-firewall.py
+msgid "Another rule already uses this protocol and these ports."
+msgstr "已有另一条规则使用相同的协议和端口。"
+
+#: roudix-firewall.py
+msgid "Presets"
+msgstr "预设"
+
+#: roudix-firewall.py
+msgid "Added"
+msgstr "已添加"
+
+#: roudix-firewall.py
+msgid "Add"
+msgstr "添加"
+
+#: roudix-firewall.py
+msgid "Applying the firewall"
+msgstr "正在应用防火墙"
+
+#: roudix-firewall.py
+msgid "Rebuilding… this can take a few minutes."
+msgstr "正在重新构建…这可能需要几分钟。"
+
+#: roudix-firewall.py
+msgid "Close"
+msgstr "关闭"
+
+#: roudix-firewall.py
+msgid "ERROR: 'nh' not found in PATH."
+msgstr "错误：在 PATH 中找不到 'nh'。"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "ERROR: {error}"
+msgstr "错误：{error}"
+
+#: roudix-firewall.py
+msgid "✓ Firewall applied."
+msgstr "✓ 防火墙已应用。"
+
+#: roudix-firewall.py
+msgid "✓ Rebuild completed successfully."
+msgstr "✓ 重新构建成功完成。"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid ""
+"✗ The rebuild failed (exit {rc}). Your previous firewall file was restored."
+msgstr "✗ 重新构建失败（退出码 {rc}）。已恢复你之前的防火墙文件。"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit code {rc})."
+msgstr "✗ 重新构建失败（退出码 {rc}）。"
+
+#: roudix-firewall.py
+msgid "Roudix Firewall"
+msgstr "Roudix 防火墙"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid ""
+"Host directory not found: {path}. Set ROUDIX_HOST to the name of your hosts/ "
+"directory."
+msgstr "找不到主机目录：{path}。请将 ROUDIX_HOST 设置为你的 hosts/ 目录名称。"
+
+#: roudix-firewall.py
+msgid ""
+"This host's configuration.nix does not import firewall.local.nix yet: "
+"nothing saved here will apply. Update Roudix first."
+msgstr "此主机的 configuration.nix 尚未导入 firewall.local.nix：在此保存的内容都不会生效。请先更新 Roudix。"
+
+#: roudix-firewall.py
+msgid ""
+"This file was edited by hand and has been read back from its Nix. Saving "
+"will regenerate it."
+msgstr "此文件曾被手动编辑，并已从其 Nix 重新读取。保存时将重新生成。"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid ""
+"Saved in {path}, which git ignores: git pull and the auto-update never "
+"overwrite it."
+msgstr "已保存到 {path}，该文件被 git 忽略：git pull 和自动更新永远不会覆盖它。"
+
+#: roudix-firewall.py
+msgid "Firewall"
+msgstr "防火墙"
+
+#: roudix-firewall.py
+msgid "Block incoming connections that are not allowed below"
+msgstr "阻止下方未允许的传入连接"
+
+#: roudix-firewall.py
+msgid "Allowed ports"
+msgstr "允许的端口"
+
+#: roudix-firewall.py
+msgid "Incoming connections on these ports are allowed."
+msgstr "这些端口上的传入连接均被允许。"
+
+#: roudix-firewall.py
+msgid "Add rule"
+msgstr "添加规则"
+
+#: roudix-firewall.py
+msgid "Trusted interfaces"
+msgstr "受信任的接口"
+
+#: roudix-firewall.py
+msgid ""
+"All traffic coming in on these interfaces is allowed (containers, VMs, VPN…)."
+msgstr "通过这些接口传入的所有流量均被允许（容器、虚拟机、VPN…）。"
+
+#: roudix-firewall.py
+msgid "Add an interface (e.g. docker0)"
+msgstr "添加接口（例如 docker0）"
+
+#: roudix-firewall.py
+msgid "Suggestions"
+msgstr "建议"
+
+#: roudix-firewall.py
+msgid "Save & apply"
+msgstr "保存并应用"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid ""
+"local.nix also sets networking.firewall options ({n} line(s)). They keep "
+"working and add up to the ones below, but cannot be edited here."
+msgstr "local.nix 也设置了 networking.firewall 选项（{n} 行）。它们仍然有效，并与下方的选项叠加，但无法在此编辑。"
+
+#: roudix-firewall.py
+msgid "Unsaved changes"
+msgstr "未保存的更改"
+
+#: roudix-firewall.py
+msgid "Add a rule or pick a preset."
+msgstr "添加规则或选择预设。"
+
+#: roudix-firewall.py
+msgid "No rules yet"
+msgstr "暂无规则"
+
+#: roudix-firewall.py
+msgid "disabled"
+msgstr "已禁用"
+
+#: roudix-firewall.py
+msgid "Enable or disable this rule"
+msgstr "启用或禁用此规则"
+
+#: roudix-firewall.py
+msgid "Edit"
+msgstr "编辑"
+
+#: roudix-firewall.py
+msgid "Delete"
+msgstr "删除"
+
+#: roudix-firewall.py
+msgid "Remove"
+msgstr "移除"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "Invalid interface name: {name}"
+msgstr "无效的接口名称：{name}"
+
+#: roudix-firewall.py
+msgid "Turn the firewall off?"
+msgstr "关闭防火墙？"
+
+#: roudix-firewall.py
+msgid ""
+"With the firewall off, every port of this machine is reachable from the "
+"network."
+msgstr "防火墙关闭后，这台机器的所有端口都可从网络访问。"
+
+#: roudix-firewall.py
+msgid "Turn off"
+msgstr "关闭"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "Could not save: {error}"
+msgstr "无法保存：{error}"
+
+#: roudix-firewall.py
+msgid "Saved. It takes effect at the next rebuild (or use Save & apply)."
+msgstr "已保存。将在下次重新构建时生效（或使用“保存并应用”）。"
+
+#: roudix-firewall.py
+#, python-brace-format
+msgid "Could not restore the previous file: {error}"
+msgstr "无法恢复之前的文件：{error}"
+
+#: roudix-firewall.py
+msgid "Discard unsaved changes?"
+msgstr "放弃未保存的更改？"
+
+#: roudix-firewall.py
+msgid "Your changes have not been saved."
+msgstr "你的更改尚未保存。"
+
+#: roudix-firewall.py
+msgid "Discard"
+msgstr "放弃"
+
+#: roudix_firewall_core.py
+msgid "Common services"
+msgstr "常用服务"
+
+#: roudix_firewall_core.py
+msgid "SSH"
+msgstr "SSH"
+
+#: roudix_firewall_core.py
+msgid "HTTP / HTTPS"
+msgstr "HTTP / HTTPS"
+
+#: roudix_firewall_core.py
+msgid "DNS"
+msgstr "DNS"
+
+#: roudix_firewall_core.py
+msgid "Gaming"
+msgstr "游戏"
+
+#: roudix_firewall_core.py
+msgid "Steam (game server)"
+msgstr "Steam（游戏服务器）"
+
+#: roudix_firewall_core.py
+msgid "Sunshine (TCP)"
+msgstr "Sunshine (TCP)"
+
+#: roudix_firewall_core.py
+msgid "Sunshine (UDP)"
+msgstr "Sunshine (UDP)"
+
+#: roudix_firewall_core.py
+msgid "Minecraft Java server"
+msgstr "Minecraft Java 服务器"
+
+#: roudix_firewall_core.py
+msgid "Minecraft Bedrock server"
+msgstr "Minecraft Bedrock 服务器"
+
+#: roudix_firewall_core.py
+msgid "Connectivity"
+msgstr "连接"
+
+#: roudix_firewall_core.py
+msgid "KDE Connect / GSConnect"
+msgstr "KDE Connect / GSConnect"
+
+#: roudix_firewall_core.py
+msgid "Syncthing (TCP)"
+msgstr "Syncthing (TCP)"
+
+#: roudix_firewall_core.py
+msgid "Syncthing (UDP)"
+msgstr "Syncthing (UDP)"
+
+#: roudix_firewall_core.py
+msgid "Samba (TCP)"
+msgstr "Samba (TCP)"
+
+#: roudix_firewall_core.py
+msgid "Samba (UDP)"
+msgstr "Samba (UDP)"
+
+#: roudix_firewall_core.py
+msgid "LocalSend"
+msgstr "LocalSend"
+
+#: roudix_firewall_core.py
+msgid "Docker"
+msgstr "Docker"
+
+#: roudix_firewall_core.py
+msgid "Podman"
+msgstr "Podman"
+
+#: roudix_firewall_core.py
+msgid "Libvirt / QEMU"
+msgstr "Libvirt / QEMU"
+
+#: roudix_firewall_core.py
+msgid "Network bridge"
+msgstr "网络桥接"
+
+#: roudix_firewall_core.py
+msgid "Tailscale"
+msgstr "Tailscale"
+
+#: roudix_firewall_core.py
+msgid "WireGuard"
+msgstr "WireGuard"

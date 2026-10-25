@@ -287,6 +287,27 @@ msgid "Dev — latest changes, least stable"
 msgstr "Dev — नवीनतम बदलाव, सबसे कम स्थिर"
 
 #: roudix-switcher.py
+#, python-brace-format
+msgid "matches your main screen ({res})"
+msgstr "आपकी मुख्य स्क्रीन से मेल खाता है ({res})"
+
+#: roudix-switcher.py
+msgid "Automatic"
+msgstr "स्वचालित"
+
+#: roudix-switcher.py
+msgid "Limine decides"
+msgstr "Limine तय करता है"
+
+#: roudix-switcher.py
+msgid "Your main screen"
+msgstr "आपकी मुख्य स्क्रीन"
+
+#: roudix-switcher.py
+msgid "Current setting"
+msgstr "वर्तमान सेटिंग"
+
+#: roudix-switcher.py
 msgid ""
 "~/.config/roudix is not a git repository — the branch cannot be switched."
 msgstr "~/.config/roudix कोई git रिपॉज़िटरी नहीं है — ब्रांच नहीं बदली जा सकती।"
@@ -964,6 +985,53 @@ msgid "Update check interval"
 msgstr "अपडेट जाँच अंतराल"
 
 #: roudix-switcher.py
+msgid "Boot wallpaper format (Limine)"
+msgstr "बूट वॉलपेपर प्रारूप (Limine)"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"Your main screen ({res}) looks like {aspect}, but the boot wallpaper is "
+"{current} — pick {aspect} if you changed screens."
+msgstr ""
+"आपकी मुख्य स्क्रीन ({res}) {aspect} है, लेकिन बूट वॉलपेपर {current} है — अगर "
+"आपने स्क्रीन बदली है तो {aspect} चुनें।"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "Main screen detected: {res}."
+msgstr "मुख्य स्क्रीन मिली: {res}।"
+
+#: roudix-switcher.py
+msgid ""
+"Could not detect your screen — pick the format closest to your main screen "
+"(the biggest one)."
+msgstr ""
+"आपकी स्क्रीन का पता नहीं चल सका — अपनी मुख्य (सबसे बड़ी) स्क्रीन के सबसे "
+"करीब वाला प्रारूप चुनें।"
+
+#: roudix-switcher.py
+msgid "Limine menu resolution"
+msgstr "Limine मेनू रिज़ॉल्यूशन"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"{count} screens detected: Limine can use the smaller one — pick {res} (your "
+"main screen) to force the menu and its wallpaper to it."
+msgstr ""
+"{count} स्क्रीन मिलीं: Limine छोटी स्क्रीन चुन सकता है — मेनू और उसके "
+"वॉलपेपर को उसी रिज़ॉल्यूशन पर लाने के लिए {res} (आपकी मुख्य स्क्रीन) चुनें।"
+
+#: roudix-switcher.py
+msgid ""
+"Only useful with several screens of different sizes. If the firmware doesn't "
+"offer the resolution, Limine falls back to another one."
+msgstr ""
+"केवल अलग-अलग आकार की कई स्क्रीन होने पर उपयोगी। अगर फ़र्मवेयर यह रिज़ॉल्यूशन "
+"नहीं देता, तो Limine कोई दूसरा चुन लेता है।"
+
+#: roudix-switcher.py
 msgid "Audio (PipeWire)"
 msgstr "ऑडियो (PipeWire)"
 
@@ -1012,6 +1080,10 @@ msgstr ""
 #: roudix-switcher.py
 msgid "Update interval"
 msgstr "अपडेट अंतराल"
+
+#: roudix-switcher.py
+msgid "Boot wallpaper format"
+msgstr "बूट वॉलपेपर प्रारूप"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"
