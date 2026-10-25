@@ -2,7 +2,7 @@
 {
   nix.settings = {
     extra-substituters = [
-    #  "https://attic.xuyh0120.win/lantian"
+      "https://cache.lantian.pub/lantian"
       "https://noctalia.cachix.org"
       "https://prismlauncher.cachix.org"
       "https://nix-community.cachix.org"
@@ -15,7 +15,7 @@
     ];
     extra-trusted-public-keys = [
       "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
-    #  "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+      "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "prismlauncher.cachix.org-1:9/n/FGyABA2jLUVfY+DEp4hKds/rwO+SCOtbOkDzd+c="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

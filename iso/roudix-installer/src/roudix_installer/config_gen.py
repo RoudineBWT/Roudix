@@ -182,6 +182,8 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.autoupdate.interval", state.autoupdate_interval)
     t = _sub_string(t, "roudix.autoupdate.branch", state.branch)
     t = _sub_string(t, "roudix.boot.bootloader", state.bootloader)
+    t = _sub_string(t, "roudix.boot.wallpaperAspect", state.boot_aspect)
+    t = _sub_string(t, "roudix.boot.menuResolution", state.boot_resolution)
     t = _sub_string(t, "roudix.matrixClient", state.matrix_client)
     t = _sub_string(t, "roudix.discord", state.discord)
     t = _sub_string(t, "roudix.telegram", state.telegram)
@@ -249,7 +251,9 @@ def _expected_values(state: InstallState) -> list:
         "i18n.defaultLocale": state.locale, "console.keyMap": state.keymap,
         "roudix.keyboardLayout": state.keyboard_layout, "roudix.keyboardVariant": state.keyboard_variant,
         "roudix.autoupdate.interval": state.autoupdate_interval, "roudix.autoupdate.branch": state.branch,
-        "roudix.boot.bootloader": state.bootloader, "roudix.matrixClient": state.matrix_client,
+        "roudix.boot.bootloader": state.bootloader, "roudix.boot.wallpaperAspect": state.boot_aspect,
+        "roudix.boot.menuResolution": state.boot_resolution,
+        "roudix.matrixClient": state.matrix_client,
         "roudix.discord": state.discord, "roudix.telegram": state.telegram,
         "roudix.videoPlayer": state.video_player, "roudix.torrentClient": state.torrent_client,
         "roudix.musicPlayer": state.music_player, "roudix.mailClient": state.mail_client,

@@ -294,6 +294,27 @@ msgid "Dev — latest changes, least stable"
 msgstr "Dev — últimas mudanças, a menos estável"
 
 #: roudix-switcher.py
+#, python-brace-format
+msgid "matches your main screen ({res})"
+msgstr "corresponde à sua tela principal ({res})"
+
+#: roudix-switcher.py
+msgid "Automatic"
+msgstr "Automático"
+
+#: roudix-switcher.py
+msgid "Limine decides"
+msgstr "O Limine decide"
+
+#: roudix-switcher.py
+msgid "Your main screen"
+msgstr "Sua tela principal"
+
+#: roudix-switcher.py
+msgid "Current setting"
+msgstr "Configuração atual"
+
+#: roudix-switcher.py
 msgid ""
 "~/.config/roudix is not a git repository — the branch cannot be switched."
 msgstr ""
@@ -987,6 +1008,53 @@ msgid "Update check interval"
 msgstr "Intervalo de verificação de atualizações"
 
 #: roudix-switcher.py
+msgid "Boot wallpaper format (Limine)"
+msgstr "Formato do papel de parede de boot (Limine)"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"Your main screen ({res}) looks like {aspect}, but the boot wallpaper is "
+"{current} — pick {aspect} if you changed screens."
+msgstr ""
+"Sua tela principal ({res}) é {aspect}, mas o papel de parede de boot é "
+"{current} — escolha {aspect} se você trocou de tela."
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "Main screen detected: {res}."
+msgstr "Tela principal detectada: {res}."
+
+#: roudix-switcher.py
+msgid ""
+"Could not detect your screen — pick the format closest to your main screen "
+"(the biggest one)."
+msgstr ""
+"Não foi possível detectar sua tela — escolha o formato mais próximo da sua "
+"tela principal (a maior)."
+
+#: roudix-switcher.py
+msgid "Limine menu resolution"
+msgstr "Resolução do menu do Limine"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"{count} screens detected: Limine can use the smaller one — pick {res} (your "
+"main screen) to force the menu and its wallpaper to it."
+msgstr ""
+"{count} telas detectadas: o Limine pode usar a menor — escolha {res} (sua "
+"tela principal) para forçar o menu e o papel de parede nessa resolução."
+
+#: roudix-switcher.py
+msgid ""
+"Only useful with several screens of different sizes. If the firmware doesn't "
+"offer the resolution, Limine falls back to another one."
+msgstr ""
+"Útil apenas com várias telas de tamanhos diferentes. Se o firmware não "
+"oferecer a resolução, o Limine usa outra."
+
+#: roudix-switcher.py
 msgid "Audio (PipeWire)"
 msgstr "Áudio (PipeWire)"
 
@@ -1037,6 +1105,10 @@ msgstr ""
 #: roudix-switcher.py
 msgid "Update interval"
 msgstr "Intervalo de atualização"
+
+#: roudix-switcher.py
+msgid "Boot wallpaper format"
+msgstr "Formato do papel de parede de boot"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

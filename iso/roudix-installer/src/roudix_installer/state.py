@@ -131,6 +131,8 @@ class InstallState:
     autoupdate_interval: str = "1h"
     branch: str = "main"             # roudix.autoupdate.branch — main | testing | dev (also the branch cloned)
     bootloader: str = "limine"       # limine | systemd-boot
+    boot_aspect: str = "16x9"        # roudix.boot.wallpaperAspect — 16x9 | 16x10 | 21x9 | 4x3 (Limine wallpaper, main screen)
+    boot_resolution: str = "auto"    # roudix.boot.menuResolution — "auto" | "<w>x<h>" (Limine menu; main screen with several screens)
     matrix_client: str = "none"      # none | element | cinny
     discord: str = "none"            # roudix.discord — vencord | vanilla | none
     telegram: str = "none"           # roudix.telegram — none | telegram | ayugram

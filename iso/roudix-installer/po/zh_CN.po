@@ -331,6 +331,15 @@ msgid "Limine (recommended)"
 msgstr "Limine（推荐）"
 
 #: src/roudix_installer/pages/options.py
+msgid "Automatic (Limine decides)"
+msgstr "自动（由 Limine 决定）"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Main screen: {res}"
+msgstr "主屏幕：{res}"
+
+#: src/roudix_installer/pages/options.py
 msgid "main — stable, ~every 2 weeks (recommended)"
 msgstr "main — 稳定，约每 2 周更新（推荐）"
 
@@ -1143,6 +1152,34 @@ msgstr "分支（安装 + 更新）"
 #: src/roudix_installer/pages/options.py
 msgid "Bootloader"
 msgstr "引导程序"
+
+#: src/roudix_installer/pages/options.py
+msgid "Boot wallpaper format (Limine)"
+msgstr "启动壁纸格式 (Limine)"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Main screen detected: {res}"
+msgstr "检测到主屏幕：{res}"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pick the one closest to your main screen (the biggest one)"
+msgstr "请选择最接近主屏幕（最大的那块）的选项"
+
+#: src/roudix_installer/pages/options.py
+msgid "Limine menu resolution"
+msgstr "Limine 菜单分辨率"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid ""
+"{count} screens detected: Limine can use the smaller one — pick your main "
+"screen's resolution."
+msgstr "检测到 {count} 个屏幕：Limine 可能会使用较小的那个 — 请选择主屏幕的分辨率。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Only useful with several screens of different sizes."
+msgstr "仅在有多个不同尺寸的屏幕时有用。"
 
 #: src/roudix_installer/pages/options.py
 msgid "Matrix client"

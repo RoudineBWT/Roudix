@@ -334,6 +334,15 @@ msgid "Limine (recommended)"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py
+msgid "Automatic (Limine decides)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Main screen: {res}"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
 msgid "main — stable, ~every 2 weeks (recommended)"
 msgstr ""
 
@@ -1138,6 +1147,34 @@ msgstr ""
 
 #: src/roudix_installer/pages/options.py
 msgid "Bootloader"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Boot wallpaper format (Limine)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Main screen detected: {res}"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Pick the one closest to your main screen (the biggest one)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Limine menu resolution"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid ""
+"{count} screens detected: Limine can use the smaller one — pick your main "
+"screen's resolution."
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Only useful with several screens of different sizes."
 msgstr ""
 
 #: src/roudix_installer/pages/options.py

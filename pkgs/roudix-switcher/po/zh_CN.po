@@ -286,6 +286,27 @@ msgid "Dev — latest changes, least stable"
 msgstr "Dev — 最新改动，稳定性最低"
 
 #: roudix-switcher.py
+#, python-brace-format
+msgid "matches your main screen ({res})"
+msgstr "与你的主屏幕匹配（{res}）"
+
+#: roudix-switcher.py
+msgid "Automatic"
+msgstr "自动"
+
+#: roudix-switcher.py
+msgid "Limine decides"
+msgstr "由 Limine 决定"
+
+#: roudix-switcher.py
+msgid "Your main screen"
+msgstr "你的主屏幕"
+
+#: roudix-switcher.py
+msgid "Current setting"
+msgstr "当前设置"
+
+#: roudix-switcher.py
 msgid ""
 "~/.config/roudix is not a git repository — the branch cannot be switched."
 msgstr "~/.config/roudix 不是 git 仓库 — 无法切换分支。"
@@ -955,6 +976,45 @@ msgid "Update check interval"
 msgstr "更新检查间隔"
 
 #: roudix-switcher.py
+msgid "Boot wallpaper format (Limine)"
+msgstr "启动壁纸格式 (Limine)"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"Your main screen ({res}) looks like {aspect}, but the boot wallpaper is "
+"{current} — pick {aspect} if you changed screens."
+msgstr "你的主屏幕（{res}）是 {aspect}，但启动壁纸是 {current} — 如果你换了屏幕，请选择 {aspect}。"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid "Main screen detected: {res}."
+msgstr "检测到主屏幕：{res}。"
+
+#: roudix-switcher.py
+msgid ""
+"Could not detect your screen — pick the format closest to your main screen "
+"(the biggest one)."
+msgstr "无法检测到你的屏幕 — 请选择最接近主屏幕（最大的那块）的格式。"
+
+#: roudix-switcher.py
+msgid "Limine menu resolution"
+msgstr "Limine 菜单分辨率"
+
+#: roudix-switcher.py
+#, python-brace-format
+msgid ""
+"{count} screens detected: Limine can use the smaller one — pick {res} (your "
+"main screen) to force the menu and its wallpaper to it."
+msgstr "检测到 {count} 个屏幕：Limine 可能会使用较小的那个 — 请选择 {res}（你的主屏幕），让菜单和壁纸使用该分辨率。"
+
+#: roudix-switcher.py
+msgid ""
+"Only useful with several screens of different sizes. If the firmware doesn't "
+"offer the resolution, Limine falls back to another one."
+msgstr "仅在有多个不同尺寸的屏幕时有用。如果固件不支持该分辨率，Limine 会自动改用其他分辨率。"
+
+#: roudix-switcher.py
 msgid "Audio (PipeWire)"
 msgstr "音频（PipeWire）"
 
@@ -1002,6 +1062,10 @@ msgstr ""
 #: roudix-switcher.py
 msgid "Update interval"
 msgstr "更新间隔"
+
+#: roudix-switcher.py
+msgid "Boot wallpaper format"
+msgstr "启动壁纸格式"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

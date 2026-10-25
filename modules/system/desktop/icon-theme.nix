@@ -7,12 +7,14 @@ let
   # papirus-icon.nix, tela-icon.nix), but built once by Nix, with the fixed
   # Roudix primary from assets/palette/Roudix.json instead of generated at
   # runtime. The theme only contains the "places" icons (the folders, home,
-  # desktop...) recolored; everything else is inherited from the stock
-  # Papirus-Dark / Tela-dark, which therefore has to be installed next to it.
-  # Result: orange folders on every desktop, zero copied app icons, zero risk
-  # of breaking anything else.
+  # desktop...) plus the file-manager app icons (system-file-manager, nemo...)
+  # recolored; everything else is inherited from the stock Papirus-Dark /
+  # Tela-dark, which therefore has to be installed next to it.
+  # Result: orange folders and file manager on every desktop, a handful of
+  # copied app icons, zero risk of breaking anything else.
   palette = builtins.fromJSON (builtins.readFile ../../../assets/palette/Roudix.json);
   primary = palette.dark.mPrimary;
+  secondary = palette.dark.mSecondary;
 
   # Papirus draws its folders with two shades: #5294e2 (body) and #4877b1 (tab,
   # ~80 % of the body). Same ratio for the Roudix primary.
@@ -22,7 +24,15 @@ let
     (i: lib.fixedWidthString 2 "0" (lib.toHexString (channel i * 80 / 100)))
     [ 0 2 4 ];
 
-  mkRoudixIcons = { name, title, base, baseName, sizes, extraSed ? "" }:
+  # File-manager app icons (what the panel / dock shows for Nemo, Nautilus,
+  # Dolphin...). Papirus: system-file-manager is the 3-tab cabinet; Tela:
+  # system-file-manager -> file-manager.svg is the blue folder.
+  fileManagerApps = [
+    "system-file-manager" "file-manager" "nemo" "org.gnome.Nautilus"
+    "org.kde.dolphin" "dolphin" "org.xfce.filemanager" "thunar"
+  ];
+
+  mkRoudixIcons = { name, title, base, baseName, sizes, extraSed ? "", appSed }:
     pkgs.runCommand "${lib.toLower name}-icon-theme" { } ''
       src="${base}/share/icons/${baseName}"
       dest="$out/share/icons/${name}"
@@ -41,11 +51,35 @@ let
         mkdir -p "$dest/$size/places"
         cp -rL "$src/$size/places/." "$dest/$size/places/"
       done
+
+      # File-manager app icons: same size loop, apps/ folder, only the names
+      # in fileManagerApps (missing ones are skipped).
+      for size in ${lib.concatStringsSep " " sizes}; do
+        for app in ${lib.concatStringsSep " " fileManagerApps}; do
+          f="$src/$size/apps/$app.svg"
+          [ -e "$f" ] || continue
+          mkdir -p "$dest/$size/apps"
+          cp -L "$f" "$dest/$size/apps/$app.svg"
+        done
+      done
       chmod -R u+w "$dest"
+
+      # HiDPI: Papirus lists "<size>@2x" dirs in ScaledDirectories (symlinks to
+      # <size> in the base theme). Without the same links here, a scaled
+      # display (panel icons, KDE with scale > 1) skips our recolored icons
+      # and falls back to the stock blue ones from the base theme.
+      for size in ${lib.concatStringsSep " " sizes}; do
+        [ -e "$src/$size@2x" ] && [ -d "$dest/$size" ] || continue
+        ln -s "$size" "$dest/$size@2x"
+      done
 
       find "$dest" -path '*/places/*.svg' -print0 | xargs -0 -r sed -i \
         -e "s/#5294e2/${primary}/Ig" \
         ${extraSed}
+
+      # Recolor the copied file-manager icons (palette differs per theme).
+      find "$dest" -path '*/apps/*.svg' -print0 | xargs -0 -r sed -i \
+        ${appSed}
     '';
 
   papirusRoudix = mkRoudixIcons {
@@ -55,6 +89,11 @@ let
     baseName = "Papirus-Dark";
     sizes    = [ "16x16" "22x22" "24x24" "32x32" "48x48" "64x64" "96x96" "128x128" "scalable" "symbolic" ];
     extraSed = ''-e "s/#4877b1/${darker}/Ig"'';
+    # system-file-manager (cabinet tabs): blue (#5294e2, or #5895dc at small
+    # sizes) -> primary, green -> secondary, yellow -> palette's bright yellow.
+    # org.kde.dolphin (what the Dolphin launcher uses): body #127bdc -> primary,
+    # back tab #1f6394 -> the darker shade, like the folders.
+    appSed   = ''-e "s/#5294e2/${primary}/Ig" -e "s/#5895dc/${primary}/Ig" -e "s/#89e058/${secondary}/Ig" -e "s/#ffcd54/#FFC878/Ig" -e "s/#127bdc/${primary}/Ig" -e "s/#1f6394/${darker}/Ig"'';
   };
 
   telaRoudix = mkRoudixIcons {
@@ -63,6 +102,8 @@ let
     base     = pkgs.tela-icon-theme;
     baseName = "Tela-dark";
     sizes    = [ "16" "22" "24" "32" "scalable" "symbolic" ];
+    # file-manager.svg: blue folder (#5294e2); nemo.svg: green folder (#4ed09d).
+    appSed   = ''-e "s/#5294e2/${primary}/Ig" -e "s/#4ed09d/${primary}/Ig"'';
   };
 
   # Curated ids -> theme name + the packages that provide it. Anything else is
@@ -126,6 +167,14 @@ in
   };
 
   config = lib.mkIf (builtins.elem config.roudix.desktop.type nativeDesktops) {
-    environment.systemPackages = chosen.packages;
+    # Both Roudix themes (+ their stock base) are always installed on these
+    # desktops, not only the one picked by roudix.iconTheme: the option just
+    # seeds the DEFAULT, and the desktop's own settings app (KDE System
+    # Settings, GNOME Tweaks, Cinnamon...) can only list what is on the system.
+    environment.systemPackages = lib.unique (
+      chosen.packages
+      ++ curated.papirus.packages
+      ++ curated.tela.packages
+    );
   };
 }

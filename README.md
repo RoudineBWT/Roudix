@@ -112,6 +112,7 @@ roudix/
 ├── pkgs/
 │   ├── roudix-branding              # Roudix Branding package
 │   ├── roudix-kernel-switcher       # Roudix Kernel Switcher GUI package
+│   ├── roudix-firewall/             # Roudix Firewall GUI (ports, trusted interfaces → hosts/<host>/firewall.local.nix)
 │   ├── roudix-switcher/             # Roudix Settings GUI (desktop, gaming, editor, terminal, browser, shell, file manager, chat, system, integration)
 │   └──   roudix-scheduler-switcher    # Scheduler Switcher GUI package
 │

@@ -122,6 +122,8 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   hardware.myKernel        = "cachyos-lts-lto-v3"; # xddxdd kernel — used when hardware.myGpu != "nvidia"
   hardware.myKernelChaotic = "cachyos";            # Chaotic-Nyx kernel — used only when hardware.myGpu == "nvidia"
   roudix.boot.bootloader = "limine";          # "limine" or "systemd-boot"
+  roudix.boot.wallpaperAspect = "16x9";       # Limine boot wallpaper: "16x9", "16x10", "21x9" or "4x3" — the closest to your main screen (./scripts/detect-boot-aspect.sh)
+  roudix.boot.menuResolution = "auto";       # Limine menu resolution: "auto", or "<width>x<height>" — with several screens set your main screen's (Limine may pick the smaller one)
   roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
   roudix.zen.enable   = false;                # set to true to also install Zen Browser (Twilight)
   roudix.rgb          = "openlinkhub";        # "openlinkhub", "openrgb" or "none" — see below
@@ -448,6 +450,8 @@ roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
 roudix.zen.enable            = false;  # install Zen Browser (disabled by default)
 roudix.mesa.useGit           = false;  # true = mesa-git (experimental, bleeding edge — build may fail), false = nixpkgs stable
 roudix.boot.bootloader       = "limine";  # "limine" or "systemd-boot"
+roudix.boot.wallpaperAspect  = "16x9";    # Limine boot wallpaper: "16x9", "16x10", "21x9" or "4x3" — the closest to your main screen (./scripts/detect-boot-aspect.sh)
+roudix.boot.menuResolution   = "auto";    # Limine menu resolution: "auto", or "<width>x<height>" — with several screens set your main screen's (Limine may pick the smaller one)
 roudix.matrixClient          = "none"; # "element", "cinny" or "none"
 ```
 

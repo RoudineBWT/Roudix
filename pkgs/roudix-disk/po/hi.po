@@ -1,0 +1,294 @@
+# Translations of roudix-disk (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-disk\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-25 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: roudix-disk.py
+msgid "Unbalanced braces in the configuration file."
+msgstr "कॉन्फ़िगरेशन फ़ाइल में कर्ली ब्रेसेस संतुलित नहीं हैं।"
+
+#: roudix-disk.py
+msgid ""
+"This file uses the `fileSystems = { … }` form, which roudix-disk does not "
+"edit."
+msgstr "यह फ़ाइल `fileSystems = { … }` रूप का उपयोग करती है, जिसे roudix-disk संपादित नहीं करता।"
+
+#: roudix-disk.py
+msgid "Two entries share the same mount point."
+msgstr "दो प्रविष्टियाँ एक ही माउंट पॉइंट साझा करती हैं।"
+
+#: roudix-disk.py
+msgid "The configuration file does not end with a closing brace."
+msgstr "कॉन्फ़िगरेशन फ़ाइल समापन ब्रेस पर समाप्त नहीं होती।"
+
+#: roudix-disk.py
+msgid "Use an absolute path with letters, digits and . _ - @ + only."
+msgstr "केवल अक्षरों, अंकों और . _ - @ + वाला पूर्ण पथ इस्तेमाल करें।"
+
+#: roudix-disk.py
+msgid "No trailing slash."
+msgstr "अंत में स्लैश न लगाएँ।"
+
+#: roudix-disk.py
+msgid "Use a clean path (no //, . or ..)."
+msgstr "साफ़ पथ इस्तेमाल करें (बिना //, . या ..)।"
+
+#: roudix-disk.py
+msgid "This mount point belongs to the system."
+msgstr "यह माउंट पॉइंट सिस्टम का है।"
+
+#: roudix-disk.py
+msgid "Mounting here could break the system."
+msgstr "यहाँ माउंट करने से सिस्टम ख़राब हो सकता है।"
+
+#: roudix-disk.py
+msgid "This mount point is already used."
+msgstr "यह माउंट पॉइंट पहले से इस्तेमाल में है।"
+
+#: roudix-disk.py
+msgid "Generated file is not valid Nix:"
+msgstr "बनाई गई फ़ाइल मान्य Nix नहीं है:"
+
+#: roudix-disk.py
+msgid "Close"
+msgstr "बंद करें"
+
+#: roudix-disk.py
+msgid "Done."
+msgstr "हो गया।"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Failed (exit code {rc})."
+msgstr "विफल (एग्ज़िट कोड {rc})।"
+
+#: roudix-disk.py
+msgid "Roudix Disks"
+msgstr "Roudix डिस्क"
+
+#: roudix-disk.py
+msgid "Rescan disks"
+msgstr "डिस्क दोबारा स्कैन करें"
+
+#: roudix-disk.py
+msgid "Apply…"
+msgstr "लागू करें…"
+
+#: roudix-disk.py
+msgid "Changes not applied yet"
+msgstr "बदलाव अभी लागू नहीं हुए"
+
+#: roudix-disk.py
+msgid "Remove"
+msgstr "हटाएँ"
+
+#: roudix-disk.py
+msgid "Dismiss"
+msgstr "अनदेखा करें"
+
+#: roudix-disk.py
+msgid "Configuration not found"
+msgstr "कॉन्फ़िगरेशन नहीं मिला"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"Could not find {file}. Set ROUDIX_HOST or NH_FLAKE if your configuration "
+"lives elsewhere."
+msgstr "{file} नहीं मिली। यदि आपका कॉन्फ़िगरेशन कहीं और है तो ROUDIX_HOST या NH_FLAKE सेट करें।"
+
+#: roudix-disk.py
+msgid "This configuration can't be edited here"
+msgstr "इस कॉन्फ़िगरेशन को यहाँ संपादित नहीं किया जा सकता"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Could not list disks: {err}"
+msgstr "डिस्क की सूची नहीं मिल सकी: {err}"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "{n} configured disk is not connected"
+msgid_plural "{n} configured disks are not connected"
+msgstr[0] "{n} कॉन्फ़िगर की गई डिस्क कनेक्ट नहीं है"
+msgstr[1] "{n} कॉन्फ़िगर की गई डिस्क कनेक्ट नहीं हैं"
+
+#: roudix-disk.py
+msgid "No disks found"
+msgstr "कोई डिस्क नहीं मिली"
+
+#: roudix-disk.py
+msgid "removable"
+msgstr "हटाने योग्य"
+
+#: roudix-disk.py
+msgid "Unknown disk"
+msgstr "अज्ञात डिस्क"
+
+#: roudix-disk.py
+msgid "Format…"
+msgstr "फ़ॉर्मैट करें…"
+
+#: roudix-disk.py
+msgid "Mounted — unmount it first"
+msgstr "माउंट है — पहले इसे अनमाउंट करें"
+
+#: roudix-disk.py
+msgid "Empty disk"
+msgstr "खाली डिस्क"
+
+#: roudix-disk.py
+msgid "No partition table or filesystem. Use Format… to prepare it."
+msgstr "कोई पार्टीशन टेबल या फ़ाइल सिस्टम नहीं है। इसे तैयार करने के लिए «फ़ॉर्मैट करें…» का उपयोग करें।"
+
+#: roudix-disk.py
+msgid "unknown filesystem"
+msgstr "अज्ञात फ़ाइल सिस्टम"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "mounted at {mp}"
+msgstr "{mp} पर माउंट है"
+
+#: roudix-disk.py
+msgid "System"
+msgstr "सिस्टम"
+
+#: roudix-disk.py
+msgid "Change mount point"
+msgstr "माउंट पॉइंट बदलें"
+
+#: roudix-disk.py
+msgid "Remove mount point"
+msgstr "माउंट पॉइंट हटाएँ"
+
+#: roudix-disk.py
+msgid "Mount…"
+msgstr "माउंट करें…"
+
+#: roudix-disk.py
+msgid "Not supported"
+msgstr "समर्थित नहीं"
+
+#: roudix-disk.py
+msgid "Mount point"
+msgstr "माउंट पॉइंट"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Where should {device} be mounted?"
+msgstr "{device} को कहाँ माउंट किया जाए?"
+
+#: roudix-disk.py
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#: roudix-disk.py
+msgid "Save"
+msgstr "सहेजें"
+
+#: roudix-disk.py
+msgid "This disk is in use and can't be formatted."
+msgstr "यह डिस्क उपयोग में है और इसे फ़ॉर्मैट नहीं किया जा सकता।"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Format {device}?"
+msgstr "{device} को फ़ॉर्मैट करें?"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"All data on {device} ({model}, {size}) will be permanently erased and "
+"replaced by a single GPT partition."
+msgstr "{device} ({model}, {size}) का सारा डेटा स्थायी रूप से मिटा दिया जाएगा और उसकी जगह एक GPT पार्टीशन बनेगा।"
+
+#: roudix-disk.py
+msgid "Filesystem"
+msgstr "फ़ाइल सिस्टम"
+
+#: roudix-disk.py
+msgid "Label"
+msgstr "लेबल"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Type {device} to confirm"
+msgstr "पुष्टि के लिए {device} टाइप करें"
+
+#: roudix-disk.py
+msgid "Erase and format"
+msgstr "मिटाएँ और फ़ॉर्मैट करें"
+
+#: roudix-disk.py
+msgid "Label: 1–16 characters, letters, digits . _ - only."
+msgstr "लेबल: 1–16 अक्षर, केवल अक्षर, अंक और . _ -"
+
+#: roudix-disk.py
+msgid "Authentication cancelled."
+msgstr "प्रमाणीकरण रद्द किया गया।"
+
+#: roudix-disk.py
+msgid "Formatting failed — see the log."
+msgstr "फ़ॉर्मैटिंग विफल रही — लॉग देखें।"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "{device} formatted."
+msgstr "{device} फ़ॉर्मैट हो गई।"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Formatting {device}…"
+msgstr "{device} फ़ॉर्मैट हो रही है…"
+
+#: roudix-disk.py
+msgid "Apply changes?"
+msgstr "बदलाव लागू करें?"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"{file} will be updated and Roudix rebuilt. The current file is backed up "
+"first, and restored if the rebuild fails."
+msgstr "{file} अपडेट की जाएगी और Roudix रीबिल्ड होगा। मौजूदा फ़ाइल का पहले बैकअप लिया जाता है, और रीबिल्ड विफल होने पर उसे बहाल किया जाता है।"
+
+#: roudix-disk.py
+msgid "At next boot"
+msgstr "अगले बूट पर"
+
+#: roudix-disk.py
+msgid "Apply now"
+msgstr "अभी लागू करें"
+
+#: roudix-disk.py
+msgid "Changes applied."
+msgstr "बदलाव लागू हो गए।"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Rebuild failed and the backup could not be restored: {err}"
+msgstr "रीबिल्ड विफल रहा और बैकअप बहाल नहीं हो सका: {err}"
+
+#: roudix-disk.py
+msgid "Authentication cancelled — nothing was changed."
+msgstr "प्रमाणीकरण रद्द किया गया — कुछ नहीं बदला।"
+
+#: roudix-disk.py
+msgid ""
+"Rebuild failed — the previous configuration was restored. Your edits are "
+"still here."
+msgstr "रीबिल्ड विफल रहा — पिछला कॉन्फ़िगरेशन बहाल कर दिया गया। आपके बदलाव अभी भी यहीं हैं।"
+
+#: roudix-disk.py
+msgid "Rebuilding Roudix…"
+msgstr "Roudix रीबिल्ड हो रहा है…"

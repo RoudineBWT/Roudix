@@ -20,6 +20,7 @@
 ## Boot
 
 - Limine bootloader (default) — modern, fast, multi-disk support — or systemd-boot, selectable via `roudix.boot.bootloader`
+- Limine boot wallpaper in 4 formats (16:9, 16:10, 21:9, 4:3), picked with `roudix.boot.wallpaperAspect` — both installers and `roudix-switcher` detect your main screen (the one with the highest resolution) and suggest the right one, handy after swapping screens. With several screens of different sizes, `roudix.boot.menuResolution` forces the Limine menu to your main screen's resolution (otherwise Limine may pick the smaller one)
 - Automatic UEFI entry rename to "Roudix"
 - Multi-OS boot menu (Windows, other Linux distros on separate ESPs)
 - Boot label shows Roudix name + NixOS release version

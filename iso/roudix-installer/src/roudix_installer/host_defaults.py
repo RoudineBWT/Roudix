@@ -76,6 +76,8 @@ OPTION_TO_ATTR = {
     "roudix.autoupdate.interval": "autoupdate_interval",
     "roudix.autoupdate.branch": "branch",
     "roudix.boot.bootloader": "bootloader",
+    "roudix.boot.wallpaperAspect": "boot_aspect",
+    "roudix.boot.menuResolution": "boot_resolution",
     "roudix.matrixClient": "matrix_client",
     "roudix.discord": "discord",
     "roudix.telegram": "telegram",

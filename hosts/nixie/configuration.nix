@@ -22,7 +22,9 @@
     #   ../../modules/system/rgb
     #   ../../modules/system/virtualization
     inputs.brave-previews.nixosModules.default
-  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix;
+  ] ++ lib.optional (builtins.pathExists ./local.nix) ./local.nix
+  # Written by roudix-firewall (gitignored, like local.nix): ports, trusted interfaces
+  ++ lib.optional (builtins.pathExists ./firewall.local.nix) ./firewall.local.nix;
 
   # ── Browser ────────────────────────────────────────────────────────────
   roudix.browsers = lib.mkDefault ["helium"];

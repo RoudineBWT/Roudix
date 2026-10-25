@@ -333,6 +333,15 @@ msgid "Limine (recommended)"
 msgstr "Limine (अनुशंसित)"
 
 #: src/roudix_installer/pages/options.py
+msgid "Automatic (Limine decides)"
+msgstr "स्वचालित (Limine तय करता है)"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Main screen: {res}"
+msgstr "मुख्य स्क्रीन: {res}"
+
+#: src/roudix_installer/pages/options.py
 msgid "main — stable, ~every 2 weeks (recommended)"
 msgstr "main — स्थिर, लगभग हर 2 हफ़्ते में (अनुशंसित)"
 
@@ -1146,6 +1155,36 @@ msgstr "ब्रांच (इंस्टॉल + अपडेट)"
 #: src/roudix_installer/pages/options.py
 msgid "Bootloader"
 msgstr "बूटलोडर"
+
+#: src/roudix_installer/pages/options.py
+msgid "Boot wallpaper format (Limine)"
+msgstr "बूट वॉलपेपर प्रारूप (Limine)"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid "Main screen detected: {res}"
+msgstr "मुख्य स्क्रीन मिली: {res}"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pick the one closest to your main screen (the biggest one)"
+msgstr "अपनी मुख्य (सबसे बड़ी) स्क्रीन के सबसे करीब वाला चुनें"
+
+#: src/roudix_installer/pages/options.py
+msgid "Limine menu resolution"
+msgstr "Limine मेनू रिज़ॉल्यूशन"
+
+#: src/roudix_installer/pages/options.py
+#, python-brace-format
+msgid ""
+"{count} screens detected: Limine can use the smaller one — pick your main "
+"screen's resolution."
+msgstr ""
+"{count} स्क्रीन मिलीं: Limine छोटी स्क्रीन चुन सकता है — अपनी मुख्य स्क्रीन "
+"का रिज़ॉल्यूशन चुनें।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Only useful with several screens of different sizes."
+msgstr "केवल अलग-अलग आकार की कई स्क्रीन होने पर उपयोगी।"
 
 #: src/roudix_installer/pages/options.py
 msgid "Matrix client"

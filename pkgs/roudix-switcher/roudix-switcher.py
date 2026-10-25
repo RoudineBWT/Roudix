@@ -438,6 +438,105 @@ BRANCHES = [
     {"id": "dev",     "name": "dev",     "subtitle": tr("Dev — latest changes, least stable"), "icon": "none.svg"},
 ]
 
+# roudix.boot.wallpaperAspect (modules/system/boot/boot.nix) — format of the Limine
+# boot wallpaper. It is stretched to the screen, so it has to match the ratio of
+# the MAIN screen: the connected one with the highest resolution. Same detection
+# as scripts/detect-boot-aspect.sh and both installers (keep them in sync).
+BOOT_ASPECTS = [
+    {"id": "16x9",  "name": "16:9",  "subtitle": "1280x720, 1920x1080, 2560x1440, 3840x2160"},
+    {"id": "16x10", "name": "16:10", "subtitle": "1920x1200, 2560x1600, 2880x1800"},
+    {"id": "21x9",  "name": "21:9",  "subtitle": "2560x1080, 3440x1440 (ultrawide)"},
+    {"id": "4x3",   "name": "4:3",   "subtitle": "1024x768, 1280x1024 (5:4)"},
+]
+_ASPECT_RATIOS = {"16x9": 16 / 9, "16x10": 16 / 10, "21x9": 21 / 9, "4x3": 4 / 3}
+DRM_ROOT = "/sys/class/drm"                          # module-level so tests can point elsewhere
+FB_SIZE  = "/sys/class/graphics/fb0/virtual_size"
+
+
+def _connected_screens() -> list:
+    """[(width, height)] of every connected screen: first listed DRM mode
+    (= preferred / native), else the framebuffer size, else Gdk's monitors."""
+    screens = []
+    try:
+        for name in sorted(os.listdir(DRM_ROOT)):
+            if not re.match(r"card\d+-", name):
+                continue
+            base = os.path.join(DRM_ROOT, name)
+            try:
+                with open(os.path.join(base, "status")) as f:
+                    if f.read().strip() != "connected":
+                        continue
+                with open(os.path.join(base, "modes")) as f:
+                    first = f.readline()
+            except OSError:
+                continue
+            m = re.match(r"(\d+)x(\d+)", first)
+            if m:
+                screens.append((int(m.group(1)), int(m.group(2))))
+    except OSError:
+        pass
+    if not screens:
+        try:
+            with open(FB_SIZE) as f:
+                w, h = f.read().strip().split(",")
+            screens.append((int(w), int(h)))
+        except (OSError, ValueError):
+            pass
+    if not screens:
+        try:
+            monitors = Gdk.Display.get_default().get_monitors()
+            for i in range(monitors.get_n_items()):
+                mon = monitors.get_item(i)
+                geo, scale = mon.get_geometry(), mon.get_scale_factor()
+                screens.append((geo.width * scale, geo.height * scale))
+        except Exception:
+            pass
+    return screens
+
+
+def aspect_of(width: int, height: int) -> str:
+    """The roudix.boot.wallpaperAspect value closest to width:height."""
+    ratio = width / height
+    return min(_ASPECT_RATIOS, key=lambda k: abs(ratio - _ASPECT_RATIOS[k]))
+
+
+def detect_main_screen():
+    """("2560x1600", "16x10") for the main screen = highest resolution among the
+    connected ones (first wins a tie), or (None, None) if nothing could be read."""
+    screens = _connected_screens()
+    if not screens:
+        return None, None
+    width, height = max(screens, key=lambda wh: wh[0] * wh[1])
+    return f"{width}x{height}", aspect_of(width, height)
+
+
+def boot_aspect_items(detected_aspect, detected_res) -> list:
+    """BOOT_ASPECTS, the entry matching the main screen flagged in its subtitle."""
+    items = []
+    for item in BOOT_ASPECTS:
+        item = dict(item)
+        if detected_aspect and item["id"] == detected_aspect:
+            item["subtitle"] += " — " + tr("matches your main screen ({res})").format(res=detected_res)
+        items.append(item)
+    return items
+
+
+def screen_count() -> int:
+    """How many screens are connected (0 when none could be read)."""
+    return len(_connected_screens())
+
+
+def boot_resolution_items(main_res, current) -> list:
+    """roudix.boot.menuResolution choices: automatic, the main screen's resolution
+    (what to force when several screens make Limine pick the smaller one), and the
+    value already in local.nix if it is neither."""
+    items = [{"id": "auto", "name": tr("Automatic"), "subtitle": tr("Limine decides")}]
+    if main_res:
+        items.append({"id": main_res, "name": main_res, "subtitle": tr("Your main screen")})
+    if current not in ("auto", main_res):
+        items.append({"id": current, "name": current, "subtitle": tr("Current setting")})
+    return items
+
 
 def current_repo_branch() -> str:
     """Branch the local checkout is actually on (what the machine really
@@ -2350,6 +2449,63 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         )
         system_page.append(self.autoupdate_interval_selector)
 
+        # roudix.boot.wallpaperAspect — Limine boot wallpaper format. Only with
+        # Limine. The entry matching the MAIN screen (highest resolution) is
+        # flagged, so after swapping screens it is a single click.
+        boot_res, boot_detected = detect_main_screen()
+        current_boot_aspect = get_active_string_option("roudix.boot.wallpaperAspect", "16x9")
+        self.boot_aspect_selector = SelectorGroup(
+            tr("Boot wallpaper format (Limine)"),
+            boot_aspect_items(boot_detected, boot_res), current_boot_aspect, dark,
+        )
+        system_page.append(self.boot_aspect_selector)
+
+        if boot_detected and boot_detected != current_boot_aspect:
+            boot_note = tr("Your main screen ({res}) looks like {aspect}, but the boot wallpaper is "
+                           "{current} — pick {aspect} if you changed screens.").format(
+                res=boot_res, aspect=boot_detected.replace("x", ":"),
+                current=current_boot_aspect.replace("x", ":"))
+        elif boot_detected:
+            boot_note = tr("Main screen detected: {res}.").format(res=boot_res)
+        else:
+            boot_note = tr("Could not detect your screen — pick the format closest to your "
+                           "main screen (the biggest one).")
+        self.boot_aspect_note = Gtk.Label(label=boot_note, halign=Gtk.Align.START)
+        self.boot_aspect_note.add_css_class("dim-label")
+        self.boot_aspect_note.set_wrap(True)
+        self.boot_aspect_note.set_xalign(0)
+        system_page.append(self.boot_aspect_note)
+        if not self._boot_is_limine():
+            self.boot_aspect_selector.set_visible(False)
+            self.boot_aspect_note.set_visible(False)
+
+        # roudix.boot.menuResolution — Limine menu (and wallpaper) resolution. With
+        # several screens of different sizes Limine can pick the smaller one:
+        # forcing the MAIN screen's resolution avoids it.
+        boot_count = screen_count()
+        current_boot_res = get_active_string_option("roudix.boot.menuResolution", "auto")
+        self.boot_resolution_selector = SelectorGroup(
+            tr("Limine menu resolution"),
+            boot_resolution_items(boot_res, current_boot_res), current_boot_res, dark,
+        )
+        system_page.append(self.boot_resolution_selector)
+
+        if boot_count >= 2 and boot_res and current_boot_res != boot_res:
+            res_note = tr("{count} screens detected: Limine can use the smaller one — pick {res} "
+                          "(your main screen) to force the menu and its wallpaper to it.").format(
+                count=boot_count, res=boot_res)
+        else:
+            res_note = tr("Only useful with several screens of different sizes. If the firmware "
+                          "doesn't offer the resolution, Limine falls back to another one.")
+        self.boot_resolution_note = Gtk.Label(label=res_note, halign=Gtk.Align.START)
+        self.boot_resolution_note.add_css_class("dim-label")
+        self.boot_resolution_note.set_wrap(True)
+        self.boot_resolution_note.set_xalign(0)
+        system_page.append(self.boot_resolution_note)
+        if not self._boot_is_limine():
+            self.boot_resolution_selector.set_visible(False)
+            self.boot_resolution_note.set_visible(False)
+
         # roudix.pipewire.* — extras, all off by default.
         self.pipewire_toggles = host_filter_items(PIPEWIRE_TOGGLES)
         pipewire_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.pipewire_toggles}
@@ -2477,6 +2633,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
              "label": tr("Password manager"),             "relevant": lambda de: True},
             {"widget": self.autoupdate_interval_selector, "key": "roudix.autoupdate.interval", "default": "1h",
              "label": tr("Update interval"),              "relevant": lambda de: True},
+            {"widget": self.boot_aspect_selector,         "key": "roudix.boot.wallpaperAspect", "default": "16x9",
+             "label": tr("Boot wallpaper format"),        "relevant": lambda de: self._boot_is_limine()},
+            {"widget": self.boot_resolution_selector,     "key": "roudix.boot.menuResolution", "default": "auto",
+             "label": tr("Limine menu resolution"),       "relevant": lambda de: self._boot_is_limine()},
             {"widget": self.spicetify_theme_selector,     "key": "roudix.spicetify.theme",     "default": "colorful",
              "label": tr("Spicetify theme"),              "relevant": lambda de: self.music_player_selector.selected_id == "spotify"},
             {"widget": self.zen_profile_selector,         "key": "roudix.zen.tweaks.profile",  "default": PROFILE_AUTO,
@@ -2740,6 +2900,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.rgb_selector,     host_lists("roudix.rgb")),
                 (self.branch_selector,  host_lists("roudix.autoupdate.branch")),
                 (self.autoupdate_interval_selector, host_lists("roudix.autoupdate.interval")),
+                (self.boot_aspect_selector, host_lists("roudix.boot.wallpaperAspect")),
+                (self.boot_aspect_note,     host_lists("roudix.boot.wallpaperAspect")),
+                (self.boot_resolution_selector, host_lists("roudix.boot.menuResolution")),
+                (self.boot_resolution_note,     host_lists("roudix.boot.menuResolution")),
                 (self.pipewire_group,      bool(self.pipewire_toggles)),
                 (self.tuning_master_group, bool(self.tuning_master_items)),
                 (self.tuning_group,        bool(self.tuning_items)),
@@ -2822,6 +2986,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         show = self.music_player_selector.selected_id == "spotify"
         self.spicetify_theme_selector.set_visible(show)
         self.spicetify_group.set_visible(show)
+
+    @staticmethod
+    def _boot_is_limine() -> bool:
+        """Only Limine shows a wallpaper (default bootloader of Roudix)."""
+        return get_active_string_option("roudix.boot.bootloader", "limine") == "limine"
 
     def _tuning_master_on(self) -> bool:
         sw = self.tuning_master_group.switches.get("enable")

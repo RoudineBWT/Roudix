@@ -1,0 +1,294 @@
+# Translations of roudix-disk (Roudix).
+msgid ""
+msgstr ""
+"Project-Id-Version: roudix-disk\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-10-25 00:00+0000\n"
+"Last-Translator: Claude\n"
+"Language-Team: Brazilian Portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: roudix-disk.py
+msgid "Unbalanced braces in the configuration file."
+msgstr "Chaves desbalanceadas no arquivo de configuração."
+
+#: roudix-disk.py
+msgid ""
+"This file uses the `fileSystems = { … }` form, which roudix-disk does not "
+"edit."
+msgstr "Este arquivo usa a forma `fileSystems = { … }`, que o roudix-disk não edita."
+
+#: roudix-disk.py
+msgid "Two entries share the same mount point."
+msgstr "Duas entradas compartilham o mesmo ponto de montagem."
+
+#: roudix-disk.py
+msgid "The configuration file does not end with a closing brace."
+msgstr "O arquivo de configuração não termina com uma chave de fechamento."
+
+#: roudix-disk.py
+msgid "Use an absolute path with letters, digits and . _ - @ + only."
+msgstr "Use um caminho absoluto apenas com letras, dígitos e . _ - @ +"
+
+#: roudix-disk.py
+msgid "No trailing slash."
+msgstr "Sem barra no final."
+
+#: roudix-disk.py
+msgid "Use a clean path (no //, . or ..)."
+msgstr "Use um caminho limpo (sem //, . ou ..)."
+
+#: roudix-disk.py
+msgid "This mount point belongs to the system."
+msgstr "Este ponto de montagem pertence ao sistema."
+
+#: roudix-disk.py
+msgid "Mounting here could break the system."
+msgstr "Montar aqui pode quebrar o sistema."
+
+#: roudix-disk.py
+msgid "This mount point is already used."
+msgstr "Este ponto de montagem já está em uso."
+
+#: roudix-disk.py
+msgid "Generated file is not valid Nix:"
+msgstr "O arquivo gerado não é um Nix válido:"
+
+#: roudix-disk.py
+msgid "Close"
+msgstr "Fechar"
+
+#: roudix-disk.py
+msgid "Done."
+msgstr "Concluído."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Failed (exit code {rc})."
+msgstr "Falhou (código de saída {rc})."
+
+#: roudix-disk.py
+msgid "Roudix Disks"
+msgstr "Discos do Roudix"
+
+#: roudix-disk.py
+msgid "Rescan disks"
+msgstr "Verificar discos novamente"
+
+#: roudix-disk.py
+msgid "Apply…"
+msgstr "Aplicar…"
+
+#: roudix-disk.py
+msgid "Changes not applied yet"
+msgstr "Alterações ainda não aplicadas"
+
+#: roudix-disk.py
+msgid "Remove"
+msgstr "Remover"
+
+#: roudix-disk.py
+msgid "Dismiss"
+msgstr "Dispensar"
+
+#: roudix-disk.py
+msgid "Configuration not found"
+msgstr "Configuração não encontrada"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"Could not find {file}. Set ROUDIX_HOST or NH_FLAKE if your configuration "
+"lives elsewhere."
+msgstr "Não foi possível encontrar {file}. Defina ROUDIX_HOST ou NH_FLAKE se sua configuração estiver em outro lugar."
+
+#: roudix-disk.py
+msgid "This configuration can't be edited here"
+msgstr "Esta configuração não pode ser editada aqui"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Could not list disks: {err}"
+msgstr "Não foi possível listar os discos: {err}"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "{n} configured disk is not connected"
+msgid_plural "{n} configured disks are not connected"
+msgstr[0] "{n} disco configurado não está conectado"
+msgstr[1] "{n} discos configurados não estão conectados"
+
+#: roudix-disk.py
+msgid "No disks found"
+msgstr "Nenhum disco encontrado"
+
+#: roudix-disk.py
+msgid "removable"
+msgstr "removível"
+
+#: roudix-disk.py
+msgid "Unknown disk"
+msgstr "Disco desconhecido"
+
+#: roudix-disk.py
+msgid "Format…"
+msgstr "Formatar…"
+
+#: roudix-disk.py
+msgid "Mounted — unmount it first"
+msgstr "Montado — desmonte-o primeiro"
+
+#: roudix-disk.py
+msgid "Empty disk"
+msgstr "Disco vazio"
+
+#: roudix-disk.py
+msgid "No partition table or filesystem. Use Format… to prepare it."
+msgstr "Sem tabela de partições nem sistema de arquivos. Use Formatar… para prepará-lo."
+
+#: roudix-disk.py
+msgid "unknown filesystem"
+msgstr "sistema de arquivos desconhecido"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "mounted at {mp}"
+msgstr "montado em {mp}"
+
+#: roudix-disk.py
+msgid "System"
+msgstr "Sistema"
+
+#: roudix-disk.py
+msgid "Change mount point"
+msgstr "Alterar ponto de montagem"
+
+#: roudix-disk.py
+msgid "Remove mount point"
+msgstr "Remover ponto de montagem"
+
+#: roudix-disk.py
+msgid "Mount…"
+msgstr "Montar…"
+
+#: roudix-disk.py
+msgid "Not supported"
+msgstr "Não suportado"
+
+#: roudix-disk.py
+msgid "Mount point"
+msgstr "Ponto de montagem"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Where should {device} be mounted?"
+msgstr "Onde {device} deve ser montado?"
+
+#: roudix-disk.py
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: roudix-disk.py
+msgid "Save"
+msgstr "Salvar"
+
+#: roudix-disk.py
+msgid "This disk is in use and can't be formatted."
+msgstr "Este disco está em uso e não pode ser formatado."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Format {device}?"
+msgstr "Formatar {device}?"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"All data on {device} ({model}, {size}) will be permanently erased and "
+"replaced by a single GPT partition."
+msgstr "Todos os dados em {device} ({model}, {size}) serão apagados permanentemente e substituídos por uma única partição GPT."
+
+#: roudix-disk.py
+msgid "Filesystem"
+msgstr "Sistema de arquivos"
+
+#: roudix-disk.py
+msgid "Label"
+msgstr "Rótulo"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Type {device} to confirm"
+msgstr "Digite {device} para confirmar"
+
+#: roudix-disk.py
+msgid "Erase and format"
+msgstr "Apagar e formatar"
+
+#: roudix-disk.py
+msgid "Label: 1–16 characters, letters, digits . _ - only."
+msgstr "Rótulo: de 1 a 16 caracteres, apenas letras, dígitos e . _ -"
+
+#: roudix-disk.py
+msgid "Authentication cancelled."
+msgstr "Autenticação cancelada."
+
+#: roudix-disk.py
+msgid "Formatting failed — see the log."
+msgstr "A formatação falhou — veja o log."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "{device} formatted."
+msgstr "{device} formatado."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Formatting {device}…"
+msgstr "Formatando {device}…"
+
+#: roudix-disk.py
+msgid "Apply changes?"
+msgstr "Aplicar as alterações?"
+
+#: roudix-disk.py
+#, python-brace-format
+msgid ""
+"{file} will be updated and Roudix rebuilt. The current file is backed up "
+"first, and restored if the rebuild fails."
+msgstr "{file} será atualizado e o Roudix reconstruído. O arquivo atual é copiado como backup antes e restaurado se a reconstrução falhar."
+
+#: roudix-disk.py
+msgid "At next boot"
+msgstr "Na próxima inicialização"
+
+#: roudix-disk.py
+msgid "Apply now"
+msgstr "Aplicar agora"
+
+#: roudix-disk.py
+msgid "Changes applied."
+msgstr "Alterações aplicadas."
+
+#: roudix-disk.py
+#, python-brace-format
+msgid "Rebuild failed and the backup could not be restored: {err}"
+msgstr "A reconstrução falhou e o backup não pôde ser restaurado: {err}"
+
+#: roudix-disk.py
+msgid "Authentication cancelled — nothing was changed."
+msgstr "Autenticação cancelada — nada foi alterado."
+
+#: roudix-disk.py
+msgid ""
+"Rebuild failed — the previous configuration was restored. Your edits are "
+"still here."
+msgstr "A reconstrução falhou — a configuração anterior foi restaurada. Suas edições continuam aqui."
+
+#: roudix-disk.py
+msgid "Rebuilding Roudix…"
+msgstr "Reconstruindo o Roudix…"

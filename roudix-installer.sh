@@ -59,6 +59,7 @@ declare -A VAR_KEY=(
   [VIRTUALIZATION]=roudix.virtualization.enable
   [AUTOUPDATE]=roudix.autoupdate.enable
   [BOOTLOADER]=roudix.boot.bootloader  [MATRIX_CLIENT]=roudix.matrixClient
+  [BOOT_ASPECT]=roudix.boot.wallpaperAspect  [BOOT_RES]=roudix.boot.menuResolution
   [DISCORD]=roudix.discord             [TELEGRAM]=roudix.telegram
   [VIDEO_PLAYER]=roudix.videoPlayer    [TORRENT_CLIENT]=roudix.torrentClient
   [MAIL_CLIENT]=roudix.mailClient      [WAYDROID]=roudix.waydroid.enable
@@ -1139,6 +1140,59 @@ pick "Bootloader:" BOOTLOADER \
   "limine|Limine — modern, fast, multi-disk support (recommended)" \
   "systemd-boot|systemd-boot — simple UEFI bootloader"
 
+# Limine boot wallpaper format. The wallpaper is stretched to the screen, so it
+# has to match the aspect ratio of the MAIN screen — the connected one with the
+# highest resolution (scripts/detect-boot-aspect.sh). Only asked with Limine.
+BOOT_ASPECT="16x9"
+if [[ "$BOOTLOADER" == "limine" ]] && ! hidden_key roudix.boot.wallpaperAspect; then
+  DETECTED_RES="" DETECTED_ASPECT=""
+  if [[ -f scripts/detect-boot-aspect.sh ]]; then
+    DETECTED_RES="$(bash scripts/detect-boot-aspect.sh --resolution 2>/dev/null || true)"
+    DETECTED_ASPECT="$(bash scripts/detect-boot-aspect.sh --aspect 2>/dev/null || true)"
+  fi
+  declare -A _ASPECT_DESC=(
+    [16x9]="16:9  — 1280x720, 1920x1080, 2560x1440, 3840x2160"
+    [16x10]="16:10 — 1920x1200, 2560x1600, 2880x1800"
+    [21x9]="21:9  — 2560x1080, 3440x1440 (ultrawide)"
+    [4x3]="4:3   — 1024x768, 1280x1024 (5:4)"
+  )
+  _aspect_opts=()
+  for _a in 16x9 16x10 21x9 4x3; do
+    _desc="${_ASPECT_DESC[$_a]}"
+    [[ "$_a" == "$DETECTED_ASPECT" ]] && _desc+="  <- your main screen (${DETECTED_RES})"
+    _aspect_opts+=("${_a}|${_desc}")
+  done
+  if [[ -n "$DETECTED_ASPECT" ]]; then
+    info "Main screen detected: ${DETECTED_RES} -> ${DETECTED_ASPECT}"
+  else
+    warn "Could not detect your screen — pick the format closest to your main screen."
+  fi
+  pick "Boot wallpaper format (Limine) — matches your main screen, the biggest one:" BOOT_ASPECT "${_aspect_opts[@]}"
+fi
+
+# Limine menu resolution. With several screens of different sizes Limine can end
+# up on the smaller one (its menu and wallpaper then use that resolution), so with
+# 2+ screens the MAIN one's resolution is recommended. "auto" = Limine decides; if
+# the firmware doesn't offer the resolution Limine falls back by itself.
+BOOT_RES="auto"
+if [[ "$BOOTLOADER" == "limine" ]] && ! hidden_key roudix.boot.menuResolution; then
+  _res="" _count=0
+  if [[ -f scripts/detect-boot-aspect.sh ]]; then
+    _res="$(bash scripts/detect-boot-aspect.sh --resolution 2>/dev/null || true)"
+    _count="$(bash scripts/detect-boot-aspect.sh --count 2>/dev/null || true)"
+  fi
+  if [[ -n "$_res" ]]; then
+    _opt_main="${_res}|Your main screen (${_res})"
+    _opt_auto="auto|Automatic — Limine decides"
+    if (( ${_count:-0} >= 2 )); then
+      info "${_count} screens detected: Limine may use the smaller one, forcing the main screen's resolution avoids it."
+      pick "Limine menu resolution:" BOOT_RES "${_opt_main} — recommended" "$_opt_auto"
+    else
+      pick "Limine menu resolution:" BOOT_RES "$_opt_auto" "$_opt_main"
+    fi
+  fi
+fi
+
 pick "Matrix client:" MATRIX_CLIENT \
   "none|None" \
   "element|Element Desktop — full-featured Matrix client" \
@@ -1256,6 +1310,8 @@ sed -i -E "s/roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*(true|false)/rou
 sed -i "s/roudix\.autoupdate\.interval[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.autoupdate.interval  = \"${AUTOUPDATE_INTERVAL}\"/" hosts/${HOSTNAME}/local.nix
 set_kernel_option hosts/${HOSTNAME}/local.nix "roudix.autoupdate.branch" "true" "${BRANCH}"
 sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.boot\.wallpaperAspect[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.wallpaperAspect = \"${BOOT_ASPECT}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.boot\.menuResolution[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.menuResolution = \"${BOOT_RES}\"/" hosts/${HOSTNAME}/local.nix
 sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/${HOSTNAME}/local.nix
 sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/${HOSTNAME}/local.nix
 sed -i "s/roudix\.telegram[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.telegram = \"${TELEGRAM}\"/" hosts/${HOSTNAME}/local.nix
@@ -1327,6 +1383,8 @@ check_opt "roudix.virtualization.enable" "roudix\.virtualization\.enable[[:space
 check_opt "roudix.autoupdate.enable"   "roudix\.autoupdate\.enable[[:space:]]*=[[:space:]]*${AUTOUPDATE}"
 check_opt "roudix.autoupdate.branch"   "^[[:space:]]*roudix\.autoupdate\.branch[[:space:]]*=[[:space:]]*\"${BRANCH}\""
 check_opt "roudix.boot.bootloader"     "roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"${BOOTLOADER}\""
+check_opt "roudix.boot.wallpaperAspect" "roudix\.boot\.wallpaperAspect[[:space:]]*=[[:space:]]*\"${BOOT_ASPECT}\""
+check_opt "roudix.boot.menuResolution" "roudix\.boot\.menuResolution[[:space:]]*=[[:space:]]*\"${BOOT_RES}\""
 check_opt "roudix.matrixClient"        "roudix\.matrixClient[[:space:]]*=[[:space:]]*\"${MATRIX_CLIENT}\""
 check_opt "roudix.discord" "roudix\.discord[[:space:]]*=[[:space:]]*\"${DISCORD}\""
 check_opt "roudix.telegram"            "roudix\.telegram[[:space:]]*=[[:space:]]*\"${TELEGRAM}\""
@@ -1383,7 +1441,7 @@ echo -e "
   ${BOLD}Virtualization:${NC} $VIRTUALIZATION
   ${BOLD}Branch        :${NC} $BRANCH
   ${BOLD}Auto-update   :${NC} $AUTOUPDATE $([ "$AUTOUPDATE" == "true" ] && echo "(every $AUTOUPDATE_INTERVAL)")
-  ${BOLD}Bootloader    :${NC} $BOOTLOADER
+  ${BOLD}Bootloader    :${NC} $BOOTLOADER$([ "$BOOTLOADER" == "limine" ] && echo " (wallpaper $BOOT_ASPECT, menu $BOOT_RES)")
   ${BOLD}Matrix client :${NC} $MATRIX_CLIENT
   ${BOLD}Discord       :${NC} ${DISCORD}
   ${BOLD}Telegram      :${NC} ${TELEGRAM}
