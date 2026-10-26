@@ -18,6 +18,10 @@
     scroller_proportion_preset = "0.33333,0.5,0.66667,1.0";
     edge_scroller_pointer_focus = 1;
 
+    # mango >= 0.18.0: tab bar in monocle / deck layouts.
+    monocle_tab_mode = 1;
+    deck_tab_mode = 1;
+
     default_master_factor = 0.55;
     default_master_count = 1;
     new_is_master = 1;
