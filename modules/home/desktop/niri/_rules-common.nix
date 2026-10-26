@@ -76,21 +76,29 @@ in
     {
       matches = [ { app-id = "^(steam_app_.*)$"; } ];
       open-on-workspace = ws.games;
+      # On-demand VRR (DP-1, see _output.nix) only turns on when a window asks for it.
+      variable-refresh-rate = true;
       open-fullscreen = true;
     }
     {
       matches = [ { app-id = "^heroic$"; } ];
       open-on-workspace = ws.games;
+      # On-demand VRR (DP-1, see _output.nix) only turns on when a window asks for it.
+      variable-refresh-rate = true;
       open-fullscreen = true;
     }
     {
       matches = [ { app-id = "org.prismlauncher.PrismLauncher"; } ];
       open-on-workspace = ws.games;
+      # On-demand VRR (DP-1, see _output.nix) only turns on when a window asks for it.
+      variable-refresh-rate = true;
       open-maximized = true;
     }
     {
       matches = [ { app-id = "Minecraft"; } ];
       open-on-workspace = ws.games;
+      # On-demand VRR (DP-1, see _output.nix) only turns on when a window asks for it.
+      variable-refresh-rate = true;
       open-fullscreen = true;
     }
     {
@@ -136,13 +144,6 @@ in
     {
       matches = [ { app-id = "com.github.wwmm.easyeffects"; } ];
       open-on-workspace = ws.music;
-    }
-    {
-      # On-demand VRR (DP-1, see _output.nix) only turns on when a window
-      # asks for it. "fullscreen-only" (niri main, post-26.04) enables it
-      # while any window is fullscreen on that output: games, video players.
-      matches = [ { } ];
-      variable-refresh-rate = "fullscreen-only";
     }
     {
       # Corner radius + clip applied to all windows (matches = [{}] — one
