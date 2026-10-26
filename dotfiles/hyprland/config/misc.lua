@@ -12,7 +12,9 @@ hl.config({
         enable_swallow = true,
         swallow_regex = "(ghostty|kitty|com\\.mitchellh\\.ghostty)",
         -- niri gère la VRR par sortie ("on-demand" sur ton Legion 27Q-10).
-        -- Hyprland ne l'a qu'en global : vrr = 2 = "activé seulement en plein écran",
+        -- Valeur globale par défaut ; chaque hl.monitor() peut la surcharger via `vrr`
+        -- (-1 = suivre ce global, 0 off, 1 on, 2 plein écran, 3 plein écran vidéo/jeu
+        -- uniquement — voir monitors.lua). vrr = 2 = "activé seulement en plein écran",
         -- le plus proche du comportement on-demand. Vu que le VRR est un suspect secondaire
         -- dans tes crashs Star Wars Outlaws, teste aussi vrr = 0 (désactivé) pour comparer.
         vrr = 2,
