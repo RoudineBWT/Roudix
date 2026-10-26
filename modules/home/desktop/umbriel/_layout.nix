@@ -6,8 +6,9 @@
 {
   programs.umbriel.settings = {
   layout = {
-    # layout.mode in a [[workspace]] rule accepts "scrolling", "dwindle" and
-    # "master" directly (docs.noctalia.dev/umbriel/workspaces/#available-fields).
+    # layout.mode in a [[workspace]] rule accepts "scrolling", "dwindle",
+    # "master" and (umbriel d323128) "floating" directly
+    # (docs.noctalia.dev/umbriel/workspaces/#available-fields).
     # The global mode stays "scrolling"; chat/games get an explicit
     # layout.mode = "master" override per-workspace in _output.nix.
     mode = "scrolling";
@@ -61,7 +62,13 @@
       # from the still-valid `layout.master.default_width_fraction` above).
       # Matches the packaged config's own default.
       default_extent_fraction = 0.5;
+      # Fractions may now go above 1.0 (up to 4.0, scrolling layout only): a
+      # column can span several outputs' worth of viewport (umbriel 5e241f5).
+      # extent_presets above accepts the same range.
       center_underfull_strip = true;
+      # Center the window picked in the overview, like column-center
+      # (umbriel 2ecfe10). Off by default, same as before.
+      center_on_overview_select = false;
       # `expand_single_column` still doesn't exist in the current docs —
       # confirmed gone, not just renamed. Left out.
       #

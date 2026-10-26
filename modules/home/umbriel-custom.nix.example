@@ -21,6 +21,26 @@
   #   { match.app_id = "^mpv$"; default_floating = true; }
   # ];
 
+  # -- Window behaviour (umbriel 2026-10-25) --------------------------------
+  # Roudix pins window_snapping = false and hover_raises = false (see
+  # _input.nix); flip them back with lib.mkForce.
+  # programs.umbriel.settings.input.window_snapping = lib.mkForce true;
+  # programs.umbriel.settings.input.focus.hover_raises = lib.mkForce true;
+
+  # -- Server-side title bar (umbriel e3534ac, off by default) ----------------
+  # mode: "off" | "negotiated" | "on" | "forced". Colors live under
+  # [colors.title_bar] (they are not provided by the Noctalia include).
+  # programs.umbriel.settings.appearance.title_bar = {
+  #   mode = "negotiated";
+  #   height = 28;
+  #   button_position = "right";
+  #   buttons = [ "minimize" "maximize" "close" ];
+  # };
+  # Hide the bar only while a window is maximized to edges:
+  # programs.umbriel.settings.window_rule = [
+  #   { match.is_maximized_to_edges = true; title_bar = "off"; }
+  # ];
+
   # -- Replace the whole animation section -----------------------------------
   # programs.umbriel.settings.animation = lib.mkForce {
   #   enabled = false; # disable everything, e.g. on an old PC
