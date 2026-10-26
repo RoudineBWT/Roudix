@@ -96,14 +96,20 @@ in
     {
       matches = [ { app-id = "^firefox$"; title = "^Picture-in-Picture$"; } ];
       open-floating = true;
+      # niri main (post-26.04): a PiP window must not steal focus.
+      on-xdg-activate = "set-urgent";
     }
     {
       matches = [ { app-id = "^zen$"; title = "^Picture-in-Picture$"; } ];
       open-floating = true;
+      # niri main (post-26.04): a PiP window must not steal focus.
+      on-xdg-activate = "set-urgent";
     }
     {
       matches = [ { app-id = "^brave$"; title = "^Picture-in-Picture$"; } ];
       open-floating = true;
+      # niri main (post-26.04): a PiP window must not steal focus.
+      on-xdg-activate = "set-urgent";
     }
     {
       matches = [ { app-id = "steam"; title = "^notificationtoasts_\\d+_desktop$"; } ];
@@ -130,6 +136,13 @@ in
     {
       matches = [ { app-id = "com.github.wwmm.easyeffects"; } ];
       open-on-workspace = ws.music;
+    }
+    {
+      # On-demand VRR (DP-1, see _output.nix) only turns on when a window
+      # asks for it. "fullscreen-only" (niri main, post-26.04) enables it
+      # while any window is fullscreen on that output: games, video players.
+      matches = [ { } ];
+      variable-refresh-rate = "fullscreen-only";
     }
     {
       # Corner radius + clip applied to all windows (matches = [{}] — one
