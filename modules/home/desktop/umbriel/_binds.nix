@@ -195,6 +195,14 @@ in
     # and Music workspaces are dwindle.
     "Mod+Shift+S" = { action = "layout-toggle-split"; repeat = false; };
 
+    # ─── Minimize (umbriel e5adea6, 185b559) ───
+    # Floating windows only (tiled and pinned windows have no minimize).
+    # Restores the latest minimized window of the workspace; show-desktop
+    # minimizes/restores every floating window of the workspace.
+    "Mod+M" = "window-minimize";
+    "Mod+Shift+M" = "window-restore-minimized";
+    "Mod+Shift+D" = "workspace-toggle-show-desktop";
+
     # ─── Modes ───
     "Mod+T" = "window-toggle-floating";
     "Mod+F" = "window-toggle-fullscreen";

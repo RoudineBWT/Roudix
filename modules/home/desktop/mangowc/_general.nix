@@ -28,6 +28,10 @@
     single_scratchpad = 1;
     axis_bind_apply_timeout = 100;
 
+    # mango >= 0.18.0: reload config.conf when it changes (e.g. after a
+    # home-manager switch swaps the symlink). SUPER+SHIFT+R stays as manual reload.
+    auto_reload_config = 1;
+
     cursor_size = 24;
     cursor_theme = "capitaine-cursors-white";
     cursor_hide_timeout = 0;

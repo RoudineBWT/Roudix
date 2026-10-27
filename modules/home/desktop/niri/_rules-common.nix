@@ -76,34 +76,48 @@ in
     {
       matches = [ { app-id = "^(steam_app_.*)$"; } ];
       open-on-workspace = ws.games;
+      # On-demand VRR (DP-1, see _output.nix) only turns on when a window asks for it.
+      variable-refresh-rate = true;
       open-fullscreen = true;
     }
     {
       matches = [ { app-id = "^heroic$"; } ];
       open-on-workspace = ws.games;
+      # On-demand VRR (DP-1, see _output.nix) only turns on when a window asks for it.
+      variable-refresh-rate = true;
       open-fullscreen = true;
     }
     {
       matches = [ { app-id = "org.prismlauncher.PrismLauncher"; } ];
       open-on-workspace = ws.games;
+      # On-demand VRR (DP-1, see _output.nix) only turns on when a window asks for it.
+      variable-refresh-rate = true;
       open-maximized = true;
     }
     {
       matches = [ { app-id = "Minecraft"; } ];
       open-on-workspace = ws.games;
+      # On-demand VRR (DP-1, see _output.nix) only turns on when a window asks for it.
+      variable-refresh-rate = true;
       open-fullscreen = true;
     }
     {
       matches = [ { app-id = "^firefox$"; title = "^Picture-in-Picture$"; } ];
       open-floating = true;
+      # niri main (post-26.04): a PiP window must not steal focus.
+      on-xdg-activate = "set-urgent";
     }
     {
       matches = [ { app-id = "^zen$"; title = "^Picture-in-Picture$"; } ];
       open-floating = true;
+      # niri main (post-26.04): a PiP window must not steal focus.
+      on-xdg-activate = "set-urgent";
     }
     {
       matches = [ { app-id = "^brave$"; title = "^Picture-in-Picture$"; } ];
       open-floating = true;
+      # niri main (post-26.04): a PiP window must not steal focus.
+      on-xdg-activate = "set-urgent";
     }
     {
       matches = [ { app-id = "steam"; title = "^notificationtoasts_\\d+_desktop$"; } ];

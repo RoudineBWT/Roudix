@@ -34,7 +34,7 @@ let
     hyprland = {
       env   = "XDG_CURRENT_DESKTOP=Hyprland XDG_SESSION_DESKTOP=hyprland DESKTOP_SESSION=hyprland";
       start = "/run/current-system/sw/bin/uwsm start -- hyprland-uwsm.desktop";
-      quit  = "/run/current-system/sw/bin/hyprctl dispatch exit";
+      quit  = "/run/current-system/sw/bin/hyprctl dispatch 'hl.dsp.exit()'";
     };
     mangowc = {
       env   = "XDG_CURRENT_DESKTOP=Mango XDG_SESSION_DESKTOP=mangowc DESKTOP_SESSION=mangowc";
