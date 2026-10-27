@@ -136,3 +136,4 @@ jobs:
           git add flake.lock
           git commit -m "chore: nix flake update (auto, daily)"
           git push origin testing
+          git push origin main
