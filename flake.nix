@@ -51,9 +51,7 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     niri = {
-      # Pinned: epireyn/niri-flake@0ba376b and later ship an EMPTY refs.nix (upstream bot bug).
-      # Unpin once refs.nix is non-empty again on main.
-      url = "github:epireyn/niri-flake/bad8bd7e18002069e744582b029107d570e82c36";
+      url = "github:epireyn/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
