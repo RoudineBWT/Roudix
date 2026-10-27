@@ -5,6 +5,11 @@ on:
     - cron: '0 3 1,15 * *'  # le 1er et le 15 de chaque mois à 03h00 UTC
   workflow_dispatch:
 
+# Évite que ce job et update-main-lock poussent sur main en même temps
+concurrency:
+  group: main-branch
+  cancel-in-progress: false
+
 jobs:
   merge:
     runs-on: ubuntu-latest
