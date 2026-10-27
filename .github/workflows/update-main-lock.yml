@@ -32,9 +32,9 @@ jobs:
         with:
           # Évite de rester bloqué sur un cache en panne (ex: Attic qui time out)
           extra-conf: |
-            connect-timeout = 3
-            stalled-download-timeout = 10
-            download-attempts = 2
+            connect-timeout = 5
+            stalled-download-timeout = 30
+            download-attempts = 5
 
       - name: Update flake inputs
         run: nix flake update --accept-flake-config
@@ -115,10 +115,23 @@ jobs:
             host="$(basename "$host_dir")"
             [ -f "hosts/$host/configuration.nix" ] || continue
             echo "::group::Build $host"
-            nix build ".#nixosConfigurations.$host.config.system.build.toplevel" \
-              --accept-flake-config \
-              --no-link \
-              -L
+            # Les erreurs réseau transitoires (cache.nixos.org, nyx-cache...)
+            # arrivent de temps en temps : on réessaie avant d'abandonner.
+            # Les vraies erreurs de build échouent à chaque tentative.
+            for attempt in 1 2 3; do
+              if nix build ".#nixosConfigurations.$host.config.system.build.toplevel" \
+                --accept-flake-config \
+                --no-link \
+                -L; then
+                break
+              fi
+              if [ "$attempt" = 3 ]; then
+                echo "::error::Build of $host failed after 3 attempts"
+                exit 1
+              fi
+              echo "Build of $host failed (attempt $attempt/3), retrying in 30s..."
+              sleep 30
+            done
             echo "::endgroup::"
           done
 
