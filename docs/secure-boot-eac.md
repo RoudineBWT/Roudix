@@ -52,15 +52,36 @@ Limine and signs it instead of changing bootloader.
   patches; locally built kernel modules (v4l2loopback virtual camera, xone,
   ZFS…) are left out of that entry, with a warning at build time; hibernation
   is blocked by lockdown.
-- **NVIDIA** is not wired by Roudix. With a Bazzite vendor kernel set
-  `eacnix.nvidia.enable = true;` yourself in `local.nix` (open modules, Turing
-  and newer, only tested in VMs so far).
+- **NVIDIA** needs the Bazzite vendor: Fedora ships no signed NVIDIA modules,
+  Universal Blue does. With `hardware.myGpu = "nvidia"` Roudix turns on
+  `eacnix.nvidia` for you (open modules when `hardware.nvidiaOpen` is on,
+  i.e. Turing and newer; the proprietary ones, pre-Turing only, run on Bazzite's
+  LTS kernel), and refuses `vendor = "fedora"` with an NVIDIA GPU. The
+  installers and `roudix-switcher` pick Bazzite by themselves on NVIDIA.
+  Tested upstream only in VMs without a GPU; hybrid laptops (PRIME) are not
+  covered and raise a warning.
 - **Vendor pins age.** Kernel, grub and shim are pinned together and must be
   bumped together; Bazzite images are pruned from ghcr.io after a few months.
 - **Other OS entries** chainloaded by Limine (`boot.local.nix`) must be signed
   to boot with Secure Boot on. Windows' boot manager and shim-based distros
   (Fedora, openSUSE, …) are; a custom or unsigned loader is not (sign it with
   `sbctl sign`, or leave Secure Boot off for that OS).
+
+## Installer and roudix-switcher
+
+The same options are exposed outside `local.nix`, all off by default:
+
+- **GTK installer and `roudix-installer.sh`** ask for them on the options page,
+  only when the bootloader is Limine: "Secure Boot (sign Limine)", "EAC Linux v2
+  boot entry (experimental)" and, once that one is on, the EAC kernel (Fedora or
+  Bazzite OGC). With Secure Boot on, the sbctl keys are created on the new
+  system during the install (`autoGenerateKeys`). **Enrolling them in the
+  firmware stays manual**, as described below. For a Bazzite kernel the MOK
+  enrollment (`sudo eacnix-enroll-mok`) is also done after the install.
+- **`roudix-switcher`** has a "Secure Boot and EAC (experimental)" group on the
+  System page with the same two switches and the EAC kernel choice (Limine
+  only). Turning Secure Boot on there rebuilds with signing enabled, so create
+  the sbctl keys first (`sudo sbctl create-keys`).
 
 ## Turning it on safely (existing Limine install)
 

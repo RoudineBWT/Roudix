@@ -60,6 +60,8 @@ declare -A VAR_KEY=(
   [AUTOUPDATE]=roudix.autoupdate.enable
   [BOOTLOADER]=roudix.boot.bootloader  [MATRIX_CLIENT]=roudix.matrixClient
   [BOOT_ASPECT]=roudix.boot.wallpaperAspect  [BOOT_RES]=roudix.boot.menuResolution
+  [SECURE_BOOT]=roudix.boot.secureBoot.enable  [EAC]=roudix.boot.eac.enable
+  [EAC_VENDOR]=roudix.boot.eac.vendor
   [DISCORD]=roudix.discord             [TELEGRAM]=roudix.telegram
   [VIDEO_PLAYER]=roudix.videoPlayer    [TORRENT_CLIENT]=roudix.torrentClient
   [MAIL_CLIENT]=roudix.mailClient      [WAYDROID]=roudix.waydroid.enable
@@ -1193,6 +1195,30 @@ if [[ "$BOOTLOADER" == "limine" ]] && ! hidden_key roudix.boot.menuResolution; t
   fi
 fi
 
+# Secure Boot + EAC Linux v2 boot entry — experimental, Limine only, both off by
+# default (docs/secure-boot-eac.md). With Secure Boot on, the sbctl keys are
+# created now; enrolling them in the firmware is a manual step done afterwards.
+SECURE_BOOT="false"
+EAC="false"
+EAC_VENDOR="fedora"
+if [[ "$BOOTLOADER" == "limine" ]]; then
+  pick_bool "Sign Limine for Secure Boot? (keys created now, enrolled in the firmware afterwards - docs/secure-boot-eac.md)" SECURE_BOOT \
+    "Yes" "No"
+  pick_bool "Add a separate \"NixOS EAC\" boot entry for EAC Linux v2 games? (experimental, needs Secure Boot and a TPM 2.0)" EAC \
+    "Yes" "No"
+  if [[ "$EAC" == "true" ]] && ! hidden_key roudix.boot.eac.vendor; then
+    if [[ "$GPU" == "nvidia" ]]; then
+      # Fedora ships no signed NVIDIA modules: only Bazzite's kernel works on NVIDIA.
+      EAC_VENDOR="bazzite"
+      echo "NVIDIA GPU: the EAC entry uses the Bazzite kernel (only Bazzite ships signed NVIDIA modules)."
+    else
+      pick "EAC kernel:" EAC_VENDOR \
+        "fedora|Fedora kernel - nothing to enroll" \
+        "bazzite|Bazzite OGC kernel - Universal Blue's key to enroll after the install"
+    fi
+  fi
+fi
+
 pick "Matrix client:" MATRIX_CLIENT \
   "none|None" \
   "element|Element Desktop — full-featured Matrix client" \
@@ -1312,6 +1338,10 @@ set_kernel_option hosts/${HOSTNAME}/local.nix "roudix.autoupdate.branch" "true" 
 sed -i "s/roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.bootloader = \"${BOOTLOADER}\"/" hosts/${HOSTNAME}/local.nix
 sed -i "s/roudix\.boot\.wallpaperAspect[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.wallpaperAspect = \"${BOOT_ASPECT}\"/" hosts/${HOSTNAME}/local.nix
 sed -i "s/roudix\.boot\.menuResolution[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.menuResolution = \"${BOOT_RES}\"/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.boot\.secureBoot\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.boot.secureBoot.enable = ${SECURE_BOOT}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.boot\.secureBoot\.autoGenerateKeys[[:space:]]*=[[:space:]]*(true|false)/roudix.boot.secureBoot.autoGenerateKeys = ${SECURE_BOOT}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.boot\.eac\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.boot.eac.enable = ${EAC}/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.boot\.eac\.vendor[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.eac.vendor = \"${EAC_VENDOR}\"/" hosts/${HOSTNAME}/local.nix
 sed -i "s/roudix\.matrixClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.matrixClient = \"${MATRIX_CLIENT}\"/" hosts/${HOSTNAME}/local.nix
 sed -i -E "s/roudix\.discord[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.discord = \"${DISCORD}\"/" hosts/${HOSTNAME}/local.nix
 sed -i "s/roudix\.telegram[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.telegram = \"${TELEGRAM}\"/" hosts/${HOSTNAME}/local.nix
@@ -1385,6 +1415,9 @@ check_opt "roudix.autoupdate.branch"   "^[[:space:]]*roudix\.autoupdate\.branch[
 check_opt "roudix.boot.bootloader"     "roudix\.boot\.bootloader[[:space:]]*=[[:space:]]*\"${BOOTLOADER}\""
 check_opt "roudix.boot.wallpaperAspect" "roudix\.boot\.wallpaperAspect[[:space:]]*=[[:space:]]*\"${BOOT_ASPECT}\""
 check_opt "roudix.boot.menuResolution" "roudix\.boot\.menuResolution[[:space:]]*=[[:space:]]*\"${BOOT_RES}\""
+check_opt "roudix.boot.secureBoot.enable" "roudix\.boot\.secureBoot\.enable[[:space:]]*=[[:space:]]*${SECURE_BOOT}"
+check_opt "roudix.boot.eac.enable"        "roudix\.boot\.eac\.enable[[:space:]]*=[[:space:]]*${EAC}"
+check_opt "roudix.boot.eac.vendor"        "roudix\.boot\.eac\.vendor[[:space:]]*=[[:space:]]*\"${EAC_VENDOR}\""
 check_opt "roudix.matrixClient"        "roudix\.matrixClient[[:space:]]*=[[:space:]]*\"${MATRIX_CLIENT}\""
 check_opt "roudix.discord" "roudix\.discord[[:space:]]*=[[:space:]]*\"${DISCORD}\""
 check_opt "roudix.telegram"            "roudix\.telegram[[:space:]]*=[[:space:]]*\"${TELEGRAM}\""
@@ -1442,6 +1475,7 @@ echo -e "
   ${BOLD}Branch        :${NC} $BRANCH
   ${BOLD}Auto-update   :${NC} $AUTOUPDATE $([ "$AUTOUPDATE" == "true" ] && echo "(every $AUTOUPDATE_INTERVAL)")
   ${BOLD}Bootloader    :${NC} $BOOTLOADER$([ "$BOOTLOADER" == "limine" ] && echo " (wallpaper $BOOT_ASPECT, menu $BOOT_RES)")
+  ${BOLD}Secure Boot   :${NC} $SECURE_BOOT$([ "$EAC" == "true" ] && echo " (EAC entry: $EAC_VENDOR)")
   ${BOLD}Matrix client :${NC} $MATRIX_CLIENT
   ${BOLD}Discord       :${NC} ${DISCORD}
   ${BOLD}Telegram      :${NC} ${TELEGRAM}

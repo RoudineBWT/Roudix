@@ -13,6 +13,7 @@
 let
   cfg = config.roudix.boot;
   limine = cfg.bootloader == "limine";
+  nvidia = config.hardware.myGpu == "nvidia";
 in
 {
   options.roudix.boot = {
@@ -127,7 +128,21 @@ in
         fi
       '');
 
+      # NVIDIA: Fedora ships no signed NVIDIA modules, Universal Blue does (Bazzite
+      # vendor), so the EAC entry runs their signed modules and the userspace of
+      # the same version. The flavour follows hardware.nvidiaOpen (open modules =
+      # Turing and newer; the proprietary ones only exist for older GPUs, on
+      # Bazzite's LTS kernel).
+      eacnix.nvidia = lib.mkIf (nvidia && cfg.eac.vendor == "bazzite") {
+        enable = true;
+        flavor = if config.hardware.nvidiaOpen then "open" else "proprietary";
+      };
+
       assertions = [
+        {
+          assertion = nvidia -> cfg.eac.vendor == "bazzite";
+          message = "roudix.boot.eac with an NVIDIA GPU needs roudix.boot.eac.vendor = \"bazzite\": Fedora ships no signed NVIDIA modules, so the NixOS EAC entry would have no NVIDIA driver.";
+        }
         {
           assertion = cfg.eac.addToBootOrder -> config.boot.loader.efi.canTouchEfiVariables;
           message = "roudix.boot.eac.addToBootOrder needs boot.loader.efi.canTouchEfiVariables (without it the firmware entry is never created).";
@@ -141,6 +156,11 @@ in
           Limine cannot boot with Secure Boot on. Enable roudix.boot.secureBoot
           (docs/secure-boot-eac.md) or the normal entry stops booting the day
           you turn Secure Boot on.
+        ''
+        ++ lib.optional (nvidia && config.hardware.nvidiaLaptop) ''
+          roudix.boot.eac: hybrid NVIDIA laptops (hardware.nvidiaLaptop) are not
+          covered by eacnix's tests; the EAC entry may come up without the NVIDIA
+          GPU (PRIME offload). The normal entry is not affected.
         ''
         ++ lib.optional limine ''
           roudix.boot.eac: with Limine, the "eac" specialisation also shows in
