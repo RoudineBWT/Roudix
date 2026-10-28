@@ -6,7 +6,7 @@
 
 - NTSync सक्षम CachyOS कर्नेल (`ntsync` मॉड्यूल)
 - दो कर्नेल प्रदाता, जो `hardware.myGpu` के आधार पर अपने-आप चुने जाते हैं:
-  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 32 वैरिएंट (`hardware.myKernel`)
+  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 36 वैरिएंट (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 वैरिएंट (`hardware.myKernelChaotic`) — `nvidia_cachyos` देता है, जो उनके कर्नेल से मेल खाता पहले से कंपाइल किया हुआ ड्राइवर है, इसलिए कर्नेल अपडेट पर Nvidia मॉड्यूल को लोकल रूप से दोबारा नहीं बनाना पड़ता
 - सादे nixpkgs कर्नेल भी दोनों प्रदाताओं पर चुने जा सकते हैं, CachyOS ओवरले से पूरी तरह बाहर — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod)। Nvidia पर ये लोकल रूप से दोबारा बनाए गए Nvidia मॉड्यूल पर लौट आते हैं (`nvidia_cachyos` कैश नहीं मिलता)
 - `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) सिर्फ़ इन्हीं nixpkgs कर्नेल को ज़्यादा नए nixpkgs से लेता है ताकि कर्नेल अपडेट जल्दी मिलें, और बाकी सिस्टम को छुए बिना
@@ -42,7 +42,7 @@
 
 ## डेस्कटॉप (Niri)
 
-- Niri स्क्रॉल होने वाला टाइलिंग Wayland कंपोज़िटर — [niri-flake](https://github.com/epireyn/niri-flake) (epireyn) के ज़रिए उपलब्ध, डिफ़ॉल्ट रूप से `niri-unstable` का उपयोग, और `niri.cachix.org` बाइनरी कैश पहले से कॉन्फ़िगर
+- Niri स्क्रॉल होने वाला टाइलिंग Wayland कंपोज़िटर — [niri-flake](https://github.com/epireyn/niri-flake) (epireyn) के ज़रिए उपलब्ध, डिफ़ॉल्ट रूप से `niri-unstable` का उपयोग, और `niri-epireyn.cachix.org` बाइनरी कैश पहले से कॉन्फ़िगर
 - कॉन्फ़िग Nix-नेटिव है (`programs.niri.settings`), विषय के अनुसार बँटा हुआ (general, animations, input, layout, outputs, binds, rules) और बिल्ड के समय `niri validate` से जाँचा जाता है — टूटा हुआ कॉन्फ़िग बिल्ड को फ़ेल करता है, लॉगिन पर कंपोज़िटर को नहीं
 - Noctalia/DMS का लाइव थीम सिंक (matugen/DMS से बने रंग, alt-tab, ब्लर) जनरेट किए गए कॉन्फ़िग में एक `include` जोड़कर सुरक्षित रखा जाता है, उसे स्थिर रूप से बेक करके नहीं
 - Noctalia (v5) आधुनिक शेल
@@ -93,12 +93,12 @@
 - xdg-desktop-portal-hyprland + gtk पोर्टल
 - Bibata Modern Ice कर्सर (24 px)
 - GNOME Polkit एजेंट (systemd यूज़र सर्विस के ज़रिए शुरू)
-- swww वॉलपेपर डेमन
+- awww वॉलपेपर डेमन
 - grim + slurp + satty (एनोटेशन) से स्क्रीनशॉट — 3 कीबाइंड
 
 ## डेस्कटॉप (GNOME)
 
-- GNOME 50.x (nixos-unstable ब्रांच को फ़ॉलो करता है)
+- GNOME (nixos-unstable ब्रांच को फ़ॉलो करता है)
 - चुने हुए एक्सटेंशन का सेट (blur, tiling, vitals, arcmenu...) — dconf के ज़रिए सक्षम
 - मेन्यू बटन आइकन के रूप में Roudix लोगो के साथ ArcMenu
 - `environment.gnome.excludePackages` से फ़ालतू सॉफ़्टवेयर हटाए गए
@@ -107,9 +107,9 @@
 - Bibata Modern Ice कर्सर (24 px)
 - Roudix वॉलपेपर (सिस्टम थीम के अनुसार लाइट/डार्क)
 - `color-scheme = prefer-dark` dconf के ज़रिए लागू
-- एक्सटेंशन सेटिंग (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) `gnome-extensions.nix` के ज़रिए पहले से कॉन्फ़िगर
+- एक्सटेंशन सेटिंग (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) `modules/home/desktop/gnome/_extensions.nix` के ज़रिए पहले से कॉन्फ़िगर
 - मुख्य फ़ाइलें बदले बिना `roudix.gnome.extraExtensions` / `roudix.gnome.disabledExtensions` से एक्सटेंशन जोड़ें/हटाएँ
-- वॉलपेपर, थीम, आइकन और कर्सर को `home/local.nix` में ओवरराइड करें
+- वॉलपेपर, थीम, आइकन और कर्सर को `modules/home/local.nix` में ओवरराइड करें
 
 ## डेस्कटॉप (KDE)
 
@@ -121,7 +121,7 @@
 - लॉगिन स्क्रीन और डेस्कटॉप पर Roudix Dark वॉलपेपर
 - चुने हुए पैकेज: partitionmanager, kcalc, digikam, vlc...
 - फ़ालतू सॉफ़्टवेयर हटाए गए (Discover शामिल नहीं)
-- वॉलपेपर, पैनल और आइकन थीम को `home/local.nix` में ओवरराइड करें
+- वॉलपेपर, पैनल और आइकन थीम को `modules/home/local.nix` में ओवरराइड करें
 
 ## संगीत
 
@@ -179,7 +179,7 @@ input से लिया जाता है — अभी nixpkgs में �
 ## ब्राउज़र
 
 - `roudix.browsers` विकल्प से कॉन्फ़िगर की जा सकने वाली ब्राउज़र सूची
-- `brave`, `helium` (amaanq/helium-flake के ज़रिए, DRM पैच शामिल — `helium` चुनने पर Widevine प्लेबैक `modules/home/apps/browser/helium-widevine.nix` के ज़रिए अपने-आप जुड़ जाता है), `vivaldi` (ffmpeg कोडेक के साथ), `firefox`, `librewolf`, `chromium`, या कोई भी न चाहिए तो `[]` को सपोर्ट करता है
+- `brave`, `helium` (x13-me/helium-nix के ज़रिए, DRM पैच शामिल — `helium` चुनने पर Widevine प्लेबैक `modules/home/apps/browser/helium-widevine.nix` के ज़रिए अपने-आप जुड़ जाता है), `vivaldi` (ffmpeg कोडेक के साथ), `firefox`, `librewolf`, `chromium`, या कोई भी न चाहिए तो `[]` को सपोर्ट करता है
 - Zen Browser `roudix.zen.enable = true` से अलग से उपलब्ध (डिफ़ॉल्ट रूप से बंद); चैनल `roudix.zen.variant` से चुना जा सकता है — `"twilight"` (डिफ़ॉल्ट) या `"beta"`
 
 ## अन्य

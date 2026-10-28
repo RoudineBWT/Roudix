@@ -102,12 +102,12 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hard
 
 ### 4. Создайте локальные конфигурации
 
-**Никогда не редактируйте `configuration.nix` и `home/common.nix` напрямую** — они перезаписываются при `git pull`.
+**Никогда не редактируйте `configuration.nix` и `modules/home/common.nix` напрямую** — они перезаписываются при `git pull`.
 Вместо этого создайте свои локальные файлы переопределений (все они в gitignore):
 
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
-cp home/local.nix.example home/local.nix
+cp modules/home/local.nix.example modules/home/local.nix
 cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 ```
 
@@ -239,7 +239,7 @@ sudo dmidecode -t memory | grep 'Part Number'
 
 > **Примечание:** `environment.sessionVariables.TZ` всегда должен совпадать с `time.timeZone` — оба управляют часовым поясом, один на уровне системы, другой на уровне сессии.
 
-Отредактируйте `home/local.nix` для личных переопределений home-manager (дополнительные пакеты, dotfiles, алиасы, fastfetch...):
+Отредактируйте `modules/home/local.nix` для личных переопределений home-manager (дополнительные пакеты, dotfiles, алиасы, fastfetch...):
 
 ```nix
 { pkgs, lib, osConfig, ... }:
@@ -248,13 +248,13 @@ sudo dmidecode -t memory | grep 'Part Number'
 }
 ```
 
-> См. `home/local.nix.example` — там все доступные варианты переопределения, включая настройку fastfetch.
+> См. `modules/home/local.nix.example` — там все доступные варианты переопределения, включая настройку fastfetch.
 
 ### 5. Настройте ядро
 
 Roudix использует **двух разных поставщиков ядра** в зависимости от вашей GPU:
 
-- **`hardware.myGpu != "nvidia"`** (AMD или Intel) → ядро из [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), выбирается через `hardware.myKernel`. Модуль Nvidia не нужно учитывать, поэтому доступен полный набор из 32 вариантов.
+- **`hardware.myGpu != "nvidia"`** (AMD или Intel) → ядро из [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), выбирается через `hardware.myKernel`. Модуль Nvidia не нужно учитывать, поэтому доступен полный набор из 36 вариантов.
 - **`hardware.myGpu == "nvidia"`** → ядро из **Chaotic-Nyx**, выбирается через `hardware.myKernelChaotic`. Это нужно, чтобы получить **`nvidia_cachyos`** — предсобранный драйвер Nvidia, соответствующий их ядру; иначе модуль ядра Nvidia пересобирается локально при каждом обновлении ядра. Набор вариантов здесь намеренно меньше (Chaotic-Nyx не публикует столько вариантов, а варианты `-lto` чаще ломают внешние модули вроде модуля Nvidia).
 
 Обе опции также принимают несколько **обычных ядер nixpkgs**, полностью вне соответствующего оверлея CachyOS — удобно, если вам нужно обычное ядро без патчей CachyOS: `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`, `xanmod-lts`, `xanmod-latest`. На пути Nvidia они обходят кэш `nvidia_cachyos` и пересобирают модуль Nvidia локально (см. `nvidia.nix`).
@@ -327,7 +327,7 @@ Roudix использует **двух разных поставщиков яд�
 
 > **Примечание о теме Spicetify Comfy:** после первой сборки скопируйте color.ini вручную:
 > ```bash
-> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/spicetify/Comfy/color.ini
+> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/apps/media/spicetify/Comfy/color.ini
 > ```
 > Затем выполните `rebuild`, чтобы применить.
 
@@ -407,10 +407,10 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 ### 8. Обновите конфигурацию git
 
-`modules/home/git.nix` внесён в gitignore (как и `local.nix`) — скопируйте версионируемый шаблон и укажите свои данные:
+`modules/home/dev/git.nix` внесён в gitignore (как и `local.nix`) — скопируйте версионируемый шаблон и укажите свои данные:
 
 ```bash
-cp modules/home/git.nix.example modules/home/git.nix
+cp modules/home/dev/git.nix.example modules/home/dev/git.nix
 ```
 
 ```nix
@@ -458,7 +458,7 @@ roudix.matrixClient          = "none"; # "element", "cinny" или "none"
 
 ### 10. Настройте fastfetch (необязательно)
 
-По умолчанию Roudix показывает в fastfetch свой ASCII-логотип. Его можно переопределить в `home/local.nix`, не трогая git:
+По умолчанию Roudix показывает в fastfetch свой ASCII-логотип. Его можно переопределить в `modules/home/local.nix`, не трогая git:
 
 ```nix
 # Использовать своё изображение (нужен терминал kitty)
@@ -487,7 +487,7 @@ programs.fastfetch.settings = lib.mkForce {
 ```
 
 > `lib.mkForce` перезаписывает всю конфигурацию Roudix по умолчанию. Без него ваши ключи объединяются со значениями по умолчанию.
-> См. `home/local.nix.example` — там больше примеров.
+> См. `modules/home/local.nix.example` — там больше примеров.
 
 ### 11. Сборка
 

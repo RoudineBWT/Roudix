@@ -10,7 +10,7 @@
 | `hyprland` | Hyprland + (Noctalia, DMS, Caelestia) | डायनामिक टाइलिंग Wayland — UWSM के ज़रिए लॉन्च होता है |
 | `mangowc` | MangoWC + (Noctalia, DMS) | Wayland कंपोज़िटर |
 | `umbriel` | Umbriel + Noctalia | स्क्रॉल होने वाला टाइलिंग — Noctalia का अपना नेटिव कंपोज़िटर, सिर्फ़ Noctalia के साथ (शेल बदलना संभव नहीं) |
-| `gnome` | GNOME 49.5 | |
+| `gnome` | GNOME | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 | `cinnamon` | Cinnamon | X11 सेशन + LightDM — क्लासिक डेस्कटॉप, पुराने हार्डवेयर के लिए उपयुक्त (GNOME 49 सिर्फ़ Wayland है) |
 | `cosmic` | COSMIC | System76 का Wayland डेस्कटॉप (cosmic-comp), cosmic-greeter |
@@ -101,7 +101,7 @@ Niri और Umbriel Nix में नेटिव रूप से कॉन्�
 
 MangoWC और Hyprland टेक्स्ट-आधारित ही रहते हैं (नीचे देखें)।
 
-आप ओवरराइड सीधे `home/local.nix` में रख सकते हैं, लेकिन अगर आप किसी एक कंपोज़िटर को बहुत कस्टमाइज़ कर रहे हैं तो अलग फ़ाइल चीज़ों को साफ़-सुथरा रखती है — `home/local.nix` अपने-आप `home/niri-custom.nix`, `home/umbriel-custom.nix` और `home/mango-custom.nix` इम्पोर्ट कर लेता है, अगर वे मौजूद हों (शुरू करने के लिए संबंधित `*.example` फ़ाइल कॉपी करें; ये `local.nix` की तरह gitignore में हैं)।
+आप ओवरराइड सीधे `modules/home/local.nix` में रख सकते हैं, लेकिन अगर आप किसी एक कंपोज़िटर को बहुत कस्टमाइज़ कर रहे हैं तो अलग फ़ाइल चीज़ों को साफ़-सुथरा रखती है — `modules/home/local.nix` अपने-आप `modules/home/niri-custom.nix`, `modules/home/umbriel-custom.nix` और `modules/home/mango-custom.nix` इम्पोर्ट कर लेता है, अगर वे मौजूद हों (शुरू करने के लिए संबंधित `*.example` फ़ाइल कॉपी करें; ये `local.nix` की तरह gitignore में हैं)।
 
 **Niri**
 
@@ -154,7 +154,7 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 '';
 ```
 
-चूँकि यह कुछ Nix पंक्तियों की जगह एक बड़ा टेक्स्ट ब्लॉक है, इसलिए यह अपनी अलग फ़ाइल में बेहतर बैठता है — `home/mango-custom.nix.example` देखें।
+चूँकि यह कुछ Nix पंक्तियों की जगह एक बड़ा टेक्स्ट ब्लॉक है, इसलिए यह अपनी अलग फ़ाइल में बेहतर बैठता है — `modules/home/mango-custom.nix.example` देखें।
 
 **Hyprland अब `dotfiles/hyprland/` में मौजूद मॉड्यूलर Lua कॉन्फ़िगरेशन इस्तेमाल करता है।** एंट्री पॉइंट `dotfiles/hyprland/hyprland.lua` है, जो मॉनिटर, लेआउट, एनिमेशन, बाइंड, विंडो रूल और शेल इंटीग्रेशन के `config/` मॉड्यूल लोड करता है। Nix इस ट्री को जैसा है वैसा ही `~/.config/hypr/` में कॉपी करता है।
 
@@ -164,17 +164,17 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 
 मशीन-विशिष्ट मान (`DP-1`/`DP-3` आउटपुट, प्राइमरी मॉनिटर, डिफ़ॉल्ट ऐप्स, कीबोर्ड आदि) `dotfiles/hyprland/config/` के अंतर्गत होते हैं। अगर आप अपना Hyprland सेटअप Roudix रिपॉज़िटरी में रखते हैं तो उन्हें सीधे संपादित करें।
 
-ट्रैक की गई फ़ाइलों को बदले बिना व्यक्तिगत ओवरराइड के लिए `home/local.nix` में `xdg.configFile."hypr/..."` और `lib.mkForce` का उपयोग करें।
+ट्रैक की गई फ़ाइलों को बदले बिना व्यक्तिगत ओवरराइड के लिए `modules/home/local.nix` में `xdg.configFile."hypr/..."` और `lib.mkForce` का उपयोग करें।
 
 > Lua कॉन्फ़िगरेशन बदलने के बाद `rebuild` चलाएँ। शेल या एनवायरनमेंट के बदलावों के लिए सेशन रीस्टार्ट की ज़रूरत पड़ सकती है।
 
-> उदाहरणों की पूरी सूची के लिए `home/niri-custom.nix.example`, `home/umbriel-custom.nix.example`, `home/mango-custom.nix.example` और `home/local.nix.example` देखें।
+> उदाहरणों की पूरी सूची के लिए `modules/home/niri-custom.nix.example`, `modules/home/umbriel-custom.nix.example`, `modules/home/mango-custom.nix.example` और `modules/home/local.nix.example` देखें।
 
 ---
 
 ## GNOME ओवरराइड
 
-`roudix.desktop.type = "gnome"` इस्तेमाल करते समय एक्सटेंशन प्रबंधन `hosts/roudix/local.nix` में और दिखावट के ओवरराइड `home/local.nix` में जाते हैं।
+`roudix.desktop.type = "gnome"` इस्तेमाल करते समय एक्सटेंशन प्रबंधन `hosts/roudix/local.nix` में और दिखावट के ओवरराइड `modules/home/local.nix` में जाते हैं।
 
 **डिफ़ॉल्ट एक्सटेंशन के ऊपर और एक्सटेंशन जोड़ें** (`hosts/roudix/local.nix`)
 ```nix
@@ -200,7 +200,7 @@ roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 
 Roudix GNOME की दिखावट (वॉलपेपर, डार्क थीम, आइकन, कर्सर, एक्सटेंशन सेटिंग्स) *डिफ़ॉल्ट* के रूप में देता है। सेटिंग्स, Tweaks या किसी एक्सटेंशन की प्राथमिकताओं में कुछ भी बदलें और वह आपका हो जाता है: रीबिल्ड उसे कभी वापस नहीं पलटता। Roudix के अपडेट सिर्फ़ उन सेटिंग्स के डिफ़ॉल्ट बदलते हैं जिन्हें आपने छुआ नहीं है।
 
-**अपनी कॉन्फ़िग से कोई मान ज़बरदस्ती लागू करना** (`home/local.nix`)
+**अपनी कॉन्फ़िग से कोई मान ज़बरदस्ती लागू करना** (`modules/home/local.nix`)
 
 अगर आप किसी मान को डिक्लेरेटिव तरीके से पिन करना चाहते हैं, तो उसे home-manager से सेट करें। ऊपर वाले मैन्युअल तरीके से अलग, यह **हर** रीबिल्ड पर दोबारा लागू होता है और UI में आपके किए बदलावों को ओवरराइड कर देता है:
 ```nix
@@ -221,7 +221,7 @@ dconf reset /org/gnome/desktop/interface/icon-theme
 dconf reset -f /org/gnome/shell/extensions/dash-to-panel/
 ```
 
-> उपलब्ध सभी GNOME ओवरराइड विकल्पों के लिए `hosts/roudix/local.nix.example` और `home/local.nix.example` देखें।
+> उपलब्ध सभी GNOME ओवरराइड विकल्पों के लिए `hosts/roudix/local.nix.example` और `modules/home/local.nix.example` देखें।
 
 ---
 
@@ -235,7 +235,7 @@ Roudix अपनी KDE दिखावट **सिर्फ़ एक बार
 - **स्टार्टअप पर NumLock, लॉक-स्क्रीन वॉलपेपर**: `/etc/xdg` में साधारण KConfig डिफ़ॉल्ट, जो आपके `~/.config` से नीचे रहते हैं और उसे कभी ओवरराइड नहीं करते।
 - **वॉलपेपर और पैनल**: plasma-manager द्वारा पहले लॉगिन पर लागू होते हैं, और फिर तभी दोबारा चलते हैं जब Roudix खुद किसी अपडेट में उनकी परिभाषा बदले।
 
-**अपनी कॉन्फ़िग से मान पिन करना** (`home/local.nix`)
+**अपनी कॉन्फ़िग से मान पिन करना** (`modules/home/local.nix`)
 
 plasma-manager से आप जो भी सेट करते हैं वह **हर** रीबिल्ड पर दोबारा लागू होता है, इसलिए इसे सिर्फ़ उसी के लिए इस्तेमाल करें जिसे आप डिक्लेरेटिव रखना चाहते हैं:
 
@@ -268,7 +268,7 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> `lib.mkForce` सिर्फ़ `wallpaper` और `panels` के लिए ज़रूरी है, जो अब भी `home/desktop/kde/default.nix` में परिभाषित हैं।
+> `lib.mkForce` सिर्फ़ `wallpaper` और `panels` के लिए ज़रूरी है, जो अब भी `modules/home/desktop/kde/default.nix` में परिभाषित हैं।
 
 ## Cinnamon के डिफ़ॉल्ट
 

@@ -25,7 +25,9 @@ in
           rebuild with this on — follow docs/secure-boot-eac.md, in this
           order: `sbctl create-keys`, firmware Setup Mode,
           `sbctl enroll-keys -m -f`, rebuild, check `sbctl verify`, and only
-          then enable Secure Boot in the firmware.
+          then enable Secure Boot in the firmware. sbctl is installed by this
+          option, so before it is on, run it with
+          `sudo nix run nixpkgs#sbctl -- <command>`.
         '';
         type = lib.types.bool;
         default = false;

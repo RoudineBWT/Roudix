@@ -27,7 +27,7 @@ This path replaces the two steps below entirely (no need for `roudix-installer.s
 
 If NixOS is already installed (via the official stable/unstable ISO, or any other means) and you just want to bootstrap Roudix on top of it, there are two installers: the graphical one (from a desktop session) and the bash script (works from a bare TTY).
 
-> **Note:** install NixOS first with the [stable](https://nixos.org/download/) or [unstable](https://releases.nixos.org/nixos/unstable/nixos-26.05pre980183.4bd9165a9165) ISO, then run one of the installers below or follow the manual installation.
+> **Note:** install NixOS first with the [stable or unstable ISO](https://nixos.org/download/), then run one of the installers below or follow the manual installation.
 
 ### B1 — Graphical installer (recommended on a desktop)
 
@@ -102,12 +102,12 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hard
 
 ### 4. Create your local configs
 
-**Never edit `configuration.nix` or `home/common.nix` directly** — they get overwritten on `git pull`.
+**Never edit `configuration.nix` or `modules/home/common.nix` directly** — they get overwritten on `git pull`.
 Instead, create your local override files (all gitignored):
 
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
-cp home/local.nix.example home/local.nix
+cp modules/home/local.nix.example modules/home/local.nix
 cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 ```
 
@@ -116,7 +116,7 @@ Edit `hosts/roudix/local.nix` to match your hardware:
 ```nix
 { lib, ... }:
 {
-  roudix.desktop.type = "niri";               # "niri", "hyprland", "mangowc", "umbriel", "gnome" or "kde"
+  roudix.desktop.type = "niri";               # "niri", "hyprland", "mangowc", "umbriel", "gnome", "kde", "cinnamon" or "cosmic"
   hardware.myGpu      = "amd";                # "amd", "nvidia" or "intel"
   hardware.myCpu      = "intel";              # "intel" or "amd"
   hardware.myKernel        = "cachyos-lts-lto-v3"; # xddxdd kernel — used when hardware.myGpu != "nvidia"
@@ -124,7 +124,7 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   roudix.boot.bootloader = "limine";          # "limine" or "systemd-boot"
   roudix.boot.wallpaperAspect = "16x9";       # Limine boot wallpaper: "16x9", "16x10", "21x9" or "4x3" — the closest to your main screen (./scripts/detect-boot-aspect.sh)
   roudix.boot.menuResolution = "auto";       # Limine menu resolution: "auto", or "<width>x<height>" — with several screens set your main screen's (Limine may pick the smaller one)
-  roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" or []
+  roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium", "ungoogled-chromium", "google-chrome", "microsoft-edge" (+ brave-beta/-nightly/-origin*) or []
   roudix.zen.enable   = false;                # set to true to also install Zen Browser (Twilight)
   roudix.rgb          = "openlinkhub";        # "openlinkhub", "openrgb" or "none" — see below
   roudix.mesa.useGit  = false;                # true = mesa-git (experimental, build may fail), false = nixpkgs stable
@@ -241,7 +241,7 @@ sudo dmidecode -t memory | grep 'Part Number'
 
 > **Note:** `environment.sessionVariables.TZ` must always match `time.timeZone` — they both control the timezone, one at the system level and one at the session level.
 
-Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfiles, aliases, fastfetch...):
+Edit `modules/home/local.nix` for personal home-manager overrides (extra packages, dotfiles, aliases, fastfetch...):
 
 ```nix
 { pkgs, lib, osConfig, ... }:
@@ -250,13 +250,13 @@ Edit `home/local.nix` for personal home-manager overrides (extra packages, dotfi
 }
 ```
 
-> See `home/local.nix.example` for all available override options including fastfetch customization.
+> See `modules/home/local.nix.example` for all available override options including fastfetch customization.
 
 ### 5. Configure kernel
 
 Roudix uses **two different kernel providers** depending on your GPU:
 
-- **`hardware.myGpu != "nvidia"`** (AMD or Intel) → kernel from [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), selected via `hardware.myKernel`. No Nvidia module to worry about, so the full 32-variant set is available.
+- **`hardware.myGpu != "nvidia"`** (AMD or Intel) → kernel from [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), selected via `hardware.myKernel`. No Nvidia module to worry about, so the full 36-variant set is available.
 - **`hardware.myGpu == "nvidia"`** → kernel from **Chaotic-Nyx**, selected via `hardware.myKernelChaotic`. This is required to get **`nvidia_cachyos`**, a precompiled Nvidia driver matched to their kernel — otherwise the Nvidia kernel module rebuilds locally on every kernel bump. The variant set is smaller here on purpose (Chaotic-Nyx doesn't publish as many flavors, and `-lto` variants are more prone to breaking out-of-tree modules like Nvidia's).
 
 Both options also accept a handful of **plain nixpkgs kernels**, entirely outside their respective CachyOS overlay — useful if you just want a stock kernel without any CachyOS patching: `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`, `xanmod-lts`, `xanmod-latest`. On the Nvidia path these skip the `nvidia_cachyos` cache and rebuild the Nvidia module locally instead (see `nvidia.nix`).
@@ -329,7 +329,7 @@ Both options also accept a handful of **plain nixpkgs kernels**, entirely outsid
 
 > **Spicetify Comfy theme note:** After your first build, copy the color.ini manually:
 > ```bash
-> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/spicetify/Comfy/color.ini
+> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/apps/media/spicetify/Comfy/color.ini
 > ```
 > Then run `rebuild` to apply.
 
@@ -409,10 +409,10 @@ If you have no other OS to add, just leave `extraEntries` empty:
 
 ### 8. Update git config
 
-`modules/home/git.nix` is gitignored (like `local.nix`) — copy the tracked template and fill in your identity:
+`modules/home/dev/git.nix` is gitignored (like `local.nix`) — copy the tracked template and fill in your identity:
 
 ```bash
-cp modules/home/git.nix.example modules/home/git.nix
+cp modules/home/dev/git.nix.example modules/home/dev/git.nix
 ```
 
 ```nix
@@ -446,7 +446,7 @@ roudix.fstrim.enable         = true;   # recommended for SSD/NVMe
 roudix.virtualization.enable = false;  # enable for QEMU/KVM
 roudix.vmGuest.enable        = true;   # enable only inside a VM
 roudix.hosts.gtaFix.enable   = true;   # block BattlEye telemetry (GTA fix)
-roudix.autoupdate.enable     = true;   # auto pull + nh os boot on changes
+roudix.autoupdate.enable     = true;   # auto pull + nixos-rebuild boot on changes
 roudix.zen.enable            = false;  # install Zen Browser (disabled by default)
 roudix.mesa.useGit           = false;  # true = mesa-git (experimental, bleeding edge — build may fail), false = nixpkgs stable
 roudix.boot.bootloader       = "limine";  # "limine" or "systemd-boot"
@@ -455,14 +455,14 @@ roudix.boot.menuResolution   = "auto";    # Limine menu resolution: "auto", or "
 roudix.matrixClient          = "none"; # "element", "cinny" or "none"
 ```
 
-> **Reminder:** If you set `roudix.autoupdate.enable = true`, also configure the interval:
+> **Reminder:** If you set `roudix.autoupdate.enable = true`, you can also configure the interval (see [auto-update](autoupdate.md)):
 > ```nix
 > roudix.autoupdate.interval = "1h"; # 1h, 6h, 12h, 24h...
 > ```
 
 ### 10. Customize fastfetch (optional)
 
-By default Roudix shows its ASCII logo in fastfetch. You can override it in `home/local.nix` without touching git:
+By default Roudix shows its ASCII logo in fastfetch. You can override it in `modules/home/local.nix` without touching git:
 
 ```nix
 # Use a custom image (requires kitty terminal)
@@ -491,7 +491,7 @@ programs.fastfetch.settings = lib.mkForce {
 ```
 
 > `lib.mkForce` overwrites the entire Roudix default config. Without it, your keys are merged with the defaults.
-> See `home/local.nix.example` for more examples.
+> See `modules/home/local.nix.example` for more examples.
 
 ### 11. Build
 

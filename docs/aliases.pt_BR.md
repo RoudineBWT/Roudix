@@ -11,7 +11,7 @@
 | `cleanup` | Remover gerações antigas + coleta de lixo |
 | `noctalia-reload` | Reiniciar o Noctalia sem encerrar a sessão |
 | `dms-reload` | Reiniciar o Quickshell sem encerrar a sessão |
-| `caelista-reload` | Reiniciar o Quickshell sem encerrar a sessão |
+| `caelestia-reload` | Reiniciar o Quickshell sem encerrar a sessão |
 | `roudix-switch <de>` | Trocar de ambiente de desktop (aplica na próxima reinicialização) |
 | `roudix-kernel-switch <kernel>` | Trocar de variante de kernel (aplica na próxima reinicialização) |
 
@@ -62,6 +62,8 @@ roudix-switch mangowc
 roudix-switch umbriel
 roudix-switch gnome
 roudix-switch kde
+roudix-switch cinnamon
+roudix-switch cosmic
 
 # Trocar de variante de kernel — a lista depende de hardware.myGpu, veja docs/installation.md
 # AMD/Intel (xddxdd):

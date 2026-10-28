@@ -4,7 +4,7 @@
 
 当 `roudix.autoupdate.enable = true` 时，系统会每小时检查一次 GitHub（并在开机后 5 分钟检查一次）。
 如果在所跟踪的分支（默认为 `main`）上检测到新的提交，它会执行 pull 并运行 `nh os boot path:...` — 新配置将在下次重启时生效。
-你的 `local.nix`、`username.nix`、`hardware-configuration.nix` 文件，可选的 `home/niri-custom.nix` / `home/umbriel-custom.nix` / `home/mango-custom.nix`，以及 `dotfiles/perso/` 下的所有内容都已加入 gitignore，pull 绝不会触碰它们。
+你的 `local.nix`、`username.nix`、`hardware-configuration.nix` 文件，可选的 `modules/home/niri-custom.nix` / `modules/home/umbriel-custom.nix` / `modules/home/mango-custom.nix`，以及 `dotfiles/perso/` 下的所有内容都已加入 gitignore，pull 绝不会触碰它们。
 
 要配置检查间隔或分支，请在 `local.nix` 中覆盖：
 

@@ -55,7 +55,7 @@ hosts/<host>/firewall.local.nix
 
 ## What it does
 
-1. Reads `hosts/<host>/firewall.local.nix` (nothing yet = firewall on, no rules).
+1. Reads `hosts/<host>/firewall.local.nix` (nothing yet = firewall on with the defaults of `modules/system/nix/common.nix`, i.e. port 443 open).
 2. You edit rules, presets and interfaces. Nothing is written until you press a button.
 3. **Save** writes the file (atomically, previous version kept as `firewall.local.nix.bak`);
    it takes effect at the next rebuild, including the auto-update's.

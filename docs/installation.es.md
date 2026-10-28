@@ -102,12 +102,12 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hard
 
 ### 4. Crea tus configuraciones locales
 
-**Nunca edites `configuration.nix` ni `home/common.nix` directamente** — se sobrescriben con `git pull`.
+**Nunca edites `configuration.nix` ni `modules/home/common.nix` directamente** — se sobrescriben con `git pull`.
 En su lugar, crea tus archivos locales de personalización (todos en el gitignore):
 
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
-cp home/local.nix.example home/local.nix
+cp modules/home/local.nix.example modules/home/local.nix
 cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 ```
 
@@ -239,7 +239,7 @@ sudo dmidecode -t memory | grep 'Part Number'
 
 > **Nota:** `environment.sessionVariables.TZ` debe coincidir siempre con `time.timeZone` — ambos controlan la zona horaria, uno a nivel de sistema y otro a nivel de sesión.
 
-Edita `home/local.nix` para tus personalizaciones de home-manager (paquetes extra, dotfiles, alias, fastfetch...):
+Edita `modules/home/local.nix` para tus personalizaciones de home-manager (paquetes extra, dotfiles, alias, fastfetch...):
 
 ```nix
 { pkgs, lib, osConfig, ... }:
@@ -248,13 +248,13 @@ Edita `home/local.nix` para tus personalizaciones de home-manager (paquetes extr
 }
 ```
 
-> Consulta `home/local.nix.example` para ver todas las opciones de personalización disponibles, incluida la personalización de fastfetch.
+> Consulta `modules/home/local.nix.example` para ver todas las opciones de personalización disponibles, incluida la personalización de fastfetch.
 
 ### 5. Configura el kernel
 
 Roudix usa **dos proveedores de kernel distintos** según tu GPU:
 
-- **`hardware.myGpu != "nvidia"`** (AMD o Intel) → kernel de [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), que se elige con `hardware.myKernel`. Sin módulo Nvidia de que preocuparse, así que está disponible el conjunto completo de 32 variantes.
+- **`hardware.myGpu != "nvidia"`** (AMD o Intel) → kernel de [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), que se elige con `hardware.myKernel`. Sin módulo Nvidia de que preocuparse, así que está disponible el conjunto completo de 36 variantes.
 - **`hardware.myGpu == "nvidia"`** → kernel de **Chaotic-Nyx**, que se elige con `hardware.myKernelChaotic`. Es necesario para obtener **`nvidia_cachyos`**, un driver Nvidia precompilado que coincide con su kernel — de lo contrario el módulo de kernel de Nvidia se recompila localmente con cada actualización del kernel. Aquí el conjunto de variantes es más reducido a propósito (Chaotic-Nyx no publica tantas variantes, y las variantes `-lto` son más propensas a romper módulos externos como el de Nvidia).
 
 Ambas opciones aceptan también unos cuantos **kernels simples de nixpkgs**, totalmente fuera de su overlay respectivo de CachyOS — útiles si solo quieres un kernel estándar sin parches de CachyOS: `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`, `xanmod-lts`, `xanmod-latest`. En la ruta Nvidia se saltan la caché de `nvidia_cachyos` y recompilan el módulo Nvidia localmente (ver `nvidia.nix`).
@@ -327,7 +327,7 @@ Ambas opciones aceptan también unos cuantos **kernels simples de nixpkgs**, tot
 
 > **Nota sobre el tema Spicetify Comfy:** tras tu primera compilación, copia a mano el color.ini:
 > ```bash
-> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/spicetify/Comfy/color.ini
+> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/apps/media/spicetify/Comfy/color.ini
 > ```
 > Después ejecuta `rebuild` para aplicarlo.
 
@@ -407,10 +407,10 @@ Si no tienes otro sistema operativo que añadir, deja `extraEntries` vacío:
 
 ### 8. Actualiza la configuración de git
 
-`modules/home/git.nix` está en el gitignore (como `local.nix`) — copia la plantilla versionada y rellena tu identidad:
+`modules/home/dev/git.nix` está en el gitignore (como `local.nix`) — copia la plantilla versionada y rellena tu identidad:
 
 ```bash
-cp modules/home/git.nix.example modules/home/git.nix
+cp modules/home/dev/git.nix.example modules/home/dev/git.nix
 ```
 
 ```nix
@@ -458,7 +458,7 @@ roudix.matrixClient          = "none"; # "element", "cinny" o "none"
 
 ### 10. Personaliza fastfetch (opcional)
 
-Por defecto Roudix muestra su logo ASCII en fastfetch. Puedes sustituirlo en `home/local.nix` sin tocar git:
+Por defecto Roudix muestra su logo ASCII en fastfetch. Puedes sustituirlo en `modules/home/local.nix` sin tocar git:
 
 ```nix
 # Usa una imagen personalizada (requiere el terminal kitty)
@@ -487,7 +487,7 @@ programs.fastfetch.settings = lib.mkForce {
 ```
 
 > `lib.mkForce` sobrescribe toda la configuración por defecto de Roudix. Sin él, tus claves se combinan con las de por defecto.
-> Consulta `home/local.nix.example` para ver más ejemplos.
+> Consulta `modules/home/local.nix.example` para ver más ejemplos.
 
 ### 11. Compila
 

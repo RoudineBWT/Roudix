@@ -69,17 +69,21 @@ any step that does not behave as described.
 
 1. **Prepare a way back.** Back up the ESP (`sudo tar -C /boot -cf ~/esp-backup.tar .`),
    have a live USB at hand, and know how to open the firmware setup.
-2. **Create the keys** (Secure Boot still OFF in the firmware):
-   `sudo sbctl create-keys` (stored in `/var/lib/sbctl`; back them up).
+2. **Create the keys** (Secure Boot still OFF in the firmware). Roudix only
+   installs `sbctl` once `roudix.boot.secureBoot.enable` is on, so for steps
+   2 to 4 run it through nix:
+   `sudo nix run nixpkgs#sbctl -- create-keys` (stored in `/var/lib/sbctl`;
+   back them up).
 3. **Put the firmware in Setup Mode** (the menu entry to clear or reset the
    Secure Boot keys; it differs per board). Secure Boot stays disabled.
-4. **Enroll your keys with Microsoft's:** `sudo sbctl enroll-keys -m -f`
+4. **Enroll your keys with Microsoft's:**
+   `sudo nix run nixpkgs#sbctl -- enroll-keys -m -f`
    (`-m` keeps Microsoft's certificates, needed by Fedora's shim and most GPU
-   firmware; `-f` keeps the firmware's built-in ones). `sudo sbctl status`
-   should now show Setup Mode off.
+   firmware; `-f` keeps the firmware's built-in ones).
+   `sudo nix run nixpkgs#sbctl -- status` should now show Setup Mode off.
 5. **Sign Limine:** in `hosts/<host>/local.nix` set
-   `roudix.boot.secureBoot.enable = true;`, then rebuild. Check
-   `sudo sbctl verify`: the Limine EFI files must show as signed (kernels are
+   `roudix.boot.secureBoot.enable = true;`, then rebuild (`sbctl` is in your
+   PATH from now on). Check `sudo sbctl verify`: the Limine EFI files must show as signed (kernels are
    verified by Limine through the hashes in its enrolled config, not by
    signature).
 6. **Reboot with Secure Boot still OFF** and check it boots normally.

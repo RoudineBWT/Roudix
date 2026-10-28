@@ -11,7 +11,7 @@
 | `cleanup` | Удалить старые поколения + сборка мусора |
 | `noctalia-reload` | Перезапустить Noctalia без выхода из сеанса |
 | `dms-reload` | Перезапустить Quickshell без выхода из сеанса |
-| `caelista-reload` | Перезапустить Quickshell без выхода из сеанса |
+| `caelestia-reload` | Перезапустить Quickshell без выхода из сеанса |
 | `roudix-switch <de>` | Сменить окружение рабочего стола (применится при следующей перезагрузке) |
 | `roudix-kernel-switch <kernel>` | Сменить вариант ядра (применится при следующей перезагрузке) |
 
@@ -62,6 +62,8 @@ roudix-switch mangowc
 roudix-switch umbriel
 roudix-switch gnome
 roudix-switch kde
+roudix-switch cinnamon
+roudix-switch cosmic
 
 # Сменить вариант ядра — список зависит от hardware.myGpu, см. docs/installation.md
 # AMD/Intel (xddxdd):
