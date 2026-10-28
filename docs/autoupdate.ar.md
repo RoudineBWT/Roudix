@@ -4,7 +4,7 @@
 
 عندما يكون `roudix.autoupdate.enable = true`، يفحص النظام GitHub كل ساعة (وبعد 5 دقائق من الإقلاع).
 إذا اكتُشفت التزامات (commits) جديدة في الفرع المتتبَّع (`main` افتراضيًا)، يقوم بعملية pull ويشغّل `nh os boot path:...` — وتُطبَّق الإعدادات الجديدة عند إعادة التشغيل التالية.
-ملفاتك `local.nix` و`username.nix` و`hardware-configuration.nix` والملفات الاختيارية `home/niri-custom.nix` / `home/umbriel-custom.nix` / `home/mango-custom.nix` وكل ما في `dotfiles/perso/` مُدرجة في gitignore ولا يمسّها الـ pull أبدًا.
+ملفاتك `local.nix` و`username.nix` و`hardware-configuration.nix` والملفات الاختيارية `modules/home/niri-custom.nix` / `modules/home/umbriel-custom.nix` / `modules/home/mango-custom.nix` وكل ما في `dotfiles/perso/` مُدرجة في gitignore ولا يمسّها الـ pull أبدًا.
 
 لضبط الفاصل الزمني أو الفرع، أعِد تعريفهما في `local.nix`:
 

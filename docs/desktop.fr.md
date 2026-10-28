@@ -10,12 +10,12 @@ Changez de bureau à tout moment avec `roudix-switch <de>` ou via l'interface **
 | `hyprland` | Hyprland + (Noctalia, DMS, Caelestia) | Tiling dynamique Wayland — lancé via UWSM |
 | `mangowc` | MangoWC + (Noctalia, DMS) | Compositeur Wayland |
 | `umbriel` | Umbriel + Noctalia | Tiling scrollable — le compositeur natif propre à Noctalia, Noctalia uniquement (pas de changement de shell) |
-| `gnome` | GNOME 49.5 | |
+| `gnome` | GNOME | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 | `cinnamon` | Cinnamon | Session X11 + LightDM — bureau classique, adapté aux vieux PC (GNOME 49 est Wayland uniquement) |
 | `cosmic` | COSMIC | Bureau Wayland de System76 (cosmic-comp), cosmic-greeter |
 
-Pour changer de façon permanente, modifiez `hosts/roudix/local.nix` :
+Pour changer de façon permanente, modifiez `hosts/<hostname>/local.nix` (ex. `hosts/roudix/local.nix`) :
 
 ```nix
 roudix.desktop.type = "niri"; # "niri", "hyprland", "mangowc", "gnome", "kde", "cinnamon" ou "cosmic"
@@ -53,7 +53,7 @@ Le démarrage dépend du shell et du compositeur, avec une seule méthode active
 - **MangoWC + Noctalia :** `noctalia` depuis `autostart_sh`.
 - **MangoWC + DMS :** service systemd utilisateur DMS, démarré via `mango-session.target` ; MangoWC n’exécute donc pas `dms run`.
 
-DMS ne doit pas être lancé à la fois par systemd et par le compositor : sa documentation officielle recommande de supprimer `dms run` lorsqu’on utilise le service systemd. citeturn1search0turn1search2
+DMS ne doit pas être lancé à la fois par systemd et par le compositor : sa documentation officielle recommande de supprimer `dms run` lorsqu’on utilise le service systemd.
 
 
 Pour changer, modifiez `hosts/roudix/local.nix` :
@@ -102,7 +102,7 @@ Niri et Umbriel sont configurés nativement en Nix (`programs.niri.settings` / `
 
 MangoWC et Hyprland restent basés sur du texte (voir ci-dessous).
 
-Vous pouvez mettre les surcharges directement dans `home/local.nix`, mais si vous personnalisez beaucoup un compositeur, un fichier dédié garde les choses plus propres — `home/local.nix` importe automatiquement `home/niri-custom.nix`, `home/umbriel-custom.nix` et `home/mango-custom.nix` s'ils existent (copiez le fichier `*.example` correspondant pour démarrer ; ils sont ignorés par git comme `local.nix`).
+Vous pouvez mettre les surcharges directement dans `modules/home/local.nix`, mais si vous personnalisez beaucoup un compositeur, un fichier dédié garde les choses plus propres — `modules/home/local.nix` importe automatiquement `modules/home/niri-custom.nix`, `modules/home/umbriel-custom.nix` et `modules/home/mango-custom.nix` s'ils existent (copiez le fichier `*.example` correspondant pour démarrer ; ils sont ignorés par git comme `local.nix`).
 
 **Niri**
 
@@ -155,7 +155,7 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 '';
 ```
 
-Comme c'est un gros bloc de texte plutôt que quelques lignes Nix, ça a plus sa place dans son propre fichier — voir `home/mango-custom.nix.example`.
+Comme c'est un gros bloc de texte plutôt que quelques lignes Nix, ça a plus sa place dans son propre fichier — voir `modules/home/mango-custom.nix.example`.
 
 **Hyprland utilise maintenant une configuration Lua modulaire fournie dans `dotfiles/hyprland/`.** Le fichier d'entrée est `dotfiles/hyprland/hyprland.lua`, qui charge les modules `config/` pour les écrans, layouts, animations, binds, règles de fenêtres et intégrations shell. Nix copie cet arbre tel quel dans `~/.config/hypr/`.
 
@@ -165,17 +165,17 @@ La configuration actuelle cible Hyprland 0.55+ et utilise les layouts natifs `dw
 
 Les valeurs propres à la machine (sorties `DP-1`/`DP-3`, écran principal, applications par défaut, clavier, etc.) se trouvent dans `dotfiles/hyprland/config/`. Modifiez-les directement si vous versionnez votre configuration avec Roudix.
 
-Pour une surcharge personnelle sans modifier les fichiers suivis par git, utilisez `home/local.nix` avec `xdg.configFile."hypr/..."` et `lib.mkForce`.
+Pour une surcharge personnelle sans modifier les fichiers suivis par git, utilisez `modules/home/local.nix` avec `xdg.configFile."hypr/..."` et `lib.mkForce`.
 
 > Après une modification de la configuration Lua, utilisez `rebuild`. Un redémarrage de session peut être nécessaire pour les changements de shell ou d'environnement.
 
-> Voir `home/niri-custom.nix.example`, `home/umbriel-custom.nix.example`, `home/mango-custom.nix.example` et `home/local.nix.example` pour la liste complète des exemples.
+> Voir `modules/home/niri-custom.nix.example`, `modules/home/umbriel-custom.nix.example`, `modules/home/mango-custom.nix.example` et `modules/home/local.nix.example` pour la liste complète des exemples.
 
 ---
 
 ## Surcharges GNOME
 
-Avec `roudix.desktop.type = "gnome"`, la gestion des extensions se fait dans `hosts/roudix/local.nix` et les surcharges d'apparence dans `home/local.nix`.
+Avec `roudix.desktop.type = "gnome"`, la gestion des extensions se fait dans `hosts/roudix/local.nix` et les surcharges d'apparence dans `modules/home/local.nix`.
 
 **Ajouter des extensions en plus des extensions par défaut** (`hosts/roudix/local.nix`)
 ```nix
@@ -201,7 +201,7 @@ roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 
 Roudix fournit l'apparence de GNOME (fond d'écran, thème sombre, icônes, curseur, réglages des extensions) sous forme de *valeurs par défaut*. Modifiez ce que vous voulez dans les Paramètres, Ajustements ou les préférences d'une extension : c'est à vous, un rebuild ne le remettra jamais en arrière. Les mises à jour de Roudix ne changent que les défauts des réglages que vous n'avez pas touchés.
 
-**Imposer une valeur depuis votre config** (`home/local.nix`)
+**Imposer une valeur depuis votre config** (`modules/home/local.nix`)
 
 Pour figer une valeur de façon déclarative, passez par home-manager. Contrairement à la méthode manuelle ci-dessus, elle est réappliquée à **chaque** rebuild et écrase ce que vous changez dans l'interface :
 ```nix
@@ -222,7 +222,7 @@ dconf reset /org/gnome/desktop/interface/icon-theme
 dconf reset -f /org/gnome/shell/extensions/dash-to-panel/
 ```
 
-> Voir `hosts/roudix/local.nix.example` et `home/local.nix.example` pour toutes les options de surcharge GNOME disponibles.
+> Voir `hosts/roudix/local.nix.example` et `modules/home/local.nix.example` pour toutes les options de surcharge GNOME disponibles.
 
 ---
 
@@ -236,7 +236,7 @@ Roudix applique son apparence KDE **une seule fois**, jamais à chaque rebuild :
 - **Verr. num. au démarrage, fond d'écran de verrouillage** : simples valeurs par défaut KConfig dans `/etc/xdg`, situées sous votre `~/.config` et qui ne l'écrasent jamais.
 - **Fond d'écran et panneau** : appliqués par plasma-manager au premier login, puis rejoués uniquement si Roudix change leur définition dans une mise à jour.
 
-**Figer des valeurs depuis votre config** (`home/local.nix`)
+**Figer des valeurs depuis votre config** (`modules/home/local.nix`)
 
 Tout ce que vous réglez via plasma-manager est réappliqué à **chaque** rebuild : à réserver à ce que vous voulez déclaratif.
 
@@ -269,7 +269,7 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> `lib.mkForce` n'est nécessaire que pour `wallpaper` et `panels`, encore définis dans `home/desktop/kde/default.nix`.
+> `lib.mkForce` n'est nécessaire que pour `wallpaper` et `panels`, encore définis dans `modules/home/desktop/kde/default.nix`.
 
 ## Défauts Cinnamon
 

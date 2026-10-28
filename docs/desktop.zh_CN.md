@@ -10,7 +10,7 @@
 | `hyprland` | Hyprland + (Noctalia, DMS, Caelestia) | 动态平铺 Wayland——通过 UWSM 启动 |
 | `mangowc` | MangoWC + (Noctalia, DMS) | Wayland 合成器 |
 | `umbriel` | Umbriel + Noctalia | 可滚动平铺——Noctalia 自带的原生合成器，仅限 Noctalia（不能切换 Shell） |
-| `gnome` | GNOME 49.5 | |
+| `gnome` | GNOME | |
 | `kde` | KDE Plasma 6 | plasma-login-manager、KDE Connect |
 | `cinnamon` | Cinnamon | X11 会话 + LightDM——经典桌面，适合较旧的硬件（GNOME 49 仅支持 Wayland） |
 | `cosmic` | COSMIC | System76 的 Wayland 桌面（cosmic-comp），cosmic-greeter |
@@ -101,7 +101,7 @@ Niri 和 Umbriel 原生地在 Nix 中配置（`programs.niri.settings` / `progra
 
 MangoWC 和 Hyprland 仍然基于文本（见下文）。
 
-你可以直接把覆盖配置放在 `home/local.nix` 中，但如果你大量定制某个合成器，使用专用文件会更整洁——`home/local.nix` 会自动导入 `home/niri-custom.nix`、`home/umbriel-custom.nix` 和 `home/mango-custom.nix`（如果存在）（复制对应的 `*.example` 文件即可开始；它们与 `local.nix` 一样被 gitignore）。
+你可以直接把覆盖配置放在 `modules/home/local.nix` 中，但如果你大量定制某个合成器，使用专用文件会更整洁——`modules/home/local.nix` 会自动导入 `modules/home/niri-custom.nix`、`modules/home/umbriel-custom.nix` 和 `modules/home/mango-custom.nix`（如果存在）（复制对应的 `*.example` 文件即可开始；它们与 `local.nix` 一样被 gitignore）。
 
 **Niri**
 
@@ -154,7 +154,7 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 '';
 ```
 
-由于它是一大段文本而不是几行 Nix，放在单独的文件中更合适——参见 `home/mango-custom.nix.example`。
+由于它是一大段文本而不是几行 Nix，放在单独的文件中更合适——参见 `modules/home/mango-custom.nix.example`。
 
 **Hyprland 现在使用 `dotfiles/hyprland/` 中的模块化 Lua 配置。** 入口是 `dotfiles/hyprland/hyprland.lua`，它会加载 `config/` 中负责显示器、布局、动画、快捷键、窗口规则和 Shell 集成的模块。Nix 会把这个目录树原样复制到 `~/.config/hypr/`。
 
@@ -164,17 +164,17 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 
 与具体机器相关的值（`DP-1`/`DP-3` 输出、主显示器、默认应用、键盘等）位于 `dotfiles/hyprland/config/` 下。如果你把 Hyprland 配置保存在 Roudix 仓库中，可以直接编辑它们。
 
-如果想在不修改受版本控制文件的情况下做个人覆盖，请在 `home/local.nix` 中使用 `xdg.configFile."hypr/..."` 和 `lib.mkForce`。
+如果想在不修改受版本控制文件的情况下做个人覆盖，请在 `modules/home/local.nix` 中使用 `xdg.configFile."hypr/..."` 和 `lib.mkForce`。
 
 > 修改 Lua 配置后，请运行 `rebuild`。涉及 Shell 或环境的更改可能需要重启会话。
 
-> 完整的示例列表请参见 `home/niri-custom.nix.example`、`home/umbriel-custom.nix.example`、`home/mango-custom.nix.example` 和 `home/local.nix.example`。
+> 完整的示例列表请参见 `modules/home/niri-custom.nix.example`、`modules/home/umbriel-custom.nix.example`、`modules/home/mango-custom.nix.example` 和 `modules/home/local.nix.example`。
 
 ---
 
 ## GNOME 覆盖配置
 
-使用 `roudix.desktop.type = "gnome"` 时，扩展管理放在 `hosts/roudix/local.nix` 中，外观覆盖放在 `home/local.nix` 中。
+使用 `roudix.desktop.type = "gnome"` 时，扩展管理放在 `hosts/roudix/local.nix` 中，外观覆盖放在 `modules/home/local.nix` 中。
 
 **在默认扩展之外添加扩展**（`hosts/roudix/local.nix`）
 ```nix
@@ -200,7 +200,7 @@ roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 
 Roudix 将 GNOME 的外观（壁纸、深色主题、图标、光标、扩展设置）作为*默认值*提供。在“设置”、“优化（Tweaks）”或扩展的首选项中修改任何内容，它就归你所有：重新构建永远不会还原它。Roudix 的更新只会更改你没有动过的设置的默认值。
 
-**从你的配置中强制指定某个值**（`home/local.nix`）
+**从你的配置中强制指定某个值**（`modules/home/local.nix`）
 
 如果你更希望以声明式的方式固定某个值，请通过 home-manager 设置。与上面的手动方式不同，它会在**每次**重新构建时重新应用，并覆盖你在界面中所做的更改：
 ```nix
@@ -221,7 +221,7 @@ dconf reset /org/gnome/desktop/interface/icon-theme
 dconf reset -f /org/gnome/shell/extensions/dash-to-panel/
 ```
 
-> 所有可用的 GNOME 覆盖选项请参见 `hosts/roudix/local.nix.example` 和 `home/local.nix.example`。
+> 所有可用的 GNOME 覆盖选项请参见 `hosts/roudix/local.nix.example` 和 `modules/home/local.nix.example`。
 
 ---
 
@@ -235,7 +235,7 @@ Roudix **只应用一次** KDE 外观，绝不会在每次重新构建时应用�
 - **启动时开启 NumLock、锁屏壁纸**：`/etc/xdg` 中普通的 KConfig 默认值，优先级低于你的 `~/.config`，绝不会覆盖它。
 - **壁纸和面板**：由 plasma-manager 在首次登录时应用，之后仅在 Roudix 自身通过更新修改了它们的定义时才会重新执行。
 
-**从你的配置中固定值**（`home/local.nix`）
+**从你的配置中固定值**（`modules/home/local.nix`）
 
 通过 plasma-manager 设置的任何内容都会在**每次**重新构建时重新应用，因此只对你希望保持声明式的内容使用它：
 
@@ -268,7 +268,7 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> 只有 `wallpaper` 和 `panels` 需要 `lib.mkForce`，它们仍然定义在 `home/desktop/kde/default.nix` 中。
+> 只有 `wallpaper` 和 `panels` 需要 `lib.mkForce`，它们仍然定义在 `modules/home/desktop/kde/default.nix` 中。
 
 ## Cinnamon 默认设置
 

@@ -3,17 +3,20 @@
 # Auto-update
 
 When `roudix.autoupdate.enable = true`, the system checks GitHub every hour (and 5 min after boot).
-If new commits are detected on the tracked branch (`main` by default), it pulls and runs `nh os boot path:...` — the new config applies on next reboot.
-Your `local.nix` files, `username.nix`, `hardware-configuration.nix`, the optional `home/niri-custom.nix` / `home/umbriel-custom.nix` / `home/mango-custom.nix` and everything under `dotfiles/perso/` are gitignored and never touched by the pull.
+If new commits are detected on the tracked branch (`main` by default), it pulls and runs `nixos-rebuild boot --flake path:...` (as root, no `nh`) — the new config applies on next reboot.
+Your `local.nix` files, `username.nix`, `hardware-configuration.nix`, the optional `modules/home/niri-custom.nix` / `modules/home/umbriel-custom.nix` / `modules/home/mango-custom.nix` and everything under `dotfiles/perso/` are gitignored and never touched by the pull.
 
 To configure the interval or branch, override in `local.nix`:
 
 ```nix
 { ... }:
 {
-  roudix.autoupdate.enable   = true;  # if you set false at this one, config.roudix.autoupdate will take the relai to update but not git pulled
+  roudix.autoupdate.enable   = true;  # false = no timer, no automatic pull (use `update` manually)
   roudix.autoupdate.interval = "6h";   # check every 6 hours instead of 1h
   roudix.autoupdate.branch   = "main"; # branch to track: "main" (stable), "testing" or "dev" — set by the installer
+  roudix.autoupdate.onBootDelay = "5min"; # delay before the first check after boot
+  roudix.autoupdate.minFreeSpaceGB = 5;   # skip (and notify) if /nix/store has less free space
+  roudix.autoupdate.configPath = "/home/<user>/.config/roudix"; # repository to update
 }
 ```
 

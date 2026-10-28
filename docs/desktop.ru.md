@@ -10,7 +10,7 @@
 | `hyprland` | Hyprland + (Noctalia, DMS, Caelestia) | Wayland с динамической тайловой раскладкой — запускается через UWSM |
 | `mangowc` | MangoWC + (Noctalia, DMS) | Композитор Wayland |
 | `umbriel` | Umbriel + Noctalia | Прокручиваемая тайловая раскладка — собственный нативный композитор Noctalia, только с Noctalia (без смены оболочки) |
-| `gnome` | GNOME 49.5 | |
+| `gnome` | GNOME | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 | `cinnamon` | Cinnamon | Сессия X11 + LightDM — классический рабочий стол, подходит для старого оборудования (GNOME 49 работает только на Wayland) |
 | `cosmic` | COSMIC | Wayland-рабочий стол от System76 (cosmic-comp), cosmic-greeter |
@@ -101,7 +101,7 @@ Niri и Umbriel настраиваются нативно в Nix (`programs.niri
 
 MangoWC и Hyprland остаются текстовыми (см. ниже).
 
-Переопределения можно писать прямо в `home/local.nix`, но если вы много настраиваете один композитор, отдельный файл удобнее — `home/local.nix` автоматически подключает `home/niri-custom.nix`, `home/umbriel-custom.nix` и `home/mango-custom.nix`, если они существуют (скопируйте соответствующий файл `*.example`, чтобы начать; они в gitignore, как и `local.nix`).
+Переопределения можно писать прямо в `modules/home/local.nix`, но если вы много настраиваете один композитор, отдельный файл удобнее — `modules/home/local.nix` автоматически подключает `modules/home/niri-custom.nix`, `modules/home/umbriel-custom.nix` и `modules/home/mango-custom.nix`, если они существуют (скопируйте соответствующий файл `*.example`, чтобы начать; они в gitignore, как и `local.nix`).
 
 **Niri**
 
@@ -154,7 +154,7 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 '';
 ```
 
-Поскольку это один большой текстовый блок, а не несколько строк Nix, его лучше держать в отдельном файле — см. `home/mango-custom.nix.example`.
+Поскольку это один большой текстовый блок, а не несколько строк Nix, его лучше держать в отдельном файле — см. `modules/home/mango-custom.nix.example`.
 
 **Hyprland теперь использует модульную Lua-конфигурацию из `dotfiles/hyprland/`.** Точка входа — `dotfiles/hyprland/hyprland.lua`, который загружает модули из `config/` для мониторов, раскладок, анимаций, сочетаний клавиш, правил окон и интеграции оболочек. Nix копирует это дерево как есть в `~/.config/hypr/`.
 
@@ -164,17 +164,17 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 
 Значения, специфичные для конкретной машины (выходы `DP-1`/`DP-3`, основной монитор, приложения по умолчанию, клавиатура и т. д.), находятся в `dotfiles/hyprland/config/`. Редактируйте их напрямую, если храните конфигурацию Hyprland в репозитории Roudix.
 
-Для личных переопределений без изменения отслеживаемых файлов используйте `home/local.nix` с `xdg.configFile."hypr/..."` и `lib.mkForce`.
+Для личных переопределений без изменения отслеживаемых файлов используйте `modules/home/local.nix` с `xdg.configFile."hypr/..."` и `lib.mkForce`.
 
 > После изменения Lua-конфигурации выполните `rebuild`. Для изменений оболочки или окружения может потребоваться перезапуск сессии.
 
-> Полный список примеров см. в `home/niri-custom.nix.example`, `home/umbriel-custom.nix.example`, `home/mango-custom.nix.example` и `home/local.nix.example`.
+> Полный список примеров см. в `modules/home/niri-custom.nix.example`, `modules/home/umbriel-custom.nix.example`, `modules/home/mango-custom.nix.example` и `modules/home/local.nix.example`.
 
 ---
 
 ## Переопределения GNOME
 
-При `roudix.desktop.type = "gnome"` управление расширениями задаётся в `hosts/roudix/local.nix`, а переопределения внешнего вида — в `home/local.nix`.
+При `roudix.desktop.type = "gnome"` управление расширениями задаётся в `hosts/roudix/local.nix`, а переопределения внешнего вида — в `modules/home/local.nix`.
 
 **Добавить расширения к стандартным** (`hosts/roudix/local.nix`)
 ```nix
@@ -200,7 +200,7 @@ roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 
 Roudix поставляет внешний вид GNOME (обои, тёмную тему, значки, курсор, настройки расширений) как *значения по умолчанию*. Измените что угодно в Параметрах, Tweaks или настройках расширения — и это станет вашим: пересборка никогда не вернёт старое. Обновления Roudix меняют только значения по умолчанию тех параметров, которых вы не трогали.
 
-**Принудительное задание значения из вашей конфигурации** (`home/local.nix`)
+**Принудительное задание значения из вашей конфигурации** (`modules/home/local.nix`)
 
 Если вы предпочитаете закрепить значение декларативно, задайте его через home-manager. В отличие от ручного способа выше, оно применяется заново при **каждой** пересборке и перекрывает то, что вы меняете в интерфейсе:
 ```nix
@@ -221,7 +221,7 @@ dconf reset /org/gnome/desktop/interface/icon-theme
 dconf reset -f /org/gnome/shell/extensions/dash-to-panel/
 ```
 
-> Все доступные параметры переопределения GNOME см. в `hosts/roudix/local.nix.example` и `home/local.nix.example`.
+> Все доступные параметры переопределения GNOME см. в `hosts/roudix/local.nix.example` и `modules/home/local.nix.example`.
 
 ---
 
@@ -235,7 +235,7 @@ Roudix применяет свой внешний вид KDE **один раз**
 - **NumLock при запуске, обои экрана блокировки**: обычные значения по умолчанию KConfig в `/etc/xdg`, которые лежат ниже вашего `~/.config` и никогда его не переопределяют.
 - **Обои и панель**: применяются plasma-manager при первом входе и перезапускаются только если сам Roudix изменит их определение в обновлении.
 
-**Закрепление значений из вашей конфигурации** (`home/local.nix`)
+**Закрепление значений из вашей конфигурации** (`modules/home/local.nix`)
 
 Всё, что вы задаёте через plasma-manager, применяется заново при **каждой** пересборке, поэтому используйте это только для того, что должно быть декларативным:
 
@@ -268,7 +268,7 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> `lib.mkForce` нужен только для `wallpaper` и `panels`, которые по-прежнему определены в `home/desktop/kde/default.nix`.
+> `lib.mkForce` нужен только для `wallpaper` и `panels`, которые по-прежнему определены в `modules/home/desktop/kde/default.nix`.
 
 ## Значения по умолчанию Cinnamon
 

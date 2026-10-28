@@ -133,6 +133,9 @@ class InstallState:
     bootloader: str = "limine"       # limine | systemd-boot
     boot_aspect: str = "16x9"        # roudix.boot.wallpaperAspect — 16x9 | 16x10 | 21x9 | 4x3 (Limine wallpaper, main screen)
     boot_resolution: str = "auto"    # roudix.boot.menuResolution — "auto" | "<w>x<h>" (Limine menu; main screen with several screens)
+    secure_boot: bool = False        # roudix.boot.secureBoot.enable — sign Limine with sbctl (Limine only). Keys are created at install, enrolling them in the firmware stays manual
+    eac_enable: bool = False         # roudix.boot.eac.enable — separate "NixOS EAC" boot entry for EAC Linux v2 (experimental, Limine only)
+    eac_vendor: str = "fedora"       # roudix.boot.eac.vendor — fedora | bazzite
     matrix_client: str = "none"      # none | element | cinny
     discord: str = "none"            # roudix.discord — vencord | vanilla | none
     telegram: str = "none"           # roudix.telegram — none | telegram | ayugram

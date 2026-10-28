@@ -10,7 +10,7 @@
 | `hyprland` | Hyprland + (Noctalia, DMS, Caelestia) | Wayland بتبليط ديناميكي — يُشغَّل عبر UWSM |
 | `mangowc` | MangoWC + (Noctalia, DMS) | مُركِّب Wayland |
 | `umbriel` | Umbriel + Noctalia | تبليط قابل للتمرير — المُركِّب الأصلي الخاص بـ Noctalia، مع Noctalia فقط (دون تبديل الصدفة) |
-| `gnome` | GNOME 49.5 | |
+| `gnome` | GNOME | |
 | `kde` | KDE Plasma 6 | plasma-login-manager، KDE Connect |
 | `cinnamon` | Cinnamon | جلسة X11 + LightDM — سطح مكتب كلاسيكي، مناسب للعتاد القديم (GNOME 49 يعمل على Wayland فقط) |
 | `cosmic` | COSMIC | سطح مكتب Wayland من System76 (cosmic-comp)، وcosmic-greeter |
@@ -101,7 +101,7 @@ roudix.desktop.latest.caelestia = true;  # Caelestia (يتبعها greeter ال�
 
 يبقى MangoWC وHyprland نصيَّين (انظر أدناه).
 
-يمكنك وضع التخصيصات مباشرة في `home/local.nix`، لكن إن كنت تخصّص مُركِّبًا واحدًا كثيرًا فإن ملفًا مخصصًا يُبقي الأمور أكثر ترتيبًا — إذ يستورد `home/local.nix` تلقائيًا الملفات `home/niri-custom.nix` و`home/umbriel-custom.nix` و`home/mango-custom.nix` إن وُجدت (انسخ ملف `*.example` المقابل للبدء؛ وهي مستثناة في gitignore مثل `local.nix`).
+يمكنك وضع التخصيصات مباشرة في `modules/home/local.nix`، لكن إن كنت تخصّص مُركِّبًا واحدًا كثيرًا فإن ملفًا مخصصًا يُبقي الأمور أكثر ترتيبًا — إذ يستورد `modules/home/local.nix` تلقائيًا الملفات `modules/home/niri-custom.nix` و`modules/home/umbriel-custom.nix` و`modules/home/mango-custom.nix` إن وُجدت (انسخ ملف `*.example` المقابل للبدء؛ وهي مستثناة في gitignore مثل `local.nix`).
 
 **Niri**
 
@@ -154,7 +154,7 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 '';
 ```
 
-وبما أنه كتلة نصية كبيرة وليس بضعة أسطر من Nix، فمكانه الأنسب ملف خاص به — انظر `home/mango-custom.nix.example`.
+وبما أنه كتلة نصية كبيرة وليس بضعة أسطر من Nix، فمكانه الأنسب ملف خاص به — انظر `modules/home/mango-custom.nix.example`.
 
 **يستخدم Hyprland الآن إعدادات Lua المعيارية في `dotfiles/hyprland/`.** نقطة الدخول هي `dotfiles/hyprland/hyprland.lua`، التي تحمّل وحدات `config/` الخاصة بالشاشات والتخطيطات والرسوم المتحركة والاختصارات وقواعد النوافذ وتكاملات الصدفة. وينسخ Nix هذه الشجرة كما هي إلى `~/.config/hypr/`.
 
@@ -164,17 +164,17 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 
 القيم الخاصة بالجهاز (مخرجات `DP-1`/`DP-3`، والشاشة الرئيسية، والتطبيقات الافتراضية، ولوحة المفاتيح، إلخ) موجودة ضمن `dotfiles/hyprland/config/`. عدّلها مباشرة إن كنت تحتفظ بإعداد Hyprland في مستودع Roudix.
 
-وللتخصيصات الشخصية دون تعديل الملفات المتتبَّعة، استخدم `home/local.nix` مع `xdg.configFile."hypr/..."` و`lib.mkForce`.
+وللتخصيصات الشخصية دون تعديل الملفات المتتبَّعة، استخدم `modules/home/local.nix` مع `xdg.configFile."hypr/..."` و`lib.mkForce`.
 
 > بعد تغيير إعدادات Lua، شغّل `rebuild`. وقد يلزم إعادة تشغيل الجلسة عند تغيير الصدفة أو البيئة.
 
-> انظر `home/niri-custom.nix.example` و`home/umbriel-custom.nix.example` و`home/mango-custom.nix.example` و`home/local.nix.example` للاطلاع على القائمة الكاملة للأمثلة.
+> انظر `modules/home/niri-custom.nix.example` و`modules/home/umbriel-custom.nix.example` و`modules/home/mango-custom.nix.example` و`modules/home/local.nix.example` للاطلاع على القائمة الكاملة للأمثلة.
 
 ---
 
 ## تخصيصات GNOME
 
-عند استخدام `roudix.desktop.type = "gnome"`، تكون إدارة الإضافات في `hosts/roudix/local.nix` وتخصيصات المظهر في `home/local.nix`.
+عند استخدام `roudix.desktop.type = "gnome"`، تكون إدارة الإضافات في `hosts/roudix/local.nix` وتخصيصات المظهر في `modules/home/local.nix`.
 
 **إضافة إضافات فوق الإضافات الافتراضية** (`hosts/roudix/local.nix`)
 ```nix
@@ -200,7 +200,7 @@ roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 
 يوفّر Roudix مظهر GNOME (الخلفية، والسمة الداكنة، والأيقونات، والمؤشر، وإعدادات الإضافات) بوصفه *قيمًا افتراضية*. غيّر أي شيء من الإعدادات أو Tweaks أو تفضيلات إحدى الإضافات فيصبح ملكك: لا تُرجعه إعادة البناء أبدًا. وتغيّر تحديثات Roudix القيم الافتراضية للإعدادات التي لم تلمسها فقط.
 
-**فرض قيمة من إعداداتك** (`home/local.nix`)
+**فرض قيمة من إعداداتك** (`modules/home/local.nix`)
 
 إن كنت تفضّل تثبيت قيمة بشكل تصريحي، فاضبطها عبر home-manager. وخلافًا للطريقة اليدوية أعلاه، تُعاد هذه القيمة في **كل** عملية إعادة بناء وتتغلب على ما تغيّره في الواجهة:
 ```nix
@@ -221,7 +221,7 @@ dconf reset /org/gnome/desktop/interface/icon-theme
 dconf reset -f /org/gnome/shell/extensions/dash-to-panel/
 ```
 
-> انظر `hosts/roudix/local.nix.example` و`home/local.nix.example` لجميع خيارات تخصيص GNOME المتاحة.
+> انظر `hosts/roudix/local.nix.example` و`modules/home/local.nix.example` لجميع خيارات تخصيص GNOME المتاحة.
 
 ---
 
@@ -235,7 +235,7 @@ dconf reset -f /org/gnome/shell/extensions/dash-to-panel/
 - **NumLock عند بدء التشغيل وخلفية شاشة القفل**: قيم KConfig افتراضية عادية في `/etc/xdg`، تقع أدنى من `~/.config` الخاص بك ولا تتغلب عليه أبدًا.
 - **الخلفية واللوحة**: يطبّقهما plasma-manager عند أول تسجيل دخول، ثم لا يعيد تشغيلهما إلا إذا غيّر Roudix نفسه تعريفهما في تحديث.
 
-**تثبيت القيم من إعداداتك** (`home/local.nix`)
+**تثبيت القيم من إعداداتك** (`modules/home/local.nix`)
 
 كل ما تضبطه عبر plasma-manager يُعاد تطبيقه في **كل** عملية إعادة بناء، لذا استخدمه فقط لما تريده تصريحيًا:
 
@@ -268,7 +268,7 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> لا حاجة إلى `lib.mkForce` إلا مع `wallpaper` و`panels`، فهما ما زالا معرَّفين في `home/desktop/kde/default.nix`.
+> لا حاجة إلى `lib.mkForce` إلا مع `wallpaper` و`panels`، فهما ما زالا معرَّفين في `modules/home/desktop/kde/default.nix`.
 
 ## الإعدادات الافتراضية لـ Cinnamon
 

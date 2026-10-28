@@ -5,6 +5,7 @@
   # `import ./boot.local.nix` from inside boot.nix, not NixOS modules.
   imports = [
     ./boot.nix
+    ./secure-boot.nix
     ./kernel.nix
     ./cpu.nix
   ];

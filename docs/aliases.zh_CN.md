@@ -11,7 +11,7 @@
 | `cleanup` | 删除旧世代 + 垃圾回收 |
 | `noctalia-reload` | 无需注销即可重启 Noctalia |
 | `dms-reload` | 无需注销即可重启 Quickshell |
-| `caelista-reload` | 无需注销即可重启 Quickshell |
+| `caelestia-reload` | 无需注销即可重启 Quickshell |
 | `roudix-switch <de>` | 切换桌面环境（下次重启生效） |
 | `roudix-kernel-switch <kernel>` | 切换内核变体（下次重启生效） |
 
@@ -62,6 +62,8 @@ roudix-switch mangowc
 roudix-switch umbriel
 roudix-switch gnome
 roudix-switch kde
+roudix-switch cinnamon
+roudix-switch cosmic
 
 # 切换内核变体 — 可选列表取决于 hardware.myGpu，见 docs/installation.md
 # AMD/Intel (xddxdd)：

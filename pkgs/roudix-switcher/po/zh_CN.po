@@ -468,6 +468,30 @@ msgid "Every day"
 msgstr "每天"
 
 #: roudix-switcher.py
+msgid ""
+"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"keys)"
+msgstr ""
+"Secure Boot — 用 sbctl 为 Limine 签名（密钥必须已存在：sudo sbctl create-"
+"keys）"
+
+#: roudix-switcher.py
+msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
+msgstr "EAC Linux v2 — 单独的“NixOS EAC”启动项（实验性）"
+
+#: roudix-switcher.py
+msgid "Fedora kernel — nothing to enroll"
+msgstr "Fedora 内核 — 无需注册密钥"
+
+#: roudix-switcher.py
+msgid ""
+"Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-"
+"enroll-mok)"
+msgstr ""
+"Bazzite OGC 内核 — 需要先注册一次 Universal Blue 的密钥（sudo eacnix-enroll-"
+"mok）"
+
+#: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
 msgstr "低延迟（48 kHz，quantum 128）— 音频制作、节奏游戏"
 
@@ -984,7 +1008,9 @@ msgstr "启动壁纸格式 (Limine)"
 msgid ""
 "Your main screen ({res}) looks like {aspect}, but the boot wallpaper is "
 "{current} — pick {aspect} if you changed screens."
-msgstr "你的主屏幕（{res}）是 {aspect}，但启动壁纸是 {current} — 如果你换了屏幕，请选择 {aspect}。"
+msgstr ""
+"你的主屏幕（{res}）是 {aspect}，但启动壁纸是 {current} — 如果你换了屏幕，请选"
+"择 {aspect}。"
 
 #: roudix-switcher.py
 #, python-brace-format
@@ -1006,13 +1032,34 @@ msgstr "Limine 菜单分辨率"
 msgid ""
 "{count} screens detected: Limine can use the smaller one — pick {res} (your "
 "main screen) to force the menu and its wallpaper to it."
-msgstr "检测到 {count} 个屏幕：Limine 可能会使用较小的那个 — 请选择 {res}（你的主屏幕），让菜单和壁纸使用该分辨率。"
+msgstr ""
+"检测到 {count} 个屏幕：Limine 可能会使用较小的那个 — 请选择 {res}（你的主屏"
+"幕），让菜单和壁纸使用该分辨率。"
 
 #: roudix-switcher.py
 msgid ""
 "Only useful with several screens of different sizes. If the firmware doesn't "
 "offer the resolution, Limine falls back to another one."
-msgstr "仅在有多个不同尺寸的屏幕时有用。如果固件不支持该分辨率，Limine 会自动改用其他分辨率。"
+msgstr ""
+"仅在有多个不同尺寸的屏幕时有用。如果固件不支持该分辨率，Limine 会自动改用其他"
+"分辨率。"
+
+#: roudix-switcher.py
+msgid "Secure Boot and EAC (experimental)"
+msgstr "Secure Boot 与 EAC（实验性）"
+
+#: roudix-switcher.py
+msgid "EAC kernel"
+msgstr "EAC 内核"
+
+#: roudix-switcher.py
+msgid ""
+"Create and enroll the sbctl keys before turning Secure Boot on in the "
+"firmware (docs/secure-boot-eac.md). Epic has not confirmed that EAC accepts "
+"this setup yet."
+msgstr ""
+"请先创建并注册 sbctl 密钥，再在固件中开启 Secure Boot（docs/secure-boot-"
+"eac.md）。Epic 尚未确认 EAC 会接受这种配置。"
 
 #: roudix-switcher.py
 msgid "Audio (PipeWire)"

@@ -37,19 +37,19 @@
 | Layer | Choice |
 |-------|--------|
 | OS | Roudix (NixOS unstable) |
-| Kernel | CachyOS (Choose your kernel variant see in[Features](docs/features.md) or in [Installation](docs/installation.md) ) |
+| Kernel | CachyOS (Choose your kernel variant see [Features](docs/features.md) or in [Installation](docs/installation.md) ) |
 | Bootloader | Limine (default) · systemd-boot |
 | Compositor | Niri (scrollable tiling) · Hyprland (dynamic tiling) · MangoWC · Umbriel (scrollable tiling, Noctalia-native) |
 | Graphical shell | Noctalia · DankMaterialShell · Caelestia |
-| Desktop Environment | KDE Plasma · Gnome |
-| Display Manager | DMS Greeter (Dms only) · Noctalia Greeter (noctalia only) · plasma-login-manager (KDE only) · GDM (Gnome only) |
-| Terminal | Configurable (Ghossty, Kitty, Foot, Wzertem, Konsole, Ptyxis) |
+| Desktop Environment | KDE Plasma · GNOME · Cinnamon · COSMIC |
+| Display Manager | Noctalia Greeter (Noctalia) · DMS Greeter (DMS) · Ly (Hyprland/MangoWC without Noctalia) · plasma-login-manager (KDE) · GDM (GNOME) · LightDM (Cinnamon) · cosmic-greeter (COSMIC) |
+| Terminal | Configurable (Ghostty, Kitty, Alacritty, Foot, WezTerm, Konsole, Ptyxis) |
 | Shell | Fish · Bash |
-| Browser | Configurable (Brave, Helium, Vivaldi, Firefox, LibreWolf, Chromium, Zen Twilight) |
+| Browser | Configurable (Brave, Helium, Vivaldi, Firefox, LibreWolf, Chromium, Ungoogled Chromium, Chrome, Edge — Zen via `roudix.zen`) |
 | File Manager | Configurable (Nautilus, Thunar, Dolphin, Nemo) |
 | Editor | Configurable (Zed, VS Code, Neovim, none) |
 | Chat | Discord (Vencord · vanilla · none) + Matrix (Element · Cinny · none) |
-| Music | Configurable (Spotify + Spicetify, YouTube Music Desktop, none) |
+| Music | Configurable (Spotify + Spicetify, YouTube Music Desktop, Sonora, none) |
 
 ---
 
@@ -70,139 +70,74 @@
 ```
 roudix/
 ├── roudix-installer.sh              # Bash-based installer
-├── flake.nix                        # Inputs & outputs
-├── flake.lock
+├── flake.nix / flake.lock           # Inputs & outputs (one nixosConfigurations entry per hosts/<name>/)
+├── version.nix / branding.nix       # Roudix OS branding (os-release, distroName)
+├── Justfile                         # Dev tasks (`just ci`)
 ├── docs/                            # Documentation
-│   ├── desktop.md                   # Desktop environments & graphical shells
-│   ├── aliases.md                   # Shell aliases & functions
-│   ├── installation.md              # Installation guide
-│   ├── features.md                  # Feature list
-│   ├── features.fr.md               # Feature list (French)
-│   └── autoupdate.md                # Auto-update configuration
+│   └── desktop / aliases / installation / features / autoupdate (.md + .<lang>.md) · secure-boot-eac.md
 │
-├── hosts/
-│   └── roudix/                      # Single host — DE selected via roudix.desktop.type
-│       ├── configuration.nix
-│       ├── username.nix             # gitignored — your username (see installation)
-│       ├── local.nix                # gitignored — your personal system overrides
-│       ├── local.nix.example        # copy this to local.nix to get started
-│       └── hardware-configuration.nix
+├── hosts/                           # One directory per machine — each becomes a nixosConfigurations.<name>
+│   ├── roudix/ · nixie/             # DE selected via roudix.desktop.type
+│   │   ├── configuration.nix
+│   │   ├── username.nix             # gitignored — your username (see installation)
+│   │   ├── local.nix                # gitignored — your personal system overrides
+│   │   ├── local.nix.example        # copy it to local.nix to get started
+│   │   ├── firewall.local.nix       # gitignored — written by roudix-firewall
+│   │   └── hardware-configuration.nix  # gitignored
 │
 ├── dotfiles/                        # Raw config files managed by Home Manager
-│   ├── easyeffects/                 # EasyEffects presets
-│   ├── fastfetch/
-│   │   └── roudix.txt               # Default Roudix ASCII logo for fastfetch
-│   # niri/, niri-dms/ removed — niri config is now fully
-│   # Nix-native (see modules/home/desktop/niri/ below).
+│   ├── easyeffects/ · fastfetch/    # EasyEffects presets, fastfetch logo (roudix-ascii.txt)
 │   ├── hyprland/                    # Hyprland config (Lua) — one tree for every graphical shell
 │   │   ├── hyprland.lua             # Entry point: loads the config/ modules
-│   │   └── config/
-│   │       ├── shell.lua            # Picks the shell (noctalia / dms / caelestia) from ROUDIX_HYPR_SHELL
-│   │       ├── shells/              # Per-shell binds & integration (noctalia.lua, dms.lua, caelestia.lua)
-│   │       ├── binds/common.lua     # Binds shared by every shell
-│   │       ├── rules/               # Window rules (common.lua, apps.lua, gaming.lua)
-│   │       ├── ws.lua               # Shared workspace table (used by workspaces, binds and rules)
-│   │       ├── workspaces.lua       # Workspace rules
-│   │       ├── monitors.lua / input.lua / layout.lua / decorations.lua / animations.lua
-│   │       ├── defaults.lua / colors.lua / environment.lua / autostart.lua / misc.lua
-│   │       └── nix-noctalia.lua     # Loads the live Noctalia theme (generated by matugen)
-│   │   # config/nix-plugins.lua and config/nix-apps.lua are generated by Nix (not in the repo)
+│   │   └── config/                  # shell.lua, shells/, binds/, rules/, ws.lua, monitors.lua… (nix-plugins.lua / nix-apps.lua are generated by Nix)
 │   └── perso/                       # Personal config (gitignored)
 │
+├── iso/                             # Live ISO + graphical installer
+│   └── roudix-installer/            # GTK4/libadwaita installer (disko, "existing NixOS" mode, gettext translations)
+├── scripts/                         # CI / tooling (i18n.sh, release.sh, check-path-refs.py, ai-commit.py…)
+│
 ├── pkgs/
-│   ├── roudix-branding              # Roudix Branding package
-│   ├── roudix-kernel-switcher       # Roudix Kernel Switcher GUI package
-│   ├── roudix-firewall/             # Roudix Firewall GUI (ports, trusted interfaces → hosts/<host>/firewall.local.nix)
-│   ├── roudix-switcher/             # Roudix Settings GUI (desktop, gaming, editor, terminal, browser, shell, file manager, chat, system, integration)
-│   └──   roudix-scheduler-switcher    # Scheduler Switcher GUI package
+│   ├── roudix-branding / roudix-config / roudix-welcome
+│   ├── roudix-switcher/             # Roudix Customizer/Settings GUI (desktop, gaming, editor, terminal, browser, shell, file manager, chat, system, integration)
+│   ├── roudix-kernel-switcher / roudix-scheduler-switcher / roudix-hw-sync
+│   ├── roudix-firewall/             # Firewall GUI (ports, trusted interfaces → hosts/<host>/firewall.local.nix)
+│   ├── roudix-disk/ · roudix-store/ # Disk tool · software center (Nix + Flatpak)
+│   └── nemo-terminal/
 │
 └── modules/
+    ├── desktop-pkgs.nix             # niri/mango/umbriel/shell package selection (nixpkgs or flake)
     ├── system/                      # NixOS system-level modules
-    │   ├── desktop/                 # Desktop environment modules (NixOS-level)
-    │   │   ├── default.nix          # Desktop options (roudix.desktop.type + roudix.desktop.shell)
-    │   │   └── niri.nix / hyprland.nix / gnome.nix / kde.nix / mangowc.nix / umbriel.nix
-    │   │
+    │   ├── desktop/                 # One module per DE + shared desktop settings
+    │   │   ├── default.nix          # roudix.desktop.type / .shell / .latest
+    │   │   ├── niri / hyprland / mangowc / umbriel / gnome / kde / cinnamon / cosmic .nix
+    │   │   └── ly.nix · keyboard.nix · icon-theme.nix · desktop-integration.nix
     │   ├── boot/                    # Bootloader, kernel & CPU
-    │   │   ├── boot.nix             # Limine/systemd-boot + multi-OS entries
-    │   │   ├── boot.local.nix       # gitignored — your personal boot entries
-    │   │   ├── boot.local.nix.example
-    │   │   ├── kernel.nix           # Kernel variant selection — CachyOS variants + plain nixpkgs
-    │   │   ├── cpu.nix              # Intel/AMD microcode + i2c modules
-    │   │   └── bootloader/          # Limine wallpaper asset
-    │   │
+    │   │   └── boot.nix · secure-boot.nix · boot.local.nix (gitignored) · kernel.nix · cpu.nix · bootloader/
     │   ├── apps/                    # App-selection modules (one roudix.* option each)
-    │   │   ├── apps.nix / appimage.nix / flatpak.nix / browser.nix / discord.nix
-    │   │   ├── telegram.nix / matrix.nix / mail-client.nix / music-player.nix
-    │   │   ├── video-player.nix / torrent-client.nix / password-manager.nix
-    │   │   └── filemanager.nix / editor.nix / terminal.nix / spicetify.nix / content-creation.nix
-    │   │
-    │   ├── virtualization/          # QEMU/KVM, containers, VM-guest tweaks, Waydroid
-    │   │   └── virtualization.nix / containers.nix / vm-guest.nix / waydroid.nix
-    │   │
-    │   ├── rgb/                     # RGB controller routing
-    │   │   ├── default.nix          # roudix.rgb option (openlinkhub / openrgb / none)
-    │   │   └── openlinkhub.nix / openrgb.nix
-    │   │
-    │   ├── gaming/                  # Steam, Gamescope, ananicy-cpp, tuned-adm, SCX schedulers
-    │   │   └── gaming.nix / scx.nix
-    │   │
-    │   ├── gpu/                     # GPU configuration (AMD/NVIDIA/Intel/VM + mesa-git)
-    │   │
-    │   ├── autoupdate.nix       # Auto git pull + rebuild on config changes
-    │   ├── binary-caches.nix    # Nix binary caches (substituters + trusted keys)
-    │   ├── common.nix           # Shared system config (all hosts)
-    │   ├── desktop-integration.nix  # Keyring + xdg-desktop-portal stack for bare compositors
-    │   ├── environment.nix      # Environment variables
-    │   ├── fstrim.nix           # fstrim for SSD/NVMe
-    │   ├── hosts-gta.nix        # BattlEye hosts block (GTA fix, optional)
-    │   ├── icon-theme.nix       # System-wide icon theme selection
-    │   ├── keyboard.nix         # Graphical (Wayland) keyboard layout/variant
-    │   ├── pipewire.nix         # PipeWire audio + rnnoise noise suppression
-    │   ├── shell.nix            # Default shell (fish/bash)
-    │   ├── update.nix           # Flake update configuration
-    │   ├── roudix-update.nix    # `update` command (pull + rebuild + Flatpaks), script in roudix-update.sh, shell completions in completions/
-    │   └── version.nix          # Roudix OS branding (os-release, distroName)
-    │   # terminal/file manager: pick your favorite via local.nix in hosts/roudix/
+    │   │   └── browser/ communication/ creation/ media/ utilities/ apps.nix
+    │   ├── packaging/               # appimage.nix · flatpak.nix · store.nix
+    │   ├── nix/                     # Nix settings, caches, auto-update, `update` command
+    │   │   └── autoupdate.nix · binary-caches.nix · common.nix · update.nix · roudix-update.{nix,sh} · completions/
+    │   ├── core/                    # environment, fstrim, default shell, tuning (ZRAM/sysctl)
+    │   ├── audio/                   # pipewire.nix
+    │   ├── gaming/                  # Steam, Gamescope, Gaming Mode session, SCX, GTA hosts fix
+    │   ├── gpu/                     # AMD / NVIDIA / Intel / VM + mesa-git, undervolt
+    │   ├── rgb/                     # roudix.rgb (openlinkhub / openrgb / none)
+    │   ├── power/                   # laptop.nix
+    │   └── virtualization/          # QEMU/KVM, containers, VM guest, Waydroid
     │
     └── home/                        # Home Manager user-level modules
-        ├── common.nix               # Shared home config (all users & DEs)
-        ├── bash.nix                 # Bash shell config + roudix-switch + roudix-shell-switch
-        ├── fastfetch.nix            # Fastfetch + fish autostart
-        ├── fish.nix                 # Fish shell + aliases + roudix-switch + roudix-shell-switch
-        ├── gaming-home.nix          # User gaming packages (proton, mangohud...)
-        ├── git.nix                  # Git config
-        ├── mangohud.nix             # MangoHud overlay (shared across DEs)
-        ├── papirus-icon.nix         # Papirus icon theme (shared across DEs)
-        ├── papirus-folders.nix      # Papirus folder color configuration (shared)
-        ├── tela-icon.nix            # Tela icon theme (shared across DEs)
-        ├── spicetify.nix            # Spotify + Spicetify (Comfy theme)
-        ├── ssh.nix                  # SSH + GitHub
-        ├── shell-modules.nix        # Shared shell module imports (noctalia, dms, caelestia)
-        └── desktop/                 # One folder per DE — Home Manager side, mirrors modules/system/desktop/
-            ├── default.nix          # Imports all six unconditionally (each is internally lib.mkIf-guarded)
-            ├── gnome/
-            │   ├── default.nix      # Wallpaper, theme, icons, cursor
-            │   └── _extensions.nix  # GNOME extensions — packages, enabled UUIDs, dconf settings
-            ├── kde/default.nix      # plasma-manager config (wallpaper, panels, lock screen)
-            ├── hyprland/default.nix # Shell-aware (noctalia/dms/caelestia), plugins, packages
-            ├── mangowc/default.nix  # Generated mango config.conf/apps.conf, packages
-            ├── niri/                # programs.niri.settings, split by topic, shell-aware
-            │   ├── default.nix      # assembles settings, live-theme include, packages
-            │   ├── _general.nix     # environment, autostart, cursor (shell-aware)
-            │   ├── _animation.nix
-            │   ├── _input.nix
-            │   ├── _layout.nix
-            │   ├── _output.nix      # outputs + named workspaces
-            │   ├── _ws.nix          # shared workspace-icon glyph constants
-            │   ├── _rules-common.nix
-            │   ├── _rules-noctalia.nix / _rules-dms.nix
-            │   ├── _binds-noctalia.nix / _binds-dms.nix
-            │   └── _include-noctalia.nix / _include-dms.nix  # appends live-theme `include` to niri-flake's rendered config
-            └── umbriel/             # programs.umbriel.settings, split by topic (Noctalia-only)
-                ├── default.nix
-                ├── _general.nix / _appearance.nix / _animation.nix / _input.nix
-                ├── _layout.nix / _output.nix / _binds.nix / _rules.nix
-                └── _include-noctalia.nix  # loads noctalia.toml (Umbriel's native live-theme include)
+        ├── common.nix               # Shared home config
+        ├── local.nix                # gitignored
+        ├── niri-custom.nix / umbriel-custom.nix / mango-custom.nix  # gitignored (personal compositor overrides)
+        ├── shell/                   # bash/fish/fastfetch + roudix-switch / -kernel-switch / -shell-switch
+        ├── dev/                     # git, ssh, gitwatch (git.nix / ssh.nix are gitignored — copy the .example)
+        ├── apps/                    # Home-side app config (browser/zen, media/spicetify, store…)
+        ├── theming/                 # GTK, icons (Papirus/Tela), palette, MangoHud, terminal theme
+        ├── gaming/                  # gaming-home.nix
+        └── desktop/                 # One folder per DE, mirror of modules/system/desktop/
+            ├── default.nix          # Imports all eight (each is guarded by lib.mkIf)
+            └── niri / hyprland / mangowc / umbriel / gnome / kde / cinnamon / cosmic
 ```
 
 ---
@@ -231,6 +166,14 @@ roudix/
 | roudix-caches | [RoudineBWT/Roudix-caches](https://github.com/RoudineBWT/Roudix-caches) |
 | nix-gaming-edge | [powerofthe69/nix-gaming-edge](https://github.com/powerofthe69/nix-gaming-edge) |
 | betterbird-nix | [TheAnachronism/betterbird-nix](https://github.com/TheAnachronism/betterbird-nix) |
+| nixpkgs-master / nixpkgs-staging-next | [NixOS/nixpkgs](https://github.com/NixOS/nixpkgs) — only for nixpkgs kernels (`hardware.myKernelSource`) |
+| mango | [mangowm/mango](https://github.com/mangowm/mango) |
+| noctalia-greeter | [noctalia-dev/noctalia-greeter](https://github.com/noctalia-dev/noctalia-greeter) |
+| dank-greeter | [AvengeMedia/dank-greeter](https://github.com/AvengeMedia/dank-greeter) |
+| jovian | [Jovian-Experiments/Jovian-NixOS](https://github.com/Jovian-Experiments/Jovian-NixOS) — Decky Loader only |
+| nixos-appstream-data | [vlinkz/nixos-appstream-data](https://github.com/vlinkz/nixos-appstream-data) — Roudix Store catalog |
+| sonora | [sonorahq/sonora](https://github.com/sonorahq/sonora) |
+| eacnix | [samos667/eacnix](https://github.com/samos667/eacnix) — pinned commit, only used with `roudix.boot.eac.enable` |
 ---
 
 ## See also

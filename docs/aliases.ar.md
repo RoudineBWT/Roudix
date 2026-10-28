@@ -11,7 +11,7 @@
 | `cleanup` | حذف الأجيال القديمة + جمع المهملات |
 | `noctalia-reload` | إعادة تشغيل Noctalia دون تسجيل الخروج |
 | `dms-reload` | إعادة تشغيل Quickshell دون تسجيل الخروج |
-| `caelista-reload` | إعادة تشغيل Quickshell دون تسجيل الخروج |
+| `caelestia-reload` | إعادة تشغيل Quickshell دون تسجيل الخروج |
 | `roudix-switch <de>` | تبديل بيئة سطح المكتب (تُطبَّق عند إعادة التشغيل التالية) |
 | `roudix-kernel-switch <kernel>` | تبديل نسخة النواة (تُطبَّق عند إعادة التشغيل التالية) |
 
@@ -62,6 +62,8 @@ roudix-switch mangowc
 roudix-switch umbriel
 roudix-switch gnome
 roudix-switch kde
+roudix-switch cinnamon
+roudix-switch cosmic
 
 # تبديل نسخة النواة — تعتمد القائمة على hardware.myGpu، انظر docs/installation.md
 # AMD/Intel (xddxdd):

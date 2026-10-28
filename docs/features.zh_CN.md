@@ -6,7 +6,7 @@
 
 - 启用 NTSync 的 CachyOS 内核（`ntsync` 模块）
 - 两个内核提供方，由 `hardware.myGpu` 自动选择：
-  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)，32 个变体（`hardware.myKernel`）
+  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)，36 个变体（`hardware.myKernel`）
   - Nvidia → Chaotic-Nyx，4 个变体（`hardware.myKernelChaotic`）— 附带 `nvidia_cachyos`，一个与其内核配套的预编译驱动，因此内核升级时无需在本地重新编译 Nvidia 模块
 - 两个提供方都可以选择原版 nixpkgs 内核，完全独立于 CachyOS overlay — `zen`（`linuxPackages_zen`）、`nixpkgs-lts`、`nixpkgs-latest`、`nixpkgs-testing`（RC/mainline）、`xanmod-lts` / `xanmod-latest`（XanMod）。在 Nvidia 上，这些内核会回退到本地重新编译的 Nvidia 模块（没有 `nvidia_cachyos` 缓存）
 - `hardware.myKernelSource`（`nixpkgs` / `master` / `staging-next`）只会从较新的 nixpkgs 中获取这些 nixpkgs 内核，以便更早升级内核，而不影响系统的其余部分
@@ -42,7 +42,7 @@
 
 ## 桌面（Niri）
 
-- Niri 可滚动平铺式 Wayland 合成器 — 通过 [niri-flake](https://github.com/epireyn/niri-flake)（epireyn）提供，默认使用 `niri-unstable`，并预先配置了 `niri.cachix.org` 二进制缓存
+- Niri 可滚动平铺式 Wayland 合成器 — 通过 [niri-flake](https://github.com/epireyn/niri-flake)（epireyn）提供，默认使用 `niri-unstable`，并预先配置了 `niri-epireyn.cachix.org` 二进制缓存
 - 配置是 Nix 原生的（`programs.niri.settings`），按主题拆分（general、animations、input、layout、outputs、binds、rules），并在构建时通过 `niri validate` 校验 — 配置有误会让构建失败，而不是在登录时让合成器崩溃
 - Noctalia/DMS 的实时主题同步（由 matugen/DMS 生成的颜色、alt-tab、模糊）通过在生成的配置中追加一条 `include` 来保留，而不是静态写死
 - Noctalia（v5）现代化 shell
@@ -93,12 +93,12 @@
 - xdg-desktop-portal-hyprland + gtk portal
 - Bibata Modern Ice 光标（24 px）
 - GNOME Polkit 代理（通过 systemd 用户服务启动）
-- swww 壁纸守护进程
+- awww 壁纸守护进程
 - 使用 grim + slurp + satty（标注）截图 — 3 个快捷键
 
 ## 桌面（GNOME）
 
-- GNOME 50.x（跟随 nixos-unstable 分支）
+- GNOME（跟随 nixos-unstable 分支）
 - 精选扩展集（blur、tiling、vitals、arcmenu...）— 通过 dconf 启用
 - ArcMenu 使用 Roudix 徽标作为菜单按钮图标
 - 通过 `environment.gnome.excludePackages` 移除多余软件
@@ -107,9 +107,9 @@
 - Bibata Modern Ice 光标（24 px）
 - Roudix 壁纸（根据系统主题切换浅色/深色）
 - 通过 dconf 应用 `color-scheme = prefer-dark`
-- 扩展设置（ArcMenu、Dash to Dock、Dash to Panel、Blur My Shell...）通过 `gnome-extensions.nix` 预先配置
+- 扩展设置（ArcMenu、Dash to Dock、Dash to Panel、Blur My Shell...）通过 `modules/home/desktop/gnome/_extensions.nix` 预先配置
 - 通过 `roudix.gnome.extraExtensions` / `roudix.gnome.disabledExtensions` 添加/移除扩展，无需修改核心文件
-- 在 `home/local.nix` 中覆盖壁纸、主题、图标和光标
+- 在 `modules/home/local.nix` 中覆盖壁纸、主题、图标和光标
 
 ## 桌面（KDE）
 
@@ -121,7 +121,7 @@
 - 登录界面和桌面使用 Roudix Dark 壁纸
 - 精选软件包：partitionmanager、kcalc、digikam、vlc...
 - 移除多余软件（排除 Discover）
-- 在 `home/local.nix` 中覆盖壁纸、面板和图标主题
+- 在 `modules/home/local.nix` 中覆盖壁纸、面板和图标主题
 
 ## 音乐
 
@@ -180,7 +180,7 @@ input — 目前还不在 nixpkgs 中）或 `"geary"`（轻量级 GNOME 客户�
 ## 浏览器
 
 - 通过 `roudix.browsers` 选项配置浏览器列表
-- 支持 `brave`、`helium`（通过 amaanq/helium-flake，包含 DRM 补丁 — 选择 `helium` 时会通过 `modules/home/apps/browser/helium-widevine.nix` 自动接入 Widevine 播放）、`vivaldi`（带 ffmpeg 编解码器）、`firefox`、`librewolf`、`chromium`，或 `[]` 表示不安装
+- 支持 `brave`、`helium`（通过 x13-me/helium-nix，包含 DRM 补丁 — 选择 `helium` 时会通过 `modules/home/apps/browser/helium-widevine.nix` 自动接入 Widevine 播放）、`vivaldi`（带 ffmpeg 编解码器）、`firefox`、`librewolf`、`chromium`，或 `[]` 表示不安装
 - Zen Browser 可通过 `roudix.zen.enable = true` 单独启用（默认关闭）；可通过 `roudix.zen.variant` 选择通道 — `"twilight"`（默认）或 `"beta"`
 
 ## 其他

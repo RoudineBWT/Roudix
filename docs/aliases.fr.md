@@ -4,6 +4,8 @@
 
 ## Disponibles partout
 
+> Les alias `*-reload` n'existent que pour le shell choisi (`roudix.desktop.shell`).
+
 | Alias | Action |
 |-------|--------|
 | `rebuild` | Applique la configuration immédiatement |
@@ -11,7 +13,7 @@
 | `cleanup` | Supprime les anciennes générations + garbage collect |
 | `noctalia-reload` | Redémarre Noctalia sans se déconnecter |
 | `dms-reload` | Redémarre Quickshell sans se déconnecter |
-| `caelista-reload` | Redémarre Quickshell sans se déconnecter |
+| `caelestia-reload` | Redémarre Quickshell sans se déconnecter |
 | `roudix-switch <de>` | Change d'environnement de bureau (s'applique au prochain redémarrage) |
 | `roudix-kernel-switch <kernel>` | Change de variante de kernel (s'applique au prochain redémarrage) |
 
@@ -62,6 +64,8 @@ roudix-switch mangowc
 roudix-switch umbriel
 roudix-switch gnome
 roudix-switch kde
+roudix-switch cinnamon
+roudix-switch cosmic
 
 # Changer de variante de kernel — la liste dépend de hardware.myGpu, voir docs/installation.fr.md
 # AMD/Intel (xddxdd) :
@@ -86,6 +90,6 @@ roudix-shell-switch dms
 roudix-shell-switch caelestia # uniquement pour hyprland
 ```
 
-Les trois commandes modifient automatiquement `hosts/roudix/local.nix` et lancent `nh os boot` — aucun rebuild manuel nécessaire. Les changements s'appliquent au prochain redémarrage.
+Les trois commandes modifient automatiquement `hosts/<hostname>/local.nix` (le dossier portant le nom d'hôte de la machine) et lancent `nh os boot` — aucun rebuild manuel nécessaire. Les changements s'appliquent au prochain redémarrage.
 
 > **Note :** `roudix-kernel-switch` écrit automatiquement dans `hardware.myKernel` ou `hardware.myKernelChaotic` selon votre `hardware.myGpu` actuel — passez le nom de la variante correspondant à la liste de votre GPU (voir tableau ci-dessus).

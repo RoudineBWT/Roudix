@@ -480,6 +480,30 @@ msgid "Every day"
 msgstr "Каждый день"
 
 #: roudix-switcher.py
+msgid ""
+"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"keys)"
+msgstr ""
+"Secure Boot — подпись Limine через sbctl (ключи должны существовать: sudo "
+"sbctl create-keys)"
+
+#: roudix-switcher.py
+msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
+msgstr "EAC Linux v2 — отдельный пункт загрузки «NixOS EAC» (экспериментально)"
+
+#: roudix-switcher.py
+msgid "Fedora kernel — nothing to enroll"
+msgstr "Ядро Fedora — ничего регистрировать не нужно"
+
+#: roudix-switcher.py
+msgid ""
+"Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-"
+"enroll-mok)"
+msgstr ""
+"Ядро OGC от Bazzite — ключ Universal Blue нужно один раз зарегистрировать "
+"(sudo eacnix-enroll-mok)"
+
+#: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
 msgstr "Низкая задержка (48 кГц, quantum 128) — работа со звуком, ритм-игры"
 
@@ -1055,6 +1079,24 @@ msgid ""
 msgstr ""
 "Нужно только при нескольких экранах разного размера. Если прошивка не "
 "поддерживает это разрешение, Limine выберет другое."
+
+#: roudix-switcher.py
+msgid "Secure Boot and EAC (experimental)"
+msgstr "Secure Boot и EAC (экспериментально)"
+
+#: roudix-switcher.py
+msgid "EAC kernel"
+msgstr "Ядро для EAC"
+
+#: roudix-switcher.py
+msgid ""
+"Create and enroll the sbctl keys before turning Secure Boot on in the "
+"firmware (docs/secure-boot-eac.md). Epic has not confirmed that EAC accepts "
+"this setup yet."
+msgstr ""
+"Создайте и зарегистрируйте ключи sbctl, прежде чем включать Secure Boot в "
+"прошивке (docs/secure-boot-eac.md). Epic пока не подтвердила, что EAC "
+"принимает такую конфигурацию."
 
 #: roudix-switcher.py
 msgid "Audio (PipeWire)"
