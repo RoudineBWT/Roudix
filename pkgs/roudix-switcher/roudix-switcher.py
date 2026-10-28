@@ -700,8 +700,8 @@ BOOT_SECURITY_TOGGLES = [
 ]
 # roudix.boot.eac.vendor — whose signed kernel the “NixOS EAC” entry boots.
 EAC_VENDORS = [
-    {"id": "fedora",  "name": "fedora",  "subtitle": tr("Fedora kernel — nothing to enroll"), "icon": "none.svg"},
-    {"id": "bazzite", "name": "bazzite", "subtitle": tr("Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-enroll-mok)"), "icon": "none.svg"},
+    {"id": "fedora",  "name": "fedora",  "subtitle": tr("Fedora kernel — nothing to enroll"), "icon": "fedora.svg"},
+    {"id": "bazzite", "name": "bazzite", "subtitle": tr("Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-enroll-mok)"), "icon": "bazzite.svg"},
 ]
 
 # roudix.pipewire.* (modules/system/audio/pipewire.nix) — all off by default:
