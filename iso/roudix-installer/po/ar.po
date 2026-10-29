@@ -1365,6 +1365,12 @@ msgstr "Kernel (xddxdd)"
 
 #: src/roudix_installer/pages/options.py
 msgid ""
+"Invalid username: use letters, digits, '_', '-' or '.', starting with a "
+"letter or '_' (max 32)."
+msgstr "اسم مستخدم غير صالح: استخدم الأحرف أو الأرقام أو «_» أو «-» أو «.»، على أن يبدأ بحرف أو «_» (32 حرفًا كحد أقصى)."
+
+#: src/roudix_installer/pages/options.py
+msgid ""
 "This user doesn't exist on this system — run the installer from the account "
 "you want to keep."
 msgstr ""

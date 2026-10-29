@@ -1360,6 +1360,12 @@ msgstr "Kernel (xddxdd)"
 
 #: src/roudix_installer/pages/options.py
 msgid ""
+"Invalid username: use letters, digits, '_', '-' or '.', starting with a "
+"letter or '_' (max 32)."
+msgstr "用户名无效：请使用字母、数字、“_”、“-”或“.”，并以字母或“_”开头（最多 32 个字符）。"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
 "This user doesn't exist on this system — run the installer from the account "
 "you want to keep."
 msgstr "此系统上不存在该用户 — 请从你想保留的账户运行安装程序。"
