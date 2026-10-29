@@ -418,8 +418,14 @@ class ProgressPage(Adw.NavigationPage):
     def _partition_disko(self):
         GLib.idle_add(self._set_status, tr("Partitioning the disk…"), 0.15)
         disko_nix = disko_gen.generate(self.state.disk)
-        Path("/tmp/roudix-disko.nix").write_text(disko_nix)
-        self._run_cmd(["disko", "--mode", "disko", "/tmp/roudix-disko.nix"])
+        # mkdtemp → private (0700) dir, no predictable /tmp path another process could pre-create
+        disko_dir = Path(tempfile.mkdtemp(prefix="roudix-disko-"))
+        try:
+            disko_file = disko_dir / "roudix-disko.nix"
+            disko_file.write_text(disko_nix)
+            self._run_cmd(["disko", "--mode", "disko", str(disko_file)])
+        finally:
+            shutil.rmtree(disko_dir, ignore_errors=True)
 
     def _partition_manual(self):
         """

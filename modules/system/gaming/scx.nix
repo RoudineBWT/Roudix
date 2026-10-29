@@ -67,6 +67,19 @@ let
   scx-switch = pkgs.writeShellScriptBin "scx-switch" ''
     set -euo pipefail
 
+    # Hardening: this runs as root (pkexec, no password for wheel) and its arguments
+    # come from the caller. Disable pathname expansion (the unquoted $EXTRA split
+    # below would otherwise glob against the filesystem) and whitelist the inputs.
+    set -f
+    _validate_args() {
+      local re_name='^[a-z0-9_]+$'
+      local re_mode='^[A-Za-z_-]+$'
+      local re_extra='^[A-Za-z0-9_ ,.=:/+-]*$'
+      [[ "$1" =~ $re_name ]] || { echo "invalid scheduler name" >&2; return 1; }
+      [[ -z "$2" || "$2" =~ $re_mode ]] || { echo "invalid mode" >&2; return 1; }
+      [[ -z "$3" || "$3" =~ $re_extra ]] || { echo "invalid extra flags" >&2; return 1; }
+    }
+
     STATE_FILE="${scxStateFile}"
     CMD="''${1:-}"
 
@@ -107,6 +120,7 @@ let
           echo "Usage: scx-switch set <scheduler> [mode] [extra-flags]" >&2
           exit 1
         fi
+        _validate_args "$SCHEDULER" "$MODE" "$EXTRA" || exit 1
 
         if _ananicy_enabled; then
           echo "Stopping ananicy-cpp..."
@@ -196,12 +210,28 @@ let
   # No-op if the file doesn't exist (ananicy enabled, or "none" selected).
   scx-restore = pkgs.writeShellScriptBin "scx-restore-default" ''
     set -euo pipefail
+
+    # Hardening: this runs as root (pkexec, no password for wheel) and its arguments
+    # come from the caller. Disable pathname expansion (the unquoted $EXTRA split
+    # below would otherwise glob against the filesystem) and whitelist the inputs.
+    set -f
+    _validate_args() {
+      local re_name='^[a-z0-9_]+$'
+      local re_mode='^[A-Za-z_-]+$'
+      local re_extra='^[A-Za-z0-9_ ,.=:/+-]*$'
+      [[ "$1" =~ $re_name ]] || { echo "invalid scheduler name" >&2; return 1; }
+      [[ -z "$2" || "$2" =~ $re_mode ]] || { echo "invalid mode" >&2; return 1; }
+      [[ -z "$3" || "$3" =~ $re_extra ]] || { echo "invalid extra flags" >&2; return 1; }
+    }
+
     STATE_FILE="${scxStateFile}"
 
     [ -f "''${STATE_FILE}" ] || exit 0
     # 3-line format: scheduler / mode / extra-flags (mode and extra can be empty)
     { read -r SCHEDULER || true; read -r MODE || true; read -r EXTRA || true; } < "''${STATE_FILE}"
     [ -n "''${SCHEDULER:-}" ] || exit 0
+    # the state file is root-owned, but validate anyway (defence in depth)
+    _validate_args "$SCHEDULER" "''${MODE:-}" "''${EXTRA:-}" || exit 0
 
     ${pkgs.systemd}/bin/systemctl start scx-loader
 
