@@ -13,7 +13,22 @@ RAM RGB SMBus/SKU are no longer auto-detect TODOs: local.nix.example
 now ships explicit roudix.memory.smBus / roudix.memory.sku keys, so
 they're tracked here as plain (still manually-entered) string fields.
 """
+import re
 from dataclasses import dataclass, field
+
+# The username ends up in username.nix (a Nix string), in `chpasswd` input
+# ("user:password"), in /mnt/home/<user>/ paths and in a root bash -c. Anything
+# outside this whitelist ( " $ ; : / newline .. ) would be code/path injection.
+_USERNAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_.-]{0,31}$")
+_HOSTNAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,62}$")
+
+
+def valid_username(name: str) -> bool:
+    return bool(_USERNAME_RE.fullmatch(name or "")) and name != "root" and ".." not in name
+
+
+def valid_hostname(name: str) -> bool:
+    return bool(_HOSTNAME_RE.fullmatch(name or ""))
 
 
 @dataclass

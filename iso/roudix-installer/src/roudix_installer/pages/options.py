@@ -1,6 +1,7 @@
 from gi.repository import Adw, Gtk
 
 from roudix_installer import existing_nixos, host_defaults, host_profile
+from roudix_installer.state import valid_username
 from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_main_screen, detect_screen_count
 from roudix_installer.i18n import tr, trc, tr_noop
 from roudix_installer.ui_helpers import page_with_header
@@ -1665,6 +1666,11 @@ class OptionsPage(Adw.NavigationPage):
     def _validate(self, _btn):
         password = self.password_row.get_text()
         confirm = self.password_confirm_row.get_text()
+        if not valid_username(self.username_row.get_text()):
+            self.password_warning.set_label(
+                tr("Invalid username: use letters, digits, '_', '-' or '.', starting with a letter or '_' (max 32)."))
+            self.password_warning.set_visible(True)
+            return
         if self._existing:
             if not existing_nixos.user_exists(self.username_row.get_text()):
                 self.password_warning.set_label(

@@ -337,6 +337,9 @@ class ProgressPage(Adw.NavigationPage):
     def _run(self):
         dry = self._is_dry_run()
         try:
+            # Before anything destructive (partitioning): the username/hostname reach
+            # root shell commands, chpasswd input and generated Nix files.
+            config_gen.check_identity(self.state)
             if dry:
                 (self._dry_run_existing if self._existing else self._dry_run)()
                 GLib.idle_add(self.back_btn.set_visible, True)
