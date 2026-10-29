@@ -62,15 +62,15 @@ in
     # bind, so lib.mkForce makes this value win (same principle as a
     # local.nix override).
     programs.umbriel.settings.keybinds = {
-      "Mod+Return" = lib.mkForce "spawn:${terminalCmd}";
-      "Mod+E" = lib.mkForce "spawn:${fileManagerCmd}";
+      "Mod+Return" = lib.mkForce "spawn ${terminalCmd}";
+      "Mod+E" = lib.mkForce "spawn ${fileManagerCmd}";
     }
     // lib.optionalAttrs (browserCmd != null) {
-      "Mod+B" = lib.mkForce "spawn:${browserCmd}";
+      "Mod+B" = lib.mkForce "spawn ${browserCmd}";
     }
     // (lib.listToAttrs (lib.imap1 (i: b: {
       name = "Mod+Ctrl+Alt+${toString i}";
-      value = "spawn:${b.command}";
+      value = "spawn ${b.command}";
     }) extraBrowsers));
 
     # ── Packages ─────────────────────────────────────────────────────────

@@ -7,7 +7,8 @@
   programs.umbriel.settings = {
   layout = {
     # layout.mode in a [[workspace]] rule accepts "scrolling", "dwindle",
-    # "master" and (umbriel d323128) "floating" directly
+    # "master" and "stacking" (the old "floating" layout, renamed in
+    # umbriel b95c1ae) directly
     # (docs.noctalia.dev/umbriel/workspaces/#available-fields).
     # The global mode stays "scrolling"; chat/games get an explicit
     # layout.mode = "master" override per-workspace in _output.nix.
@@ -27,6 +28,14 @@
     # kick a game out of fullscreen. Scrolling never exits fullscreen anyway.
     # Other values: "floating", "pinned", "all", or [ ] to disable.
     new_exits_fullscreen = [ "tiled" ];
+
+    # Edge/corner drop zones when dragging windows in a *stacking* workspace
+    # (umbriel b95c1ae; replaces `input.window_snapping`). Upstream turned
+    # them ON by default; false keeps the previous Roudix behaviour: a dragged
+    # window stays exactly where it is released. Only matters on workspaces
+    # whose layout.mode is "stacking". window-set-region / window-clear-region
+    # (see _binds.nix) still work with this off.
+    stacking.drop_zones = false;
 
     master = {
       position = "left";        # main column on the left, stack on the right
