@@ -102,12 +102,12 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hard
 
 ### 4. أنشئ إعداداتك المحلية
 
-**لا تعدّل `configuration.nix` ولا `home/common.nix` مباشرة أبدًا** — فهما يُستبدلان عند `git pull`.
+**لا تعدّل `configuration.nix` ولا `modules/home/common.nix` مباشرة أبدًا** — فهما يُستبدلان عند `git pull`.
 بدلًا من ذلك، أنشئ ملفات التخصيص المحلية الخاصة بك (كلها في gitignore):
 
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
-cp home/local.nix.example home/local.nix
+cp modules/home/local.nix.example modules/home/local.nix
 cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 ```
 
@@ -239,7 +239,7 @@ sudo dmidecode -t memory | grep 'Part Number'
 
 > **ملاحظة:** يجب أن يطابق `environment.sessionVariables.TZ` دائمًا `time.timeZone` — فكلاهما يتحكم في المنطقة الزمنية، أحدهما على مستوى النظام والآخر على مستوى الجلسة.
 
-عدّل `home/local.nix` لتخصيصات home-manager الشخصية (حزم إضافية، dotfiles، أسماء مستعارة، fastfetch...):
+عدّل `modules/home/local.nix` لتخصيصات home-manager الشخصية (حزم إضافية، dotfiles، أسماء مستعارة، fastfetch...):
 
 ```nix
 { pkgs, lib, osConfig, ... }:
@@ -248,13 +248,13 @@ sudo dmidecode -t memory | grep 'Part Number'
 }
 ```
 
-> راجع `home/local.nix.example` لمعرفة جميع خيارات التخصيص المتاحة بما فيها تخصيص fastfetch.
+> راجع `modules/home/local.nix.example` لمعرفة جميع خيارات التخصيص المتاحة بما فيها تخصيص fastfetch.
 
 ### 5. اضبط النواة
 
 يستخدم Roudix **مزوّدَين مختلفَين للنواة** بحسب بطاقة GPU لديك:
 
-- **`hardware.myGpu != "nvidia"`** (AMD أو Intel) ← نواة من [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)، تُختار عبر `hardware.myKernel`. لا وحدة Nvidia تدعو للقلق، لذا تتوفر المجموعة الكاملة من 32 نسخة.
+- **`hardware.myGpu != "nvidia"`** (AMD أو Intel) ← نواة من [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)، تُختار عبر `hardware.myKernel`. لا وحدة Nvidia تدعو للقلق، لذا تتوفر المجموعة الكاملة من 36 نسخة.
 - **`hardware.myGpu == "nvidia"`** ← نواة من **Chaotic-Nyx**، تُختار عبر `hardware.myKernelChaotic`. هذا ضروري للحصول على **`nvidia_cachyos`**، وهو تعريف Nvidia مبني مسبقًا ومطابق لنواتهم — وإلا أُعيد بناء وحدة نواة Nvidia محليًا مع كل ترقية للنواة. مجموعة النسخ هنا أصغر عمدًا (لا ينشر Chaotic-Nyx هذا العدد من النكهات، كما أن نسخ `-lto` أكثر عرضة لكسر الوحدات الخارجية مثل وحدة Nvidia).
 
 يقبل الخياران أيضًا عددًا قليلًا من **نوى nixpkgs العادية**، خارج overlay الخاصة بـ CachyOS تمامًا — وهي مفيدة إن أردت نواة قياسية دون ترقيعات CachyOS: `zen` و`nixpkgs-lts` و`nixpkgs-latest` و`nixpkgs-testing` و`xanmod-lts` و`xanmod-latest`. على مسار Nvidia تتجاوز هذه النوى ذاكرة `nvidia_cachyos` المؤقتة وتعيد بناء وحدة Nvidia محليًا (انظر `nvidia.nix`).
@@ -327,7 +327,7 @@ sudo dmidecode -t memory | grep 'Part Number'
 
 > **ملاحظة حول سمة Spicetify Comfy:** بعد أول بناء، انسخ الملف color.ini يدويًا:
 > ```bash
-> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/spicetify/Comfy/color.ini
+> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/apps/media/spicetify/Comfy/color.ini
 > ```
 > ثم نفّذ `rebuild` للتطبيق.
 
@@ -407,10 +407,10 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 ### 8. حدّث إعدادات git
 
-`modules/home/git.nix` مُدرج في gitignore (مثل `local.nix`) — انسخ القالب المتتبَّع واملأ هويتك:
+`modules/home/dev/git.nix` مُدرج في gitignore (مثل `local.nix`) — انسخ القالب المتتبَّع واملأ هويتك:
 
 ```bash
-cp modules/home/git.nix.example modules/home/git.nix
+cp modules/home/dev/git.nix.example modules/home/dev/git.nix
 ```
 
 ```nix
@@ -458,7 +458,7 @@ roudix.matrixClient          = "none"; # "element" أو "cinny" أو "none"
 
 ### 10. خصّص fastfetch (اختياري)
 
-افتراضيًا يعرض Roudix شعاره بصيغة ASCII في fastfetch. يمكنك استبداله في `home/local.nix` دون المساس بـ git:
+افتراضيًا يعرض Roudix شعاره بصيغة ASCII في fastfetch. يمكنك استبداله في `modules/home/local.nix` دون المساس بـ git:
 
 ```nix
 # استخدم صورة مخصصة (تتطلب طرفية kitty)
@@ -487,7 +487,7 @@ programs.fastfetch.settings = lib.mkForce {
 ```
 
 > يستبدل `lib.mkForce` إعدادات Roudix الافتراضية بالكامل. ودونه تُدمج مفاتيحك مع الإعدادات الافتراضية.
-> راجع `home/local.nix.example` لمزيد من الأمثلة.
+> راجع `modules/home/local.nix.example` لمزيد من الأمثلة.
 
 ### 11. ابنِ
 

@@ -4,7 +4,7 @@
 
 जब `roudix.autoupdate.enable = true` होता है, सिस्टम हर घंटे GitHub जाँचता है (और बूट के 5 मिनट बाद भी)।
 अगर फ़ॉलो की जा रही ब्रांच (डिफ़ॉल्ट रूप से `main`) पर नए कमिट मिलते हैं, तो वह pull करता है और `nh os boot path:...` चलाता है — नया कॉन्फ़िगरेशन अगले रीबूट पर लागू होता है।
-आपकी `local.nix`, `username.nix`, `hardware-configuration.nix` फ़ाइलें, वैकल्पिक `home/niri-custom.nix` / `home/umbriel-custom.nix` / `home/mango-custom.nix` और `dotfiles/perso/` के अंदर की हर चीज़ gitignore में हैं और pull उन्हें कभी नहीं छूता।
+आपकी `local.nix`, `username.nix`, `hardware-configuration.nix` फ़ाइलें, वैकल्पिक `modules/home/niri-custom.nix` / `modules/home/umbriel-custom.nix` / `modules/home/mango-custom.nix` और `dotfiles/perso/` के अंदर की हर चीज़ gitignore में हैं और pull उन्हें कभी नहीं छूता।
 
 अंतराल या ब्रांच बदलने के लिए `local.nix` में ओवरराइड करें:
 

@@ -51,9 +51,7 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     niri = {
-      # Pinned: epireyn/niri-flake@0ba376b and later ship an EMPTY refs.nix (upstream bot bug).
-      # Unpin once refs.nix is non-empty again on main.
-      url = "github:epireyn/niri-flake/bad8bd7e18002069e744582b029107d570e82c36";
+      url = "github:epireyn/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -170,6 +168,16 @@
       url = "github:sonorahq/sonora";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # EAC Linux v2 boot path: a separate "NixOS EAC" boot entry running a
+    # Fedora/Bazzite-signed kernel (modules/system/boot/secure-boot.nix,
+    # docs/secure-boot-eac.md). Pinned to a commit on purpose — it writes to
+    # the ESP and the firmware boot entries, so it only moves when we bump it
+    # after reading the diff. It stays inert unless roudix.boot.eac.enable.
+    eacnix = {
+      url = "github:samos667/eacnix/242713d46aacd1fa3cfe7462eb2ac57a74621f67";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -243,6 +251,7 @@
           nix-flatpak.nixosModules.nix-flatpak
           inputs.mango.nixosModules.mango
           chaotic.nixosModules.default
+          inputs.eacnix.nixosModules.default
           (./hosts + "/${hostName}/configuration.nix")
           ./version.nix
           ./branding.nix

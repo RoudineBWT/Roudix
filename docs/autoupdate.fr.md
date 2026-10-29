@@ -3,17 +3,20 @@
 # Mise à jour automatique
 
 Quand `roudix.autoupdate.enable = true`, le système vérifie GitHub toutes les heures (et 5 min après le démarrage).
-Si de nouveaux commits sont détectés sur la branche suivie (`main` par défaut), il fait un pull et lance `nh os boot path:...` — la nouvelle config s'applique au prochain redémarrage.
-Vos fichiers `local.nix`, `username.nix`, `hardware-configuration.nix`, les fichiers optionnels `home/niri-custom.nix` / `home/umbriel-custom.nix` / `home/mango-custom.nix` et tout ce qui se trouve sous `dotfiles/perso/` sont ignorés par git et jamais touchés par le pull.
+Si de nouveaux commits sont détectés sur la branche suivie (`main` par défaut), il fait un pull et lance `nixos-rebuild boot --flake path:...` (en root, sans `nh`) — la nouvelle config s'applique au prochain redémarrage.
+Vos fichiers `local.nix`, `username.nix`, `hardware-configuration.nix`, les fichiers optionnels `modules/home/niri-custom.nix` / `modules/home/umbriel-custom.nix` / `modules/home/mango-custom.nix` et tout ce qui se trouve sous `dotfiles/perso/` sont ignorés par git et jamais touchés par le pull.
 
 Pour configurer l'intervalle ou la branche, surchargez dans `local.nix` :
 
 ```nix
 { ... }:
 {
-  roudix.autoupdate.enable   = true;  # si vous mettez false ici, config.roudix.autoupdate prendra le relai pour mettre à jour mais sans git pull
+  roudix.autoupdate.enable   = true;  # false = ni timer ni pull automatique (utilisez `update` à la main)
   roudix.autoupdate.interval = "6h";   # vérifier toutes les 6 heures au lieu de 1h
   roudix.autoupdate.branch   = "main"; # branche à suivre : "main" (stable), "testing" ou "dev" — définie par l'installateur
+  roudix.autoupdate.onBootDelay = "5min"; # délai avant la première vérification après le démarrage
+  roudix.autoupdate.minFreeSpaceGB = 5;   # abandonne (et notifie) s\'il reste moins de place sur /nix/store
+  roudix.autoupdate.configPath = "/home/<user>/.config/roudix"; # dépôt à mettre à jour
 }
 ```
 

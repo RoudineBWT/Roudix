@@ -6,7 +6,7 @@
 
 - Ядро CachyOS с включённым NTSync (модуль `ntsync`)
 - Два поставщика ядер, выбираемые автоматически по `hardware.myGpu`:
-  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 32 варианта (`hardware.myKernel`)
+  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 36 варианта (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 варианта (`hardware.myKernelChaotic`) — поставляет `nvidia_cachyos`, предсобранный драйвер, подогнанный под их ядро, поэтому модуль Nvidia не пересобирается локально при каждом обновлении ядра
 - «Чистые» ядра из nixpkgs тоже можно выбрать у обоих поставщиков, полностью вне оверлея CachyOS — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod). На Nvidia они переходят на локально пересобираемый модуль Nvidia (без кэша `nvidia_cachyos`)
 - `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) берёт только эти ядра nixpkgs из более свежего nixpkgs, чтобы раньше получать обновления ядра, не затрагивая остальную систему
@@ -42,7 +42,7 @@
 
 ## Рабочий стол (Niri)
 
-- Niri — прокручиваемый тайловый композитор Wayland — поставляется через [niri-flake](https://github.com/epireyn/niri-flake) (epireyn), по умолчанию используется `niri-unstable`, бинарный кэш `niri.cachix.org` предварительно настроен
+- Niri — прокручиваемый тайловый композитор Wayland — поставляется через [niri-flake](https://github.com/epireyn/niri-flake) (epireyn), по умолчанию используется `niri-unstable`, бинарный кэш `niri-epireyn.cachix.org` предварительно настроен
 - Конфигурация нативная для Nix (`programs.niri.settings`), разбита по темам (general, animations, input, layout, outputs, binds, rules) и проверяется при сборке через `niri validate` — сломанная конфигурация приводит к сбою сборки, а не композитора при входе
 - Живая синхронизация темы Noctalia/DMS (цвета, сгенерированные matugen/DMS, alt-tab, размытие) сохраняется за счёт добавления `include` в сгенерированную конфигурацию вместо статического вшивания
 - Современная оболочка Noctalia (v5)
@@ -93,12 +93,12 @@
 - xdg-desktop-portal-hyprland + портал gtk
 - Курсор Bibata Modern Ice (24 px)
 - Агент Polkit от GNOME (запускается как пользовательская служба systemd)
-- Демон обоев swww
+- Демон обоев awww
 - Скриншоты через grim + slurp + satty (аннотации) — 3 сочетания клавиш
 
 ## Рабочий стол (GNOME)
 
-- GNOME 50.x (следует за веткой nixos-unstable)
+- GNOME (следует за веткой nixos-unstable)
 - Тщательно подобранный набор расширений (blur, tiling, vitals, arcmenu...) — включаются через dconf
 - ArcMenu с логотипом Roudix в качестве значка кнопки меню
 - Лишний софт удалён через `environment.gnome.excludePackages`
@@ -107,9 +107,9 @@
 - Курсор Bibata Modern Ice (24 px)
 - Обои Roudix (светлые/тёмные в зависимости от темы системы)
 - `color-scheme = prefer-dark` применяется через dconf
-- Настройки расширений (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) предварительно заданы через `gnome-extensions.nix`
+- Настройки расширений (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) предварительно заданы через `modules/home/desktop/gnome/_extensions.nix`
 - Добавляйте и убирайте расширения, не редактируя основные файлы, через `roudix.gnome.extraExtensions` / `roudix.gnome.disabledExtensions`
-- Переопределяйте обои, тему, значки и курсор в `home/local.nix`
+- Переопределяйте обои, тему, значки и курсор в `modules/home/local.nix`
 
 ## Рабочий стол (KDE)
 
@@ -121,7 +121,7 @@
 - Обои Roudix Dark на экране входа и на рабочем столе
 - Подобранные пакеты: partitionmanager, kcalc, digikam, vlc...
 - Лишний софт удалён (Discover исключён)
-- Переопределяйте обои, панели и тему значков в `home/local.nix`
+- Переопределяйте обои, панели и тему значков в `modules/home/local.nix`
 
 ## Музыка
 
@@ -180,7 +180,7 @@ opt-in: `roudix.apps.fluxer.enable`. В nixpkgs его пока нет, поэт
 ## Браузер
 
 - Настраиваемый список браузеров через опцию `roudix.browsers`
-- Поддерживаются `brave`, `helium` (через amaanq/helium-flake, включает патч DRM — воспроизведение Widevine подключается автоматически через `modules/home/apps/browser/helium-widevine.nix` при выборе `helium`), `vivaldi` (с кодеками ffmpeg), `firefox`, `librewolf`, `chromium` или `[]`, если браузеры не нужны
+- Поддерживаются `brave`, `helium` (через x13-me/helium-nix, включает патч DRM — воспроизведение Widevine подключается автоматически через `modules/home/apps/browser/helium-widevine.nix` при выборе `helium`), `vivaldi` (с кодеками ffmpeg), `firefox`, `librewolf`, `chromium` или `[]`, если браузеры не нужны
 - Zen Browser доступен отдельно через `roudix.zen.enable = true` (по умолчанию отключён); канал выбирается через `roudix.zen.variant` — `"twilight"` (по умолчанию) или `"beta"`
 
 ## Прочее

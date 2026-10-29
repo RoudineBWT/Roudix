@@ -75,8 +75,7 @@ msgstr "Taille de /boot (Go)"
 
 #: src/roudix_installer/pages/disk.py
 msgid "4G recommended with CachyOS + multiple Limine generations — 2G minimum"
-msgstr ""
-"4G recommandé avec CachyOS + plusieurs générations Limine — 2G minimum"
+msgstr "4G recommandé avec CachyOS + plusieurs générations Limine — 2G minimum"
 
 #: src/roudix_installer/pages/disk.py
 msgid "Add a swap partition"
@@ -318,11 +317,10 @@ msgid "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommended)"
 msgstr "GNOME keyring + xdg-desktop-portal-gtk/-gnome (recommandé)"
 
 #: src/roudix_installer/pages/options.py
-msgid ""
-"KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)"
+msgid "KWallet + xdg-desktop-portal-kde (useful if you mainly run Qt/KDE apps)"
 msgstr ""
-"KWallet + xdg-desktop-portal-kde (utile si vous utilisez surtout des apps "
-"Qt/KDE)"
+"KWallet + xdg-desktop-portal-kde (utile si vous utilisez surtout des apps Qt/"
+"KDE)"
 
 #: src/roudix_installer/pages/options.py
 msgid "OpenRGB — mixed brands (Razer, ASUS, MSI...)"
@@ -335,6 +333,16 @@ msgstr "Aucune gestion RGB"
 #: src/roudix_installer/pages/options.py
 msgid "Limine (recommended)"
 msgstr "Limine (recommandé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fedora kernel (nothing to enroll)"
+msgstr "Kernel Fedora (rien à enregistrer)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bazzite OGC kernel (Universal Blue's key to enroll after the install)"
+msgstr ""
+"Kernel OGC de Bazzite (clé d'Universal Blue à enregistrer après "
+"l'installation)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Automatic (Limine decides)"
@@ -1006,11 +1014,10 @@ msgid ""
 "⚠ Roudix configurations are written for the flake (latest) versions first. "
 "On the nixpkgs version, a configuration error saying that an option, a "
 "setting or a key \"does not exist\" is normal: it was added after the "
-"nixpkgs version. Wait for nixpkgs to catch up, or turn the latest version "
-"on."
+"nixpkgs version. Wait for nixpkgs to catch up, or turn the latest version on."
 msgstr ""
-"⚠ Les configurations Roudix sont écrites en priorité pour les versions flake"
-" (les plus récentes). Sur la version nixpkgs, une erreur de configuration "
+"⚠ Les configurations Roudix sont écrites en priorité pour les versions flake "
+"(les plus récentes). Sur la version nixpkgs, une erreur de configuration "
 "disant qu'une option, un réglage ou une clé « n'existe pas » est normale : "
 "elle a été ajoutée après la version de nixpkgs. Patiente que nixpkgs la "
 "rattrape, ou active la dernière version."
@@ -1132,8 +1139,8 @@ msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
 msgstr ""
-"SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via « "
-"i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' »."
+"SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via "
+"« i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' »."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Extras"
@@ -1192,6 +1199,35 @@ msgstr ""
 #: src/roudix_installer/pages/options.py
 msgid "Only useful with several screens of different sizes."
 msgstr "Utile seulement avec plusieurs écrans de tailles différentes."
+
+#: src/roudix_installer/pages/options.py
+msgid "Secure Boot (sign Limine)"
+msgstr "Secure Boot (signer Limine)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Keys are created during the install; enrolling them in the firmware is done "
+"afterwards (docs/secure-boot-eac.md)."
+msgstr ""
+"Les clés sont créées pendant l'installation ; leur enregistrement dans le "
+"firmware se fait ensuite (docs/secure-boot-eac.md)."
+
+#: src/roudix_installer/pages/options.py
+msgid "EAC Linux v2 boot entry (experimental)"
+msgstr "Entrée de démarrage EAC Linux v2 (expérimental)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Separate “NixOS EAC” entry on a Fedora/Bazzite-signed kernel. Needs Secure "
+"Boot and a TPM 2.0; Epic has not confirmed it accepts this yet."
+msgstr ""
+"Entrée « NixOS EAC » séparée, sur un kernel signé par Fedora ou Bazzite. "
+"Demande Secure Boot et un TPM 2.0 ; Epic n'a pas encore confirmé que cela "
+"soit accepté."
+
+#: src/roudix_installer/pages/options.py
+msgid "EAC kernel"
+msgstr "Kernel EAC"
 
 #: src/roudix_installer/pages/options.py
 msgid "Matrix client"
@@ -1323,6 +1359,10 @@ msgstr "Webcam virtuelle (v4l2loopback)"
 #: src/roudix_installer/pages/options.py
 msgid "Chatterino2 (third-party Twitch chat)"
 msgstr "Chatterino2 (chat Twitch tiers)"
+
+#: src/roudix_installer/pages/options.py
+msgid "NVIDIA GPU: only Bazzite ships signed NVIDIA modules"
+msgstr "GPU NVIDIA : seul Bazzite fournit des modules NVIDIA signés"
 
 #: src/roudix_installer/pages/options.py
 msgid "Kernel (Chaotic-Nyx)"
@@ -1490,8 +1530,7 @@ msgstr "Vérification de la branche « {branch} »…"
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
 msgid "Branch '{branch}' not found on {repo_url} — falling back to 'main'."
-msgstr ""
-"Branche « {branch} » introuvable sur {repo_url} — retour sur « main »."
+msgstr "Branche « {branch} » introuvable sur {repo_url} — retour sur « main »."
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1499,8 +1538,8 @@ msgid ""
 "Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
 "local.nix generation may fail."
 msgstr ""
-"Avertissement: hosts/{host}/local.nix.example introuvable sur la branche « "
-"{branch} » — la génération de local.nix pourrait échouer."
+"Avertissement: hosts/{host}/local.nix.example introuvable sur la branche "
+"« {branch} » — la génération de local.nix pourrait échouer."
 
 #: src/roudix_installer/pages/progress.py
 msgid "Copying the configuration…"
@@ -1516,8 +1555,8 @@ msgstr ""
 
 #: src/roudix_installer/pages/progress.py
 msgid ""
-"/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing"
-" outside an ISO) — cloning straight from GitHub instead."
+"/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing "
+"outside an ISO) — cloning straight from GitHub instead."
 msgstr ""
 "/iso-cfg introuvable (ISO pas (encore) reconstruite avec isoImage.contents, "
 "ou test hors ISO) — clone direct depuis GitHub à la place."
@@ -1553,8 +1592,7 @@ msgstr ""
 #, python-brace-format
 msgid ""
 "Warning: your configuration uses system.stateVersion {old}, Roudix sets "
-"{new}. Services that keep data (databases…) deserve a look before booting "
-"it."
+"{new}. Services that keep data (databases…) deserve a look before booting it."
 msgstr ""
 "Attention : ta configuration utilise system.stateVersion {old}, Roudix met "
 "{new}. Les services qui gardent des données (bases de données…) méritent un "
@@ -1707,8 +1745,8 @@ msgid ""
 "/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current system "
 "stays in the boot menu."
 msgstr ""
-"/etc/nixos est copié dans {dir} (avec un RESTORE.txt), et ton système actuel"
-" reste dans le menu de démarrage."
+"/etc/nixos est copié dans {dir} (avec un RESTORE.txt), et ton système actuel "
+"reste dans le menu de démarrage."
 
 #: src/roudix_installer/pages/summary.py
 msgid "Safety net"
@@ -1762,6 +1800,19 @@ msgstr "Virtualisation"
 msgctxt "summary, Extras row: nothing selected"
 msgid "none"
 msgstr "aucun"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Secure Boot / EAC"
+msgstr "Secure Boot / EAC"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Secure Boot"
+msgstr "Secure Boot"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Secure Boot / EAC row: nothing selected"
+msgid "off"
+msgstr "désactivé"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Apps row: nothing selected"

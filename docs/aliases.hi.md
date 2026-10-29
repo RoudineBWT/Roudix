@@ -11,7 +11,7 @@
 | `cleanup` | पुरानी जनरेशन हटाएँ + गार्बेज कलेक्शन |
 | `noctalia-reload` | लॉग-आउट किए बिना Noctalia रीस्टार्ट करें |
 | `dms-reload` | लॉग-आउट किए बिना Quickshell रीस्टार्ट करें |
-| `caelista-reload` | लॉग-आउट किए बिना Quickshell रीस्टार्ट करें |
+| `caelestia-reload` | लॉग-आउट किए बिना Quickshell रीस्टार्ट करें |
 | `roudix-switch <de>` | डेस्कटॉप एनवायरनमेंट बदलें (अगले रीबूट पर लागू) |
 | `roudix-kernel-switch <kernel>` | कर्नेल वैरिएंट बदलें (अगले रीबूट पर लागू) |
 
@@ -62,6 +62,8 @@ roudix-switch mangowc
 roudix-switch umbriel
 roudix-switch gnome
 roudix-switch kde
+roudix-switch cinnamon
+roudix-switch cosmic
 
 # कर्नेल वैरिएंट बदलें — सूची hardware.myGpu पर निर्भर करती है, देखें docs/installation.md
 # AMD/Intel (xddxdd):

@@ -470,6 +470,30 @@ msgid "Every day"
 msgstr "كل يوم"
 
 #: roudix-switcher.py
+msgid ""
+"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"keys)"
+msgstr ""
+"Secure Boot — توقيع Limine بواسطة sbctl (يجب أن تكون المفاتيح موجودة: sudo "
+"sbctl create-keys)"
+
+#: roudix-switcher.py
+msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
+msgstr "EAC Linux v2 — إدخال إقلاع «NixOS EAC» منفصل (تجريبي)"
+
+#: roudix-switcher.py
+msgid "Fedora kernel — nothing to enroll"
+msgstr "نواة Fedora — لا شيء لتسجيله"
+
+#: roudix-switcher.py
+msgid ""
+"Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-"
+"enroll-mok)"
+msgstr ""
+"نواة OGC من Bazzite — يجب تسجيل مفتاح Universal Blue مرة واحدة (sudo eacnix-"
+"enroll-mok)"
+
+#: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
 msgstr ""
 "زمن استجابة منخفض (48 كيلوهرتز، quantum 128) — العمل الصوتي وألعاب الإيقاع"
@@ -1032,6 +1056,23 @@ msgid ""
 msgstr ""
 "مفيد فقط عند وجود عدة شاشات بأحجام مختلفة. إذا لم يوفر البرنامج الثابت هذه "
 "الدقة، يستخدم Limine دقة أخرى."
+
+#: roudix-switcher.py
+msgid "Secure Boot and EAC (experimental)"
+msgstr "Secure Boot وEAC (تجريبي)"
+
+#: roudix-switcher.py
+msgid "EAC kernel"
+msgstr "نواة EAC"
+
+#: roudix-switcher.py
+msgid ""
+"Create and enroll the sbctl keys before turning Secure Boot on in the "
+"firmware (docs/secure-boot-eac.md). Epic has not confirmed that EAC accepts "
+"this setup yet."
+msgstr ""
+"أنشئ مفاتيح sbctl وسجّلها قبل تفعيل Secure Boot في البرنامج الثابت (docs/"
+"secure-boot-eac.md). لم تؤكد Epic بعد أن EAC يقبل هذا الإعداد."
 
 #: roudix-switcher.py
 msgid "Audio (PipeWire)"

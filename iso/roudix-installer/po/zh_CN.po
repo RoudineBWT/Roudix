@@ -331,6 +331,14 @@ msgid "Limine (recommended)"
 msgstr "Limine（推荐）"
 
 #: src/roudix_installer/pages/options.py
+msgid "Fedora kernel (nothing to enroll)"
+msgstr "Fedora 内核（无需注册密钥）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bazzite OGC kernel (Universal Blue's key to enroll after the install)"
+msgstr "Bazzite OGC 内核（安装后需注册 Universal Blue 的密钥）"
+
+#: src/roudix_installer/pages/options.py
 msgid "Automatic (Limine decides)"
 msgstr "自动（由 Limine 决定）"
 
@@ -1175,11 +1183,39 @@ msgstr "Limine 菜单分辨率"
 msgid ""
 "{count} screens detected: Limine can use the smaller one — pick your main "
 "screen's resolution."
-msgstr "检测到 {count} 个屏幕：Limine 可能会使用较小的那个 — 请选择主屏幕的分辨率。"
+msgstr ""
+"检测到 {count} 个屏幕：Limine 可能会使用较小的那个 — 请选择主屏幕的分辨率。"
 
 #: src/roudix_installer/pages/options.py
 msgid "Only useful with several screens of different sizes."
 msgstr "仅在有多个不同尺寸的屏幕时有用。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Secure Boot (sign Limine)"
+msgstr "安全启动 Secure Boot（为 Limine 签名）"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Keys are created during the install; enrolling them in the firmware is done "
+"afterwards (docs/secure-boot-eac.md)."
+msgstr ""
+"密钥会在安装过程中创建；之后再将其注册到固件中（docs/secure-boot-eac.md）。"
+
+#: src/roudix_installer/pages/options.py
+msgid "EAC Linux v2 boot entry (experimental)"
+msgstr "EAC Linux v2 启动项（实验性）"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Separate “NixOS EAC” entry on a Fedora/Bazzite-signed kernel. Needs Secure "
+"Boot and a TPM 2.0; Epic has not confirmed it accepts this yet."
+msgstr ""
+"单独的“NixOS EAC”启动项，使用由 Fedora 或 Bazzite 签名的内核。需要 Secure "
+"Boot 和 TPM 2.0；Epic 尚未确认会接受这种方式。"
+
+#: src/roudix_installer/pages/options.py
+msgid "EAC kernel"
+msgstr "EAC 内核"
 
 #: src/roudix_installer/pages/options.py
 msgid "Matrix client"
@@ -1309,6 +1345,10 @@ msgstr "虚拟摄像头（v4l2loopback）"
 #: src/roudix_installer/pages/options.py
 msgid "Chatterino2 (third-party Twitch chat)"
 msgstr "Chatterino2（第三方 Twitch 聊天）"
+
+#: src/roudix_installer/pages/options.py
+msgid "NVIDIA GPU: only Bazzite ships signed NVIDIA modules"
+msgstr "NVIDIA 显卡：只有 Bazzite 提供已签名的 NVIDIA 模块"
 
 #: src/roudix_installer/pages/options.py
 msgid "Kernel (Chaotic-Nyx)"
@@ -1733,6 +1773,19 @@ msgstr "虚拟化"
 msgctxt "summary, Extras row: nothing selected"
 msgid "none"
 msgstr "无"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Secure Boot / EAC"
+msgstr "安全启动 / EAC"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Secure Boot"
+msgstr "安全启动"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Secure Boot / EAC row: nothing selected"
+msgid "off"
+msgstr "关闭"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Apps row: nothing selected"
