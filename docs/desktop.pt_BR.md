@@ -10,7 +10,7 @@ Troque de desktop a qualquer momento com `roudix-switch <de>` ou pela interface 
 | `hyprland` | Hyprland + (Noctalia, DMS, Caelestia) | Wayland com tiling dinâmico — iniciado via UWSM |
 | `mangowc` | MangoWC + (Noctalia, DMS) | Compositor Wayland |
 | `umbriel` | Umbriel + Noctalia | Tiling rolável — o compositor nativo do próprio Noctalia, somente Noctalia (sem troca de shell) |
-| `gnome` | GNOME 49.5 | |
+| `gnome` | GNOME | |
 | `kde` | KDE Plasma 6 | plasma-login-manager, KDE Connect |
 | `cinnamon` | Cinnamon | Sessão X11 + LightDM — desktop clássico, adequado a hardware mais antigo (o GNOME 49 é somente Wayland) |
 | `cosmic` | COSMIC | Desktop Wayland da System76 (cosmic-comp), cosmic-greeter |
@@ -101,7 +101,7 @@ Niri e Umbriel são configurados nativamente em Nix (`programs.niri.settings` / 
 
 MangoWC e Hyprland continuam baseados em texto (veja abaixo).
 
-Você pode colocar personalizações diretamente em `home/local.nix`, mas se estiver personalizando bastante um compositor, um arquivo dedicado deixa tudo mais organizado — `home/local.nix` importa automaticamente `home/niri-custom.nix`, `home/umbriel-custom.nix` e `home/mango-custom.nix` se existirem (copie o arquivo `*.example` correspondente para começar; eles ficam no gitignore, como `local.nix`).
+Você pode colocar personalizações diretamente em `modules/home/local.nix`, mas se estiver personalizando bastante um compositor, um arquivo dedicado deixa tudo mais organizado — `modules/home/local.nix` importa automaticamente `modules/home/niri-custom.nix`, `modules/home/umbriel-custom.nix` e `modules/home/mango-custom.nix` se existirem (copie o arquivo `*.example` correspondente para começar; eles ficam no gitignore, como `local.nix`).
 
 **Niri**
 
@@ -154,7 +154,7 @@ xdg.configFile."mango/user.conf".text = lib.mkForce ''
 '';
 ```
 
-Como é um grande bloco de texto e não algumas linhas de Nix, ele se encaixa melhor em um arquivo próprio — veja `home/mango-custom.nix.example`.
+Como é um grande bloco de texto e não algumas linhas de Nix, ele se encaixa melhor em um arquivo próprio — veja `modules/home/mango-custom.nix.example`.
 
 **O Hyprland agora usa a configuração Lua modular em `dotfiles/hyprland/`.** O ponto de entrada é `dotfiles/hyprland/hyprland.lua`, que carrega os módulos de `config/` para monitores, layouts, animações, atalhos, regras de janela e integrações de shell. O Nix copia essa árvore como está para `~/.config/hypr/`.
 
@@ -164,17 +164,17 @@ A configuração atual tem como alvo o Hyprland 0.55+ e usa os layouts nativos `
 
 Os valores específicos da máquina (as saídas `DP-1`/`DP-3`, monitor principal, aplicativos padrão, teclado etc.) ficam em `dotfiles/hyprland/config/`. Edite-os diretamente se você mantém sua configuração do Hyprland no repositório do Roudix.
 
-Para personalizações pessoais sem alterar arquivos versionados, use `home/local.nix` com `xdg.configFile."hypr/..."` e `lib.mkForce`.
+Para personalizações pessoais sem alterar arquivos versionados, use `modules/home/local.nix` com `xdg.configFile."hypr/..."` e `lib.mkForce`.
 
 > Depois de alterar a configuração Lua, execute `rebuild`. Pode ser necessário reiniciar a sessão para mudanças de shell ou de ambiente.
 
-> Veja `home/niri-custom.nix.example`, `home/umbriel-custom.nix.example`, `home/mango-custom.nix.example` e `home/local.nix.example` para a lista completa de exemplos.
+> Veja `modules/home/niri-custom.nix.example`, `modules/home/umbriel-custom.nix.example`, `modules/home/mango-custom.nix.example` e `modules/home/local.nix.example` para a lista completa de exemplos.
 
 ---
 
 ## Personalizações do GNOME
 
-Ao usar `roudix.desktop.type = "gnome"`, o gerenciamento de extensões fica em `hosts/roudix/local.nix` e as personalizações de aparência ficam em `home/local.nix`.
+Ao usar `roudix.desktop.type = "gnome"`, o gerenciamento de extensões fica em `hosts/roudix/local.nix` e as personalizações de aparência ficam em `modules/home/local.nix`.
 
 **Adicionar extensões além das padrão** (`hosts/roudix/local.nix`)
 ```nix
@@ -200,7 +200,7 @@ roudix.gnome.disabledExtensions = [ "arcmenu@arcmenu.com" ];
 
 O Roudix entrega a aparência do GNOME (papel de parede, tema escuro, ícones, cursor, configurações das extensões) como *padrões*. Mude qualquer coisa em Configurações, Ajustes ou nas preferências de uma extensão e passa a ser sua: uma reconstrução nunca a reverte. As atualizações do Roudix só alteram os padrões das configurações que você não tocou.
 
-**Forçando um valor a partir da sua configuração** (`home/local.nix`)
+**Forçando um valor a partir da sua configuração** (`modules/home/local.nix`)
 
 Se preferir fixar um valor de forma declarativa, defina-o pelo home-manager. Diferentemente do caminho manual acima, ele é reaplicado a **cada** reconstrução e se sobrepõe ao que você muda na interface:
 ```nix
@@ -221,7 +221,7 @@ dconf reset /org/gnome/desktop/interface/icon-theme
 dconf reset -f /org/gnome/shell/extensions/dash-to-panel/
 ```
 
-> Veja `hosts/roudix/local.nix.example` e `home/local.nix.example` para todas as opções de personalização do GNOME disponíveis.
+> Veja `hosts/roudix/local.nix.example` e `modules/home/local.nix.example` para todas as opções de personalização do GNOME disponíveis.
 
 ---
 
@@ -235,7 +235,7 @@ O Roudix aplica a aparência do KDE **uma única vez**, nunca a cada reconstruç
 - **NumLock na inicialização, papel de parede da tela de bloqueio**: padrões simples do KConfig em `/etc/xdg`, que ficam abaixo do seu `~/.config` e nunca o sobrescrevem.
 - **Papel de parede e painel**: aplicados pelo plasma-manager no primeiro login e só executados de novo se o próprio Roudix alterar a definição deles em uma atualização.
 
-**Fixando valores a partir da sua configuração** (`home/local.nix`)
+**Fixando valores a partir da sua configuração** (`modules/home/local.nix`)
 
 Tudo o que você definir pelo plasma-manager é reaplicado a **cada** reconstrução, então use-o apenas para o que você quer que seja declarativo:
 
@@ -268,7 +268,7 @@ programs.plasma.panels = lib.mkForce [
 ];
 ```
 
-> `lib.mkForce` só é necessário para `wallpaper` e `panels`, que ainda são definidos em `home/desktop/kde/default.nix`.
+> `lib.mkForce` só é necessário para `wallpaper` e `panels`, que ainda são definidos em `modules/home/desktop/kde/default.nix`.
 
 ## Padrões do Cinnamon
 

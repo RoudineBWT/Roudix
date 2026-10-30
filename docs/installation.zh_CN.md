@@ -102,12 +102,12 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hard
 
 ### 4. 创建你的本地配置
 
-**不要直接编辑 `configuration.nix` 或 `home/common.nix`** — 它们会在 `git pull` 时被覆盖。
+**不要直接编辑 `configuration.nix` 或 `modules/home/common.nix`** — 它们会在 `git pull` 时被覆盖。
 请改为创建你自己的本地覆盖文件（全部已加入 gitignore）：
 
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
-cp home/local.nix.example home/local.nix
+cp modules/home/local.nix.example modules/home/local.nix
 cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 ```
 
@@ -239,7 +239,7 @@ sudo dmidecode -t memory | grep 'Part Number'
 
 > **注意：** `environment.sessionVariables.TZ` 必须始终与 `time.timeZone` 一致 — 两者都控制时区，一个在系统层面，一个在会话层面。
 
-编辑 `home/local.nix` 以进行个人的 home-manager 覆盖（额外软件包、dotfiles、别名、fastfetch...）：
+编辑 `modules/home/local.nix` 以进行个人的 home-manager 覆盖（额外软件包、dotfiles、别名、fastfetch...）：
 
 ```nix
 { pkgs, lib, osConfig, ... }:
@@ -248,13 +248,13 @@ sudo dmidecode -t memory | grep 'Part Number'
 }
 ```
 
-> 所有可用的覆盖选项（包括 fastfetch 自定义）请参见 `home/local.nix.example`。
+> 所有可用的覆盖选项（包括 fastfetch 自定义）请参见 `modules/home/local.nix.example`。
 
 ### 5. 配置内核
 
 Roudix 根据你的 GPU 使用**两个不同的内核来源**：
 
-- **`hardware.myGpu != "nvidia"`**（AMD 或 Intel）→ 内核来自 [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)，通过 `hardware.myKernel` 选择。无需担心 Nvidia 模块，因此可以使用完整的 32 个变体。
+- **`hardware.myGpu != "nvidia"`**（AMD 或 Intel）→ 内核来自 [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)，通过 `hardware.myKernel` 选择。无需担心 Nvidia 模块，因此可以使用完整的 36 个变体。
 - **`hardware.myGpu == "nvidia"`** → 内核来自 **Chaotic-Nyx**，通过 `hardware.myKernelChaotic` 选择。这样才能获得 **`nvidia_cachyos`**，一个与其内核匹配的预编译 Nvidia 驱动 — 否则每次内核升级时 Nvidia 内核模块都要在本地重新构建。这里的变体集合刻意更小（Chaotic-Nyx 没有发布那么多变体，而且 `-lto` 变体更容易破坏像 Nvidia 这样的树外模块）。
 
 两个选项还接受少数**纯 nixpkgs 内核**，它们完全不在各自的 CachyOS overlay 之内 — 如果你只想要不带 CachyOS 补丁的普通内核，它们很有用：`zen`、`nixpkgs-lts`、`nixpkgs-latest`、`nixpkgs-testing`、`xanmod-lts`、`xanmod-latest`。在 Nvidia 路径上，它们会跳过 `nvidia_cachyos` 缓存，改为在本地重新构建 Nvidia 模块（见 `nvidia.nix`）。
@@ -327,7 +327,7 @@ Roudix 根据你的 GPU 使用**两个不同的内核来源**：
 
 > **Spicetify Comfy 主题说明：** 首次构建之后，请手动复制 color.ini：
 > ```bash
-> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/spicetify/Comfy/color.ini
+> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/apps/media/spicetify/Comfy/color.ini
 > ```
 > 然后运行 `rebuild` 使其生效。
 
@@ -407,10 +407,10 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 ### 8. 更新 git 配置
 
-`modules/home/git.nix` 已加入 gitignore（与 `local.nix` 一样）— 复制受版本控制的模板并填写你的身份信息：
+`modules/home/dev/git.nix` 已加入 gitignore（与 `local.nix` 一样）— 复制受版本控制的模板并填写你的身份信息：
 
 ```bash
-cp modules/home/git.nix.example modules/home/git.nix
+cp modules/home/dev/git.nix.example modules/home/dev/git.nix
 ```
 
 ```nix
@@ -458,7 +458,7 @@ roudix.matrixClient          = "none"; # "element"、"cinny" 或 "none"
 
 ### 10. 自定义 fastfetch（可选）
 
-默认情况下，Roudix 在 fastfetch 中显示它的 ASCII 标志。你可以在 `home/local.nix` 中覆盖它，而无需改动 git：
+默认情况下，Roudix 在 fastfetch 中显示它的 ASCII 标志。你可以在 `modules/home/local.nix` 中覆盖它，而无需改动 git：
 
 ```nix
 # 使用自定义图片（需要 kitty 终端）
@@ -487,7 +487,7 @@ programs.fastfetch.settings = lib.mkForce {
 ```
 
 > `lib.mkForce` 会覆盖整个 Roudix 默认配置。不使用它时，你的键会与默认值合并。
-> 更多示例请参见 `home/local.nix.example`。
+> 更多示例请参见 `modules/home/local.nix.example`。
 
 ### 11. 构建
 

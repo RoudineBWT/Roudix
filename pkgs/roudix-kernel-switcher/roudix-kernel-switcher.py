@@ -34,7 +34,10 @@ ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
 LOG_DIR  = os.path.expanduser("~/.local/share/roudix-kernel-switcher")
 LOG_FILE = os.path.join(LOG_DIR, "switcher.log")
-TMP_LOG  = "/tmp/roudix-kernel-switcher.log"
+# Not in /tmp: a predictable world-writable path lets another local user plant a
+# symlink there and make us truncate/overwrite one of our files. XDG_RUNTIME_DIR is
+# private to the user (0700); fall back to the per-user log dir.
+TMP_LOG = os.path.join(os.environ.get("XDG_RUNTIME_DIR") or LOG_DIR, "roudix-kernel-switcher.log")
 
 def setup_logging():
     os.makedirs(LOG_DIR, exist_ok=True)

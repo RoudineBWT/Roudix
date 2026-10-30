@@ -102,12 +102,12 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hard
 
 ### 4. अपने लोकल कॉन्फ़िग बनाएँ
 
-**`configuration.nix` या `home/common.nix` को सीधे कभी एडिट न करें** — `git pull` पर ये ओवरराइट हो जाते हैं।
+**`configuration.nix` या `modules/home/common.nix` को सीधे कभी एडिट न करें** — `git pull` पर ये ओवरराइट हो जाते हैं।
 इसके बजाय अपनी लोकल ओवरराइड फ़ाइलें बनाएँ (सभी gitignore में हैं):
 
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
-cp home/local.nix.example home/local.nix
+cp modules/home/local.nix.example modules/home/local.nix
 cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 ```
 
@@ -239,7 +239,7 @@ sudo dmidecode -t memory | grep 'Part Number'
 
 > **नोट:** `environment.sessionVariables.TZ` हमेशा `time.timeZone` से मेल खाना चाहिए — दोनों समय क्षेत्र नियंत्रित करते हैं, एक सिस्टम स्तर पर और दूसरा सेशन स्तर पर।
 
-निजी home-manager ओवरराइड (अतिरिक्त पैकेज, dotfiles, एलियास, fastfetch...) के लिए `home/local.nix` एडिट करें:
+निजी home-manager ओवरराइड (अतिरिक्त पैकेज, dotfiles, एलियास, fastfetch...) के लिए `modules/home/local.nix` एडिट करें:
 
 ```nix
 { pkgs, lib, osConfig, ... }:
@@ -248,13 +248,13 @@ sudo dmidecode -t memory | grep 'Part Number'
 }
 ```
 
-> fastfetch कस्टमाइज़ेशन समेत सभी उपलब्ध ओवरराइड विकल्पों के लिए `home/local.nix.example` देखें।
+> fastfetch कस्टमाइज़ेशन समेत सभी उपलब्ध ओवरराइड विकल्पों के लिए `modules/home/local.nix.example` देखें।
 
 ### 5. कर्नेल कॉन्फ़िगर करें
 
 आपकी GPU के अनुसार Roudix **दो अलग कर्नेल प्रदाता** इस्तेमाल करता है:
 
-- **`hardware.myGpu != "nvidia"`** (AMD या Intel) → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) से कर्नेल, जिसे `hardware.myKernel` से चुना जाता है। Nvidia मॉड्यूल की चिंता नहीं, इसलिए पूरे 32 वैरिएंट उपलब्ध हैं।
+- **`hardware.myGpu != "nvidia"`** (AMD या Intel) → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) से कर्नेल, जिसे `hardware.myKernel` से चुना जाता है। Nvidia मॉड्यूल की चिंता नहीं, इसलिए पूरे 36 वैरिएंट उपलब्ध हैं।
 - **`hardware.myGpu == "nvidia"`** → **Chaotic-Nyx** से कर्नेल, जिसे `hardware.myKernelChaotic` से चुना जाता है। **`nvidia_cachyos`** पाने के लिए यह ज़रूरी है, जो उनके कर्नेल से मेल खाता पहले से कंपाइल किया हुआ Nvidia ड्राइवर है — वरना हर कर्नेल अपडेट पर Nvidia कर्नेल मॉड्यूल लोकल रूप से दोबारा बनता है। यहाँ वैरिएंट का सेट जानबूझकर छोटा है (Chaotic-Nyx इतने फ़्लेवर प्रकाशित नहीं करता, और `-lto` वैरिएंट Nvidia जैसे आउट-ऑफ़-ट्री मॉड्यूल तोड़ने की ज़्यादा संभावना रखते हैं)।
 
 दोनों विकल्प कुछ **सादे nixpkgs कर्नेल** भी स्वीकार करते हैं, जो अपने-अपने CachyOS ओवरले से पूरी तरह बाहर हैं — उपयोगी अगर आपको CachyOS पैचिंग के बिना बस सामान्य कर्नेल चाहिए: `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`, `xanmod-lts`, `xanmod-latest`। Nvidia रास्ते पर ये `nvidia_cachyos` कैश छोड़ देते हैं और Nvidia मॉड्यूल लोकल रूप से दोबारा बनाते हैं (देखें `nvidia.nix`)।
@@ -327,7 +327,7 @@ sudo dmidecode -t memory | grep 'Part Number'
 
 > **Spicetify Comfy थीम नोट:** पहले बिल्ड के बाद color.ini हाथ से कॉपी करें:
 > ```bash
-> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/spicetify/Comfy/color.ini
+> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/apps/media/spicetify/Comfy/color.ini
 > ```
 > फिर लागू करने के लिए `rebuild` चलाएँ।
 
@@ -407,10 +407,10 @@ lsblk -o NAME,FSTYPE,SIZE,PARTLABEL,PARTUUID
 
 ### 8. git कॉन्फ़िग अपडेट करें
 
-`modules/home/git.nix` gitignore में है (`local.nix` की तरह) — ट्रैक किया हुआ टेम्पलेट कॉपी करें और अपनी पहचान भरें:
+`modules/home/dev/git.nix` gitignore में है (`local.nix` की तरह) — ट्रैक किया हुआ टेम्पलेट कॉपी करें और अपनी पहचान भरें:
 
 ```bash
-cp modules/home/git.nix.example modules/home/git.nix
+cp modules/home/dev/git.nix.example modules/home/dev/git.nix
 ```
 
 ```nix
@@ -458,7 +458,7 @@ roudix.matrixClient          = "none"; # "element", "cinny" या "none"
 
 ### 10. fastfetch कस्टमाइज़ करें (वैकल्पिक)
 
-डिफ़ॉल्ट रूप से Roudix fastfetch में अपना ASCII लोगो दिखाता है। आप git को छुए बिना `home/local.nix` में इसे बदल सकते हैं:
+डिफ़ॉल्ट रूप से Roudix fastfetch में अपना ASCII लोगो दिखाता है। आप git को छुए बिना `modules/home/local.nix` में इसे बदल सकते हैं:
 
 ```nix
 # कस्टम इमेज इस्तेमाल करें (kitty टर्मिनल चाहिए)
@@ -487,7 +487,7 @@ programs.fastfetch.settings = lib.mkForce {
 ```
 
 > `lib.mkForce` पूरे Roudix डिफ़ॉल्ट कॉन्फ़िग को ओवरराइट कर देता है। इसके बिना आपकी कुंजियाँ डिफ़ॉल्ट के साथ मर्ज हो जाती हैं।
-> और उदाहरणों के लिए `home/local.nix.example` देखें।
+> और उदाहरणों के लिए `modules/home/local.nix.example` देखें।
 
 ### 11. बिल्ड करें
 

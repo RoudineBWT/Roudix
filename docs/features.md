@@ -6,7 +6,7 @@
 
 - CachyOS kernel with NTSync enabled (`ntsync` module)
 - Two kernel providers, selected automatically by `hardware.myGpu`:
-  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 32 variants (`hardware.myKernel`)
+  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 36 variants (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 variants (`hardware.myKernelChaotic`) — ships `nvidia_cachyos`, a precompiled driver matched to their kernel, so no local Nvidia module rebuild on kernel bumps
 - Plain nixpkgs kernels also selectable on both providers, outside the CachyOS overlay entirely — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod). On Nvidia these fall back to a locally-rebuilt Nvidia module (no `nvidia_cachyos` cache)
 - `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) takes only those nixpkgs kernels from a fresher nixpkgs for earlier kernel bumps, without touching the rest of the system
@@ -14,7 +14,7 @@
 - zswap disabled
 - CPU microcode auto-configured (Intel or AMD)
 - Intel: `split_lock_detect=off` applied automatically
-- ananicy-cpp enabled (process priority daemon, CachyOS rules)
+- ananicy-cpp (process priority daemon, CachyOS rules) — opt-in, off by default: `roudix.gaming.ananicy.enable = true`
 - SCX scheduler support — live switching, no reboot required (bpfland, lavd, flash, p2dq, rusty…) via the Kernel Switcher GUI — a single password prompt via `scx-switch` handles ananicy-cpp stop/start and scheduler switching in one shot — **note:** SCX is not persistent across reboots; after a reboot ananicy-cpp restarts automatically and the scheduler must be re-applied via the Kernel Switcher GUI
 
 ## Boot
@@ -24,6 +24,7 @@
 - Automatic UEFI entry rename to "Roudix"
 - Multi-OS boot menu (Windows, other Linux distros on separate ESPs)
 - Boot label shows Roudix name + NixOS release version
+- Opt-in Secure Boot (`roudix.boot.secureBoot.enable`, Limine signed with sbctl) and an optional separate "NixOS EAC" boot entry for Easy Anti-Cheat Linux v2 (`roudix.boot.eac.enable`) — both off by default, see [secure-boot-eac.md](secure-boot-eac.md)
 
 ## Gaming
 
@@ -43,7 +44,7 @@
 
 ## Desktop (Niri)
 
-- Niri scrollable tiling Wayland compositor — provided via [niri-flake](https://github.com/epireyn/niri-flake) (epireyn), using `niri-unstable` by default, with the `niri.cachix.org` binary cache pre-configured
+- Niri scrollable tiling Wayland compositor — provided via [niri-flake](https://github.com/epireyn/niri-flake) (epireyn), using `niri-unstable` by default, with the `niri-epireyn.cachix.org` binary cache pre-configured
 - Config is Nix-native (`programs.niri.settings`), split by topic (general, animations, input, layout, outputs, binds, rules) and validated at build time via `niri validate` — a broken config fails the build instead of the compositor at login
 - Noctalia/DMS live theme sync (matugen/DMS-generated colors, alt-tab, blur) is preserved by appending an `include` to the generated config rather than baking it in statically
 - Noctalia (v5) modern shell
@@ -52,7 +53,7 @@
 - adw-gtk3 + Papirus icons + Papirus Folders
 - Element Desktop with gnome-libsecret / kwallet6 (auto-detected per DE)
 - GNOME Polkit agent
-- DMS Greeter (greetd)
+- Login screen: Noctalia Greeter (default shell) or DMS Greeter (greetd) with the DMS shell
 
 ## Desktop (MangoWC)
 
@@ -61,7 +62,7 @@
 - xdg-desktop-portal-gtk
 - Bibata Modern Ice cursor (24 px)
 - GNOME Polkit agent
-- Ly display manager
+- Login screen: Noctalia Greeter with Noctalia, Ly with the other shells
 - adw-gtk3 + Papirus icons + Papirus Folders
 - Zoom open animation + official bezier curves
 - VRR + tearing enabled on gaming monitor (DP-1 1440p@240)
@@ -94,35 +95,51 @@
 - xdg-desktop-portal-hyprland + gtk portal
 - Bibata Modern Ice cursor (24 px)
 - GNOME Polkit agent (started via systemd user service)
-- swww wallpaper daemon
+- awww wallpaper daemon
 - Screenshots with grim + slurp + satty (annotation) — 3 keybinds
 
 ## Desktop (GNOME)
 
-- GNOME 50.x (follows nixos-unstable branch)
+- GNOME (follows nixos-unstable branch)
 - Curated extension set (blur, tiling, vitals, arcmenu...) — enabled via dconf
 - ArcMenu with Roudix logo as menu button icon
 - Bloat removed via `environment.gnome.excludePackages`
-- Papirus-Dark icon theme
+- Papirus-Roudix icon theme (Papirus-Dark with folders in the Roudix colour — see `roudix.iconTheme`)
 - adw-gtk3-dark GTK theme (dark mode by default)
 - Bibata Modern Ice cursor (24 px)
 - Roudix wallpaper (light/dark based on system theme)
 - `color-scheme = prefer-dark` applied via dconf
-- Extension settings (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) pre-configured via `gnome-extensions.nix`
+- Extension settings (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) pre-configured via `modules/home/desktop/gnome/_extensions.nix`
 - Add/remove extensions without editing core files via `roudix.gnome.extraExtensions` / `roudix.gnome.disabledExtensions`
-- Override wallpaper, theme, icons, cursor in `home/local.nix`
+- Override wallpaper, theme, icons, cursor in `modules/home/local.nix`
 
 ## Desktop (KDE)
 
 - KDE Plasma 6 with plasma-login-manager (Plasma 6.6+, nixpkgs unstable)
 - KDE Connect enabled
 - xdg-desktop-portal-kde
-- Papirus-Dark icon theme
+- Papirus-Roudix icon theme (Papirus-Dark with folders in the Roudix colour — see `roudix.iconTheme`)
 - Breeze Dark look & feel + color scheme
 - Roudix Dark wallpaper on login screen and desktop
 - Curated packages: partitionmanager, kcalc, digikam, vlc...
 - Bloat removed (Discover excluded)
-- Override wallpaper, panels, icon theme in `home/local.nix`
+- Override wallpaper, panels, icon theme in `modules/home/local.nix`
+
+## Desktop (Cinnamon)
+
+- Cinnamon with X11 session + LightDM (slick-greeter) — classic desktop, suited to older hardware
+- Roudix Kitsune wallpaper on the desktop and login screen (login wallpaper changeable with `roudix-lightdm-wallpaper`)
+- Roudix logo as menu icon; default browser, Nemo, Roudix Store and Settings pinned in the panel (`roudix.desktop.cinnamon.pinnedApps`)
+- Papirus-Roudix icons, dark theme for GTK4/libadwaita apps
+- All of these are defaults: they never override what you changed
+
+## Desktop (COSMIC)
+
+- COSMIC (System76) with cosmic-comp + cosmic-greeter, Roudix Kitsune wallpaper
+- Roudix colour scheme as the native COSMIC theme (`assets/cosmic/`, generated from `assets/palette/Roudix.json`)
+- Dock pinned with your browser(s), COSMIC Files, terminal, Roudix Store and Settings; Roudix apps grouped in a **Roudix** folder of the app library
+- Keyboard layout taken from `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`
+- COSMIC Store not installed (Roudix Store replaces it); `system76-scheduler` off by default (SCX)
 
 ## Music
 
@@ -181,7 +198,7 @@ Also available, opt-in (off by default): a torrent client via
 ## Browser
 
 - Configurable browser list via `roudix.browsers` option
-- Supports `brave`, `helium` (via amaanq/helium-flake, includes the DRM patch — Widevine playback is wired up automatically via `modules/home/apps/browser/helium-widevine.nix` when `helium` is selected), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, or `[]` for none
+- Supports `brave` (also `brave-beta`, `brave-nightly`, `brave-origin`, `brave-origin-beta`, `brave-origin-nightly`), `helium` (via x13-me/helium-nix, includes the DRM patch — Widevine playback is wired up automatically via `modules/home/apps/browser/helium-widevine.nix` when `helium` is selected), `vivaldi` (with ffmpeg codecs), `firefox`, `librewolf`, `chromium`, `ungoogled-chromium`, `google-chrome`, `microsoft-edge`, or `[]` for none
 - Zen Browser available separately via `roudix.zen.enable = true` (disabled by default); channel selectable via `roudix.zen.variant` — `"twilight"` (default) or `"beta"`
 
 ## Other
@@ -208,8 +225,13 @@ Also available, opt-in (off by default): a torrent client via
 - Blueman Bluetooth manager
 - Matrix client — configurable via `roudix.matrixClient` (`element`, `cinny`, or `none`) — Element auto-selects kwallet6 on KDE, gnome-libsecret elsewhere
 - Video player selectable via `roudix.videoPlayer` — `"vlc"` (widest format support, default), `"clapper"` (modern GTK4 player), `"mpv"` (+ yt-dlp, minimal/streaming), `"celluloid"` (GTK front-end for mpv) or `"none"`; applies on every desktop (used to be Clapper hardcoded on bare compositors only, plus a separate DE-agnostic mpv toggle)
-- AppImage support enabled via `appimage.nix`
+- AppImage support enabled via `modules/system/packaging/appimage.nix`
+- Roudix Firewall GUI (`roudix-firewall`): ports, ranges and trusted interfaces, written to the gitignored `hosts/<host>/firewall.local.nix`
 - Waydroid (Android container) — optional, `roudix.waydroid.enable = true`
 - QEMU/KVM + Virt-Manager (optional, `roudix.virtualization.enable`)
 - vm-curator (optional, `roudix.virtualization.vmCurator.enable`) — Rust TUI alternative to virt-manager, drives QEMU directly (no libvirt), with 3D acceleration and GPU passthrough support; can be enabled independently or alongside the libvirt stack
 - VM guest optimizations module (clipboard sharing, auto-resize, QEMU agent, Spice)
+
+## More options
+
+Other `roudix.*` options you can set in `local.nix` (see the option descriptions in `modules/` for details): `roudix.zen.tweaks.*` and `roudix.firefox.tweaks.*` (privacy/performance prefs, optional profile), `roudix.umbriel.effects` (shader effects), `roudix.gaming.gamescopeSession.hdr.enable`, `roudix.laptop`, `roudix.undervolt.only-amd.enable`, `roudix.tuning`, `roudix.palette`, `roudix.gitwatch`, `roudix.distrobox.enable`, `roudix.podman.enable`, `roudix.terminal` (`ghostty`, `kitty`, `alacritty`, `foot`, `wezterm`, `ptyxis`, `konsole`) and `roudix.fileManager`.

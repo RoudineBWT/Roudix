@@ -73,7 +73,10 @@ def host_filter_items(items: list) -> list:
 
 LOG_DIR     = os.path.expanduser("~/.local/share/roudix-switcher")
 LOG_FILE    = os.path.join(LOG_DIR, "switcher.log")
-TMP_LOG     = "/tmp/roudix-switcher.log"
+# Not in /tmp: a predictable world-writable path lets another local user plant a
+# symlink there and make us truncate/overwrite one of our files. XDG_RUNTIME_DIR is
+# private to the user (0700); fall back to the per-user log dir.
+TMP_LOG = os.path.join(os.environ.get("XDG_RUNTIME_DIR") or LOG_DIR, "roudix-switcher.log")
 
 ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
@@ -686,6 +689,22 @@ AUTOUPDATE_INTERVALS = [
     {"id": "6h",  "name": tr("Every 6 hours"),  "subtitle": ""},
     {"id": "12h", "name": tr("Every 12 hours"), "subtitle": ""},
     {"id": "24h", "name": tr("Every day"),      "subtitle": ""},
+]
+
+# roudix.boot.secureBoot / roudix.boot.eac (modules/system/boot/secure-boot.nix) —
+# Limine only, experimental, off by default. The sbctl keys must exist and be
+# enrolled in the firmware BEFORE Secure Boot is switched on there:
+# docs/secure-boot-eac.md.
+BOOT_SECURITY_TOGGLES = [
+    {"id": "secureBoot", "name": tr("Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-keys)"),
+     "key": "roudix.boot.secureBoot.enable", "default": False},
+    {"id": "eac",        "name": tr("EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"),
+     "key": "roudix.boot.eac.enable",        "default": False},
+]
+# roudix.boot.eac.vendor — whose signed kernel the “NixOS EAC” entry boots.
+EAC_VENDORS = [
+    {"id": "fedora",  "name": "fedora",  "subtitle": tr("Fedora kernel — nothing to enroll"), "icon": "fedora.svg"},
+    {"id": "bazzite", "name": "bazzite", "subtitle": tr("Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-enroll-mok)"), "icon": "bazzite.svg"},
 ]
 
 # roudix.pipewire.* (modules/system/audio/pipewire.nix) — all off by default:
@@ -2506,6 +2525,36 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             self.boot_resolution_selector.set_visible(False)
             self.boot_resolution_note.set_visible(False)
 
+        # roudix.boot.secureBoot / roudix.boot.eac — Limine only, all off by default.
+        self.boot_security_toggles = host_filter_items(BOOT_SECURITY_TOGGLES)
+        boot_security_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.boot_security_toggles}
+        self.boot_security_group = ToggleListGroup(tr("Secure Boot and EAC (experimental)"), self.boot_security_toggles, boot_security_current)
+        system_page.append(self.boot_security_group)
+
+        eac_vendors = EAC_VENDORS
+        eac_vendor_current = get_active_string_option("roudix.boot.eac.vendor", "fedora")
+        if get_string_option("hardware.myGpu", "amd") == "nvidia":
+            # Fedora ships no signed NVIDIA modules: only Bazzite's kernel works on NVIDIA.
+            eac_vendors = [v for v in EAC_VENDORS if v["id"] == "bazzite"]
+            eac_vendor_current = "bazzite"
+        self.eac_vendor_selector = SelectorGroup(tr("EAC kernel"), eac_vendors, eac_vendor_current, dark)
+        system_page.append(self.eac_vendor_selector)
+
+        self.boot_security_note = Gtk.Label(
+            label=tr("Create and enroll the sbctl keys before turning Secure Boot on in the firmware "
+                     "(docs/secure-boot-eac.md). Epic has not confirmed that EAC accepts this setup yet."),
+            halign=Gtk.Align.START,
+        )
+        self.boot_security_note.add_css_class("dim-label")
+        self.boot_security_note.set_wrap(True)
+        self.boot_security_note.set_xalign(0)
+        system_page.append(self.boot_security_note)
+
+        eac_switch = self.boot_security_group.switches.get("eac")
+        if eac_switch is not None:
+            eac_switch.connect("notify::active", lambda *_: self._update_boot_security_visibility())
+        self._update_boot_security_visibility()
+
         # roudix.pipewire.* — extras, all off by default.
         self.pipewire_toggles = host_filter_items(PIPEWIRE_TOGGLES)
         pipewire_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.pipewire_toggles}
@@ -2637,6 +2686,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
              "label": tr("Boot wallpaper format"),        "relevant": lambda de: self._boot_is_limine()},
             {"widget": self.boot_resolution_selector,     "key": "roudix.boot.menuResolution", "default": "auto",
              "label": tr("Limine menu resolution"),       "relevant": lambda de: self._boot_is_limine()},
+            {"widget": self.eac_vendor_selector,          "key": "roudix.boot.eac.vendor",    "default": "fedora",
+             "label": tr("EAC kernel"),                   "relevant": lambda de: self._boot_is_limine() and self._eac_enabled()},
             {"widget": self.spicetify_theme_selector,     "key": "roudix.spicetify.theme",     "default": "colorful",
              "label": tr("Spicetify theme"),              "relevant": lambda de: self.music_player_selector.selected_id == "spotify"},
             {"widget": self.zen_profile_selector,         "key": "roudix.zen.tweaks.profile",  "default": PROFILE_AUTO,
@@ -2652,6 +2703,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.extra_bool_groups = [
             ("zen",   self.zen_tweaks,          self.zen_tweaks_group,      lambda de: self.zen_switch.get_active()),
             ("ff",    self.firefox_tweaks,      self.firefox_tweaks_group,  lambda de: self.browser_group.switches["firefox"].get_active()),
+            ("boot",  self.boot_security_toggles, self.boot_security_group, lambda de: self._boot_is_limine()),
             ("pw",    self.pipewire_toggles,    self.pipewire_group,        lambda de: True),
             ("tune0", self.tuning_master_items, self.tuning_master_group,   lambda de: True),
             ("tune",  self.tuning_items,        self.tuning_group,          lambda de: self._tuning_master_on()),
@@ -2904,6 +2956,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.boot_aspect_note,     host_lists("roudix.boot.wallpaperAspect")),
                 (self.boot_resolution_selector, host_lists("roudix.boot.menuResolution")),
                 (self.boot_resolution_note,     host_lists("roudix.boot.menuResolution")),
+                (self.boot_security_group,      bool(self.boot_security_toggles)),
+                (self.eac_vendor_selector,      host_lists("roudix.boot.eac.vendor")),
+                (self.boot_security_note,       bool(self.boot_security_toggles)),
                 (self.pipewire_group,      bool(self.pipewire_toggles)),
                 (self.tuning_master_group, bool(self.tuning_master_items)),
                 (self.tuning_group,        bool(self.tuning_items)),
@@ -2991,6 +3046,18 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
     def _boot_is_limine() -> bool:
         """Only Limine shows a wallpaper (default bootloader of Roudix)."""
         return get_active_string_option("roudix.boot.bootloader", "limine") == "limine"
+
+    def _eac_enabled(self) -> bool:
+        sw = self.boot_security_group.switches.get("eac")
+        return False if sw is None else sw.get_active()
+
+    def _update_boot_security_visibility(self):
+        """Secure Boot signing and the EAC entry are Limine-only; the EAC
+        kernel choice only matters while the EAC entry is on."""
+        limine = self._boot_is_limine()
+        self.boot_security_group.set_visible(limine)
+        self.boot_security_note.set_visible(limine)
+        self.eac_vendor_selector.set_visible(limine and self._eac_enabled())
 
     def _tuning_master_on(self) -> bool:
         sw = self.tuning_master_group.switches.get("enable")

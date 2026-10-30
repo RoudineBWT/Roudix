@@ -56,6 +56,13 @@
 ##                        Noctalia's included file provides, so the effects
 ##                        stay Roudix-palette whatever the wallpaper.
 ##
+## Drag physics tuning (umbriel e045d63): `windows_drag` (used by the wobbly
+## and sakura setups with `physics = true`) also takes stiffness (36.0,
+## 1..10000), damping (6.5, 1..100), coupling (100.0), pointer_response (2.0,
+## 0..10), max_displacement_px (200.0, 1..4000) and settle_after_pause_s
+## (0.25, 0.1..5). Defaults are the values the simulation shipped with, so
+## nothing is set here; override from umbriel-custom.nix with lib.mkForce.
+##
 ## Docs: https://docs.noctalia.dev/umbriel/animation/
 { lib, pkgs, osConfig, ... }:
 let

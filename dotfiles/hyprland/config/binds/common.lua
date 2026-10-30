@@ -129,7 +129,6 @@ local function toggleGameMode()
         decoration = {
             blur     = { enabled = not gameModeOn },
             shadow   = { enabled = not gameModeOn },
-            rounding = gameModeOn and 0 or 10,
         },
         general = {
             gaps_in  = gameModeOn and 0 or 3,

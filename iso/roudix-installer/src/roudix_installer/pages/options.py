@@ -1,6 +1,7 @@
 from gi.repository import Adw, Gtk
 
 from roudix_installer import existing_nixos, host_defaults, host_profile
+from roudix_installer.state import valid_username
 from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_main_screen, detect_screen_count
 from roudix_installer.i18n import tr, trc, tr_noop
 from roudix_installer.ui_helpers import page_with_header
@@ -208,6 +209,14 @@ def _bootloaders():
     return [
         ("limine", tr("Limine (recommended)")),
         ("systemd-boot", "systemd-boot"),
+    ]
+
+
+def _eac_vendors():
+    # roudix.boot.eac.vendor — whose signed kernel the "NixOS EAC" entry boots.
+    return [
+        ("fedora", tr("Fedora kernel (nothing to enroll)")),
+        ("bazzite", tr("Bazzite OGC kernel (Universal Blue's key to enroll after the install)")),
     ]
 
 
@@ -1023,6 +1032,29 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.boot_resolution_row)
 
+        # Secure Boot + EAC Linux v2 boot entry — experimental, Limine only, off
+        # by default. See docs/secure-boot-eac.md.
+        self.secure_boot_row = Adw.SwitchRow(title=tr("Secure Boot (sign Limine)"))
+        self.secure_boot_row.set_subtitle(
+            tr("Keys are created during the install; enrolling them in the firmware is "
+               "done afterwards (docs/secure-boot-eac.md).")
+        )
+        self.secure_boot_row.set_active(state.secure_boot)
+        extra_group.add(self.secure_boot_row)
+
+        self.eac_row = Adw.SwitchRow(title=tr("EAC Linux v2 boot entry (experimental)"))
+        self.eac_row.set_subtitle(
+            tr("Separate “NixOS EAC” entry on a Fedora/Bazzite-signed kernel. Needs Secure Boot "
+               "and a TPM 2.0; Epic has not confirmed it accepts this yet.")
+        )
+        self.eac_row.set_active(state.eac_enable)
+        extra_group.add(self.eac_row)
+
+        self.eac_vendor_row = self._combo(
+            tr("EAC kernel"), _eac_vendors(), state.eac_vendor
+        )
+        extra_group.add(self.eac_vendor_row)
+
         self.matrix_row = self._combo(
             tr("Matrix client"), _matrix(), state.matrix_client
         )
@@ -1215,6 +1247,10 @@ class OptionsPage(Adw.NavigationPage):
         self._sync_boot_aspect_row()
         self.bootloader_row.connect("notify::selected", lambda *_: self._sync_boot_resolution_row())
         self._sync_boot_resolution_row()
+        self.bootloader_row.connect("notify::selected", lambda *_: self._sync_boot_security_rows())
+        self.eac_row.connect("notify::active", lambda *_: self._sync_boot_security_rows())
+        self.gpu_row.connect("notify::selected", lambda *_: self._sync_boot_security_rows())
+        self._sync_boot_security_rows()
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_undervolt_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
@@ -1291,6 +1327,8 @@ class OptionsPage(Adw.NavigationPage):
         "branch_row": ["roudix.autoupdate.branch"], "bootloader_row": ["roudix.boot.bootloader"],
         "boot_aspect_row": ["roudix.boot.wallpaperAspect"],
         "boot_resolution_row": ["roudix.boot.menuResolution"],
+        "secure_boot_row": ["roudix.boot.secureBoot.enable"],
+        "eac_row": ["roudix.boot.eac.enable"], "eac_vendor_row": ["roudix.boot.eac.vendor"],
         "matrix_row": ["roudix.matrixClient"], "discord_row": ["roudix.discord"],
         "telegram_row": ["roudix.telegram"], "video_player_row": ["roudix.videoPlayer"],
         "torrent_client_row": ["roudix.torrentClient"], "music_player_row": ["roudix.musicPlayer"],
@@ -1317,7 +1355,7 @@ class OptionsPage(Adw.NavigationPage):
         "desktop_group": ["desktop_row", "shell_row", "latest_de_row", "latest_shell_row", "latest_note", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
         "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
         "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
-        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "boot_aspect_row", "boot_resolution_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
+        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "boot_aspect_row", "boot_resolution_row", "secure_boot_row", "eac_row", "eac_vendor_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
         "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row"],
         "cc_group": ["content_creation_row", "obs_row", "video_editor_row", "virtual_camera_row", "chatterino_row"],
     }
@@ -1344,6 +1382,7 @@ class OptionsPage(Adw.NavigationPage):
             "rgb": vals(_rgb_options()),
             "bootloader": vals(_bootloaders()),
             "boot_aspect": vals(_boot_aspects()),
+            "eac_vendor": vals(_eac_vendors()),
             "boot_resolution": lambda st: [v for v, _ in _boot_resolutions(detect_main_screen()[0])],
             "branch": vals(_branches()),
             "matrix_client": vals(_matrix()),
@@ -1441,6 +1480,22 @@ class OptionsPage(Adw.NavigationPage):
         self.boot_resolution_row.set_visible(
             self._selected_value(self.bootloader_row) == "limine"
             and len(self._rows[id(self.boot_resolution_row)]) > 1
+        )
+
+    def _sync_boot_security_rows(self):
+        # Secure Boot signing and the EAC entry are Limine-only; the EAC kernel
+        # choice only matters once the EAC entry is on.
+        limine = self._selected_value(self.bootloader_row) == "limine"
+        self.secure_boot_row.set_visible(limine)
+        self.eac_row.set_visible(limine)
+        self.eac_vendor_row.set_visible(limine and self.eac_row.get_active())
+        # Fedora ships no signed NVIDIA modules: on NVIDIA only Bazzite's kernel works.
+        nvidia = self._selected_value(self.gpu_row) == "nvidia"
+        if nvidia:
+            self._set_combo_value(self.eac_vendor_row, "bazzite")
+        self.eac_vendor_row.set_sensitive(not nvidia)
+        self.eac_vendor_row.set_subtitle(
+            tr("NVIDIA GPU: only Bazzite ships signed NVIDIA modules") if nvidia else ""
         )
 
     def _sync_boot_aspect_row(self):
@@ -1611,6 +1666,11 @@ class OptionsPage(Adw.NavigationPage):
     def _validate(self, _btn):
         password = self.password_row.get_text()
         confirm = self.password_confirm_row.get_text()
+        if not valid_username(self.username_row.get_text()):
+            self.password_warning.set_label(
+                tr("Invalid username: use letters, digits, '_', '-' or '.', starting with a letter or '_' (max 32)."))
+            self.password_warning.set_visible(True)
+            return
         if self._existing:
             if not existing_nixos.user_exists(self.username_row.get_text()):
                 self.password_warning.set_label(
@@ -1709,6 +1769,9 @@ class OptionsPage(Adw.NavigationPage):
         s.bootloader = self._selected_value(self.bootloader_row)
         s.boot_aspect = self._selected_value(self.boot_aspect_row)
         s.boot_resolution = self._selected_value(self.boot_resolution_row)
+        s.secure_boot = self.secure_boot_row.get_active()
+        s.eac_enable = self.eac_row.get_active()
+        s.eac_vendor = self._selected_value(self.eac_vendor_row)
         s.matrix_client = self._selected_value(self.matrix_row)
         s.discord = self._selected_value(self.discord_row)
         s.telegram = self._selected_value(self.telegram_row)

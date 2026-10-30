@@ -4,7 +4,7 @@
 
 Если `roudix.autoupdate.enable = true`, система проверяет GitHub каждый час (и через 5 минут после загрузки).
 Если в отслеживаемой ветке (по умолчанию `main`) обнаружены новые коммиты, она делает pull и запускает `nh os boot path:...` — новая конфигурация применится при следующей перезагрузке.
-Ваши файлы `local.nix`, `username.nix`, `hardware-configuration.nix`, необязательные `home/niri-custom.nix` / `home/umbriel-custom.nix` / `home/mango-custom.nix` и всё, что лежит в `dotfiles/perso/`, внесены в gitignore, и pull их никогда не затрагивает.
+Ваши файлы `local.nix`, `username.nix`, `hardware-configuration.nix`, необязательные `modules/home/niri-custom.nix` / `modules/home/umbriel-custom.nix` / `modules/home/mango-custom.nix` и всё, что лежит в `dotfiles/perso/`, внесены в gitignore, и pull их никогда не затрагивает.
 
 Чтобы настроить интервал или ветку, переопределите их в `local.nix`:
 

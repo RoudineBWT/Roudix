@@ -470,6 +470,30 @@ msgid "Every day"
 msgstr "हर दिन"
 
 #: roudix-switcher.py
+msgid ""
+"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"keys)"
+msgstr ""
+"Secure Boot — sbctl से Limine पर हस्ताक्षर (कुंजियाँ पहले से मौजूद होनी चाहिए: sudo "
+"sbctl create-keys)"
+
+#: roudix-switcher.py
+msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
+msgstr "EAC Linux v2 — अलग “NixOS EAC” बूट एंट्री (प्रायोगिक)"
+
+#: roudix-switcher.py
+msgid "Fedora kernel — nothing to enroll"
+msgstr "Fedora कर्नेल — कुछ दर्ज करने की ज़रूरत नहीं"
+
+#: roudix-switcher.py
+msgid ""
+"Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-"
+"enroll-mok)"
+msgstr ""
+"Bazzite का OGC कर्नेल — Universal Blue की कुंजी एक बार दर्ज करनी होगी (sudo "
+"eacnix-enroll-mok)"
+
+#: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
 msgstr "कम लेटेंसी (48 kHz, quantum 128) — ऑडियो कार्य, रिदम गेम"
 
@@ -994,8 +1018,8 @@ msgid ""
 "Your main screen ({res}) looks like {aspect}, but the boot wallpaper is "
 "{current} — pick {aspect} if you changed screens."
 msgstr ""
-"आपकी मुख्य स्क्रीन ({res}) {aspect} है, लेकिन बूट वॉलपेपर {current} है — अगर "
-"आपने स्क्रीन बदली है तो {aspect} चुनें।"
+"आपकी मुख्य स्क्रीन ({res}) {aspect} है, लेकिन बूट वॉलपेपर {current} है — अगर आपने "
+"स्क्रीन बदली है तो {aspect} चुनें।"
 
 #: roudix-switcher.py
 #, python-brace-format
@@ -1007,8 +1031,8 @@ msgid ""
 "Could not detect your screen — pick the format closest to your main screen "
 "(the biggest one)."
 msgstr ""
-"आपकी स्क्रीन का पता नहीं चल सका — अपनी मुख्य (सबसे बड़ी) स्क्रीन के सबसे "
-"करीब वाला प्रारूप चुनें।"
+"आपकी स्क्रीन का पता नहीं चल सका — अपनी मुख्य (सबसे बड़ी) स्क्रीन के सबसे करीब वाला "
+"प्रारूप चुनें।"
 
 #: roudix-switcher.py
 msgid "Limine menu resolution"
@@ -1020,16 +1044,34 @@ msgid ""
 "{count} screens detected: Limine can use the smaller one — pick {res} (your "
 "main screen) to force the menu and its wallpaper to it."
 msgstr ""
-"{count} स्क्रीन मिलीं: Limine छोटी स्क्रीन चुन सकता है — मेनू और उसके "
-"वॉलपेपर को उसी रिज़ॉल्यूशन पर लाने के लिए {res} (आपकी मुख्य स्क्रीन) चुनें।"
+"{count} स्क्रीन मिलीं: Limine छोटी स्क्रीन चुन सकता है — मेनू और उसके वॉलपेपर को उसी "
+"रिज़ॉल्यूशन पर लाने के लिए {res} (आपकी मुख्य स्क्रीन) चुनें।"
 
 #: roudix-switcher.py
 msgid ""
 "Only useful with several screens of different sizes. If the firmware doesn't "
 "offer the resolution, Limine falls back to another one."
 msgstr ""
-"केवल अलग-अलग आकार की कई स्क्रीन होने पर उपयोगी। अगर फ़र्मवेयर यह रिज़ॉल्यूशन "
-"नहीं देता, तो Limine कोई दूसरा चुन लेता है।"
+"केवल अलग-अलग आकार की कई स्क्रीन होने पर उपयोगी। अगर फ़र्मवेयर यह रिज़ॉल्यूशन नहीं देता, "
+"तो Limine कोई दूसरा चुन लेता है।"
+
+#: roudix-switcher.py
+msgid "Secure Boot and EAC (experimental)"
+msgstr "Secure Boot और EAC (प्रायोगिक)"
+
+#: roudix-switcher.py
+msgid "EAC kernel"
+msgstr "EAC कर्नेल"
+
+#: roudix-switcher.py
+msgid ""
+"Create and enroll the sbctl keys before turning Secure Boot on in the "
+"firmware (docs/secure-boot-eac.md). Epic has not confirmed that EAC accepts "
+"this setup yet."
+msgstr ""
+"फ़र्मवेयर में Secure Boot चालू करने से पहले sbctl की कुंजियाँ बनाएँ और दर्ज करें (docs/"
+"secure-boot-eac.md)। Epic ने अभी तक पुष्टि नहीं की है कि EAC इस सेटअप को स्वीकार "
+"करेगा।"
 
 #: roudix-switcher.py
 msgid "Audio (PipeWire)"

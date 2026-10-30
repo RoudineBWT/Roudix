@@ -336,6 +336,16 @@ msgid "Limine (recommended)"
 msgstr "Limine (recomendado)"
 
 #: src/roudix_installer/pages/options.py
+msgid "Fedora kernel (nothing to enroll)"
+msgstr "Kernel de Fedora (nada que registrar)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bazzite OGC kernel (Universal Blue's key to enroll after the install)"
+msgstr ""
+"Kernel OGC de Bazzite (clave de Universal Blue que se registra tras la "
+"instalación)"
+
+#: src/roudix_installer/pages/options.py
 msgid "Automatic (Limine decides)"
 msgstr "Automático (Limine decide)"
 
@@ -1192,6 +1202,34 @@ msgid "Only useful with several screens of different sizes."
 msgstr "Solo útil con varias pantallas de distinto tamaño."
 
 #: src/roudix_installer/pages/options.py
+msgid "Secure Boot (sign Limine)"
+msgstr "Secure Boot (firmar Limine)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Keys are created during the install; enrolling them in the firmware is done "
+"afterwards (docs/secure-boot-eac.md)."
+msgstr ""
+"Las claves se crean durante la instalación; su registro en el firmware se "
+"hace después (docs/secure-boot-eac.md)."
+
+#: src/roudix_installer/pages/options.py
+msgid "EAC Linux v2 boot entry (experimental)"
+msgstr "Entrada de arranque EAC Linux v2 (experimental)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Separate “NixOS EAC” entry on a Fedora/Bazzite-signed kernel. Needs Secure "
+"Boot and a TPM 2.0; Epic has not confirmed it accepts this yet."
+msgstr ""
+"Entrada «NixOS EAC» aparte, con un kernel firmado por Fedora o Bazzite. "
+"Requiere Secure Boot y un TPM 2.0; Epic aún no ha confirmado que lo acepte."
+
+#: src/roudix_installer/pages/options.py
+msgid "EAC kernel"
+msgstr "Kernel para EAC"
+
+#: src/roudix_installer/pages/options.py
 msgid "Matrix client"
 msgstr "Cliente Matrix"
 
@@ -1323,12 +1361,22 @@ msgid "Chatterino2 (third-party Twitch chat)"
 msgstr "Chatterino2 (chat de Twitch de terceros)"
 
 #: src/roudix_installer/pages/options.py
+msgid "NVIDIA GPU: only Bazzite ships signed NVIDIA modules"
+msgstr "GPU NVIDIA: solo Bazzite incluye módulos NVIDIA firmados"
+
+#: src/roudix_installer/pages/options.py
 msgid "Kernel (Chaotic-Nyx)"
 msgstr "Kernel (Chaotic-Nyx)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Kernel (xddxdd)"
 msgstr "Kernel (xddxdd)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Invalid username: use letters, digits, '_', '-' or '.', starting with a "
+"letter or '_' (max 32)."
+msgstr "Nombre de usuario no válido: usa letras, dígitos, «_», «-» o «.», empezando por una letra o «_» (máx. 32)."
 
 #: src/roudix_installer/pages/options.py
 msgid ""
@@ -1762,6 +1810,19 @@ msgstr "Virtualización"
 msgctxt "summary, Extras row: nothing selected"
 msgid "none"
 msgstr "ninguno"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Secure Boot / EAC"
+msgstr "Secure Boot / EAC"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Secure Boot"
+msgstr "Secure Boot"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Secure Boot / EAC row: nothing selected"
+msgid "off"
+msgstr "desactivado"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Apps row: nothing selected"

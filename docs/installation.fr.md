@@ -27,7 +27,7 @@ Ce chemin remplace entièrement les deux étapes ci-dessous (pas besoin de `roud
 
 Si NixOS est déjà installé (via l'ISO officielle stable/unstable, ou tout autre moyen) et que vous voulez juste installer Roudix par-dessus, il y a deux installeurs : le graphique (depuis une session de bureau) et le script bash (fonctionne depuis un simple TTY).
 
-> **Note :** installez d'abord NixOS avec l'ISO [stable](https://nixos.org/download/) ou [unstable](https://releases.nixos.org/nixos/unstable/nixos-26.05pre980183.4bd9165a9165), puis lancez l'un des installeurs ci-dessous ou suivez l'installation manuelle.
+> **Note :** installez d'abord NixOS avec l'[ISO stable ou unstable](https://nixos.org/download/), puis lancez l'un des installeurs ci-dessous ou suivez l'installation manuelle.
 
 ### B1 — Installeur graphique (recommandé sur un bureau)
 
@@ -102,12 +102,12 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.config/roudix/hosts/roudix/hard
 
 ### 4. Créer vos configs locales
 
-**Ne modifiez jamais `configuration.nix` ou `home/common.nix` directement** — ils sont écrasés à chaque `git pull`.
+**Ne modifiez jamais `configuration.nix` ou `modules/home/common.nix` directement** — ils sont écrasés à chaque `git pull`.
 Créez plutôt vos fichiers de surcharge locaux (tous ignorés par git) :
 
 ```bash
 cp hosts/roudix/local.nix.example hosts/roudix/local.nix
-cp home/local.nix.example home/local.nix
+cp modules/home/local.nix.example modules/home/local.nix
 cp modules/system/boot/boot.local.nix.example modules/system/boot/boot.local.nix
 ```
 
@@ -116,7 +116,7 @@ Modifiez `hosts/roudix/local.nix` pour correspondre à votre matériel :
 ```nix
 { lib, ... }:
 {
-  roudix.desktop.type = "niri";               # "niri", "hyprland", "mangowc", "umbriel", "gnome" ou "kde"
+  roudix.desktop.type = "niri";               # "niri", "hyprland", "mangowc", "umbriel", "gnome", "kde", "cinnamon" ou "cosmic"
   hardware.myGpu      = "amd";                # "amd", "nvidia" ou "intel"
   hardware.myCpu      = "intel";              # "intel" ou "amd"
   hardware.myKernel        = "cachyos-lts-lto-v3"; # kernel xddxdd — utilisé quand hardware.myGpu != "nvidia"
@@ -124,7 +124,7 @@ Modifiez `hosts/roudix/local.nix` pour correspondre à votre matériel :
   roudix.boot.bootloader = "limine";          # "limine" ou "systemd-boot"
   roudix.boot.wallpaperAspect = "16x9";       # Fond d'écran de boot Limine : "16x9", "16x10", "21x9" ou "4x3" — le plus proche de ton écran principal (./scripts/detect-boot-aspect.sh)
   roudix.boot.menuResolution = "auto";       # Résolution du menu Limine : "auto", ou "<largeur>x<hauteur>" — avec plusieurs écrans, mets celle de ton écran principal (Limine peut prendre le plus petit)
-  roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium" ou []
+  roudix.browsers     = [ "helium" ];         # "brave", "helium", "vivaldi", "firefox", "librewolf", "chromium", "ungoogled-chromium", "google-chrome", "microsoft-edge" (+ brave-beta/-nightly/-origin*) ou []
   roudix.zen.enable   = false;                # mettre à true pour aussi installer Zen Browser (Twilight)
   roudix.rgb          = "openlinkhub";        # "openlinkhub", "openrgb" ou "none" — voir ci-dessous
   roudix.mesa.useGit  = false;                # true = mesa-git (expérimental, le build peut échouer), false = nixpkgs stable
@@ -141,7 +141,7 @@ Modifiez `hosts/roudix/local.nix` pour correspondre à votre matériel :
   # roudix.gaming.apps.mangohud.enable      = false;
 
   # ── Intégration compositeur nu (niri/hyprland/mangowc/umbriel uniquement) ───────
-  roudix.desktopIntegration = "gnome";        # "gnome" ou "kde" — stack keyring + xdg-desktop-portal ; aucun effet sur les sessions gnome/kde
+  roudix.desktopIntegration = "gnome";        # "gnome", "kde", "cinnamon" ou "cosmic" — stack keyring + xdg-desktop-portal ; aucun effet sur les sessions gnome/kde
 
   # ── Locale / Fuseau horaire ───────────────────────────────────────────────────────
   time.timeZone                   = "Europe/Brussels"; # voir https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -241,7 +241,7 @@ sudo dmidecode -t memory | grep 'Part Number'
 
 > **Note :** `environment.sessionVariables.TZ` doit toujours correspondre à `time.timeZone` — ils contrôlent tous les deux le fuseau horaire, l'un au niveau système et l'autre au niveau session.
 
-Modifiez `home/local.nix` pour vos surcharges home-manager personnelles (paquets supplémentaires, dotfiles, alias, fastfetch...) :
+Modifiez `modules/home/local.nix` pour vos surcharges home-manager personnelles (paquets supplémentaires, dotfiles, alias, fastfetch...) :
 
 ```nix
 { pkgs, lib, osConfig, ... }:
@@ -250,13 +250,13 @@ Modifiez `home/local.nix` pour vos surcharges home-manager personnelles (paquets
 }
 ```
 
-> Voir `home/local.nix.example` pour toutes les options de surcharge disponibles, y compris la personnalisation de fastfetch.
+> Voir `modules/home/local.nix.example` pour toutes les options de surcharge disponibles, y compris la personnalisation de fastfetch.
 
 ### 5. Configurer le kernel
 
 Roudix utilise **deux fournisseurs de kernel différents** selon votre GPU :
 
-- **`hardware.myGpu != "nvidia"`** (AMD ou Intel) → kernel de [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), choisi via `hardware.myKernel`. Pas de module Nvidia à gérer, donc les 32 variantes sont toutes disponibles.
+- **`hardware.myGpu != "nvidia"`** (AMD ou Intel) → kernel de [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), choisi via `hardware.myKernel`. Pas de module Nvidia à gérer, donc les 36 variantes sont toutes disponibles.
 - **`hardware.myGpu == "nvidia"`** → kernel de **Chaotic-Nyx**, choisi via `hardware.myKernelChaotic`. C'est nécessaire pour obtenir **`nvidia_cachyos`**, un pilote Nvidia précompilé assorti à leur kernel — sinon le module kernel Nvidia se recompile localement à chaque bump de kernel. Le jeu de variantes est volontairement plus restreint ici (Chaotic-Nyx ne publie pas autant de saveurs, et les variantes `-lto` sont plus sujettes à casser des modules hors arbre comme celui de Nvidia).
 
 Les deux options acceptent aussi quelques **kernels nixpkgs bruts**, entièrement en dehors de leur overlay CachyOS respectif — utile si vous voulez juste un kernel stock sans aucun patch CachyOS : `zen`, `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing`, `xanmod-lts`, `xanmod-latest`. Sur le chemin Nvidia, ceux-ci évitent le cache `nvidia_cachyos` et recompilent le module Nvidia localement à la place (voir `nvidia.nix`).
@@ -329,7 +329,7 @@ Les deux options acceptent aussi quelques **kernels nixpkgs bruts**, entièremen
 
 > **Note thème Spicetify Comfy :** Après votre premier build, copiez le color.ini manuellement :
 > ```bash
-> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/spicetify/Comfy/color.ini
+> cp ~/.config/spicetify/Themes/Comfy/color.ini ~/.config/roudix/modules/home/apps/media/spicetify/Comfy/color.ini
 > ```
 > Puis lancez `rebuild` pour appliquer.
 
@@ -409,10 +409,10 @@ Si vous n'avez pas d'autre OS à ajouter, laissez simplement `extraEntries` vide
 
 ### 8. Mettre à jour la config git
 
-`modules/home/git.nix` est ignoré par git (comme `local.nix`) — copiez le template suivi et renseignez votre identité :
+`modules/home/dev/git.nix` est ignoré par git (comme `local.nix`) — copiez le template suivi et renseignez votre identité :
 
 ```bash
-cp modules/home/git.nix.example modules/home/git.nix
+cp modules/home/dev/git.nix.example modules/home/dev/git.nix
 ```
 
 ```nix
@@ -446,7 +446,7 @@ roudix.fstrim.enable         = true;   # recommandé pour SSD/NVMe
 roudix.virtualization.enable = false;  # activer pour QEMU/KVM
 roudix.vmGuest.enable        = true;   # activer uniquement dans une VM
 roudix.hosts.gtaFix.enable   = true;   # bloque la télémétrie BattlEye (fix GTA)
-roudix.autoupdate.enable     = true;   # auto pull + nh os boot lors des changements
+roudix.autoupdate.enable     = true;   # auto pull + nixos-rebuild boot lors des changements
 roudix.zen.enable            = false;  # installer Zen Browser (désactivé par défaut)
 roudix.mesa.useGit           = false;  # true = mesa-git (expérimental, bleeding edge — le build peut échouer), false = nixpkgs stable
 roudix.boot.bootloader       = "limine";  # "limine" ou "systemd-boot"
@@ -455,14 +455,14 @@ roudix.boot.menuResolution   = "auto";    # Résolution du menu Limine : "auto",
 roudix.matrixClient          = "none"; # "element", "cinny" ou "none"
 ```
 
-> **Rappel :** Si vous mettez `roudix.autoupdate.enable = true`, configurez aussi l'intervalle :
+> **Rappel :** Si vous mettez `roudix.autoupdate.enable = true`, vous pouvez aussi configurer l'intervalle (voir [mise à jour automatique](autoupdate.fr.md)) :
 > ```nix
 > roudix.autoupdate.interval = "1h"; # 1h, 6h, 12h, 24h...
 > ```
 
 ### 10. Personnaliser fastfetch (optionnel)
 
-Par défaut, Roudix affiche son logo ASCII dans fastfetch. Vous pouvez le surcharger dans `home/local.nix` sans toucher à git :
+Par défaut, Roudix affiche son logo ASCII dans fastfetch. Vous pouvez le surcharger dans `modules/home/local.nix` sans toucher à git :
 
 ```nix
 # Utiliser une image personnalisée (nécessite le terminal kitty)
@@ -491,7 +491,7 @@ programs.fastfetch.settings = lib.mkForce {
 ```
 
 > `lib.mkForce` écrase toute la config par défaut de Roudix. Sans lui, vos clés sont fusionnées avec les valeurs par défaut.
-> Voir `home/local.nix.example` pour plus d'exemples.
+> Voir `modules/home/local.nix.example` pour plus d'exemples.
 
 ### 11. Build
 

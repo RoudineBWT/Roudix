@@ -6,7 +6,7 @@
 
 - Kernel CachyOS com NTSync ativado (módulo `ntsync`)
 - Dois provedores de kernel, escolhidos automaticamente por `hardware.myGpu`:
-  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 32 variantes (`hardware.myKernel`)
+  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 36 variantes (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 variantes (`hardware.myKernelChaotic`) — traz o `nvidia_cachyos`, um driver pré-compilado combinando com o kernel deles, então o módulo da Nvidia não é recompilado localmente a cada atualização do kernel
 - Kernels "puros" do nixpkgs também podem ser escolhidos nos dois provedores, totalmente fora do overlay do CachyOS — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod). Na Nvidia, esses voltam a usar um módulo da Nvidia recompilado localmente (sem o cache do `nvidia_cachyos`)
 - `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) pega somente esses kernels do nixpkgs a partir de um nixpkgs mais recente, para atualizar o kernel mais cedo, sem mexer no resto do sistema
@@ -42,7 +42,7 @@
 
 ## Desktop (Niri)
 
-- Niri, compositor Wayland de tiling com rolagem — fornecido via [niri-flake](https://github.com/epireyn/niri-flake) (epireyn), usando `niri-unstable` por padrão, com o cache binário `niri.cachix.org` pré-configurado
+- Niri, compositor Wayland de tiling com rolagem — fornecido via [niri-flake](https://github.com/epireyn/niri-flake) (epireyn), usando `niri-unstable` por padrão, com o cache binário `niri-epireyn.cachix.org` pré-configurado
 - A configuração é nativa do Nix (`programs.niri.settings`), dividida por assunto (general, animations, input, layout, outputs, binds, rules) e validada em tempo de build com `niri validate` — uma configuração quebrada faz o build falhar, em vez de o compositor falhar no login
 - A sincronização de tema ao vivo do Noctalia/DMS (cores geradas pelo matugen/DMS, alt-tab, blur) é preservada adicionando um `include` à configuração gerada, em vez de embuti-la de forma estática
 - Shell moderno Noctalia (v5)
@@ -93,12 +93,12 @@
 - xdg-desktop-portal-hyprland + portal gtk
 - Cursor Bibata Modern Ice (24 px)
 - Agente Polkit do GNOME (iniciado via serviço de usuário do systemd)
-- Daemon de papel de parede swww
+- Daemon de papel de parede awww
 - Capturas de tela com grim + slurp + satty (anotação) — 3 atalhos de teclado
 
 ## Desktop (GNOME)
 
-- GNOME 50.x (acompanha o branch nixos-unstable)
+- GNOME (acompanha o branch nixos-unstable)
 - Conjunto selecionado de extensões (blur, tiling, vitals, arcmenu...) — ativadas via dconf
 - ArcMenu com o logo do Roudix como ícone do botão de menu
 - Bloatware removido via `environment.gnome.excludePackages`
@@ -107,9 +107,9 @@
 - Cursor Bibata Modern Ice (24 px)
 - Papel de parede do Roudix (claro/escuro conforme o tema do sistema)
 - `color-scheme = prefer-dark` aplicado via dconf
-- Configurações das extensões (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) pré-configuradas via `gnome-extensions.nix`
+- Configurações das extensões (ArcMenu, Dash to Dock, Dash to Panel, Blur My Shell...) pré-configuradas via `modules/home/desktop/gnome/_extensions.nix`
 - Adicione/remova extensões sem editar os arquivos principais via `roudix.gnome.extraExtensions` / `roudix.gnome.disabledExtensions`
-- Sobrescreva papel de parede, tema, ícones e cursor em `home/local.nix`
+- Sobrescreva papel de parede, tema, ícones e cursor em `modules/home/local.nix`
 
 ## Desktop (KDE)
 
@@ -121,7 +121,7 @@
 - Papel de parede Roudix Dark na tela de login e no desktop
 - Pacotes selecionados: partitionmanager, kcalc, digikam, vlc...
 - Bloatware removido (Discover excluído)
-- Sobrescreva papel de parede, painéis e tema de ícones em `home/local.nix`
+- Sobrescreva papel de parede, painéis e tema de ícones em `modules/home/local.nix`
 
 ## Música
 
@@ -180,7 +180,7 @@ Também disponível, opt-in (desativado por padrão): um cliente de torrent via
 ## Navegador
 
 - Lista de navegadores configurável pela opção `roudix.browsers`
-- Compatível com `brave`, `helium` (via amaanq/helium-flake, inclui o patch de DRM — a reprodução com Widevine é configurada automaticamente via `modules/home/apps/browser/helium-widevine.nix` quando `helium` é selecionado), `vivaldi` (com codecs ffmpeg), `firefox`, `librewolf`, `chromium`, ou `[]` para nenhum
+- Compatível com `brave`, `helium` (via x13-me/helium-nix, inclui o patch de DRM — a reprodução com Widevine é configurada automaticamente via `modules/home/apps/browser/helium-widevine.nix` quando `helium` é selecionado), `vivaldi` (com codecs ffmpeg), `firefox`, `librewolf`, `chromium`, ou `[]` para nenhum
 - Zen Browser disponível separadamente via `roudix.zen.enable = true` (desativado por padrão); o canal é selecionável via `roudix.zen.variant` — `"twilight"` (padrão) ou `"beta"`
 
 ## Outros

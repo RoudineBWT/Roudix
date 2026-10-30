@@ -4,7 +4,15 @@
   # The real GNOME module (modules/system/desktop/gnome.nix), pulled in via
   # roudix-cfg — enables GDM, xdg-portal, gnome-tweaks/extension-manager,
   # adw-gtk3, package exclusions, exactly like on a normal install.
-  imports = [ ./roudix-cfg/modules/system/desktop/gnome.nix ];
+  #
+  # icon-theme.nix declares roudix.iconTheme / roudix.iconThemeName, which
+  # gnome.nix reads for the dconf icon-theme key. It only needs
+  # roudix.desktop.type (declared below) and pkgs, so it is safe to import
+  # without the rest of desktop/default.nix.
+  imports = [
+    ./roudix-cfg/modules/system/desktop/gnome.nix
+    ./roudix-cfg/modules/system/desktop/icon-theme.nix
+  ];
 
   # Duplicated from modules/system/desktop/default.nix instead of importing
   # it directly, to avoid pulling in niri.nix/hyprland.nix/kde.nix/mangowc.nix,

@@ -10,7 +10,7 @@ from pathlib import Path
 
 from roudix_installer.hardware_detect import detect_prime_bus_ids
 from roudix_installer.host_profile import FIXED, restore_fixed_lines
-from roudix_installer.state import InstallState
+from roudix_installer.state import InstallState, valid_hostname, valid_username
 
 
 def _sub_string(text: str, key: str, value: str) -> str:
@@ -124,6 +124,17 @@ def _set_list_option(text: str, key: str, values: list) -> str:
     return pattern.sub(repl, text)
 
 
+def _eac_vendor(state: InstallState) -> str:
+    """Fedora ships no signed NVIDIA modules: on NVIDIA the EAC entry must use Bazzite's."""
+    return "bazzite" if state.gpu == "nvidia" else state.eac_vendor
+
+
+def _boot_security(state: InstallState) -> tuple:
+    """(secure_boot, eac) as actually written: both need Limine."""
+    limine = state.bootloader == "limine"
+    return (state.secure_boot and limine, state.eac_enable and limine)
+
+
 def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = local_nix_text
     t = _sub_string(t, "roudix.rgb", state.rgb)
@@ -184,6 +195,14 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.boot.bootloader", state.bootloader)
     t = _sub_string(t, "roudix.boot.wallpaperAspect", state.boot_aspect)
     t = _sub_string(t, "roudix.boot.menuResolution", state.boot_resolution)
+    # Secure Boot / EAC are Limine-only in Roudix (the module asserts it): never
+    # written on for another bootloader. Keys are generated on the target at
+    # install time; enrolling them in the firmware stays manual (docs/secure-boot-eac.md).
+    sb_on, eac_on = _boot_security(state)
+    t = _sub_bool(t, "roudix.boot.secureBoot.enable", sb_on)
+    t = _sub_bool(t, "roudix.boot.secureBoot.autoGenerateKeys", sb_on)
+    t = _sub_bool(t, "roudix.boot.eac.enable", eac_on)
+    t = _sub_string(t, "roudix.boot.eac.vendor", _eac_vendor(state))
     t = _sub_string(t, "roudix.matrixClient", state.matrix_client)
     t = _sub_string(t, "roudix.discord", state.discord)
     t = _sub_string(t, "roudix.telegram", state.telegram)
@@ -253,6 +272,7 @@ def _expected_values(state: InstallState) -> list:
         "roudix.autoupdate.interval": state.autoupdate_interval, "roudix.autoupdate.branch": state.branch,
         "roudix.boot.bootloader": state.bootloader, "roudix.boot.wallpaperAspect": state.boot_aspect,
         "roudix.boot.menuResolution": state.boot_resolution,
+        "roudix.boot.eac.vendor": _eac_vendor(state),
         "roudix.matrixClient": state.matrix_client,
         "roudix.discord": state.discord, "roudix.telegram": state.telegram,
         "roudix.videoPlayer": state.video_player, "roudix.torrentClient": state.torrent_client,
@@ -268,6 +288,8 @@ def _expected_values(state: InstallState) -> list:
         "roudix.flatpak.enable": state.flatpak, "roudix.virtualization.enable": state.virtualization,
         "roudix.autoupdate.enable": state.autoupdate, "roudix.waydroid.enable": state.waydroid_enable,
         "roudix.zen.enable": state.zen_browser, "roudix.contentCreation.enable": state.content_creation_enable,
+        "roudix.boot.secureBoot.enable": _boot_security(state)[0],
+        "roudix.boot.eac.enable": _boot_security(state)[1],
     }
     out = [(k, "str", v) for k, v in strings.items()]
     out += [(k, "bool", v) for k, v in bools.items()]
@@ -300,12 +322,21 @@ def verify_local_nix(state: InstallState, example_text: str, result_text: str) -
     return missing
 
 
+def check_identity(state: InstallState) -> None:
+    """Refuse a username/hostname that could inject Nix code, shell or a path."""
+    if not valid_username(state.username):
+        raise ValueError(f"Invalid username: {state.username!r}")
+    if not valid_hostname(state.hostname):
+        raise ValueError(f"Invalid hostname: {state.hostname!r}")
+
+
 def write_config(state: InstallState, config_root: Path):
     """
     config_root is the already-copied /iso-cfg tree (== /mnt/etc/nixos).
     Mirrors: username.nix, local.nix from example + sed, home/local.nix
     copied verbatim, boot.local.nix copied verbatim (EFI detection TODO).
     """
+    check_identity(state)
     hosts_dir = config_root / "hosts" / state.hostname
     home_dir = config_root / "modules" / "home"
     boot_local = config_root / "modules" / "system" / "boot" / "boot.local.nix"

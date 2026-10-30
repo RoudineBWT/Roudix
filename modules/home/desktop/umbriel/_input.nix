@@ -25,7 +25,18 @@
 
     mouse.accel_profile = "flat";
 
-    focus.follows_mouse = true; # niri: focus-follows-mouse
+    focus = {
+      follows_mouse = true; # niri: focus-follows-mouse
+      # hover_raises (umbriel e57420b): by default hovering a window with
+      # follows_mouse also RAISES it, so sweeping the pointer over a larger
+      # window underneath buries the one above (the floating ghostty / chat
+      # windows over a tiled browser). false = hover only focuses; clicks,
+      # keybinds and activation still raise.
+      hover_raises = false;
+    };
+
+    # `input.window_snapping` is gone (umbriel b95c1ae): edge/corner drop zones
+    # are now `layout.stacking.drop_zones`, pinned to false in _layout.nix.
 
     # Edge scroll while dragging (umbriel #401): holding a window (Mod+drag
     # or tab bar) or a drag-and-drop near either end of a scrolling workspace

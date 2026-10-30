@@ -20,50 +20,39 @@ Ici :
   `roudix.*` que ton script bash générait déjà, sans passer par les
   hacks Calamares.
 - **UI** → wizard GTK4/libadwaita en 5 écrans (Welcome → Disk → Options
-  → Summary → Progress), thème Catppuccin Mocha Peach pour matcher le
+  → Summary → Progress), thème sombre Catppuccin Mocha pour matcher le
   reste de la branding Roudix.
 
 ## Structure
 
 ```
 src/roudix_installer/
-  main.py           # fenêtre + navigation entre pages
-  state.py          # InstallState, un seul objet partagé entre les pages
-  i18n.py           # gettext : tr() / trc() / tr_noop(), langue changeable à chaud
-  disko_gen.py       # DiskChoice -> disko.nix
-  config_gen.py      # InstallState -> bloc roudix.* pour configuration.nix
+  main.py              # fenêtre + navigation entre pages
+  state.py             # InstallState, un seul objet partagé entre les pages
+  i18n.py              # gettext : tr() / trc() / tr_noop(), langue changeable à chaud
+  disko_gen.py         # DiskChoice -> disko.nix
+  btrfs_patch.py       # adaptation du layout btrfs
+  config_gen.py        # InstallState -> bloc roudix.* pour configuration.nix
+  existing_nixos.py    # mode « NixOS déjà installé » (sauvegarde /etc/nixos, pré-vérifs)
+  hardware_detect.py   # détection GPU / CPU / VM / écrans / autres OS
+  host_defaults.py / host_profile.py   # valeurs par défaut et profil d'hôte
+  ui_helpers.py
   pages/
-    welcome.py
-    disk.py           # sélection disque, mode simple/avancé
-    options.py         # desktop/shell/kernel/bootloader/matrix/waydroid
-    summary.py
-    progress.py         # exécute disko puis nixos-install, logs en direct
+    welcome.py · disk.py · options.py · summary.py · progress.py · main.py
   style.css
 data/disko/
-  simple-efi-swap-root.nix   # layout de référence, éditable en mode avancé
+  simple-efi-swap-root.nix · simple-btrfs-subvolumes.nix   # layouts de référence
 po/
   roudix-installer.pot       # modèle (généré, ne pas éditer à la main)
-  fr.po                      # traduction française
+  fr.po es.po pt_BR.po ru.po zh_CN.po hi.po ar.po
 ```
 
-## État actuel (scaffold)
+## Fonctionnement
 
-Ce qui marche déjà dans le squelette :
-- Navigation complète entre les 5 pages
-- Détection réelle des disques via `lsblk`
-- Génération réelle de `disko.nix` (mode simple) et du bloc `roudix.*`
-- `progress.py` appelle vraiment `disko` puis `nixos-install` en sous-processus,
-  avec les logs streamés dans l'UI
-
-Ce qu'il reste à faire avant que ce soit utilisable en vrai :
-- [ ] Écran mot de passe utilisateur (actuellement `password_hash` vide → pas de mdp)
-- [ ] Vérifs de garde-fous (pas de disque sélectionné, pas assez d'espace...)
-- [ ] Écrire le flake cible complet (`flake.nix#nixosConfigurations.roudix`), pas
-      juste le fichier d'options — `config_gen.py` ne produit qu'un module à importer
-- [ ] Gestion d'erreur disko (ex: disque déjà monté, LUKS si un jour tu veux du chiffrement)
-- [x] i18n propre (gettext, voir « Traductions » ci-dessous)
-- [ ] Packaging dans l'ISO : ajouter `roudix-installer` aux paquets du live env
-      et un raccourci bureau/autostart à la place de Calamares
+- **ISO** : wizard complet (Welcome → Disk → Options → Summary → Progress), partitionnement via disko, puis `nixos-install`.
+- **NixOS déjà installé** (`nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"`) : pas de page disque, config clonée dans `~/.config/roudix`, appliquée avec `nixos-rebuild boot` ; `/etc/nixos` est sauvegardé dans `/var/backups/roudix/` avec un `RESTORE.txt`.
+- Bouton *Simuler* sur la page de résumé : génère la config dans un dossier temporaire et fait évaluer le système par Nix, sans rien modifier.
+- Voir [Installation](../../docs/installation.fr.md) pour le détail côté utilisateur.
 
 ## Tester en local (hors ISO)
 

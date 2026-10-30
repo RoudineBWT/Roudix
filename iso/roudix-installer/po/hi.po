@@ -333,6 +333,14 @@ msgid "Limine (recommended)"
 msgstr "Limine (अनुशंसित)"
 
 #: src/roudix_installer/pages/options.py
+msgid "Fedora kernel (nothing to enroll)"
+msgstr "Fedora कर्नेल (कुछ दर्ज करने की ज़रूरत नहीं)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Bazzite OGC kernel (Universal Blue's key to enroll after the install)"
+msgstr "Bazzite का OGC कर्नेल (इंस्टॉल के बाद Universal Blue की कुंजी दर्ज करनी होगी)"
+
+#: src/roudix_installer/pages/options.py
 msgid "Automatic (Limine decides)"
 msgstr "स्वचालित (Limine तय करता है)"
 
@@ -1179,12 +1187,41 @@ msgid ""
 "{count} screens detected: Limine can use the smaller one — pick your main "
 "screen's resolution."
 msgstr ""
-"{count} स्क्रीन मिलीं: Limine छोटी स्क्रीन चुन सकता है — अपनी मुख्य स्क्रीन "
-"का रिज़ॉल्यूशन चुनें।"
+"{count} स्क्रीन मिलीं: Limine छोटी स्क्रीन चुन सकता है — अपनी मुख्य स्क्रीन का रिज़ॉल्यूशन "
+"चुनें।"
 
 #: src/roudix_installer/pages/options.py
 msgid "Only useful with several screens of different sizes."
 msgstr "केवल अलग-अलग आकार की कई स्क्रीन होने पर उपयोगी।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Secure Boot (sign Limine)"
+msgstr "Secure Boot (Limine पर हस्ताक्षर)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Keys are created during the install; enrolling them in the firmware is done "
+"afterwards (docs/secure-boot-eac.md)."
+msgstr ""
+"कुंजियाँ इंस्टॉल के दौरान बनाई जाती हैं; उन्हें फ़र्मवेयर में दर्ज करने का काम बाद में किया जाता "
+"है (docs/secure-boot-eac.md)।"
+
+#: src/roudix_installer/pages/options.py
+msgid "EAC Linux v2 boot entry (experimental)"
+msgstr "EAC Linux v2 बूट एंट्री (प्रायोगिक)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Separate “NixOS EAC” entry on a Fedora/Bazzite-signed kernel. Needs Secure "
+"Boot and a TPM 2.0; Epic has not confirmed it accepts this yet."
+msgstr ""
+"Fedora या Bazzite द्वारा हस्ताक्षरित कर्नेल पर अलग “NixOS EAC” एंट्री। इसके लिए "
+"Secure Boot और TPM 2.0 चाहिए; Epic ने अभी तक पुष्टि नहीं की है कि वह इसे स्वीकार "
+"करेगा।"
+
+#: src/roudix_installer/pages/options.py
+msgid "EAC kernel"
+msgstr "EAC कर्नेल"
 
 #: src/roudix_installer/pages/options.py
 msgid "Matrix client"
@@ -1316,12 +1353,22 @@ msgid "Chatterino2 (third-party Twitch chat)"
 msgstr "Chatterino2 (थर्ड-पार्टी Twitch चैट)"
 
 #: src/roudix_installer/pages/options.py
+msgid "NVIDIA GPU: only Bazzite ships signed NVIDIA modules"
+msgstr "NVIDIA GPU: केवल Bazzite ही हस्ताक्षरित NVIDIA मॉड्यूल देता है"
+
+#: src/roudix_installer/pages/options.py
 msgid "Kernel (Chaotic-Nyx)"
 msgstr "Kernel (Chaotic-Nyx)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Kernel (xddxdd)"
 msgstr "Kernel (xddxdd)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Invalid username: use letters, digits, '_', '-' or '.', starting with a "
+"letter or '_' (max 32)."
+msgstr "अमान्य उपयोगकर्ता नाम: अक्षर, अंक, '_', '-' या '.' का उपयोग करें, और नाम अक्षर या '_' से शुरू होना चाहिए (अधिकतम 32)।"
 
 #: src/roudix_installer/pages/options.py
 msgid ""
@@ -1746,6 +1793,19 @@ msgstr "वर्चुअलाइज़ेशन"
 msgctxt "summary, Extras row: nothing selected"
 msgid "none"
 msgstr "कोई नहीं"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Secure Boot / EAC"
+msgstr "Secure Boot / EAC"
+
+#: src/roudix_installer/pages/summary.py
+msgid "Secure Boot"
+msgstr "Secure Boot"
+
+#: src/roudix_installer/pages/summary.py
+msgctxt "summary, Secure Boot / EAC row: nothing selected"
+msgid "off"
+msgstr "बंद"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Apps row: nothing selected"

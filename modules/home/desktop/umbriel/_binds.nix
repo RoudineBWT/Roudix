@@ -16,33 +16,33 @@ in
     # window, for frozen apps/games that ignore window-close. Deliberately
     # a 3-key chord + no repeat so it can't be hit by accident.
     "Mod+Ctrl+Shift+Q" = { action = "window-kill"; repeat = false; };
-    "Mod+Return" = "spawn:ghostty";
-    "Mod+D" = "spawn:noctalia msg panel-toggle launcher";
-    "Mod+Shift+B" = "spawn:zen-twilight";
-    "Mod+B" = "spawn:brave-origin-beta";
-    "Mod+Alt+L" = "spawn:noctalia msg session lock";
-    "Mod+E" = "spawn:nautilus";
-    "Mod+Shift+Q" = "spawn:noctalia msg panel-toggle session";
+    "Mod+Return" = "spawn ghostty";
+    "Mod+D" = "spawn noctalia msg panel-toggle launcher";
+    "Mod+Shift+B" = "spawn zen-twilight";
+    "Mod+B" = "spawn brave-origin-beta";
+    "Mod+Alt+L" = "spawn noctalia msg session lock";
+    "Mod+E" = "spawn nautilus";
+    "Mod+Shift+Q" = "spawn noctalia msg panel-toggle session";
     "Mod+Shift+Escape" = "cheatsheet-toggle";
 
     # ─── Additional Noctalia panels ───
     # From the official "Noctalia shell integration" example in the
     # keybinds doc.
-    "Mod+V" = "spawn:noctalia msg panel-toggle clipboard";  # clipboard manager
-    "Mod+W" = "spawn:noctalia msg panel-toggle wallpaper";  # wallpaper picker
-    "Mod+Z" = "spawn:noctalia msg panel-toggle launcher /emo"; # emoji picker
-    "Mod+N" = "spawn:noctalia msg panel-toggle noctalia/notes:panel"; # notes panel
+    "Mod+V" = "spawn noctalia msg panel-toggle clipboard";  # clipboard manager
+    "Mod+W" = "spawn noctalia msg panel-toggle wallpaper";  # wallpaper picker
+    "Mod+Z" = "spawn noctalia msg panel-toggle launcher /emo"; # emoji picker
+    "Mod+N" = "spawn noctalia msg panel-toggle noctalia/notes:panel"; # notes panel
 
     # ─── Audio ───
     # allow_when_locked lets these shortcuts work even with the screen
     # locked, equivalent to niri's allow-when-locked=true.
-    "XF86AudioRaiseVolume" = { action = "spawn:noctalia msg volume-up"; allow_when_locked = true; };
-    "XF86AudioLowerVolume" = { action = "spawn:noctalia msg volume-down"; allow_when_locked = true; };
-    "XF86AudioMute" = { action = "spawn:noctalia msg volume-mute"; allow_when_locked = true; };
-    "XF86AudioMicMute" = { action = "spawn:noctalia msg mic-mute"; allow_when_locked = true; };
-    "XF86AudioPlay" = { action = "spawn:playerctl play-pause"; allow_when_locked = true; };
-    "XF86AudioPrev" = { action = "spawn:playerctl previous"; allow_when_locked = true; };
-    "XF86AudioNext" = { action = "spawn:playerctl next"; allow_when_locked = true; };
+    "XF86AudioRaiseVolume" = { action = "spawn noctalia msg volume-up"; allow_when_locked = true; };
+    "XF86AudioLowerVolume" = { action = "spawn noctalia msg volume-down"; allow_when_locked = true; };
+    "XF86AudioMute" = { action = "spawn noctalia msg volume-mute"; allow_when_locked = true; };
+    "XF86AudioMicMute" = { action = "spawn noctalia msg mic-mute"; allow_when_locked = true; };
+    "XF86AudioPlay" = { action = "spawn playerctl play-pause"; allow_when_locked = true; };
+    "XF86AudioPrev" = { action = "spawn playerctl previous"; allow_when_locked = true; };
+    "XF86AudioNext" = { action = "spawn playerctl next"; allow_when_locked = true; };
 
     # ─── Windows: focus / movement ───
     "Mod+Left" = "window-focus-left";
@@ -111,45 +111,45 @@ in
     # ignoring which monitor has focus. Current layout:
     # Legion (DP-1) → 1 web, 2 zed, 3 term, 4 games, 5 files, 6-9 empty.
     # HKC (DP-3)    → 1 chat, 2 music, 3 web (brave), 4-9 empty.
-    "Mod+1" = "workspace-switch:1"; # Legion: web · HKC: chat
-    "Mod+2" = "workspace-switch:2"; # Legion: zed · HKC: music
-    "Mod+3" = "workspace-switch:3"; # Legion: term · HKC: web (brave)
-    "Mod+4" = "workspace-switch:4"; # Legion: games · HKC: empty (H4)
-    "Mod+5" = "workspace-switch:5"; # Legion: files · HKC: empty (H5)
-    "Mod+6" = "workspace-switch:6"; # empty on both sides (L6 / H6)
-    "Mod+7" = "workspace-switch:7"; # empty on both sides (L7 / H7)
-    "Mod+8" = "workspace-switch:8"; # empty on both sides (L8 / H8)
-    "Mod+9" = "workspace-switch:9"; # empty on both sides (L9 / H9)
+    "Mod+1" = "workspace-switch 1"; # Legion: web · HKC: chat
+    "Mod+2" = "workspace-switch 2"; # Legion: zed · HKC: music
+    "Mod+3" = "workspace-switch 3"; # Legion: term · HKC: web (brave)
+    "Mod+4" = "workspace-switch 4"; # Legion: games · HKC: empty (H4)
+    "Mod+5" = "workspace-switch 5"; # Legion: files · HKC: empty (H5)
+    "Mod+6" = "workspace-switch 6"; # empty on both sides (L6 / H6)
+    "Mod+7" = "workspace-switch 7"; # empty on both sides (L7 / H7)
+    "Mod+8" = "workspace-switch 8"; # empty on both sides (L8 / H8)
+    "Mod+9" = "workspace-switch 9"; # empty on both sides (L9 / H9)
 
-    "Mod+Ctrl+1" = "window-move-to-workspace:1";
-    "Mod+Ctrl+2" = "window-move-to-workspace:2";
-    "Mod+Ctrl+3" = "window-move-to-workspace:3";
-    "Mod+Ctrl+4" = "window-move-to-workspace:4";
-    "Mod+Ctrl+5" = "window-move-to-workspace:5";
-    "Mod+Ctrl+6" = "window-move-to-workspace:6";
-    "Mod+Ctrl+7" = "window-move-to-workspace:7";
-    "Mod+Ctrl+8" = "window-move-to-workspace:8";
-    "Mod+Ctrl+9" = "window-move-to-workspace:9";
+    "Mod+Ctrl+1" = "window-move-to-workspace 1";
+    "Mod+Ctrl+2" = "window-move-to-workspace 2";
+    "Mod+Ctrl+3" = "window-move-to-workspace 3";
+    "Mod+Ctrl+4" = "window-move-to-workspace 4";
+    "Mod+Ctrl+5" = "window-move-to-workspace 5";
+    "Mod+Ctrl+6" = "window-move-to-workspace 6";
+    "Mod+Ctrl+7" = "window-move-to-workspace 7";
+    "Mod+Ctrl+8" = "window-move-to-workspace 8";
+    "Mod+Ctrl+9" = "window-move-to-workspace 9";
 
     # Silent moves (umbriel #273): send the focused window to a workspace
     # WITHOUT following it (focus and view stay on the current workspace).
     # Same 1..9 numbering rules as above (position on the focused output).
-    "Mod+Alt+1" = "window-move-to-workspace-silent:1";
-    "Mod+Alt+2" = "window-move-to-workspace-silent:2";
-    "Mod+Alt+3" = "window-move-to-workspace-silent:3";
-    "Mod+Alt+4" = "window-move-to-workspace-silent:4";
-    "Mod+Alt+5" = "window-move-to-workspace-silent:5";
-    "Mod+Alt+6" = "window-move-to-workspace-silent:6";
-    "Mod+Alt+7" = "window-move-to-workspace-silent:7";
-    "Mod+Alt+8" = "window-move-to-workspace-silent:8";
-    "Mod+Alt+9" = "window-move-to-workspace-silent:9";
+    "Mod+Alt+1" = "window-move-to-workspace-silent 1";
+    "Mod+Alt+2" = "window-move-to-workspace-silent 2";
+    "Mod+Alt+3" = "window-move-to-workspace-silent 3";
+    "Mod+Alt+4" = "window-move-to-workspace-silent 4";
+    "Mod+Alt+5" = "window-move-to-workspace-silent 5";
+    "Mod+Alt+6" = "window-move-to-workspace-silent 6";
+    "Mod+Alt+7" = "window-move-to-workspace-silent 7";
+    "Mod+Alt+8" = "window-move-to-workspace-silent 8";
+    "Mod+Alt+9" = "window-move-to-workspace-silent 9";
 
     # ⚠ workspace-previous is positional (no wrap, no "last active" like
     # niri's MRU) — always an approximation.
     "Mod+Tab" = "workspace-previous";
     # `hold`: a quick Alt+Tab tap switches to the previous window and no longer
     # leaves the switcher overlay stuck open (noctalia 5.2.1).
-    "Alt+Tab" = "spawn:noctalia msg window-switcher hold";
+    "Alt+Tab" = "spawn noctalia msg window-switcher hold";
 
     # ─── Layout ───
     "Mod+Ctrl+F" = "window-toggle-maximize";
@@ -162,12 +162,12 @@ in
     # master — plus edge-anchored variants like
     # window-modify-width-left/-right). It resizes the column/lane along
     # the active layout's main axis, with no particular anchor.
-    "Mod+Minus" = "window-modify-primary-extent:-0.1";
-    "Mod+Equal" = "window-modify-primary-extent:0.1";
+    "Mod+Minus" = "window-modify-primary-extent -0.1";
+    "Mod+Equal" = "window-modify-primary-extent 0.1";
     # Secondary extent (row height within a column/master area/stack) —
     # niri's set-window-height equivalent, now available.
-    "Mod+Shift+Minus" = "window-modify-secondary-extent:-0.1";
-    "Mod+Shift+Equal" = "window-modify-secondary-extent:0.1";
+    "Mod+Shift+Minus" = "window-modify-secondary-extent -0.1";
+    "Mod+Shift+Equal" = "window-modify-secondary-extent 0.1";
     # niri's center-column/center-visible-columns equivalents.
     "Mod+C" = "column-center";
     "Mod+Shift+C" = "window-center";
@@ -195,21 +195,39 @@ in
     # and Music workspaces are dwindle.
     "Mod+Shift+S" = { action = "layout-toggle-split"; repeat = false; };
 
+    # ─── Minimize (umbriel e5adea6, 185b559) ───
+    # Floating windows only (tiled and pinned windows have no minimize).
+    # Restores the latest minimized window of the workspace; show-desktop
+    # minimizes/restores every floating window of the workspace.
+    "Mod+M" = "window-minimize";
+    "Mod+Shift+M" = "window-restore-minimized";
+    "Mod+Shift+D" = "workspace-toggle-show-desktop";
+
+    # ─── Stacking regions (umbriel b95c1ae) ───
+    # Replace the old window-snap action. Only for ordinary windows of a
+    # *stacking* workspace (rejected on tiled / pinned / scratchpad ones).
+    # Repeating a region is a no-op; window-clear-region restores the box.
+    "Mod+Ctrl+Alt+Left" = "window-set-region left";
+    "Mod+Ctrl+Alt+Right" = "window-set-region right";
+    "Mod+Ctrl+Alt+Up" = "window-set-region top";
+    "Mod+Ctrl+Alt+Down" = "window-set-region bottom";
+    "Mod+Ctrl+Alt+C" = "window-clear-region";
+
     # ─── Modes ───
     "Mod+T" = "window-toggle-floating";
     "Mod+F" = "window-toggle-fullscreen";
     "Mod+Shift+T" = "window-toggle-pinned"; # pins above fullscreen
 
     # ─── Screenshots ───
-    "Ctrl+Shift+1" = "spawn:noctalia msg screenshot-region";
-    "Ctrl+Shift+2" = "spawn:noctalia msg screenshot-fullscreen";
+    "Ctrl+Shift+1" = "spawn noctalia msg screenshot-region";
+    "Ctrl+Shift+2" = "spawn noctalia msg screenshot-fullscreen";
     # Noctalia annotation editor: freeze the screen and draw on it / live
     # transparent drawing overlay for presentations (noctalia 5.1+).
-    "Mod+Shift+A" = "spawn:noctalia msg screenshot-annotate";
-    "Mod+Ctrl+A" = "spawn:noctalia msg annotate";
+    "Mod+Shift+A" = "spawn noctalia msg screenshot-annotate";
+    "Mod+Ctrl+A" = "spawn noctalia msg annotate";
     # Active-window capture via grim+slurp with manual targeting (click on
     # the window) — Umbriel has no native "focused window" action.
-    "Ctrl+Shift+3" = ''spawn:sh -c "grim -g \"$(slurp -w)\" - | wl-copy"'';
+    "Ctrl+Shift+3" = ''spawn sh -c "grim -g \"$(slurp -w)\" - | wl-copy"'';
 
     # niri's toggle-keyboard-shortcuts-inhibit equivalent: releases
     # shortcuts captured by a fullscreen game/remote-desktop client.
@@ -236,22 +254,22 @@ in
     # a named scratchpad disables the implicit "default", so every action
     # takes a ":name" suffix.
 
-    "Mod+Shift+Space" = ''spawn:sh -c "umbriel msg window-toggle-pinned; umbriel msg window-move-to-scratchpad:misc"'';
-    "Mod+Space" = "scratchpad-toggle:misc";
-    "Mod+Ctrl+Space" = "window-restore-from-scratchpad:misc";
-    "Mod+Alt+Space" = "scratchpad-focus-next:misc";
+    "Mod+Shift+Space" = ''spawn sh -c "umbriel msg window-toggle-pinned; umbriel msg window-move-to-scratchpad misc"'';
+    "Mod+Space" = "scratchpad-toggle misc";
+    "Mod+Ctrl+Space" = "window-restore-from-scratchpad misc";
+    "Mod+Alt+Space" = "scratchpad-focus-next misc";
 
     # "communication" (Discord+Telegram) and "music" (Spotify): *-toggle
     # shows/hides everything the rule assigned there. *-Shift-* uses
     # window-toggle-scratchpad (bidirectional on the focused window)
     # rather than the one-way window-restore-from-scratchpad, so a window
     # can also be sent back into the scratchpad.
-    "Mod+Alt+D" = "scratchpad-toggle:communication";
-    "Mod+Alt+Shift+D" = "window-toggle-scratchpad:communication";
-    "Mod+Ctrl+D" = "window-restore-from-scratchpad:communication";
-    "Mod+Alt+M" = "scratchpad-toggle:music";
-    "Mod+Alt+Shift+M" = "window-toggle-scratchpad:music";
-    "Mod+Ctrl+M" = "window-restore-from-scratchpad:music";
+    "Mod+Alt+D" = "scratchpad-toggle communication";
+    "Mod+Alt+Shift+D" = "window-toggle-scratchpad communication";
+    "Mod+Ctrl+D" = "window-restore-from-scratchpad communication";
+    "Mod+Alt+M" = "scratchpad-toggle music";
+    "Mod+Alt+Shift+M" = "window-toggle-scratchpad music";
+    "Mod+Ctrl+M" = "window-restore-from-scratchpad music";
   });
   };
 }

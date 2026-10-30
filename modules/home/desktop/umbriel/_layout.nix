@@ -6,8 +6,10 @@
 {
   programs.umbriel.settings = {
   layout = {
-    # layout.mode in a [[workspace]] rule accepts "scrolling", "dwindle" and
-    # "master" directly (docs.noctalia.dev/umbriel/workspaces/#available-fields).
+    # layout.mode in a [[workspace]] rule accepts "scrolling", "dwindle",
+    # "master" and "stacking" (the old "floating" layout, renamed in
+    # umbriel b95c1ae) directly
+    # (docs.noctalia.dev/umbriel/workspaces/#available-fields).
     # The global mode stays "scrolling"; chat/games get an explicit
     # layout.mode = "master" override per-workspace in _output.nix.
     mode = "scrolling";
@@ -26,6 +28,14 @@
     # kick a game out of fullscreen. Scrolling never exits fullscreen anyway.
     # Other values: "floating", "pinned", "all", or [ ] to disable.
     new_exits_fullscreen = [ "tiled" ];
+
+    # Edge/corner drop zones when dragging windows in a *stacking* workspace
+    # (umbriel b95c1ae; replaces `input.window_snapping`). Upstream turned
+    # them ON by default; false keeps the previous Roudix behaviour: a dragged
+    # window stays exactly where it is released. Only matters on workspaces
+    # whose layout.mode is "stacking". window-set-region / window-clear-region
+    # (see _binds.nix) still work with this off.
+    stacking.drop_zones = false;
 
     master = {
       position = "left";        # main column on the left, stack on the right
@@ -61,7 +71,13 @@
       # from the still-valid `layout.master.default_width_fraction` above).
       # Matches the packaged config's own default.
       default_extent_fraction = 0.5;
+      # Fractions may now go above 1.0 (up to 4.0, scrolling layout only): a
+      # column can span several outputs' worth of viewport (umbriel 5e241f5).
+      # extent_presets above accepts the same range.
       center_underfull_strip = true;
+      # Center the window picked in the overview, like column-center
+      # (umbriel 2ecfe10). Off by default, same as before.
+      center_on_overview_select = false;
       # `expand_single_column` still doesn't exist in the current docs —
       # confirmed gone, not just renamed. Left out.
       #

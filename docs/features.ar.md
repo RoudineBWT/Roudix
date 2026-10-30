@@ -6,7 +6,7 @@
 
 - نواة CachyOS مع تفعيل NTSync (وحدة `ntsync`)
 - مزوّدان للنواة، يُختاران تلقائيًا بحسب `hardware.myGpu`:
-  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)، 32 إصدارًا (`hardware.myKernel`)
+  - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)، 36 إصدارًا (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx، 4 إصدارات (`hardware.myKernelChaotic`) — يوفّر `nvidia_cachyos`، وهو تعريف مُجمَّع مسبقًا ومطابق لنواتهم، ولذلك لا تُعاد بناء وحدة Nvidia محليًا عند كل تحديث للنواة
 - يمكن أيضًا اختيار نوى nixpkgs العادية مع كلا المزوّدين، خارج طبقة CachyOS تمامًا — `zen` (`linuxPackages_zen`) و`nixpkgs-lts` و`nixpkgs-latest` و`nixpkgs-testing` (RC/mainline) و`xanmod-lts` / `xanmod-latest` (XanMod). على Nvidia تعود هذه النوى إلى وحدة Nvidia تُبنى محليًا (دون ذاكرة التخزين المؤقت `nvidia_cachyos`)
 - يأخذ `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) نوى nixpkgs هذه فقط من nixpkgs أحدث للحصول على تحديثات النواة أبكر، دون المساس ببقية النظام
@@ -42,7 +42,7 @@
 
 ## سطح المكتب (Niri)
 
-- Niri، مُركِّب Wayland بنظام تبليط قابل للتمرير — يُوفَّر عبر [niri-flake](https://github.com/epireyn/niri-flake) (epireyn)، ويستخدم `niri-unstable` افتراضيًا، مع ضبط ذاكرة التخزين المؤقت الثنائية `niri.cachix.org` مسبقًا
+- Niri، مُركِّب Wayland بنظام تبليط قابل للتمرير — يُوفَّر عبر [niri-flake](https://github.com/epireyn/niri-flake) (epireyn)، ويستخدم `niri-unstable` افتراضيًا، مع ضبط ذاكرة التخزين المؤقت الثنائية `niri-epireyn.cachix.org` مسبقًا
 - الإعداد أصيل في Nix (`programs.niri.settings`)، مقسَّم بحسب الموضوع (general وanimations وinput وlayout وoutputs وbinds وrules) ويُتحقق منه وقت البناء عبر `niri validate` — فالإعداد المعطوب يُفشل عملية البناء بدلًا من أن يفشل المُركِّب عند تسجيل الدخول
 - تُحفَظ مزامنة السمة الحية في Noctalia/DMS (ألوان مولَّدة من matugen/DMS، وalt-tab، والتمويه) بإلحاق `include` بالإعداد المولَّد بدلًا من تثبيتها بشكل ثابت
 - واجهة Noctalia (الإصدار 5) الحديثة
@@ -93,12 +93,12 @@
 - xdg-desktop-portal-hyprland + بوابة gtk
 - مؤشر Bibata Modern Ice (24 بكسل)
 - وكيل Polkit الخاص بـ GNOME (يبدأ عبر خدمة مستخدم في systemd)
-- خدمة خلفيات swww
+- خدمة خلفيات awww
 - لقطات الشاشة عبر grim + slurp + satty (للتعليق التوضيحي) — 3 اختصارات مفاتيح
 
 ## سطح المكتب (GNOME)
 
-- GNOME 50.x (يتبع فرع nixos-unstable)
+- GNOME (يتبع فرع nixos-unstable)
 - مجموعة منتقاة من الإضافات (blur وtiling وvitals وarcmenu...) — تُفعَّل عبر dconf
 - ArcMenu مع شعار Roudix كأيقونة لزر القائمة
 - إزالة البرمجيات الزائدة عبر `environment.gnome.excludePackages`
@@ -107,9 +107,9 @@
 - مؤشر Bibata Modern Ice (24 بكسل)
 - خلفية Roudix (فاتحة/داكنة بحسب سمة النظام)
 - يُطبَّق `color-scheme = prefer-dark` عبر dconf
-- إعدادات الإضافات (ArcMenu وDash to Dock وDash to Panel وBlur My Shell...) مضبوطة مسبقًا عبر `gnome-extensions.nix`
+- إعدادات الإضافات (ArcMenu وDash to Dock وDash to Panel وBlur My Shell...) مضبوطة مسبقًا عبر `modules/home/desktop/gnome/_extensions.nix`
 - أضف الإضافات أو أزلها دون تعديل الملفات الأساسية عبر `roudix.gnome.extraExtensions` / `roudix.gnome.disabledExtensions`
-- غيّر الخلفية والسمة والأيقونات والمؤشر في `home/local.nix`
+- غيّر الخلفية والسمة والأيقونات والمؤشر في `modules/home/local.nix`
 
 ## سطح المكتب (KDE)
 
@@ -121,7 +121,7 @@
 - خلفية Roudix Dark على شاشة تسجيل الدخول وسطح المكتب
 - حزم منتقاة: partitionmanager وkcalc وdigikam وvlc...
 - إزالة البرمجيات الزائدة (استبعاد Discover)
-- غيّر الخلفية واللوحات وسمة الأيقونات في `home/local.nix`
+- غيّر الخلفية واللوحات وسمة الأيقونات في `modules/home/local.nix`
 
 ## الموسيقى
 
@@ -180,7 +180,7 @@ input المسمى [betterbird-nix](https://github.com/TheAnachronism/betterbird
 ## المتصفح
 
 - قائمة متصفحات قابلة للضبط عبر الخيار `roudix.browsers`
-- يدعم `brave` و`helium` (عبر amaanq/helium-flake، ويتضمن رقعة DRM — يُوصَّل تشغيل Widevine تلقائيًا عبر `modules/home/apps/browser/helium-widevine.nix` عند اختيار `helium`) و`vivaldi` (مع ترميزات ffmpeg) و`firefox` و`librewolf` و`chromium`، أو `[]` لعدم تثبيت أي متصفح
+- يدعم `brave` و`helium` (عبر x13-me/helium-nix، ويتضمن رقعة DRM — يُوصَّل تشغيل Widevine تلقائيًا عبر `modules/home/apps/browser/helium-widevine.nix` عند اختيار `helium`) و`vivaldi` (مع ترميزات ffmpeg) و`firefox` و`librewolf` و`chromium`، أو `[]` لعدم تثبيت أي متصفح
 - Zen Browser متاح بشكل منفصل عبر `roudix.zen.enable = true` (معطّل افتراضيًا)؛ ويمكن اختيار القناة عبر `roudix.zen.variant` — `"twilight"` (الافتراضية) أو `"beta"`
 
 ## أخرى

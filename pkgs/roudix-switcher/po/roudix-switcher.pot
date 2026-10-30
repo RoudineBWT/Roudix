@@ -459,6 +459,26 @@ msgid "Every day"
 msgstr ""
 
 #: roudix-switcher.py
+msgid ""
+"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"keys)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Fedora kernel — nothing to enroll"
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-"
+"enroll-mok)"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
 msgstr ""
 
@@ -996,6 +1016,21 @@ msgstr ""
 msgid ""
 "Only useful with several screens of different sizes. If the firmware doesn't "
 "offer the resolution, Limine falls back to another one."
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Secure Boot and EAC (experimental)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "EAC kernel"
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"Create and enroll the sbctl keys before turning Secure Boot on in the "
+"firmware (docs/secure-boot-eac.md). Epic has not confirmed that EAC accepts "
+"this setup yet."
 msgstr ""
 
 #: roudix-switcher.py
