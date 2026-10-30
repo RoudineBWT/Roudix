@@ -73,7 +73,10 @@ def host_filter_items(items: list) -> list:
 
 LOG_DIR     = os.path.expanduser("~/.local/share/roudix-switcher")
 LOG_FILE    = os.path.join(LOG_DIR, "switcher.log")
-TMP_LOG     = "/tmp/roudix-switcher.log"
+# Not in /tmp: a predictable world-writable path lets another local user plant a
+# symlink there and make us truncate/overwrite one of our files. XDG_RUNTIME_DIR is
+# private to the user (0700); fall back to the per-user log dir.
+TMP_LOG = os.path.join(os.environ.get("XDG_RUNTIME_DIR") or LOG_DIR, "roudix-switcher.log")
 
 ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 

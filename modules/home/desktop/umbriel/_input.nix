@@ -35,11 +35,8 @@
       hover_raises = false;
     };
 
-    # Edge/corner drop zones for floating windows (umbriel d88d0bc turned it
-    # ON by default). Pinned to false to keep the previous behaviour: a
-    # dragged floating window stays exactly where it is released. Set to true
-    # to get half/quarter-screen snapping (see also window-snap in _binds.nix).
-    window_snapping = false;
+    # `input.window_snapping` is gone (umbriel b95c1ae): edge/corner drop zones
+    # are now `layout.stacking.drop_zones`, pinned to false in _layout.nix.
 
     # Edge scroll while dragging (umbriel #401): holding a window (Mod+drag
     # or tab bar) or a drag-and-drop near either end of a scrolling workspace

@@ -18,6 +18,16 @@
     # scaled outputs, games benefit most) but X11 apps that don't scale their
     # own UI look smaller. Needs a restart.
     # xwayland_native_resolution = true;
+    # Monitor published as the X11 *primary* (umbriel d1a09d4). Some X11 games
+    # and Wine apps list their resolutions from the primary monitor, whatever
+    # screen the window is on. Connector or monitor identity from
+    # `umbriel outputs`; empty (default) leaves it unmanaged. Host-specific,
+    # so set it in umbriel-custom.nix rather than here.
+    # xwayland_primary_output = "DP-1";
+    # NVIDIA only (umbriel c028006): outputs without explicit sync wait for the
+    # GPU before presenting. On by default upstream; turn it off if it causes
+    # stutter / dropped frames.
+    # nvidia_sync_workaround = false;
     show_cheatsheet = false; # niri: hotkey-overlay { skip-at-startup }
     focus_on_activate = false;
     # Apps like Steam/PrismLauncher that reopen already maximized stay

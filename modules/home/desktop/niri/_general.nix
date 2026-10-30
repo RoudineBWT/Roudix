@@ -18,13 +18,15 @@ in
     debug.honor-xdg-activation-with-invalid-serial = [ ];
 
     # Hot corner (top-left toggles the overview) — niri's equivalent of
-    # Umbriel's hot corner. ⚠ niri itself supports choosing a specific
-    # corner since 25.11 (gestures.hot-corners { top-right; }), but
-    # niri-flake's typed schema hasn't caught up yet: only a global
-    # `enable` switch exists for now (always top-left). To use a
-    # different corner, fall back to raw programs.niri.settings-config
-    # (KDL) until niri-flake exposes top-left/top-right/etc.
-    gestures.hot-corners.enable = true;
+    # Umbriel's hot corner. The niri-flake schema exposes the four corners
+    # as required booleans (no `enable` switch, no defaults): all four
+    # must be set explicitly.
+    gestures.hot-corners = {
+      top-left = true;
+      top-right = false;
+      bottom-left = false;
+      bottom-right = false;
+    };
 
     environment = {
       LD_PRELOAD = "";

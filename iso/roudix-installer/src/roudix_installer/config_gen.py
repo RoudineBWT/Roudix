@@ -10,7 +10,7 @@ from pathlib import Path
 
 from roudix_installer.hardware_detect import detect_prime_bus_ids
 from roudix_installer.host_profile import FIXED, restore_fixed_lines
-from roudix_installer.state import InstallState
+from roudix_installer.state import InstallState, valid_hostname, valid_username
 
 
 def _sub_string(text: str, key: str, value: str) -> str:
@@ -322,12 +322,21 @@ def verify_local_nix(state: InstallState, example_text: str, result_text: str) -
     return missing
 
 
+def check_identity(state: InstallState) -> None:
+    """Refuse a username/hostname that could inject Nix code, shell or a path."""
+    if not valid_username(state.username):
+        raise ValueError(f"Invalid username: {state.username!r}")
+    if not valid_hostname(state.hostname):
+        raise ValueError(f"Invalid hostname: {state.hostname!r}")
+
+
 def write_config(state: InstallState, config_root: Path):
     """
     config_root is the already-copied /iso-cfg tree (== /mnt/etc/nixos).
     Mirrors: username.nix, local.nix from example + sed, home/local.nix
     copied verbatim, boot.local.nix copied verbatim (EFI detection TODO).
     """
+    check_identity(state)
     hosts_dir = config_root / "hosts" / state.hostname
     home_dir = config_root / "modules" / "home"
     boot_local = config_root / "modules" / "system" / "boot" / "boot.local.nix"

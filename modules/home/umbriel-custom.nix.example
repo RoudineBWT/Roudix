@@ -11,10 +11,10 @@
   # programs.umbriel.settings.output."DP-1".mode = lib.mkForce "3840x2160@144";
 
   # -- Remap an existing bind -----------------------------------------------
-  # programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn:some-command";
+  # programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn some-command";
 
   # -- Add a bind that doesn't exist yet --------------------------------
-  # programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn:pavucontrol";
+  # programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn pavucontrol";
 
   # -- Add an extra window rule -----------------------------------------------
   # programs.umbriel.settings.window_rule = [
@@ -22,10 +22,32 @@
   # ];
 
   # -- Window behaviour (umbriel 2026-10-25) --------------------------------
-  # Roudix pins window_snapping = false and hover_raises = false (see
-  # _input.nix); flip them back with lib.mkForce.
-  # programs.umbriel.settings.input.window_snapping = lib.mkForce true;
+  # Roudix pins hover_raises = false (see
+  # _input.nix); flip it back with lib.mkForce.
   # programs.umbriel.settings.input.focus.hover_raises = lib.mkForce true;
+  # Edge/corner drop zones when dragging in a stacking workspace (umbriel
+  # b95c1ae, replaces input.window_snapping; Roudix pins it to false):
+  # programs.umbriel.settings.layout.stacking.drop_zones = lib.mkForce true;
+
+  # -- Xwayland / NVIDIA (umbriel d1a09d4, c028006) ---------------------------
+  # X11 primary monitor for games / Wine that read resolutions from it
+  # (connector or monitor identity from `umbriel outputs`):
+  # programs.umbriel.settings.general.xwayland_primary_output = "DP-1";
+  # NVIDIA sync workaround is on upstream; disable if it stutters:
+  # programs.umbriel.settings.general.nvidia_sync_workaround = false;
+
+  # -- Wide scrolling columns (umbriel 5e241f5) -------------------------------
+  # Column extents go up to 4.0 (above 1.0 spans several viewports), e.g.
+  # a column across two monitors-worth of width:
+  # programs.umbriel.settings.keybinds."Mod+Alt+W" = "window-set-primary-extent 2.0";
+  # (extent_presets and default_extent_fraction accept the same range.)
+
+  # -- Per-window shortcut inhibition (umbriel 155665c) -----------------------
+  # Roudix already disables client shortcut grabs for virt-manager / virt-viewer.
+  # Add other apps the same way:
+  # programs.umbriel.settings.window_rule = [
+  #   { match.app_id = "^my-vm-app$"; allow_shortcuts_inhibit = false; }
+  # ];
 
   # -- Server-side title bar (umbriel e3534ac, off by default) ----------------
   # mode: "off" | "negotiated" | "on" | "forced". Colors live under

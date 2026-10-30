@@ -49,6 +49,13 @@ in
   ];
 
   window_rule = [
+    # Keep compositor shortcuts (Mod+...) working inside VM / remote-desktop
+    # windows that would otherwise grab the keyboard (umbriel 155665c).
+    # Mod+Ctrl+Shift+Escape still toggles passthrough by hand.
+    {
+      match.app_id = "^(virt-manager|virt-viewer|remote-viewer)$";
+      allow_shortcuts_inhibit = false;
+    }
     # Discord / Element: Umbriel has no "fixed-width tiled" equivalent
     # (default_width only accepts a fraction), so these are floating to
     # match the original niri size/position exactly.
