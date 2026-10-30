@@ -7,6 +7,8 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 
 ## [Unreleased]
 
+## [2026.10.30] - 2026-10-30
+
 ### Added
 - Umbriel (synced with upstream up to `55655e4`): `Mod+Ctrl+Alt+Left/Right/Up/Down` place the focused stacking window in a half of the screen and `Mod+Ctrl+Alt+C` restores it (`window-set-region` / `window-clear-region`, which replace `window-snap`); `virt-manager`, `virt-viewer` and `remote-viewer` no longer grab compositor shortcuts (`allow_shortcuts_inhibit = false`). `modules/home/umbriel-custom.nix.example` and `_general.nix` document `xwayland_primary_output`, `nvidia_sync_workaround` and scrolling columns wider than the output (extents up to `4.0`).
 - Secure Boot / EAC options in the GTK installer, `roudix-installer.sh` and `roudix-switcher` (Limine only, off by default; the installer creates the sbctl keys, enrolling them in the firmware stays manual), translated into all supported languages.
