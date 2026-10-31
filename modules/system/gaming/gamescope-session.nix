@@ -19,7 +19,7 @@ let
     umbriel = {
       env   = "XDG_CURRENT_DESKTOP=Umbriel XDG_SESSION_DESKTOP=umbriel DESKTOP_SESSION=umbriel";
       start = "/run/current-system/sw/bin/start-umbriel";
-      quit  = "/run/current-system/sw/bin/umbriel msg session-quit:skip-confirmation";
+      quit  = "/run/current-system/sw/bin/umbriel msg session-quit skip-confirmation";
     };
     gnome = {
       env   = "XDG_CURRENT_DESKTOP=GNOME XDG_SESSION_DESKTOP=gnome DESKTOP_SESSION=gnome";
