@@ -38,7 +38,7 @@ Wayland कंपोज़िटर (Niri, Hyprland, MangoWC) के लिए �
 | मान | शेल | Hyprland |
 |-----|-----|----------|
 | `noctalia` | Noctalia | `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `dms` | Dux Shell | `dotfiles/hyprland/` |
 | `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
 **नोट:** Caelestia सिर्फ़ Hyprland पर उपलब्ध है। शेल को `ROUDIX_HYPR_SHELL` के ज़रिए सेशन में इंजेक्ट किया जाता है, इसलिए अलग-अलग `hyprland-dms/` या `hyprland-caelestia/` ट्री नहीं हैं जिन्हें सिंक रखना पड़े।
@@ -83,7 +83,7 @@ Niri, MangoWC और Umbriel हमेशा अपने ही flake से �
 
 ```nix
 roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
-roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.dms       = true;  # Dux Shell (+ dms-greeter)
 roudix.desktop.latest.caelestia = true;  # Caelestia (DMS greeter इसके साथ चलता है)
 ```
 

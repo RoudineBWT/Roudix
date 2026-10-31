@@ -17,7 +17,7 @@
 | <img src="assets/screenshot/preview-slideshow.webp" alt="Apresentação do Roudix: Umbriel, GNOME e KDE Plasma" width="900"/> |
 
 <sub>Personalização pessoal — a sua ficará diferente dependendo da sua configuração 👀</sub><br/>
-<sub>Os compositores Wayland ficam por sua conta para personalizar: o Roudix só inclui a configuração padrão do Noctalia, do DankMaterialShell e (somente Hyprland) do Caelestia.</sub>
+<sub>Os compositores Wayland ficam por sua conta para personalizar: o Roudix só inclui a configuração padrão do Noctalia, do Dux Shell e (somente Hyprland) do Caelestia.</sub>
 
 </div>
 
@@ -40,7 +40,7 @@
 | Kernel | CachyOS (escolha sua variante em [Funcionalidades](docs/features.md) ou em [Instalação](docs/installation.pt_BR.md)) |
 | Bootloader | Limine (padrão) · systemd-boot |
 | Compositor | Niri (tiling com rolagem) · Hyprland (tiling dinâmico) · MangoWC · Umbriel (tiling com rolagem, nativo do Noctalia) |
-| Shell gráfico | Noctalia · DankMaterialShell · Caelestia |
+| Shell gráfico | Noctalia · Dux Shell · Caelestia |
 | Ambiente de desktop | KDE Plasma · Gnome |
 | Gerenciador de login | DMS Greeter (somente Dms) · Noctalia Greeter (somente noctalia) · plasma-login-manager (somente KDE) · GDM (somente Gnome) |
 | Terminal | Configurable (Ghossty, Kitty, Foot, Wzertem, Konsole, Ptyxis) |
@@ -217,7 +217,7 @@ roudix/
 | noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | umbriel | [noctalia-dev/umbriel](https://github.com/noctalia-dev/umbriel) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
-| dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
+| dms | [duxlabs-dev/dux-shell](https://github.com/duxlabs-dev/dux-shell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
 | chaotic | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx) |
 | zen-browser | [0xc000022070/zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) |

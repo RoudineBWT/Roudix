@@ -38,7 +38,7 @@ Nos compositores Wayland (Niri, Hyprland, MangoWC), você pode trocar a pilha de
 | Valor | Shell | Hyprland |
 |-------|-------|----------|
 | `noctalia` | Noctalia | `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `dms` | Dux Shell | `dotfiles/hyprland/` |
 | `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
 **Nota:** o Caelestia só está disponível no Hyprland. O shell é injetado na sessão por meio de `ROUDIX_HYPR_SHELL`, portanto não há árvores `hyprland-dms/` ou `hyprland-caelestia/` separadas para manter sincronizadas.
@@ -83,7 +83,7 @@ Niri, MangoWC e Umbriel vêm sempre do próprio flake. Para o shell (e o greeter
 
 ```nix
 roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
-roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.dms       = true;  # Dux Shell (+ dms-greeter)
 roudix.desktop.latest.caelestia = true;  # Caelestia (o greeter do DMS o acompanha)
 ```
 

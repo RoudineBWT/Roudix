@@ -56,7 +56,7 @@
 ## डेस्कटॉप (MangoWC)
 
 - MangoWC Wayland कंपोज़िटर
-- Noctalia / DankMaterialShell
+- Noctalia / Dux Shell
 - xdg-desktop-portal-gtk
 - Bibata Modern Ice कर्सर (24 px)
 - GNOME Polkit एजेंट

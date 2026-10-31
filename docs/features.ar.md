@@ -56,7 +56,7 @@
 ## سطح المكتب (MangoWC)
 
 - مُركِّب Wayland من نوع MangoWC
-- Noctalia / DankMaterialShell
+- Noctalia / Dux Shell
 - xdg-desktop-portal-gtk
 - مؤشر Bibata Modern Ice (24 بكسل)
 - وكيل Polkit الخاص بـ GNOME

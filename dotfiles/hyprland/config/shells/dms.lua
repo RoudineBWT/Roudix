@@ -1,4 +1,4 @@
--- DankMaterialShell integration for Roudix Hyprland.
+-- Dux Shell integration for Roudix Hyprland.
 local dms = "dms "
 
 hl.bind("SUPER + SHIFT + Escape", hl.dsp.exec_cmd(dms .. "ipc call keybinds toggle hyprland"), { description = "Open keybind cheatsheet" })

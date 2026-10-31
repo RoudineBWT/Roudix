@@ -17,7 +17,7 @@
   # Only used when roudix.desktop.type = "niri" or "hyprland"
   # Controls which shell/bar stack is enabled for the chosen compositor.
   #   "noctalia"  — Noctalia shell   (github:noctalia-dev/noctalia-shell)
-  #   "dms"       — DankMaterialShell (github:AvengeMedia/DankMaterialShell)
+  #   "dms"       — Dux Shell (github:duxlabs-dev/dux-shell)
   #   "caelestia" — Caelestia shell  (github:caelestia-dots/shell)
   roudix.desktop.shell = "noctalia";
 

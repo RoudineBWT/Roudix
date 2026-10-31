@@ -17,7 +17,7 @@
 | <img src="assets/screenshot/preview-slideshow.webp" alt="Presentación de Roudix: Umbriel, GNOME y KDE Plasma" width="900"/> |
 
 <sub>Personalización propia — la tuya se verá distinta según tu configuración 👀</sub><br/>
-<sub>Los compositores Wayland quedan a tu criterio para personalizarlos: Roudix solo incluye la configuración por defecto de Noctalia, DankMaterialShell y (solo Hyprland) Caelestia.</sub>
+<sub>Los compositores Wayland quedan a tu criterio para personalizarlos: Roudix solo incluye la configuración por defecto de Noctalia, Dux Shell y (solo Hyprland) Caelestia.</sub>
 
 </div>
 
@@ -40,7 +40,7 @@
 | Kernel | CachyOS (elige tu variante en [Funcionalidades](docs/features.md) o en [Instalación](docs/installation.es.md)) |
 | Bootloader | Limine (por defecto) · systemd-boot |
 | Compositor | Niri (mosaico con desplazamiento) · Hyprland (mosaico dinámico) · MangoWC · Umbriel (mosaico con desplazamiento, nativo de Noctalia) |
-| Shell gráfico | Noctalia · DankMaterialShell · Caelestia |
+| Shell gráfico | Noctalia · Dux Shell · Caelestia |
 | Entorno de escritorio | KDE Plasma · Gnome |
 | Gestor de inicio de sesión | DMS Greeter (solo Dms) · Noctalia Greeter (solo noctalia) · plasma-login-manager (solo KDE) · GDM (solo Gnome) |
 | Terminal | Configurable (Ghossty, Kitty, Foot, Wzertem, Konsole, Ptyxis) |
@@ -217,7 +217,7 @@ roudix/
 | noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | umbriel | [noctalia-dev/umbriel](https://github.com/noctalia-dev/umbriel) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
-| dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
+| dms | [duxlabs-dev/dux-shell](https://github.com/duxlabs-dev/dux-shell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
 | chaotic | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx) |
 | zen-browser | [0xc000022070/zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) |

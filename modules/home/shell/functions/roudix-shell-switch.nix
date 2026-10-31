@@ -8,7 +8,7 @@
       echo ""
       echo "Available graphical shells:"
       echo "  noctalia  — Roudix default shell"
-      echo "  dms       — DankMaterialShell"
+      echo "  dms       — Dux Shell"
       ${lib.optionalString onHyprland ''echo "  caelestia  — Caelestia shell"''}
       return 1
     end
@@ -40,7 +40,7 @@
         echo ""
         echo "Available graphical shells:"
         echo "  noctalia  — Roudix default shell"
-        echo "  dms       — DankMaterialShell"
+        echo "  dms       — Dux Shell"
         ${lib.optionalString onHyprland ''echo "  caelestia  — Caelestia shell"''}
         return 1
       fi

@@ -1,4 +1,4 @@
-## _binds-dms.nix — niri: [binds], DankMaterialShell (DMS) variant.
+## _binds-dms.nix — niri: [binds], Dux Shell (DMS) variant.
 ##
 ## Same note as the noctalia variant on action syntax.
 { ... }:

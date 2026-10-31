@@ -56,7 +56,7 @@
 ## Рабочий стол (MangoWC)
 
 - Композитор Wayland MangoWC
-- Noctalia / DankMaterialShell
+- Noctalia / Dux Shell
 - xdg-desktop-portal-gtk
 - Курсор Bibata Modern Ice (24 px)
 - Агент Polkit от GNOME

@@ -38,7 +38,7 @@ For Wayland compositors (Niri, Hyprland, MangoWC), you can switch the shell/bar 
 | Value | Shell | Hyprland |
 |-------|-------|----------|
 | `noctalia` | Noctalia | `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `dms` | Dux Shell | `dotfiles/hyprland/` |
 | `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
 **Note:** Caelestia is only available on Hyprland. The shell is injected into the session through `ROUDIX_HYPR_SHELL`, so there are no separate `hyprland-dms/` or `hyprland-caelestia/` trees to keep in sync.
@@ -84,7 +84,7 @@ Niri, MangoWC and Umbriel always come from their own flake. For the shell (and t
 
 ```nix
 roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
-roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.dms       = true;  # Dux Shell (+ dms-greeter)
 roudix.desktop.latest.caelestia = true;  # Caelestia (the DMS greeter follows it)
 ```
 

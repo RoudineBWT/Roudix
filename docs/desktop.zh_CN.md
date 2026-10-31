@@ -38,7 +38,7 @@ roudix-switch kde
 | 取值 | Shell | Hyprland |
 |------|-------|----------|
 | `noctalia` | Noctalia | `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `dms` | Dux Shell | `dotfiles/hyprland/` |
 | `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
 **注意：** Caelestia 仅在 Hyprland 上可用。Shell 通过 `ROUDIX_HYPR_SHELL` 注入会话，因此不存在需要保持同步的独立 `hyprland-dms/` 或 `hyprland-caelestia/` 目录树。
@@ -83,7 +83,7 @@ Niri、MangoWC 和 Umbriel 始终来自各自的 flake。对于 Shell（以及�
 
 ```nix
 roudix.desktop.latest.noctalia  = true;  # Noctalia（+ noctalia-greeter）
-roudix.desktop.latest.dms       = true;  # DankMaterialShell（+ dms-greeter）
+roudix.desktop.latest.dms       = true;  # Dux Shell（+ dms-greeter）
 roudix.desktop.latest.caelestia = true;  # Caelestia（DMS greeter 跟随它）
 ```
 

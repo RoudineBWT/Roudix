@@ -56,7 +56,7 @@
 ## Escritorio (MangoWC)
 
 - MangoWC, compositor Wayland
-- Noctalia / DankMaterialShell
+- Noctalia / Dux Shell
 - xdg-desktop-portal-gtk
 - Cursor Bibata Modern Ice (24 px)
 - Agente Polkit de GNOME

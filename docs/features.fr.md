@@ -58,7 +58,7 @@
 ## Bureau (MangoWC)
 
 - Compositeur Wayland MangoWC
-- Noctalia / DankMaterialShell
+- Noctalia / Dux Shell
 - xdg-desktop-portal-gtk
 - Curseur Bibata Modern Ice (24 px)
 - Agent Polkit GNOME

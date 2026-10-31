@@ -757,11 +757,11 @@ DESKTOP_SHELL="noctalia"
 if [[ "$DE" == "niri" || "$DE" == "mangowc" ]]; then
   pick "Desktop shell (bar/UI stack):" DESKTOP_SHELL \
     "noctalia|Noctalia — default Roudix shell" \
-    "dms|DankMaterialShell — Material 3 design"
+    "dms|Dux Shell — Material 3 design"
 elif [[ "$DE" == "hyprland" ]]; then
   pick "Desktop shell (bar/UI stack):" DESKTOP_SHELL \
     "noctalia|Noctalia — default Roudix shell" \
-    "dms|DankMaterialShell — Material 3 design" \
+    "dms|Dux Shell — Material 3 design" \
     "caelestia|Caelestia — aesthetic Quickshell setup"
 fi
 

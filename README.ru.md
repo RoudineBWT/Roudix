@@ -17,7 +17,7 @@
 | <img src="assets/screenshot/preview-slideshow.webp" alt="Слайд-шоу Roudix: Umbriel, GNOME и KDE Plasma" width="900"/> |
 
 <sub>Личная настройка — у вас всё будет выглядеть иначе, в зависимости от вашей конфигурации 👀</sub><br/>
-<sub>Настройка Wayland-композиторов остаётся за вами: Roudix поставляет только конфигурацию по умолчанию для Noctalia, DankMaterialShell и (только Hyprland) Caelestia.</sub>
+<sub>Настройка Wayland-композиторов остаётся за вами: Roudix поставляет только конфигурацию по умолчанию для Noctalia, Dux Shell и (только Hyprland) Caelestia.</sub>
 
 </div>
 
@@ -40,7 +40,7 @@
 | Kernel | CachyOS (выберите вариант ядра в разделе [Возможности](docs/features.md) или [Установка](docs/installation.ru.md)) |
 | Bootloader | Limine (по умолчанию) · systemd-boot |
 | Compositor | Niri (прокручиваемая мозаика) · Hyprland (динамическая мозаика) · MangoWC · Umbriel (прокручиваемая мозаика, нативный для Noctalia) |
-| Графическая оболочка | Noctalia · DankMaterialShell · Caelestia |
+| Графическая оболочка | Noctalia · Dux Shell · Caelestia |
 | Окружение рабочего стола | KDE Plasma · Gnome |
 | Менеджер входа | DMS Greeter (только Dms) · Noctalia Greeter (только noctalia) · plasma-login-manager (только KDE) · GDM (только Gnome) |
 | Терминал | Настраивается (Ghossty, Kitty, Foot, Wzertem, Konsole, Ptyxis) |
@@ -217,7 +217,7 @@ roudix/
 | noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | umbriel | [noctalia-dev/umbriel](https://github.com/noctalia-dev/umbriel) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
-| dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
+| dms | [duxlabs-dev/dux-shell](https://github.com/duxlabs-dev/dux-shell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
 | chaotic | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx) |
 | zen-browser | [0xc000022070/zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) |

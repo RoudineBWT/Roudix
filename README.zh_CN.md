@@ -17,7 +17,7 @@
 | <img src="assets/screenshot/preview-slideshow.webp" alt="Roudix 预览幻灯片：Umbriel、GNOME 和 KDE Plasma" width="900"/> |
 
 <sub>个人定制 — 你的外观会因配置而异 👀</sub><br/>
-<sub>Wayland 合成器留给你自行定制：Roudix 只提供 Noctalia、DankMaterialShell 以及（仅 Hyprland）Caelestia 的默认配置。</sub>
+<sub>Wayland 合成器留给你自行定制：Roudix 只提供 Noctalia、Dux Shell 以及（仅 Hyprland）Caelestia 的默认配置。</sub>
 
 </div>
 
@@ -40,7 +40,7 @@
 | Kernel | CachyOS (内核变体请参见[功能](docs/features.md)或[安装](docs/installation.zh_CN.md)) |
 | Bootloader | Limine（默认） · systemd-boot |
 | Compositor | Niri （可滚动平铺） · Hyprland （动态平铺） · MangoWC · Umbriel （可滚动平铺，Noctalia 原生） |
-| 图形 shell | Noctalia · DankMaterialShell · Caelestia |
+| 图形 shell | Noctalia · Dux Shell · Caelestia |
 | 桌面环境 | KDE Plasma · Gnome |
 | 显示管理器 | DMS Greeter （仅 Dms） · Noctalia Greeter （仅 noctalia） · plasma-login-manager （仅 KDE） · GDM （仅 Gnome） |
 | 终端 | 可配置 (Ghossty, Kitty, Foot, Wzertem, Konsole, Ptyxis) |
@@ -217,7 +217,7 @@ roudix/
 | noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | umbriel | [noctalia-dev/umbriel](https://github.com/noctalia-dev/umbriel) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
-| dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
+| dms | [duxlabs-dev/dux-shell](https://github.com/duxlabs-dev/dux-shell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
 | chaotic | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx) |
 | zen-browser | [0xc000022070/zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) |

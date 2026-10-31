@@ -17,7 +17,7 @@
 | <img src="assets/screenshot/preview-slideshow.webp" alt="Diaporama d'aperçu de Roudix : Umbriel, GNOME et KDE Plasma" width="900"/> |
 
 <sub>Personnalisation perso — la vôtre sera différente selon votre configuration 👀</sub><br/>
-<sub>Les compositeurs Wayland sont laissés à votre personnalisation : Roudix ne fournit que la config par défaut de Noctalia, DankMaterialShell et (Hyprland uniquement) Caelestia.</sub>
+<sub>Les compositeurs Wayland sont laissés à votre personnalisation : Roudix ne fournit que la config par défaut de Noctalia, Dux Shell et (Hyprland uniquement) Caelestia.</sub>
 
 </div>
 
@@ -40,7 +40,7 @@
 | Kernel | CachyOS (choisissez votre variante dans [Fonctionnalités](docs/features.fr.md) ou dans [Installation](docs/installation.fr.md)) |
 | Bootloader | Limine (par défaut) · systemd-boot |
 | Compositeur | Niri (tiling scrollable) · Hyprland (tiling dynamique) · MangoWC · Umbriel (tiling scrollable, natif Noctalia) |
-| Shell graphique | Noctalia · DankMaterialShell · Caelestia |
+| Shell graphique | Noctalia · Dux Shell · Caelestia |
 | Environnement de bureau | KDE Plasma · GNOME · Cinnamon · COSMIC |
 | Gestionnaire de connexion | Noctalia Greeter (Noctalia) · DMS Greeter (DMS) · Ly (Hyprland/MangoWC sans Noctalia) · plasma-login-manager (KDE) · GDM (GNOME) · LightDM (Cinnamon) · cosmic-greeter (COSMIC) |
 | Terminal | Configurable (Ghostty, Kitty, Alacritty, Foot, WezTerm, Konsole, Ptyxis) |
@@ -153,7 +153,7 @@ roudix/
 | noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | umbriel | [noctalia-dev/umbriel](https://github.com/noctalia-dev/umbriel) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
-| dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
+| dms | [duxlabs-dev/dux-shell](https://github.com/duxlabs-dev/dux-shell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
 | chaotic | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx) |
 | zen-browser | [0xc000022070/zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) |
@@ -169,7 +169,7 @@ roudix/
 | nixpkgs-master / nixpkgs-staging-next | [NixOS/nixpkgs](https://github.com/NixOS/nixpkgs) — uniquement pour les kernels nixpkgs (`hardware.myKernelSource`) |
 | mango | [mangowm/mango](https://github.com/mangowm/mango) |
 | noctalia-greeter | [noctalia-dev/noctalia-greeter](https://github.com/noctalia-dev/noctalia-greeter) |
-| dank-greeter | [AvengeMedia/dank-greeter](https://github.com/AvengeMedia/dank-greeter) |
+| dank-greeter | [duxlabs-dev/dux-greeter](https://github.com/duxlabs-dev/dux-greeter) |
 | jovian | [Jovian-Experiments/Jovian-NixOS](https://github.com/Jovian-Experiments/Jovian-NixOS) — Decky Loader uniquement |
 | nixos-appstream-data | [vlinkz/nixos-appstream-data](https://github.com/vlinkz/nixos-appstream-data) — catalogue du Roudix Store |
 | sonora | [sonorahq/sonora](https://github.com/sonorahq/sonora) |
