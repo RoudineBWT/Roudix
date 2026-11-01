@@ -56,7 +56,7 @@
 ## 桌面（MangoWC）
 
 - MangoWC Wayland 合成器
-- Noctalia / DankMaterialShell
+- Noctalia / Dux Shell
 - xdg-desktop-portal-gtk
 - Bibata Modern Ice 光标（24 px）
 - GNOME Polkit 代理

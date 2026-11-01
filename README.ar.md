@@ -17,7 +17,7 @@
 | <img src="assets/screenshot/preview-slideshow.webp" alt="عرض شرائح لمعاينة Roudix: Umbriel وGNOME وKDE Plasma" width="900"/> |
 
 <sub>تخصيص شخصي — سيبدو إعدادك مختلفًا بحسب تهيئتك 👀</sub><br/>
-<sub>مُركِّبات Wayland متروكة لك لتخصيصها: يوفّر Roudix فقط الإعدادات الافتراضية لـ Noctalia وDankMaterialShell و(لـ Hyprland فقط) Caelestia.</sub>
+<sub>مُركِّبات Wayland متروكة لك لتخصيصها: يوفّر Roudix فقط الإعدادات الافتراضية لـ Noctalia وDux Shell و(لـ Hyprland فقط) Caelestia.</sub>
 
 </div>
 
@@ -40,7 +40,7 @@
 | Kernel | CachyOS (اختر نسخة النواة من [الميزات](docs/features.md) أو [التثبيت](docs/installation.ar.md)) |
 | Bootloader | Limine (افتراضي) · systemd-boot |
 | Compositor | Niri (تبليط قابل للتمرير) · Hyprland (تبليط ديناميكي) · MangoWC · Umbriel (تبليط قابل للتمرير، أصلي في Noctalia) |
-| الواجهة الرسومية (shell) | Noctalia · DankMaterialShell · Caelestia |
+| الواجهة الرسومية (shell) | Noctalia · Dux Shell · Caelestia |
 | بيئة سطح المكتب | KDE Plasma · Gnome |
 | مدير تسجيل الدخول | DMS Greeter (Dms فقط) · Noctalia Greeter (noctalia فقط) · plasma-login-manager (KDE فقط) · GDM (Gnome فقط) |
 | الطرفية | قابل للضبط (Ghossty, Kitty, Foot, Wzertem, Konsole, Ptyxis) |
@@ -217,7 +217,7 @@ roudix/
 | noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | umbriel | [noctalia-dev/umbriel](https://github.com/noctalia-dev/umbriel) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
-| dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
+| dms | [duxlabs-dev/dux-shell](https://github.com/duxlabs-dev/dux-shell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
 | chaotic | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx) |
 | zen-browser | [0xc000022070/zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) |

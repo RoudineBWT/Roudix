@@ -38,7 +38,7 @@ roudix-switch kde
 | القيمة | الصدفة | Hyprland |
 |--------|--------|----------|
 | `noctalia` | Noctalia | `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `dms` | Dux Shell | `dotfiles/hyprland/` |
 | `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
 **ملاحظة:** Caelestia متاحة على Hyprland فقط. تُحقَن الصدفة في الجلسة عبر `ROUDIX_HYPR_SHELL`، لذا لا توجد أشجار منفصلة `hyprland-dms/` أو `hyprland-caelestia/` تحتاج إلى إبقائها متزامنة.
@@ -83,7 +83,7 @@ roudix-shell-switch dms
 
 ```nix
 roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
-roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.dms       = true;  # Dux Shell (+ dms-greeter)
 roudix.desktop.latest.caelestia = true;  # Caelestia (يتبعها greeter الخاص بـ DMS)
 ```
 

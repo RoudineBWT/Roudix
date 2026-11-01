@@ -58,7 +58,7 @@
 ## Desktop (MangoWC)
 
 - MangoWC Wayland compositor
-- Noctalia / DankMaterialShell
+- Noctalia / Dux Shell
 - xdg-desktop-portal-gtk
 - Bibata Modern Ice cursor (24 px)
 - GNOME Polkit agent

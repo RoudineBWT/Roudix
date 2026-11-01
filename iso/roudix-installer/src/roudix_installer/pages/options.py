@@ -124,7 +124,7 @@ def _shells(desktop=None):
 
     base = [
         ("noctalia", tr("Noctalia — default shell")),
-        ("dms", "DankMaterialShell — Material 3"),
+        ("dms", "Dux Shell — Material 3"),
     ]
     if desktop == "hyprland":
         base = base + [

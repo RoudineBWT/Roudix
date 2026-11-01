@@ -38,7 +38,7 @@ roudix-switch kde
 | Значение | Оболочка | Hyprland |
 |----------|----------|----------|
 | `noctalia` | Noctalia | `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `dms` | Dux Shell | `dotfiles/hyprland/` |
 | `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
 **Примечание:** Caelestia доступна только в Hyprland. Оболочка передаётся в сессию через `ROUDIX_HYPR_SHELL`, поэтому отдельных деревьев `hyprland-dms/` и `hyprland-caelestia/`, которые нужно синхронизировать, нет.
@@ -83,7 +83,7 @@ Niri, MangoWC и Umbriel всегда берутся из собственног
 
 ```nix
 roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
-roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.dms       = true;  # Dux Shell (+ dms-greeter)
 roudix.desktop.latest.caelestia = true;  # Caelestia (greeter DMS следует за ней)
 ```
 

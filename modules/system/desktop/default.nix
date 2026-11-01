@@ -77,7 +77,7 @@ in
     mangowc   = deprecated;
     umbriel   = deprecated;
     noctalia  = mkLatest "Noctalia (and its greeter)";
-    dms       = mkLatest "DankMaterialShell (and its greeter)";
+    dms       = mkLatest "Dux Shell (and its greeter)";
     caelestia = mkLatest "Caelestia (and the DMS greeter it uses)";
   };
 

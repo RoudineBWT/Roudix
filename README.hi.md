@@ -17,7 +17,7 @@
 | <img src="assets/screenshot/preview-slideshow.webp" alt="Roudix का पूर्वावलोकन स्लाइडशो: Umbriel, GNOME और KDE Plasma" width="900"/> |
 
 <sub>निजी कस्टमाइज़ेशन — आपके सेटअप के अनुसार आपका रूप अलग दिखेगा 👀</sub><br/>
-<sub>Wayland कंपोज़िटर को कस्टमाइज़ करना आप पर छोड़ा गया है: Roudix केवल Noctalia, DankMaterialShell और (केवल Hyprland के लिए) Caelestia का डिफ़ॉल्ट कॉन्फ़िग देता है।</sub>
+<sub>Wayland कंपोज़िटर को कस्टमाइज़ करना आप पर छोड़ा गया है: Roudix केवल Noctalia, Dux Shell और (केवल Hyprland के लिए) Caelestia का डिफ़ॉल्ट कॉन्फ़िग देता है।</sub>
 
 </div>
 
@@ -40,7 +40,7 @@
 | Kernel | CachyOS (कर्नेल वैरिएंट [सुविधाएँ](docs/features.md) या [इंस्टॉलेशन](docs/installation.hi.md) में देखें) |
 | Bootloader | Limine (डिफ़ॉल्ट) · systemd-boot |
 | Compositor | Niri (स्क्रोल होने वाली टाइलिंग) · Hyprland (डायनामिक टाइलिंग) · MangoWC · Umbriel (स्क्रोल होने वाली टाइलिंग, Noctalia-नेटिव) |
-| ग्राफ़िकल शेल | Noctalia · DankMaterialShell · Caelestia |
+| ग्राफ़िकल शेल | Noctalia · Dux Shell · Caelestia |
 | डेस्कटॉप एनवायरनमेंट | KDE Plasma · Gnome |
 | डिस्प्ले मैनेजर | DMS Greeter (केवल Dms) · Noctalia Greeter (केवल noctalia) · plasma-login-manager (केवल KDE) · GDM (केवल Gnome) |
 | टर्मिनल | कॉन्फ़िगर करने योग्य (Ghossty, Kitty, Foot, Wzertem, Konsole, Ptyxis) |
@@ -217,7 +217,7 @@ roudix/
 | noctalia | [noctalia-dev/noctalia](https://github.com/noctalia-dev/noctalia) |
 | umbriel | [noctalia-dev/umbriel](https://github.com/noctalia-dev/umbriel) |
 | caelestia-shell | [caelestia-dots/shell](https://github.com/caelestia-dots/shell) |
-| dms | [AvengeMedia/DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) |
+| dms | [duxlabs-dev/dux-shell](https://github.com/duxlabs-dev/dux-shell) |
 | nix-cachyos-kernel | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel) |
 | chaotic | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx) |
 | zen-browser | [0xc000022070/zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) |
