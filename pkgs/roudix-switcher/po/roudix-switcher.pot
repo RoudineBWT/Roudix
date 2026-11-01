@@ -459,6 +459,18 @@ msgid "Every day"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Stable"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Canary"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Fresher builds, more likely to break"
+msgstr ""
+
+#: roudix-switcher.py
 msgid ""
 "Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
 "keys)"
@@ -712,22 +724,6 @@ msgid "Cressida (native Discord client, unofficial)"
 msgstr ""
 
 #: roudix-switcher.py
-msgid "Fluxer channel"
-msgstr ""
-
-#: roudix-switcher.py
-msgid "Stable"
-msgstr ""
-
-#: roudix-switcher.py
-msgid "Canary"
-msgstr ""
-
-#: roudix-switcher.py
-msgid "Fresher builds, more likely to break"
-msgstr ""
-
-#: roudix-switcher.py
 msgid "Virtualization (QEMU/KVM)"
 msgstr ""
 
@@ -953,6 +949,10 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Optional apps"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Fluxer channel"
 msgstr ""
 
 #: roudix-switcher.py

@@ -410,6 +410,14 @@ msgid "Spotify + Spicetify"
 msgstr "Spotify + Spicetify"
 
 #: src/roudix_installer/pages/options.py
+msgid "Stable"
+msgstr "Stable"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canary (fresher, may break)"
+msgstr "Canary (plus récent, peut casser)"
+
+#: src/roudix_installer/pages/options.py
 msgid "Thunderbird (full-featured)"
 msgstr "Thunderbird (complet)"
 
@@ -1293,20 +1301,12 @@ msgstr ""
 "dessus)"
 
 #: src/roudix_installer/pages/options.py
-msgid "Native Wayland Discord client (unofficial, early development)"
-msgstr "Client Discord natif Wayland (non officiel, en développement précoce)"
-
-#: src/roudix_installer/pages/options.py
 msgid "Fluxer channel"
 msgstr "Canal Fluxer"
 
 #: src/roudix_installer/pages/options.py
-msgid "Stable"
-msgstr "Stable"
-
-#: src/roudix_installer/pages/options.py
-msgid "Canary (fresher, may break)"
-msgstr "Canary (plus récent, peut casser)"
+msgid "Native Wayland Discord client (unofficial, early development)"
+msgstr "Client Discord natif Wayland (non officiel, en développement précoce)"
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Content Creation"
@@ -1392,7 +1392,9 @@ msgstr "Kernel (xddxdd)"
 msgid ""
 "Invalid username: use letters, digits, '_', '-' or '.', starting with a "
 "letter or '_' (max 32)."
-msgstr "Nom d'utilisateur invalide : utilisez des lettres, des chiffres, « _ », « - » ou « . », en commençant par une lettre ou « _ » (32 caractères max)."
+msgstr ""
+"Nom d'utilisateur invalide : utilisez des lettres, des chiffres, « _ », "
+"« - » ou « . », en commençant par une lettre ou « _ » (32 caractères max)."
 
 #: src/roudix_installer/pages/options.py
 msgid ""
