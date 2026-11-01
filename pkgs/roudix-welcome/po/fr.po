@@ -45,28 +45,175 @@ msgid "Choose and apply an SCX scheduler"
 msgstr "Choisis et applique un ordonnanceur SCX"
 
 #: roudix-welcome.py
+msgid "Disks"
+msgstr "Disques"
+
+#: roudix-welcome.py
+msgid "Mount, format and manage your extra disks"
+msgstr "Monte, formate et gère tes disques supplémentaires"
+
+#: roudix-welcome.py
+msgid "Firewall"
+msgstr "Pare-feu"
+
+#: roudix-welcome.py
+msgid "Open ports and trusted interfaces"
+msgstr "Ports ouverts et interfaces de confiance"
+
+#: roudix-welcome.py
+msgid "Hardware Sync"
+msgstr "Synchro matériel"
+
+#: roudix-welcome.py
+msgid "Changed PC? Update your CPU/GPU settings"
+msgstr "Changement de PC ? Mets à jour tes réglages CPU/GPU"
+
+#: roudix-welcome.py
+msgid "Compositor Config"
+msgstr "Config du compositeur"
+
+#: roudix-welcome.py
+msgid "Window rules, screens and shortcuts"
+msgstr "Règles de fenêtres, écrans et raccourcis"
+
+#: roudix-welcome.py
+msgid "Documentation"
+msgstr "Documentation"
+
+#: roudix-welcome.py
+msgid "Source code"
+msgstr "Code source"
+
+#: roudix-welcome.py
+msgid "Release notes"
+msgstr "Notes de version"
+
+#: roudix-welcome.py
+msgid "Report a bug"
+msgstr "Signaler un bug"
+
+#: roudix-welcome.py
+msgid "YouTube"
+msgstr "YouTube"
+
+#: roudix-welcome.py
+msgid "Discord"
+msgstr "Discord"
+
+#: roudix-welcome.py
+msgid "Check for updates"
+msgstr "Rechercher des mises à jour"
+
+#: roudix-welcome.py
+msgid "See if new commits are available (nothing is changed)"
+msgstr "Vérifie si de nouveaux commits sont disponibles (rien n'est modifié)"
+
+#: roudix-welcome.py
+msgid "Update system"
+msgstr "Mettre à jour le système"
+
+#: roudix-welcome.py
+msgid "Pull, rebuild, switch and update Flatpaks (same as `update`)"
+msgstr "Pull, rebuild, bascule et met à jour les Flatpaks (comme `update`)"
+
+#: roudix-welcome.py
+msgid ""
+"Open a terminal and run the update? You will be asked for your password."
+msgstr ""
+"Ouvrir un terminal et lancer la mise à jour ? Ton mot de passe te sera "
+"demandé."
+
+#: roudix-welcome.py
+msgid "Apply configuration"
+msgstr "Appliquer la configuration"
+
+#: roudix-welcome.py
+msgid "Rebuild and switch now (same as `rebuild`)"
+msgstr "Reconstruit et bascule maintenant (comme `rebuild`)"
+
+#: roudix-welcome.py
+msgid "Rebuild the system now? This can take a while."
+msgstr "Reconstruire le système maintenant ? Cela peut prendre un moment."
+
+#: roudix-welcome.py
+msgid "Clean old generations"
+msgstr "Nettoyer les anciennes générations"
+
+#: roudix-welcome.py
+msgid "Keep the last 3 generations, then garbage-collect (same as `cleanup`)"
+msgstr ""
+"Garde les 3 dernières générations puis lance le garbage-collect (comme "
+"`cleanup`)"
+
+#: roudix-welcome.py
+msgid ""
+"Remove old system generations? You will not be able to roll back to them."
+msgstr ""
+"Supprimer les anciennes générations système ? Tu ne pourras plus revenir "
+"dessus."
+
+#: roudix-welcome.py
+msgid "Show last update log"
+msgstr "Voir le dernier journal de mise à jour"
+
+#: roudix-welcome.py
+msgid "Output of the last run of `update`"
+msgstr "Sortie de la dernière exécution de `update`"
+
+#: roudix-welcome.py
+msgid "Press Enter to close…"
+msgstr "Appuie sur Entrée pour fermer…"
+
+#: roudix-welcome.py
+msgid "Close"
+msgstr "Fermer"
+
+#: roudix-welcome.py
+msgid "Running…"
+msgstr "En cours…"
+
+#: roudix-welcome.py
+#, python-brace-format
+msgid "ERROR: '{cmd}' not found in PATH."
+msgstr "ERREUR : « {cmd} » introuvable dans le PATH."
+
+#: roudix-welcome.py
+#, python-brace-format
+msgid "ERROR: {error}"
+msgstr "ERREUR : {error}"
+
+#: roudix-welcome.py
+msgid "✓ Done"
+msgstr "✓ Terminé"
+
+#: roudix-welcome.py
+#, python-brace-format
+msgid "✗ Failed (exit code {rc})"
+msgstr "✗ Échec (code de sortie {rc})"
+
+#: roudix-welcome.py
 msgid "Welcome to Roudix"
 msgstr "Bienvenue sur Roudix"
 
 #: roudix-welcome.py
-msgid "<span size='small'>Roudix is your personal NixOS distribution: Wayland compositors (Niri, Hyprland, MangoWC, Umbriel), GNOME and KDE, a CachyOS kernel, and a bunch of tweaks built for you — and for the family and friends you share it with. Use the shortcuts below to customize your system, switch kernel and scheduler, or install apps from the store.</span>"
-msgstr "<span size='small'>Roudix est ta distribution NixOS personnelle : compositeurs Wayland (Niri, Hyprland, MangoWC, Umbriel), GNOME et KDE, kernel CachyOS et tout un tas de réglages pensés pour toi — et pour la famille et les amis à qui tu la partages. Utilise les raccourcis ci-dessous pour personnaliser ton système ou changer de kernel et d'ordonnanceur, ou la logithèque pour installer des applications.</span>"
+msgid "Welcome"
+msgstr "Bienvenue"
 
 #: roudix-welcome.py
-msgid "Roudix Apps"
-msgstr "Applications Roudix"
+msgid "Tweaks"
+msgstr "Réglages"
 
 #: roudix-welcome.py
-msgid "Open"
-msgstr "Ouvrir"
+msgid "Your NixOS, your way — shared with the people you care about."
+msgstr "Ton NixOS, à ta façon — partagé avec ceux qui comptent pour toi."
+
+#: roudix-welcome.py
+msgid "System tools"
+msgstr "Outils système"
 
 #: roudix-welcome.py
 msgid "Resources"
 msgstr "Ressources"
-
-#: roudix-welcome.py
-msgid "Source code & documentation"
-msgstr "Code source & documentation"
 
 #: roudix-welcome.py
 msgid "Show at startup"
@@ -77,5 +224,69 @@ msgid "Show this window again on every login"
 msgstr "Réaffiche cette fenêtre à chaque connexion"
 
 #: roudix-welcome.py
-msgid "Close"
-msgstr "Fermer"
+msgid "Maintenance"
+msgstr "Maintenance"
+
+#: roudix-welcome.py
+msgid "Common system tasks, one click away."
+msgstr "Les tâches système courantes, en un clic."
+
+#: roudix-welcome.py
+msgid "Run"
+msgstr "Lancer"
+
+#: roudix-welcome.py
+msgid "Configuration"
+msgstr "Configuration"
+
+#: roudix-welcome.py
+msgid "Open configuration folder"
+msgstr "Ouvrir le dossier de configuration"
+
+#: roudix-welcome.py
+msgid "Cancel"
+msgstr "Annuler"
+
+#: roudix-welcome.py
+msgid "No terminal found"
+msgstr "Aucun terminal trouvé"
+
+#: roudix-welcome.py
+msgid "Open a terminal yourself and run `update`."
+msgstr "Ouvre un terminal toi-même et lance `update`."
+
+#~ msgid ""
+#~ "<span size='small'>Roudix is your personal NixOS distribution: Wayland "
+#~ "compositors (Niri, Hyprland, MangoWC, Umbriel), GNOME and KDE, a CachyOS "
+#~ "kernel, and a bunch of tweaks built for you — and for the family and "
+#~ "friends you share it with. Use the shortcuts below to customize your "
+#~ "system, switch kernel and scheduler, or install apps from the store.</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span size='small'>Roudix est ta distribution NixOS personnelle : "
+#~ "compositeurs Wayland (Niri, Hyprland, MangoWC, Umbriel), GNOME et KDE, "
+#~ "kernel CachyOS et tout un tas de réglages pensés pour toi — et pour la "
+#~ "famille et les amis à qui tu la partages. Utilise les raccourcis ci-"
+#~ "dessous pour personnaliser ton système ou changer de kernel et "
+#~ "d'ordonnanceur, ou la logithèque pour installer des applications.</span>"
+
+#~ msgid "Roudix Apps"
+#~ msgstr "Applications Roudix"
+
+#~ msgid "Open"
+#~ msgstr "Ouvrir"
+
+#~ msgid "Source code & documentation"
+#~ msgstr "Code source & documentation"
+
+#~ msgid "Rebuild and switch to the current configuration"
+#~ msgstr "Reconstruit et bascule sur la configuration actuelle"
+
+#~ msgid "Update Flatpak apps"
+#~ msgstr "Mettre à jour les apps Flatpak"
+
+#~ msgid "Update all installed Flatpak applications"
+#~ msgstr "Met à jour toutes les applications Flatpak installées"
+
+#~ msgid "Keep the last 3 generations and free disk space"
+#~ msgstr "Garde les 3 dernières générations et libère de l'espace disque"
