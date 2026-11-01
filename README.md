@@ -166,6 +166,7 @@ roudix/
 | roudix-caches | [RoudineBWT/Roudix-caches](https://github.com/RoudineBWT/Roudix-caches) |
 | nix-gaming-edge | [powerofthe69/nix-gaming-edge](https://github.com/powerofthe69/nix-gaming-edge) |
 | betterbird-nix | [TheAnachronism/betterbird-nix](https://github.com/TheAnachronism/betterbird-nix) |
+| cressida | [Ly-sec/Cressida](https://github.com/Ly-sec/Cressida) |
 | nixpkgs-master / nixpkgs-staging-next | [NixOS/nixpkgs](https://github.com/NixOS/nixpkgs) — only for nixpkgs kernels (`hardware.myKernelSource`) |
 | mango | [mangowm/mango](https://github.com/mangowm/mango) |
 | noctalia-greeter | [noctalia-dev/noctalia-greeter](https://github.com/noctalia-dev/noctalia-greeter) |

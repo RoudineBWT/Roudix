@@ -167,6 +167,8 @@ class InstallState:
     app_signal: bool = False
     app_zapzap: bool = False
     app_fluxer: bool = False
+    app_fluxer_channel: str = "stable"   # roudix.apps.fluxer.channel — stable | canary
+    app_cressida: bool = False
     mail_client: str = "none"
     password_manager: str = "none"
 

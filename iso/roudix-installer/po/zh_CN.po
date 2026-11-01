@@ -1278,6 +1278,22 @@ msgid ""
 "Self-hostable Discord alternative (independent of the Discord choice above)"
 msgstr "可自托管的 Discord 替代品（与上面的 Discord 选择无关）"
 
+#: src/roudix_installer/pages/options.py
+msgid "Native Wayland Discord client (unofficial, early development)"
+msgstr "原生 Wayland 的 Discord 客户端（非官方，早期开发中）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fluxer channel"
+msgstr "Fluxer 渠道"
+
+#: src/roudix_installer/pages/options.py
+msgid "Stable"
+msgstr "稳定版"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canary (fresher, may break)"
+msgstr "Canary（更新，可能出问题）"
+
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Content Creation"
 msgstr "内容创作"

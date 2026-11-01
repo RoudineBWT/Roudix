@@ -194,14 +194,17 @@
   roudix.apps.inkscape.enable    = false;
   roudix.apps.songrec.enable     = false;
   roudix.apps.easyeffects.enable = false; # + rnnoise-plugin
-  # Signal, ZapZap (unofficial WhatsApp client) and Fluxer (self-hostable
-  # Discord alternative, packaged via the nix-gaming-edge flake) have no
-  # real alternative to switch between, so they're just opt-in booleans.
-  # Fluxer is independent of roudix.discord on purpose — people may well
-  # want both:
+  # Signal, ZapZap (unofficial WhatsApp client), Fluxer (self-hostable
+  # Discord alternative, packaged via the nix-gaming-edge flake) and
+  # Cressida (unofficial native Wayland Discord client, from its own flake
+  # input, early development) have no real alternative to switch between,
+  # so they're just opt-in booleans. Fluxer and Cressida are independent of
+  # roudix.discord on purpose — people may well want both:
   roudix.apps.signal.enable = false;
   roudix.apps.zapzap.enable = false;
   roudix.apps.fluxer.enable = false;
+  roudix.apps.fluxer.channel = "stable"; # "stable" or "canary" (fresher, may break) — only used if Fluxer is enabled
+  roudix.apps.cressida.enable = false;
   # Sonora (active only if roudix.musicPlayer = "sonora"):
   # roudix.sonora.provider = "youtube"; # null (Sonora's own default) or a provider id, "youtube" = YouTube Music
   # Spicetify (active only if roudix.musicPlayer = "spotify"):

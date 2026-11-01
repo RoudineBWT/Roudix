@@ -1292,6 +1292,22 @@ msgstr ""
 "Alternativa a Discord autoalojable (independiente de la elección de Discord "
 "de arriba)"
 
+#: src/roudix_installer/pages/options.py
+msgid "Native Wayland Discord client (unofficial, early development)"
+msgstr "Cliente nativo de Discord para Wayland (no oficial, en desarrollo temprano)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Fluxer channel"
+msgstr "Canal de Fluxer"
+
+#: src/roudix_installer/pages/options.py
+msgid "Stable"
+msgstr "Estable"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canary (fresher, may break)"
+msgstr "Canary (más reciente, puede fallar)"
+
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Content Creation"
 msgstr "Creación de contenido"

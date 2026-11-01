@@ -691,6 +691,13 @@ AUTOUPDATE_INTERVALS = [
     {"id": "24h", "name": tr("Every day"),      "subtitle": ""},
 ]
 
+# roudix.apps.fluxer.channel (modules/system/apps/apps.nix) — enum, only
+# meaningful while Fluxer is enabled (no icons: plain text rows).
+FLUXER_CHANNELS = [
+    {"id": "stable", "name": tr("Stable"), "subtitle": tr("Default")},
+    {"id": "canary", "name": tr("Canary"), "subtitle": tr("Fresher builds, more likely to break")},
+]
+
 # roudix.boot.secureBoot / roudix.boot.eac (modules/system/boot/secure-boot.nix) —
 # Limine only, experimental, off by default. The sbctl keys must exist and be
 # enrolled in the firmware BEFORE Secure Boot is switched on there:
@@ -925,6 +932,7 @@ APPS_TOGGLES = [
     {"id": "signal",      "name": "Signal",                           "key": "roudix.apps.signal.enable",     "default": False},
     {"id": "zapzap",      "name": tr("ZapZap (unofficial WhatsApp client)"), "key": "roudix.apps.zapzap.enable", "default": False},
     {"id": "fluxer",      "name": tr("Fluxer (self-hostable Discord alternative)"), "key": "roudix.apps.fluxer.enable", "default": False},
+    {"id": "cressida",    "name": tr("Cressida (native Discord client, unofficial)"), "key": "roudix.apps.cressida.enable", "default": False},
 ]
 
 
@@ -2386,6 +2394,19 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.apps_group = ToggleListGroup(tr("Optional apps"), self.apps_toggles, apps_current)
         apps_page.append(self.apps_group)
 
+        # roudix.apps.fluxer.channel — only shown while Fluxer is switched on.
+        self.fluxer_channel_selector = SelectorGroup(
+            tr("Fluxer channel"),
+            FLUXER_CHANNELS,
+            get_active_string_option("roudix.apps.fluxer.channel", "stable"),
+            dark,
+        )
+        apps_page.append(self.fluxer_channel_selector)
+        fluxer_sw = self.apps_group.switches.get("fluxer")
+        if fluxer_sw is not None:
+            fluxer_sw.connect("notify::active", lambda *_: self._update_fluxer_visibility())
+        self._update_fluxer_visibility()
+
         current_video_player = get_string_option("roudix.videoPlayer", "none")
         self.video_player_selector = SelectorGroup(tr("Video player"), VIDEO_PLAYERS, current_video_player, dark)
         apps_page.append(self.video_player_selector)
@@ -2688,6 +2709,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
              "label": tr("Limine menu resolution"),       "relevant": lambda de: self._boot_is_limine()},
             {"widget": self.eac_vendor_selector,          "key": "roudix.boot.eac.vendor",    "default": "fedora",
              "label": tr("EAC kernel"),                   "relevant": lambda de: self._boot_is_limine() and self._eac_enabled()},
+            {"widget": self.fluxer_channel_selector,      "key": "roudix.apps.fluxer.channel", "default": "stable",
+             "label": tr("Fluxer channel"),               "relevant": lambda de: self._fluxer_enabled()},
             {"widget": self.spicetify_theme_selector,     "key": "roudix.spicetify.theme",     "default": "colorful",
              "label": tr("Spicetify theme"),              "relevant": lambda de: self.music_player_selector.selected_id == "spotify"},
             {"widget": self.zen_profile_selector,         "key": "roudix.zen.tweaks.profile",  "default": PROFILE_AUTO,
@@ -2939,6 +2962,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             ],
             "apps": [
                 (self.apps_group,             bool(self.apps_toggles)),
+                (self.fluxer_channel_selector, host_lists("roudix.apps.fluxer.channel")),
                 (self.video_player_selector,  host_lists("roudix.videoPlayer")),
                 (self.torrent_client_selector, host_lists("roudix.torrentClient")),
                 (self.music_player_selector,  host_lists("roudix.musicPlayer")),
@@ -3035,6 +3059,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         row.set_visible(supported)
         if not supported and self.category_list.get_selected_row() is row:
             self.category_list.select_row(self._category_rows["desktop"])
+
+    def _fluxer_enabled(self) -> bool:
+        sw = self.apps_group.switches.get("fluxer")
+        return False if sw is None else sw.get_active()
+
+    def _update_fluxer_visibility(self):
+        """The Fluxer channel only means something while Fluxer is enabled."""
+        self.fluxer_channel_selector.set_visible(self._fluxer_enabled())
 
     def _update_spicetify_visibility(self):
         """Spicetify settings only mean something with Spotify as music player."""
@@ -3160,6 +3192,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.password_manager_selector.update_icons(dark)
         self.autoupdate_interval_selector.update_icons(dark)
         self.spicetify_theme_selector.update_icons(dark)
+        self.fluxer_channel_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 

@@ -745,6 +745,26 @@ msgid "Fluxer (self-hostable Discord alternative)"
 msgstr "Fluxer (alternative Discord auto-hébergeable)"
 
 #: roudix-switcher.py
+msgid "Cressida (native Discord client, unofficial)"
+msgstr "Cressida (client Discord natif, non officiel)"
+
+#: roudix-switcher.py
+msgid "Fluxer channel"
+msgstr "Canal Fluxer"
+
+#: roudix-switcher.py
+msgid "Stable"
+msgstr "Stable"
+
+#: roudix-switcher.py
+msgid "Canary"
+msgstr "Canary"
+
+#: roudix-switcher.py
+msgid "Fresher builds, more likely to break"
+msgstr "Versions plus récentes, plus susceptibles de casser"
+
+#: roudix-switcher.py
 msgid "Virtualization (QEMU/KVM)"
 msgstr "Virtualisation (QEMU/KVM)"
 

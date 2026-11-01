@@ -162,7 +162,8 @@ class SummaryPage(Adw.NavigationPage):
                 "+ EasyEffects" if s.app_easyeffects else "",
                 "+ Signal" if s.app_signal else "",
                 "+ ZapZap" if s.app_zapzap else "",
-                "+ Fluxer" if s.app_fluxer else "",
+                (("+ Fluxer" + (" (canary)" if s.app_fluxer_channel == "canary" else "")) if s.app_fluxer else ""),
+                "+ Cressida" if s.app_cressida else "",
             ])) or trc("summary, Apps row: nothing selected", "none")),
         ] + ([
             ("Spicetify", f"{s.spicetify_theme}"

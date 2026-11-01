@@ -154,7 +154,9 @@ opt-in: `roudix.apps.fluxer.enable`. Todavía no está en nixpkgs, así que se
 obtiene directamente del paquete precompilado `fluxer-desktop` del flake input
 `nix-gaming-edge`. Es deliberadamente independiente de `roudix.discord`
 y de `roudix.gaming.enable` — nada te impide querer Discord
-y Fluxer a la vez, o Fluxer sin ningún setup de gaming.
+y Fluxer a la vez, o Fluxer sin ningún setup de gaming. `roudix.apps.fluxer.channel` elige el canal: `"stable"` (por defecto) o `"canary"` (compilaciones más recientes y más propensas a fallar; se instala como `fluxer-canary`, con su propio app id).
+
+Cressida es un cliente nativo no oficial de Discord (C++ / Wayland), otro booleano opt-in: `roudix.apps.cressida.enable`. Tampoco está en nixpkgs, así que viene de su propio flake input `cressida` ([Ly-sec/Cressida](https://github.com/Ly-sec/Cressida)). Es independiente de `roudix.discord`, de Fluxer y de `roudix.gaming.enable`. Dos advertencias de su propia documentación: está en desarrollo temprano (aún sin videollamadas, algunos ajustes incompletos) y, como cualquier cliente de Discord de terceros, puede provocar que una cuenta sea marcada o restringida; conviene tenerlo en cuenta antes de usarlo con la cuenta principal. Solo Wayland, sin backend X11.
 
 También hay disponibles, opt-in (desactivados por defecto), un cliente de correo y un gestor
 de contraseñas: `roudix.mailClient` — `"thunderbird"` (completo),

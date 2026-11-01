@@ -220,6 +220,8 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _set_bool_option(t, "roudix.apps.signal.enable", state.app_signal)
     t = _set_bool_option(t, "roudix.apps.zapzap.enable", state.app_zapzap)
     t = _set_bool_option(t, "roudix.apps.fluxer.enable", state.app_fluxer)
+    t = _set_string_option(t, "roudix.apps.fluxer.channel", state.app_fluxer_channel)
+    t = _set_bool_option(t, "roudix.apps.cressida.enable", state.app_cressida)
 
     if state.music_player == "spotify":
         t = _set_string_option(t, "roudix.spicetify.theme", state.spicetify_theme)
@@ -278,6 +280,7 @@ def _expected_values(state: InstallState) -> list:
         "roudix.videoPlayer": state.video_player, "roudix.torrentClient": state.torrent_client,
         "roudix.musicPlayer": state.music_player, "roudix.mailClient": state.mail_client,
         "roudix.passwordManager": state.password_manager,
+        "roudix.apps.fluxer.channel": state.app_fluxer_channel,
     }
     bools = {
         "hardware.nvidiaLaptop": state.nvidia_laptop, "roudix.laptop.enable": state.laptop,

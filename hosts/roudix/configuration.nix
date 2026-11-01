@@ -75,6 +75,8 @@
   roudix.apps.signal.enable      = lib.mkDefault false;
   roudix.apps.zapzap.enable      = lib.mkDefault false;
   roudix.apps.fluxer.enable      = lib.mkDefault false;
+  roudix.apps.fluxer.channel     = lib.mkDefault "stable";
+  roudix.apps.cressida.enable    = lib.mkDefault false;
   roudix.zen.enable              = lib.mkDefault false;
   roudix.contentCreation.enable  = lib.mkDefault false;
   roudix.contentCreation.obs.enable = lib.mkDefault false;

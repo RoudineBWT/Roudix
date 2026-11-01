@@ -1270,6 +1270,22 @@ msgid ""
 "Self-hostable Discord alternative (independent of the Discord choice above)"
 msgstr ""
 
+#: src/roudix_installer/pages/options.py
+msgid "Native Wayland Discord client (unofficial, early development)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Fluxer channel"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Stable"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Canary (fresher, may break)"
+msgstr ""
+
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Content Creation"
 msgstr ""
