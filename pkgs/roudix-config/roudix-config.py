@@ -104,6 +104,7 @@ def make_app():
             self.shown = list(sources)
             self.place_keys = [k for k in PLACEMENTS if k in B.placements]
             self.blur_values = list(B.blur_choices)
+            self.capture_values = list(B.capture_choices)
             self.ws_choices = B.workspace_choices()
 
         def compose(self) -> ComposeResult:
@@ -127,6 +128,9 @@ def make_app():
                     yield Select([(blur_label(v), v) for v in self.blur_values], id="blur", prompt=UNSET, allow_blank=True)
                     yield Label(tr("Opacity (0 to 1, optional)"))
                     yield Input(id="opacity", placeholder="ex. 0.9")
+                    if self.capture_values:
+                        yield Label(tr("Screenshots and recordings"))
+                        yield Select([(capture_label(v), v) for v in self.capture_values], id="capture", prompt=UNSET, allow_blank=True)
                 yield Static("", id="preview")
                 yield from self.footer_widgets()
 
@@ -145,6 +149,8 @@ def make_app():
                 put(self.query_one("#blur", Select), r["blur"])
             if "opacity" in r:
                 self.query_one("#opacity", Input).value = str(r["opacity"])
+            if self.capture_values and "block_capture" in r:
+                put(self.query_one("#capture", Select), r["block_capture"])
             self.refresh_preview()
 
         def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
@@ -179,6 +185,7 @@ def make_app():
                 chosen(self.query_one("#place", Select)),
                 chosen(self.query_one("#blur", Select)),
                 opacity,
+                chosen(self.query_one("#capture", Select)) if self.capture_values else None,
             )
 
         def refresh_preview(self) -> None:

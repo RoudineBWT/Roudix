@@ -34,8 +34,8 @@ msgstr "Aplicativo"
 
 #: roudix-config-gui.py
 msgid ""
-"● open now · ○ seen open before · no symbol: installed (the app_id is then a"
-" guess)"
+"● open now · ○ seen open before · no symbol: installed (the app_id is then a "
+"guess)"
 msgstr ""
 "● aberto agora · ○ visto aberto antes · sem símbolo: instalado (o app_id é "
 "então um palpite)"
@@ -79,6 +79,10 @@ msgstr "Desfoque (blur)"
 #: roudix-config-gui.py roudix-config.py
 msgid "Opacity (0 to 1, optional)"
 msgstr "Opacidade (0 a 1, opcional)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Screenshots and recordings"
+msgstr "Capturas de tela e gravações"
 
 #: roudix-config-gui.py
 msgid "Opacity: a number between 0 and 1"
@@ -128,8 +132,8 @@ msgid ""
 "to that screen."
 msgstr ""
 "Nomes separados por espaços. Evite um nome puramente numérico que exista em "
-"apenas uma tela: o compositor o trata como único e Mod+N sempre pularia para"
-" essa tela."
+"apenas uma tela: o compositor o trata como único e Mod+N sempre pularia para "
+"essa tela."
 
 #: roudix-config-gui.py
 msgid "This screen's workspace names"
@@ -234,8 +238,7 @@ msgid ""
 "you). Moving or deleting a default shortcut is done in the File tab."
 msgstr ""
 "{label}: você pode alterar a ação de um atalho ou adicionar novos (✎ = "
-"alterado por você). Mover ou excluir um atalho padrão é feito na aba "
-"Arquivo."
+"alterado por você). Mover ou excluir um atalho padrão é feito na aba Arquivo."
 
 #: roudix-config-gui.py
 msgid ""
@@ -452,8 +455,8 @@ msgid ""
 "Avoid a purely numeric name that exists on one screen only: the compositor "
 "treats it as unique and Mod+N would always jump to that screen."
 msgstr ""
-"Evite um nome puramente numérico que exista em apenas uma tela: o compositor"
-" o trata como único e Mod+N sempre pularia para essa tela."
+"Evite um nome puramente numérico que exista em apenas uma tela: o compositor "
+"o trata como único e Mod+N sempre pularia para essa tela."
 
 #: roudix-config.py
 msgid "pick an output"
@@ -555,8 +558,7 @@ msgstr ", nomes dos workspaces"
 #: roudix-config.py
 #, python-brace-format
 msgid ""
-"e edit (resolution, scale, rotation{names}) · r back to the output's "
-"defaults"
+"e edit (resolution, scale, rotation{names}) · r back to the output's defaults"
 msgstr ""
 "e editar (resolução, escala, rotação{names}) · r voltar aos valores padrão "
 "da saída"
@@ -565,18 +567,22 @@ msgstr ""
 #, python-brace-format
 msgid ""
 "a add · e change the action · r reset everything\n"
-"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = changed by you."
+"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = "
+"changed by you."
 msgstr ""
 "a adicionar · e alterar a ação · r redefinir tudo\n"
-"{label}: mover ou excluir um atalho padrão é feito na aba Arquivo. ✎ = alterado por você."
+"{label}: mover ou excluir um atalho padrão é feito na aba Arquivo. ✎ = "
+"alterado por você."
 
 #: roudix-config.py
 msgid ""
 "a add · e edit · d delete · r reset everything\n"
-"Once changed, the table is frozen: new default shortcuts added to the repo won't reach you any more (r to go back)."
+"Once changed, the table is frozen: new default shortcuts added to the repo "
+"won't reach you any more (r to go back)."
 msgstr ""
 "a adicionar · e editar · d excluir · r redefinir tudo\n"
-"Depois de alterada, a tabela fica congelada: os novos atalhos padrão adicionados ao repositório não chegarão mais até você (r para voltar)."
+"Depois de alterada, a tabela fica congelada: os novos atalhos padrão "
+"adicionados ao repositório não chegarão mais até você (r para voltar)."
 
 #: roudix-config.py
 msgid ""
@@ -685,8 +691,7 @@ msgstr ""
 
 #: roudix-config.py
 msgid ""
-"Rebuild finished (see the terminal) — reload the compositor config if "
-"needed."
+"Rebuild finished (see the terminal) — reload the compositor config if needed."
 msgstr ""
 "Rebuild concluído (veja o terminal) — recarregue a configuração do "
 "compositor se necessário."
@@ -757,6 +762,10 @@ msgid "Prefer server-side decorations"
 msgstr "Preferir decorações do lado do servidor"
 
 #: roudix_config_backends.py
+msgid "Title bar button symbols"
+msgstr "Símbolos dos botões da barra de título"
+
+#: roudix_config_backends.py
 msgid "Default layout"
 msgstr "Disposição padrão"
 
@@ -771,6 +780,10 @@ msgstr "Largura padrão das colunas"
 #: roudix_config_backends.py
 msgid "Master area width"
 msgstr "Largura da área principal (master)"
+
+#: roudix_config_backends.py
+msgid "Fade window opacity and blur on focus change"
+msgstr "Transição de opacidade e desfoque ao mudar o foco"
 
 #: roudix_config_backends.py
 msgid "Tap to click (touchpad)"
@@ -888,8 +901,7 @@ msgstr "gerado pelo Roudix Config — edite-o pelo app"
 msgid ""
 "e.g. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modifiers, key)"
 msgstr ""
-"ex. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modificadores, "
-"tecla)"
+"ex. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modificadores, tecla)"
 
 #: roudix_config_backends.py
 msgid "Mango shortcut: “MODS,KEY” (e.g. SUPER,Q)"
@@ -914,11 +926,11 @@ msgstr "Niri: mover um atalho não é suportado (use a aba Arquivo)."
 #: roudix_config_core.py
 #, python-brace-format
 msgid ""
-"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg}"
-" — trailing comma before ] or }} ?"
+"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg} "
+"— trailing comma before ] or }} ?"
 msgstr ""
-"JSON inválido no bloco roudix-config (linha {line}, coluna {colno}): {msg} —"
-" vírgula sobrando antes de ] ou }} ?"
+"JSON inválido no bloco roudix-config (linha {line}, coluna {colno}): {msg} — "
+"vírgula sobrando antes de ] ou }} ?"
 
 #: roudix_config_core.py
 #, python-brace-format
@@ -981,6 +993,14 @@ msgid "On"
 msgstr "Ativado"
 
 #: roudix_config_core.py
+msgid "Hidden from captures"
+msgstr "Oculta nas capturas"
+
+#: roudix_config_core.py
+msgid "Shown in captures"
+msgstr "Visível nas capturas"
+
+#: roudix_config_core.py
 msgid "app_id or title required"
 msgstr "app_id ou título obrigatório"
 
@@ -1008,11 +1028,11 @@ msgstr "O Roudix Config ainda não suporta {t} (por enquanto: {join})."
 
 #: roudix_config_core.py
 msgid ""
-"Can't determine the desktop (roudix.desktop.type). Rebuild so that "
-"~/.local/share/roudix/desktop-type gets created."
+"Can't determine the desktop (roudix.desktop.type). Rebuild so that ~/.local/"
+"share/roudix/desktop-type gets created."
 msgstr ""
-"Não foi possível determinar o desktop (roudix.desktop.type). Faça um rebuild"
-" para que ~/.local/share/roudix/desktop-type seja criado."
+"Não foi possível determinar o desktop (roudix.desktop.type). Faça um rebuild "
+"para que ~/.local/share/roudix/desktop-type seja criado."
 
 #: roudix_config_core.py
 #, python-brace-format

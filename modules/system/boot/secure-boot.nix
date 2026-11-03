@@ -4,15 +4,18 @@
 # See docs/secure-boot-eac.md for the why, the limits and the safe way to
 # turn it on.
 #
-#  * roudix.boot.secureBoot  signs Limine with sbctl, so the normal Roudix
+#  * roudix.boot.secureBoot  Limine: signs it with sbctl, so the normal Roudix
 #                            entry (your kernel, the Limine wallpaper, other
 #                            OS entries) keeps booting with Secure Boot ON.
+#                            systemd-boot: lanzaboote (signed systemd-boot +
+#                            signed unified kernel images, same sbctl keys).
 #  * roudix.boot.eac         adds eacnix's "NixOS EAC" entry: Fedora's or
 #                            Bazzite's signed kernel behind Fedora's
 #                            Microsoft-signed shim, measured by the TPM.
 let
   cfg = config.roudix.boot;
   limine = cfg.bootloader == "limine";
+  systemdBoot = cfg.bootloader == "systemd-boot";
   nvidia = config.hardware.myGpu == "nvidia";
 in
 {
@@ -20,10 +23,10 @@ in
     secureBoot = {
       enable = lib.mkOption {
         description = ''
-          Sign the Limine binary with sbctl so the machine can boot with UEFI
-          Secure Boot enabled. Limine only (with systemd-boot there is no
-          signing here). Needs the keys created and enrolled BEFORE the first
-          rebuild with this on — follow docs/secure-boot-eac.md, in this
+          Boot with UEFI Secure Boot enabled. With Limine, the Limine binary
+          is signed with sbctl; with systemd-boot, lanzaboote signs
+          systemd-boot and every kernel (unified kernel images). Needs the keys
+          created and enrolled BEFORE the first rebuild with this on — follow docs/secure-boot-eac.md, in this
           order: `sbctl create-keys`, firmware Setup Mode,
           `sbctl enroll-keys -m -f`, rebuild, check `sbctl verify`, and only
           then enable Secure Boot in the firmware. sbctl is installed by this
@@ -88,12 +91,12 @@ in
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
 
-    # ── Secure Boot (Limine signed with sbctl) ────────────────────────────
+    # ── Secure Boot (Limine signed with sbctl / systemd-boot via lanzaboote) ──
     (lib.mkIf cfg.secureBoot.enable {
       assertions = [
         {
-          assertion = limine;
-          message = "roudix.boot.secureBoot.enable only supports roudix.boot.bootloader = \"limine\" (Limine is signed with sbctl).";
+          assertion = !(systemdBoot && cfg.eac.enable);
+          message = "roudix.boot.eac with Secure Boot is only supported on Limine for now: lanzaboote replaces systemd-boot's installer, which eacnix hooks into. Use bootloader = \"limine\" or turn eac off.";
         }
       ];
 
@@ -103,6 +106,18 @@ in
       };
 
       environment.systemPackages = [ pkgs.sbctl ];
+    })
+
+    # systemd-boot: lanzaboote takes over the install (it replaces
+    # systemd-boot's own installer; configurationLimit set in boot.nix still
+    # applies). Keys live in /var/lib/sbctl, same as the Limine path.
+    (lib.mkIf (cfg.secureBoot.enable && systemdBoot) {
+      boot.loader.systemd-boot.enable = lib.mkForce false;
+      boot.lanzaboote = {
+        enable = true;
+        pkiBundle = "/var/lib/sbctl";
+        autoGenerateKeys.enable = cfg.secureBoot.autoGenerateKeys;
+      };
     })
 
     # ── EAC Linux v2 boot entry (eacnix) ──────────────────────────────────

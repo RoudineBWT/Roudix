@@ -114,8 +114,8 @@
 
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
-  roudix.boot.wallpaperAspect = "16x9"; # Limine wallpaper format — the one closest to your MAIN screen (the biggest one), so it isn't stretched: "16x9" (1920x1080, 2560x1440, 3840x2160...), "16x10" (1920x1200, 2560x1600...), "21x9" (2560x1080, 3440x1440...) or "4x3" (1024x768, 1280x1024...). Run ./scripts/detect-boot-aspect.sh to find yours; the installers and roudix-switcher suggest it too (change it there if you swap screens). Only used with limine
-  roudix.boot.menuResolution = "auto"; # Limine menu (and wallpaper) resolution: "auto", or "<width>x<height>" e.g. "2560x1440". With several screens of different sizes Limine can pick the SMALLER one: set your MAIN screen's resolution (the highest one) — ./scripts/detect-boot-aspect.sh --resolution prints it, the installers and roudix-switcher suggest it. If the firmware doesn't offer it, Limine falls back by itself. Only used with limine
+  roudix.boot.wallpaperAspect = "16x9"; # Limine wallpaper format — the one closest to your MAIN screen (the biggest one), so it isn't stretched: "16x9" (1920x1080, 2560x1440, 3840x2160...), "16x10" (1920x1200, 2560x1600...), "21x9" (2560x1080, 3440x1440...) or "4x3" (1024x768, 1280x1024...). Run ./scripts/detect-boot-aspect.sh to find yours; the installers and roudix-switcher suggest it too (change it there if you swap screens). Used with limine
+  roudix.boot.menuResolution = "auto"; # Limine menu (and wallpaper) resolution: "auto", or "<width>x<height>" e.g. "2560x1440". With several screens of different sizes Limine can pick the SMALLER one: set your MAIN screen's resolution (the highest one) — ./scripts/detect-boot-aspect.sh --resolution prints it, the installers and roudix-switcher suggest it. If the firmware doesn't offer it, Limine falls back by itself. Used with limine
   # ── Secure Boot + EAC Linux v2 (opt-in, see docs/secure-boot-eac.md) ───────
   # Follow the order in the doc (create sbctl keys, Setup Mode, enroll, rebuild,
   # check, THEN enable Secure Boot in the firmware). The keys must be enrolled
@@ -173,6 +173,7 @@
   # keyring + xdg-desktop-portal to use. No effect on gnome/kde.
   roudix.desktopIntegration = "gnome"; # "gnome" or "kde"
   roudix.flatpak.enable       = false;       # enable Flatpak support
+  roudix.printing.enable      = false;       # CUPS + Avahi (network printers) + common drivers (Gutenprint, HPLIP, brlaser...)
   roudix.virtualization.enable = false;      # enable libvirt / virt-manager
   roudix.virtualization.vmCurator.enable = false; # enable vm-curator / qemu-kvm -- alternative to virt-manager
   roudix.vmGuest.enable       = false;       # enable only inside a VM

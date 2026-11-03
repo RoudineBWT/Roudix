@@ -1,4 +1,12 @@
 { lib, config, pkgs, ... }:
+let
+  cfg = config.roudix.boot;
+
+  localBoot =
+    if builtins.pathExists ./boot.local.nix
+    then import ./boot.local.nix
+    else { };
+in
 {
   options.roudix.boot = {
     enable = lib.mkOption {
@@ -9,7 +17,7 @@
 
     wallpaperAspect = lib.mkOption {
       description = ''
-        Aspect ratio of the Limine boot wallpaper. Pick the one closest to your
+        Aspect ratio of the boot wallpaper (Limine). Pick the one closest to your
         MAIN screen (the one with the highest resolution) so the stretched image
         is not distorted. Run ./scripts/detect-boot-aspect.sh to find out which
         one to use; the installers and roudix-switcher suggest it too.
@@ -24,13 +32,13 @@
 
     menuResolution = lib.mkOption {
       description = ''
-        Resolution of the Limine menu, and so of its wallpaper: "auto" lets
+        Resolution of the boot menu (Limine), and so of its wallpaper: "auto" lets
         Limine pick, or "<width>x<height>" (e.g. "2560x1440") forces it.
         With several screens of different sizes Limine can end up on the smaller
         one: set your MAIN screen's resolution (the highest one) here. If the
         firmware doesn't offer it, Limine falls back to another one by itself.
         ./scripts/detect-boot-aspect.sh --resolution prints it; the installers
-        and roudix-switcher suggest it too. Only used with limine.
+        and roudix-switcher suggest it too. Used with limine.
       '';
       type = lib.types.either
         (lib.types.enum [ "auto" ])
@@ -40,16 +48,21 @@
     };
 
     bootloader = lib.mkOption {
-      description = "Bootloader to use: \"limine\" or \"systemd-boot\"";
+      description = ''
+        Bootloader to use: "limine" (default, themed, Secure Boot + EAC
+        support) or "systemd-boot" (minimal, UEFI only, Secure Boot through
+        lanzaboote).
+      '';
       type = lib.types.enum [ "limine" "systemd-boot" ];
       default = "limine";
     };
+
   };
 
   config = lib.mkIf config.roudix.boot.enable {
 
     # ── Bootloader ────────────────────────────────────────────────────────
-    boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
 
     boot.loader.systemd-boot = lib.mkIf (config.roudix.boot.bootloader == "systemd-boot") {
       enable = true;
@@ -88,9 +101,7 @@
       # ── Extra boot entries for other OS on other ESPs ─────────────────
       # Use the PARTUUID of each ESP (not the filesystem UUID)
       # Get PARTUUIDs with: lsblk -o NAME,PARTUUID
-      extraEntries = if builtins.pathExists ./boot.local.nix
-        then (import ./boot.local.nix).extraEntries or ""
-        else "";
+      extraEntries = localBoot.extraEntries or "";
     };
 
     # ── Rename boot profile label ─────────────────────────────────────────────
@@ -108,7 +119,7 @@
       script = ''
         if [ -d /sys/firmware/efi ]; then
           ENTRY=$(${pkgs.efibootmgr}/bin/efibootmgr -v 2>/dev/null \
-            | ${pkgs.gnugrep}/bin/grep -i "Linux Boot Manager\|Limine\|UEFI OS" \
+            | ${pkgs.gnugrep}/bin/grep -i "Linux Boot Manager\|Limine\|UEFI OS\|NixOS" \
             | ${pkgs.gnugrep}/bin/grep -oP 'Boot[0-9A-F]{4}' \
             | head -1)
           if [ -n "$ENTRY" ]; then

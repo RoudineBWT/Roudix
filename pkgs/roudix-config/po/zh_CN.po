@@ -34,9 +34,10 @@ msgstr "应用"
 
 #: roudix-config-gui.py
 msgid ""
-"● open now · ○ seen open before · no symbol: installed (the app_id is then a"
-" guess)"
-msgstr "● 当前已打开 · ○ 以前见过已打开 · 无符号：已安装（此时 app_id 为推测值）"
+"● open now · ○ seen open before · no symbol: installed (the app_id is then a "
+"guess)"
+msgstr ""
+"● 当前已打开 · ○ 以前见过已打开 · 无符号：已安装（此时 app_id 为推测值）"
 
 #: roudix-config-gui.py
 msgid "Pick an app"
@@ -77,6 +78,10 @@ msgstr "模糊（blur）"
 #: roudix-config-gui.py roudix-config.py
 msgid "Opacity (0 to 1, optional)"
 msgstr "不透明度（0 到 1，可选）"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Screenshots and recordings"
+msgstr "截图和录屏"
 
 #: roudix-config-gui.py
 msgid "Opacity: a number between 0 and 1"
@@ -124,7 +129,9 @@ msgid ""
 "Names separated by spaces. Avoid a purely numeric name that exists on one "
 "screen only: the compositor treats it as unique and Mod+N would always jump "
 "to that screen."
-msgstr "名称以空格分隔。避免使用只存在于一个屏幕上的纯数字名称：合成器会将其视为唯一，Mod+N 将始终跳转到该屏幕。"
+msgstr ""
+"名称以空格分隔。避免使用只存在于一个屏幕上的纯数字名称：合成器会将其视为唯"
+"一，Mod+N 将始终跳转到该屏幕。"
 
 #: roudix-config-gui.py
 msgid "This screen's workspace names"
@@ -227,14 +234,18 @@ msgstr "在终端中运行 `nh os switch`（应用你的更改）"
 msgid ""
 "{label}: you can change a shortcut's action or add new ones (✎ = changed by "
 "you). Moving or deleting a default shortcut is done in the File tab."
-msgstr "{label}：你可以更改快捷键的操作或添加新的快捷键（✎ = 由你修改）。移动或删除默认快捷键需在“文件”标签页中进行。"
+msgstr ""
+"{label}：你可以更改快捷键的操作或添加新的快捷键（✎ = 由你修改）。移动或删除默"
+"认快捷键需在“文件”标签页中进行。"
 
 #: roudix-config-gui.py
 msgid ""
 "Once you change anything, the shortcut table is frozen: new default "
 "shortcuts added to the repo won't reach you any more (“Reset everything” to "
 "go back)."
-msgstr "一旦修改任何内容，快捷键表就会被冻结：添加到仓库的新默认快捷键将不再同步给你（点击“全部重置”可恢复）。"
+msgstr ""
+"一旦修改任何内容，快捷键表就会被冻结：添加到仓库的新默认快捷键将不再同步给你"
+"（点击“全部重置”可恢复）。"
 
 #: roudix-config-gui.py
 msgid "Filter shortcuts…"
@@ -246,7 +257,8 @@ msgid ""
 "Your whole {custom_name} file. The “roudix-config” block is managed by the "
 "app; the rest is yours. Saving makes a .bak copy and checks the syntax."
 msgstr ""
-"你完整的 {custom_name} 文件。“roudix-config”块由应用管理，其余部分归你所有。保存时会创建 .bak 副本并检查语法。"
+"你完整的 {custom_name} 文件。“roudix-config”块由应用管理，其余部分归你所有。"
+"保存时会创建 .bak 副本并检查语法。"
 
 #: roudix-config-gui.py roudix-config.py
 msgid "File"
@@ -270,7 +282,9 @@ msgstr "已保存（{msg}）。需要 rebuild。"
 msgid ""
 "The most common settings. A value you changed is marked ✎ (↶ to restore the "
 "default); the others follow the repo's defaults. Rebuild required to apply."
-msgstr "最常用的设置。你修改过的值会标记为 ✎（↶ 可恢复默认值）；其余的遵循仓库的默认值。需要 rebuild 才能生效。"
+msgstr ""
+"最常用的设置。你修改过的值会标记为 ✎（↶ 可恢复默认值）；其余的遵循仓库的默认"
+"值。需要 rebuild 才能生效。"
 
 #: roudix-config-gui.py roudix-config.py
 msgid "Settings"
@@ -433,7 +447,9 @@ msgstr "例如  web code chat   （或图标）"
 msgid ""
 "Avoid a purely numeric name that exists on one screen only: the compositor "
 "treats it as unique and Mod+N would always jump to that screen."
-msgstr "避免使用只存在于一个屏幕上的纯数字名称：合成器会将其视为唯一，Mod+N 将始终跳转到该屏幕。"
+msgstr ""
+"避免使用只存在于一个屏幕上的纯数字名称：合成器会将其视为唯一，Mod+N 将始终跳"
+"转到该屏幕。"
 
 #: roudix-config.py
 msgid "pick an output"
@@ -520,7 +536,9 @@ msgstr "保存 .nix"
 msgid ""
 "Unsaved changes in the File tab: Ctrl+S to keep them (or leave without "
 "saving) before continuing."
-msgstr "“文件”标签页中有未保存的更改：请先按 Ctrl+S 保留它们（或不保存直接离开），再继续。"
+msgstr ""
+"“文件”标签页中有未保存的更改：请先按 Ctrl+S 保留它们（或不保存直接离开），再"
+"继续。"
 
 #: roudix-config.py
 msgid "a add · e edit · d delete"
@@ -533,15 +551,15 @@ msgstr "，workspace 名称"
 #: roudix-config.py
 #, python-brace-format
 msgid ""
-"e edit (resolution, scale, rotation{names}) · r back to the output's "
-"defaults"
+"e edit (resolution, scale, rotation{names}) · r back to the output's defaults"
 msgstr "e 编辑（分辨率、缩放、旋转{names}） · r 恢复该输出的默认值"
 
 #: roudix-config.py
 #, python-brace-format
 msgid ""
 "a add · e change the action · r reset everything\n"
-"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = changed by you."
+"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = "
+"changed by you."
 msgstr ""
 "a 添加 · e 更改操作 · r 全部重置\n"
 "{label}：移动或删除默认快捷键需在“文件”标签页中进行。✎ = 由你修改。"
@@ -549,10 +567,12 @@ msgstr ""
 #: roudix-config.py
 msgid ""
 "a add · e edit · d delete · r reset everything\n"
-"Once changed, the table is frozen: new default shortcuts added to the repo won't reach you any more (r to go back)."
+"Once changed, the table is frozen: new default shortcuts added to the repo "
+"won't reach you any more (r to go back)."
 msgstr ""
 "a 添加 · e 编辑 · d 删除 · r 全部重置\n"
-"一旦修改，表就会被冻结：添加到仓库的新默认快捷键将不再同步给你（按 r 可恢复）。"
+"一旦修改，表就会被冻结：添加到仓库的新默认快捷键将不再同步给你（按 r 可恢"
+"复）。"
 
 #: roudix-config.py
 msgid ""
@@ -657,8 +677,7 @@ msgstr "无法从 TUI 执行 rebuild（{e}）：请运行 `rebuild` 别名。"
 
 #: roudix-config.py
 msgid ""
-"Rebuild finished (see the terminal) — reload the compositor config if "
-"needed."
+"Rebuild finished (see the terminal) — reload the compositor config if needed."
 msgstr "Rebuild 已结束（见终端）— 如有需要请重新加载合成器配置。"
 
 #: roudix-config.py
@@ -727,6 +746,10 @@ msgid "Prefer server-side decorations"
 msgstr "优先使用服务端装饰"
 
 #: roudix_config_backends.py
+msgid "Title bar button symbols"
+msgstr "标题栏按钮符号"
+
+#: roudix_config_backends.py
 msgid "Default layout"
 msgstr "默认布局"
 
@@ -741,6 +764,10 @@ msgstr "默认列宽"
 #: roudix_config_backends.py
 msgid "Master area width"
 msgstr "主区域宽度（master）"
+
+#: roudix_config_backends.py
+msgid "Fade window opacity and blur on focus change"
+msgstr "切换焦点时淡入淡出不透明度和模糊"
 
 #: roudix_config_backends.py
 msgid "Tap to click (touchpad)"
@@ -857,7 +884,8 @@ msgstr "由 Roudix Config 生成 — 请通过应用进行编辑"
 #: roudix_config_backends.py
 msgid ""
 "e.g. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modifiers, key)"
-msgstr "例如 SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  （修饰键，按键）"
+msgstr ""
+"例如 SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  （修饰键，按键）"
 
 #: roudix_config_backends.py
 msgid "Mango shortcut: “MODS,KEY” (e.g. SUPER,Q)"
@@ -882,10 +910,11 @@ msgstr "Niri：不支持移动快捷键（请使用“文件”标签页）。"
 #: roudix_config_core.py
 #, python-brace-format
 msgid ""
-"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg}"
-" — trailing comma before ] or }} ?"
+"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg} "
+"— trailing comma before ] or }} ?"
 msgstr ""
-"roudix-config 块中的 JSON 无效（第 {line} 行，第 {colno} 列）：{msg} — ] 或 }} 前是否多了逗号？"
+"roudix-config 块中的 JSON 无效（第 {line} 行，第 {colno} 列）：{msg} — ] "
+"或 }} 前是否多了逗号？"
 
 #: roudix_config_core.py
 #, python-brace-format
@@ -910,7 +939,9 @@ msgstr "已移除旧的 umbriel-managed.nix 导入（已过时）"
 msgid ""
 "NOTE: umbriel-custom.nix still mentions umbriel-managed.nix — remove it by "
 "hand, that file is obsolete."
-msgstr "注意：umbriel-custom.nix 仍提到 umbriel-managed.nix — 请手动移除，该文件已过时。"
+msgstr ""
+"注意：umbriel-custom.nix 仍提到 umbriel-managed.nix — 请手动移除，该文件已过"
+"时。"
 
 #: roudix_config_core.py
 #, python-brace-format
@@ -946,6 +977,14 @@ msgid "On"
 msgstr "开启"
 
 #: roudix_config_core.py
+msgid "Hidden from captures"
+msgstr "在截图和录屏中隐藏"
+
+#: roudix_config_core.py
+msgid "Shown in captures"
+msgstr "在截图和录屏中显示"
+
+#: roudix_config_core.py
 msgid "app_id or title required"
 msgstr "需要 app_id 或标题"
 
@@ -971,11 +1010,11 @@ msgstr "Roudix Config 暂不支持 {t}（目前支持：{join}）。"
 
 #: roudix_config_core.py
 msgid ""
-"Can't determine the desktop (roudix.desktop.type). Rebuild so that "
-"~/.local/share/roudix/desktop-type gets created."
+"Can't determine the desktop (roudix.desktop.type). Rebuild so that ~/.local/"
+"share/roudix/desktop-type gets created."
 msgstr ""
-"无法确定桌面环境（roudix.desktop.type）。请执行 rebuild，以创建 ~/.local/share/roudix/desktop-"
-"type。"
+"无法确定桌面环境（roudix.desktop.type）。请执行 rebuild，以创建 ~/.local/"
+"share/roudix/desktop-type。"
 
 #: roudix_config_core.py
 #, python-brace-format

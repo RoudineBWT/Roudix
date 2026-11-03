@@ -80,6 +80,10 @@ msgstr "Flou (blur)"
 msgid "Opacity (0 to 1, optional)"
 msgstr "Opacité (0 à 1, optionnel)"
 
+#: roudix-config-gui.py roudix-config.py
+msgid "Screenshots and recordings"
+msgstr "Captures d'écran et enregistrements"
+
 #: roudix-config-gui.py
 msgid "Opacity: a number between 0 and 1"
 msgstr "Opacité : un nombre entre 0 et 1"
@@ -759,6 +763,10 @@ msgid "Prefer server-side decorations"
 msgstr "Forcer les décorations côté serveur"
 
 #: roudix_config_backends.py
+msgid "Title bar button symbols"
+msgstr "Symboles des boutons de la barre de titre"
+
+#: roudix_config_backends.py
 msgid "Default layout"
 msgstr "Disposition par défaut"
 
@@ -773,6 +781,10 @@ msgstr "Largeur par défaut des colonnes"
 #: roudix_config_backends.py
 msgid "Master area width"
 msgstr "Largeur de la zone principale (master)"
+
+#: roudix_config_backends.py
+msgid "Fade window opacity and blur on focus change"
+msgstr "Fondu de l'opacité et du flou au changement de focus"
 
 #: roudix_config_backends.py
 msgid "Tap to click (touchpad)"
@@ -983,6 +995,14 @@ msgstr "Désactivé"
 #: roudix_config_core.py
 msgid "On"
 msgstr "Activé"
+
+#: roudix_config_core.py
+msgid "Hidden from captures"
+msgstr "Masquée des captures"
+
+#: roudix_config_core.py
+msgid "Shown in captures"
+msgstr "Visible dans les captures"
 
 #: roudix_config_core.py
 msgid "app_id or title required"

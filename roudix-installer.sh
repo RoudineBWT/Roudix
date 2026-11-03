@@ -1144,7 +1144,7 @@ pick "Bootloader:" BOOTLOADER \
 
 # Limine boot wallpaper format. The wallpaper is stretched to the screen, so it
 # has to match the aspect ratio of the MAIN screen — the connected one with the
-# highest resolution (scripts/detect-boot-aspect.sh). Only asked with Limine.
+# highest resolution (scripts/detect-boot-aspect.sh). Asked with Limine only.
 BOOT_ASPECT="16x9"
 if [[ "$BOOTLOADER" == "limine" ]] && ! hidden_key roudix.boot.wallpaperAspect; then
   DETECTED_RES="" DETECTED_ASPECT=""

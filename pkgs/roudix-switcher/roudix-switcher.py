@@ -2515,7 +2515,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.boot_aspect_note.set_wrap(True)
         self.boot_aspect_note.set_xalign(0)
         system_page.append(self.boot_aspect_note)
-        if not self._boot_is_limine():
+        if not self._boot_has_wallpaper():
             self.boot_aspect_selector.set_visible(False)
             self.boot_aspect_note.set_visible(False)
 
@@ -2542,7 +2542,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.boot_resolution_note.set_wrap(True)
         self.boot_resolution_note.set_xalign(0)
         system_page.append(self.boot_resolution_note)
-        if not self._boot_is_limine():
+        if not self._boot_has_wallpaper():
             self.boot_resolution_selector.set_visible(False)
             self.boot_resolution_note.set_visible(False)
 
@@ -2704,9 +2704,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             {"widget": self.autoupdate_interval_selector, "key": "roudix.autoupdate.interval", "default": "1h",
              "label": tr("Update interval"),              "relevant": lambda de: True},
             {"widget": self.boot_aspect_selector,         "key": "roudix.boot.wallpaperAspect", "default": "16x9",
-             "label": tr("Boot wallpaper format"),        "relevant": lambda de: self._boot_is_limine()},
+             "label": tr("Boot wallpaper format"),        "relevant": lambda de: self._boot_has_wallpaper()},
             {"widget": self.boot_resolution_selector,     "key": "roudix.boot.menuResolution", "default": "auto",
-             "label": tr("Limine menu resolution"),       "relevant": lambda de: self._boot_is_limine()},
+             "label": tr("Limine menu resolution"),       "relevant": lambda de: self._boot_has_wallpaper()},
             {"widget": self.eac_vendor_selector,          "key": "roudix.boot.eac.vendor",    "default": "fedora",
              "label": tr("EAC kernel"),                   "relevant": lambda de: self._boot_is_limine() and self._eac_enabled()},
             {"widget": self.fluxer_channel_selector,      "key": "roudix.apps.fluxer.channel", "default": "stable",
@@ -3077,6 +3077,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
     @staticmethod
     def _boot_is_limine() -> bool:
         """Only Limine shows a wallpaper (default bootloader of Roudix)."""
+        return get_active_string_option("roudix.boot.bootloader", "limine") == "limine"
+
+    @staticmethod
+    def _boot_has_wallpaper() -> bool:
+        """Only Limine draws the boot wallpaper (systemd-boot has none)."""
         return get_active_string_option("roudix.boot.bootloader", "limine") == "limine"
 
     def _eac_enabled(self) -> bool:

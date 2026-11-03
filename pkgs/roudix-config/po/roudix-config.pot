@@ -82,6 +82,10 @@ msgstr ""
 msgid "Opacity (0 to 1, optional)"
 msgstr ""
 
+#: roudix-config-gui.py roudix-config.py
+msgid "Screenshots and recordings"
+msgstr ""
+
 #: roudix-config-gui.py
 msgid "Opacity: a number between 0 and 1"
 msgstr ""
@@ -722,6 +726,10 @@ msgid "Prefer server-side decorations"
 msgstr ""
 
 #: roudix_config_backends.py
+msgid "Title bar button symbols"
+msgstr ""
+
+#: roudix_config_backends.py
 msgid "Default layout"
 msgstr ""
 
@@ -735,6 +743,10 @@ msgstr ""
 
 #: roudix_config_backends.py
 msgid "Master area width"
+msgstr ""
+
+#: roudix_config_backends.py
+msgid "Fade window opacity and blur on focus change"
 msgstr ""
 
 #: roudix_config_backends.py
@@ -937,6 +949,14 @@ msgstr ""
 
 #: roudix_config_core.py
 msgid "On"
+msgstr ""
+
+#: roudix_config_core.py
+msgid "Hidden from captures"
+msgstr ""
+
+#: roudix_config_core.py
+msgid "Shown in captures"
 msgstr ""
 
 #: roudix_config_core.py
