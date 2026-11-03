@@ -480,6 +480,18 @@ msgid "Every day"
 msgstr "Каждый день"
 
 #: roudix-switcher.py
+msgid "Stable"
+msgstr "Стабильный"
+
+#: roudix-switcher.py
+msgid "Canary"
+msgstr "Canary"
+
+#: roudix-switcher.py
+msgid "Fresher builds, more likely to break"
+msgstr "Более свежие сборки, выше риск сбоев"
+
+#: roudix-switcher.py
 msgid ""
 "Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
 "keys)"
@@ -747,6 +759,10 @@ msgid "Fluxer (self-hostable Discord alternative)"
 msgstr "Fluxer (альтернатива Discord для самостоятельного хостинга)"
 
 #: roudix-switcher.py
+msgid "Cressida (native Discord client, unofficial)"
+msgstr "Cressida (нативный клиент Discord, неофициальный)"
+
+#: roudix-switcher.py
 msgid "Virtualization (QEMU/KVM)"
 msgstr "Виртуализация (QEMU/KVM)"
 
@@ -988,6 +1004,10 @@ msgstr "Клиент Matrix"
 #: roudix-switcher.py
 msgid "Optional apps"
 msgstr "Дополнительные приложения"
+
+#: roudix-switcher.py
+msgid "Fluxer channel"
+msgstr "Канал Fluxer"
 
 #: roudix-switcher.py
 msgid "Video player"

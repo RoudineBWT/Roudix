@@ -300,6 +300,13 @@ def _music_player():
     ]
 
 
+def _fluxer_channel():
+    return [
+        ("stable", tr("Stable")),
+        ("canary", tr("Canary (fresher, may break)")),
+    ]
+
+
 def _mail_client():
     return [
         ("none", tr("None")),
@@ -1171,6 +1178,23 @@ class OptionsPage(Adw.NavigationPage):
         self.app_fluxer_row.set_active(state.app_fluxer)
         apps_group.add(self.app_fluxer_row)
 
+        self.app_fluxer_channel_row = self._combo(
+            tr("Fluxer channel"), _fluxer_channel(), state.app_fluxer_channel
+        )
+        apps_group.add(self.app_fluxer_channel_row)
+        self.app_fluxer_channel_row.set_sensitive(state.app_fluxer)
+        self.app_fluxer_row.connect(
+            "notify::active",
+            lambda *_: self.app_fluxer_channel_row.set_sensitive(self.app_fluxer_row.get_active()),
+        )
+
+        self.app_cressida_row = Adw.SwitchRow(
+            title="Cressida",
+            subtitle=tr("Native Wayland Discord client (unofficial, early development)"),
+        )
+        self.app_cressida_row.set_active(state.app_cressida)
+        apps_group.add(self.app_cressida_row)
+
         box.append(apps_group)
         self._sync_spicetify_rows()
 
@@ -1338,6 +1362,8 @@ class OptionsPage(Adw.NavigationPage):
         "app_songrec_row": ["roudix.apps.songrec.enable"], "app_easyeffects_row": ["roudix.apps.easyeffects.enable"],
         "app_signal_row": ["roudix.apps.signal.enable"], "app_zapzap_row": ["roudix.apps.zapzap.enable"],
         "app_fluxer_row": ["roudix.apps.fluxer.enable"],
+        "app_fluxer_channel_row": ["roudix.apps.fluxer.channel"],
+        "app_cressida_row": ["roudix.apps.cressida.enable"],
         "spicetify_theme_row": ["roudix.spicetify.theme"],
         "spicetify_color_scheme_row": ["roudix.spicetify.colorScheme"],
         "spicetify_adblock_row": ["roudix.spicetify.extensions.adblock.enable"],
@@ -1356,7 +1382,7 @@ class OptionsPage(Adw.NavigationPage):
         "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
         "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
         "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "boot_aspect_row", "boot_resolution_row", "secure_boot_row", "eac_row", "eac_vendor_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
-        "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row"],
+        "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row", "app_fluxer_channel_row", "app_cressida_row"],
         "cc_group": ["content_creation_row", "obs_row", "video_editor_row", "virtual_camera_row", "chatterino_row"],
     }
 
@@ -1392,6 +1418,7 @@ class OptionsPage(Adw.NavigationPage):
             "torrent_client": vals(_torrent_client()),
             "music_player": vals(_music_player()),
             "mail_client": vals(_mail_client()),
+            "app_fluxer_channel": vals(_fluxer_channel()),
             "password_manager": vals(_password_manager()),
             "spicetify_theme": vals(_spicetify_themes()),
             "timezone": vals(_timezones()),
@@ -1793,6 +1820,8 @@ class OptionsPage(Adw.NavigationPage):
         s.app_signal = self.app_signal_row.get_active()
         s.app_zapzap = self.app_zapzap_row.get_active()
         s.app_fluxer = self.app_fluxer_row.get_active()
+        s.app_fluxer_channel = self._selected_value(self.app_fluxer_channel_row)
+        s.app_cressida = self.app_cressida_row.get_active()
 
         s.content_creation_enable = self.content_creation_row.get_active()
         s.obs_enable = self.obs_row.get_active()

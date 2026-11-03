@@ -151,6 +151,14 @@
       url = "github:TheAnachronism/betterbird-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Cressida — native C++ / Wayland chat client (unofficial Discord client).
+    # Only used by roudix.apps.cressida.enable. No `nixpkgs.follows` on
+    # purpose: its docs ask to keep the nixpkgs it pins for its build
+    # dependencies (C++23 toolchain, libzstd, ...).
+    cressida = {
+      url = "github:Ly-sec/Cressida";
+    };
     mango = {
         url = "github:mangowm/mango";
         inputs.nixpkgs.follows = "nixpkgs";

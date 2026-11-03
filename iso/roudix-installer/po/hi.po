@@ -406,6 +406,14 @@ msgid "Spotify + Spicetify"
 msgstr "Spotify + Spicetify"
 
 #: src/roudix_installer/pages/options.py
+msgid "Stable"
+msgstr "स्टेबल"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canary (fresher, may break)"
+msgstr "Canary (नया, खराब हो सकता है)"
+
+#: src/roudix_installer/pages/options.py
 msgid "Thunderbird (full-featured)"
 msgstr "Thunderbird (पूर्ण-सुविधा)"
 
@@ -1284,6 +1292,14 @@ msgid ""
 "Self-hostable Discord alternative (independent of the Discord choice above)"
 msgstr "खुद होस्ट किया जा सकने वाला Discord का विकल्प (ऊपर के Discord चुनाव से स्वतंत्र)"
 
+#: src/roudix_installer/pages/options.py
+msgid "Fluxer channel"
+msgstr "Fluxer चैनल"
+
+#: src/roudix_installer/pages/options.py
+msgid "Native Wayland Discord client (unofficial, early development)"
+msgstr "Wayland के लिए नेटिव Discord क्लाइंट (अनौपचारिक, शुरुआती विकास में)"
+
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Content Creation"
 msgstr "कंटेंट क्रिएशन"
@@ -1368,7 +1384,9 @@ msgstr "Kernel (xddxdd)"
 msgid ""
 "Invalid username: use letters, digits, '_', '-' or '.', starting with a "
 "letter or '_' (max 32)."
-msgstr "अमान्य उपयोगकर्ता नाम: अक्षर, अंक, '_', '-' या '.' का उपयोग करें, और नाम अक्षर या '_' से शुरू होना चाहिए (अधिकतम 32)।"
+msgstr ""
+"अमान्य उपयोगकर्ता नाम: अक्षर, अंक, '_', '-' या '.' का उपयोग करें, और नाम अक्षर या "
+"'_' से शुरू होना चाहिए (अधिकतम 32)।"
 
 #: src/roudix_installer/pages/options.py
 msgid ""

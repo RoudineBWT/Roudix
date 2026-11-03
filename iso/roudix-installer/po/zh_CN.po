@@ -404,6 +404,14 @@ msgid "Spotify + Spicetify"
 msgstr "Spotify + Spicetify"
 
 #: src/roudix_installer/pages/options.py
+msgid "Stable"
+msgstr "稳定版"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canary (fresher, may break)"
+msgstr "Canary（更新，可能出问题）"
+
+#: src/roudix_installer/pages/options.py
 msgid "Thunderbird (full-featured)"
 msgstr "Thunderbird（功能齐全）"
 
@@ -1278,6 +1286,14 @@ msgid ""
 "Self-hostable Discord alternative (independent of the Discord choice above)"
 msgstr "可自托管的 Discord 替代品（与上面的 Discord 选择无关）"
 
+#: src/roudix_installer/pages/options.py
+msgid "Fluxer channel"
+msgstr "Fluxer 渠道"
+
+#: src/roudix_installer/pages/options.py
+msgid "Native Wayland Discord client (unofficial, early development)"
+msgstr "原生 Wayland 的 Discord 客户端（非官方，早期开发中）"
+
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Content Creation"
 msgstr "内容创作"
@@ -1362,7 +1378,9 @@ msgstr "Kernel (xddxdd)"
 msgid ""
 "Invalid username: use letters, digits, '_', '-' or '.', starting with a "
 "letter or '_' (max 32)."
-msgstr "用户名无效：请使用字母、数字、“_”、“-”或“.”，并以字母或“_”开头（最多 32 个字符）。"
+msgstr ""
+"用户名无效：请使用字母、数字、“_”、“-”或“.”，并以字母或“_”开头（最多 32 个字"
+"符）。"
 
 #: src/roudix_installer/pages/options.py
 msgid ""

@@ -154,7 +154,9 @@ Fluxer 是可自托管的 Discord 替代品，同样是这类 opt-in
 直接取自 `nix-gaming-edge` flake input 中预编译好的
 `fluxer-desktop` 包。它有意与 `roudix.discord`
 和 `roudix.gaming.enable` 保持独立 — 你完全可能既想要 Discord
-又想要 Fluxer，或者想要 Fluxer 却没有任何游戏配置。
+又想要 Fluxer，或者想要 Fluxer 却没有任何游戏配置。 `roudix.apps.fluxer.channel` 用于选择发布渠道：`"stable"`（默认）或 `"canary"`（更新的构建，更容易出问题；以 `fluxer-canary` 安装，并使用独立的 app id）。
+
+Cressida 是一个非官方的原生 Discord 客户端（C++ / Wayland），同样是可选的布尔选项：`roudix.apps.cressida.enable`。它同样不在 nixpkgs 中，因此来自它自己的 `cressida` flake input（[Ly-sec/Cressida](https://github.com/Ly-sec/Cressida)）。它独立于 `roudix.discord`、Fluxer 和 `roudix.gaming.enable`。根据其自身文档有两点需要注意：它仍处于早期开发阶段（暂不支持视频通话，部分设置尚不完整）；并且和任何第三方 Discord 客户端一样，可能导致账号被标记或受限——在用主账号之前请先考虑这一点。仅支持 Wayland，没有 X11 后端。
 
 邮件客户端和密码管理器也可使用，均为 opt-in（默认关闭）：
 `roudix.mailClient` — `"thunderbird"`（功能齐全）、

@@ -414,6 +414,14 @@ msgid "Spotify + Spicetify"
 msgstr "Spotify + Spicetify"
 
 #: src/roudix_installer/pages/options.py
+msgid "Stable"
+msgstr "Стабильный"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canary (fresher, may break)"
+msgstr "Canary (новее, может ломаться)"
+
+#: src/roudix_installer/pages/options.py
 msgid "Thunderbird (full-featured)"
 msgstr "Thunderbird (полнофункциональный)"
 
@@ -1295,6 +1303,14 @@ msgstr ""
 "Альтернатива Discord с самостоятельным хостингом (не зависит от выбора "
 "Discord выше)"
 
+#: src/roudix_installer/pages/options.py
+msgid "Fluxer channel"
+msgstr "Канал Fluxer"
+
+#: src/roudix_installer/pages/options.py
+msgid "Native Wayland Discord client (unofficial, early development)"
+msgstr "Нативный клиент Discord для Wayland (неофициальный, ранняя разработка)"
+
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Content Creation"
 msgstr "Создание контента"
@@ -1379,7 +1395,9 @@ msgstr "Kernel (xddxdd)"
 msgid ""
 "Invalid username: use letters, digits, '_', '-' or '.', starting with a "
 "letter or '_' (max 32)."
-msgstr "Недопустимое имя пользователя: используйте буквы, цифры, «_», «-» или «.», начиная с буквы или «_» (не более 32 символов)."
+msgstr ""
+"Недопустимое имя пользователя: используйте буквы, цифры, «_», «-» или «.», "
+"начиная с буквы или «_» (не более 32 символов)."
 
 #: src/roudix_installer/pages/options.py
 msgid ""
