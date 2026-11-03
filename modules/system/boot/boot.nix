@@ -59,18 +59,18 @@ in
 
   };
 
-  config = lib.mkIf config.roudix.boot.enable {
+  config = lib.mkIf cfg.enable {
 
     # ── Bootloader ────────────────────────────────────────────────────────
     boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
 
-    boot.loader.systemd-boot = lib.mkIf (config.roudix.boot.bootloader == "systemd-boot") {
+    boot.loader.systemd-boot = lib.mkIf (cfg.bootloader == "systemd-boot") {
       enable = true;
       configurationLimit = 3;
       editor = false;
     };
 
-    boot.loader.limine = lib.mkIf (config.roudix.boot.bootloader == "limine") {
+    boot.loader.limine = lib.mkIf (cfg.bootloader == "limine") {
       enable = true;
       # Enroll config checksum for integrity verification
       enrollConfig = true;
@@ -79,15 +79,15 @@ in
       style = {
         wallpapers = [
           (builtins.path {
-            path = ./bootloader + "/wallpaper-${config.roudix.boot.wallpaperAspect}.png";
+            path = ./bootloader + "/wallpaper-${cfg.wallpaperAspect}.png";
             name = "limine-wallpaper";
           })
         ];
         wallpaperStyle = "stretched";
         # null = no `interface_resolution` line, Limine picks by itself
         interface.resolution =
-          if config.roudix.boot.menuResolution == "auto" then null
-          else config.roudix.boot.menuResolution;
+          if cfg.menuResolution == "auto" then null
+          else cfg.menuResolution;
         # ── Roudix Roux ──────────────────────────────────────────────
         graphicalTerminal = {
           foreground       = "eab676"; # tan (logo)
