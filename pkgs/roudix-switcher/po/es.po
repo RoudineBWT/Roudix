@@ -494,10 +494,10 @@ msgstr "Compilaciones más recientes, más propensas a fallar"
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"Secure Boot — sign Limine with sbctl (the keys must exist: roudix-secureboot create-"
 "keys)"
 msgstr ""
-"Secure Boot — firmar Limine con sbctl (las claves deben existir: sudo sbctl "
+"Secure Boot — firmar Limine con sbctl (las claves deben existir: roudix-secureboot "
 "create-keys)"
 
 #: roudix-switcher.py

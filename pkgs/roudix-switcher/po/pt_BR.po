@@ -492,11 +492,11 @@ msgstr "Versões mais recentes, mais propensas a quebrar"
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"Secure Boot — sign Limine with sbctl (the keys must exist: roudix-secureboot create-"
 "keys)"
 msgstr ""
-"Secure Boot — assinar o Limine com sbctl (as chaves precisam existir: sudo "
-"sbctl create-keys)"
+"Secure Boot — assinar o Limine com sbctl (as chaves precisam existir: roudix-secureboot "
+"create-keys)"
 
 #: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"

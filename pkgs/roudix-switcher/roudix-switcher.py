@@ -703,7 +703,7 @@ FLUXER_CHANNELS = [
 # enrolled in the firmware BEFORE Secure Boot is switched on there:
 # docs/secure-boot-eac.md.
 BOOT_SECURITY_TOGGLES = [
-    {"id": "secureBoot", "name": tr("Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-keys)"),
+    {"id": "secureBoot", "name": tr("Secure Boot — sign Limine with sbctl (the keys must exist: roudix-secureboot create-keys)"),
      "key": "roudix.boot.secureBoot.enable", "default": False},
     {"id": "eac",        "name": tr("EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"),
      "key": "roudix.boot.eac.enable",        "default": False},

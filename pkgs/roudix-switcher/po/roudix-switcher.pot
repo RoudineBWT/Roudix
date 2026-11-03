@@ -472,7 +472,7 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"Secure Boot — sign Limine with sbctl (the keys must exist: roudix-secureboot create-"
 "keys)"
 msgstr ""
 

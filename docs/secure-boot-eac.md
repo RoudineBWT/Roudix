@@ -81,36 +81,37 @@ The same options are exposed outside `local.nix`, all off by default:
 - **`roudix-switcher`** has a "Secure Boot and EAC (experimental)" group on the
   System page with the same two switches and the EAC kernel choice (Limine
   only). Turning Secure Boot on there rebuilds with signing enabled, so create
-  the sbctl keys first (`sudo sbctl create-keys`).
+  the sbctl keys first (`roudix-secureboot create-keys`).
 
 ## Turning it on safely (existing Limine install)
 
-Nothing here changes your bootloader. Do the steps in this order, and stop at
-any step that does not behave as described.
+`roudix-secureboot` is installed on every Limine system and walks you through
+this: run it without arguments to see where you are (keys, firmware mode,
+Secure Boot, Limine's signature, the EAC entry) and what to do next. Nothing here
+changes your bootloader. Do the steps in this order, and stop at any step that
+does not behave as described.
 
 1. **Prepare a way back.** Back up the ESP (`sudo tar -C /boot -cf ~/esp-backup.tar .`),
    have a live USB at hand, and know how to open the firmware setup.
-2. **Create the keys** (Secure Boot still OFF in the firmware). Roudix only
-   installs `sbctl` once `roudix.boot.secureBoot.enable` is on, so for steps
-   2 to 4 run it through nix:
-   `sudo nix run nixpkgs#sbctl -- create-keys` (stored in `/var/lib/sbctl`;
-   back them up).
-3. **Put the firmware in Setup Mode** (the menu entry to clear or reset the
-   Secure Boot keys; it differs per board). Secure Boot stays disabled.
-4. **Enroll your keys with Microsoft's:**
-   `sudo nix run nixpkgs#sbctl -- enroll-keys -m -f`
-   (`-m` keeps Microsoft's certificates, needed by Fedora's shim and most GPU
-   firmware; `-f` keeps the firmware's built-in ones).
-   `sudo nix run nixpkgs#sbctl -- status` should now show Setup Mode off.
+2. **Create the keys** (Secure Boot still OFF in the firmware):
+   `roudix-secureboot create-keys` (stored in `/var/lib/sbctl`; back them up).
+3. **Put the firmware in Setup Mode.** In the firmware setup, clear the Secure
+   Boot keys (the entry differs per board; don't choose "restore factory keys").
+   Secure Boot stays disabled. `roudix-secureboot firmware` reboots into the setup.
+4. **Enroll your keys with Microsoft's:** `roudix-secureboot enroll`
+   (it runs `sbctl enroll-keys -m -f`: `-m` keeps Microsoft's certificates, needed
+   by Fedora's shim and most GPU firmware; `-f` keeps the firmware's built-in
+   ones, and it refuses to run outside Setup Mode). `roudix-secureboot` should
+   now report your keys as enrolled.
 5. **Sign Limine:** in `hosts/<host>/local.nix` set
-   `roudix.boot.secureBoot.enable = true;`, then rebuild (`sbctl` is in your
-   PATH from now on). Check `sudo sbctl verify`: the Limine EFI files must show as signed (kernels are
+   `roudix.boot.secureBoot.enable = true;`, then rebuild. Check with
+   `roudix-secureboot verify`: Limine's EFI file must be signed (kernels are
    verified by Limine through the hashes in its enrolled config, not by
-   signature).
+   signature; the other files `sbctl verify` lists as "not signed" are expected).
 6. **Reboot with Secure Boot still OFF** and check it boots normally.
-7. **Turn Secure Boot ON in the firmware** and reboot. If the machine does not
-   boot, disable Secure Boot in the firmware: Roudix boots as before. The ESP
-   backup and the live USB cover the rest.
+7. **Turn Secure Boot ON in the firmware** (`roudix-secureboot firmware`) and
+   reboot. If the machine does not boot, disable Secure Boot in the firmware:
+   Roudix boots as before. The ESP backup and the live USB cover the rest.
 8. **Optional — EAC entry:** set `roudix.boot.eac.enable = true;`
    (`vendor = "bazzite"` if you want the OGC kernel), rebuild, then
    `sudo eac-reboot` to boot it once. In it, `sudo eacnix-check` checks every
@@ -120,6 +121,11 @@ any step that does not behave as described.
 Some boards report Secure Boot as enabled but still run unsigned images
 (MSI's "Image Execution Policy: Always Execute", for example): `eacnix-check`
 warns about it.
+
+If Windows is installed with BitLocker, changing the Secure Boot keys can make
+it ask for its recovery key: `roudix-secureboot` reminds you before it enrolls.
+The tool also runs without arguments from a normal user (it asks for sudo) and
+`-y` skips its confirmations.
 
 ## Undoing it
 

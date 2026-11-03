@@ -17,6 +17,21 @@ let
   limine = cfg.bootloader == "limine";
   systemdBoot = cfg.bootloader == "systemd-boot";
   nvidia = config.hardware.myGpu == "nvidia";
+
+  # Guided setup: shows where you are (keys, firmware mode, Secure Boot, Limine
+  # signature, EAC entry) and runs the steps that can be automated. Installed on
+  # every Limine system, since it is what you use BEFORE turning the options on.
+  # The script lives in roudix-secureboot.sh (linted by writeShellApplication).
+  roudixSecureboot = pkgs.writeShellApplication {
+    name = "roudix-secureboot";
+    runtimeInputs = with pkgs; [ sbctl efibootmgr coreutils gnugrep systemd ];
+    runtimeEnv = {
+      ROUDIX_BOOTLOADER = cfg.bootloader;
+      ROUDIX_SB_ENABLED = lib.boolToString cfg.secureBoot.enable;
+      ROUDIX_EAC_ENABLED = lib.boolToString cfg.eac.enable;
+    };
+    text = builtins.readFile ./roudix-secureboot.sh;
+  };
 in
 {
   options.roudix.boot = {
@@ -29,9 +44,8 @@ in
           created and enrolled BEFORE the first rebuild with this on — follow docs/secure-boot-eac.md, in this
           order: `sbctl create-keys`, firmware Setup Mode,
           `sbctl enroll-keys -m -f`, rebuild, check `sbctl verify`, and only
-          then enable Secure Boot in the firmware. sbctl is installed by this
-          option, so before it is on, run it with
-          `sudo nix run nixpkgs#sbctl -- <command>`.
+          then enable Secure Boot in the firmware. `roudix-secureboot` (installed
+          on every Limine system) does these steps and tells you the next one.
         '';
         type = lib.types.bool;
         default = false;
@@ -90,6 +104,11 @@ in
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
+
+    # ── roudix-secureboot (Limine systems) ────────────────────────────────
+    (lib.mkIf limine {
+      environment.systemPackages = [ roudixSecureboot ];
+    })
 
     # ── Secure Boot (Limine signed with sbctl / systemd-boot via lanzaboote) ──
     (lib.mkIf cfg.secureBoot.enable {

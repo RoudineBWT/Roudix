@@ -121,6 +121,7 @@
   # check, THEN enable Secure Boot in the firmware). The keys must be enrolled
   # before Secure Boot is switched on in the firmware.
   # Limine only. Needs UEFI; the EAC entry also needs a TPM 2.0.
+  # `roudix-secureboot` (installed with Limine) shows where you are and does the steps.
   roudix.boot.secureBoot.enable = false;           # sign Limine with sbctl so the normal entry boots with Secure Boot ON
   roudix.boot.secureBoot.autoGenerateKeys = false; # create the sbctl keys at install time if missing (enrolling them stays manual)
   roudix.boot.eac.enable = false;                  # add a separate "NixOS EAC" boot entry (Fedora/Bazzite-signed kernel) for EAC Linux v2 games — Epic has not confirmed it accepts this yet

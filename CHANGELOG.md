@@ -8,6 +8,7 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 ## [Unreleased]
 
 ### Added
+- `roudix-secureboot`: guided Secure Boot setup, installed on every Limine system. It shows the keys, firmware mode, Secure Boot state, Limine's signature and the EAC entry, runs `create-keys` and `enroll` (refusing outside Setup Mode, with a BitLocker reminder) and tells you the next step. Covered by an offline test (`scripts/test-roudix-secureboot.sh`).
 - Secure Boot with `roudix.boot.bootloader = "systemd-boot"`: `roudix.boot.secureBoot.enable` now signs it through lanzaboote (new pinned `lanzaboote` flake input; same sbctl keys as Limine). `roudix.boot.eac` stays Limine-only when Secure Boot is on.
 - `roudix.apps.fluxer.channel` (`"stable"` by default, or `"canary"`) picks which Fluxer build is installed (`fluxer-desktop` / `fluxer-desktop-canary` from nix-gaming-edge; canary has its own app id, so it never overwrites stable). Also in the GTK installer and `roudix-switcher`, translated into all supported languages.
 - Cressida, an unofficial native (C++ / Wayland) Discord client, as an opt-in app (`roudix.apps.cressida.enable`, off by default) from the new `cressida` flake input, next to Fluxer: also in the GTK installer and `roudix-switcher`, translated into all supported languages. Early development, Wayland only; like any third-party Discord client it can get an account flagged.
