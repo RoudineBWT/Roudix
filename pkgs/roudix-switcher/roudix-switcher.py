@@ -691,12 +691,20 @@ AUTOUPDATE_INTERVALS = [
     {"id": "24h", "name": tr("Every day"),      "subtitle": ""},
 ]
 
+# roudix.apps.fluxer.channel (modules/system/apps/apps.nix) — enum, only
+# meaningful while Fluxer is enabled (no icons: plain text rows).
+FLUXER_CHANNELS = [
+    {"id": "stable", "name": tr("Stable"), "subtitle": tr("Default")},
+    {"id": "canary", "name": tr("Canary"), "subtitle": tr("Fresher builds, more likely to break")},
+]
+
 # roudix.boot.secureBoot / roudix.boot.eac (modules/system/boot/secure-boot.nix) —
-# Limine only, experimental, off by default. The sbctl keys must exist and be
+# Secure Boot works with Limine and systemd-boot (lanzaboote), the EAC entry is
+# Limine only. Experimental, off by default. The sbctl keys must exist and be
 # enrolled in the firmware BEFORE Secure Boot is switched on there:
 # docs/secure-boot-eac.md.
 BOOT_SECURITY_TOGGLES = [
-    {"id": "secureBoot", "name": tr("Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-keys)"),
+    {"id": "secureBoot", "name": tr("Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-keys)"),
      "key": "roudix.boot.secureBoot.enable", "default": False},
     {"id": "eac",        "name": tr("EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"),
      "key": "roudix.boot.eac.enable",        "default": False},
@@ -925,6 +933,7 @@ APPS_TOGGLES = [
     {"id": "signal",      "name": "Signal",                           "key": "roudix.apps.signal.enable",     "default": False},
     {"id": "zapzap",      "name": tr("ZapZap (unofficial WhatsApp client)"), "key": "roudix.apps.zapzap.enable", "default": False},
     {"id": "fluxer",      "name": tr("Fluxer (self-hostable Discord alternative)"), "key": "roudix.apps.fluxer.enable", "default": False},
+    {"id": "cressida",    "name": tr("Cressida (native Discord client, unofficial)"), "key": "roudix.apps.cressida.enable", "default": False},
 ]
 
 
@@ -2386,6 +2395,19 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.apps_group = ToggleListGroup(tr("Optional apps"), self.apps_toggles, apps_current)
         apps_page.append(self.apps_group)
 
+        # roudix.apps.fluxer.channel — only shown while Fluxer is switched on.
+        self.fluxer_channel_selector = SelectorGroup(
+            tr("Fluxer channel"),
+            FLUXER_CHANNELS,
+            get_active_string_option("roudix.apps.fluxer.channel", "stable"),
+            dark,
+        )
+        apps_page.append(self.fluxer_channel_selector)
+        fluxer_sw = self.apps_group.switches.get("fluxer")
+        if fluxer_sw is not None:
+            fluxer_sw.connect("notify::active", lambda *_: self._update_fluxer_visibility())
+        self._update_fluxer_visibility()
+
         current_video_player = get_string_option("roudix.videoPlayer", "none")
         self.video_player_selector = SelectorGroup(tr("Video player"), VIDEO_PLAYERS, current_video_player, dark)
         apps_page.append(self.video_player_selector)
@@ -2494,7 +2516,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.boot_aspect_note.set_wrap(True)
         self.boot_aspect_note.set_xalign(0)
         system_page.append(self.boot_aspect_note)
-        if not self._boot_is_limine():
+        if not self._boot_has_wallpaper():
             self.boot_aspect_selector.set_visible(False)
             self.boot_aspect_note.set_visible(False)
 
@@ -2521,11 +2543,11 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.boot_resolution_note.set_wrap(True)
         self.boot_resolution_note.set_xalign(0)
         system_page.append(self.boot_resolution_note)
-        if not self._boot_is_limine():
+        if not self._boot_has_wallpaper():
             self.boot_resolution_selector.set_visible(False)
             self.boot_resolution_note.set_visible(False)
 
-        # roudix.boot.secureBoot / roudix.boot.eac — Limine only, all off by default.
+        # roudix.boot.secureBoot / roudix.boot.eac — Secure Boot with Limine or systemd-boot, EAC Limine only, all off by default.
         self.boot_security_toggles = host_filter_items(BOOT_SECURITY_TOGGLES)
         boot_security_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.boot_security_toggles}
         self.boot_security_group = ToggleListGroup(tr("Secure Boot and EAC (experimental)"), self.boot_security_toggles, boot_security_current)
@@ -2683,11 +2705,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             {"widget": self.autoupdate_interval_selector, "key": "roudix.autoupdate.interval", "default": "1h",
              "label": tr("Update interval"),              "relevant": lambda de: True},
             {"widget": self.boot_aspect_selector,         "key": "roudix.boot.wallpaperAspect", "default": "16x9",
-             "label": tr("Boot wallpaper format"),        "relevant": lambda de: self._boot_is_limine()},
+             "label": tr("Boot wallpaper format"),        "relevant": lambda de: self._boot_has_wallpaper()},
             {"widget": self.boot_resolution_selector,     "key": "roudix.boot.menuResolution", "default": "auto",
-             "label": tr("Limine menu resolution"),       "relevant": lambda de: self._boot_is_limine()},
+             "label": tr("Limine menu resolution"),       "relevant": lambda de: self._boot_has_wallpaper()},
             {"widget": self.eac_vendor_selector,          "key": "roudix.boot.eac.vendor",    "default": "fedora",
-             "label": tr("EAC kernel"),                   "relevant": lambda de: self._boot_is_limine() and self._eac_enabled()},
+             "label": tr("EAC kernel"),                   "relevant": lambda de: self._boot_is_limine() and not self._boot_is_bios() and self._eac_enabled()},
+            {"widget": self.fluxer_channel_selector,      "key": "roudix.apps.fluxer.channel", "default": "stable",
+             "label": tr("Fluxer channel"),               "relevant": lambda de: self._fluxer_enabled()},
             {"widget": self.spicetify_theme_selector,     "key": "roudix.spicetify.theme",     "default": "colorful",
              "label": tr("Spicetify theme"),              "relevant": lambda de: self.music_player_selector.selected_id == "spotify"},
             {"widget": self.zen_profile_selector,         "key": "roudix.zen.tweaks.profile",  "default": PROFILE_AUTO,
@@ -2703,7 +2727,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.extra_bool_groups = [
             ("zen",   self.zen_tweaks,          self.zen_tweaks_group,      lambda de: self.zen_switch.get_active()),
             ("ff",    self.firefox_tweaks,      self.firefox_tweaks_group,  lambda de: self.browser_group.switches["firefox"].get_active()),
-            ("boot",  self.boot_security_toggles, self.boot_security_group, lambda de: self._boot_is_limine()),
+            ("boot",  self.boot_security_toggles, self.boot_security_group, lambda de: not self._boot_is_bios()),
             ("pw",    self.pipewire_toggles,    self.pipewire_group,        lambda de: True),
             ("tune0", self.tuning_master_items, self.tuning_master_group,   lambda de: True),
             ("tune",  self.tuning_items,        self.tuning_group,          lambda de: self._tuning_master_on()),
@@ -2939,6 +2963,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             ],
             "apps": [
                 (self.apps_group,             bool(self.apps_toggles)),
+                (self.fluxer_channel_selector, host_lists("roudix.apps.fluxer.channel")),
                 (self.video_player_selector,  host_lists("roudix.videoPlayer")),
                 (self.torrent_client_selector, host_lists("roudix.torrentClient")),
                 (self.music_player_selector,  host_lists("roudix.musicPlayer")),
@@ -3036,6 +3061,14 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         if not supported and self.category_list.get_selected_row() is row:
             self.category_list.select_row(self._category_rows["desktop"])
 
+    def _fluxer_enabled(self) -> bool:
+        sw = self.apps_group.switches.get("fluxer")
+        return False if sw is None else sw.get_active()
+
+    def _update_fluxer_visibility(self):
+        """The Fluxer channel only means something while Fluxer is enabled."""
+        self.fluxer_channel_selector.set_visible(self._fluxer_enabled())
+
     def _update_spicetify_visibility(self):
         """Spicetify settings only mean something with Spotify as music player."""
         show = self.music_player_selector.selected_id == "spotify"
@@ -3043,8 +3076,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.spicetify_group.set_visible(show)
 
     @staticmethod
+    def _boot_is_bios() -> bool:
+        """Legacy BIOS machine (booted without /sys/firmware/efi, or installed with
+        roudix.boot.biosDevice): Secure Boot and the EAC entry are UEFI-only."""
+        return (not os.path.exists("/sys/firmware/efi")
+                or get_active_string_option("roudix.boot.biosDevice", "") != "")
+
+    @staticmethod
     def _boot_is_limine() -> bool:
         """Only Limine shows a wallpaper (default bootloader of Roudix)."""
+        return get_active_string_option("roudix.boot.bootloader", "limine") == "limine"
+
+    @staticmethod
+    def _boot_has_wallpaper() -> bool:
+        """Only Limine draws the boot wallpaper (systemd-boot has none)."""
         return get_active_string_option("roudix.boot.bootloader", "limine") == "limine"
 
     def _eac_enabled(self) -> bool:
@@ -3052,11 +3097,24 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         return False if sw is None else sw.get_active()
 
     def _update_boot_security_visibility(self):
-        """Secure Boot signing and the EAC entry are Limine-only; the EAC
-        kernel choice only matters while the EAC entry is on."""
+        """Secure Boot signing works with Limine and systemd-boot; the EAC entry
+        is Limine-only, and its kernel choice only matters while it is on."""
         limine = self._boot_is_limine()
-        self.boot_security_group.set_visible(limine)
-        self.boot_security_note.set_visible(limine)
+        if self._boot_is_bios():
+            # Legacy BIOS: no Secure Boot, so none of these options exist.
+            self.boot_security_group.set_visible(False)
+            self.boot_security_note.set_visible(False)
+            self.eac_vendor_selector.set_visible(False)
+            return
+        eac_sw = self.boot_security_group.switches.get("eac")
+        if eac_sw is not None:
+            eac_row = eac_sw.get_ancestor(Adw.ActionRow)
+            if eac_row is not None:
+                eac_row.set_visible(limine)
+            if not limine:
+                eac_sw.set_active(False)
+        self.boot_security_group.set_visible(bool(self.boot_security_toggles))
+        self.boot_security_note.set_visible(bool(self.boot_security_toggles))
         self.eac_vendor_selector.set_visible(limine and self._eac_enabled())
 
     def _tuning_master_on(self) -> bool:
@@ -3160,6 +3218,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.password_manager_selector.update_icons(dark)
         self.autoupdate_interval_selector.update_icons(dark)
         self.spicetify_theme_selector.update_icons(dark)
+        self.fluxer_channel_selector.update_icons(dark)
 
     # ── Apply logic ───────────────────────────────────────────────────────
 

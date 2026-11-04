@@ -38,7 +38,7 @@ roudix-switch kde
 | Значение | Оболочка | Hyprland |
 |----------|----------|----------|
 | `noctalia` | Noctalia | `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `dms` | Dux Shell | `dotfiles/hyprland/` |
 | `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
 **Примечание:** Caelestia доступна только в Hyprland. Оболочка передаётся в сессию через `ROUDIX_HYPR_SHELL`, поэтому отдельных деревьев `hyprland-dms/` и `hyprland-caelestia/`, которые нужно синхронизировать, нет.
@@ -83,7 +83,7 @@ Niri, MangoWC и Umbriel всегда берутся из собственног
 
 ```nix
 roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
-roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.dms       = true;  # Dux Shell (+ dms-greeter)
 roudix.desktop.latest.caelestia = true;  # Caelestia (greeter DMS следует за ней)
 ```
 
@@ -133,10 +133,10 @@ programs.niri.settings.window-rules = [
 programs.umbriel.settings.output."DP-1".mode = lib.mkForce "3840x2160@144";
 
 # Переназначить сочетание клавиш, которое репозиторий уже определяет
-programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn:some-command";
+programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn some-command";
 
 # Добавить сочетание клавиш, которого ещё нет
-programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn:pavucontrol";
+programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn pavucontrol";
 
 # Добавить правило окна
 programs.umbriel.settings.window_rule = [

@@ -19,7 +19,7 @@
     ./hyprland/default.nix
     ./mangowc/default.nix
     ./umbriel/default.nix
-    # Desktop shell stacks (caelestia-shell, DankMaterialShell) — imported
+    # Desktop shell stacks (caelestia-shell, Dux Shell) — imported
     # only once here to avoid the "option already declared" conflict that
     # happens if both niri/ and hyprland/ imported it themselves.
     ./shell-modules.nix

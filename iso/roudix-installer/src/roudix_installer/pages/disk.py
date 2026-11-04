@@ -4,6 +4,7 @@ import threading
 
 from gi.repository import Adw, GLib, Gtk
 
+from roudix_installer.hardware_detect import is_bios_boot
 from roudix_installer.i18n import tr
 from roudix_installer.ui_helpers import page_with_header
 
@@ -284,6 +285,9 @@ class DiskPage(Adw.NavigationPage):
             self.partition_dropdowns[p["path"]] = dropdown
 
     def _validate(self, _btn):
+        # Whatever the partitioning mode: BIOS vs UEFI is a property of this boot,
+        # and manual/advanced installs need it too (biosDevice, Limine target).
+        self.state.disk.bios = is_bios_boot()
         if self.state.disk.mode == "simple":
             self.state.disk.filesystem = "btrfs" if self.filesystem_row.get_selected() == 1 else "ext4"
             self.state.disk.boot_size_gb = int(self.boot_size_row.get_value())

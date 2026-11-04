@@ -413,6 +413,14 @@ msgid "Spotify + Spicetify"
 msgstr "Spotify + Spicetify"
 
 #: src/roudix_installer/pages/options.py
+msgid "Stable"
+msgstr "Estável"
+
+#: src/roudix_installer/pages/options.py
+msgid "Canary (fresher, may break)"
+msgstr "Canary (mais recente, pode quebrar)"
+
+#: src/roudix_installer/pages/options.py
 msgid "Thunderbird (full-featured)"
 msgstr "Thunderbird (completo)"
 
@@ -1204,8 +1212,8 @@ msgid "Only useful with several screens of different sizes."
 msgstr "Útil apenas com várias telas de tamanhos diferentes."
 
 #: src/roudix_installer/pages/options.py
-msgid "Secure Boot (sign Limine)"
-msgstr "Secure Boot (assinar o Limine)"
+msgid "Secure Boot (sign the bootloader)"
+msgstr "Secure Boot (assinar o gerenciador de boot)"
 
 #: src/roudix_installer/pages/options.py
 msgid ""
@@ -1295,6 +1303,16 @@ msgstr ""
 "Alternativa ao Discord que pode ser auto-hospedada (independente da escolha "
 "de Discord acima)"
 
+#: src/roudix_installer/pages/options.py
+msgid "Fluxer channel"
+msgstr "Canal do Fluxer"
+
+#: src/roudix_installer/pages/options.py
+msgid "Native Wayland Discord client (unofficial, early development)"
+msgstr ""
+"Cliente nativo do Discord para Wayland (não oficial, em desenvolvimento "
+"inicial)"
+
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Content Creation"
 msgstr "Criação de conteúdo"
@@ -1379,7 +1397,9 @@ msgstr "Kernel (xddxdd)"
 msgid ""
 "Invalid username: use letters, digits, '_', '-' or '.', starting with a "
 "letter or '_' (max 32)."
-msgstr "Nome de usuário inválido: use letras, dígitos, «_», «-» ou «.», começando por uma letra ou «_» (máx. 32)."
+msgstr ""
+"Nome de usuário inválido: use letras, dígitos, «_», «-» ou «.», começando "
+"por uma letra ou «_» (máx. 32)."
 
 #: src/roudix_installer/pages/options.py
 msgid ""

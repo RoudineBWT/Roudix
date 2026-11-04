@@ -2,7 +2,7 @@ from gi.repository import Adw, Gtk
 
 from roudix_installer import existing_nixos, host_defaults, host_profile
 from roudix_installer.state import valid_username
-from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_main_screen, detect_screen_count
+from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_main_screen, detect_screen_count, is_bios_boot
 from roudix_installer.i18n import tr, trc, tr_noop
 from roudix_installer.ui_helpers import page_with_header
 
@@ -124,7 +124,7 @@ def _shells(desktop=None):
 
     base = [
         ("noctalia", tr("Noctalia — default shell")),
-        ("dms", "DankMaterialShell — Material 3"),
+        ("dms", "Dux Shell — Material 3"),
     ]
     if desktop == "hyprland":
         base = base + [
@@ -297,6 +297,13 @@ def _music_player():
         ("ytmdesktop", "YouTube Music Desktop"),
         ("sonora", "Sonora (Spotify / YouTube Music)"),
         ("none", tr("None")),
+    ]
+
+
+def _fluxer_channel():
+    return [
+        ("stable", tr("Stable")),
+        ("canary", tr("Canary (fresher, may break)")),
     ]
 
 
@@ -1032,9 +1039,9 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.boot_resolution_row)
 
-        # Secure Boot + EAC Linux v2 boot entry — experimental, Limine only, off
-        # by default. See docs/secure-boot-eac.md.
-        self.secure_boot_row = Adw.SwitchRow(title=tr("Secure Boot (sign Limine)"))
+        # Secure Boot (Limine and systemd-boot) + EAC Linux v2 boot entry
+        # (Limine only) — experimental, off by default. See docs/secure-boot-eac.md.
+        self.secure_boot_row = Adw.SwitchRow(title=tr("Secure Boot (sign the bootloader)"))
         self.secure_boot_row.set_subtitle(
             tr("Keys are created during the install; enrolling them in the firmware is "
                "done afterwards (docs/secure-boot-eac.md).")
@@ -1170,6 +1177,23 @@ class OptionsPage(Adw.NavigationPage):
         )
         self.app_fluxer_row.set_active(state.app_fluxer)
         apps_group.add(self.app_fluxer_row)
+
+        self.app_fluxer_channel_row = self._combo(
+            tr("Fluxer channel"), _fluxer_channel(), state.app_fluxer_channel
+        )
+        apps_group.add(self.app_fluxer_channel_row)
+        self.app_fluxer_channel_row.set_sensitive(state.app_fluxer)
+        self.app_fluxer_row.connect(
+            "notify::active",
+            lambda *_: self.app_fluxer_channel_row.set_sensitive(self.app_fluxer_row.get_active()),
+        )
+
+        self.app_cressida_row = Adw.SwitchRow(
+            title="Cressida",
+            subtitle=tr("Native Wayland Discord client (unofficial, early development)"),
+        )
+        self.app_cressida_row.set_active(state.app_cressida)
+        apps_group.add(self.app_cressida_row)
 
         box.append(apps_group)
         self._sync_spicetify_rows()
@@ -1338,6 +1362,8 @@ class OptionsPage(Adw.NavigationPage):
         "app_songrec_row": ["roudix.apps.songrec.enable"], "app_easyeffects_row": ["roudix.apps.easyeffects.enable"],
         "app_signal_row": ["roudix.apps.signal.enable"], "app_zapzap_row": ["roudix.apps.zapzap.enable"],
         "app_fluxer_row": ["roudix.apps.fluxer.enable"],
+        "app_fluxer_channel_row": ["roudix.apps.fluxer.channel"],
+        "app_cressida_row": ["roudix.apps.cressida.enable"],
         "spicetify_theme_row": ["roudix.spicetify.theme"],
         "spicetify_color_scheme_row": ["roudix.spicetify.colorScheme"],
         "spicetify_adblock_row": ["roudix.spicetify.extensions.adblock.enable"],
@@ -1356,7 +1382,7 @@ class OptionsPage(Adw.NavigationPage):
         "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
         "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
         "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "boot_aspect_row", "boot_resolution_row", "secure_boot_row", "eac_row", "eac_vendor_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
-        "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row"],
+        "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row", "app_fluxer_channel_row", "app_cressida_row"],
         "cc_group": ["content_creation_row", "obs_row", "video_editor_row", "virtual_camera_row", "chatterino_row"],
     }
 
@@ -1392,6 +1418,7 @@ class OptionsPage(Adw.NavigationPage):
             "torrent_client": vals(_torrent_client()),
             "music_player": vals(_music_player()),
             "mail_client": vals(_mail_client()),
+            "app_fluxer_channel": vals(_fluxer_channel()),
             "password_manager": vals(_password_manager()),
             "spicetify_theme": vals(_spicetify_themes()),
             "timezone": vals(_timezones()),
@@ -1444,7 +1471,8 @@ class OptionsPage(Adw.NavigationPage):
                      "_sync_brave_row", "_sync_shell_row", "_sync_latest_rows", "_sync_desktop_integration_row",
                      "_sync_file_manager_row", "_sync_memory_rows", "_sync_zen_rows",
                      "_sync_spicetify_rows", "_sync_ananicy_row", "_sync_content_creation_rows",
-                     "_sync_autoupdate_row", "_sync_boot_aspect_row", "_sync_boot_resolution_row"):
+                     "_sync_autoupdate_row", "_sync_boot_aspect_row", "_sync_boot_resolution_row",
+                     "_sync_boot_security_rows"):
             try:
                 getattr(self, name)()
             except Exception:
@@ -1483,12 +1511,14 @@ class OptionsPage(Adw.NavigationPage):
         )
 
     def _sync_boot_security_rows(self):
-        # Secure Boot signing and the EAC entry are Limine-only; the EAC kernel
-        # choice only matters once the EAC entry is on.
+        # Secure Boot signing works with Limine and systemd-boot; the EAC entry is
+        # Limine-only, and the EAC kernel choice only matters once it is on. All of
+        # it is UEFI-only: hidden when the ISO was booted in legacy BIOS mode.
+        bios = is_bios_boot()
         limine = self._selected_value(self.bootloader_row) == "limine"
-        self.secure_boot_row.set_visible(limine)
-        self.eac_row.set_visible(limine)
-        self.eac_vendor_row.set_visible(limine and self.eac_row.get_active())
+        self.secure_boot_row.set_visible(not bios)
+        self.eac_row.set_visible(limine and not bios)
+        self.eac_vendor_row.set_visible(limine and not bios and self.eac_row.get_active())
         # Fedora ships no signed NVIDIA modules: on NVIDIA only Bazzite's kernel works.
         nvidia = self._selected_value(self.gpu_row) == "nvidia"
         if nvidia:
@@ -1769,8 +1799,9 @@ class OptionsPage(Adw.NavigationPage):
         s.bootloader = self._selected_value(self.bootloader_row)
         s.boot_aspect = self._selected_value(self.boot_aspect_row)
         s.boot_resolution = self._selected_value(self.boot_resolution_row)
-        s.secure_boot = self.secure_boot_row.get_active()
-        s.eac_enable = self.eac_row.get_active()
+        # Hidden (so never wanted) in legacy BIOS mode, whatever the host defaults say.
+        s.secure_boot = self.secure_boot_row.get_active() and not is_bios_boot()
+        s.eac_enable = self.eac_row.get_active() and not is_bios_boot()
         s.eac_vendor = self._selected_value(self.eac_vendor_row)
         s.matrix_client = self._selected_value(self.matrix_row)
         s.discord = self._selected_value(self.discord_row)
@@ -1793,6 +1824,8 @@ class OptionsPage(Adw.NavigationPage):
         s.app_signal = self.app_signal_row.get_active()
         s.app_zapzap = self.app_zapzap_row.get_active()
         s.app_fluxer = self.app_fluxer_row.get_active()
+        s.app_fluxer_channel = self._selected_value(self.app_fluxer_channel_row)
+        s.app_cressida = self.app_cressida_row.get_active()
 
         s.content_creation_enable = self.content_creation_row.get_active()
         s.obs_enable = self.obs_row.get_active()

@@ -29,7 +29,7 @@ gi.require_version("Adw", "1")
 from gi.repository import Adw, GLib, Gtk, Pango  # noqa: E402
 
 from roudix_config_core import (  # noqa: E402
-    PLACEMENTS, TRANSFORMS, availability, tr, backend, bind_action, blur_label, bootstrap, build_rule,
+    PLACEMENTS, TRANSFORMS, availability, tr, backend, bind_action, blur_label, bootstrap, build_rule, capture_label,
     build_sources, custom_path, effective_binds, effective_outputs, get_overrides, list_desktop_apps,
     list_outputs, list_outputs_full, list_windows, load_data, load_live, load_seen, nix_parse_check,
     placement_label, remember_windows, reset_override, rule_preview, rule_summary, save_binds_override,
@@ -145,6 +145,7 @@ class RuleDialog(FormDialog):
         self.sources, self.outputs = sources, outputs
         self.place_keys = [k for k in PLACEMENTS if k in B.placements]
         self.blur_values = list(B.blur_choices)
+        self.capture_values = list(B.capture_choices)
         self.ws_choices = B.workspace_choices()
 
         g = self.group(tr("Application"),
@@ -165,8 +166,11 @@ class RuleDialog(FormDialog):
         self.place = combo(tr("Placement"), [UNSET] + [placement_label(k) for k in self.place_keys])
         self.blur = combo(tr("Blur"), [UNSET] + [blur_label(v) for v in self.blur_values])
         self.opacity = entry(tr("Opacity (0 to 1, optional)"))
+        self.capture = combo(tr("Screenshots and recordings"), [UNSET] + [capture_label(v) for v in self.capture_values])
         for w in (self.output, self.ws, self.place, self.blur, self.opacity):
             g2.add(w)
+        if self.capture_values:
+            g2.add(self.capture)
 
         self.preview = Gtk.Label(xalign=0, selectable=True, wrap=True, hexpand=True)
         self.preview.add_css_class("monospace")
@@ -187,8 +191,10 @@ class RuleDialog(FormDialog):
                 self.blur.set_selected(self.blur_values.index(initial["blur"]) + 1)
             if "opacity" in initial:
                 self.opacity.set_text(str(initial["opacity"]))
+            if initial.get("block_capture") in self.capture_values:
+                self.capture.set_selected(self.capture_values.index(initial["block_capture"]) + 1)
 
-        for w in (self.output, self.ws, self.place, self.blur):
+        for w in (self.output, self.ws, self.place, self.blur, self.capture):
             w.connect("notify::selected", lambda *_: self.refresh())
         for w in (self.app_id, self.title_re, self.opacity):
             w.connect("changed", lambda *_: self.refresh())
@@ -205,8 +211,9 @@ class RuleDialog(FormDialog):
             opacity = float(op) if op else None
         except ValueError:
             raise ValueError(tr("Opacity: a number between 0 and 1"))
-        o, w, p, b = (self.output.get_selected(), self.ws.get_selected(),
-                      self.place.get_selected(), self.blur.get_selected())
+        o, w, p, b, cap = (self.output.get_selected(), self.ws.get_selected(),
+                           self.place.get_selected(), self.blur.get_selected(),
+                           self.capture.get_selected())
         return build_rule(
             self.app_id.get_text().strip(), self.title_re.get_text().strip(),
             self.outputs[o - 1] if o > 0 else None,
@@ -214,6 +221,7 @@ class RuleDialog(FormDialog):
             self.place_keys[p - 1] if p > 0 else None,
             self.blur_values[b - 1] if b > 0 else None,
             opacity,
+            self.capture_values[cap - 1] if cap > 0 and self.capture_values else None,
         )
 
     def refresh(self) -> None:

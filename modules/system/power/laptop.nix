@@ -60,6 +60,11 @@ in
         # No HDA codec power saving on AC (crackle after idle); same idea as
         # CachyOS's audio-pm-ctl, which pipewire.nix only applies on desktops.
         SOUND_POWER_SAVE_ON_AC = 0;
+        # Battery: no turbo boost, the platform's low-power profile and the
+        # scheduler's power-saving mode (silently ignored where unsupported).
+        CPU_BOOST_ON_BAT = 0;
+        PLATFORM_PROFILE_ON_BAT = "low-power";
+        SCHED_POWERSAVE_ON_BAT = 1;
       } // lib.optionalAttrs cfg.thinkpad {
         START_CHARGE_THRESH_BAT0 = cfg.batteryChargeThresholds.start;
         STOP_CHARGE_THRESH_BAT0 = cfg.batteryChargeThresholds.stop;

@@ -19,11 +19,27 @@ from pathlib import Path
 from roudix_installer.state import DiskChoice
 
 
-def _esp_block(boot_size_gb: int) -> str:
+def _bios_boot_block() -> str:
+    # 1 MiB BIOS boot partition (EF02): where Limine's stage 1.5 lives on a
+    # GPT disk. Must come first so GPT-on-BIOS boots on picky firmware.
+    return """\
+            boot = {
+              size = "1M";
+              type = "EF02";
+              priority = 1;
+            };
+"""
+
+
+def _esp_block(boot_size_gb: int, bios: bool = False) -> str:
+    # In BIOS mode this is still the /boot partition (FAT, readable by
+    # Limine), it just is not a real ESP, so no EF00 type.
+    ptype = "8300" if bios else "EF00"
+    bios_part = _bios_boot_block() if bios else ""
     return f"""\
-            ESP = {{
+{bios_part}            ESP = {{
               size = "{boot_size_gb}G";
-              type = "EF00";
+              type = "{ptype}";
               content = {{
                 type = "filesystem";
                 format = "vfat";
@@ -56,7 +72,7 @@ def _ext4_template(disk: DiskChoice) -> str:
         content = {{
           type = "gpt";
           partitions = {{
-{_esp_block(disk.boot_size_gb)}{swap}
+{_esp_block(disk.boot_size_gb, disk.bios)}{swap}
             root = {{
               size = "100%";
               content = {{
@@ -91,7 +107,7 @@ def _btrfs_template(disk: DiskChoice) -> str:
         content = {{
           type = "gpt";
           partitions = {{
-{_esp_block(disk.boot_size_gb)}{swap}
+{_esp_block(disk.boot_size_gb, disk.bios)}{swap}
             root = {{
               size = "100%";
               content = {{

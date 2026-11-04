@@ -468,11 +468,23 @@ msgid "Every day"
 msgstr "每天"
 
 #: roudix-switcher.py
+msgid "Stable"
+msgstr "稳定版"
+
+#: roudix-switcher.py
+msgid "Canary"
+msgstr "Canary"
+
+#: roudix-switcher.py
+msgid "Fresher builds, more likely to break"
+msgstr "更新的构建，更容易出问题"
+
+#: roudix-switcher.py
 msgid ""
-"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
 "keys)"
 msgstr ""
-"Secure Boot — 用 sbctl 为 Limine 签名（密钥必须已存在：sudo sbctl create-"
+"Secure Boot — 用 sbctl 为引导程序签名（密钥必须已存在：roudix-secureboot create-"
 "keys）"
 
 #: roudix-switcher.py
@@ -721,6 +733,10 @@ msgid "Fluxer (self-hostable Discord alternative)"
 msgstr "Fluxer（可自托管的 Discord 替代品）"
 
 #: roudix-switcher.py
+msgid "Cressida (native Discord client, unofficial)"
+msgstr "Cressida（原生 Discord 客户端，非官方）"
+
+#: roudix-switcher.py
 msgid "Virtualization (QEMU/KVM)"
 msgstr "虚拟化（QEMU/KVM）"
 
@@ -954,6 +970,10 @@ msgstr "Matrix 客户端"
 #: roudix-switcher.py
 msgid "Optional apps"
 msgstr "可选应用"
+
+#: roudix-switcher.py
+msgid "Fluxer channel"
+msgstr "Fluxer 渠道"
 
 #: roudix-switcher.py
 msgid "Video player"

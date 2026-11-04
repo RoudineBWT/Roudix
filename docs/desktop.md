@@ -38,7 +38,7 @@ For Wayland compositors (Niri, Hyprland, MangoWC), you can switch the shell/bar 
 | Value | Shell | Hyprland |
 |-------|-------|----------|
 | `noctalia` | Noctalia | `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `dms` | Dux Shell | `dotfiles/hyprland/` |
 | `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
 **Note:** Caelestia is only available on Hyprland. The shell is injected into the session through `ROUDIX_HYPR_SHELL`, so there are no separate `hyprland-dms/` or `hyprland-caelestia/` trees to keep in sync.
@@ -84,7 +84,7 @@ Niri, MangoWC and Umbriel always come from their own flake. For the shell (and t
 
 ```nix
 roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
-roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.dms       = true;  # Dux Shell (+ dms-greeter)
 roudix.desktop.latest.caelestia = true;  # Caelestia (the DMS greeter follows it)
 ```
 
@@ -134,10 +134,10 @@ programs.niri.settings.window-rules = [
 programs.umbriel.settings.output."DP-1".mode = lib.mkForce "3840x2160@144";
 
 # Remap a bind the repo already defines
-programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn:some-command";
+programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn some-command";
 
 # Add a bind that doesn't exist yet
-programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn:pavucontrol";
+programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn pavucontrol";
 
 # Add a window rule
 programs.umbriel.settings.window_rule = [

@@ -53,6 +53,35 @@
         nix-gaming-edge flake's prebuilt `fluxer-desktop` package (not in
         nixpkgs yet). Independent of `roudix.discord` and
         `roudix.gaming.enable` — people can want both Discord and Fluxer.
+        Which release channel is installed is picked by
+        `roudix.apps.fluxer.channel`.
+      '';
+    };
+
+    fluxer.channel = lib.mkOption {
+      type    = lib.types.enum [ "stable" "canary" ];
+      default = "stable";
+      description = ''
+        Fluxer release channel, only used when `roudix.apps.fluxer.enable`
+        is true.
+          "stable" : `fluxer-desktop` (command `fluxer`).
+          "canary" : `fluxer-desktop-canary` (command `fluxer-canary`) —
+                     fresher builds, more likely to break. It has its own
+                     app id, so it never overwrites a stable install.
+        Both come from the nix-gaming-edge flake input.
+      '';
+    };
+
+    cressida.enable = lib.mkOption {
+      type    = lib.types.bool;
+      default = false;
+      description = ''
+        Install Cressida, an unofficial native (C++ / Wayland) Discord
+        client, from the `cressida` flake input's default package (not in
+        nixpkgs). Early development, Wayland only, and — like any
+        third-party Discord client — it can get an account flagged by
+        Discord. Independent of `roudix.discord`, `roudix.apps.fluxer.enable`
+        and `roudix.gaming.enable`.
       '';
     };
   };

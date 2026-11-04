@@ -407,6 +407,14 @@ msgid "Spotify + Spicetify"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py
+msgid "Stable"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Canary (fresher, may break)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
 msgid "Thunderbird (full-featured)"
 msgstr ""
 
@@ -1186,7 +1194,7 @@ msgid "Only useful with several screens of different sizes."
 msgstr ""
 
 #: src/roudix_installer/pages/options.py
-msgid "Secure Boot (sign Limine)"
+msgid "Secure Boot (sign the bootloader)"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py
@@ -1268,6 +1276,14 @@ msgstr ""
 #: src/roudix_installer/pages/options.py
 msgid ""
 "Self-hostable Discord alternative (independent of the Discord choice above)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Fluxer channel"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Native Wayland Discord client (unofficial, early development)"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py

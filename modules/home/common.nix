@@ -46,10 +46,18 @@ in
         fi
       ''
       + lib.optionalString (shellType == "dms") ''
-        if [ ! -f "$HOME/.local/state/DankMaterialShell/session.json" ]; then
-          mkdir -p "$HOME/.local/state/DankMaterialShell"
+        # Dux Shell 2.0 renamed DankMaterialShell/ -> dms/ (and migrates on first
+        # launch). Only seed the legacy dir if it is the only one that exists,
+        # otherwise we would recreate a conflicting pair.
+        if [ -d "$HOME/.local/state/DankMaterialShell" ] && [ ! -e "$HOME/.local/state/dms" ]; then
+          dms_state="$HOME/.local/state/DankMaterialShell"
+        else
+          dms_state="$HOME/.local/state/dms"
+        fi
+        if [ ! -f "$dms_state/session.json" ]; then
+          mkdir -p "$dms_state"
           printf '%s' '{"wallpaperPath":"${roudixBranding}/share/backgrounds/roudix/roudix-dark.png","wallpaperFillMode":"PreserveAspectCrop"}' \
-            > "$HOME/.local/state/DankMaterialShell/session.json"
+            > "$dms_state/session.json"
         fi
       ''
       + lib.optionalString (shellType == "caelestia") ''

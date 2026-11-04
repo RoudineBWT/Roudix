@@ -4,31 +4,27 @@
   nix.settings = {
     trusted-users = [ "root" "${username}" ];
     experimental-features = [ "nix-command" "flakes" ];
-    extra-substituters = [
-      "https://cache.lantian.pub/lantian"
-      "https://noctalia.cachix.org"
-      "https://prismlauncher.cachix.org"
-      "https://nix-community.cachix.org"
-      "https://roudix.cachix.org"
-      "https://nix-cache.tokidoki.dev/tokidoki"
-      "https://nyx-cache.chaotic.cx/"
-      "https://niri-epireyn.cachix.org"
-      "https://hyprland.cachix.org"
-      "https://umbriel.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
-      "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
-      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-      "prismlauncher.cachix.org-1:9/n/FGyABA2jLUVfY+DEp4hKds/rwO+SCOtbOkDzd+c="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "roudix.cachix.org-1:h5EnhsXw4Mr6pLUpZIalE8SlfH1kKXgvPFvl+yrTAaQ="
-      "tokidoki:MD4VWt3kK8Fmz3jkiGoNRJIW31/QAm7l1Dcgz2Xa4hk="
-      "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "umbriel.cachix.org-1:JfNq/2yg2S6D6z4Z2dVSZrZlDPQTKtexB6GAVLD98nw="
-    ];
+    # Substituters / public keys live in ./binary-caches.nix (single copy; the
+    # flake's nixConfig is the only other place, it has to be literal).
+
+    # A dead or slow cache must not freeze a rebuild (CI already uses 3 s):
+    # give up on it quickly and, if a path really is nowhere, build locally.
+    # Trade-off: with a third-party cache down, an unattended auto-update
+    # may compile locally — the "idle" scheduling below keeps that harmless.
+    connect-timeout = 5;
+    fallback = true;
+    warn-dirty = false;
+    # GC on the fly instead of dying with "No space left on device" in the
+    # middle of a big build: below min-free, delete dead paths up to max-free.
+    min-free = 1024 * 1024 * 1024;      # 1 GiB
+    max-free = 5 * 1024 * 1024 * 1024;  # 5 GiB
   };
+
+  # Builds run by the daemon (rebuild, unattended auto-update) only get the
+  # CPU/disk nobody else wants: the desktop and games stay smooth.
+  nix.daemonCPUSchedPolicy = "idle";
+  nix.daemonIOSchedClass = "idle";
+  nix.daemonIOSchedPriority = 7;
 
   nixpkgs.config.allowUnfree = true;
 
@@ -47,6 +43,8 @@
   # DNS comes from DHCP / VPN / the local resolver (Pi-hole...) through
   # systemd-resolved, like CachyOS. The public servers are only a fallback.
   networking.networkmanager.dns = "systemd-resolved";
+  # Wi-Fi channels/power limits of the actual country (wireless-regdb).
+  hardware.wirelessRegulatoryDatabase = true;
   services.resolved = {
     enable = true;
     settings.Resolve.FallbackDNS = [ "1.1.1.1" "9.9.9.9" ];
@@ -182,7 +180,6 @@
   services.blueman.enable = true;
   networking.firewall.enable = true;
   networking.firewall.checkReversePath = false;
-  networking.firewall.allowedTCPPorts = [ 443 ];
   security.polkit.enable = true;
   security.wrappers.pkexec = {
     enable = lib.mkForce true;

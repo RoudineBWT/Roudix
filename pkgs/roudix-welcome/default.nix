@@ -1,7 +1,7 @@
 { lib, pkgs }:
 pkgs.stdenv.mkDerivation {
   pname = "roudix-welcome";
-  version = "1.0.0";
+  version = "1.3.0";
   src = ./.;
 
   nativeBuildInputs = with pkgs; [
@@ -47,7 +47,7 @@ pkgs.stdenv.mkDerivation {
     Terminal=false
     Type=Application
     Categories=System;Settings;X-Roudix;
-    Keywords=welcome;bienvenue;switcher;kernel;scheduler;store;
+    Keywords=welcome;bienvenue;switcher;kernel;scheduler;store;disk;firewall;update;maintenance;
     EOF
 
     # Translations: po/<lang>.po → share/locale/<lang>/LC_MESSAGES/roudix-welcome.mo

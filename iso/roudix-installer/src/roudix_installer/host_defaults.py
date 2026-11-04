@@ -97,6 +97,8 @@ OPTION_TO_ATTR = {
     "roudix.apps.signal.enable": "app_signal",
     "roudix.apps.zapzap.enable": "app_zapzap",
     "roudix.apps.fluxer.enable": "app_fluxer",
+    "roudix.apps.fluxer.channel": "app_fluxer_channel",
+    "roudix.apps.cressida.enable": "app_cressida",
     "roudix.spicetify.theme": "spicetify_theme",
     "roudix.spicetify.colorScheme": "spicetify_color_scheme",
     "roudix.spicetify.extensions.adblock.enable": "spicetify_adblock",

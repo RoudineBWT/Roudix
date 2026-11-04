@@ -454,9 +454,14 @@ def blur_label(value) -> str:
     return {True: tr("On"), False: tr("Off")}[value]
 
 
+def capture_label(value) -> str:
+    return {True: tr("Hidden from captures"), False: tr("Shown in captures")}[value]
+
+
 def build_rule(app_id: str, title: str = "", output: str | None = None,
                workspace=None, placement: str | None = None,
-               blur: bool | None = None, opacity: float | None = None) -> dict:
+               blur: bool | None = None, opacity: float | None = None,
+               block_capture: bool | None = None) -> dict:
     match: dict = {}
     if app_id:
         match["app_id"] = app_id
@@ -477,6 +482,8 @@ def build_rule(app_id: str, title: str = "", output: str | None = None,
         if not 0.0 <= opacity <= 1.0:
             raise ValueError(tr("opacity must be between 0 and 1"))
         rule["opacity"] = opacity
+    if block_capture is not None:         # Umbriel only (Backend.capture_choices)
+        rule["block_capture"] = block_capture
     if len(rule) == 1:
         raise ValueError(tr("choose at least one setting"))
     return rule

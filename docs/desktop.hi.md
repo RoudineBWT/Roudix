@@ -38,7 +38,7 @@ Wayland कंपोज़िटर (Niri, Hyprland, MangoWC) के लिए �
 | मान | शेल | Hyprland |
 |-----|-----|----------|
 | `noctalia` | Noctalia | `dotfiles/hyprland/` |
-| `dms` | DankMaterialShell | `dotfiles/hyprland/` |
+| `dms` | Dux Shell | `dotfiles/hyprland/` |
 | `caelestia` | Caelestia | `dotfiles/hyprland/` |
 
 **नोट:** Caelestia सिर्फ़ Hyprland पर उपलब्ध है। शेल को `ROUDIX_HYPR_SHELL` के ज़रिए सेशन में इंजेक्ट किया जाता है, इसलिए अलग-अलग `hyprland-dms/` या `hyprland-caelestia/` ट्री नहीं हैं जिन्हें सिंक रखना पड़े।
@@ -83,7 +83,7 @@ Niri, MangoWC और Umbriel हमेशा अपने ही flake से �
 
 ```nix
 roudix.desktop.latest.noctalia  = true;  # Noctalia (+ noctalia-greeter)
-roudix.desktop.latest.dms       = true;  # DankMaterialShell (+ dms-greeter)
+roudix.desktop.latest.dms       = true;  # Dux Shell (+ dms-greeter)
 roudix.desktop.latest.caelestia = true;  # Caelestia (DMS greeter इसके साथ चलता है)
 ```
 
@@ -133,10 +133,10 @@ programs.niri.settings.window-rules = [
 programs.umbriel.settings.output."DP-1".mode = lib.mkForce "3840x2160@144";
 
 # रिपॉज़िटरी द्वारा पहले से परिभाषित कीबाइंड को रीमैप करें
-programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn:some-command";
+programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn some-command";
 
 # ऐसा कीबाइंड जोड़ें जो अभी मौजूद नहीं है
-programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn:pavucontrol";
+programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn pavucontrol";
 
 # विंडो रूल जोड़ें
 programs.umbriel.settings.window_rule = [

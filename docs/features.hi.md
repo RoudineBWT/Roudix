@@ -56,7 +56,7 @@
 ## डेस्कटॉप (MangoWC)
 
 - MangoWC Wayland कंपोज़िटर
-- Noctalia / DankMaterialShell
+- Noctalia / Dux Shell
 - xdg-desktop-portal-gtk
 - Bibata Modern Ice कर्सर (24 px)
 - GNOME Polkit एजेंट
@@ -153,7 +153,9 @@ Fluxer, Discord का एक सेल्फ़-होस्ट किया �
 बूलियन है: `roudix.apps.fluxer.enable`। यह अभी nixpkgs में नहीं है, इसलिए इसे सीधे
 `nix-gaming-edge` flake input के पहले से बने `fluxer-desktop` पैकेज से लिया जाता है।
 यह जानबूझकर `roudix.discord` और `roudix.gaming.enable` से स्वतंत्र है — कोई भी
-Discord और Fluxer दोनों चाह सकता है, या बिना किसी गेमिंग सेटअप के सिर्फ़ Fluxer।
+Discord और Fluxer दोनों चाह सकता है, या बिना किसी गेमिंग सेटअप के सिर्फ़ Fluxer। `roudix.apps.fluxer.channel` रिलीज़ चैनल चुनता है: `"stable"` (डिफ़ॉल्ट) या `"canary"` (नए बिल्ड, खराब होने की संभावना अधिक; यह `fluxer-canary` के रूप में अपने app id के साथ इंस्टॉल होता है)।
+
+Cressida एक अनौपचारिक नेटिव Discord क्लाइंट (C++ / Wayland) है, और यह भी एक opt-in बूलियन है: `roudix.apps.cressida.enable`। यह भी nixpkgs में नहीं है, इसलिए यह अपने ही `cressida` flake input ([Ly-sec/Cressida](https://github.com/Ly-sec/Cressida)) से आता है। यह `roudix.discord`, Fluxer और `roudix.gaming.enable` से स्वतंत्र है। इसके अपने दस्तावेज़ों से दो सावधानियाँ: यह शुरुआती विकास में है (अभी वीडियो कॉल नहीं, कुछ सेटिंग्स अधूरी), और किसी भी थर्ड-पार्टी Discord क्लाइंट की तरह इससे खाते को फ़्लैग या प्रतिबंधित किया जा सकता है — मुख्य खाते के साथ इस्तेमाल करने से पहले यह ध्यान में रखें। केवल Wayland, X11 बैकएंड नहीं।
 
 एक मेल क्लाइंट और एक पासवर्ड मैनेजर भी उपलब्ध हैं, opt-in (डिफ़ॉल्ट रूप से बंद):
 `roudix.mailClient` — `"thunderbird"` (पूरी सुविधाओं वाला),

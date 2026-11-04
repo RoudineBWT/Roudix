@@ -76,12 +76,12 @@
        };
 
     dms ={
-        url = "github:AvengeMedia/DankMaterialShell";
+        url = "github:duxlabs-dev/dux-shell";
         inputs.nixpkgs.follows = "nixpkgs";
   };
 
   dank-greeter = {
-    url = "github:AvengeMedia/dank-greeter";
+    url = "github:duxlabs-dev/dux-greeter";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -151,6 +151,14 @@
       url = "github:TheAnachronism/betterbird-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Cressida — native C++ / Wayland chat client (unofficial Discord client).
+    # Only used by roudix.apps.cressida.enable. No `nixpkgs.follows` on
+    # purpose: its docs ask to keep the nixpkgs it pins for its build
+    # dependencies (C++23 toolchain, libzstd, ...).
+    cressida = {
+      url = "github:Ly-sec/Cressida";
+    };
     mango = {
         url = "github:mangowm/mango";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -175,55 +183,49 @@
     # the ESP and the firmware boot entries, so it only moves when we bump it
     # after reading the diff. It stays inert unless roudix.boot.eac.enable.
     eacnix = {
-      url = "github:samos667/eacnix/242713d46aacd1fa3cfe7462eb2ac57a74621f67";
+      url = "github:RoudineBWT/eacnix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Secure Boot for roudix.boot.bootloader = "systemd-boot" (signed UKIs +
+    # signed systemd-boot, keys managed with sbctl). Inert unless
+    # roudix.boot.secureBoot.enable with systemd-boot
+    # (modules/system/boot/secure-boot.nix).
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    chaotic,
-    niri,
-    home-manager,
-    nix-cachyos-kernel,
-    zen-browser,
-    noctalia,
-    noctalia-greeter,
-    caelestia-shell,
-    dms,
-    dank-greeter,
-    spicetify-nix,
-    millennium,
-    helium,
-    nix-flatpak,
-    plasma-manager,
-    brave-previews,
-    roudix-caches,
-    nix-gaming-edge,
-    mango,
-    umbriel,
-    ... }:
+  outputs = inputs @ { self, nixpkgs, ... }:
   let
-    roudixSwitcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-switcher {};
-    roudixBranding  = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-branding {};
-    roudix-kernel-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-kernel-switcher {};
-    roudix-hw-sync = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-hw-sync {};
-    roudix-firewall = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-firewall {};
-    roudix-disk = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-disk {};
-    roudix-scheduler-switcher = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-scheduler-switcher {
-      scxctl = roudix-caches.packages.x86_64-linux.scxctl;
-    };
-    roudixWelcome = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-welcome {};
-    roudixConfig = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-config {};
-    roudixStore = nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/roudix-store {
-      nixos-appstream-data = inputs.nixos-appstream-data.packages.x86_64-linux.appstream-data;
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+
+    # Roudix's own apps. Passed to every module through specialArgs (same
+    # names as before) and also exposed as `packages.${system}.*` below, so
+    # e.g. `nix build .#roudix-disk` works.
+    roudixPkgs = {
+      roudixSwitcher = pkgs.callPackage ./pkgs/roudix-switcher {};
+      roudixBranding = pkgs.callPackage ./pkgs/roudix-branding {};
+      roudix-kernel-switcher = pkgs.callPackage ./pkgs/roudix-kernel-switcher {};
+      roudix-hw-sync = pkgs.callPackage ./pkgs/roudix-hw-sync {};
+      roudix-firewall = pkgs.callPackage ./pkgs/roudix-firewall {};
+      roudix-disk = pkgs.callPackage ./pkgs/roudix-disk {};
+      roudix-scheduler-switcher = pkgs.callPackage ./pkgs/roudix-scheduler-switcher {
+        scxctl = inputs.roudix-caches.packages.${system}.scxctl;
+      };
+      roudixWelcome = pkgs.callPackage ./pkgs/roudix-welcome {};
+      roudixConfig = pkgs.callPackage ./pkgs/roudix-config {};
+      roudixStore = pkgs.callPackage ./pkgs/roudix-store {
+        nixos-appstream-data = inputs.nixos-appstream-data.packages.${system}.appstream-data;
+      };
     };
 
     # username is NOT here anymore: it's per-host, read from
     # hosts/<hostName>/username.nix (gitignored). Base args shared by
     # every host — each mkHost call adds its own `username`.
-    baseSpecialArgs = { inherit inputs roudixSwitcher roudixBranding roudix-kernel-switcher roudix-hw-sync roudix-firewall roudix-disk roudix-scheduler-switcher roudixWelcome roudixConfig roudixStore; dotfiles = self + /dotfiles; };
+    baseSpecialArgs = { inherit inputs; dotfiles = self + /dotfiles; } // roudixPkgs;
 
     # ── Host builder ──────────────────────────────────────────────────────
     # One host = one directory under ./hosts/<hostName>/ containing:
@@ -241,28 +243,28 @@
         specialArgs = baseSpecialArgs // { inherit username; };
       in
       nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        inherit specialArgs;
+        inherit system specialArgs;
         modules = [
-          niri.nixosModules.niri
+          inputs.niri.nixosModules.niri
           inputs.dms.nixosModules.dank-material-shell
           inputs.noctalia-greeter.nixosModules.default
           inputs.dank-greeter.nixosModules.default
-          nix-flatpak.nixosModules.nix-flatpak
+          inputs.nix-flatpak.nixosModules.nix-flatpak
           inputs.mango.nixosModules.mango
-          chaotic.nixosModules.default
+          inputs.chaotic.nixosModules.default
           inputs.eacnix.nixosModules.default
+          inputs.lanzaboote.nixosModules.lanzaboote
           (./hosts + "/${hostName}/configuration.nix")
           ./version.nix
           ./branding.nix
-          home-manager.nixosModules.home-manager
+          inputs.home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "bak";
             home-manager.extraSpecialArgs = specialArgs;
             # per-user Flatpaks (roudix.store.flatpaksUser / flatpaksUserBeta)
-            home-manager.sharedModules = [ nix-flatpak.homeManagerModules.nix-flatpak ];
+            home-manager.sharedModules = [ inputs.nix-flatpak.homeManagerModules.nix-flatpak ];
             home-manager.users.${username} = { lib, ... }: {
               imports = [
                 ./modules/home/common.nix
@@ -285,11 +287,13 @@
       in
       nixpkgs.lib.genAttrs hostNames mkHost;
 
+    # Roudix apps as buildable outputs: `nix build .#roudix-disk`
+    packages.${system} = roudixPkgs;
+
     # `nix develop` — the tools behind `just ci` (and the installer's gettext
     # workflow), pinned by this flake, so contributors install nothing by hand.
-    devShells.x86_64-linux.default =
-      let pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      in pkgs.mkShell {
+    devShells.${system}.default =
+      pkgs.mkShell {
         packages = with pkgs; [
           just          # task runner: `just` lists the tasks
           git

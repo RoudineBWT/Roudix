@@ -58,7 +58,7 @@
 ## Bureau (MangoWC)
 
 - Compositeur Wayland MangoWC
-- Noctalia / DankMaterialShell
+- Noctalia / Dux Shell
 - xdg-desktop-portal-gtk
 - Curseur Bibata Modern Ice (24 px)
 - Agent Polkit GNOME
@@ -174,7 +174,9 @@ booléen opt-in : `roudix.apps.fluxer.enable`. Il n'est pas encore dans
 nixpkgs, donc il vient directement du paquet prébuilt `fluxer-desktop` de
 l'input flake `nix-gaming-edge`. Volontairement indépendant de
 `roudix.discord` et de `roudix.gaming.enable` — rien n'empêche de vouloir
-Discord et Fluxer en même temps, ou Fluxer sans setup gaming du tout.
+Discord et Fluxer en même temps, ou Fluxer sans setup gaming du tout. `roudix.apps.fluxer.channel` choisit le canal : `"stable"` (par défaut) ou `"canary"` (versions plus récentes, plus susceptibles de casser ; installé sous le nom `fluxer-canary`, avec son propre app id).
+
+Cressida est un client Discord natif non officiel (C++ / Wayland), encore un booléen opt-in : `roudix.apps.cressida.enable`. Il n'est pas non plus dans nixpkgs, donc il vient de son propre flake input `cressida` ([Ly-sec/Cressida](https://github.com/Ly-sec/Cressida)). Il est indépendant de `roudix.discord`, de Fluxer et de `roudix.gaming.enable`. Deux réserves tirées de sa propre documentation : il est en développement précoce (pas encore d'appels vidéo, certains réglages incomplets) et, comme tout client Discord tiers, il peut valoir à un compte d'être signalé ou restreint — à garder en tête avant de l'utiliser avec un compte principal. Wayland uniquement, pas de backend X11.
 
 Un client mail et un gestionnaire de mots de passe sont aussi disponibles,
 opt-in (désactivés par défaut) : `roudix.mailClient` — `"thunderbird"`
