@@ -7,7 +7,42 @@
   system.stateVersion = "26.11";
 
   # ── Boot menu ─────────────────────────────────────────────────────────────
-  isoImage.appendToMenuLabel = " — Roudix Installer";
+  # Entry label. ASCII only: the BIOS (syslinux) menu uses a cp437 font, so a
+  # UTF-8 "—" shows up there as "ΓÇö". distroName replaces the "NixOS" prefix
+  # that nixpkgs puts in front of every menu entry (BIOS and EFI).
+  system.nixos.distroName = "Roudix";
+  isoImage.appendToMenuLabel = " - Installer";
+
+  # BIOS boot menu (syslinux/isolinux — the "Press [Tab] to edit options"
+  # screen). isoImage.grubTheme below only covers the EFI (GRUB) menu, so
+  # without these two the BIOS menu keeps the stock NixOS background and
+  # colours. The splash must be 640x480 (generated from the 4:3 Limine
+  # wallpaper, modules/system/boot/bootloader/wallpaper-4x3.png).
+  isoImage.splashImage = ./roudix-syslinux-splash.png;
+  isoImage.syslinuxTheme = ''
+    MENU TITLE Roudix
+    MENU RESOLUTION 800 600
+    MENU CLEAR
+    MENU ROWS 6
+    MENU CMDLINEROW -4
+    MENU TIMEOUTROW -3
+    MENU TABMSGROW  -2
+    MENU HELPMSGROW -1
+    MENU HELPMSGENDROW -1
+    MENU MARGIN 0
+
+    #                                FG:AARRGGBB  BG:AARRGGBB   shadow
+    MENU COLOR BORDER       30;44      #00000000    #00000000   none
+    MENU COLOR SCREEN       37;40      #FFEADBCB    #00000000   none
+    MENU COLOR TABMSG       31;40      #80EADBCB    #00000000   none
+    MENU COLOR TIMEOUT      1;37;40    #FFEADBCB    #00000000   none
+    MENU COLOR TIMEOUT_MSG  37;40      #FFEADBCB    #00000000   none
+    MENU COLOR CMDMARK      1;36;40    #FFFF8C42    #00000000   none
+    MENU COLOR CMDLINE      37;40      #FFEADBCB    #00000000   none
+    MENU COLOR TITLE        1;36;44    #FFFF8C42    #00000000   none
+    MENU COLOR UNSEL        37;44      #FFEADBCB    #00000000   none
+    MENU COLOR SEL          7;37;40    #FF150B05    #FFFF8C42   std
+  '';
 
   # boot.loader.grub.theme applies to the installed system's GRUB, but
   # NOT to the graphical EFI menu shown when booting the ISO itself —

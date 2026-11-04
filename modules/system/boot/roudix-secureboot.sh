@@ -1,7 +1,9 @@
 # roudix-secureboot — guided Secure Boot setup for Roudix.
 #
-# Secure Boot in Roudix means Limine signed with sbctl (roudix.boot.secureBoot)
-# and, optionally, the separate "NixOS EAC" boot entry (roudix.boot.eac). The
+# Secure Boot in Roudix means the bootloader signed with your sbctl keys
+# (roudix.boot.secureBoot): Limine signed by nixpkgs' Limine module, or
+# systemd-boot signed by lanzaboote together with one signed unified kernel
+# image per generation. Optionally (Limine only), the separate "NixOS EAC" boot entry (roudix.boot.eac). The
 # firmware part (Setup Mode, turning Secure Boot on) can't be done from the
 # running system: this tool shows where you are, runs the steps that can be
 # automated and tells you the next one. Docs: docs/secure-boot-eac.md.
@@ -41,7 +43,8 @@ Commands:
   create-keys  Create the sbctl signing keys (in /var/lib/sbctl)
   enroll       Enroll your keys, next to Microsoft's (needs the firmware in Setup Mode)
   firmware     Reboot into the firmware setup (to clear keys / turn Secure Boot on)
-  verify       Check that Limine is signed and point at the EAC check
+  verify       Check that the bootloader is signed (Limine, or systemd-boot and its
+               kernel images) and point at the EAC check
   help         This text
 
   -y, --yes    Don't ask for confirmation
@@ -111,6 +114,34 @@ limine_signed() {
   grep -qi 'limine/BOOTX64\.EFI is signed' <<<"$out"
 }
 
+sdboot_signed() {
+  local out
+  out="$(verify_output)"
+  grep -Eqi 'systemd-boot[a-z0-9]*\.efi is signed' <<<"$out"
+}
+
+# lanzaboote puts one signed unified kernel image per generation in EFI/Linux.
+uki_signed() {
+  local out
+  out="$(verify_output)"
+  grep -Eqi '/EFI/Linux/[^ ]+\.efi is signed' <<<"$out"
+}
+
+# The bootloader to check: what the configuration says, else what sbctl sees.
+current_loader() {
+  local out
+  if [ -n "$cfg_bootloader" ]; then
+    printf '%s' "$cfg_bootloader"
+    return 0
+  fi
+  out="$(verify_output)"
+  if grep -qi 'systemd-boot[a-z0-9]*\.efi is' <<<"$out" && ! grep -qi 'limine/BOOTX64\.EFI is' <<<"$out"; then
+    printf 'systemd-boot'
+  else
+    printf 'limine'
+  fi
+}
+
 efi_entries() { efibootmgr 2>/dev/null || true; }
 
 has_entry() {
@@ -122,7 +153,7 @@ has_entry() {
 # ── commands ────────────────────────────────────────────────────────────────
 
 cmd_status() {
-  local sb setup tpm
+  local sb setup tpm loader name
   sb="$(efi_byte "$efivars/SecureBoot-$global_guid")"
   setup="$(efi_byte "$efivars/SetupMode-$global_guid")"
   tpm="$(tpm_version)"
@@ -150,15 +181,24 @@ cmd_status() {
 
   if [ "$sb" = "1" ]; then ok "Secure Boot: on"; else bad "Secure Boot: off"; fi
 
-  if [ "$cfg_bootloader" != "" ] && [ "$cfg_bootloader" != "limine" ]; then
-    warn "Bootloader: $cfg_bootloader (Secure Boot signing here is for Limine only)"
-  elif limine_signed; then
-    signed=1; ok "Limine: signed"
+  loader="$(current_loader)"
+  if [ "$loader" = "systemd-boot" ]; then
+    name="systemd-boot"
+    if sdboot_signed && uki_signed; then
+      signed=1; ok "systemd-boot and kernel images: signed (lanzaboote)"
+    elif sdboot_signed; then
+      bad "systemd-boot: signed, but no signed kernel image found in EFI/Linux (rebuild)"
+    else
+      bad "systemd-boot: not signed"
+    fi
   else
-    bad "Limine: not signed"
+    name="Limine"
+    if limine_signed; then signed=1; ok "Limine: signed"; else bad "Limine: not signed"; fi
   fi
 
-  if has_entry 'NixOS EAC'; then ok "EAC boot entry: present"; else info "EAC boot entry: not set up"; fi
+  if [ "$loader" = "limine" ]; then
+    if has_entry 'NixOS EAC'; then ok "EAC boot entry: present"; else info "EAC boot entry: not set up"; fi
+  fi
 
   if [ -n "$cfg_secureboot$cfg_eac" ]; then
     info "Config: roudix.boot.secureBoot.enable = ${cfg_secureboot:-?}, roudix.boot.eac.enable = ${cfg_eac:-?}"
@@ -180,11 +220,13 @@ cmd_status() {
   elif [ "$sb" != "1" ]; then
     info "Reboot once with Secure Boot still off to check Roudix starts, then turn Secure Boot on:  roudix-secureboot firmware"
   else
-    ok "Secure Boot is on and Limine is signed."
-    if has_entry 'NixOS EAC'; then
-      info "To use the EAC entry:  sudo eac-reboot   then, inside it:  sudo eacnix-check"
-    else
-      info "Optional: roudix.boot.eac.enable = true; adds the EAC entry (docs/secure-boot-eac.md)."
+    ok "Secure Boot is on and $name is signed."
+    if [ "$loader" = "limine" ]; then
+      if has_entry 'NixOS EAC'; then
+        info "To use the EAC entry:  sudo eac-reboot   then, inside it:  sudo eacnix-check"
+      else
+        info "Optional: roudix.boot.eac.enable = true; adds the EAC entry (docs/secure-boot-eac.md)."
+      fi
     fi
   fi
   return 0
@@ -196,7 +238,7 @@ cmd_create_keys() {
     return 0
   fi
   sbctl create-keys
-  ok "Keys created in $sbctl_dir. Back that folder up: without it you can't re-sign Limine."
+  ok "Keys created in $sbctl_dir. Back that folder up: without it you can't re-sign the bootloader."
   info "Next:  roudix-secureboot status"
 }
 
@@ -223,8 +265,29 @@ cmd_firmware() {
 }
 
 cmd_verify() {
-  local out
+  local out loader
   out="$(verify_output)"
+  loader="$(current_loader)"
+  if [ "$loader" = "systemd-boot" ]; then
+    if grep -Eqi 'systemd-boot[a-z0-9]*\.efi is signed' <<<"$out"; then
+      ok "systemd-boot is signed."
+    elif grep -Eqi 'systemd-boot[a-z0-9]*\.efi is not signed' <<<"$out"; then
+      bad "systemd-boot is not signed. Set roudix.boot.secureBoot.enable = true; and rebuild."
+      return 1
+    else
+      warn "No systemd-boot EFI file found by sbctl (is the bootloader systemd-boot, and /boot mounted?)."
+      return 1
+    fi
+    if grep -Eqi '/EFI/Linux/[^ ]+\.efi is signed' <<<"$out"; then
+      ok "Kernel images (EFI/Linux) are signed."
+    else
+      bad "No signed kernel image in EFI/Linux. Set roudix.boot.secureBoot.enable = true; and rebuild."
+      return 1
+    fi
+    info "The kernels and initrds under EFI/nixos, and the other files sbctl lists as \"not signed\", are"
+    info "expected: lanzaboote's signed stub checks them through hashes; other systems' loaders are signed by their vendors."
+    return 0
+  fi
   if grep -qi 'limine/BOOTX64\.EFI is signed' <<<"$out"; then
     ok "Limine is signed."
   elif grep -qi 'limine/BOOTX64\.EFI is not signed' <<<"$out"; then

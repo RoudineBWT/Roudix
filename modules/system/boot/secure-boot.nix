@@ -20,7 +20,8 @@ let
 
   # Guided setup: shows where you are (keys, firmware mode, Secure Boot, Limine
   # signature, EAC entry) and runs the steps that can be automated. Installed on
-  # every Limine system, since it is what you use BEFORE turning the options on.
+  # every system (Limine and systemd-boot), since it is what you use BEFORE turning
+  # the options on.
   # The script lives in roudix-secureboot.sh (linted by writeShellApplication).
   roudixSecureboot = pkgs.writeShellApplication {
     name = "roudix-secureboot";
@@ -45,7 +46,7 @@ in
           order: `sbctl create-keys`, firmware Setup Mode,
           `sbctl enroll-keys -m -f`, rebuild, check `sbctl verify`, and only
           then enable Secure Boot in the firmware. `roudix-secureboot` (installed
-          on every Limine system) does these steps and tells you the next one.
+          on every system) does these steps and tells you the next one.
         '';
         type = lib.types.bool;
         default = false;
@@ -105,10 +106,10 @@ in
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
 
-    # ── roudix-secureboot (Limine systems) ────────────────────────────────
-    (lib.mkIf limine {
+    # ── roudix-secureboot (Limine and systemd-boot) ───────────────────────
+    {
       environment.systemPackages = [ roudixSecureboot ];
-    })
+    }
 
     # ── Secure Boot (Limine signed with sbctl / systemd-boot via lanzaboote) ──
     (lib.mkIf cfg.secureBoot.enable {

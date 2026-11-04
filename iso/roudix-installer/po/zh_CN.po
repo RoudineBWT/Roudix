@@ -1199,8 +1199,8 @@ msgid "Only useful with several screens of different sizes."
 msgstr "仅在有多个不同尺寸的屏幕时有用。"
 
 #: src/roudix_installer/pages/options.py
-msgid "Secure Boot (sign Limine)"
-msgstr "安全启动 Secure Boot（为 Limine 签名）"
+msgid "Secure Boot (sign the bootloader)"
+msgstr "安全启动 Secure Boot（为引导程序签名）"
 
 #: src/roudix_installer/pages/options.py
 msgid ""

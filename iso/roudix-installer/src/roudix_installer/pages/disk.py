@@ -4,6 +4,7 @@ import threading
 
 from gi.repository import Adw, GLib, Gtk
 
+from roudix_installer.hardware_detect import is_bios_boot
 from roudix_installer.i18n import tr
 from roudix_installer.ui_helpers import page_with_header
 
@@ -287,6 +288,7 @@ class DiskPage(Adw.NavigationPage):
         if self.state.disk.mode == "simple":
             self.state.disk.filesystem = "btrfs" if self.filesystem_row.get_selected() == 1 else "ext4"
             self.state.disk.boot_size_gb = int(self.boot_size_row.get_value())
+            self.state.disk.bios = is_bios_boot()
             self.state.disk.enable_swap = self.swap_row.get_active()
             self.state.disk.swap_size_gb = int(self.swap_size_row.get_value())
         elif self.state.disk.mode == "manual":

@@ -1203,8 +1203,8 @@ msgid "Only useful with several screens of different sizes."
 msgstr "केवल अलग-अलग आकार की कई स्क्रीन होने पर उपयोगी।"
 
 #: src/roudix_installer/pages/options.py
-msgid "Secure Boot (sign Limine)"
-msgstr "Secure Boot (Limine पर हस्ताक्षर)"
+msgid "Secure Boot (sign the bootloader)"
+msgstr "Secure Boot (बूटलोडर पर हस्ताक्षर)"
 
 #: src/roudix_installer/pages/options.py
 msgid ""

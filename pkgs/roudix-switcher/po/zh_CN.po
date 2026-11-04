@@ -481,10 +481,10 @@ msgstr "更新的构建，更容易出问题"
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign Limine with sbctl (the keys must exist: roudix-secureboot create-"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
 "keys)"
 msgstr ""
-"Secure Boot — 用 sbctl 为 Limine 签名（密钥必须已存在：roudix-secureboot create-"
+"Secure Boot — 用 sbctl 为引导程序签名（密钥必须已存在：roudix-secureboot create-"
 "keys）"
 
 #: roudix-switcher.py

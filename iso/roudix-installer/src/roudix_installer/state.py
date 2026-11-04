@@ -44,6 +44,10 @@ class DiskChoice:
     # mode == "manual": partitions the user made themselves in GParted,
     # mapped to mountpoints. e.g. {"/dev/vda1": "/boot", "/dev/vda2": "swap", "/dev/vda3": "/"}
     manual_partitions: dict = field(default_factory=dict)
+    # True when the live ISO was booted in legacy BIOS mode (no /sys/firmware/efi):
+    # simple mode then adds a 1M BIOS boot partition (EF02) and Limine goes on
+    # `device` itself. Set by the disk page from hardware_detect.is_bios_boot().
+    bios: bool = False
 
 
 @dataclass
@@ -148,7 +152,7 @@ class InstallState:
     bootloader: str = "limine"       # limine | systemd-boot
     boot_aspect: str = "16x9"        # roudix.boot.wallpaperAspect — 16x9 | 16x10 | 21x9 | 4x3 (Limine wallpaper, main screen)
     boot_resolution: str = "auto"    # roudix.boot.menuResolution — "auto" | "<w>x<h>" (Limine menu; main screen with several screens)
-    secure_boot: bool = False        # roudix.boot.secureBoot.enable — sign Limine with sbctl (Limine only). Keys are created at install, enrolling them in the firmware stays manual
+    secure_boot: bool = False        # roudix.boot.secureBoot.enable — sign the bootloader (Limine with sbctl, systemd-boot with lanzaboote; UEFI only). Keys are created at install, enrolling them in the firmware stays manual
     eac_enable: bool = False         # roudix.boot.eac.enable — separate "NixOS EAC" boot entry for EAC Linux v2 (experimental, Limine only)
     eac_vendor: str = "fedora"       # roudix.boot.eac.vendor — fedora | bazzite
     matrix_client: str = "none"      # none | element | cinny

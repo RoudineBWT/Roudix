@@ -25,6 +25,15 @@ case "$1" in
       signed)   echo "✓ /boot/EFI/limine/BOOTX64.EFI is signed" ;;
       unsigned) echo "✗ /boot/EFI/limine/BOOTX64.EFI is not signed" ;;
     esac
+    case "${FAKE_SDBOOT:-absent}" in
+      signed)   echo "✓ /boot/EFI/systemd/systemd-bootx64.efi is signed"
+                echo "✓ /boot/EFI/BOOT/BOOTX64.EFI is signed"
+                echo "✓ /boot/EFI/Linux/nixos-generation-3-abc.efi is signed"
+                echo "✗ /boot/EFI/nixos/kernel-6.12-abc.efi is not signed" ;;
+      nouki)    echo "✓ /boot/EFI/systemd/systemd-bootx64.efi is signed"
+                echo "✗ /boot/EFI/nixos/kernel-6.12-abc.efi is not signed" ;;
+      unsigned) echo "✗ /boot/EFI/systemd/systemd-bootx64.efi is not signed" ;;
+    esac
     echo "✗ /boot/EFI/Microsoft/Boot/bootmgfw.efi is not signed"
     exit 1 ;;   # the real one exits non-zero when anything is unsigned
   create-keys)
@@ -126,8 +135,22 @@ expect "EAC optional hint" "roudix.boot.eac.enable" "$out"
 world 1 2 1 0 1 1 signed 0 1;  out="$(run status)"
 expect "EAC entry present: how to use it" "sudo eac-reboot" "$out"
 
-world 1 2 1 0 1 1 signed;  out="$(ROUDIX_BOOTLOADER=systemd-boot run status)"
-expect "non-Limine bootloader is flagged" "Limine only" "$out"
+# systemd-boot (lanzaboote)
+world 1 2 1 0 1 1 absent;  out="$(FAKE_SDBOOT=signed ROUDIX_BOOTLOADER=systemd-boot run status)"
+expect "systemd-boot: bootloader and kernel images signed" "systemd-boot and kernel images: signed" "$out"
+expect "systemd-boot: all done" "Secure Boot is on and systemd-boot is signed" "$out"
+refute "systemd-boot: no EAC hint" "roudix.boot.eac.enable" "$out"
+refute "systemd-boot: not reported as Limine" "Limine" "$out"
+
+world 1 2 1 0 1 0 absent;  out="$(FAKE_SDBOOT=unsigned ROUDIX_BOOTLOADER=systemd-boot run status)"
+expect "systemd-boot unsigned: reported" "systemd-boot: not signed" "$out"
+expect "systemd-boot unsigned: enable the option" "roudix.boot.secureBoot.enable = true" "$out"
+
+world 1 2 1 0 1 0 absent;  out="$(FAKE_SDBOOT=nouki ROUDIX_BOOTLOADER=systemd-boot run status)"
+expect "systemd-boot without signed kernel image: reported" "no signed kernel image" "$out"
+
+world 1 2 1 0 1 1 absent;  out="$(FAKE_SDBOOT=signed run status)"
+expect "systemd-boot detected from sbctl when run standalone" "systemd-boot and kernel images: signed" "$out"
 
 # enroll
 world 1 2 1 0 0 0 absent
@@ -160,6 +183,16 @@ out="$(run verify)"
 expect "verify: signed" "Limine is signed" "$out"
 if world 1 2 1 0 1 0 unsigned && out="$(run verify)"; then n=$((n+1)); echo "not ok $n - verify must fail on unsigned Limine"; fails=$((fails+1))
 else expect "verify: unsigned fails" "Limine is not signed" "$out"; fi
+
+# verify, systemd-boot
+world 1 2 1 0 1 0 absent
+out="$(FAKE_SDBOOT=signed ROUDIX_BOOTLOADER=systemd-boot run verify)"
+expect "verify systemd-boot: bootloader signed" "systemd-boot is signed" "$out"
+expect "verify systemd-boot: kernel images signed" "Kernel images (EFI/Linux) are signed" "$out"
+if out="$(FAKE_SDBOOT=unsigned ROUDIX_BOOTLOADER=systemd-boot run verify)"; then n=$((n+1)); echo "not ok $n - verify must fail on unsigned systemd-boot"; fails=$((fails+1))
+else expect "verify systemd-boot: unsigned fails" "systemd-boot is not signed" "$out"; fi
+if out="$(FAKE_SDBOOT=nouki ROUDIX_BOOTLOADER=systemd-boot run verify)"; then n=$((n+1)); echo "not ok $n - verify must fail without signed kernel images"; fails=$((fails+1))
+else expect "verify systemd-boot: no kernel image fails" "No signed kernel image" "$out"; fi
 
 # firmware (confirmed with -y)
 world 1 2 1 0 1 0 signed

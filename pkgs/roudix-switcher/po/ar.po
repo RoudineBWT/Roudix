@@ -483,10 +483,10 @@ msgstr "إصدارات أحدث، احتمال تعطلها أكبر"
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign Limine with sbctl (the keys must exist: roudix-secureboot create-"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
 "keys)"
 msgstr ""
-"Secure Boot — توقيع Limine بواسطة sbctl (يجب أن تكون المفاتيح موجودة: roudix-secureboot "
+"Secure Boot — توقيع مدير الإقلاع بواسطة sbctl (يجب أن تكون المفاتيح موجودة: roudix-secureboot "
 "create-keys)"
 
 #: roudix-switcher.py

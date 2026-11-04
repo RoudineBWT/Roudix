@@ -11,6 +11,17 @@ bash installer.
 import re
 from pathlib import Path
 
+def is_bios_boot() -> bool:
+    """True when the running system was booted in legacy BIOS mode.
+
+    The kernel only exposes /sys/firmware/efi when it was started by UEFI
+    firmware, so its absence is the standard test (same one the
+    rename-uefi-entry service uses). The live ISO's boot mode is the one the
+    installed system will have, since the same firmware boots both.
+    """
+    return not Path("/sys/firmware/efi").exists()
+
+
 _PCI_VENDOR_IDS = {
     "0x1002": "amd",
     "0x10de": "nvidia",

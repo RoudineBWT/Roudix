@@ -2,6 +2,9 @@
 let
   cfg = config.roudix.boot;
 
+  # Legacy BIOS install: biosDevice names the disk Limine's stage 1 goes on.
+  bios = cfg.biosDevice != "";
+
   localBoot =
     if builtins.pathExists ./boot.local.nix
     then import ./boot.local.nix
@@ -47,11 +50,27 @@ in
       example = "2560x1440";
     };
 
+    biosDevice = lib.mkOption {
+      description = ''
+        Legacy BIOS (non-UEFI) machines: the DISK to install Limine on, e.g.
+        "/dev/sda" (the disk, not a partition). Empty (default) = UEFI.
+        Needs bootloader = "limine" (systemd-boot is UEFI only), and a GPT
+        disk with a 1 MiB BIOS boot partition (type EF02) plus a /boot that
+        Limine can read (FAT or ext4: not btrfs). Secure Boot and EAC do not
+        exist in BIOS mode, so they must stay off. The installers set this
+        by themselves when the live ISO was booted in BIOS mode.
+      '';
+      type = lib.types.str;
+      default = "";
+      example = "/dev/sda";
+    };
+
     bootloader = lib.mkOption {
       description = ''
         Bootloader to use: "limine" (default, themed, Secure Boot + EAC
         support) or "systemd-boot" (minimal, UEFI only, Secure Boot through
-        lanzaboote).
+        lanzaboote; no EAC entry with Secure Boot). Legacy BIOS machines: "limine"
+        with biosDevice set (no Secure Boot there).
       '';
       type = lib.types.enum [ "limine" "systemd-boot" ];
       default = "limine";
@@ -62,7 +81,22 @@ in
   config = lib.mkIf cfg.enable {
 
     # ── Bootloader ────────────────────────────────────────────────────────
-    boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
+    assertions = [
+      {
+        assertion = bios -> cfg.bootloader == "limine";
+        message = "roudix.boot.biosDevice (legacy BIOS) needs roudix.boot.bootloader = \"limine\": systemd-boot is UEFI only.";
+      }
+      {
+        assertion = !(bios && cfg.secureBoot.enable);
+        message = "roudix.boot.secureBoot cannot be used with roudix.boot.biosDevice: Secure Boot is a UEFI feature. Turn it off, or install in UEFI mode.";
+      }
+      {
+        assertion = !(bios && cfg.eac.enable);
+        message = "roudix.boot.eac needs UEFI + Secure Boot + TPM 2.0, so it cannot be used with roudix.boot.biosDevice.";
+      }
+    ];
+
+    boot.loader.efi.canTouchEfiVariables = lib.mkDefault (!bios);
 
     boot.loader.systemd-boot = lib.mkIf (cfg.bootloader == "systemd-boot") {
       enable = true;
@@ -72,8 +106,13 @@ in
 
     boot.loader.limine = lib.mkIf (cfg.bootloader == "limine") {
       enable = true;
-      # Enroll config checksum for integrity verification
-      enrollConfig = true;
+      # BIOS: stage 1 on biosDevice, no EFI binary. (UEFI keeps the nixpkgs
+      # defaults: these three lines only apply when biosDevice is set.)
+      efiSupport = lib.mkIf bios false;
+      biosSupport = lib.mkIf bios true;
+      biosDevice = lib.mkIf bios cfg.biosDevice;
+      # Enroll config checksum for integrity verification (EFI only)
+      enrollConfig = !bios;
       # Keep last 3 generations in the boot menu
       maxGenerations = 3;
       style = {
@@ -108,7 +147,7 @@ in
     system.nixos.label = lib.mkForce "${config.system.nixos.version}";
 
     # ── Rename UEFI entry to "Roudix" (on every boot, not just at activation) ──
-    systemd.services.rename-uefi-entry = {
+    systemd.services.rename-uefi-entry = lib.mkIf (!bios) {
       description = "Rename UEFI boot entry to Roudix";
       wantedBy = [ "multi-user.target" ];
       after = [ "local-fs.target" ];

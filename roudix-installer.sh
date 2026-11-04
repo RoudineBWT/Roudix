@@ -1195,15 +1195,19 @@ if [[ "$BOOTLOADER" == "limine" ]] && ! hidden_key roudix.boot.menuResolution; t
   fi
 fi
 
-# Secure Boot + EAC Linux v2 boot entry — experimental, Limine only, both off by
-# default (docs/secure-boot-eac.md). With Secure Boot on, the sbctl keys are
+# Secure Boot (Limine and systemd-boot) + EAC Linux v2 boot entry (Limine only) —
+# experimental, both off by default (docs/secure-boot-eac.md). With Secure Boot on, the sbctl keys are
 # created now; enrolling them in the firmware is a manual step done afterwards.
 SECURE_BOOT="false"
 EAC="false"
 EAC_VENDOR="fedora"
+if [[ ! -d /sys/firmware/efi ]]; then
+  # Legacy BIOS: Secure Boot and the EAC entry are UEFI features, nothing to ask.
+  echo "Legacy BIOS mode: Secure Boot and the EAC entry need UEFI, skipped."
+else
+pick_bool "Sign the bootloader for Secure Boot? (keys created now, enrolled in the firmware afterwards - docs/secure-boot-eac.md)" SECURE_BOOT \
+  "Yes" "No"
 if [[ "$BOOTLOADER" == "limine" ]]; then
-  pick_bool "Sign Limine for Secure Boot? (keys created now, enrolled in the firmware afterwards - docs/secure-boot-eac.md)" SECURE_BOOT \
-    "Yes" "No"
   pick_bool "Add a separate \"NixOS EAC\" boot entry for EAC Linux v2 games? (experimental, needs Secure Boot and a TPM 2.0)" EAC \
     "Yes" "No"
   if [[ "$EAC" == "true" ]] && ! hidden_key roudix.boot.eac.vendor; then
@@ -1217,6 +1221,7 @@ if [[ "$BOOTLOADER" == "limine" ]]; then
         "bazzite|Bazzite OGC kernel - Universal Blue's key to enroll after the install"
     fi
   fi
+fi
 fi
 
 pick "Matrix client:" MATRIX_CLIENT \

@@ -493,10 +493,10 @@ msgstr "Более свежие сборки, выше риск сбоев"
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign Limine with sbctl (the keys must exist: roudix-secureboot create-"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
 "keys)"
 msgstr ""
-"Secure Boot — подпись Limine через sbctl (ключи должны существовать: roudix-secureboot "
+"Secure Boot — подпись загрузчика через sbctl (ключи должны существовать: roudix-secureboot "
 "create-keys)"
 
 #: roudix-switcher.py

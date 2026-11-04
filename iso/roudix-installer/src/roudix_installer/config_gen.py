@@ -129,10 +129,24 @@ def _eac_vendor(state: InstallState) -> str:
     return "bazzite" if state.gpu == "nvidia" else state.eac_vendor
 
 
+def _bios_device(state: InstallState) -> str:
+    """roudix.boot.biosDevice as written: the disk Limine goes on in legacy BIOS
+    mode (simple mode only, where we know the disk), \"\" = UEFI."""
+    d = state.disk
+    return d.device if (d.bios and d.mode == "simple") else ""
+
+
+def _bootloader(state: InstallState) -> str:
+    """BIOS machines can only boot Limine here (systemd-boot is UEFI only)."""
+    return "limine" if _bios_device(state) else state.bootloader
+
+
 def _boot_security(state: InstallState) -> tuple:
-    """(secure_boot, eac) as actually written: both need Limine."""
-    limine = state.bootloader == "limine"
-    return (state.secure_boot and limine, state.eac_enable and limine)
+    """(secure_boot, eac) as actually written: Secure Boot needs UEFI (Limine
+    with sbctl, systemd-boot with lanzaboote); the EAC entry needs UEFI and Limine."""
+    uefi = not (state.disk.bios or _bios_device(state))
+    limine = _bootloader(state) == "limine" and uefi
+    return (state.secure_boot and uefi, state.eac_enable and limine)
 
 
 def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
@@ -192,11 +206,12 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_bool(t, "roudix.autoupdate.enable", state.autoupdate)
     t = _sub_string(t, "roudix.autoupdate.interval", state.autoupdate_interval)
     t = _sub_string(t, "roudix.autoupdate.branch", state.branch)
-    t = _sub_string(t, "roudix.boot.bootloader", state.bootloader)
+    t = _sub_string(t, "roudix.boot.bootloader", _bootloader(state))
+    t = _sub_string(t, "roudix.boot.biosDevice", _bios_device(state))
     t = _sub_string(t, "roudix.boot.wallpaperAspect", state.boot_aspect)
     t = _sub_string(t, "roudix.boot.menuResolution", state.boot_resolution)
-    # Secure Boot / EAC are Limine-only in Roudix (the module asserts it): never
-    # written on for another bootloader. Keys are generated on the target at
+    # Secure Boot needs UEFI (Limine or systemd-boot); the EAC entry needs UEFI and
+    # Limine (the module asserts it): never written on otherwise. Keys are generated on the target at
     # install time; enrolling them in the firmware stays manual (docs/secure-boot-eac.md).
     sb_on, eac_on = _boot_security(state)
     t = _sub_bool(t, "roudix.boot.secureBoot.enable", sb_on)
@@ -272,7 +287,8 @@ def _expected_values(state: InstallState) -> list:
         "i18n.defaultLocale": state.locale, "console.keyMap": state.keymap,
         "roudix.keyboardLayout": state.keyboard_layout, "roudix.keyboardVariant": state.keyboard_variant,
         "roudix.autoupdate.interval": state.autoupdate_interval, "roudix.autoupdate.branch": state.branch,
-        "roudix.boot.bootloader": state.bootloader, "roudix.boot.wallpaperAspect": state.boot_aspect,
+        "roudix.boot.bootloader": _bootloader(state), "roudix.boot.wallpaperAspect": state.boot_aspect,
+        "roudix.boot.biosDevice": _bios_device(state),
         "roudix.boot.menuResolution": state.boot_resolution,
         "roudix.boot.eac.vendor": _eac_vendor(state),
         "roudix.matrixClient": state.matrix_client,

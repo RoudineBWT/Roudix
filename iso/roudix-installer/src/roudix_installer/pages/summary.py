@@ -143,7 +143,7 @@ class SummaryPage(Adw.NavigationPage):
             ])) or trc("summary, Extras row: nothing selected", "none")),
             ("Bootloader", s.bootloader + (f" ({s.boot_aspect} · {s.boot_resolution})" if s.bootloader == "limine" else "")),
             (tr("Secure Boot / EAC"), ", ".join(filter(None, [
-                tr("Secure Boot") if s.secure_boot and s.bootloader == "limine" else "",
+                tr("Secure Boot") if s.secure_boot else "",
                 f"EAC ({s.eac_vendor})" if s.eac_enable and s.bootloader == "limine" else "",
             ])) or trc("summary, Secure Boot / EAC row: nothing selected", "off")),
             ("Matrix", s.matrix_client),

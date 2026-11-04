@@ -114,15 +114,18 @@
 
   # ── Optional modules ──────────────────────────────────────────────────────
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
+  roudix.boot.biosDevice = "";  # legacy BIOS only: the DISK to put Limine on (e.g. "/dev/sda"). "" = UEFI. Set by the installers when the ISO was booted in BIOS mode; needs limine, no Secure Boot/EAC
   roudix.boot.wallpaperAspect = "16x9"; # Limine wallpaper format — the one closest to your MAIN screen (the biggest one), so it isn't stretched: "16x9" (1920x1080, 2560x1440, 3840x2160...), "16x10" (1920x1200, 2560x1600...), "21x9" (2560x1080, 3440x1440...) or "4x3" (1024x768, 1280x1024...). Run ./scripts/detect-boot-aspect.sh to find yours; the installers and roudix-switcher suggest it too (change it there if you swap screens). Used with limine
   roudix.boot.menuResolution = "auto"; # Limine menu (and wallpaper) resolution: "auto", or "<width>x<height>" e.g. "2560x1440". With several screens of different sizes Limine can pick the SMALLER one: set your MAIN screen's resolution (the highest one) — ./scripts/detect-boot-aspect.sh --resolution prints it, the installers and roudix-switcher suggest it. If the firmware doesn't offer it, Limine falls back by itself. Used with limine
   # ── Secure Boot + EAC Linux v2 (opt-in, see docs/secure-boot-eac.md) ───────
   # Follow the order in the doc (create sbctl keys, Setup Mode, enroll, rebuild,
   # check, THEN enable Secure Boot in the firmware). The keys must be enrolled
   # before Secure Boot is switched on in the firmware.
-  # Limine only. Needs UEFI; the EAC entry also needs a TPM 2.0.
-  # `roudix-secureboot` (installed with Limine) shows where you are and does the steps.
-  roudix.boot.secureBoot.enable = false;           # sign Limine with sbctl so the normal entry boots with Secure Boot ON
+  # Secure Boot works with Limine (sbctl) and systemd-boot (lanzaboote); the EAC
+  # entry is Limine only. UEFI only: on legacy BIOS (biosDevice) none of this exists.
+  # The EAC entry also needs a TPM 2.0.
+  # `roudix-secureboot` (installed on every system) shows where you are and does the steps.
+  roudix.boot.secureBoot.enable = false;           # sign the bootloader with your sbctl keys (Limine, or systemd-boot through lanzaboote) so the normal entry boots with Secure Boot ON
   roudix.boot.secureBoot.autoGenerateKeys = false; # create the sbctl keys at install time if missing (enrolling them stays manual)
   roudix.boot.eac.enable = false;                  # add a separate "NixOS EAC" boot entry (Fedora/Bazzite-signed kernel) for EAC Linux v2 games — Epic has not confirmed it accepts this yet
   roudix.boot.eac.vendor = "fedora";               # "fedora" (nothing to enroll) or "bazzite" (OGC kernel, needs Universal Blue's MOK: sudo eacnix-enroll-mok)
