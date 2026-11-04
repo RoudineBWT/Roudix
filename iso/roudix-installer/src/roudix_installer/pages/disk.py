@@ -285,10 +285,12 @@ class DiskPage(Adw.NavigationPage):
             self.partition_dropdowns[p["path"]] = dropdown
 
     def _validate(self, _btn):
+        # Whatever the partitioning mode: BIOS vs UEFI is a property of this boot,
+        # and manual/advanced installs need it too (biosDevice, Limine target).
+        self.state.disk.bios = is_bios_boot()
         if self.state.disk.mode == "simple":
             self.state.disk.filesystem = "btrfs" if self.filesystem_row.get_selected() == 1 else "ext4"
             self.state.disk.boot_size_gb = int(self.boot_size_row.get_value())
-            self.state.disk.bios = is_bios_boot()
             self.state.disk.enable_swap = self.swap_row.get_active()
             self.state.disk.swap_size_gb = int(self.swap_size_row.get_value())
         elif self.state.disk.mode == "manual":

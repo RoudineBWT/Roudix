@@ -130,15 +130,56 @@ def _eac_vendor(state: InstallState) -> str:
 
 
 def _bios_device(state: InstallState) -> str:
-    """roudix.boot.biosDevice as written: the disk Limine goes on in legacy BIOS
-    mode (simple mode only, where we know the disk), \"\" = UEFI."""
+    """roudix.boot.biosDevice as written: the DISK Limine goes on in legacy BIOS
+    mode (the one picked on the Disk page, whatever the partitioning mode),
+    \"\" = UEFI. A BIOS install with no known disk is caught by
+    check_bios_support(), never silently written as a UEFI config."""
     d = state.disk
-    return d.device if (d.bios and d.mode == "simple") else ""
+    return d.device if d.bios else ""
 
 
 def _bootloader(state: InstallState) -> str:
     """BIOS machines can only boot Limine here (systemd-boot is UEFI only)."""
     return "limine" if _bios_device(state) else state.bootloader
+
+
+_BIOS_KEY = "roudix.boot.biosDevice"
+
+
+def _ensure_bios_line(text: str, value: str) -> str:
+    """_sub_string is a silent no-op when the line is missing from local.nix.example
+    (an example older than BIOS support). In BIOS mode that would write a UEFI config
+    and the install would die at the very end, so add the line after bootloader."""
+    if not value or re.search(rf"^[ \t]*#?[ \t]*{re.escape(_BIOS_KEY)}[ \t]*=", text, re.M):
+        return text
+    line = f'  {_BIOS_KEY} = "{value}";  # legacy BIOS: disk Limine is installed on\n'
+    pattern = re.compile(r"^([ \t]*roudix\.boot\.bootloader[ \t]*=[^\n]*\n)", re.M)
+    if pattern.search(text):
+        return pattern.sub(lambda m: m.group(1) + line, text, count=1)
+    return text.rstrip("\n") + "\n" + line  # last resort: a bare option line is valid in a module
+
+
+def check_bios_support(state: InstallState, config_root: Path) -> None:
+    """Fail BEFORE nixos-install (which builds for a long time) when the target
+    config cannot do a BIOS install. The configuration is NOT the installer's:
+    /iso-cfg is a snapshot of `main` taken when the ISO was built, other branches
+    are cloned from GitHub, so either can predate BIOS support (no
+    roudix.boot.biosDevice) and would then crash in efibootmgr at the very end."""
+    if not state.disk.bios:
+        return
+    if not _bios_device(state):
+        raise RuntimeError(
+            "Legacy BIOS boot detected but no target disk is known "
+            "(advanced mode needs the disk chosen on the Disk page): "
+            "refusing to write a UEFI configuration.")
+    boot_nix = config_root / "modules" / "system" / "boot" / "boot.nix"
+    if boot_nix.is_file() and "biosDevice" not in boot_nix.read_text():
+        raise RuntimeError(
+            "Legacy BIOS boot detected, but this configuration (branch "
+            f"'{state.branch}') has no roudix.boot.biosDevice, so it can only "
+            "install in UEFI mode and would fail at the bootloader step. "
+            "Use a branch / an ISO that includes BIOS support, or boot the "
+            "installer in UEFI mode.")
 
 
 def _boot_security(state: InstallState) -> tuple:
@@ -207,7 +248,8 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.autoupdate.interval", state.autoupdate_interval)
     t = _sub_string(t, "roudix.autoupdate.branch", state.branch)
     t = _sub_string(t, "roudix.boot.bootloader", _bootloader(state))
-    t = _sub_string(t, "roudix.boot.biosDevice", _bios_device(state))
+    t = _sub_string(t, _BIOS_KEY, _bios_device(state))
+    t = _ensure_bios_line(t, _bios_device(state))
     t = _sub_string(t, "roudix.boot.wallpaperAspect", state.boot_aspect)
     t = _sub_string(t, "roudix.boot.menuResolution", state.boot_resolution)
     # Secure Boot needs UEFI (Limine or systemd-boot); the EAC entry needs UEFI and
@@ -356,6 +398,7 @@ def write_config(state: InstallState, config_root: Path):
     copied verbatim, boot.local.nix copied verbatim (EFI detection TODO).
     """
     check_identity(state)
+    check_bios_support(state, config_root)
     hosts_dir = config_root / "hosts" / state.hostname
     home_dir = config_root / "modules" / "home"
     boot_local = config_root / "modules" / "system" / "boot" / "boot.local.nix"
