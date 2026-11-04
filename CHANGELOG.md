@@ -7,6 +7,15 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 
 ## [Unreleased]
 
+## [2026.11.04] - 2026-11-04
+
+### Changed
+- feat(boot): Secure Boot for systemd-boot, hidden on legacy BIOS + fix(iso): brand the BIOS (syslinux) boot menu
+- feat(secure-boot): add guided Secure Boot setup script
+- feat(roudix): add printing module and disable it by default
+- feat(roudix): add Cressida as an optional app
+- fix(gaming): correct typo in gamescope-session.nix
+
 ## [2026.10.30] - 2026-10-30
 
 ### Added
