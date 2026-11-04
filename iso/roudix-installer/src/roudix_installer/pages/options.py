@@ -1471,7 +1471,8 @@ class OptionsPage(Adw.NavigationPage):
                      "_sync_brave_row", "_sync_shell_row", "_sync_latest_rows", "_sync_desktop_integration_row",
                      "_sync_file_manager_row", "_sync_memory_rows", "_sync_zen_rows",
                      "_sync_spicetify_rows", "_sync_ananicy_row", "_sync_content_creation_rows",
-                     "_sync_autoupdate_row", "_sync_boot_aspect_row", "_sync_boot_resolution_row"):
+                     "_sync_autoupdate_row", "_sync_boot_aspect_row", "_sync_boot_resolution_row",
+                     "_sync_boot_security_rows"):
             try:
                 getattr(self, name)()
             except Exception:
