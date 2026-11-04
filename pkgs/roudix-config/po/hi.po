@@ -34,11 +34,11 @@ msgstr "ऐप्लिकेशन"
 
 #: roudix-config-gui.py
 msgid ""
-"● open now · ○ seen open before · no symbol: installed (the app_id is then a"
-" guess)"
+"● open now · ○ seen open before · no symbol: installed (the app_id is then a "
+"guess)"
 msgstr ""
-"● अभी खुला · ○ पहले खुला दिखा · कोई चिह्न नहीं: इंस्टॉल है (तब app_id अनुमान"
-" से लिया गया है)"
+"● अभी खुला · ○ पहले खुला दिखा · कोई चिह्न नहीं: इंस्टॉल है (तब app_id अनुमान से लिया "
+"गया है)"
 
 #: roudix-config-gui.py
 msgid "Pick an app"
@@ -79,6 +79,10 @@ msgstr "ब्लर (blur)"
 #: roudix-config-gui.py roudix-config.py
 msgid "Opacity (0 to 1, optional)"
 msgstr "अपारदर्शिता (0 से 1, वैकल्पिक)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Screenshots and recordings"
+msgstr "स्क्रीनशॉट और रिकॉर्डिंग"
 
 #: roudix-config-gui.py
 msgid "Opacity: a number between 0 and 1"
@@ -127,9 +131,8 @@ msgid ""
 "screen only: the compositor treats it as unique and Mod+N would always jump "
 "to that screen."
 msgstr ""
-"नाम स्पेस से अलग करें। ऐसा केवल अंकों वाला नाम न रखें जो सिर्फ़ एक स्क्रीन "
-"पर हो: कंपोज़िटर उसे अद्वितीय मानता है और Mod+N हमेशा उसी स्क्रीन पर कूद "
-"जाएगा।"
+"नाम स्पेस से अलग करें। ऐसा केवल अंकों वाला नाम न रखें जो सिर्फ़ एक स्क्रीन पर हो: कंपोज़िटर "
+"उसे अद्वितीय मानता है और Mod+N हमेशा उसी स्क्रीन पर कूद जाएगा।"
 
 #: roudix-config-gui.py
 msgid "This screen's workspace names"
@@ -233,9 +236,8 @@ msgid ""
 "{label}: you can change a shortcut's action or add new ones (✎ = changed by "
 "you). Moving or deleting a default shortcut is done in the File tab."
 msgstr ""
-"{label}: आप किसी शॉर्टकट की क्रिया बदल सकते हैं या नए जोड़ सकते हैं (✎ = "
-"आपके द्वारा बदला गया)। डिफ़ॉल्ट शॉर्टकट को हिलाना या हटाना “फ़ाइल” टैब में "
-"होता है।"
+"{label}: आप किसी शॉर्टकट की क्रिया बदल सकते हैं या नए जोड़ सकते हैं (✎ = आपके द्वारा "
+"बदला गया)। डिफ़ॉल्ट शॉर्टकट को हिलाना या हटाना “फ़ाइल” टैब में होता है।"
 
 #: roudix-config-gui.py
 msgid ""
@@ -243,8 +245,8 @@ msgid ""
 "shortcuts added to the repo won't reach you any more (“Reset everything” to "
 "go back)."
 msgstr ""
-"कुछ भी बदलते ही शॉर्टकट तालिका जम जाती है: रिपॉज़िटरी में जुड़े नए डिफ़ॉल्ट "
-"शॉर्टकट आप तक नहीं पहुँचेंगे (वापस जाने के लिए “सब कुछ रीसेट करें”)।"
+"कुछ भी बदलते ही शॉर्टकट तालिका जम जाती है: रिपॉज़िटरी में जुड़े नए डिफ़ॉल्ट शॉर्टकट आप तक "
+"नहीं पहुँचेंगे (वापस जाने के लिए “सब कुछ रीसेट करें”)।"
 
 #: roudix-config-gui.py
 msgid "Filter shortcuts…"
@@ -256,8 +258,8 @@ msgid ""
 "Your whole {custom_name} file. The “roudix-config” block is managed by the "
 "app; the rest is yours. Saving makes a .bak copy and checks the syntax."
 msgstr ""
-"आपकी पूरी {custom_name} फ़ाइल। “roudix-config” ब्लॉक ऐप द्वारा प्रबंधित है; "
-"बाकी आपका है। सहेजने पर .bak प्रति बनती है और सिंटैक्स जाँचा जाता है।"
+"आपकी पूरी {custom_name} फ़ाइल। “roudix-config” ब्लॉक ऐप द्वारा प्रबंधित है; बाकी "
+"आपका है। सहेजने पर .bak प्रति बनती है और सिंटैक्स जाँचा जाता है।"
 
 #: roudix-config-gui.py roudix-config.py
 msgid "File"
@@ -282,9 +284,8 @@ msgid ""
 "The most common settings. A value you changed is marked ✎ (↶ to restore the "
 "default); the others follow the repo's defaults. Rebuild required to apply."
 msgstr ""
-"सबसे आम सेटिंग्स। आपके द्वारा बदला गया मान ✎ से चिह्नित है (↶ से डिफ़ॉल्ट "
-"बहाल करें); बाकी रिपॉज़िटरी के डिफ़ॉल्ट का पालन करते हैं। लागू करने के लिए "
-"rebuild आवश्यक है।"
+"सबसे आम सेटिंग्स। आपके द्वारा बदला गया मान ✎ से चिह्नित है (↶ से डिफ़ॉल्ट बहाल करें); बाकी "
+"रिपॉज़िटरी के डिफ़ॉल्ट का पालन करते हैं। लागू करने के लिए rebuild आवश्यक है।"
 
 #: roudix-config-gui.py roudix-config.py
 msgid "Settings"
@@ -448,8 +449,8 @@ msgid ""
 "Avoid a purely numeric name that exists on one screen only: the compositor "
 "treats it as unique and Mod+N would always jump to that screen."
 msgstr ""
-"ऐसा केवल अंकों वाला नाम न रखें जो सिर्फ़ एक स्क्रीन पर हो: कंपोज़िटर उसे "
-"अद्वितीय मानता है और Mod+N हमेशा उसी स्क्रीन पर कूद जाएगा।"
+"ऐसा केवल अंकों वाला नाम न रखें जो सिर्फ़ एक स्क्रीन पर हो: कंपोज़िटर उसे अद्वितीय मानता है "
+"और Mod+N हमेशा उसी स्क्रीन पर कूद जाएगा।"
 
 #: roudix-config.py
 msgid "pick an output"
@@ -537,8 +538,8 @@ msgid ""
 "Unsaved changes in the File tab: Ctrl+S to keep them (or leave without "
 "saving) before continuing."
 msgstr ""
-"“फ़ाइल” टैब में बिना सहेजे बदलाव हैं: आगे बढ़ने से पहले उन्हें रखने के लिए "
-"Ctrl+S दबाएँ (या बिना सहेजे छोड़ दें)।"
+"“फ़ाइल” टैब में बिना सहेजे बदलाव हैं: आगे बढ़ने से पहले उन्हें रखने के लिए Ctrl+S दबाएँ (या "
+"बिना सहेजे छोड़ दें)।"
 
 #: roudix-config.py
 msgid "a add · e edit · d delete"
@@ -551,28 +552,29 @@ msgstr ", workspace नाम"
 #: roudix-config.py
 #, python-brace-format
 msgid ""
-"e edit (resolution, scale, rotation{names}) · r back to the output's "
-"defaults"
-msgstr ""
-"e संपादित करें (रिज़ॉल्यूशन, स्केल, घुमाव{names}) · r आउटपुट के डिफ़ॉल्ट पर "
-"लौटें"
+"e edit (resolution, scale, rotation{names}) · r back to the output's defaults"
+msgstr "e संपादित करें (रिज़ॉल्यूशन, स्केल, घुमाव{names}) · r आउटपुट के डिफ़ॉल्ट पर लौटें"
 
 #: roudix-config.py
 #, python-brace-format
 msgid ""
 "a add · e change the action · r reset everything\n"
-"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = changed by you."
+"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = "
+"changed by you."
 msgstr ""
 "a जोड़ें · e क्रिया बदलें · r सब कुछ रीसेट करें\n"
-"{label}: डिफ़ॉल्ट शॉर्टकट को हिलाना या हटाना “फ़ाइल” टैब में होता है। ✎ = आपके द्वारा बदला गया।"
+"{label}: डिफ़ॉल्ट शॉर्टकट को हिलाना या हटाना “फ़ाइल” टैब में होता है। ✎ = आपके द्वारा "
+"बदला गया।"
 
 #: roudix-config.py
 msgid ""
 "a add · e edit · d delete · r reset everything\n"
-"Once changed, the table is frozen: new default shortcuts added to the repo won't reach you any more (r to go back)."
+"Once changed, the table is frozen: new default shortcuts added to the repo "
+"won't reach you any more (r to go back)."
 msgstr ""
 "a जोड़ें · e संपादित करें · d हटाएँ · r सब कुछ रीसेट करें\n"
-"बदलने के बाद तालिका जम जाती है: रिपॉज़िटरी में जुड़े नए डिफ़ॉल्ट शॉर्टकट आप तक नहीं पहुँचेंगे (वापस जाने के लिए r)।"
+"बदलने के बाद तालिका जम जाती है: रिपॉज़िटरी में जुड़े नए डिफ़ॉल्ट शॉर्टकट आप तक नहीं पहुँचेंगे "
+"(वापस जाने के लिए r)।"
 
 #: roudix-config.py
 msgid ""
@@ -585,8 +587,7 @@ msgstr ""
 #: roudix-config.py
 #, python-brace-format
 msgid "Your {custom_name} file. Ctrl+S saves (.bak copy + syntax check)."
-msgstr ""
-"आपकी {custom_name} फ़ाइल। Ctrl+S सहेजता है (.bak प्रति + सिंटैक्स जाँच)।"
+msgstr "आपकी {custom_name} फ़ाइल। Ctrl+S सहेजता है (.bak प्रति + सिंटैक्स जाँच)।"
 
 #: roudix-config.py
 msgid "settings"
@@ -651,8 +652,7 @@ msgstr "सहेजा नहीं गया — Nix त्रुटि: {msg}
 #: roudix-config.py
 #, python-brace-format
 msgid "{name} saved ({msg}). Previous version: {name}.bak — rebuild required."
-msgstr ""
-"{name} सहेजा गया ({msg})। पिछला संस्करण: {name}.bak — rebuild आवश्यक है।"
+msgstr "{name} सहेजा गया ({msg})। पिछला संस्करण: {name}.bak — rebuild आवश्यक है।"
 
 #: roudix-config.py
 #, python-brace-format
@@ -679,10 +679,8 @@ msgstr "TUI से rebuild नहीं हो सकता ({e}): `rebuild` ali
 
 #: roudix-config.py
 msgid ""
-"Rebuild finished (see the terminal) — reload the compositor config if "
-"needed."
-msgstr ""
-"Rebuild समाप्त (टर्मिनल देखें) — ज़रूरत हो तो कंपोज़िटर कॉन्फ़िग रीलोड करें।"
+"Rebuild finished (see the terminal) — reload the compositor config if needed."
+msgstr "Rebuild समाप्त (टर्मिनल देखें) — ज़रूरत हो तो कंपोज़िटर कॉन्फ़िग रीलोड करें।"
 
 #: roudix-config.py
 msgid "Configure Umbriel, Niri or MangoWC without writing Nix."
@@ -750,6 +748,10 @@ msgid "Prefer server-side decorations"
 msgstr "सर्वर-साइड डेकोरेशन को प्राथमिकता दें"
 
 #: roudix_config_backends.py
+msgid "Title bar button symbols"
+msgstr "टाइटल बार बटन के प्रतीक"
+
+#: roudix_config_backends.py
 msgid "Default layout"
 msgstr "डिफ़ॉल्ट लेआउट"
 
@@ -764,6 +766,10 @@ msgstr "कॉलम की डिफ़ॉल्ट चौड़ाई"
 #: roudix_config_backends.py
 msgid "Master area width"
 msgstr "मुख्य क्षेत्र की चौड़ाई (master)"
+
+#: roudix_config_backends.py
+msgid "Fade window opacity and blur on focus change"
+msgstr "फ़ोकस बदलने पर पारदर्शिता और ब्लर का फेड"
 
 #: roudix_config_backends.py
 msgid "Tap to click (touchpad)"
@@ -880,8 +886,7 @@ msgstr "Roudix Config द्वारा बनाया गया — इसे
 #: roudix_config_backends.py
 msgid ""
 "e.g. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modifiers, key)"
-msgstr ""
-"जैसे SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (मॉडिफ़ायर, कुंजी)"
+msgstr "जैसे SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (मॉडिफ़ायर, कुंजी)"
 
 #: roudix_config_backends.py
 msgid "Mango shortcut: “MODS,KEY” (e.g. SUPER,Q)"
@@ -906,11 +911,11 @@ msgstr "Niri: शॉर्टकट को हिलाना समर्थि
 #: roudix_config_core.py
 #, python-brace-format
 msgid ""
-"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg}"
-" — trailing comma before ] or }} ?"
+"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg} "
+"— trailing comma before ] or }} ?"
 msgstr ""
-"roudix-config ब्लॉक में अमान्य JSON (पंक्ति {line}, कॉलम {colno}): {msg} — ]"
-" या }} से पहले फ़ालतू अल्पविराम?"
+"roudix-config ब्लॉक में अमान्य JSON (पंक्ति {line}, कॉलम {colno}): {msg} — ] या }} "
+"से पहले फ़ालतू अल्पविराम?"
 
 #: roudix_config_core.py
 #, python-brace-format
@@ -936,8 +941,8 @@ msgid ""
 "NOTE: umbriel-custom.nix still mentions umbriel-managed.nix — remove it by "
 "hand, that file is obsolete."
 msgstr ""
-"नोट: umbriel-custom.nix में अब भी umbriel-managed.nix का ज़िक्र है — इसे हाथ"
-" से हटाएँ, वह फ़ाइल अप्रचलित है।"
+"नोट: umbriel-custom.nix में अब भी umbriel-managed.nix का ज़िक्र है — इसे हाथ से "
+"हटाएँ, वह फ़ाइल अप्रचलित है।"
 
 #: roudix_config_core.py
 #, python-brace-format
@@ -973,6 +978,14 @@ msgid "On"
 msgstr "चालू"
 
 #: roudix_config_core.py
+msgid "Hidden from captures"
+msgstr "कैप्चर में छिपी"
+
+#: roudix_config_core.py
+msgid "Shown in captures"
+msgstr "कैप्चर में दिखाई देती है"
+
+#: roudix_config_core.py
 msgid "app_id or title required"
 msgstr "app_id या शीर्षक आवश्यक है"
 
@@ -990,8 +1003,7 @@ msgid ""
 "Roudix Config isn't available on {t}: use its native settings (System "
 "Settings)."
 msgstr ""
-"Roudix Config {t} पर उपलब्ध नहीं है: उसकी अपनी सेटिंग्स (सिस्टम सेटिंग्स) "
-"इस्तेमाल करें।"
+"Roudix Config {t} पर उपलब्ध नहीं है: उसकी अपनी सेटिंग्स (सिस्टम सेटिंग्स) इस्तेमाल करें।"
 
 #: roudix_config_core.py
 #, python-brace-format
@@ -1000,8 +1012,8 @@ msgstr "Roudix Config अभी {t} का समर्थन नहीं क�
 
 #: roudix_config_core.py
 msgid ""
-"Can't determine the desktop (roudix.desktop.type). Rebuild so that "
-"~/.local/share/roudix/desktop-type gets created."
+"Can't determine the desktop (roudix.desktop.type). Rebuild so that ~/.local/"
+"share/roudix/desktop-type gets created."
 msgstr ""
 "डेस्कटॉप का पता नहीं लगाया जा सकता (roudix.desktop.type)। rebuild करें ताकि "
 "~/.local/share/roudix/desktop-type बन जाए।"

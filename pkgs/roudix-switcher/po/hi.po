@@ -483,11 +483,11 @@ msgstr "नए बिल्ड, खराब होने की संभाव
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign Limine with sbctl (the keys must exist: sudo sbctl create-"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
 "keys)"
 msgstr ""
-"Secure Boot — sbctl से Limine पर हस्ताक्षर (कुंजियाँ पहले से मौजूद होनी चाहिए: sudo "
-"sbctl create-keys)"
+"Secure Boot — sbctl से बूटलोडर पर हस्ताक्षर (कुंजियाँ पहले से मौजूद होनी चाहिए: roudix-secureboot "
+"create-keys)"
 
 #: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"

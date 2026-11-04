@@ -20,7 +20,7 @@ Two independent options:
 
 | Option | What it does |
 |---|---|
-| `roudix.boot.secureBoot.enable` | Signs **Limine** with sbctl, so the normal Roudix entry (your kernel, the Limine wallpaper, your other OS entries) boots with Secure Boot ON. Keys are yours, enrolled next to Microsoft's. |
+| `roudix.boot.secureBoot.enable` | Signs the bootloader with your own sbctl keys, so the normal Roudix entry boots with Secure Boot ON: **Limine** (signed with sbctl; your kernel, the Limine wallpaper and your other OS entries stay) or **systemd-boot** (through lanzaboote: signed systemd-boot plus one signed unified kernel image per generation). Same keys and same steps for both, enrolled next to Microsoft's. |
 | `roudix.boot.eac.enable` | Adds a separate **"NixOS EAC"** entry ([eacnix](https://github.com/samos667/eacnix)): NixOS userspace on Fedora's (or Bazzite's OGC) signed kernel, through Fedora's Microsoft-signed shim and grub. Your normal entry is not changed. |
 
 `roudix.boot.eac.vendor` = `"fedora"` (default, nothing to enroll) or
@@ -32,12 +32,23 @@ screen). `addToBootOrder` lists the entry in the firmware boot menu;
 Epic's FAQ explicitly allows a separate compliant boot entry for protected
 games, and your own keys in the Secure Boot `db` for the other entries.
 
-### Why Limine stays
+### Limine or systemd-boot
 
-lanzaboote (the NixOS Secure Boot tool) is built on systemd-boot, which has no
-wallpaper or theming support, so switching to it would drop the Roudix boot
-wallpaper. nixpkgs' Limine module can sign Limine itself, so Roudix keeps
-Limine and signs it instead of changing bootloader.
+Both bootloaders get the same Secure Boot support; pick with
+`roudix.boot.bootloader`.
+
+- **Limine** (default): themed (Roudix wallpaper), multi-OS entries, and the
+  only one that can carry the EAC entry with Secure Boot on. nixpkgs' Limine
+  module signs Limine itself; the kernels are checked by Limine through the
+  hashes in its enrolled config.
+- **systemd-boot** (minimal, no wallpaper or theming): signed by lanzaboote, the
+  NixOS Secure Boot tool built on systemd-boot. lanzaboote replaces
+  systemd-boot's own installer and writes one signed unified kernel image per
+  generation to `EFI/Linux`; the kernels and initrds it keeps under `EFI/nixos`
+  are checked by that signed stub through hashes. The number of generations
+  kept follows `boot.loader.systemd-boot.configurationLimit`. Because lanzaboote
+  takes over the installer eacnix hooks into, the EAC entry is not available
+  with systemd-boot and Secure Boot (a build assertion says so).
 
 ## Limits — read before relying on it
 
@@ -47,6 +58,12 @@ Limine and signs it instead of changing bootloader.
 - **eacnix is young** (a handful of commits, one maintainer, no license file at
   the pinned commit, hardware-tested on one machine). Roudix pins it to an
   audited commit in `flake.nix`; bump it only after reading the diff.
+- **UEFI only.** On a legacy BIOS machine (`roudix.boot.biosDevice`, or an ISO
+  booted without `/sys/firmware/efi`) there is no Secure Boot: the options are
+  hidden in the installers and `roudix-switcher`, and the module refuses them.
+- **systemd-boot + Secure Boot is not hardware-tested by Roudix yet.** Keep the
+  ESP backup and the live USB of the steps below at hand, and run
+  `roudix-secureboot verify` before turning Secure Boot on in the firmware.
 - **The EAC entry is a different kernel.** Your Roudix kernel choice
   (kernel switcher, AMD/NVIDIA split) does not apply there; no custom kernel
   patches; locally built kernel modules (v4l2loopback virtual camera, xone,
@@ -71,47 +88,51 @@ Limine and signs it instead of changing bootloader.
 
 The same options are exposed outside `local.nix`, all off by default:
 
-- **GTK installer and `roudix-installer.sh`** ask for them on the options page,
-  only when the bootloader is Limine: "Secure Boot (sign Limine)", "EAC Linux v2
-  boot entry (experimental)" and, once that one is on, the EAC kernel (Fedora or
-  Bazzite OGC). With Secure Boot on, the sbctl keys are created on the new
+- **GTK installer and `roudix-installer.sh`** ask for them on the options page:
+  "Secure Boot (sign the bootloader)" with Limine or systemd-boot, and, only with
+  Limine, "EAC Linux v2 boot entry (experimental)" and, once that one is on, the
+  EAC kernel (Fedora or Bazzite OGC). With Secure Boot on, the sbctl keys are created on the new
   system during the install (`autoGenerateKeys`). **Enrolling them in the
   firmware stays manual**, as described below. For a Bazzite kernel the MOK
   enrollment (`sudo eacnix-enroll-mok`) is also done after the install.
 - **`roudix-switcher`** has a "Secure Boot and EAC (experimental)" group on the
-  System page with the same two switches and the EAC kernel choice (Limine
-  only). Turning Secure Boot on there rebuilds with signing enabled, so create
-  the sbctl keys first (`sudo sbctl create-keys`).
+  System page with the same two switches and the EAC kernel choice (the EAC
+  ones only with Limine; the Secure Boot switch works with both bootloaders). Turning Secure Boot on there rebuilds with signing enabled, so create
+  the sbctl keys first (`roudix-secureboot create-keys`).
 
-## Turning it on safely (existing Limine install)
+## Turning it on safely (existing install, Limine or systemd-boot)
 
-Nothing here changes your bootloader. Do the steps in this order, and stop at
-any step that does not behave as described.
+`roudix-secureboot` is installed on every system and walks you through
+this: run it without arguments to see where you are (keys, firmware mode,
+Secure Boot, the bootloader's signature, and the EAC entry with Limine) and what to do next. Nothing here
+changes your bootloader. Do the steps in this order, and stop at any step that
+does not behave as described.
 
 1. **Prepare a way back.** Back up the ESP (`sudo tar -C /boot -cf ~/esp-backup.tar .`),
    have a live USB at hand, and know how to open the firmware setup.
-2. **Create the keys** (Secure Boot still OFF in the firmware). Roudix only
-   installs `sbctl` once `roudix.boot.secureBoot.enable` is on, so for steps
-   2 to 4 run it through nix:
-   `sudo nix run nixpkgs#sbctl -- create-keys` (stored in `/var/lib/sbctl`;
-   back them up).
-3. **Put the firmware in Setup Mode** (the menu entry to clear or reset the
-   Secure Boot keys; it differs per board). Secure Boot stays disabled.
-4. **Enroll your keys with Microsoft's:**
-   `sudo nix run nixpkgs#sbctl -- enroll-keys -m -f`
-   (`-m` keeps Microsoft's certificates, needed by Fedora's shim and most GPU
-   firmware; `-f` keeps the firmware's built-in ones).
-   `sudo nix run nixpkgs#sbctl -- status` should now show Setup Mode off.
-5. **Sign Limine:** in `hosts/<host>/local.nix` set
-   `roudix.boot.secureBoot.enable = true;`, then rebuild (`sbctl` is in your
-   PATH from now on). Check `sudo sbctl verify`: the Limine EFI files must show as signed (kernels are
-   verified by Limine through the hashes in its enrolled config, not by
-   signature).
+2. **Create the keys** (Secure Boot still OFF in the firmware):
+   `roudix-secureboot create-keys` (stored in `/var/lib/sbctl`; back them up).
+3. **Put the firmware in Setup Mode.** In the firmware setup, clear the Secure
+   Boot keys (the entry differs per board; don't choose "restore factory keys").
+   Secure Boot stays disabled. `roudix-secureboot firmware` reboots into the setup.
+4. **Enroll your keys with Microsoft's:** `roudix-secureboot enroll`
+   (it runs `sbctl enroll-keys -m -f`: `-m` keeps Microsoft's certificates, needed
+   by Fedora's shim and most GPU firmware; `-f` keeps the firmware's built-in
+   ones, and it refuses to run outside Setup Mode). `roudix-secureboot` should
+   now report your keys as enrolled.
+5. **Sign the bootloader:** in `hosts/<host>/local.nix` set
+   `roudix.boot.secureBoot.enable = true;`, then rebuild. Check with
+   `roudix-secureboot verify`. With Limine, Limine's EFI file must be signed
+   (kernels are verified by Limine through the hashes in its enrolled config,
+   not by signature). With systemd-boot, systemd-boot and the kernel images in
+   `EFI/Linux` must be signed (the kernels and initrds under `EFI/nixos` are
+   checked by the signed stub through hashes). The other files `sbctl verify`
+   lists as "not signed" are expected.
 6. **Reboot with Secure Boot still OFF** and check it boots normally.
-7. **Turn Secure Boot ON in the firmware** and reboot. If the machine does not
-   boot, disable Secure Boot in the firmware: Roudix boots as before. The ESP
-   backup and the live USB cover the rest.
-8. **Optional — EAC entry:** set `roudix.boot.eac.enable = true;`
+7. **Turn Secure Boot ON in the firmware** (`roudix-secureboot firmware`) and
+   reboot. If the machine does not boot, disable Secure Boot in the firmware:
+   Roudix boots as before. The ESP backup and the live USB cover the rest.
+8. **Optional — EAC entry (Limine only):** set `roudix.boot.eac.enable = true;`
    (`vendor = "bazzite"` if you want the OGC kernel), rebuild, then
    `sudo eac-reboot` to boot it once. In it, `sudo eacnix-check` checks every
    requirement against the TPM event log. The next reboot returns to the
@@ -120,6 +141,11 @@ any step that does not behave as described.
 Some boards report Secure Boot as enabled but still run unsigned images
 (MSI's "Image Execution Policy: Always Execute", for example): `eacnix-check`
 warns about it.
+
+If Windows is installed with BitLocker, changing the Secure Boot keys can make
+it ask for its recovery key: `roudix-secureboot` reminds you before it enrolls.
+The tool also runs without arguments from a normal user (it asks for sudo) and
+`-y` skips its confirmations.
 
 ## Undoing it
 

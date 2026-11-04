@@ -10,7 +10,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: roudix-config-gui.py roudix-config.py
 msgid "(unchanged)"
@@ -34,8 +35,8 @@ msgstr "Приложение"
 
 #: roudix-config-gui.py
 msgid ""
-"● open now · ○ seen open before · no symbol: installed (the app_id is then a"
-" guess)"
+"● open now · ○ seen open before · no symbol: installed (the app_id is then a "
+"guess)"
 msgstr ""
 "● открыто сейчас · ○ ранее было открыто · без значка: установлено (app_id в "
 "этом случае угадан)"
@@ -80,6 +81,10 @@ msgstr "Размытие (blur)"
 #: roudix-config-gui.py roudix-config.py
 msgid "Opacity (0 to 1, optional)"
 msgstr "Непрозрачность (от 0 до 1, необязательно)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Screenshots and recordings"
+msgstr "Снимки экрана и записи"
 
 #: roudix-config-gui.py
 msgid "Opacity: a number between 0 and 1"
@@ -129,8 +134,8 @@ msgid ""
 "to that screen."
 msgstr ""
 "Имена через пробел. Избегайте чисто числового имени, которое есть только на "
-"одном экране: композитор считает его уникальным, и Mod+N всегда переходил бы"
-" на этот экран."
+"одном экране: композитор считает его уникальным, и Mod+N всегда переходил бы "
+"на этот экран."
 
 #: roudix-config-gui.py
 msgid "This screen's workspace names"
@@ -456,8 +461,7 @@ msgid ""
 "treats it as unique and Mod+N would always jump to that screen."
 msgstr ""
 "Избегайте чисто числового имени, которое есть только на одном экране: "
-"композитор считает его уникальным, и Mod+N всегда переходил бы на этот "
-"экран."
+"композитор считает его уникальным, и Mod+N всегда переходил бы на этот экран."
 
 #: roudix-config.py
 msgid "pick an output"
@@ -559,28 +563,31 @@ msgstr ", имена workspace"
 #: roudix-config.py
 #, python-brace-format
 msgid ""
-"e edit (resolution, scale, rotation{names}) · r back to the output's "
-"defaults"
+"e edit (resolution, scale, rotation{names}) · r back to the output's defaults"
 msgstr ""
-"e изменить (разрешение, масштаб, поворот{names}) · r вернуть значения выхода"
-" по умолчанию"
+"e изменить (разрешение, масштаб, поворот{names}) · r вернуть значения выхода "
+"по умолчанию"
 
 #: roudix-config.py
 #, python-brace-format
 msgid ""
 "a add · e change the action · r reset everything\n"
-"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = changed by you."
+"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = "
+"changed by you."
 msgstr ""
 "a добавить · e изменить действие · r сбросить всё\n"
-"{label}: перемещение или удаление стандартного сочетания выполняется на вкладке «Файл». ✎ = изменено вами."
+"{label}: перемещение или удаление стандартного сочетания выполняется на "
+"вкладке «Файл». ✎ = изменено вами."
 
 #: roudix-config.py
 msgid ""
 "a add · e edit · d delete · r reset everything\n"
-"Once changed, the table is frozen: new default shortcuts added to the repo won't reach you any more (r to go back)."
+"Once changed, the table is frozen: new default shortcuts added to the repo "
+"won't reach you any more (r to go back)."
 msgstr ""
 "a добавить · e изменить · d удалить · r сбросить всё\n"
-"После изменения таблица замораживается: новые стандартные сочетания, добавленные в репозиторий, до вас больше не дойдут (r — вернуться)."
+"После изменения таблица замораживается: новые стандартные сочетания, "
+"добавленные в репозиторий, до вас больше не дойдут (r — вернуться)."
 
 #: roudix-config.py
 msgid ""
@@ -688,8 +695,7 @@ msgstr "Не удаётся выполнить rebuild из TUI ({e}): запу�
 
 #: roudix-config.py
 msgid ""
-"Rebuild finished (see the terminal) — reload the compositor config if "
-"needed."
+"Rebuild finished (see the terminal) — reload the compositor config if needed."
 msgstr ""
 "Rebuild завершён (см. терминал) — при необходимости перезагрузите "
 "конфигурацию композитора."
@@ -760,6 +766,10 @@ msgid "Prefer server-side decorations"
 msgstr "Предпочитать серверные декорации"
 
 #: roudix_config_backends.py
+msgid "Title bar button symbols"
+msgstr "Символы кнопок заголовка окна"
+
+#: roudix_config_backends.py
 msgid "Default layout"
 msgstr "Раскладка по умолчанию"
 
@@ -774,6 +784,10 @@ msgstr "Ширина колонок по умолчанию"
 #: roudix_config_backends.py
 msgid "Master area width"
 msgstr "Ширина основной области (master)"
+
+#: roudix_config_backends.py
+msgid "Fade window opacity and blur on focus change"
+msgstr "Плавное изменение прозрачности и размытия при смене фокуса"
 
 #: roudix_config_backends.py
 msgid "Tap to click (touchpad)"
@@ -908,8 +922,7 @@ msgstr "Пустое действие"
 
 #: roudix_config_backends.py
 msgid "Invalid action name (e.g. spawn, close-window, focus-workspace)"
-msgstr ""
-"Недопустимое имя действия (напр. spawn, close-window, focus-workspace)"
+msgstr "Недопустимое имя действия (напр. spawn, close-window, focus-workspace)"
 
 #: roudix_config_backends.py
 msgid "Niri: moving a shortcut isn't supported (use the File tab)."
@@ -919,8 +932,8 @@ msgstr ""
 #: roudix_config_core.py
 #, python-brace-format
 msgid ""
-"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg}"
-" — trailing comma before ] or }} ?"
+"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg} "
+"— trailing comma before ] or }} ?"
 msgstr ""
 "Недопустимый JSON в блоке roudix-config (строка {line}, столбец {colno}): "
 "{msg} — лишняя запятая перед ] или }} ?"
@@ -949,8 +962,8 @@ msgid ""
 "NOTE: umbriel-custom.nix still mentions umbriel-managed.nix — remove it by "
 "hand, that file is obsolete."
 msgstr ""
-"ВНИМАНИЕ: umbriel-custom.nix всё ещё упоминает umbriel-managed.nix — удалите"
-" упоминание вручную, этот файл устарел."
+"ВНИМАНИЕ: umbriel-custom.nix всё ещё упоминает umbriel-managed.nix — удалите "
+"упоминание вручную, этот файл устарел."
 
 #: roudix_config_core.py
 #, python-brace-format
@@ -986,6 +999,14 @@ msgid "On"
 msgstr "Включено"
 
 #: roudix_config_core.py
+msgid "Hidden from captures"
+msgstr "Скрыто на снимках и записях"
+
+#: roudix_config_core.py
+msgid "Shown in captures"
+msgstr "Видно на снимках и записях"
+
+#: roudix_config_core.py
 msgid "app_id or title required"
 msgstr "требуется app_id или заголовок"
 
@@ -1013,11 +1034,11 @@ msgstr "Roudix Config пока не поддерживает {t} (сейчас: 
 
 #: roudix_config_core.py
 msgid ""
-"Can't determine the desktop (roudix.desktop.type). Rebuild so that "
-"~/.local/share/roudix/desktop-type gets created."
+"Can't determine the desktop (roudix.desktop.type). Rebuild so that ~/.local/"
+"share/roudix/desktop-type gets created."
 msgstr ""
-"Не удаётся определить рабочий стол (roudix.desktop.type). Выполните rebuild,"
-" чтобы был создан ~/.local/share/roudix/desktop-type."
+"Не удаётся определить рабочий стол (roudix.desktop.type). Выполните rebuild, "
+"чтобы был создан ~/.local/share/roudix/desktop-type."
 
 #: roudix_config_core.py
 #, python-brace-format

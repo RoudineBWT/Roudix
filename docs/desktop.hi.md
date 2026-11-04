@@ -133,10 +133,10 @@ programs.niri.settings.window-rules = [
 programs.umbriel.settings.output."DP-1".mode = lib.mkForce "3840x2160@144";
 
 # रिपॉज़िटरी द्वारा पहले से परिभाषित कीबाइंड को रीमैप करें
-programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn:some-command";
+programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn some-command";
 
 # ऐसा कीबाइंड जोड़ें जो अभी मौजूद नहीं है
-programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn:pavucontrol";
+programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn pavucontrol";
 
 # विंडो रूल जोड़ें
 programs.umbriel.settings.window_rule = [

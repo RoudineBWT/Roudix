@@ -2,7 +2,7 @@ from gi.repository import Adw, Gtk
 
 from roudix_installer import existing_nixos, host_defaults, host_profile
 from roudix_installer.state import valid_username
-from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_main_screen, detect_screen_count
+from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_main_screen, detect_screen_count, is_bios_boot
 from roudix_installer.i18n import tr, trc, tr_noop
 from roudix_installer.ui_helpers import page_with_header
 
@@ -1039,9 +1039,9 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.boot_resolution_row)
 
-        # Secure Boot + EAC Linux v2 boot entry — experimental, Limine only, off
-        # by default. See docs/secure-boot-eac.md.
-        self.secure_boot_row = Adw.SwitchRow(title=tr("Secure Boot (sign Limine)"))
+        # Secure Boot (Limine and systemd-boot) + EAC Linux v2 boot entry
+        # (Limine only) — experimental, off by default. See docs/secure-boot-eac.md.
+        self.secure_boot_row = Adw.SwitchRow(title=tr("Secure Boot (sign the bootloader)"))
         self.secure_boot_row.set_subtitle(
             tr("Keys are created during the install; enrolling them in the firmware is "
                "done afterwards (docs/secure-boot-eac.md).")
@@ -1471,7 +1471,8 @@ class OptionsPage(Adw.NavigationPage):
                      "_sync_brave_row", "_sync_shell_row", "_sync_latest_rows", "_sync_desktop_integration_row",
                      "_sync_file_manager_row", "_sync_memory_rows", "_sync_zen_rows",
                      "_sync_spicetify_rows", "_sync_ananicy_row", "_sync_content_creation_rows",
-                     "_sync_autoupdate_row", "_sync_boot_aspect_row", "_sync_boot_resolution_row"):
+                     "_sync_autoupdate_row", "_sync_boot_aspect_row", "_sync_boot_resolution_row",
+                     "_sync_boot_security_rows"):
             try:
                 getattr(self, name)()
             except Exception:
@@ -1510,12 +1511,14 @@ class OptionsPage(Adw.NavigationPage):
         )
 
     def _sync_boot_security_rows(self):
-        # Secure Boot signing and the EAC entry are Limine-only; the EAC kernel
-        # choice only matters once the EAC entry is on.
+        # Secure Boot signing works with Limine and systemd-boot; the EAC entry is
+        # Limine-only, and the EAC kernel choice only matters once it is on. All of
+        # it is UEFI-only: hidden when the ISO was booted in legacy BIOS mode.
+        bios = is_bios_boot()
         limine = self._selected_value(self.bootloader_row) == "limine"
-        self.secure_boot_row.set_visible(limine)
-        self.eac_row.set_visible(limine)
-        self.eac_vendor_row.set_visible(limine and self.eac_row.get_active())
+        self.secure_boot_row.set_visible(not bios)
+        self.eac_row.set_visible(limine and not bios)
+        self.eac_vendor_row.set_visible(limine and not bios and self.eac_row.get_active())
         # Fedora ships no signed NVIDIA modules: on NVIDIA only Bazzite's kernel works.
         nvidia = self._selected_value(self.gpu_row) == "nvidia"
         if nvidia:
@@ -1796,8 +1799,9 @@ class OptionsPage(Adw.NavigationPage):
         s.bootloader = self._selected_value(self.bootloader_row)
         s.boot_aspect = self._selected_value(self.boot_aspect_row)
         s.boot_resolution = self._selected_value(self.boot_resolution_row)
-        s.secure_boot = self.secure_boot_row.get_active()
-        s.eac_enable = self.eac_row.get_active()
+        # Hidden (so never wanted) in legacy BIOS mode, whatever the host defaults say.
+        s.secure_boot = self.secure_boot_row.get_active() and not is_bios_boot()
+        s.eac_enable = self.eac_row.get_active() and not is_bios_boot()
         s.eac_vendor = self._selected_value(self.eac_vendor_row)
         s.matrix_client = self._selected_value(self.matrix_row)
         s.discord = self._selected_value(self.discord_row)

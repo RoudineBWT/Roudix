@@ -10,7 +10,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
 
 #: roudix-config-gui.py roudix-config.py
 msgid "(unchanged)"
@@ -34,11 +35,10 @@ msgstr "التطبيق"
 
 #: roudix-config-gui.py
 msgid ""
-"● open now · ○ seen open before · no symbol: installed (the app_id is then a"
-" guess)"
+"● open now · ○ seen open before · no symbol: installed (the app_id is then a "
+"guess)"
 msgstr ""
-"● مفتوح الآن · ○ شوهد مفتوحًا سابقًا · بلا رمز: مثبّت (وقتها يكون app_id "
-"تخمينًا)"
+"● مفتوح الآن · ○ شوهد مفتوحًا سابقًا · بلا رمز: مثبّت (وقتها يكون app_id تخمينًا)"
 
 #: roudix-config-gui.py
 msgid "Pick an app"
@@ -79,6 +79,10 @@ msgstr "التمويه (blur)"
 #: roudix-config-gui.py roudix-config.py
 msgid "Opacity (0 to 1, optional)"
 msgstr "الشفافية (من 0 إلى 1، اختياري)"
+
+#: roudix-config-gui.py roudix-config.py
+msgid "Screenshots and recordings"
+msgstr "لقطات الشاشة والتسجيلات"
 
 #: roudix-config-gui.py
 msgid "Opacity: a number between 0 and 1"
@@ -127,8 +131,8 @@ msgid ""
 "screen only: the compositor treats it as unique and Mod+N would always jump "
 "to that screen."
 msgstr ""
-"أسماء مفصولة بمسافات. تجنّب اسمًا رقميًا بحتًا موجودًا على شاشة واحدة فقط: "
-"يعامله المُركِّب كاسم فريد وسيقفز Mod+N دائمًا إلى تلك الشاشة."
+"أسماء مفصولة بمسافات. تجنّب اسمًا رقميًا بحتًا موجودًا على شاشة واحدة فقط: يعامله "
+"المُركِّب كاسم فريد وسيقفز Mod+N دائمًا إلى تلك الشاشة."
 
 #: roudix-config-gui.py
 msgid "This screen's workspace names"
@@ -232,8 +236,8 @@ msgid ""
 "{label}: you can change a shortcut's action or add new ones (✎ = changed by "
 "you). Moving or deleting a default shortcut is done in the File tab."
 msgstr ""
-"{label}: يمكنك تغيير إجراء اختصار أو إضافة اختصارات جديدة (✎ = غيّرتَه أنت)."
-" نقل اختصار افتراضي أو حذفه يتم من تبويب الملف."
+"{label}: يمكنك تغيير إجراء اختصار أو إضافة اختصارات جديدة (✎ = غيّرتَه أنت). "
+"نقل اختصار افتراضي أو حذفه يتم من تبويب الملف."
 
 #: roudix-config-gui.py
 msgid ""
@@ -280,8 +284,8 @@ msgid ""
 "The most common settings. A value you changed is marked ✎ (↶ to restore the "
 "default); the others follow the repo's defaults. Rebuild required to apply."
 msgstr ""
-"الإعدادات الأكثر شيوعًا. القيمة التي غيّرتَها تُعلَّم بـ ✎ (↶ لاستعادة "
-"الافتراضي)؛ والبقية تتبع قيم المستودع الافتراضية. يلزم rebuild للتطبيق."
+"الإعدادات الأكثر شيوعًا. القيمة التي غيّرتَها تُعلَّم بـ ✎ (↶ لاستعادة الافتراضي)؛ "
+"والبقية تتبع قيم المستودع الافتراضية. يلزم rebuild للتطبيق."
 
 #: roudix-config-gui.py roudix-config.py
 msgid "Settings"
@@ -445,8 +449,8 @@ msgid ""
 "Avoid a purely numeric name that exists on one screen only: the compositor "
 "treats it as unique and Mod+N would always jump to that screen."
 msgstr ""
-"تجنّب اسمًا رقميًا بحتًا موجودًا على شاشة واحدة فقط: يعامله المُركِّب كاسم "
-"فريد وسيقفز Mod+N دائمًا إلى تلك الشاشة."
+"تجنّب اسمًا رقميًا بحتًا موجودًا على شاشة واحدة فقط: يعامله المُركِّب كاسم فريد "
+"وسيقفز Mod+N دائمًا إلى تلك الشاشة."
 
 #: roudix-config.py
 msgid "pick an output"
@@ -548,8 +552,7 @@ msgstr "، أسماء workspace"
 #: roudix-config.py
 #, python-brace-format
 msgid ""
-"e edit (resolution, scale, rotation{names}) · r back to the output's "
-"defaults"
+"e edit (resolution, scale, rotation{names}) · r back to the output's defaults"
 msgstr ""
 "e تعديل (الدقة، المقياس، التدوير{names}) · r العودة إلى القيم الافتراضية "
 "للمخرج"
@@ -558,7 +561,8 @@ msgstr ""
 #, python-brace-format
 msgid ""
 "a add · e change the action · r reset everything\n"
-"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = changed by you."
+"{label}: moving or deleting a default shortcut is done in the File tab. ✎ = "
+"changed by you."
 msgstr ""
 "a إضافة · e تغيير الإجراء · r إعادة تعيين الكل\n"
 "{label}: نقل اختصار افتراضي أو حذفه يتم من تبويب الملف. ✎ = غيّرتَه أنت."
@@ -566,10 +570,12 @@ msgstr ""
 #: roudix-config.py
 msgid ""
 "a add · e edit · d delete · r reset everything\n"
-"Once changed, the table is frozen: new default shortcuts added to the repo won't reach you any more (r to go back)."
+"Once changed, the table is frozen: new default shortcuts added to the repo "
+"won't reach you any more (r to go back)."
 msgstr ""
 "a إضافة · e تعديل · d حذف · r إعادة تعيين الكل\n"
-"بعد التغيير يتجمّد الجدول: لن تصلك الاختصارات الافتراضية الجديدة المضافة إلى المستودع (r للعودة)."
+"بعد التغيير يتجمّد الجدول: لن تصلك الاختصارات الافتراضية الجديدة المضافة إلى "
+"المستودع (r للعودة)."
 
 #: roudix-config.py
 msgid ""
@@ -582,8 +588,7 @@ msgstr ""
 #: roudix-config.py
 #, python-brace-format
 msgid "Your {custom_name} file. Ctrl+S saves (.bak copy + syntax check)."
-msgstr ""
-"ملف {custom_name} الخاص بك. يحفظ Ctrl+S (نسخة .bak + فحص بناء الجملة)."
+msgstr "ملف {custom_name} الخاص بك. يحفظ Ctrl+S (نسخة .bak + فحص بناء الجملة)."
 
 #: roudix-config.py
 msgid "settings"
@@ -675,10 +680,8 @@ msgstr "تعذّر تنفيذ rebuild من TUI ({e}): شغّل الاسم الم
 
 #: roudix-config.py
 msgid ""
-"Rebuild finished (see the terminal) — reload the compositor config if "
-"needed."
-msgstr ""
-"انتهى Rebuild (انظر الطرفية) — أعد تحميل إعدادات المُركِّب عند الحاجة."
+"Rebuild finished (see the terminal) — reload the compositor config if needed."
+msgstr "انتهى Rebuild (انظر الطرفية) — أعد تحميل إعدادات المُركِّب عند الحاجة."
 
 #: roudix-config.py
 msgid "Configure Umbriel, Niri or MangoWC without writing Nix."
@@ -746,6 +749,10 @@ msgid "Prefer server-side decorations"
 msgstr "تفضيل الزخارف من جهة الخادم"
 
 #: roudix_config_backends.py
+msgid "Title bar button symbols"
+msgstr "رموز أزرار شريط العنوان"
+
+#: roudix_config_backends.py
 msgid "Default layout"
 msgstr "التخطيط الافتراضي"
 
@@ -760,6 +767,10 @@ msgstr "العرض الافتراضي للأعمدة"
 #: roudix_config_backends.py
 msgid "Master area width"
 msgstr "عرض المنطقة الرئيسية (master)"
+
+#: roudix_config_backends.py
+msgid "Fade window opacity and blur on focus change"
+msgstr "تلاشي الشفافية والضبابية عند تغيّر التركيز"
 
 #: roudix_config_backends.py
 msgid "Tap to click (touchpad)"
@@ -877,8 +888,7 @@ msgstr "أنشأه Roudix Config — عدّله عبر التطبيق"
 msgid ""
 "e.g. SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (modifiers, key)"
 msgstr ""
-"مثال: SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (المُعدِّلات، "
-"المفتاح)"
+"مثال: SUPER,Q · SUPER+SHIFT,Return · NONE,XF86AudioMute  (المُعدِّلات، المفتاح)"
 
 #: roudix_config_backends.py
 msgid "Mango shortcut: “MODS,KEY” (e.g. SUPER,Q)"
@@ -903,8 +913,8 @@ msgstr "Niri: نقل الاختصار غير مدعوم (استخدم تبويب
 #: roudix_config_core.py
 #, python-brace-format
 msgid ""
-"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg}"
-" — trailing comma before ] or }} ?"
+"Invalid JSON in the roudix-config block (line {line}, column {colno}): {msg} "
+"— trailing comma before ] or }} ?"
 msgstr ""
 "JSON غير صالح في كتلة roudix-config (السطر {line}، العمود {colno}): {msg} — "
 "فاصلة زائدة قبل ] أو }} ؟"
@@ -933,8 +943,8 @@ msgid ""
 "NOTE: umbriel-custom.nix still mentions umbriel-managed.nix — remove it by "
 "hand, that file is obsolete."
 msgstr ""
-"ملاحظة: ما زال umbriel-custom.nix يذكر umbriel-managed.nix — أزل ذلك يدويًا،"
-" فهذا الملف متقادم."
+"ملاحظة: ما زال umbriel-custom.nix يذكر umbriel-managed.nix — أزل ذلك يدويًا، "
+"فهذا الملف متقادم."
 
 #: roudix_config_core.py
 #, python-brace-format
@@ -970,6 +980,14 @@ msgid "On"
 msgstr "قيد التشغيل"
 
 #: roudix_config_core.py
+msgid "Hidden from captures"
+msgstr "مخفية من اللقطات"
+
+#: roudix_config_core.py
+msgid "Shown in captures"
+msgstr "ظاهرة في اللقطات"
+
+#: roudix_config_core.py
 msgid "app_id or title required"
 msgstr "app_id أو العنوان مطلوب"
 
@@ -996,11 +1014,11 @@ msgstr "Roudix Config لا يدعم {t} بعد (حاليًا: {join})."
 
 #: roudix_config_core.py
 msgid ""
-"Can't determine the desktop (roudix.desktop.type). Rebuild so that "
-"~/.local/share/roudix/desktop-type gets created."
+"Can't determine the desktop (roudix.desktop.type). Rebuild so that ~/.local/"
+"share/roudix/desktop-type gets created."
 msgstr ""
-"تعذّر تحديد سطح المكتب (roudix.desktop.type). نفّذ rebuild كي يُنشأ "
-"~/.local/share/roudix/desktop-type."
+"تعذّر تحديد سطح المكتب (roudix.desktop.type). نفّذ rebuild كي يُنشأ ~/.local/"
+"share/roudix/desktop-type."
 
 #: roudix_config_core.py
 #, python-brace-format
@@ -1009,8 +1027,7 @@ msgstr "إعداد غير معروف: {sid}"
 
 #: roudix_config_core.py
 msgid "`nh` not found: run the rebuild by hand (the `rebuild` alias)."
-msgstr ""
-"لم يتم العثور على `nh`: شغّل rebuild يدويًا (الاسم المستعار `rebuild`)."
+msgstr "لم يتم العثور على `nh`: شغّل rebuild يدويًا (الاسم المستعار `rebuild`)."
 
 #: roudix_config_core.py
 msgid "Rebuild done ✔ — reload the compositor config if needed."
@@ -1026,8 +1043,7 @@ msgstr "اضغط Enter للإغلاق… "
 
 #: roudix_config_core.py
 msgid "No terminal found: run the rebuild by hand (the `rebuild` alias)."
-msgstr ""
-"لم يتم العثور على طرفية: شغّل rebuild يدويًا (الاسم المستعار `rebuild`)."
+msgstr "لم يتم العثور على طرفية: شغّل rebuild يدويًا (الاسم المستعار `rebuild`)."
 
 #: roudix_config_core.py
 msgid "syntax not checked, nix-instantiate not found"

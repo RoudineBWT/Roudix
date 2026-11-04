@@ -183,7 +183,16 @@
     # the ESP and the firmware boot entries, so it only moves when we bump it
     # after reading the diff. It stays inert unless roudix.boot.eac.enable.
     eacnix = {
-      url = "github:samos667/eacnix/242713d46aacd1fa3cfe7462eb2ac57a74621f67";
+      url = "github:RoudineBWT/eacnix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Secure Boot for roudix.boot.bootloader = "systemd-boot" (signed UKIs +
+    # signed systemd-boot, keys managed with sbctl). Inert unless
+    # roudix.boot.secureBoot.enable with systemd-boot
+    # (modules/system/boot/secure-boot.nix).
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -244,6 +253,7 @@
           inputs.mango.nixosModules.mango
           inputs.chaotic.nixosModules.default
           inputs.eacnix.nixosModules.default
+          inputs.lanzaboote.nixosModules.lanzaboote
           (./hosts + "/${hostName}/configuration.nix")
           ./version.nix
           ./branding.nix

@@ -133,10 +133,10 @@ programs.niri.settings.window-rules = [
 programs.umbriel.settings.output."DP-1".mode = lib.mkForce "3840x2160@144";
 
 # Reasignar un atajo que el repositorio ya define
-programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn:some-command";
+programs.umbriel.settings.keybinds."Mod+C" = lib.mkForce "spawn some-command";
 
 # Añadir un atajo que aún no existe
-programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn:pavucontrol";
+programs.umbriel.settings.keybinds."Mod+Shift+V" = "spawn pavucontrol";
 
 # Añadir una regla de ventana
 programs.umbriel.settings.window_rule = [

@@ -12,4 +12,5 @@
 #      protocol: efi
 #      path: uuid(YOUR-CACHYOS-ESP-PARTUUID):/EFI/limine/BOOTX64.EFI
 #  '';
+
 }

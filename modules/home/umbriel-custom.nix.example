@@ -57,11 +57,49 @@
   #   height = 28;
   #   button_position = "right";
   #   buttons = [ "minimize" "maximize" "close" ];
+  #   # When the X / square / underscore symbols show: "always", "hover"
+  #   # (default) or "never" (umbriel b1c3efc4; replaces button_icons and
+  #   # button_icons_on_hover). button_background = false keeps symbols only.
+  #   button_glyph = "hover";
   # };
   # Hide the bar only while a window is maximized to edges:
   # programs.umbriel.settings.window_rule = [
   #   { match.is_maximized_to_edges = true; title_bar = "off"; }
   # ];
+
+  # -- Hide a window from screenshots / recordings (umbriel 1ecefc2) ----------
+  # Visible locally, absent from screencopy / image-copy and portal screen
+  # shares (password manager, private chat...). Raw export-dmabuf is no
+  # longer advertised, so use screencopy or image-copy clients.
+  # programs.umbriel.settings.window_rule = [
+  #   { match.app_id = "^org.keepassxc.KeePassXC$"; block_capture = true; }
+  # ];
+
+  # -- Screen effect only while an output is shared (umbriel e0da106) ---------
+  # Needs an effect preset that is already included (see _animation.nix);
+  # add effects.in_capture = true so the viewers see it too.
+  # programs.umbriel.settings.effects.screen_cast = "vignette";
+  # programs.umbriel.settings.output."DP-1".screen_cast_effect = "off";
+
+  # -- Move a whole workspace to another output (umbriel 69a348c) -------------
+  # workspace-move-to-output-* now moves the workspace itself (name, layout,
+  # windows); it no longer just moves the windows.
+  # programs.umbriel.settings.keybinds."Mod+Ctrl+Page_Down" = "workspace-move-to-output-next";
+  # programs.umbriel.settings.keybinds."Mod+Ctrl+Page_Up" = "workspace-move-to-output-previous";
+  # programs.umbriel.settings.keybinds."Mod+Ctrl+W" = "workspace-move-to-output current WEB --output DP-1";
+
+  # -- Scratchpad size follows the monitor (umbriel ef1d1b8) ------------------
+  # Only for named scratchpads ([[scratchpad]] entries):
+  # programs.umbriel.settings.scratchpad = [
+  #   { name = "terminal"; proportional_size = true; }
+  # ];
+
+  # -- Focus fade of window-rule opacity / blur (umbriel 2952bbc) -------------
+  # On by default upstream (spring); tune or disable it:
+  # programs.umbriel.settings.animation.windows_opacity = {
+  #   enabled = false;
+  #   # curve = "easeinoutcubic"; duration_ms = 200;
+  # };
 
   # -- Replace the whole animation section -----------------------------------
   # programs.umbriel.settings.animation = lib.mkForce {

@@ -41,6 +41,7 @@
   roudix.gaming.enable         = lib.mkDefault false;
   roudix.gaming.ananicy.enable = lib.mkDefault false;
   roudix.flatpak.enable        = lib.mkDefault false;
+  roudix.printing.enable       = lib.mkDefault false; # CUPS + Avahi + drivers, see modules/system/apps/utilities/printing.nix
   roudix.fstrim.enable         = lib.mkDefault true;
   roudix.tuning.enable         = lib.mkDefault true;  # CachyOS-Settings-style tuning, see modules/system/core/tuning.nix
   roudix.virtualization.enable = lib.mkDefault false;

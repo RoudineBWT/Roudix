@@ -129,10 +129,65 @@ def _eac_vendor(state: InstallState) -> str:
     return "bazzite" if state.gpu == "nvidia" else state.eac_vendor
 
 
+def _bios_device(state: InstallState) -> str:
+    """roudix.boot.biosDevice as written: the DISK Limine goes on in legacy BIOS
+    mode (the one picked on the Disk page, whatever the partitioning mode),
+    \"\" = UEFI. A BIOS install with no known disk is caught by
+    check_bios_support(), never silently written as a UEFI config."""
+    d = state.disk
+    return d.device if d.bios else ""
+
+
+def _bootloader(state: InstallState) -> str:
+    """BIOS machines can only boot Limine here (systemd-boot is UEFI only)."""
+    return "limine" if _bios_device(state) else state.bootloader
+
+
+_BIOS_KEY = "roudix.boot.biosDevice"
+
+
+def _ensure_bios_line(text: str, value: str) -> str:
+    """_sub_string is a silent no-op when the line is missing from local.nix.example
+    (an example older than BIOS support). In BIOS mode that would write a UEFI config
+    and the install would die at the very end, so add the line after bootloader."""
+    if not value or re.search(rf"^[ \t]*#?[ \t]*{re.escape(_BIOS_KEY)}[ \t]*=", text, re.M):
+        return text
+    line = f'  {_BIOS_KEY} = "{value}";  # legacy BIOS: disk Limine is installed on\n'
+    pattern = re.compile(r"^([ \t]*roudix\.boot\.bootloader[ \t]*=[^\n]*\n)", re.M)
+    if pattern.search(text):
+        return pattern.sub(lambda m: m.group(1) + line, text, count=1)
+    return text.rstrip("\n") + "\n" + line  # last resort: a bare option line is valid in a module
+
+
+def check_bios_support(state: InstallState, config_root: Path) -> None:
+    """Fail BEFORE nixos-install (which builds for a long time) when the target
+    config cannot do a BIOS install. The configuration is NOT the installer's:
+    /iso-cfg is a snapshot of `main` taken when the ISO was built, other branches
+    are cloned from GitHub, so either can predate BIOS support (no
+    roudix.boot.biosDevice) and would then crash in efibootmgr at the very end."""
+    if not state.disk.bios:
+        return
+    if not _bios_device(state):
+        raise RuntimeError(
+            "Legacy BIOS boot detected but no target disk is known "
+            "(advanced mode needs the disk chosen on the Disk page): "
+            "refusing to write a UEFI configuration.")
+    boot_nix = config_root / "modules" / "system" / "boot" / "boot.nix"
+    if boot_nix.is_file() and "biosDevice" not in boot_nix.read_text():
+        raise RuntimeError(
+            "Legacy BIOS boot detected, but this configuration (branch "
+            f"'{state.branch}') has no roudix.boot.biosDevice, so it can only "
+            "install in UEFI mode and would fail at the bootloader step. "
+            "Use a branch / an ISO that includes BIOS support, or boot the "
+            "installer in UEFI mode.")
+
+
 def _boot_security(state: InstallState) -> tuple:
-    """(secure_boot, eac) as actually written: both need Limine."""
-    limine = state.bootloader == "limine"
-    return (state.secure_boot and limine, state.eac_enable and limine)
+    """(secure_boot, eac) as actually written: Secure Boot needs UEFI (Limine
+    with sbctl, systemd-boot with lanzaboote); the EAC entry needs UEFI and Limine."""
+    uefi = not (state.disk.bios or _bios_device(state))
+    limine = _bootloader(state) == "limine" and uefi
+    return (state.secure_boot and uefi, state.eac_enable and limine)
 
 
 def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
@@ -192,11 +247,13 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_bool(t, "roudix.autoupdate.enable", state.autoupdate)
     t = _sub_string(t, "roudix.autoupdate.interval", state.autoupdate_interval)
     t = _sub_string(t, "roudix.autoupdate.branch", state.branch)
-    t = _sub_string(t, "roudix.boot.bootloader", state.bootloader)
+    t = _sub_string(t, "roudix.boot.bootloader", _bootloader(state))
+    t = _sub_string(t, _BIOS_KEY, _bios_device(state))
+    t = _ensure_bios_line(t, _bios_device(state))
     t = _sub_string(t, "roudix.boot.wallpaperAspect", state.boot_aspect)
     t = _sub_string(t, "roudix.boot.menuResolution", state.boot_resolution)
-    # Secure Boot / EAC are Limine-only in Roudix (the module asserts it): never
-    # written on for another bootloader. Keys are generated on the target at
+    # Secure Boot needs UEFI (Limine or systemd-boot); the EAC entry needs UEFI and
+    # Limine (the module asserts it): never written on otherwise. Keys are generated on the target at
     # install time; enrolling them in the firmware stays manual (docs/secure-boot-eac.md).
     sb_on, eac_on = _boot_security(state)
     t = _sub_bool(t, "roudix.boot.secureBoot.enable", sb_on)
@@ -272,7 +329,8 @@ def _expected_values(state: InstallState) -> list:
         "i18n.defaultLocale": state.locale, "console.keyMap": state.keymap,
         "roudix.keyboardLayout": state.keyboard_layout, "roudix.keyboardVariant": state.keyboard_variant,
         "roudix.autoupdate.interval": state.autoupdate_interval, "roudix.autoupdate.branch": state.branch,
-        "roudix.boot.bootloader": state.bootloader, "roudix.boot.wallpaperAspect": state.boot_aspect,
+        "roudix.boot.bootloader": _bootloader(state), "roudix.boot.wallpaperAspect": state.boot_aspect,
+        "roudix.boot.biosDevice": _bios_device(state),
         "roudix.boot.menuResolution": state.boot_resolution,
         "roudix.boot.eac.vendor": _eac_vendor(state),
         "roudix.matrixClient": state.matrix_client,
@@ -340,6 +398,7 @@ def write_config(state: InstallState, config_root: Path):
     copied verbatim, boot.local.nix copied verbatim (EFI detection TODO).
     """
     check_identity(state)
+    check_bios_support(state, config_root)
     hosts_dir = config_root / "hosts" / state.hostname
     home_dir = config_root / "modules" / "home"
     boot_local = config_root / "modules" / "system" / "boot" / "boot.local.nix"

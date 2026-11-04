@@ -9,7 +9,7 @@ A backend knows, for ONE compositor:
 The data kept in the block is neutral (see roudix_config_core.build_rule):
     window_rule : [ {match:{app_id,title}, default_output, default_workspace,
                      default_floating|default_maximize|default_fullscreen,
-                     blur, opacity} ]
+                     blur, opacity, block_capture (Umbriel only)} ]
     overrides.output[name]  : {mode:"WxH@R", scale, transform, [workspaces]}
     overrides.keybinds      : compositor-specific (see each backend)
 Backends that need a different native shape (Niri, Mango) also store it under
@@ -39,11 +39,14 @@ from roudix_config_core import (
 
 class Setting:
     def __init__(self, id, group, title, kind, path="", lo=None, hi=None, step=1,
-                 choices=(), keys=(), kdl=(), invert=False, as_int=False):
+                 choices=(), keys=(), kdl=(), invert=False, as_int=False, default=None):
         self.id, self.group, self.kind, self.path = id, group, kind, path
         self.title = tr(title)
         self.lo, self.hi, self.step, self.choices = lo, hi, step, tuple(choices)
         self.keys, self.kdl, self.invert, self.as_int = tuple(keys), tuple(kdl), invert, as_int
+        # Compositor's built-in value, used when the live config.toml doesn't set the key
+        # (e.g. Umbriel's animation.windows_opacity is on upstream but absent from the file).
+        self.default = default
 
 
 GROUPS = {
@@ -90,11 +93,13 @@ UMBRIEL_SETTINGS = [
     _S("blur_passes", "look", tr_noop("Blur: passes"), "int", "appearance.blur.passes", 1, 8),
     _S("shadow", "look", tr_noop("Window shadows"), "bool", "appearance.shadow.enabled"),
     _S("no_csd", "look", tr_noop("Prefer server-side decorations"), "bool", "appearance.prefer_no_csd"),
-    _S("layout", "layout", tr_noop("Default layout"), "choice", "layout.mode", choices=("scrolling", "dwindle", "master")),
+    _S("title_glyph", "look", tr_noop("Title bar button symbols"), "choice", "appearance.title_bar.button_glyph", choices=("always", "hover", "never"), default="hover"),
+    _S("layout", "layout", tr_noop("Default layout"), "choice", "layout.mode", choices=("scrolling", "dwindle", "master", "stacking")),
     _S("center", "layout", tr_noop("Center the focused column"), "choice", "layout.scrolling.center_focused", choices=("never", "always", "on_overflow")),
     _S("col_width", "layout", tr_noop("Default column width"), "float", "layout.scrolling.default_extent_fraction", 0.2, 1.0, 0.05),
     _S("master_width", "layout", tr_noop("Master area width"), "float", "layout.master.default_width_fraction", 0.2, 0.8, 0.05),
     _S("anim", "anim", tr_noop("Animations"), "bool", "animation.enabled"),
+    _S("focus_fade", "anim", tr_noop("Fade window opacity and blur on focus change"), "bool", "animation.windows_opacity.enabled", default=True),
     _S("tap", "input", tr_noop("Tap to click (touchpad)"), "bool", "input.touchpad.tap"),
     _S("natural", "input", tr_noop("Natural scrolling (touchpad)"), "bool", "input.touchpad.natural_scroll"),
     _S("accel", "input", tr_noop("Mouse acceleration"), "choice", "input.mouse.accel_profile", choices=("flat", "adaptive")),
@@ -405,6 +410,7 @@ class Backend:
     modifiers = ["Mod", "Super", "Ctrl", "Alt", "Shift"]
     placements = ("floating", "maximize", "fullscreen")
     blur_choices = (True, False)   # values offered besides "unchanged"
+    capture_choices = ()           # block_capture window rule (screenshots / recordings); Umbriel only
     cli = ""
 
     # ── what the UIs show ──
@@ -480,6 +486,7 @@ class Umbriel(Backend):
     custom_name = "umbriel-custom.nix"
     label = "Umbriel"
     workspace_names = True
+    capture_choices = (True, False)
     cli = "umbriel"
 
     TEMPLATE = _HEAD + """\
@@ -504,7 +511,7 @@ class Umbriel(Backend):
 """
 
     def action_help(self) -> str:
-        return "window-close · spawn:ghostty · spawn:noctalia msg panel-toggle launcher"
+        return "window-close · spawn ghostty · spawn noctalia msg panel-toggle launcher"
 
     def list_windows(self) -> list[dict]:
         data = _run_json(["umbriel", "windows", "--json"])
@@ -578,9 +585,9 @@ class Umbriel(Backend):
         cur = live
         for part in s.path.split("."):
             if not isinstance(cur, dict) or part not in cur:
-                return None
+                return s.default
             cur = cur[part]
-        return cur if not isinstance(cur, (dict, list)) else None
+        return cur if not isinstance(cur, (dict, list)) else s.default
 
     def native_settings(self, values: dict) -> dict:
         out: dict = {}
