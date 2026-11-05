@@ -4,13 +4,13 @@ let
 
   # Default Roudix wallpaper (installed by pkgs/roudix-branding, linked into
   # /run/current-system/sw/share/backgrounds through desktop-integration.nix).
-  kitsunePath = "/run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
-  wallpaper   = "file://${kitsunePath}";
+  defaultWallpaperPath = "/run/current-system/sw/share/backgrounds/roudix/roudix-ember-cove.png";
+  wallpaper   = "file://${defaultWallpaperPath}";
 
   # ── LightDM (slick-greeter) wallpaper ─────────────────────────────────
   # slick-greeter has no settings app, it only reads `background=` from its
   # config. That config lives in the Nix store, so the path it points to is
-  # a mutable file instead: by default a symlink to the Kitsune wallpaper,
+  # a mutable file instead: by default a symlink to the Ember Cove wallpaper,
   # replaced by `roudix-lightdm-wallpaper <image>` — no rebuild needed.
   lightdmBgDir = "/var/lib/roudix/lightdm";
   lightdmBg    = "${lightdmBgDir}/background.png";
@@ -22,7 +22,7 @@ let
       usage() {
         cat <<'EOF'
       Usage: roudix-lightdm-wallpaper <image>   set the LightDM login wallpaper
-             roudix-lightdm-wallpaper --reset   restore the Roudix Kitsune default
+             roudix-lightdm-wallpaper --reset   restore the Roudix Ember Cove default
       EOF
       }
 
@@ -37,8 +37,8 @@ let
       dest="${lightdmBg}"
 
       if [ "$1" = "--reset" ]; then
-        ln -sfn "${kitsunePath}" "$dest"
-        echo "LightDM wallpaper reset to Roudix Kitsune."
+        ln -sfn "${defaultWallpaperPath}" "$dest"
+        echo "LightDM wallpaper reset to Roudix Ember Cove."
         exit 0
       fi
 
@@ -214,13 +214,13 @@ in
 
     services.xserver.enable = true;
     services.xserver.displayManager.lightdm.enable = true;
-    # Mutable file (default: Kitsune) — change it with roudix-lightdm-wallpaper.
+    # Mutable file (default: Ember Cove) — change it with roudix-lightdm-wallpaper.
     services.xserver.displayManager.lightdm.background = lightdmBg;
     systemd.tmpfiles.rules = [
       "d /var/lib/roudix 0755 root root -"
       "d ${lightdmBgDir} 0755 root root -"
       # `L` (not `L+`): created once, never replaces a wallpaper the user set.
-      "L ${lightdmBg} - - - - ${kitsunePath}"
+      "L ${lightdmBg} - - - - ${defaultWallpaperPath}"
     ];
     services.displayManager.defaultSession = "cinnamon";
     services.xserver.desktopManager.cinnamon.enable = true;

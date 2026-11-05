@@ -470,6 +470,46 @@ msgid "Every day"
 msgstr "كل يوم"
 
 #: roudix-switcher.py
+msgid "Logo with a gentle pulse (default)"
+msgstr "شعار بنبض لطيف (افتراضي)"
+
+#: roudix-switcher.py
+msgid "Roudix"
+msgstr "Roudix"
+
+#: roudix-switcher.py
+msgid "Logo turning slowly"
+msgstr "شعار يدور ببطء"
+
+#: roudix-switcher.py
+msgid "Roudix — spin"
+msgstr "Roudix — spin"
+
+#: roudix-switcher.py
+msgid "Roudix — glow"
+msgstr "Roudix — glow"
+
+#: roudix-switcher.py
+msgid "Warm gradient, glow pulsing behind the logo"
+msgstr "تدرّج دافئ، وهج ينبض خلف الشعار"
+
+#: roudix-switcher.py
+msgid "Rising embers, a progress ring, logo in a growing glow"
+msgstr "جمرات متصاعدة وحلقة تقدّم وشعار داخل توهّج متزايد"
+
+#: roudix-switcher.py
+msgid "Roudix — ember"
+msgstr "Roudix — ember"
+
+#: roudix-switcher.py
+msgid "Pandoudix"
+msgstr "Pandoudix"
+
+#: roudix-switcher.py
+msgid "The mascot: waves on boot, sleeps on shutdown"
+msgstr "التميمة: تلوّح عند الإقلاع وتنام عند الإيقاف"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "مستقر"
 
@@ -483,11 +523,11 @@ msgstr "إصدارات أحدث، احتمال تعطلها أكبر"
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
-"keys)"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-"
+"secureboot create-keys)"
 msgstr ""
-"Secure Boot — توقيع مدير الإقلاع بواسطة sbctl (يجب أن تكون المفاتيح موجودة: roudix-secureboot "
-"create-keys)"
+"Secure Boot — توقيع مدير الإقلاع بواسطة sbctl (يجب أن تكون المفاتيح موجودة: "
+"roudix-secureboot create-keys)"
 
 #: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
@@ -1078,6 +1118,10 @@ msgstr ""
 "الدقة، يستخدم Limine دقة أخرى."
 
 #: roudix-switcher.py
+msgid "Boot splash (Plymouth)"
+msgstr "شاشة الإقلاع (Plymouth)"
+
+#: roudix-switcher.py
 msgid "Secure Boot and EAC (experimental)"
 msgstr "Secure Boot وEAC (تجريبي)"
 
@@ -1148,6 +1192,10 @@ msgstr "الفاصل الزمني للتحديث"
 #: roudix-switcher.py
 msgid "Boot wallpaper format"
 msgstr "تنسيق خلفية الإقلاع"
+
+#: roudix-switcher.py
+msgid "Boot splash"
+msgstr "شاشة الإقلاع"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

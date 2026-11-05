@@ -4,7 +4,7 @@ let
 
   # Default Roudix wallpaper (installed by pkgs/roudix-branding, linked into
   # /run/current-system/sw/share/backgrounds through desktop-integration.nix).
-  wallpaper = "/run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
+  wallpaper = "/run/current-system/sw/share/backgrounds/roudix/roudix-ember-cove.png";
 
   # ── How Roudix ships its COSMIC defaults without overriding the user ─────
   # cosmic-config (libcosmic) looks a key up in the user's own
@@ -148,7 +148,7 @@ let
       (mkDefault "com.system76.CosmicAppList" "favorites" (ron.list (map ron.str favoriteApps)))
       (mkDefault "com.system76.CosmicAppLibrary" "groups" appLibraryGroups)
       (mkDefault "com.system76.CosmicComp" "xkb_config" xkbConfig)
-      # Wallpaper: the same Kitsune as the other desktops, same on all outputs.
+      # Wallpaper: the same Ember Cove as the other desktops, same on all outputs.
       (mkDefault "com.system76.CosmicBackground" "same-on-all" "true")
       (mkDefault "com.system76.CosmicBackground" "all"
         ''(output: "all", source: Path(${ron.str wallpaper}), filter_by_theme: false, rotation_frequency: 300, filter_method: Lanczos, scaling_mode: Zoom, sampling_method: Alphanumeric)'')
@@ -162,7 +162,7 @@ in
     services.desktopManager.cosmic.enable = true;
     services.displayManager.cosmic-greeter.enable = true;
 
-    # The greeter shows each user's last wallpaper (Roudix Kitsune by default,
+    # The greeter shows each user's last wallpaper (Roudix Ember Cove by default,
     # see cosmicDefaults) and theme; its built-in fallback image is only used
     # before the very first login. cosmic-greeter-daemon reads each user's
     # COSMIC config to paint it. Without XDG_DATA_DIRS a systemd service only

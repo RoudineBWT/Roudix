@@ -480,6 +480,46 @@ msgid "Every day"
 msgstr "Каждый день"
 
 #: roudix-switcher.py
+msgid "Logo with a gentle pulse (default)"
+msgstr "Логотип с мягкой пульсацией (по умолчанию)"
+
+#: roudix-switcher.py
+msgid "Roudix"
+msgstr "Roudix"
+
+#: roudix-switcher.py
+msgid "Logo turning slowly"
+msgstr "Медленно вращающийся логотип"
+
+#: roudix-switcher.py
+msgid "Roudix — spin"
+msgstr "Roudix — spin"
+
+#: roudix-switcher.py
+msgid "Roudix — glow"
+msgstr "Roudix — glow"
+
+#: roudix-switcher.py
+msgid "Warm gradient, glow pulsing behind the logo"
+msgstr "Тёплый градиент, свечение пульсирует за логотипом"
+
+#: roudix-switcher.py
+msgid "Rising embers, a progress ring, logo in a growing glow"
+msgstr "Поднимающиеся угольки, кольцо прогресса, логотип в нарастающем свечении"
+
+#: roudix-switcher.py
+msgid "Roudix — ember"
+msgstr "Roudix — ember"
+
+#: roudix-switcher.py
+msgid "Pandoudix"
+msgstr "Pandoudix"
+
+#: roudix-switcher.py
+msgid "The mascot: waves on boot, sleeps on shutdown"
+msgstr "Талисман: машет при загрузке, засыпает при выключении"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "Стабильный"
 
@@ -493,11 +533,11 @@ msgstr "Более свежие сборки, выше риск сбоев"
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
-"keys)"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-"
+"secureboot create-keys)"
 msgstr ""
-"Secure Boot — подпись загрузчика через sbctl (ключи должны существовать: roudix-secureboot "
-"create-keys)"
+"Secure Boot — подпись загрузчика через sbctl (ключи должны существовать: "
+"roudix-secureboot create-keys)"
 
 #: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
@@ -1101,6 +1141,10 @@ msgstr ""
 "поддерживает это разрешение, Limine выберет другое."
 
 #: roudix-switcher.py
+msgid "Boot splash (Plymouth)"
+msgstr "Экран загрузки (Plymouth)"
+
+#: roudix-switcher.py
 msgid "Secure Boot and EAC (experimental)"
 msgstr "Secure Boot и EAC (экспериментально)"
 
@@ -1173,6 +1217,10 @@ msgstr "Интервал обновления"
 #: roudix-switcher.py
 msgid "Boot wallpaper format"
 msgstr "Формат обоев загрузчика"
+
+#: roudix-switcher.py
+msgid "Boot splash"
+msgstr "Экран загрузки"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

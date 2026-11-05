@@ -459,6 +459,46 @@ msgid "Every day"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Logo with a gentle pulse (default)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Roudix"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Logo turning slowly"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Roudix — spin"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Roudix — glow"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Warm gradient, glow pulsing behind the logo"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Rising embers, a progress ring, logo in a growing glow"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Roudix — ember"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Pandoudix"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "The mascot: waves on boot, sleeps on shutdown"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr ""
 
@@ -1039,6 +1079,10 @@ msgid ""
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Boot splash (Plymouth)"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Secure Boot and EAC (experimental)"
 msgstr ""
 
@@ -1097,6 +1141,10 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Boot wallpaper format"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Boot splash"
 msgstr ""
 
 #: roudix-switcher.py

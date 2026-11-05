@@ -46,117 +46,117 @@ msgstr "选择并应用 SCX 调度器"
 
 #: roudix-welcome.py
 msgid "Disks"
-msgstr ""
+msgstr "磁盘"
 
 #: roudix-welcome.py
 msgid "Mount, format and manage your extra disks"
-msgstr ""
+msgstr "挂载、格式化并管理额外的磁盘"
 
 #: roudix-welcome.py
 msgid "Firewall"
-msgstr ""
+msgstr "防火墙"
 
 #: roudix-welcome.py
 msgid "Open ports and trusted interfaces"
-msgstr ""
+msgstr "开放端口和受信任的接口"
 
 #: roudix-welcome.py
 msgid "Hardware Sync"
-msgstr ""
+msgstr "硬件同步"
 
 #: roudix-welcome.py
 msgid "Changed PC? Update your CPU/GPU settings"
-msgstr ""
+msgstr "换了电脑？更新你的 CPU/GPU 设置"
 
 #: roudix-welcome.py
 msgid "Compositor Config"
-msgstr ""
+msgstr "合成器配置"
 
 #: roudix-welcome.py
 msgid "Window rules, screens and shortcuts"
-msgstr ""
+msgstr "窗口规则、屏幕和快捷键"
 
 #: roudix-welcome.py
 msgid "Documentation"
-msgstr ""
+msgstr "文档"
 
 #: roudix-welcome.py
 msgid "Source code"
-msgstr ""
+msgstr "源代码"
 
 #: roudix-welcome.py
 msgid "Release notes"
-msgstr ""
+msgstr "发行说明"
 
 #: roudix-welcome.py
 msgid "Report a bug"
-msgstr ""
+msgstr "报告错误"
 
 #: roudix-welcome.py
 msgid "YouTube"
-msgstr ""
+msgstr "YouTube"
 
 #: roudix-welcome.py
 msgid "Discord"
-msgstr ""
+msgstr "Discord"
 
 #: roudix-welcome.py
 msgid "Check for updates"
-msgstr ""
+msgstr "检查更新"
 
 #: roudix-welcome.py
 msgid "See if new commits are available (nothing is changed)"
-msgstr ""
+msgstr "查看是否有新的提交（不会更改任何内容）"
 
 #: roudix-welcome.py
 msgid "Update system"
-msgstr ""
+msgstr "更新系统"
 
 #: roudix-welcome.py
 msgid "Pull, rebuild, switch and update Flatpaks (same as `update`)"
-msgstr ""
+msgstr "拉取、重新构建、切换并更新 Flatpak（与 `update` 相同）"
 
 #: roudix-welcome.py
 msgid ""
 "Open a terminal and run the update? You will be asked for your password."
-msgstr ""
+msgstr "打开终端并运行更新？系统会要求你输入密码。"
 
 #: roudix-welcome.py
 msgid "Apply configuration"
-msgstr ""
+msgstr "应用配置"
 
 #: roudix-welcome.py
 msgid "Rebuild and switch now (same as `rebuild`)"
-msgstr ""
+msgstr "立即重新构建并切换（与 `rebuild` 相同）"
 
 #: roudix-welcome.py
 msgid "Rebuild the system now? This can take a while."
-msgstr ""
+msgstr "现在重新构建系统？这可能需要一些时间。"
 
 #: roudix-welcome.py
 msgid "Clean old generations"
-msgstr ""
+msgstr "清理旧世代"
 
 #: roudix-welcome.py
 msgid "Keep the last 3 generations, then garbage-collect (same as `cleanup`)"
-msgstr ""
+msgstr "保留最近 3 个世代，然后进行垃圾回收（与 `cleanup` 相同）"
 
 #: roudix-welcome.py
 msgid ""
 "Remove old system generations? You will not be able to roll back to them."
-msgstr ""
+msgstr "删除旧的系统世代？之后将无法回滚到这些世代。"
 
 #: roudix-welcome.py
 msgid "Show last update log"
-msgstr ""
+msgstr "显示上次更新日志"
 
 #: roudix-welcome.py
 msgid "Output of the last run of `update`"
-msgstr ""
+msgstr "上次运行 `update` 的输出"
 
 #: roudix-welcome.py
 msgid "Press Enter to close…"
-msgstr ""
+msgstr "按回车键关闭…"
 
 #: roudix-welcome.py
 msgid "Close"
@@ -164,26 +164,26 @@ msgstr "关闭"
 
 #: roudix-welcome.py
 msgid "Running…"
-msgstr ""
+msgstr "正在运行…"
 
 #: roudix-welcome.py
 #, python-brace-format
 msgid "ERROR: '{cmd}' not found in PATH."
-msgstr ""
+msgstr "错误：在 PATH 中找不到“{cmd}”。"
 
 #: roudix-welcome.py
 #, python-brace-format
 msgid "ERROR: {error}"
-msgstr ""
+msgstr "错误：{error}"
 
 #: roudix-welcome.py
 msgid "✓ Done"
-msgstr ""
+msgstr "✓ 完成"
 
 #: roudix-welcome.py
 #, python-brace-format
 msgid "✗ Failed (exit code {rc})"
-msgstr ""
+msgstr "✗ 失败（退出码 {rc}）"
 
 #: roudix-welcome.py
 msgid "Welcome to Roudix"
@@ -191,19 +191,19 @@ msgstr "欢迎使用 Roudix"
 
 #: roudix-welcome.py
 msgid "Welcome"
-msgstr ""
+msgstr "欢迎"
 
 #: roudix-welcome.py
 msgid "Tweaks"
-msgstr ""
+msgstr "调整"
 
 #: roudix-welcome.py
 msgid "Your NixOS, your way — shared with the people you care about."
-msgstr ""
+msgstr "你的 NixOS，你做主——与你在乎的人一起分享。"
 
 #: roudix-welcome.py
 msgid "System tools"
-msgstr ""
+msgstr "系统工具"
 
 #: roudix-welcome.py
 msgid "Resources"
@@ -219,48 +219,46 @@ msgstr "每次登录时再次显示此窗口"
 
 #: roudix-welcome.py
 msgid "Maintenance"
-msgstr ""
+msgstr "维护"
 
 #: roudix-welcome.py
 msgid "Common system tasks, one click away."
-msgstr ""
+msgstr "常用系统任务，一键完成。"
 
 #: roudix-welcome.py
 msgid "Run"
-msgstr ""
+msgstr "运行"
 
 #: roudix-welcome.py
 msgid "Configuration"
-msgstr ""
+msgstr "配置"
 
 #: roudix-welcome.py
 msgid "Open configuration folder"
-msgstr ""
+msgstr "打开配置文件夹"
 
 #: roudix-welcome.py
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: roudix-welcome.py
 msgid "No terminal found"
-msgstr ""
+msgstr "未找到终端"
 
 #: roudix-welcome.py
 msgid "Open a terminal yourself and run `update`."
-msgstr ""
+msgstr "请自行打开终端并运行 `update`。"
 
 #~ msgid ""
 #~ "<span size='small'>Roudix is your personal NixOS distribution: Wayland "
 #~ "compositors (Niri, Hyprland, MangoWC, Umbriel), GNOME and KDE, a CachyOS "
-#~ "kernel, and a bunch of tweaks built for you — and for the family and "
-#~ "friends you share it with. Use the shortcuts below to customize your "
-#~ "system, switch kernel and scheduler, or install apps from the store.</"
-#~ "span>"
+#~ "kernel, and a bunch of tweaks built for you — and for the family and friends"
+#~ " you share it with. Use the shortcuts below to customize your system, switch"
+#~ " kernel and scheduler, or install apps from the store.</span>"
 #~ msgstr ""
-#~ "<span size='small'>Roudix 是你的个人 NixOS 发行版：Wayland 合成器（Niri、"
-#~ "Hyprland、MangoWC、Umbriel）、GNOME 和 KDE、CachyOS 内核，以及一系列为你——"
-#~ "也为与你分享它的家人和朋友——打造的调整。使用下方的快捷入口来定制系统、切换"
-#~ "内核和调度器，或从商店安装应用。</span>"
+#~ "<span size='small'>Roudix 是你的个人 NixOS 发行版：Wayland "
+#~ "合成器（Niri、Hyprland、MangoWC、Umbriel）、GNOME 和 KDE、CachyOS "
+#~ "内核，以及一系列为你——也为与你分享它的家人和朋友——打造的调整。使用下方的快捷入口来定制系统、切换内核和调度器，或从商店安装应用。</span>"
 
 #~ msgid "Roudix Apps"
 #~ msgstr "Roudix 应用"

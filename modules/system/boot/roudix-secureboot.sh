@@ -10,6 +10,7 @@
 #
 # The paths below can be overridden to test the script against fake data:
 #   ROUDIX_SB_EFIVARS ROUDIX_SB_EFI_DIR ROUDIX_SB_SBCTL_DIR ROUDIX_SB_TPM_DIR
+#   ROUDIX_SB_MOK_DIR
 # and ROUDIX_SB_NO_SUDO=1 skips the sudo re-exec.
 
 shopt -s nullglob
@@ -18,6 +19,7 @@ efivars="${ROUDIX_SB_EFIVARS:-/sys/firmware/efi/efivars}"
 efi_dir="${ROUDIX_SB_EFI_DIR:-/sys/firmware/efi}"
 sbctl_dir="${ROUDIX_SB_SBCTL_DIR:-/var/lib/sbctl}"
 tpm_dir="${ROUDIX_SB_TPM_DIR:-/sys/class/tpm}"
+mok_dir="${ROUDIX_SB_MOK_DIR:-/sys/firmware/efi/mok-variables}"
 global_guid="8be4df61-93ca-11d2-aa0d-00e098032b8c"
 db_guid="d719b2cb-3d3a-4596-a3bc-dad00e67656f"
 
@@ -27,6 +29,7 @@ cfg_secureboot="${ROUDIX_SB_ENABLED:-}"
 cfg_eac="${ROUDIX_EAC_ENABLED:-}"
 
 assume_yes=0
+MOK_FAILED=0
 
 if [ -t 1 ]; then
   green=$'\e[32m'; red=$'\e[31m'; yellow=$'\e[33m'; bold=$'\e[1m'; reset=$'\e[0m'
@@ -150,6 +153,32 @@ has_entry() {
   grep -qi "$1" <<<"$out"
 }
 
+# Machine Owner Keys (shim's own trust list). EAC wants every one of them to be
+# on Epic's well-known list, even those not used to boot. They are only readable
+# when shim ran in this boot (the EAC entry), and eacnix-check knows the list.
+mok_status() {
+  local line detail
+  if [ ! -r "$mok_dir/MokListRT" ]; then
+    info "MOKs: readable only when booted through shim (the EAC entry): sudo eac-reboot, then run this again"
+    return 0
+  fi
+  if ! command -v eacnix-check >/dev/null 2>&1; then
+    warn "MOKs: readable, but eacnix-check isn't installed to judge them (roudix.boot.eac.enable)"
+    return 0
+  fi
+  line="$(eacnix-check 2>&1 | grep -F 'Only well-known MOKs' || true)"
+  detail="${line#*Only well-known MOKs}"
+  detail="${detail#"${detail%%[![:space:]]*}"}"  # trim leading whitespace
+  case "$line" in
+    *pass*) ok "MOKs: all well-known" ;;
+    *fail*)
+      bad "MOKs: not all well-known: ${detail#not well-known: }"
+      MOK_FAILED=1 ;;
+    *) warn "MOKs: could not be checked (${detail:-no result from eacnix-check})" ;;
+  esac
+  return 0
+}
+
 # ── commands ────────────────────────────────────────────────────────────────
 
 cmd_status() {
@@ -198,6 +227,7 @@ cmd_status() {
 
   if [ "$loader" = "limine" ]; then
     if has_entry 'NixOS EAC'; then ok "EAC boot entry: present"; else info "EAC boot entry: not set up"; fi
+    mok_status
   fi
 
   if [ -n "$cfg_secureboot$cfg_eac" ]; then
@@ -222,6 +252,11 @@ cmd_status() {
   else
     ok "Secure Boot is on and $name is signed."
     if [ "$loader" = "limine" ]; then
+      if [ "$MOK_FAILED" -eq 1 ]; then
+        warn "Some enrolled MOKs aren't well-known, so EAC would refuse this boot."
+        info "Remove one:  mokutil --export, then  mokutil --delete MOK-000N.der, reboot and confirm in MokManager."
+        info "Third-party tools like Ventoy: see \"Third-party keys\" in docs/secure-boot-eac.md."
+      fi
       if has_entry 'NixOS EAC'; then
         info "To use the EAC entry:  sudo eac-reboot   then, inside it:  sudo eacnix-check"
       else

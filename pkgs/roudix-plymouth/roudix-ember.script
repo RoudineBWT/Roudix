@@ -1,0 +1,171 @@
+# Roudix Plymouth theme "roudix-ember" (script module)
+#   - embers rising across the screen, a ring of 72 ticks that lights up with the
+#     boot progress, the logo turning slowly inside a glow that grows with the
+#     progress, a dark vignette, LUKS/password prompt, message line.
+# Colours come from the Limine menu: tan #eab676, cream #f6e2c4, logo orange #ff8c42.
+
+# ── Background ──────────────────────────────────────────────────────────────
+Window.SetBackgroundTopColor(0.114, 0.055, 0.024);     # #1d0e06
+Window.SetBackgroundBottomColor(0.039, 0.020, 0.012);  # #0a0503
+
+screen_w = Window.GetWidth();
+screen_h = Window.GetHeight();
+ox = Window.GetX();
+oy = Window.GetY();
+cx = ox + screen_w / 2;
+cy = oy + screen_h / 2 - 20;
+
+# ── Vignette (darkens the corners, stretched over the whole screen) ─────────
+vig.src = Image("vignette.png");
+vig.image = vig.src.Scale(screen_w, screen_h);
+vig.sprite = Sprite(vig.image);
+vig.sprite.SetPosition(ox, oy, 2);
+
+# ── Embers ──────────────────────────────────────────────────────────────────
+ember.count = 36;
+ember.img[0] = Image("ember-s.png");
+ember.img[1] = Image("ember-m.png");
+ember.img[2] = Image("ember-l.png");
+for (e = 0; e < ember.count; e++) {
+  ember.sprite[e] = Sprite(ember.img[e % 3]);
+  ember.x[e] = Math.Random() * screen_w;
+  ember.y[e] = Math.Random() * screen_h;
+  ember.speed[e] = 0.5 + Math.Random() * 1.6;
+  ember.phase[e] = Math.Random() * 6.28;
+  ember.sway[e] = 10 + Math.Random() * 30;
+  ember.sprite[e].SetPosition(ox + ember.x[e], oy + ember.y[e], 3);
+  ember.sprite[e].SetOpacity(0);
+}
+
+# ── Glow behind the logo ────────────────────────────────────────────────────
+glow.image = Image("glow.png");
+glow.sprite = Sprite(glow.image);
+glow.sprite.SetPosition(cx - glow.image.GetWidth() / 2, cy - glow.image.GetHeight() / 2, 5);
+glow.sprite.SetOpacity(0);
+
+# ── Logo (turns slowly; rebuilt every 2nd frame to keep the CPU cost low) ───
+logo.image = Image("logo.png");
+logo.sprite = Sprite(logo.image);
+logo.sprite.SetPosition(cx - logo.image.GetWidth() / 2, cy - logo.image.GetHeight() / 2, 10);
+logo.sprite.SetOpacity(0);
+
+# ── Progress ring: 72 ticks, dim underneath, lit on top ─────────────────────
+# The ticks are pre-rotated PNGs (tick-dim-N / tick-lit-N, N = 0..71, 5° apart).
+ring.radius = 190;
+ring.count = 72;
+for (t = 0; t < ring.count; t++) {
+  a = t * 6.283185 / ring.count;
+  tx = cx + ring.radius * Math.Sin(a) - 14;
+  ty = cy - ring.radius * Math.Cos(a) - 14;
+  tick.dim[t] = Sprite(Image("tick-dim-" + t + ".png"));
+  tick.dim[t].SetPosition(tx, ty, 8);
+  tick.lit[t] = Sprite(Image("tick-lit-" + t + ".png"));
+  tick.lit[t].SetPosition(tx, ty, 9);
+  tick.lit[t].SetOpacity(0);
+}
+
+# ── Progress (smoothed: Plymouth's estimate jumps around) ───────────────────
+target = 0;
+shown = 0;
+fun progress_callback(duration, progress) {
+  target = progress;
+}
+Plymouth.SetBootProgressFunction(progress_callback);
+
+# ── Animation (called ~50 times per second) ─────────────────────────────────
+frame = 0;
+fun refresh_callback() {
+  frame++;
+
+  fade = frame / 60.0;               # 1.2 s fade-in
+  if (fade > 1) fade = 1;
+
+  shown = shown + (target - shown) * 0.04;
+
+  # Ring sweep: tick t lights up as the progress passes it (soft edge).
+  for (t = 0; t < ring.count; t++) {
+    v = shown * ring.count - t;
+    if (v < 0) v = 0;
+    if (v > 1) v = 1;
+    tick.lit[t].SetOpacity(v * fade);
+    tick.dim[t].SetOpacity(fade);
+  }
+
+  # Glow: grows with the progress, breathes on top.
+  glow.sprite.SetOpacity((0.30 + 0.45 * shown + 0.15 * Math.Sin(frame * 0.0419)) * fade);
+
+  # Logo: slow turn (one turn ~ 20 s).
+  logo.sprite.SetOpacity(fade);
+  if (frame % 2 == 0) {
+    logo.sprite.SetImage(logo.image.Rotate(frame * 0.006));
+  }
+
+  # Embers: rise, sway, flicker, fade out near the top, respawn at the bottom.
+  for (e = 0; e < ember.count; e++) {
+    ember.y[e] = ember.y[e] - ember.speed[e];
+    if (ember.y[e] < -20) {
+      ember.y[e] = screen_h + 10;
+      ember.x[e] = Math.Random() * screen_w;
+    }
+    ex = ember.x[e] + ember.sway[e] * Math.Sin(frame * 0.02 + ember.phase[e]);
+    ember.sprite[e].SetPosition(ox + ex, oy + ember.y[e], 3);
+    h = ember.y[e] / screen_h;
+    if (h < 0) h = 0;
+    if (h > 1) h = 1;
+    ember.sprite[e].SetOpacity((0.55 + 0.35 * Math.Sin(frame * 0.1 + ember.phase[e])) * h * fade);
+  }
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+# ── Password prompt (LUKS) ──────────────────────────────────────────────────
+box.image = Image("box.png");
+box.sprite = Sprite(box.image);
+box.x = cx - box.image.GetWidth() / 2;
+box.y = cy + ring.radius + 46;
+box.sprite.SetPosition(box.x, box.y, 20);
+box.sprite.SetOpacity(0);
+
+bullet.image = Image("bullet.png");
+bullet.sprites = [];
+bullet.max = 22;
+
+prompt.sprite = Sprite();
+prompt.sprite.SetPosition(box.x, box.y - 28, 20);
+
+fun hide_prompt() {
+  box.sprite.SetOpacity(0);
+  prompt.sprite.SetOpacity(0);
+  for (i = 0; i < bullet.max; i++) {
+    if (bullet.sprites[i]) bullet.sprites[i].SetOpacity(0);
+  }
+}
+
+fun display_password_callback(prompt_text, bullets) {
+  box.sprite.SetOpacity(1);
+  prompt.sprite.SetImage(Image.Text(prompt_text, 0.918, 0.714, 0.463));
+  prompt.sprite.SetOpacity(1);
+
+  for (i = 0; i < bullet.max; i++) {
+    if (!bullet.sprites[i]) {
+      bullet.sprites[i] = Sprite(bullet.image);
+      bullet.sprites[i].SetPosition(box.x + 14 + i * 14, box.y + 14, 21);
+    }
+    if (i < bullets) bullet.sprites[i].SetOpacity(1);
+    else bullet.sprites[i].SetOpacity(0);
+  }
+}
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+
+fun display_normal_callback() {
+  hide_prompt();
+}
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+
+# ── Status / error messages ─────────────────────────────────────────────────
+message.sprite = Sprite();
+message.sprite.SetPosition(cx - 150, box.y + 52, 20);
+
+fun message_callback(text) {
+  message.sprite.SetImage(Image.Text(text, 0.965, 0.886, 0.769));
+}
+Plymouth.SetMessageFunction(message_callback);

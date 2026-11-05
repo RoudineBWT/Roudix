@@ -272,13 +272,13 @@ programs.plasma.panels = lib.mkForce [
 
 ## Cinnamon के डिफ़ॉल्ट
 
-Cinnamon डिफ़ॉल्ट रूप से Roudix Kitsune वॉलपेपर के साथ आता है — डेस्कटॉप पर भी और LightDM लॉगिन स्क्रीन पर भी — मेनू आइकन के रूप में Roudix लोगो इस्तेमाल करता है, और पैनल में डिफ़ॉल्ट ब्राउज़र (`roudix.browsers` का पहला), Roudix Store और सेटिंग्स को पिन करता है। GTK4 / libadwaita ऐप्स डार्क थीम का पालन करते हैं। ये डिफ़ॉल्ट हैं: ये सिर्फ़ उसी पर लागू होते हैं जिसे उपयोगकर्ता ने नहीं बदला है। पैनल पिन (ब्राउज़र, Nemo, Roudix Store, सेटिंग्स) और मेनू आइकन ऐप्लेट के डिफ़ॉल्ट हैं, जो दो ऐप्लेट की पैच की हुई कॉपियों के रूप में दिए जाते हैं: Cinnamon का कुछ भी रीबिल्ड नहीं होता।
+Cinnamon डिफ़ॉल्ट रूप से Roudix Ember Cove वॉलपेपर के साथ आता है — डेस्कटॉप पर भी और LightDM लॉगिन स्क्रीन पर भी — मेनू आइकन के रूप में Roudix लोगो इस्तेमाल करता है, और पैनल में डिफ़ॉल्ट ब्राउज़र (`roudix.browsers` का पहला), Roudix Store और सेटिंग्स को पिन करता है। GTK4 / libadwaita ऐप्स डार्क थीम का पालन करते हैं। ये डिफ़ॉल्ट हैं: ये सिर्फ़ उसी पर लागू होते हैं जिसे उपयोगकर्ता ने नहीं बदला है। पैनल पिन (ब्राउज़र, Nemo, Roudix Store, सेटिंग्स) और मेनू आइकन ऐप्लेट के डिफ़ॉल्ट हैं, जो दो ऐप्लेट की पैच की हुई कॉपियों के रूप में दिए जाते हैं: Cinnamon का कुछ भी रीबिल्ड नहीं होता।
 
 लॉगिन स्क्रीन (slick-greeter) के लिए कोई सेटिंग्स ऐप नहीं है। उसका वॉलपेपर इस तरह बदलें:
 
 ```bash
 roudix-lightdm-wallpaper ~/Pictures/wallpaper.jpg   # रीबिल्ड की ज़रूरत नहीं
-roudix-lightdm-wallpaper --reset                    # Kitsune पर वापस
+roudix-lightdm-wallpaper --reset                    # Ember Cove पर वापस
 ```
 
 पिन किए गए ऐप्स को `hosts/roudix/local.nix` में ओवरराइड करें:
@@ -289,7 +289,7 @@ roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.deskto
 
 ## COSMIC के डिफ़ॉल्ट
 
-COSMIC डिफ़ॉल्ट रूप से Roudix Kitsune वॉलपेपर और `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions` का कीबोर्ड लेआउट लेकर आता है। डॉक Roudix में चुने गए ब्राउज़र (और अगर चालू हो तो Zen), COSMIC Files, आपका टर्मिनल, Roudix Store और COSMIC Settings को पिन करता है — वही विचार जो GNOME के dash और Plasma के टास्क मैनेजर का है। ऐप लाइब्रेरी में Roudix के हर ऐप (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) को एक **Roudix** फ़ोल्डर में समूहित किया गया है और वे अब सिस्टम / यूटिलिटीज़ में सूचीबद्ध नहीं होते। COSMIC Store इंस्टॉल नहीं होता: उसकी जगह Roudix Store लेता है।
+COSMIC डिफ़ॉल्ट रूप से Roudix Ember Cove वॉलपेपर और `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions` का कीबोर्ड लेआउट लेकर आता है। डॉक Roudix में चुने गए ब्राउज़र (और अगर चालू हो तो Zen), COSMIC Files, आपका टर्मिनल, Roudix Store और COSMIC Settings को पिन करता है — वही विचार जो GNOME के dash और Plasma के टास्क मैनेजर का है। ऐप लाइब्रेरी में Roudix के हर ऐप (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) को एक **Roudix** फ़ोल्डर में समूहित किया गया है और वे अब सिस्टम / यूटिलिटीज़ में सूचीबद्ध नहीं होते। COSMIC Store इंस्टॉल नहीं होता: उसकी जगह Roudix Store लेता है।
 
 ये डिफ़ॉल्ट हैं, जो सिस्टम-व्यापी cosmic-config फ़ाइलों के रूप में दिए जाते हैं: ये सिर्फ़ उसी पर लागू होते हैं जिसे उपयोगकर्ता ने नहीं बदला है, और रीबिल्ड COSMIC Settings में किए गए किसी चुनाव को कभी नहीं पलटता।
 

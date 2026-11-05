@@ -129,14 +129,14 @@
 ## Bureau (Cinnamon)
 
 - Cinnamon avec session X11 + LightDM (slick-greeter) — bureau classique, adapté aux machines anciennes
-- Fond d'écran Roudix Kitsune sur le bureau et l'écran de connexion (modifiable avec `roudix-lightdm-wallpaper`)
+- Fond d'écran Roudix Ember Cove sur le bureau et l'écran de connexion (modifiable avec `roudix-lightdm-wallpaper`)
 - Logo Roudix comme icône de menu ; navigateur par défaut, Nemo, Roudix Store et Paramètres épinglés dans le panneau (`roudix.desktop.cinnamon.pinnedApps`)
 - Icônes Papirus-Roudix, thème sombre pour les apps GTK4/libadwaita
 - Ce sont des valeurs par défaut : elles n'écrasent jamais vos changements
 
 ## Bureau (COSMIC)
 
-- COSMIC (System76) avec cosmic-comp + cosmic-greeter, fond d'écran Roudix Kitsune
+- COSMIC (System76) avec cosmic-comp + cosmic-greeter, fond d'écran Roudix Ember Cove
 - Palette Roudix comme thème natif de COSMIC (`assets/cosmic/`, générée depuis `assets/palette/Roudix.json`)
 - Dock avec vos navigateurs, COSMIC Files, terminal, Roudix Store et Paramètres ; apps Roudix regroupées dans un dossier **Roudix** de la bibliothèque d'apps
 - Disposition clavier reprise de `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`

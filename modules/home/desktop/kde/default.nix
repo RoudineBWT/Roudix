@@ -1,6 +1,6 @@
 { lib, pkgs, osConfig, inputs, ... }:
 let
-  wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixKitsune/contents/images/2560x1440.png";
+  wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixEmberCove/contents/images/2560x1440.png";
 
   kwriteconfig6 = "${pkgs.kdePackages.kconfig}/bin/kwriteconfig6";
   kreadconfig6  = "${pkgs.kdePackages.kconfig}/bin/kreadconfig6";

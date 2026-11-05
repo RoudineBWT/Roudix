@@ -470,6 +470,46 @@ msgid "Every day"
 msgstr "हर दिन"
 
 #: roudix-switcher.py
+msgid "Logo with a gentle pulse (default)"
+msgstr "हल्की धड़कन वाला लोगो (डिफ़ॉल्ट)"
+
+#: roudix-switcher.py
+msgid "Roudix"
+msgstr "Roudix"
+
+#: roudix-switcher.py
+msgid "Logo turning slowly"
+msgstr "धीरे-धीरे घूमता लोगो"
+
+#: roudix-switcher.py
+msgid "Roudix — spin"
+msgstr "Roudix — spin"
+
+#: roudix-switcher.py
+msgid "Roudix — glow"
+msgstr "Roudix — glow"
+
+#: roudix-switcher.py
+msgid "Warm gradient, glow pulsing behind the logo"
+msgstr "गर्म ग्रेडिएंट, लोगो के पीछे धड़कती चमक"
+
+#: roudix-switcher.py
+msgid "Rising embers, a progress ring, logo in a growing glow"
+msgstr "ऊपर उठते अंगारे, प्रगति रिंग और बढ़ती चमक में लोगो"
+
+#: roudix-switcher.py
+msgid "Roudix — ember"
+msgstr "Roudix — ember"
+
+#: roudix-switcher.py
+msgid "Pandoudix"
+msgstr "Pandoudix"
+
+#: roudix-switcher.py
+msgid "The mascot: waves on boot, sleeps on shutdown"
+msgstr "शुभंकर: बूट पर हाथ हिलाता है, शटडाउन पर सो जाता है"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "स्टेबल"
 
@@ -483,11 +523,11 @@ msgstr "नए बिल्ड, खराब होने की संभाव
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
-"keys)"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-"
+"secureboot create-keys)"
 msgstr ""
-"Secure Boot — sbctl से बूटलोडर पर हस्ताक्षर (कुंजियाँ पहले से मौजूद होनी चाहिए: roudix-secureboot "
-"create-keys)"
+"Secure Boot — sbctl से बूटलोडर पर हस्ताक्षर (कुंजियाँ पहले से मौजूद होनी चाहिए: roudix-"
+"secureboot create-keys)"
 
 #: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
@@ -1076,6 +1116,10 @@ msgstr ""
 "तो Limine कोई दूसरा चुन लेता है।"
 
 #: roudix-switcher.py
+msgid "Boot splash (Plymouth)"
+msgstr "बूट स्प्लैश (Plymouth)"
+
+#: roudix-switcher.py
 msgid "Secure Boot and EAC (experimental)"
 msgstr "Secure Boot और EAC (प्रायोगिक)"
 
@@ -1146,6 +1190,10 @@ msgstr "अपडेट अंतराल"
 #: roudix-switcher.py
 msgid "Boot wallpaper format"
 msgstr "बूट वॉलपेपर प्रारूप"
+
+#: roudix-switcher.py
+msgid "Boot splash"
+msgstr "बूट स्प्लैश"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

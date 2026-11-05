@@ -29,7 +29,7 @@ and system tweaks, hit apply, and it rebuilds the system for you.
 | Editor / Terminal / Browser / Login Shell / File Manager | Default app of each kind (Browser also has the Zen and Firefox tweaks, each applied to a profile you pick) |
 | Chat Client | Matrix, Discord, Telegram clients |
 | Apps | Optional apps (GIMP, Inkscape, EasyEffects, Signal, ZapZap, Fluxer, Cressida...), media players, mail, torrent, password manager |
-| System | Flatpak, virtualization, Waydroid, auto-update (and its check interval), laptop/TLP, Podman, Distrobox... |
+| System | Flatpak, virtualization, Waydroid, auto-update (and its check interval), laptop/TLP, Podman, Distrobox, boot splash (Plymouth, with thumbnails)... |
 | Integration | GNOME / KDE app integration for the tiling compositors |
 | Icon Theme | Papirus, Tela, Qogir, WhiteSur, Colloid — with live folder-icon previews |
 

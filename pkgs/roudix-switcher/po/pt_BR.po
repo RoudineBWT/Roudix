@@ -479,6 +479,46 @@ msgid "Every day"
 msgstr "Todos os dias"
 
 #: roudix-switcher.py
+msgid "Logo with a gentle pulse (default)"
+msgstr "Logotipo com uma pulsação suave (padrão)"
+
+#: roudix-switcher.py
+msgid "Roudix"
+msgstr "Roudix"
+
+#: roudix-switcher.py
+msgid "Logo turning slowly"
+msgstr "Logotipo girando lentamente"
+
+#: roudix-switcher.py
+msgid "Roudix — spin"
+msgstr "Roudix — spin"
+
+#: roudix-switcher.py
+msgid "Roudix — glow"
+msgstr "Roudix — glow"
+
+#: roudix-switcher.py
+msgid "Warm gradient, glow pulsing behind the logo"
+msgstr "Degradê quente, brilho pulsando atrás do logotipo"
+
+#: roudix-switcher.py
+msgid "Rising embers, a progress ring, logo in a growing glow"
+msgstr "Brasas subindo, um anel de progresso e o logo em um brilho crescente"
+
+#: roudix-switcher.py
+msgid "Roudix — ember"
+msgstr "Roudix — ember"
+
+#: roudix-switcher.py
+msgid "Pandoudix"
+msgstr "Pandoudix"
+
+#: roudix-switcher.py
+msgid "The mascot: waves on boot, sleeps on shutdown"
+msgstr "A mascote: acena na inicialização e dorme no desligamento"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "Estável"
 
@@ -492,11 +532,11 @@ msgstr "Versões mais recentes, mais propensas a quebrar"
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
-"keys)"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-"
+"secureboot create-keys)"
 msgstr ""
-"Secure Boot — assinar o gerenciador de boot com sbctl (as chaves precisam existir: roudix-secureboot "
-"create-keys)"
+"Secure Boot — assinar o gerenciador de boot com sbctl (as chaves precisam "
+"existir: roudix-secureboot create-keys)"
 
 #: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
@@ -1100,6 +1140,10 @@ msgstr ""
 "oferecer a resolução, o Limine usa outra."
 
 #: roudix-switcher.py
+msgid "Boot splash (Plymouth)"
+msgstr "Tela de inicialização (Plymouth)"
+
+#: roudix-switcher.py
 msgid "Secure Boot and EAC (experimental)"
 msgstr "Secure Boot e EAC (experimental)"
 
@@ -1172,6 +1216,10 @@ msgstr "Intervalo de atualização"
 #: roudix-switcher.py
 msgid "Boot wallpaper format"
 msgstr "Formato do papel de parede de boot"
+
+#: roudix-switcher.py
+msgid "Boot splash"
+msgstr "Tela de inicialização"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"
