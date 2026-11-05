@@ -144,15 +144,15 @@ stdenvNoCC.mkDerivation {
       -depth 8 \
       $out/share/backgrounds/roudix/roudix_wallpaper_drift.png
 
-    # ── Default wallpaper: roudix-kitsune (GNOME + KDE) ───────────────────────
-    convert $src/wallpapers/roudix-kitsune.png \
+    # ── Default wallpaper: roudix-ember-cove (GNOME + KDE + COSMIC + Cinnamon) ─
+    convert $src/wallpapers/roudix-ember-cove.png \
       -strip \
       -define png:color-type=2 \
       -depth 8 \
-      $out/share/backgrounds/roudix/roudix-kitsune.png
+      $out/share/backgrounds/roudix/roudix-ember-cove.png
 
     # ── Extra wallpapers PNG (GNOME) ──────────────────────────────────────────
-    for WP in roudix-emberlit-valley roudix-emblem; do
+    for WP in roudix-bamboo-dusk roudix-emberlit-valley roudix-emblem; do
       convert $src/wallpapers/$WP.png \
         -strip \
         -define png:color-type=2 \
@@ -160,27 +160,51 @@ stdenvNoCC.mkDerivation {
         $out/share/backgrounds/roudix/$WP.png
     done
 
-    # ── Wallpaper KDE Kitsune (default) ───────────────────────────────────────
-    mkdir -p $out/share/wallpapers/RoudixKitsune/contents/images
+    # ── Wallpaper KDE Ember Cove (default) ──────────────────────────────────────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixEmberCove/contents/images
 
-    cp $src/wallpapers/roudix-kitsune.png \
-      $out/share/wallpapers/RoudixKitsune/contents/images/2560x1440.png
+    cp $src/wallpapers/roudix-ember-cove.png \
+      $out/share/wallpapers/RoudixEmberCove/contents/images/2560x1440.png
 
-    convert $src/wallpapers/roudix-kitsune.png \
+    convert $src/wallpapers/roudix-ember-cove.png \
       -resize 400x225 \
-      $out/share/wallpapers/RoudixKitsune/contents/screenshot.png
+      $out/share/wallpapers/RoudixEmberCove/contents/screenshot.png
 
-    cat <<JSONEOF > $out/share/wallpapers/RoudixKitsune/metadata.json
+    cat <<JSONEOF > $out/share/wallpapers/RoudixEmberCove/metadata.json
 {
   "KPlugin": {
     "Authors": [ { "Name": "Roudix" } ],
-    "Id": "RoudixKitsune",
+    "Id": "RoudixEmberCove",
     "License": "AGPL-3.0+",
-    "Name": "Roudix Kitsune",
+    "Name": "Roudix Ember Cove",
     "Version": "1.0"
   },
   "KPackageStructure": "Wallpaper/Images",
-  "X-KDE-PluginInfo-Name": "RoudixKitsune"
+  "X-KDE-PluginInfo-Name": "RoudixEmberCove"
+}
+JSONEOF
+
+    # ── Wallpaper KDE Bamboo Dusk ───────────────────────────────────────────────────────────────────────────────────
+    mkdir -p $out/share/wallpapers/RoudixBambooDusk/contents/images
+
+    cp $src/wallpapers/roudix-bamboo-dusk.png \
+      $out/share/wallpapers/RoudixBambooDusk/contents/images/2560x1440.png
+
+    convert $src/wallpapers/roudix-bamboo-dusk.png \
+      -resize 400x225 \
+      $out/share/wallpapers/RoudixBambooDusk/contents/screenshot.png
+
+    cat <<JSONEOF > $out/share/wallpapers/RoudixBambooDusk/metadata.json
+{
+  "KPlugin": {
+    "Authors": [ { "Name": "Roudix" } ],
+    "Id": "RoudixBambooDusk",
+    "License": "AGPL-3.0+",
+    "Name": "Roudix Bamboo Dusk",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "Wallpaper/Images",
+  "X-KDE-PluginInfo-Name": "RoudixBambooDusk"
 }
 JSONEOF
 
@@ -438,8 +462,16 @@ JSONEOF
 <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
 <wallpapers>
   <wallpaper deleted="false">
-    <name>Roudix Kitsune</name>
-    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png</filename>
+    <name>Roudix Ember Cove</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-ember-cove.png</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#14100D</pcolor>
+    <scolor>#14100D</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Roudix Bamboo Dusk</name>
+    <filename>/run/current-system/sw/share/backgrounds/roudix/roudix-bamboo-dusk.png</filename>
     <options>zoom</options>
     <shade_type>solid</shade_type>
     <pcolor>#14100D</pcolor>

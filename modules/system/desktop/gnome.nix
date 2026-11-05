@@ -94,12 +94,12 @@ let
     };
 
     "org/gnome/desktop/background" = {
-      picture-uri      = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
-      picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
+      picture-uri      = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-ember-cove.png";
+      picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-ember-cove.png";
       picture-options  = "zoom";
     };
     "org/gnome/desktop/screensaver" = {
-      picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-kitsune.png";
+      picture-uri = "file:///run/current-system/sw/share/backgrounds/roudix/roudix-ember-cove.png";
     };
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";

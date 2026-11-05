@@ -272,13 +272,13 @@ programs.plasma.panels = lib.mkForce [
 
 ## الإعدادات الافتراضية لـ Cinnamon
 
-يأتي Cinnamon افتراضيًا بخلفية Roudix Kitsune، على سطح المكتب وعلى شاشة تسجيل الدخول في LightDM، ويستخدم شعار Roudix أيقونةً للقائمة، ويثبّت في اللوحة المتصفح الافتراضي (أول عنصر في `roudix.browsers`) وRoudix Store والإعدادات. وتتبع تطبيقات GTK4 / libadwaita السمة الداكنة. هذه كلها قيم افتراضية: لا تُطبَّق إلا على ما لم يغيّره المستخدم. وعناصر اللوحة المثبّتة (المتصفح، وNemo، وRoudix Store، والإعدادات) وأيقونة القائمة هي قيم افتراضية للـ applets، تُوفَّر كنسخ مُعدَّلة (patched) من applet-ين: لا يُعاد بناء أي شيء من Cinnamon.
+يأتي Cinnamon افتراضيًا بخلفية Roudix Ember Cove، على سطح المكتب وعلى شاشة تسجيل الدخول في LightDM، ويستخدم شعار Roudix أيقونةً للقائمة، ويثبّت في اللوحة المتصفح الافتراضي (أول عنصر في `roudix.browsers`) وRoudix Store والإعدادات. وتتبع تطبيقات GTK4 / libadwaita السمة الداكنة. هذه كلها قيم افتراضية: لا تُطبَّق إلا على ما لم يغيّره المستخدم. وعناصر اللوحة المثبّتة (المتصفح، وNemo، وRoudix Store، والإعدادات) وأيقونة القائمة هي قيم افتراضية للـ applets، تُوفَّر كنسخ مُعدَّلة (patched) من applet-ين: لا يُعاد بناء أي شيء من Cinnamon.
 
 ليس لشاشة تسجيل الدخول (slick-greeter) تطبيق إعدادات. غيّر خلفيتها بما يلي:
 
 ```bash
 roudix-lightdm-wallpaper ~/Pictures/wallpaper.jpg   # لا حاجة إلى إعادة بناء
-roudix-lightdm-wallpaper --reset                    # العودة إلى Kitsune
+roudix-lightdm-wallpaper --reset                    # العودة إلى Ember Cove
 ```
 
 تجاوز التطبيقات المثبّتة في `hosts/roudix/local.nix`:
@@ -289,7 +289,7 @@ roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.deskto
 
 ## الإعدادات الافتراضية لـ COSMIC
 
-يأتي COSMIC افتراضيًا بخلفية Roudix Kitsune وبتخطيط لوحة المفاتيح المحدد في `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. ويثبّت الـ dock المتصفح (أو المتصفحات) المختار في Roudix (وZen إن كان مفعّلًا)، وCOSMIC Files، وطرفيتك، وRoudix Store، وCOSMIC Settings — بنفس فكرة الـ dash في GNOME ومدير المهام في Plasma. وفي مكتبة التطبيقات، تُجمَّع كل تطبيقات Roudix (Store وCustomizer وKernel Switcher وScheduler وHardware Sync وConfig وWelcome) في مجلد **Roudix** ولا تُدرَج بعد الآن ضمن النظام / الأدوات المساعدة. ولا يُثبَّت COSMIC Store: إذ يحلّ Roudix Store محلّه.
+يأتي COSMIC افتراضيًا بخلفية Roudix Ember Cove وبتخطيط لوحة المفاتيح المحدد في `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. ويثبّت الـ dock المتصفح (أو المتصفحات) المختار في Roudix (وZen إن كان مفعّلًا)، وCOSMIC Files، وطرفيتك، وRoudix Store، وCOSMIC Settings — بنفس فكرة الـ dash في GNOME ومدير المهام في Plasma. وفي مكتبة التطبيقات، تُجمَّع كل تطبيقات Roudix (Store وCustomizer وKernel Switcher وScheduler وHardware Sync وConfig وWelcome) في مجلد **Roudix** ولا تُدرَج بعد الآن ضمن النظام / الأدوات المساعدة. ولا يُثبَّت COSMIC Store: إذ يحلّ Roudix Store محلّه.
 
 هذه قيم افتراضية، تُوفَّر كملفات cosmic-config على مستوى النظام: لا تُطبَّق إلا على ما لم يغيّره المستخدم، ولا تُرجع إعادة البناء أبدًا خيارًا اتخذته في COSMIC Settings.
 

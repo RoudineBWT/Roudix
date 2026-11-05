@@ -2,7 +2,7 @@
 let
   isKde = config.roudix.desktop.type == "kde";
 
-  wallpaperDark = "${roudixBranding}/share/wallpapers/RoudixKitsune/contents/images/2560x1440.png";
+  wallpaperDark = "${roudixBranding}/share/wallpapers/RoudixEmberCove/contents/images/2560x1440.png";
 
   roudixMenu = {
       text = ''
@@ -41,15 +41,15 @@ lib.mkIf isKde {
   # and references it via /etc/plasmalogin.conf with a file:// prefix
   environment.etc."plasmalogin.conf".text = ''
     [Greeter][Wallpaper][org.kde.image][General]
-    Image=file:///var/lib/plasmalogin/wallpapers/RoudixKitsune
+    Image=file:///var/lib/plasmalogin/wallpapers/RoudixEmberCove
   '';
 
   system.activationScripts.plasmaLoginWallpaper = {
     deps = [ "users" "groups" ];
     text = ''
-      install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/RoudixKitsune/contents/images
-      cp ${wallpaperDark} /var/lib/plasmalogin/wallpapers/RoudixKitsune/contents/images/2560x1440.png
-      cp ${roudixBranding}/share/wallpapers/RoudixKitsune/metadata.json /var/lib/plasmalogin/wallpapers/RoudixKitsune/metadata.json
+      install -d -o plasmalogin -g plasmalogin /var/lib/plasmalogin/wallpapers/RoudixEmberCove/contents/images
+      cp ${wallpaperDark} /var/lib/plasmalogin/wallpapers/RoudixEmberCove/contents/images/2560x1440.png
+      cp ${roudixBranding}/share/wallpapers/RoudixEmberCove/metadata.json /var/lib/plasmalogin/wallpapers/RoudixEmberCove/metadata.json
       chown -R plasmalogin:plasmalogin /var/lib/plasmalogin/wallpapers/
     '';
   };

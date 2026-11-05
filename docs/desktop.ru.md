@@ -272,13 +272,13 @@ programs.plasma.panels = lib.mkForce [
 
 ## Значения по умолчанию Cinnamon
 
-Cinnamon по умолчанию поставляется с обоями Roudix Kitsune — на рабочем столе и на экране входа LightDM, использует логотип Roudix как значок меню и закрепляет на панели браузер по умолчанию (первый из `roudix.browsers`), Roudix Store и Параметры. Приложения GTK4 / libadwaita следуют тёмной теме. Это значения по умолчанию: они применяются только к тому, что пользователь не менял. Закреплённые элементы панели (браузер, Nemo, Roudix Store, Параметры) и значок меню — значения по умолчанию апплетов, поставляемые в виде пропатченных копий двух апплетов: сам Cinnamon не пересобирается.
+Cinnamon по умолчанию поставляется с обоями Roudix Ember Cove — на рабочем столе и на экране входа LightDM, использует логотип Roudix как значок меню и закрепляет на панели браузер по умолчанию (первый из `roudix.browsers`), Roudix Store и Параметры. Приложения GTK4 / libadwaita следуют тёмной теме. Это значения по умолчанию: они применяются только к тому, что пользователь не менял. Закреплённые элементы панели (браузер, Nemo, Roudix Store, Параметры) и значок меню — значения по умолчанию апплетов, поставляемые в виде пропатченных копий двух апплетов: сам Cinnamon не пересобирается.
 
 У экрана входа (slick-greeter) нет приложения настроек. Меняйте его обои так:
 
 ```bash
 roudix-lightdm-wallpaper ~/Pictures/wallpaper.jpg   # пересборка не нужна
-roudix-lightdm-wallpaper --reset                    # вернуть Kitsune
+roudix-lightdm-wallpaper --reset                    # вернуть Ember Cove
 ```
 
 Переопределите закреплённые приложения в `hosts/roudix/local.nix`:
@@ -289,7 +289,7 @@ roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.deskto
 
 ## Значения по умолчанию COSMIC
 
-COSMIC по умолчанию поставляется с обоями Roudix Kitsune и раскладкой клавиатуры из `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. В доке закреплены браузер(ы), выбранные в Roudix (и Zen, если включён), COSMIC Files, ваш терминал, Roudix Store и COSMIC Settings — та же идея, что и у dash в GNOME и диспетчера задач в Plasma. В библиотеке приложений все приложения Roudix (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) сгруппированы в папке **Roudix** и больше не отображаются в разделе Система / Утилиты. COSMIC Store не устанавливается: её заменяет Roudix Store.
+COSMIC по умолчанию поставляется с обоями Roudix Ember Cove и раскладкой клавиатуры из `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. В доке закреплены браузер(ы), выбранные в Roudix (и Zen, если включён), COSMIC Files, ваш терминал, Roudix Store и COSMIC Settings — та же идея, что и у dash в GNOME и диспетчера задач в Plasma. В библиотеке приложений все приложения Roudix (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) сгруппированы в папке **Roudix** и больше не отображаются в разделе Система / Утилиты. COSMIC Store не устанавливается: её заменяет Roudix Store.
 
 Это значения по умолчанию, поставляемые в виде общесистемных файлов cosmic-config: они применяются только к тому, что пользователь не менял, а пересборка никогда не отменяет выбор, сделанный в COSMIC Settings.
 

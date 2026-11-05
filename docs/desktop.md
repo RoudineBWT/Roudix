@@ -273,13 +273,13 @@ programs.plasma.panels = lib.mkForce [
 
 ## Cinnamon defaults
 
-Cinnamon ships the Roudix Kitsune wallpaper by default, on the desktop and on the LightDM login screen, uses the Roudix logo as the menu icon, and pins the default browser (first of `roudix.browsers`), Roudix Store and Settings in the panel. GTK4 / libadwaita apps follow the dark theme. These are defaults: they only apply to what the user has not changed. Panel pins (browser, Nemo, Roudix Store, Settings) and the menu icon are applet defaults, shipped as patched copies of two applets: nothing of Cinnamon is rebuilt.
+Cinnamon ships the Roudix Ember Cove wallpaper by default, on the desktop and on the LightDM login screen, uses the Roudix logo as the menu icon, and pins the default browser (first of `roudix.browsers`), Roudix Store and Settings in the panel. GTK4 / libadwaita apps follow the dark theme. These are defaults: they only apply to what the user has not changed. Panel pins (browser, Nemo, Roudix Store, Settings) and the menu icon are applet defaults, shipped as patched copies of two applets: nothing of Cinnamon is rebuilt.
 
 The login screen (slick-greeter) has no settings app. Change its wallpaper with:
 
 ```bash
 roudix-lightdm-wallpaper ~/Pictures/wallpaper.jpg   # no rebuild needed
-roudix-lightdm-wallpaper --reset                    # back to Kitsune
+roudix-lightdm-wallpaper --reset                    # back to Ember Cove
 ```
 
 Override the pinned apps in `hosts/roudix/local.nix`:
@@ -290,7 +290,7 @@ roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.deskto
 
 ## COSMIC defaults
 
-COSMIC ships the Roudix Kitsune wallpaper by default and the keyboard layout of `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. The dock pins the browser(s) chosen in Roudix (and Zen if enabled), COSMIC Files, your terminal, Roudix Store and COSMIC Settings — the same idea as the GNOME dash and the Plasma task manager. In the app library, every Roudix app (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) is grouped in a **Roudix** folder and no longer listed under System / Utilities. COSMIC Store is not installed: Roudix Store replaces it.
+COSMIC ships the Roudix Ember Cove wallpaper by default and the keyboard layout of `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. The dock pins the browser(s) chosen in Roudix (and Zen if enabled), COSMIC Files, your terminal, Roudix Store and COSMIC Settings — the same idea as the GNOME dash and the Plasma task manager. In the app library, every Roudix app (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) is grouped in a **Roudix** folder and no longer listed under System / Utilities. COSMIC Store is not installed: Roudix Store replaces it.
 
 These are defaults, shipped as system-wide cosmic-config files: they only apply to what the user has not changed, and a rebuild never reverts a choice made in COSMIC Settings.
 

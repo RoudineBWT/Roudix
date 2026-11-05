@@ -128,14 +128,14 @@
 ## Desktop (Cinnamon)
 
 - Cinnamon with X11 session + LightDM (slick-greeter) — classic desktop, suited to older hardware
-- Roudix Kitsune wallpaper on the desktop and login screen (login wallpaper changeable with `roudix-lightdm-wallpaper`)
+- Roudix Ember Cove wallpaper on the desktop and login screen (login wallpaper changeable with `roudix-lightdm-wallpaper`)
 - Roudix logo as menu icon; default browser, Nemo, Roudix Store and Settings pinned in the panel (`roudix.desktop.cinnamon.pinnedApps`)
 - Papirus-Roudix icons, dark theme for GTK4/libadwaita apps
 - All of these are defaults: they never override what you changed
 
 ## Desktop (COSMIC)
 
-- COSMIC (System76) with cosmic-comp + cosmic-greeter, Roudix Kitsune wallpaper
+- COSMIC (System76) with cosmic-comp + cosmic-greeter, Roudix Ember Cove wallpaper
 - Roudix colour scheme as the native COSMIC theme (`assets/cosmic/`, generated from `assets/palette/Roudix.json`)
 - Dock pinned with your browser(s), COSMIC Files, terminal, Roudix Store and Settings; Roudix apps grouped in a **Roudix** folder of the app library
 - Keyboard layout taken from `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`
