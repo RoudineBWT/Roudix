@@ -33,7 +33,7 @@
 
   # ── Boot ─────────────────────────────────────────────────────────────────
   roudix.boot.bootloader = "systemd-boot";      # "limine" or "systemd-boot"
-  roudix.boot.plymouth.theme = "roudix";        # boot splash: "roudix", "roudix-spin", "roudix-gradient" or "roudix-panda"
+  roudix.boot.plymouth.theme = "roudix";        # boot splash: "roudix", "roudix-spin", "roudix-gradient", "roudix-ember" or "roudix-panda"
 
   # ── Hands-off updates: the whole point of this host ──────────────────────
   roudix.autoupdate.enable   = true;

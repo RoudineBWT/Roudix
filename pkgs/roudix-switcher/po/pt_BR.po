@@ -503,6 +503,14 @@ msgid "Warm gradient, glow pulsing behind the logo"
 msgstr "Degradê quente, brilho pulsando atrás do logotipo"
 
 #: roudix-switcher.py
+msgid "Rising embers, a progress ring, logo in a growing glow"
+msgstr "Brasas subindo, um anel de progresso e o logo em um brilho crescente"
+
+#: roudix-switcher.py
+msgid "Roudix — ember"
+msgstr "Roudix — ember"
+
+#: roudix-switcher.py
 msgid "Pandoudix"
 msgstr "Pandoudix"
 

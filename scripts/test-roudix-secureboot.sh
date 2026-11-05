@@ -57,12 +57,26 @@ echo "systemctl $*" >> "$FAKE_LOG"
 FAKE
 chmod +x "$work/bin/"*
 
+# A fake eacnix-check, only put on PATH when FAKE_CHECK is set (pass|fail|unknown).
+mkdir -p "$work/bin2"
+cat > "$work/bin2/eacnix-check" <<'FAKE'
+#!/usr/bin/env bash
+echo "v pass    TPM 2.0                                   TPM version 2"
+case "$FAKE_CHECK" in
+  pass) echo "v pass    Only well-known MOKs                      verified: fedoraca, ublue kernel" ;;
+  fail) echo "x fail    Only well-known MOKs                      not well-known: Ventoy Secure Boot Root CA. Export them with 'mokutil --export'" ;;
+  unknown) echo "? unknown Only well-known MOKs                      no MokListRT: shim isn't in this boot's chain" ;;
+esac
+FAKE
+chmod +x "$work/bin2/eacnix-check"
+
 fails=0
 n=0
 
 # world <uefi> <tpm> <keys> <setup|-> <enrolled> <sb|-> <limine> [windows] [eac]
 world() {
-  rm -rf "$work/w"; mkdir -p "$work/w/efivars" "$work/w/tpm0" "$work/w/sbctl"
+  rm -rf "$work/w"; mkdir -p "$work/w/efivars" "$work/w/tpm0" "$work/w/sbctl" "$work/w/mok"
+  if [ "${FAKE_MOK:-0}" = 1 ]; then : > "$work/w/mok/MokListRT"; fi
   [ "$1" = 1 ] && mkdir -p "$work/w/efi"
   [ "$2" = 2 ] && echo 2 > "$work/w/tpm0/tpm_version_major"
   if [ "$3" = 1 ]; then
@@ -84,9 +98,12 @@ world() {
 }
 
 run() {
-  PATH="$work/bin:$PATH" ROUDIX_SB_NO_SUDO=1 \
+  local extra=""
+  if [ -n "${FAKE_CHECK:-}" ]; then extra="$work/bin2:"; fi
+  PATH="$extra$work/bin:$PATH" ROUDIX_SB_NO_SUDO=1 \
     ROUDIX_SB_EFIVARS="$work/w/efivars" ROUDIX_SB_EFI_DIR="$work/w/efi" \
     ROUDIX_SB_SBCTL_DIR="$work/w/sbctl" ROUDIX_SB_TPM_DIR="$work/w" \
+    ROUDIX_SB_MOK_DIR="$work/w/mok" \
     "$work/roudix-secureboot" "$@" 2>&1
 }
 
@@ -151,6 +168,28 @@ expect "systemd-boot without signed kernel image: reported" "no signed kernel im
 
 world 1 2 1 0 1 1 absent;  out="$(FAKE_SDBOOT=signed run status)"
 expect "systemd-boot detected from sbctl when run standalone" "systemd-boot and kernel images: signed" "$out"
+
+# MOKs (Limine only: the EAC entry is the one booted through shim)
+world 1 2 1 0 1 1 signed;  out="$(run status)"
+expect "no shim in this boot: MOKs unreadable" "readable only when booted through shim" "$out"
+
+FAKE_MOK=1 world 1 2 1 0 1 1 signed;  out="$(run status)"
+expect "shim boot without eacnix-check: says so" "eacnix-check isn't installed" "$out"
+
+FAKE_MOK=1 world 1 2 1 0 1 1 signed;  out="$(FAKE_CHECK=pass run status)"
+expect "all MOKs well-known" "MOKs: all well-known" "$out"
+refute "no MOK warning when fine" "aren't well-known" "$out"
+
+FAKE_MOK=1 world 1 2 1 0 1 1 signed;  out="$(FAKE_CHECK=fail run status)"
+expect "unknown MOK is named" "Ventoy Secure Boot Root CA" "$out"
+expect "unknown MOK explains the consequence" "EAC would refuse this boot" "$out"
+expect "unknown MOK points at the doc" "Third-party keys" "$out"
+
+FAKE_MOK=1 world 1 2 1 0 1 1 signed;  out="$(FAKE_CHECK=unknown run status)"
+expect "unclear MOK result is a warning" "could not be checked" "$out"
+
+FAKE_MOK=1 world 1 2 1 0 1 1 absent;  out="$(FAKE_SDBOOT=signed FAKE_CHECK=fail ROUDIX_BOOTLOADER=systemd-boot run status)"
+refute "systemd-boot: MOKs are not part of its flow" "MOKs:" "$out"
 
 # enroll
 world 1 2 1 0 0 0 absent

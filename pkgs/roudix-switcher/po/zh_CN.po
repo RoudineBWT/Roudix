@@ -492,6 +492,14 @@ msgid "Warm gradient, glow pulsing behind the logo"
 msgstr "暖色渐变，徽标后方光晕脉动"
 
 #: roudix-switcher.py
+msgid "Rising embers, a progress ring, logo in a growing glow"
+msgstr "升腾的火星、进度环，徽标沐浴在渐强的光晕中"
+
+#: roudix-switcher.py
+msgid "Roudix — ember"
+msgstr "Roudix — ember"
+
+#: roudix-switcher.py
 msgid "Pandoudix"
 msgstr "Pandoudix"
 

@@ -20,10 +20,12 @@ in
           roudix           logo with a gentle pulse (default)
           roudix-spin      logo turning slowly
           roudix-gradient  warm gradient background, glow pulsing behind the logo
+          roudix-ember     embers rising, progress ring, logo in a growing
+                           glow (the showy one)
           roudix-panda     Pandoudix, the mascot (waves on boot, sleeps on
                            shutdown, teary when a message shows up)
       '';
-      type = lib.types.enum [ "roudix" "roudix-spin" "roudix-gradient" "roudix-panda" ];
+      type = lib.types.enum [ "roudix" "roudix-spin" "roudix-gradient" "roudix-ember" "roudix-panda" ];
       default = "roudix";
     };
 

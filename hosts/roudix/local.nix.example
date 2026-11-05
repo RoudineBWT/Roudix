@@ -132,7 +132,7 @@
   roudix.boot.eac.addToBootOrder = false;          # list "NixOS EAC" in the firmware boot menu (otherwise: sudo eac-reboot)
   roudix.boot.eac.generations = 3;                 # EAC generations kept on the ESP
   roudix.boot.plymouth.enable = true;      # boot splash (Plymouth); false = plain text boot
-  roudix.boot.plymouth.theme  = "roudix";   # "roudix" (logo, gentle pulse), "roudix-spin" (logo turning), "roudix-gradient" (gradient + glow) or "roudix-panda" (Pandoudix: waves on boot, sleeps on shutdown). roudix-switcher shows a preview of each
+  roudix.boot.plymouth.theme  = "roudix";   # "roudix" (logo, gentle pulse), "roudix-spin" (logo turning), "roudix-gradient" (gradient + glow), "roudix-ember" (embers + progress ring) or "roudix-panda" (Pandoudix: waves on boot, sleeps on shutdown). roudix-switcher shows a preview of each
   roudix.boot.plymouth.quiet  = true;       # hide kernel/initrd messages during boot (false to debug a boot problem)
   roudix.terminal = "ghostty"; # "ghostty", "kitty", "alacritty", "foot" or "wezterm"
   roudix.fileManager = "nautilus"; # dolphin, thunar, nautilus, nemo
