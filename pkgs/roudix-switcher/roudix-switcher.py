@@ -701,6 +701,8 @@ PLYMOUTH_THEMES = [
      "preview": "roudix-spin.png"},
     {"id": "roudix-gradient", "name": tr("Roudix — glow"),   "subtitle": tr("Warm gradient, glow pulsing behind the logo"),
      "preview": "roudix-gradient.png"},
+    {"id": "roudix-ember",    "name": tr("Roudix — ember"),  "subtitle": tr("Rising embers, a progress ring, logo in a growing glow"),
+     "preview": "roudix-ember.png"},
     {"id": "roudix-panda",    "name": tr("Pandoudix"),       "subtitle": tr("The mascot: waves on boot, sleeps on shutdown"),
      "preview": "roudix-panda.png"},
 ]

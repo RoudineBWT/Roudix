@@ -14,7 +14,7 @@
     hardware.myGpu = lib.mkOption {
       type = lib.types.enum [ "amd" "amd-igpu" "nvidia" "amd-legacy" "intel" "vm" ];
       default = "amd";
-      description = "GPU type to configure. 'amd' = discrete RDNA/GCN 3+, 'amd-igpu' = AMD APU (integrated), 'amd-legacy' = GCN 1.x/2.x, 'intel' = Intel iGPU/Arc (all generations, i915 or xe), 'vm' = virtual machines (virtio-gpu, QXL, VMware SVGA).";
+      description = "GPU type to configure. 'amd' = discrete RDNA/GCN 3+, 'amd-igpu' = AMD APU (integrated), 'amd-legacy' = GCN 1.x/2.x via amdgpu (HD 7xxx, R7/R9 2xx, and Kaveri/Godavari APUs like the A10-7800 — needed for Vulkan; NOT for TeraScale HD 5xxx/6xxx), 'intel' = Intel iGPU/Arc (all generations, i915 or xe), 'vm' = virtual machines (virtio-gpu, QXL, VMware SVGA).";
     };
 
     hardware.nvidiaOpen = lib.mkOption {

@@ -147,6 +147,41 @@ it ask for its recovery key: `roudix-secureboot` reminds you before it enrolls.
 The tool also runs without arguments from a normal user (it asks for sudo) and
 `-y` skips its confirmations.
 
+## Third-party keys (Ventoy and similar)
+
+EAC wants **every** Machine Owner Key (MOK) enrolled in shim to be on Epic's
+well-known list, even the ones the boot doesn't use: Linux trusts all MOKs for
+module signatures. A tool that asks you to enroll its own key as a MOK (Ventoy's
+"Enroll key from disk" in the blue MokManager screen) makes `eacnix-check` fail
+on "Only well-known MOKs".
+
+MOKs are only readable when shim ran in the current boot, so look from the EAC
+entry: `sudo eac-reboot`, then `roudix-secureboot` (or `sudo eacnix-check`) names
+the keys that aren't well-known.
+
+Your options:
+
+1. **Remove the key before playing protected games**, enroll it again when you
+   need the tool: `sudo mokutil --export` (creates `MOK-000N.der` files),
+   `sudo mokutil --delete MOK-000N.der`, reboot, confirm in MokManager. Safe,
+   but you repeat it each time.
+2. **Put the certificate in the firmware's `db` instead of the MOK list.**
+   This is what Epic's FAQ recommends for custom keys: they stay allowed for
+   your other boot options. For Ventoy the certificate is
+   `ENROLL_THIS_KEY_IN_MOKMANAGER.cer` on its `VTOYEFI` partition. Many
+   firmware setups can append a certificate to the `db` from a file (look for
+   *Key Management* / *Authorized Signatures* in Custom mode). Think about it
+   first: the firmware will then accept anything signed by that key at boot,
+   for as long as it's there, and some researchers argue that trusting Ventoy's
+   key weakens Secure Boot a lot. Ventoy's own documentation only describes
+   the MOK route, so check that Ventoy still boots with the certificate in the
+   `db`. Roudix has no command for this on purpose: writing the `db` from the
+   running system is the one step that can leave a machine unbootable, and it
+   can't be tested without the real firmware.
+3. **Avoid the key altogether**: write the installer ISO with the distribution's
+   own tool or `dd`. Fedora, Ubuntu and other mainstream ISOs boot under Secure
+   Boot with their own signed shim, so nothing has to be enrolled.
+
 ## Undoing it
 
 Set both options back to `false` and rebuild. To go back to a firmware without
