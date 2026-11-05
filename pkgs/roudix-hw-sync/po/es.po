@@ -219,6 +219,16 @@ msgstr "Valor de --laptop no válido: %s"
 
 #: roudix-hw-sync
 #, sh-printf-format
+msgid "Invalid --tlp: %s"
+msgstr "Valor de --tlp no válido: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --thinkpad: %s"
+msgstr "Valor de --thinkpad no válido: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
 msgid "local.nix not found: %s"
 msgstr "No se encontró local.nix: %s"
 
@@ -234,6 +244,11 @@ msgstr "No se detectó la GPU, usa --gpu ..."
 #, sh-printf-format
 msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
 msgstr "Detectado: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Laptop (TLP): %s  ThinkPad: %s"
+msgstr "Portátil (TLP): %s  ThinkPad: %s"
 
 #: roudix-hw-sync
 msgid ""

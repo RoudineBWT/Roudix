@@ -1,5 +1,7 @@
 { config, pkgs, lib, inputs, ... }:
 let
+  # tuned is force-disabled only when TLP is the laptop's power manager.
+  tlpOwnsPower = config.roudix.laptop.enable && config.roudix.laptop.backend == "tlp";
   game-performance = pkgs.writeShellScriptBin "game-performance" ''
     #!${pkgs.runtimeShell}
     # Bazzite/CachyOS-style wrapper for tuned-adm, a simple proven structure
@@ -8,25 +10,34 @@ let
     TUNED_ADM=${pkgs.tuned}/bin/tuned-adm
     GAME_PROFILE=roudix-gaming
     FALLBACK_PROFILE=balanced
-    LAPTOP_MODE=${if config.roudix.laptop.enable then "1" else "0"}
+    LAPTOP_MODE=${if tlpOwnsPower then "1" else "0"}
+
+    # Hybrid-graphics laptop: the game runs on the dedicated GPU while the
+    # desktop and the Steam client stay on the integrated one (battery).
+    # ROUDIX_NO_DGPU=1 in the launch options opts out for a given game.
+    DGPU_WRAPPER="${if config.roudix.laptop.enable then "${config.roudix.laptop.dgpuLauncher}/bin/roudix-dgpu" else ""}"
+    GAME_PREFIX=()
+    if [ -n "$DGPU_WRAPPER" ] && [ -z "''${ROUDIX_NO_DGPU:-}" ]; then
+        GAME_PREFIX=("$DGPU_WRAPPER")
+    fi
 
     if ! command -v "$TUNED_ADM" &>/dev/null; then
         echo "Error: tuned-adm not found" >&2
-        exec "$@"
+        exec "''${GAME_PREFIX[@]}" "$@"
     fi
 
-    # tuned is force-disabled whenever roudix.laptop.enable is true (TLP
+    # tuned is force-disabled when roudix.laptop.backend = "tlp" (TLP
     # takes over, see modules/system/power/laptop.nix) — the tuned-adm
     # binary is still in the closure but the daemon isn't running, so
     # querying it would just D-Bus-timeout. Skip straight to launching the
     # game instead of waiting on a check we already know will fail.
     if [ "$LAPTOP_MODE" = "1" ]; then
-        exec "$@"
+        exec "''${GAME_PREFIX[@]}" "$@"
     fi
 
     # Don't fail if the profile doesn't exist, just run the command
     if ! "$TUNED_ADM" list | grep -q "$GAME_PROFILE"; then
-        exec "$@"
+        exec "''${GAME_PREFIX[@]}" "$@"
     fi
 
     # Save the current profile before changing it
@@ -45,9 +56,9 @@ let
 
     # Launch the game with or without systemd-inhibit
     if [ -n "''${GAME_PERFORMANCE_SCREENSAVER_ON:-}" ]; then
-        "$@"
+        "''${GAME_PREFIX[@]}" "$@"
     else
-        ${pkgs.systemd}/bin/systemd-inhibit --why "game-performance is running" -- "$@"
+        ${pkgs.systemd}/bin/systemd-inhibit --why "game-performance is running" -- "''${GAME_PREFIX[@]}" "$@"
     fi
 
     # Store exit code to return it properly
@@ -154,8 +165,8 @@ in
 
   config = lib.mkIf config.roudix.gaming.enable {
 
-    warnings = lib.optional config.roudix.laptop.enable
-      "roudix.gaming.enable and roudix.laptop.enable are both true: tuned is force-disabled on laptops in favor of TLP, so game-performance will launch games directly without the roudix-gaming CPU profile (no crash, no error — the profile switch is just a no-op). Set roudix.gaming.enable = false on non-gaming laptops to install Lutris/Heroic/etc. as well.";
+    warnings = lib.optional tlpOwnsPower
+      "roudix.gaming.enable and roudix.laptop.enable are both true with roudix.laptop.backend = \"tlp\": tuned is force-disabled in favor of TLP, so game-performance will launch games directly without the roudix-gaming CPU profile (no crash, no error — the profile switch is just a no-op). On a gaming laptop set roudix.laptop.backend = \"tuned\" to keep it; on a non-gaming laptop set roudix.gaming.enable = false to install Lutris/Heroic/etc. as well.";
 
     nixpkgs.overlays = [
       inputs.nix-gaming-edge.overlays.default

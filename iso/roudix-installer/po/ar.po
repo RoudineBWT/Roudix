@@ -943,10 +943,24 @@ msgstr "حاسوب محمول (TLP)"
 #: src/roudix_installer/pages/options.py
 msgid ""
 "Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
-"will still launch games normally but without the roudix-gaming CPU profile."
+"will still launch games normally but without the roudix-gaming CPU profile. "
+"On a gaming laptop, pick tuned above instead."
 msgstr ""
-"يعطّل tuned لصالح TLP: إذا كان الألعاب مفعّلًا أيضًا، فسيستمر game-performance "
-"في تشغيل الألعاب بشكل طبيعي ولكن دون ملف CPU الخاص بـ roudix-gaming."
+"يعطّل tuned لصالح TLP: إذا كان الألعاب مفعّلًا أيضًا، فسيستمر game-"
+"performance في تشغيل الألعاب بشكل طبيعي ولكن دون ملف CPU الخاص بـ roudix-"
+"gaming. على حاسوب محمول للألعاب، اختر tuned من الأعلى بدلًا من ذلك."
+
+#: src/roudix_installer/pages/options.py
+msgid "Laptop power manager"
+msgstr "مدير طاقة الحاسوب المحمول"
+
+#: src/roudix_installer/pages/options.py
+msgid "TLP — best battery life"
+msgstr "TLP — أفضل عمر للبطارية"
+
+#: src/roudix_installer/pages/options.py
+msgid "tuned — gaming laptop (keeps game-performance)"
+msgstr "tuned — حاسوب محمول للألعاب (يُبقي game-performance)"
 
 #: src/roudix_installer/pages/options.py
 msgid "ThinkPad (40/80% battery charge thresholds)"

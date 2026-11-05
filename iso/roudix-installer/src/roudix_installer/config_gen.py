@@ -202,6 +202,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
         t = _set_nullable_string_option(t, f"roudix.nvidia_config.{key}", prime_ids.get(key, ""))
     t = _sub_bool(t, "roudix.laptop.enable", state.laptop)
     t = _sub_bool(t, "roudix.laptop.thinkpad", state.laptop_thinkpad)
+    t = _sub_string(t, "roudix.laptop.backend", state.laptop_backend)
     t = _sub_bool(t, "roudix.undervolt.only-amd.enable", state.undervolt_enable)
     t = _sub_string(t, "hardware.myCpu", state.cpu)
     is_nvidia = state.gpu == "nvidia"
@@ -339,6 +340,7 @@ def _expected_values(state: InstallState) -> list:
         "roudix.musicPlayer": state.music_player, "roudix.mailClient": state.mail_client,
         "roudix.passwordManager": state.password_manager,
         "roudix.apps.fluxer.channel": state.app_fluxer_channel,
+        "roudix.laptop.backend": state.laptop_backend,
     }
     bools = {
         "hardware.nvidiaLaptop": state.nvidia_laptop, "roudix.laptop.enable": state.laptop,

@@ -17,14 +17,18 @@ Changed PC, GPU or CPU? This re-detects your hardware and updates
 | `hardware.myCpu` | `amd` / `intel` from `/proc/cpuinfo` |
 | `hardware.myGpu` | `nvidia` > `amd` > `intel` from PCI display devices; an existing `amd-igpu` / `amd-legacy` is kept |
 | `hardware.nvidiaLaptop` | `true` only for NVIDIA + an Intel/AMD iGPU (Optimus) |
+| `roudix.laptop.enable` | `true` on a laptop (DMI chassis type, or a system battery), `false` otherwise |
+| `roudix.laptop.thinkpad` | `true` on a Lenovo ThinkPad (DMI), only checked on a laptop |
 | `roudix.nvidia_config.*BusId` | filled (decimal `PCI:b:d:f`) on Optimus, `null` otherwise — only if the lines exist |
 | `hardware.myKernel` / `myKernelChaotic` | the right one is uncommented (nvidia → Chaotic) — only if both lines exist |
 | `roudix.undervolt.only-amd.enable` | forced to `false` on a non-AMD GPU, left alone on `amd` / `amd-legacy` |
 
-Lines absent from your `local.nix` are never added. A `local.nix.bak` is written before each change.
+Lines absent from your `local.nix` are never added, with one exception: `roudix.laptop.enable` /
+`roudix.laptop.thinkpad` are appended when a laptop is detected and the line is missing (older
+`local.nix` files don't have them). Nothing is written for them on a desktop. A `local.nix.bak` is written before each change.
 
 ## CLI options
 
-`--gpu amd|amd-igpu|amd-legacy|nvidia|intel`, `--cpu amd|intel`, `--laptop true|false`
+`--gpu amd|amd-igpu|amd-legacy|nvidia|intel`, `--cpu amd|intel`, `--laptop true|false` (Optimus), `--tlp true|false`, `--thinkpad true|false`
 override the detection; `-f FILE` targets another file; `--detect` prints
 `key=value` lines (used by the GUI). `ROUDIX_HOST` and `NH_FLAKE` are honoured like in the other Roudix apps.

@@ -222,6 +222,16 @@ msgstr "قيمة --laptop غير صالحة: %s"
 
 #: roudix-hw-sync
 #, sh-printf-format
+msgid "Invalid --tlp: %s"
+msgstr "قيمة --tlp غير صالحة: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --thinkpad: %s"
+msgstr "قيمة --thinkpad غير صالحة: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
 msgid "local.nix not found: %s"
 msgstr "لم يتم العثور على local.nix: %s"
 
@@ -237,6 +247,11 @@ msgstr "لم يتم الكشف عن بطاقة الرسوميات، استخدم
 #, sh-printf-format
 msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
 msgstr "تم الكشف: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Laptop (TLP): %s  ThinkPad: %s"
+msgstr "حاسوب محمول (TLP): %s  ThinkPad: %s"
 
 #: roudix-hw-sync
 msgid ""

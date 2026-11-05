@@ -34,14 +34,16 @@ lib.mkIf (config.hardware.myGpu == "amd") {
     # too aggressive.
     "amdgpu.lockup_timeout=1000"
 
-    # Disables the GPU's runtime PM (power management) between frames.
-    # Some AMD cards freeze on wake due to a bad power-gate state.
-    # Slightly higher idle power draw, but a reliable fix on RDNA2/RDNA3.
-    "amdgpu.runpm=0"
-
     # Disables the scatter-gather display engine.
     # Known RDNA2/RDNA3 bug under Wayland: random display freezes,
     # sometimes with a full GPU hang. Very common on RX 6xxx/7xxx.
     "amdgpu.sg_display=0"
-  ];
+  ]
+  # Disables the GPU's runtime PM (power management) between frames.
+  # Some AMD cards freeze on wake due to a bad power-gate state. Slightly
+  # higher idle power draw, but a reliable fix on RDNA2/RDNA3 desktops.
+  # NOT on laptops: with a dedicated AMD GPU, runpm=0 keeps it powered even
+  # when idle (several watts, battery life drops a lot). If a laptop does
+  # freeze on wake, add amdgpu.runpm=0 to boot.kernelParams in local.nix.
+  ++ lib.optional (!config.roudix.laptop.enable) "amdgpu.runpm=0";
 }
