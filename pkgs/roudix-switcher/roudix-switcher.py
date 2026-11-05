@@ -691,6 +691,20 @@ AUTOUPDATE_INTERVALS = [
     {"id": "24h", "name": tr("Every day"),      "subtitle": ""},
 ]
 
+# roudix.boot.plymouth.theme (modules/system/boot/plymouth.nix, pkgs/roudix-plymouth)
+# — boot splash. "preview" is a static mock-up (plymouth-previews/<id>.png).
+PLYMOUTH_PREVIEW_DIR = os.path.join(SCRIPT_DIR, "../share/roudix-switcher/plymouth-previews")
+PLYMOUTH_THEMES = [
+    {"id": "roudix",          "name": tr("Roudix"),          "subtitle": tr("Logo with a gentle pulse (default)"),
+     "preview": "roudix.png"},
+    {"id": "roudix-spin",     "name": tr("Roudix — spin"),   "subtitle": tr("Logo turning slowly"),
+     "preview": "roudix-spin.png"},
+    {"id": "roudix-gradient", "name": tr("Roudix — glow"),   "subtitle": tr("Warm gradient, glow pulsing behind the logo"),
+     "preview": "roudix-gradient.png"},
+    {"id": "roudix-panda",    "name": tr("Pandoudix"),       "subtitle": tr("The mascot: waves on boot, sleeps on shutdown"),
+     "preview": "roudix-panda.png"},
+]
+
 # roudix.apps.fluxer.channel (modules/system/apps/apps.nix) — enum, only
 # meaningful while Fluxer is enabled (no icons: plain text rows).
 FLUXER_CHANNELS = [
@@ -1639,6 +1653,20 @@ class SelectorGroup(Gtk.Box):
             self.icon_widgets[item["id"]] = (icon, item["icon"])
             row.add_prefix(icon)
 
+        # "preview" (optional): a picture file name inside PLYMOUTH_PREVIEW_DIR,
+        # shown as a thumbnail (boot splash selector).
+        if item.get("preview"):
+            ppath = os.path.join(PLYMOUTH_PREVIEW_DIR, item["preview"])
+            if os.path.isfile(ppath):
+                pic = Gtk.Picture.new_for_filename(ppath)
+                pic.set_size_request(128, 72)
+                pic.set_can_shrink(True)
+                pic.set_content_fit(Gtk.ContentFit.COVER)
+                pic.set_margin_top(6)
+                pic.set_margin_bottom(6)
+                pic.set_valign(Gtk.Align.CENTER)
+                row.add_prefix(pic)
+
         if item.get("disabled"):
             row.set_sensitive(False)
         else:
@@ -2547,6 +2575,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             self.boot_resolution_selector.set_visible(False)
             self.boot_resolution_note.set_visible(False)
 
+        # roudix.boot.plymouth.theme — boot splash (Plymouth), with a thumbnail per theme.
+        self.plymouth_selector = SelectorGroup(
+            tr("Boot splash (Plymouth)"),
+            PLYMOUTH_THEMES, get_active_string_option("roudix.boot.plymouth.theme", "roudix"), dark,
+        )
+        system_page.append(self.plymouth_selector)
+
         # roudix.boot.secureBoot / roudix.boot.eac — Secure Boot with Limine or systemd-boot, EAC Limine only, all off by default.
         self.boot_security_toggles = host_filter_items(BOOT_SECURITY_TOGGLES)
         boot_security_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.boot_security_toggles}
@@ -2708,6 +2743,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
              "label": tr("Boot wallpaper format"),        "relevant": lambda de: self._boot_has_wallpaper()},
             {"widget": self.boot_resolution_selector,     "key": "roudix.boot.menuResolution", "default": "auto",
              "label": tr("Limine menu resolution"),       "relevant": lambda de: self._boot_has_wallpaper()},
+            {"widget": self.plymouth_selector,            "key": "roudix.boot.plymouth.theme", "default": "roudix",
+             "label": tr("Boot splash"),                  "relevant": lambda de: True},
             {"widget": self.eac_vendor_selector,          "key": "roudix.boot.eac.vendor",    "default": "fedora",
              "label": tr("EAC kernel"),                   "relevant": lambda de: self._boot_is_limine() and not self._boot_is_bios() and self._eac_enabled()},
             {"widget": self.fluxer_channel_selector,      "key": "roudix.apps.fluxer.channel", "default": "stable",
@@ -2981,6 +3018,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.boot_aspect_note,     host_lists("roudix.boot.wallpaperAspect")),
                 (self.boot_resolution_selector, host_lists("roudix.boot.menuResolution")),
                 (self.boot_resolution_note,     host_lists("roudix.boot.menuResolution")),
+                (self.plymouth_selector,        host_lists("roudix.boot.plymouth.theme")),
                 (self.boot_security_group,      bool(self.boot_security_toggles)),
                 (self.eac_vendor_selector,      host_lists("roudix.boot.eac.vendor")),
                 (self.boot_security_note,       bool(self.boot_security_toggles)),

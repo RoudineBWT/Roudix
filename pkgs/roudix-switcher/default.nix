@@ -48,6 +48,8 @@ pkgs.stdenv.mkDerivation {
     patchShebangs $out/bin/roudix-switcher
     # Install the custom icons folders
     cp -r icons $out/share/roudix-switcher/
+    # Boot splash (Plymouth) thumbnails shown in the "Boot splash" selector
+    cp -r plymouth-previews $out/share/roudix-switcher/
     # Install app icon (dark — default)
     cp roudix-switcher.svg $out/share/icons/hicolor/scalable/apps/io.roudix.switcher.svg
     # Install app icon (light — for Papirus-Light / light themes)
