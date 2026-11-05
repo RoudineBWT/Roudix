@@ -480,6 +480,38 @@ msgid "Every day"
 msgstr "Tous les jours"
 
 #: roudix-switcher.py
+msgid "Logo with a gentle pulse (default)"
+msgstr "Logo avec une légère pulsation (par défaut)"
+
+#: roudix-switcher.py
+msgid "Roudix"
+msgstr "Roudix"
+
+#: roudix-switcher.py
+msgid "Logo turning slowly"
+msgstr "Logo qui tourne lentement"
+
+#: roudix-switcher.py
+msgid "Roudix — spin"
+msgstr "Roudix — spin"
+
+#: roudix-switcher.py
+msgid "Roudix — glow"
+msgstr "Roudix — glow"
+
+#: roudix-switcher.py
+msgid "Warm gradient, glow pulsing behind the logo"
+msgstr "Dégradé chaud, halo qui pulse derrière le logo"
+
+#: roudix-switcher.py
+msgid "Pandoudix"
+msgstr "Pandoudix"
+
+#: roudix-switcher.py
+msgid "The mascot: waves on boot, sleeps on shutdown"
+msgstr "La mascotte : salue au démarrage, dort à l'extinction"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "Stable"
 
@@ -493,11 +525,11 @@ msgstr "Versions plus récentes, plus susceptibles de casser"
 
 #: roudix-switcher.py
 msgid ""
-"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-"
-"keys)"
+"Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-"
+"secureboot create-keys)"
 msgstr ""
-"Secure Boot — signer le chargeur d'amorçage avec sbctl (les clés doivent exister : roudix-secureboot "
-"create-keys)"
+"Secure Boot — signer le chargeur d'amorçage avec sbctl (les clés doivent "
+"exister : roudix-secureboot create-keys)"
 
 #: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
@@ -1099,6 +1131,10 @@ msgstr ""
 "ne propose pas cette résolution, Limine en utilise une autre."
 
 #: roudix-switcher.py
+msgid "Boot splash (Plymouth)"
+msgstr "Écran de démarrage (Plymouth)"
+
+#: roudix-switcher.py
 msgid "Secure Boot and EAC (experimental)"
 msgstr "Secure Boot et EAC (expérimental)"
 
@@ -1171,6 +1207,10 @@ msgstr "Fréquence de mise à jour"
 #: roudix-switcher.py
 msgid "Boot wallpaper format"
 msgstr "Format du fond de démarrage"
+
+#: roudix-switcher.py
+msgid "Boot splash"
+msgstr "Écran de démarrage"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

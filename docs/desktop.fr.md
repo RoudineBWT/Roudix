@@ -273,13 +273,13 @@ programs.plasma.panels = lib.mkForce [
 
 ## Défauts Cinnamon
 
-Cinnamon utilise le wallpaper Roudix Kitsune par défaut, sur le bureau et sur l'écran de connexion LightDM, utilise le logo Roudix comme icône du menu, et épingle le navigateur par défaut (le premier de `roudix.browsers`), Roudix Store et les Paramètres dans le panneau. Les apps GTK4 / libadwaita suivent le thème sombre. Ce sont des valeurs par défaut : elles ne s'appliquent qu'à ce que l'utilisateur n'a pas modifié. Les épingles du panneau (navigateur, Nemo, Roudix Store, Paramètres) et l'icône du menu sont des défauts d'applets, livrés par des copies patchées de deux applets : rien de Cinnamon n'est recompilé.
+Cinnamon utilise le wallpaper Roudix Ember Cove par défaut, sur le bureau et sur l'écran de connexion LightDM, utilise le logo Roudix comme icône du menu, et épingle le navigateur par défaut (le premier de `roudix.browsers`), Roudix Store et les Paramètres dans le panneau. Les apps GTK4 / libadwaita suivent le thème sombre. Ce sont des valeurs par défaut : elles ne s'appliquent qu'à ce que l'utilisateur n'a pas modifié. Les épingles du panneau (navigateur, Nemo, Roudix Store, Paramètres) et l'icône du menu sont des défauts d'applets, livrés par des copies patchées de deux applets : rien de Cinnamon n'est recompilé.
 
 L'écran de connexion (slick-greeter) n'a pas d'application de réglages. Changez son wallpaper avec :
 
 ```bash
 roudix-lightdm-wallpaper ~/Images/wallpaper.jpg   # sans rebuild
-roudix-lightdm-wallpaper --reset                  # retour à Kitsune
+roudix-lightdm-wallpaper --reset                  # retour à Ember Cove
 ```
 
 Surcharger les applications épinglées dans `hosts/roudix/local.nix` :
@@ -290,7 +290,7 @@ roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.deskto
 
 ## Défauts COSMIC
 
-COSMIC utilise le wallpaper Roudix Kitsune par défaut et la disposition clavier de `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. Le dock épingle le(s) navigateur(s) choisi(s) dans Roudix (et Zen s'il est activé), COSMIC Files, ton terminal, Roudix Store et les Paramètres COSMIC — même idée que le dash de GNOME et le gestionnaire de tâches de Plasma. Dans la bibliothèque d'applications, toutes les apps Roudix (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) sont regroupées dans un dossier **Roudix** et ne sont plus listées dans Système / Utilitaires. COSMIC Store n'est pas installé : Roudix Store le remplace.
+COSMIC utilise le wallpaper Roudix Ember Cove par défaut et la disposition clavier de `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions`. Le dock épingle le(s) navigateur(s) choisi(s) dans Roudix (et Zen s'il est activé), COSMIC Files, ton terminal, Roudix Store et les Paramètres COSMIC — même idée que le dash de GNOME et le gestionnaire de tâches de Plasma. Dans la bibliothèque d'applications, toutes les apps Roudix (Store, Customizer, Kernel Switcher, Scheduler, Hardware Sync, Config, Welcome) sont regroupées dans un dossier **Roudix** et ne sont plus listées dans Système / Utilitaires. COSMIC Store n'est pas installé : Roudix Store le remplace.
 
 Ce sont des valeurs par défaut, livrées sous forme de fichiers cosmic-config système : elles ne s'appliquent qu'à ce que l'utilisateur n'a pas modifié, et une reconstruction ne revient jamais sur un choix fait dans les Paramètres COSMIC.
 

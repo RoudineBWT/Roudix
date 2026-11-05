@@ -272,13 +272,13 @@ programs.plasma.panels = lib.mkForce [
 
 ## Cinnamon 默认设置
 
-Cinnamon 默认使用 Roudix Kitsune 壁纸（桌面和 LightDM 登录界面均如此），使用 Roudix 徽标作为菜单图标，并在面板中固定默认浏览器（`roudix.browsers` 中的第一个）、Roudix Store 和“设置”。GTK4 / libadwaita 应用遵循深色主题。这些都是默认值：只会应用于用户未更改过的内容。面板固定项（浏览器、Nemo、Roudix Store、设置）和菜单图标是小程序（applet）的默认值，以两个 applet 的补丁副本形式提供：不会重新构建 Cinnamon 的任何部分。
+Cinnamon 默认使用 Roudix Ember Cove 壁纸（桌面和 LightDM 登录界面均如此），使用 Roudix 徽标作为菜单图标，并在面板中固定默认浏览器（`roudix.browsers` 中的第一个）、Roudix Store 和“设置”。GTK4 / libadwaita 应用遵循深色主题。这些都是默认值：只会应用于用户未更改过的内容。面板固定项（浏览器、Nemo、Roudix Store、设置）和菜单图标是小程序（applet）的默认值，以两个 applet 的补丁副本形式提供：不会重新构建 Cinnamon 的任何部分。
 
 登录界面（slick-greeter）没有设置应用。可以这样更改它的壁纸：
 
 ```bash
 roudix-lightdm-wallpaper ~/Pictures/wallpaper.jpg   # 无需重新构建
-roudix-lightdm-wallpaper --reset                    # 恢复为 Kitsune
+roudix-lightdm-wallpaper --reset                    # 恢复为 Ember Cove
 ```
 
 在 `hosts/roudix/local.nix` 中覆盖固定的应用：
@@ -289,7 +289,7 @@ roudix.desktop.cinnamon.pinnedApps = [ "firefox.desktop" "io.roudix.store.deskto
 
 ## COSMIC 默认设置
 
-COSMIC 默认使用 Roudix Kitsune 壁纸，以及来自 `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions` 的键盘布局。程序坞会固定在 Roudix 中选择的浏览器（以及启用时的 Zen）、COSMIC Files、你的终端、Roudix Store 和 COSMIC Settings——思路与 GNOME 的 dash 和 Plasma 的任务管理器相同。在应用库中，所有 Roudix 应用（Store、Customizer、Kernel Switcher、Scheduler、Hardware Sync、Config、Welcome）都归入一个 **Roudix** 文件夹，不再列在“系统 / 实用工具”下。COSMIC Store 不会被安装：由 Roudix Store 取而代之。
+COSMIC 默认使用 Roudix Ember Cove 壁纸，以及来自 `roudix.keyboardLayout` / `roudix.keyboardVariant` / `roudix.keyboardOptions` 的键盘布局。程序坞会固定在 Roudix 中选择的浏览器（以及启用时的 Zen）、COSMIC Files、你的终端、Roudix Store 和 COSMIC Settings——思路与 GNOME 的 dash 和 Plasma 的任务管理器相同。在应用库中，所有 Roudix 应用（Store、Customizer、Kernel Switcher、Scheduler、Hardware Sync、Config、Welcome）都归入一个 **Roudix** 文件夹，不再列在“系统 / 实用工具”下。COSMIC Store 不会被安装：由 Roudix Store 取而代之。
 
 这些都是默认值，以系统级 cosmic-config 文件的形式提供：只会应用于用户未更改过的内容，重新构建也绝不会还原你在 COSMIC Settings 中做出的选择。
 
