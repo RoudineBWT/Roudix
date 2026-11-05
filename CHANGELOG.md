@@ -7,6 +7,12 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 
 ## [Unreleased]
 
+## [2026.11.05] - 2026-11-05
+
+### Changed
+- feat(roudix-plymouth): add "roudix-ember" theme
+- feat(boot): add Roudix Plymouth boot splash first take
+
 ## [2026.11.04] - 2026-11-04
 
 ### Changed
