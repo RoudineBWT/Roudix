@@ -3,16 +3,19 @@
   imagemagick,
 }:
 
-# Plymouth boot splash: Roudix logo (assets/logo/roudix-logo.png) on the
-# near-black brown used by the Limine menu, gently pulsing, with a thin
-# progress bar and a LUKS password prompt.
+# Plymouth boot splashes for Roudix. One package, four themes (pick one with
+# roudix.boot.plymouth.theme, modules/system/boot/plymouth.nix):
 #
-# Every image is generated here from the logo (single source of truth), so the
-# repo stays free of binary copies. Wire it up with roudix.boot.plymouth
-# (modules/system/boot/plymouth.nix).
+#   roudix           logo, gentle pulse, thin progress bar        (default)
+#   roudix-spin      logo turning slowly
+#   roudix-gradient  warm gradient background + pulsing glow behind the logo
+#   roudix-panda     Pandoudix, the mascot (waves; sleeps on shutdown; teary on messages)
+#
+# All of them share the Limine menu colours and a LUKS password prompt. Every
+# image is generated here from the logo / mascot (no binary copies to maintain).
 stdenvNoCC.mkDerivation {
   pname = "roudix-plymouth";
-  version = "1.0.0";
+  version = "1.2.0";
 
   src = ../../assets;
 
@@ -23,41 +26,62 @@ stdenvNoCC.mkDerivation {
   dontBuild = true;
 
   installPhase = ''
-    theme=$out/share/plymouth/themes/roudix
-    mkdir -p "$theme"
+    mascot=${../../assets/mascot}
 
-    # ── Logo (256px: the script re-draws it ~50 times/s, keep it light) ─────
-    magick $src/logo/roudix-logo.png -resize 256x256 "$theme/logo.png"
+    # common <theme> <description>: bar, password box, descriptor, script
+    common() {
+      theme=$out/share/plymouth/themes/$1
+      mkdir -p "$theme"
 
-    # ── Progress bar: track + fill (same size, the fill is scaled in the script)
-    magick -size 320x4 xc:none -fill '#3a2010' \
-      -draw 'roundrectangle 0,0 319,3 2,2' "$theme/track.png"
-    magick -size 320x4 xc:none -fill '#ff8c42' \
-      -draw 'roundrectangle 0,0 319,3 2,2' "$theme/fill.png"
+      # Progress bar: track + fill (same size, the fill is scaled in the script)
+      magick -size 320x4 xc:none -fill '#3a2010' \
+        -draw 'roundrectangle 0,0 319,3 2,2' "$theme/track.png"
+      magick -size 320x4 xc:none -fill '#ff8c42' \
+        -draw 'roundrectangle 0,0 319,3 2,2' "$theme/fill.png"
 
-    # ── Password prompt: entry box + bullet ──────────────────────────────────
-    magick -size 320x40 xc:none -fill '#2a160b' -stroke '#5c2a12' -strokewidth 1 \
-      -draw 'roundrectangle 1,1 318,38 8,8' "$theme/box.png"
-    magick -size 12x12 xc:none -fill '#f6e2c4' \
-      -draw 'circle 6,6 6,0' "$theme/bullet.png"
+      # Password prompt: entry box + bullet
+      magick -size 320x40 xc:none -fill '#2a160b' -stroke '#5c2a12' -strokewidth 1 \
+        -draw 'roundrectangle 1,1 318,38 8,8' "$theme/box.png"
+      magick -size 12x12 xc:none -fill '#f6e2c4' \
+        -draw 'circle 6,6 6,0' "$theme/bullet.png"
 
-    # ── Theme descriptor + script ────────────────────────────────────────────
-    cat > "$theme/roudix.plymouth" <<DESC
+      cat > "$theme/$1.plymouth" <<DESC
     [Plymouth Theme]
-    Name=Roudix
-    Description=Roudix boot splash
+    Name=$1
+    Description=$2
     ModuleName=script
 
     [script]
     ImageDir=$theme
-    ScriptFile=$theme/roudix.script
+    ScriptFile=$theme/$1.script
     DESC
+      cp ${./.}/$1.script "$theme/$1.script"
+    }
 
-    cp ${./roudix.script} "$theme/roudix.script"
+    # ── roudix: pulsing logo ────────────────────────────────────────────────
+    common roudix "Roudix boot splash"
+    magick $src/logo/roudix-logo.png -resize 256x256 "$theme/logo.png"
+
+    # ── roudix-spin: rotating logo (a bit smaller: it is re-drawn while turning)
+    common roudix-spin "Roudix boot splash, rotating logo"
+    magick $src/logo/roudix-logo.png -resize 224x224 "$theme/logo.png"
+
+    # ── roudix-gradient: logo + radial glow ─────────────────────────────────
+    common roudix-gradient "Roudix boot splash, gradient and glow"
+    magick $src/logo/roudix-logo.png -resize 256x256 "$theme/logo.png"
+    magick -size 720x720 xc:'#ff8c42' \
+      \( -size 720x720 radial-gradient:'gray30-black' \) \
+      -alpha off -compose copy_opacity -composite "$theme/glow.png"
+
+    # ── roudix-panda: Pandoudix, 3 poses (cut-outs in assets/mascot) ────────
+    common roudix-panda "Roudix boot splash, Pandoudix"
+    magick $mascot/pandoudix-wave.png  -resize 320x320 "$theme/panda-wave.png"
+    magick $mascot/pandoudix-sleep.png -resize 320x320 "$theme/panda-sleep.png"
+    magick $mascot/pandoudix-tear.png  -resize 320x320 "$theme/panda-tear.png"
   '';
 
   meta = {
-    description = "Roudix Plymouth boot splash";
+    description = "Roudix Plymouth boot splashes";
     platforms = [ "x86_64-linux" "aarch64-linux" ];
   };
 }

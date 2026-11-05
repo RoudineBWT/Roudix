@@ -14,6 +14,19 @@ in
       default = true;
     };
 
+    theme = lib.mkOption {
+      description = ''
+        Which splash to show:
+          roudix           logo with a gentle pulse (default)
+          roudix-spin      logo turning slowly
+          roudix-gradient  warm gradient background, glow pulsing behind the logo
+          roudix-panda     Pandoudix, the mascot (waves on boot, sleeps on
+                           shutdown, teary when a message shows up)
+      '';
+      type = lib.types.enum [ "roudix" "roudix-spin" "roudix-gradient" "roudix-panda" ];
+      default = "roudix";
+    };
+
     quiet = lib.mkOption {
       description = ''
         Hide kernel / initrd messages during boot so the splash is not drawn
@@ -29,12 +42,11 @@ in
   config = lib.mkIf (config.roudix.boot.enable && cfg.enable) {
     boot.plymouth = {
       enable = true;
-      theme = "roudix";
+      theme = cfg.theme;
       themePackages = [ roudixPlymouth ];
     };
 
     boot.consoleLogLevel = lib.mkIf cfg.quiet (lib.mkDefault 0);
-    boot.initrd.verbose = lib.mkIf cfg.quiet (lib.mkDefault false);
     boot.kernelParams = lib.mkIf cfg.quiet [ "quiet" "udev.log_level=3" ];
   };
 }
