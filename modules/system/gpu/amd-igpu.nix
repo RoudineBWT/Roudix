@@ -3,6 +3,10 @@
 # AMD integrated GPU (APU): Ryzen with Radeon Graphics, Ryzen G-series,
 # Ryzen 6000/7040/8040/AI 300 laptops, Steam Deck-class hardware...
 #
+# Pre-Ryzen APUs (Kaveri / Godavari: A10-7800, A10-7850K, ...) are NOT handled
+# here: they are GCN 1.1 and need amdgpu.cik_support=1 + radeon disabled to get
+# Vulkan. Use hardware.myGpu = "amd-legacy" for them.
+#
 # Differs from amd.nix (discrete RDNA/GCN cards) on purpose:
 #   - no ROCm / OpenCL by default (unsupported on most APUs, big closure)
 #   - no amdgpu.runpm=0 (runtime PM concerns discrete cards, not APUs)
