@@ -50,6 +50,7 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
   (`cachyos-lto-v3`, …) and the log file stay in English.
 
 ### Changed
+- MangoWC with the DMS or Caelestia shell now logs in through `dms-greeter` (`compositor.name = "mango"`), like niri and Hyprland, instead of ly. On Hyprland and MangoWC the keyring is wired to the `greetd` PAM service for both greeters.
 - Default wallpaper: the red panda **Roudix Ember Cove** (`roudix-ember-cove.png`) replaces Roudix Kitsune on GNOME, KDE, COSMIC, Cinnamon/LightDM and the live ISO (KDE package `RoudixKitsune` → `RoudixEmberCove`). Dark `#14100D` surface and the Roudix orange logo, so it stays on the palette. New extra wallpaper **Roudix Bamboo Dusk** (`roudix-bamboo-dusk.png`, GNOME picker + KDE `RoudixBambooDusk`), a misty bamboo forest with the sleeping Pandoudix; it is a scenic picture, not palette-built, so it is not the default.
 - Umbriel config follows the upstream action syntax change (`e8ab5b0`): actions with an argument now use a space instead of a colon (`spawn ghostty`, `workspace-switch 1`, `scratchpad-toggle music`). With the old `spawn:...` form every such keybind was rejected and the whole config was reported invalid. `input.window_snapping` (removed) is replaced by `layout.stacking.drop_zones = false`, and the `floating` layout is now called `stacking`.
 - Umbriel: `input.focus.hover_raises = false` (hovering focuses without raising, so a floating ghostty/chat window is no longer buried by sweeping the pointer over the window below) and `input.window_snapping = false` is pinned — upstream now enables edge/corner snapping by default, Roudix keeps drops exactly where released.
@@ -95,5 +96,6 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 - Issue templates (bug report, feature request).
 
 ### Removed
+- ly display manager (`modules/system/desktop/ly.nix`): it was enabled on every Hyprland setup next to the Noctalia/DMS greeter (two display managers at once) and pointed to a `hyprland-uwsm-fixed.desktop` session that nothing defines. The UWSM `nixos-fake-graphical-session` override moved to `hyprland.nix`.
 - GRUB as a bootloader choice (`roudix.boot.bootloader = "grub"`, `roudix.boot.grub.*`, `grubExtraEntries`): nixpkgs has no Secure Boot path for it. Keep Limine (themed, Secure Boot) or systemd-boot. The UEFI-only restriction now applies to every remaining bootloader, so legacy BIOS machines are no longer covered.
 

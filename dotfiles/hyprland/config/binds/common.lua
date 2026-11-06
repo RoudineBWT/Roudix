@@ -77,7 +77,7 @@ hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }), { descrip
 
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special" }), { description = "Move window to special workspace" })
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special(), { description = "Toggle special workspace" })
-hl.bind(mainMod .. " + CONTROL + F", hl.dsp.window.fullscreen({ mode = 1 }), { description = "Fullscreen (mode 1)" })
+hl.bind(mainMod .. " + CONTROL + F", hl.dsp.window.fullscreen({ mode = "maximized" }), { description = "Maximize" })
 hl.bind(mainMod .. " + CONTROL + C", hl.dsp.window.center(), { description = "Center window" })
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen(), { description = "Toggle fullscreen" })
 hl.bind(mainMod .. " + W", hl.dsp.group.toggle(), { description = "Toggle window group" })
@@ -116,7 +116,13 @@ hl.bind(mainMod .. " + I", hl.dsp.layout("inhibit_scroll"), { description = "Tog
 -- 6. Hyprland
 
 hl.bind("CONTROL + ALT + Delete", hl.dsp.exit(), { description = "Exit Hyprland" })
-hl.bind(mainMod .. " + SHIFT + P", hl.dsp.dpms({ action = "disable" }), { description = "Turn monitors off" })
+-- DPMS ne doit pas être lié directement à un bind (comportement indéfini, cf. wiki
+-- Dispatchers) : passage par un timer oneshot.
+hl.bind(mainMod .. " + SHIFT + P", function()
+    hl.timer(function()
+        hl.dispatch(hl.dsp.dpms({ action = "disable" }))
+    end, { timeout = 500, type = "oneshot" })
+end, { description = "Turn monitors off" })
 hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("hyprctl kill"), { description = "Kill active window" })
 
 local gameModeOn = false
