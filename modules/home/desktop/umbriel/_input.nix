@@ -54,16 +54,11 @@
       size = 24;
       hide_when_typing = true;
       hide_timeout_ms = 1000; # niri: hide-after-inactive-ms 1000
-      # hardware_cursor = false fixes the cursor freezing at its last
-      # position in-game (only redrawing when the mouse moves) and then
-      # flickering instead of smoothly appearing/disappearing — a classic
-      # hardware cursor plane desync with fullscreen direct scanout (DP-1
-      # has tearing=true + direct_scanout by default, see _output.nix).
-      # This is the documented workaround for "cursor flicker or
-      # disappearance caused by hardware cursor planes": the cursor gets
-      # composited into the render instead of using the GPU's hardware
-      # plane. Slight extra GPU cost (negligible outside demanding games),
-      # no more stuck/ghost cursor.
+      # Hardware cursor plane (Umbriel default). If the cursor freezes at its
+      # last position in-game or flickers/disappears (hardware cursor plane
+      # desync with fullscreen direct scanout — DP-1 has tearing=true +
+      # direct_scanout, see _output.nix), set this to false: the cursor is then
+      # composited into the render (slight extra GPU cost, no stuck cursor).
       hardware_cursor = true;
     };
   };
