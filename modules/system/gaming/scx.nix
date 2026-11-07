@@ -318,6 +318,11 @@ in
     });
   '';
 
+  # eacnix's default for this list reads services.scx (removed from nixpkgs → throws),
+  # so we set it explicitly. Gives scx-loader the private /boot with the vendor
+  # kernel's kconfig on the EAC boot path (scx BPF programs need it).
+  eacnix.kconfigServices = [ "scx-loader" ];
+
   # ── scx-loader service ─────────────────────────────────────────────────────
   # Does NOT start at boot (wantedBy = []).
   # Restart = "no" — the switcher is in full control.
