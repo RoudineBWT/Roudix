@@ -506,7 +506,8 @@ msgstr "Degradado cálido, resplandor que pulsa detrás del logo"
 
 #: roudix-switcher.py
 msgid "Rising embers, a progress ring, logo in a growing glow"
-msgstr "Brasas que suben, un anillo de progreso y el logo en un resplandor creciente"
+msgstr ""
+"Brasas que suben, un anillo de progreso y el logo en un resplandor creciente"
 
 #: roudix-switcher.py
 msgid "Roudix — ember"
@@ -519,6 +520,46 @@ msgstr "Pandoudix"
 #: roudix-switcher.py
 msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr "La mascota: saluda al arrancar y duerme al apagar"
+
+#: roudix-switcher.py
+msgid "Hidden"
+msgstr "Oculto"
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr "Nivel 0 — overlay oculto"
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr "Solo FPS"
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr "Nivel 1 — solo la tasa de fotogramas"
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr "Compacto"
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr "Nivel 2 — barra horizontal: CPU, GPU, RAM, tiempo de fotograma"
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr "Ampliado"
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr "Nivel 3 — añade temperaturas, consumo y frecuencias"
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr "Completo"
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr "Nivel 4 — todo (predeterminado)"
 
 #: roudix-switcher.py
 msgid "Stable"
@@ -950,6 +991,10 @@ msgid "Launchers and tools installed for gaming."
 msgstr "Lanzadores y herramientas instalados para jugar."
 
 #: roudix-switcher.py
+msgid "MangoHud — default overlay level"
+msgstr "MangoHud — nivel de overlay predeterminado"
+
+#: roudix-switcher.py
 msgid "OBS plugins"
 msgstr "Plugins de OBS"
 
@@ -1223,6 +1268,10 @@ msgstr "Formato del fondo de arranque"
 #: roudix-switcher.py
 msgid "Boot splash"
 msgstr "Pantalla de arranque"
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
+msgstr "Nivel de overlay de MangoHud"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

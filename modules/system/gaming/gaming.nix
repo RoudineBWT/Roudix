@@ -137,6 +137,22 @@ in
     };
   };
 
+  options.roudix.gaming.mangohud.defaultPreset = lib.mkOption {
+    description = ''
+      Niveau d'overlay MangoHud utilisé par défaut (il faut un rebuild pour le
+      changer ici). Ce sont les mêmes 5 niveaux que le réglage « Performance
+      overlay » de Steam : off, fps, compact, extended, full.
+
+      Sur le bureau / dans les jeux lancés à la main, Shift_R+F10 passe au
+      niveau suivant sans rebuild (le défaut est le premier de la boucle). En
+      Gaming Mode (gamescope), c'est le niveau de départ : ensuite Steam
+      pilote le niveau avec son propre réglage.
+      Le rendu de chaque niveau est défini dans modules/home/theming/mangohud.nix.
+    '';
+    type = lib.types.enum [ "off" "fps" "compact" "extended" "full" ];
+    default = "full";
+  };
+
   options.roudix.gaming.steam.millennium.enable = lib.mkOption {
     description = ''
       Use Millennium (https://github.com/SteamClientHomebrew/Millennium),

@@ -707,6 +707,23 @@ PLYMOUTH_THEMES = [
      "preview": "roudix-panda.png"},
 ]
 
+# roudix.gaming.mangohud.defaultPreset (modules/system/gaming/gaming.nix) — niveau
+# d'overlay MangoHud par défaut. Mêmes 5 niveaux que le réglage « Performance
+# overlay » de Steam en Gaming Mode. "preview" = mock-up statique (mangohud-previews/).
+MANGOHUD_PREVIEW_DIR = os.path.join(SCRIPT_DIR, "../share/roudix-switcher/mangohud-previews")
+MANGOHUD_PRESETS = [
+    {"id": "off",      "name": tr("Hidden"),   "subtitle": tr("Level 0 — overlay hidden"),
+     "preview": "off.png",      "preview_dir": MANGOHUD_PREVIEW_DIR},
+    {"id": "fps",      "name": tr("FPS only"), "subtitle": tr("Level 1 — just the frame rate"),
+     "preview": "fps.png",      "preview_dir": MANGOHUD_PREVIEW_DIR},
+    {"id": "compact",  "name": tr("Compact"),  "subtitle": tr("Level 2 — horizontal bar: CPU, GPU, RAM, frame time"),
+     "preview": "compact.png",  "preview_dir": MANGOHUD_PREVIEW_DIR},
+    {"id": "extended", "name": tr("Extended"), "subtitle": tr("Level 3 — adds temperatures, power and clocks"),
+     "preview": "extended.png", "preview_dir": MANGOHUD_PREVIEW_DIR},
+    {"id": "full",     "name": tr("Full"),     "subtitle": tr("Level 4 — everything (default)"),
+     "preview": "full.png",     "preview_dir": MANGOHUD_PREVIEW_DIR},
+]
+
 # roudix.apps.fluxer.channel (modules/system/apps/apps.nix) — enum, only
 # meaningful while Fluxer is enabled (no icons: plain text rows).
 FLUXER_CHANNELS = [
@@ -1655,10 +1672,11 @@ class SelectorGroup(Gtk.Box):
             self.icon_widgets[item["id"]] = (icon, item["icon"])
             row.add_prefix(icon)
 
-        # "preview" (optional): a picture file name inside PLYMOUTH_PREVIEW_DIR,
-        # shown as a thumbnail (boot splash selector).
+        # "preview" (optional): a picture file name inside PLYMOUTH_PREVIEW_DIR
+        # (or item["preview_dir"]), shown as a thumbnail (boot splash and
+        # MangoHud level selectors).
         if item.get("preview"):
-            ppath = os.path.join(PLYMOUTH_PREVIEW_DIR, item["preview"])
+            ppath = os.path.join(item.get("preview_dir", PLYMOUTH_PREVIEW_DIR), item["preview"])
             if os.path.isfile(ppath):
                 pic = Gtk.Picture.new_for_filename(ppath)
                 pic.set_size_request(128, 72)
@@ -2125,9 +2143,22 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.gaming_extras_group = ToggleListGroup("", self.gaming_extras, gaming_extras_current)
         gaming_page.append(self.gaming_extras_group)
 
+        # roudix.gaming.mangohud.defaultPreset — default MangoHud overlay level
+        # (a rebuild; in game Shift_R+F10 cycles the levels without one).
+        self.mangohud_preset_selector = SelectorGroup(
+            tr("MangoHud — default overlay level"),
+            MANGOHUD_PRESETS, get_active_string_option("roudix.gaming.mangohud.defaultPreset", "full"), dark,
+        )
+        self.mangohud_preset_selector.set_margin_top(8)
+        gaming_page.append(self.mangohud_preset_selector)
+
         self.gaming_master_switch.connect("notify::active", self._on_gaming_master_toggled)
         for sw in self.gaming_apps_group.switches.values():
             sw.connect("notify::active", lambda *_: self._update_gaming_counter())
+        mh_sw = self.gaming_apps_group.switches.get("mangohud")
+        if mh_sw is not None:
+            mh_sw.connect("notify::active", lambda *_: self._update_mangohud_selector())
+        self._update_mangohud_selector()
 
         self.content_stack.add_named(gaming_page, "gaming")
 
@@ -2749,6 +2780,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
              "label": tr("Boot splash"),                  "relevant": lambda de: True},
             {"widget": self.eac_vendor_selector,          "key": "roudix.boot.eac.vendor",    "default": "fedora",
              "label": tr("EAC kernel"),                   "relevant": lambda de: self._boot_is_limine() and not self._boot_is_bios() and self._eac_enabled()},
+            {"widget": self.mangohud_preset_selector,     "key": "roudix.gaming.mangohud.defaultPreset", "default": "full",
+             "label": tr("MangoHud overlay level"),       "relevant": lambda de: self._mangohud_enabled()},
             {"widget": self.fluxer_channel_selector,      "key": "roudix.apps.fluxer.channel", "default": "stable",
              "label": tr("Fluxer channel"),               "relevant": lambda de: self._fluxer_enabled()},
             {"widget": self.spicetify_theme_selector,     "key": "roudix.spicetify.theme",     "default": "colorful",
@@ -2971,6 +3004,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.gaming_apps_group,   bool(self.gaming_apps)),
                 (self.gaming_extras_label, bool(self.gaming_extras)),
                 (self.gaming_extras_group, bool(self.gaming_extras)),
+                (self.mangohud_preset_selector, host_lists("roudix.gaming.mangohud.defaultPreset")),
             ],
             "content_creation": [
                 (self.cc_master_row,           host_lists("roudix.contentCreation.enable")),
@@ -3062,6 +3096,15 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         active = sw.get_active()
         self.gaming_apps_group.set_sensitive(active)
         self._update_gaming_counter()
+        self._update_mangohud_selector()
+
+    def _mangohud_enabled(self) -> bool:
+        """The MangoHud level only means something with Gaming on and MangoHud ticked."""
+        sw = self.gaming_apps_group.switches.get("mangohud")
+        return self.gaming_master_switch.get_active() and (sw is None or sw.get_active())
+
+    def _update_mangohud_selector(self):
+        self.mangohud_preset_selector.set_sensitive(self._mangohud_enabled())
 
     def _update_gaming_counter(self):
         if not self.gaming_master_switch.get_active():

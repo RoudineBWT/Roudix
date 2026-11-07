@@ -499,6 +499,46 @@ msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Hidden"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr ""
 
@@ -902,6 +942,10 @@ msgid "Launchers and tools installed for gaming."
 msgstr ""
 
 #: roudix-switcher.py
+msgid "MangoHud — default overlay level"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "OBS plugins"
 msgstr ""
 
@@ -1145,6 +1189,10 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Boot splash"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
 msgstr ""
 
 #: roudix-switcher.py

@@ -146,6 +146,7 @@
   roudix.gaming.apps.modrinth.enable      = false; # alternative to Prism Launcher
   roudix.gaming.apps.vintagestory.enable  = false;
   roudix.gaming.apps.mangohud.enable      = false;
+  roudix.gaming.mangohud.defaultPreset    = "compact"; # "off", "fps", "compact", "extended", "full"
   # Steam client: false = stock Steam (default). true = Millennium, a modded
   # Steam client with theme/plugin support (github:SteamClientHomebrew/Millennium).
   # Only applies if roudix.gaming.enable = true.
