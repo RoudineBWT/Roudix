@@ -64,6 +64,8 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
   built by `scripts/gen-preview-slideshow.py`; `assets/screenshot/preview.png` is
   now the Umbriel screenshot. The READMEs also state that compositor customization
   is left to the user (Roudix only ships the default Noctalia / DMS / Caelestia configs).
+- Shell packages follow the nixpkgs Dux Labs rename: `pkgs.dux-shell` / `pkgs.dux-greeter` replace the `dms-shell` / `dms-greeter` aliases (evaluation warning). Flake module and option names (`programs.dank-material-shell`, `programs.dms-greeter`) are unchanged upstream.
+- Caelestia on Hyprland: volume, mute and mic-mute keys use `wpctl`; the `caelestia:volumeUp` / `volumeDown` / `mute` global shortcuts never existed, so those keys did nothing.
 
 ### Added
 - GNOME Shell themes `Roudix-Dark` / `Roudix-Light`, generated from
