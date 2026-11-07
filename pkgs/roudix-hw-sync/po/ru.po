@@ -223,6 +223,16 @@ msgstr "Недопустимое значение --laptop: %s"
 
 #: roudix-hw-sync
 #, sh-printf-format
+msgid "Invalid --tlp: %s"
+msgstr "Недопустимое значение --tlp: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --thinkpad: %s"
+msgstr "Недопустимое значение --thinkpad: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
 msgid "local.nix not found: %s"
 msgstr "local.nix не найден: %s"
 
@@ -238,6 +248,11 @@ msgstr "GPU не обнаружен, используйте --gpu ..."
 #, sh-printf-format
 msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
 msgstr "Обнаружено: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Laptop (TLP): %s  ThinkPad: %s"
+msgstr "Ноутбук (TLP): %s  ThinkPad: %s"
 
 #: roudix-hw-sync
 msgid ""

@@ -216,6 +216,16 @@ msgstr "无效的 --laptop：%s"
 
 #: roudix-hw-sync
 #, sh-printf-format
+msgid "Invalid --tlp: %s"
+msgstr "无效的 --tlp：%s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --thinkpad: %s"
+msgstr "无效的 --thinkpad：%s"
+
+#: roudix-hw-sync
+#, sh-printf-format
 msgid "local.nix not found: %s"
 msgstr "找不到 local.nix：%s"
 
@@ -231,6 +241,11 @@ msgstr "未检测到 GPU，请使用 --gpu ..."
 #, sh-printf-format
 msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
 msgstr "检测到：CPU=%s  GPU=%s  nvidiaLaptop=%s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Laptop (TLP): %s  ThinkPad: %s"
+msgstr "笔记本（TLP）：%s  ThinkPad：%s"
 
 #: roudix-hw-sync
 msgid ""

@@ -944,7 +944,20 @@ msgstr ""
 #: src/roudix_installer/pages/options.py
 msgid ""
 "Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
-"will still launch games normally but without the roudix-gaming CPU profile."
+"will still launch games normally but without the roudix-gaming CPU profile. "
+"On a gaming laptop, pick tuned above instead."
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Laptop power manager"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "TLP — best battery life"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "tuned — gaming laptop (keeps game-performance)"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py

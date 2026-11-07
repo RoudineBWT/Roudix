@@ -941,10 +941,23 @@ msgstr "笔记本（TLP）"
 #: src/roudix_installer/pages/options.py
 msgid ""
 "Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
-"will still launch games normally but without the roudix-gaming CPU profile."
+"will still launch games normally but without the roudix-gaming CPU profile. "
+"On a gaming laptop, pick tuned above instead."
 msgstr ""
-"用 TLP 取代 tuned：如果同时启用了游戏功能，game-performance 仍会正常启动游"
-"戏，但不会使用 roudix-gaming 的 CPU 配置。"
+"用 TLP 取代 tuned：如果同时启用了游戏功能，game-performance 仍会正常启动游戏，但不会使用 roudix-gaming 的 "
+"CPU 配置。在游戏本上，请改为在上方选择 tuned。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Laptop power manager"
+msgstr "笔记本电源管理器"
+
+#: src/roudix_installer/pages/options.py
+msgid "TLP — best battery life"
+msgstr "TLP — 续航最佳"
+
+#: src/roudix_installer/pages/options.py
+msgid "tuned — gaming laptop (keeps game-performance)"
+msgstr "tuned — 游戏本（保留 game-performance）"
 
 #: src/roudix_installer/pages/options.py
 msgid "ThinkPad (40/80% battery charge thresholds)"

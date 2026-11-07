@@ -4,9 +4,12 @@
 # Usage: roudix-hw-sync [-n|--dry-run] [--detect]
 #                       [--gpu amd|amd-igpu|amd-legacy|nvidia|intel]
 #                       [--cpu amd|intel] [--laptop true|false]
+#                       [--tlp true|false] [--thinkpad true|false]
 #                       [-f /path/to/local.nix]
 #
 # Touches only: hardware.myGpu, hardware.myCpu, hardware.nvidiaLaptop,
+# roudix.laptop.enable / roudix.laptop.thinkpad (laptop detected from DMI
+# chassis type or a system battery; ThinkPad from DMI),
 # roudix.nvidia_config.*BusId, the hardware.myKernel / myKernelChaotic toggle
 # and roudix.undervolt.only-amd.enable (forced to false on a non-AMD GPU).
 # Never rebuilds. Writes <file>.bak before changing anything.
@@ -23,11 +26,13 @@ export TEXTDOMAIN TEXTDOMAINDIR
 gt="@gettext@"; [ -x "$gt" ] || gt="$(command -v gettext 2>/dev/null || true)"
 _t() { if [ -n "$gt" ]; then "$gt" "$1"; else printf %s "$1"; fi; }
 
-dry=0; detect_only=0; force_gpu=""; force_cpu=""; force_laptop=""
+dry=0; detect_only=0; force_gpu=""; force_cpu=""; force_laptop=""; force_tlp=""; force_thinkpad=""
 nh_flake="$(printenv NH_FLAKE)"; [ -n "$nh_flake" ] || nh_flake="$HOME/.config/roudix"
 host="$(printenv ROUDIX_HOST)"; [ -n "$host" ] || host="$(uname -n)"
 file="$nh_flake/hosts/$host/local.nix"
 pci_dir="$(printenv ROUDIX_PCI_DIR)"; [ -n "$pci_dir" ] || pci_dir=/sys/bus/pci/devices
+dmi_dir="$(printenv ROUDIX_DMI_DIR)"; [ -n "$dmi_dir" ] || dmi_dir=/sys/class/dmi/id
+ps_dir="$(printenv ROUDIX_PS_DIR)"; [ -n "$ps_dir" ] || ps_dir=/sys/class/power_supply
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -36,8 +41,10 @@ while [ $# -gt 0 ]; do
     --gpu)        force_gpu="${2:-}"; shift ;;
     --cpu)        force_cpu="${2:-}"; shift ;;
     --laptop)     force_laptop="${2:-}"; shift ;;
+    --tlp)        force_tlp="${2:-}"; shift ;;
+    --thinkpad)   force_thinkpad="${2:-}"; shift ;;
     -f)           file="${2:-}"; shift ;;
-    -h|--help)    sed -n 2,12p "$0"; exit 0 ;;
+    -h|--help)    sed -n 2,15p "$0"; exit 0 ;;
     *) printf "$(_t 'Unknown option: %s')\n" "$1" >&2; exit 1 ;;
   esac
   shift
@@ -46,6 +53,8 @@ done
 case "$force_gpu" in ""|amd|amd-igpu|amd-legacy|nvidia|intel) ;; *) printf "$(_t 'Invalid --gpu: %s')\n" "$force_gpu" >&2; exit 1 ;; esac
 case "$force_cpu" in ""|amd|intel) ;; *) printf "$(_t 'Invalid --cpu: %s')\n" "$force_cpu" >&2; exit 1 ;; esac
 case "$force_laptop" in ""|true|false) ;; *) printf "$(_t 'Invalid --laptop: %s')\n" "$force_laptop" >&2; exit 1 ;; esac
+case "$force_tlp" in ""|true|false) ;; *) printf "$(_t 'Invalid --tlp: %s')\n" "$force_tlp" >&2; exit 1 ;; esac
+case "$force_thinkpad" in ""|true|false) ;; *) printf "$(_t 'Invalid --thinkpad: %s')\n" "$force_thinkpad" >&2; exit 1 ;; esac
 
 [ -f "$file" ] || { printf "$(_t 'local.nix not found: %s')\n" "$file" >&2; exit 1; }
 orig="$file"; file="$(mktemp)"; cp "$orig" "$file"   # work on a copy, write back at the end
@@ -72,6 +81,16 @@ set_active() {
   else
     sed -i -E "s|^([[:space:]]*)($(esc "$1")[[:space:]]*=)|\1# \2|" "$file"
   fi
+}
+
+# set_bool_or_add <key> <true|false> <comment>: like set_bool, but when the key has no
+# active line, append it before the closing brace of local.nix. Only used for
+# roudix.laptop.*, which older local.nix files don't have yet.
+set_bool_or_add() {
+  if grep -qE "^[[:space:]]*$(esc "$1")[[:space:]]*=" "$file"; then set_bool "$1" "$2"; return 0; fi
+  local last; last="$(grep -nE '^[[:space:]]*}[[:space:]]*$' "$file" | tail -1 | cut -d: -f1)"
+  [ -n "$last" ] || return 0
+  sed -i "${last}i\\  $1 = $2;  # $3" "$file"
 }
 
 # ── Detect (same logic as roudix-installer.sh) ───────────────────────────
@@ -117,10 +136,34 @@ if [ "$gpu" = nvidia ]; then
   elif [ $n_amd = 1 ] || [ $n_intel = 1 ]; then laptop=true; fi
 fi
 
+# Laptop (TLP) = DMI chassis type Portable/Laptop/Notebook/Sub Notebook/Convertible/
+# Detachable, or a system battery (peripheral batteries are scope=Device).
+is_laptop() {
+  case " 8 9 10 14 31 32 " in *" $(cat "$dmi_dir/chassis_type" 2>/dev/null) "*) return 0 ;; esac
+  local d
+  for d in "$ps_dir"/*; do
+    [ "$(cat "$d/type" 2>/dev/null)" = Battery ] || continue
+    [ "$(cat "$d/scope" 2>/dev/null | tr 'A-Z' 'a-z')" = device ] && continue
+    return 0
+  done
+  return 1
+}
+is_thinkpad() {
+  # "|| true": a missing DMI file must not fail the pipeline (pipefail is on)
+  { cat "$dmi_dir/product_family" "$dmi_dir/product_version" 2>/dev/null || true; } | grep -qi thinkpad
+}
+tlp=false; thinkpad=false
+if [ -n "$force_tlp" ]; then tlp="$force_tlp"; elif is_laptop; then tlp=true; fi
+if [ "$tlp" = true ]; then
+  if [ -n "$force_thinkpad" ]; then thinkpad="$force_thinkpad"; elif is_thinkpad; then thinkpad=true; fi
+fi
+
 if [ $detect_only -eq 1 ]; then
   echo "cpu=$cpu"; echo "gpu=$gpu"; echo "laptop=$laptop"
+  echo "tlp=$tlp"; echo "thinkpad=$thinkpad"
   echo "current_cpu=$(cur hardware.myCpu)"; echo "current_gpu=$(cur hardware.myGpu)"
   echo "current_laptop=$(cur hardware.nvidiaLaptop)"
+  echo "current_tlp=$(cur roudix.laptop.enable)"; echo "current_thinkpad=$(cur roudix.laptop.thinkpad)"
   exit 0
 fi
 
@@ -130,6 +173,16 @@ printf "$(_t 'Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s')\n" "$cpu" "$gpu" "$lap
 set_str  hardware.myGpu "$gpu"
 set_str  hardware.myCpu "$cpu"
 set_bool hardware.nvidiaLaptop "$laptop"
+
+# TLP / ThinkPad. Added to local.nix when missing, but only to turn them ON: on a
+# desktop with no such line nothing is written.
+printf "$(_t 'Laptop (TLP): %s  ThinkPad: %s')\n" "$tlp" "$thinkpad"
+if [ "$tlp" = true ] || grep -qE '^[[:space:]]*roudix\.laptop\.enable[[:space:]]*=' "$file"; then
+  set_bool_or_add roudix.laptop.enable "$tlp" "roudix-hw-sync: TLP, laptop power management"
+fi
+if [ "$thinkpad" = true ] || grep -qE '^[[:space:]]*roudix\.laptop\.thinkpad[[:space:]]*=' "$file"; then
+  set_bool_or_add roudix.laptop.thinkpad "$thinkpad" "roudix-hw-sync: ThinkPad charge thresholds"
+fi
 
 for k in nvidiaBusId intelBusId amdgpuBusId; do
   has "roudix.nvidia_config.$k" || continue

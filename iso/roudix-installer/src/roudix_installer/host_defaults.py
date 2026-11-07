@@ -35,6 +35,7 @@ OPTION_TO_ATTR = {
     "hardware.nvidiaLaptop": "nvidia_laptop",
     "roudix.laptop.enable": "laptop",
     "roudix.laptop.thinkpad": "laptop_thinkpad",
+    "roudix.laptop.backend": "laptop_backend",
     "roudix.undervolt.only-amd.enable": "undervolt_enable",
     "hardware.myCpu": "cpu",
     "hardware.myKernel": "kernel",

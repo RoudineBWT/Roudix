@@ -2,7 +2,7 @@ from gi.repository import Adw, Gtk
 
 from roudix_installer import existing_nixos, host_defaults, host_profile
 from roudix_installer.state import valid_username
-from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_main_screen, detect_screen_count, is_bios_boot
+from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_laptop, detect_thinkpad, detect_main_screen, detect_screen_count, is_bios_boot
 from roudix_installer.i18n import tr, trc, tr_noop
 from roudix_installer.ui_helpers import page_with_header
 
@@ -609,6 +609,13 @@ class OptionsPage(Adw.NavigationPage):
             state.nvidia_laptop = nvidia_laptop_detected
         if cpu_detected:
             state.cpu = cpu_detected
+        # Laptop (TLP) / ThinkPad: only ever switched ON by detection, so a
+        # profile that seeded them (hosts/nixie) is never turned off.
+        if nvidia_laptop_detected or detect_laptop():
+            state.laptop = True
+        if detect_thinkpad():
+            state.laptop = True
+            state.laptop_thinkpad = True
 
         hw_group = Adw.PreferencesGroup(title=tr("Hardware"))
         self.gpu_row = self._combo(
@@ -651,12 +658,23 @@ class OptionsPage(Adw.NavigationPage):
         self.laptop_gaming_note = Gtk.Label(
             label=tr("Disables tuned in favor of TLP: if gaming is also enabled, "
                 "game-performance will still launch games normally but "
-                "without the roudix-gaming CPU profile."),
+                "without the roudix-gaming CPU profile. On a gaming laptop, "
+                "pick tuned above instead."),
             css_classes=["dim-label", "caption"],
             wrap=True,
             xalign=0,
             visible=False,
         )
+
+        self.laptop_backend_row = self._combo(
+            tr("Laptop power manager"),
+            [
+                ("tlp", tr("TLP — best battery life")),
+                ("tuned", tr("tuned — gaming laptop (keeps game-performance)")),
+            ],
+            state.laptop_backend,
+        )
+        hw_group.add(self.laptop_backend_row)
 
         self.thinkpad_row = Adw.SwitchRow(
             title=tr("ThinkPad (40/80% battery charge thresholds)")
@@ -1279,6 +1297,7 @@ class OptionsPage(Adw.NavigationPage):
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_undervolt_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
         self.laptop_row.connect("notify::active", lambda *_: self._sync_laptop_row())
+        self.laptop_backend_row.connect("notify::selected", lambda *_: self._sync_laptop_row())
         self.gaming_row.connect("notify::active", lambda *_: self._sync_laptop_row())
         self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
@@ -1322,6 +1341,7 @@ class OptionsPage(Adw.NavigationPage):
     HOST_ROW_KEYS = {
         "gpu_row": ["hardware.myGpu"], "nvidia_laptop_row": ["hardware.nvidiaLaptop"],
         "laptop_row": ["roudix.laptop.enable"], "thinkpad_row": ["roudix.laptop.thinkpad"],
+        "laptop_backend_row": ["roudix.laptop.backend"],
         "laptop_gaming_note": ["roudix.gaming.enable"],
         "undervolt_row": ["roudix.undervolt.only-amd.enable"], "cpu_row": ["hardware.myCpu"],
         "kernel_row": ["hardware.myKernel", "hardware.myKernelChaotic"],
@@ -1376,7 +1396,7 @@ class OptionsPage(Adw.NavigationPage):
     }
     # group -> rows it contains (a group with no visible row is hidden too)
     HOST_GROUP_ROWS = {
-        "hw_group": ["gpu_row", "nvidia_laptop_row", "laptop_row", "thinkpad_row", "undervolt_row", "cpu_row", "kernel_row"],
+        "hw_group": ["gpu_row", "nvidia_laptop_row", "laptop_row", "laptop_backend_row", "thinkpad_row", "undervolt_row", "cpu_row", "kernel_row"],
         "browser_group": ["browser_row", "brave_variant_row", "zen_row", "zen_variant_row", "zen_mods_row", "zen_sine_row", "zen_sine_mods_row"],
         "desktop_group": ["desktop_row", "shell_row", "latest_de_row", "latest_shell_row", "latest_note", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
         "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
@@ -1546,8 +1566,10 @@ class OptionsPage(Adw.NavigationPage):
 
     def _sync_laptop_row(self):
         self.thinkpad_row.set_visible(self.laptop_row.get_active())
+        self.laptop_backend_row.set_visible(self.laptop_row.get_active())
         self.laptop_gaming_note.set_visible(
             self.laptop_row.get_active() and self.gaming_row.get_active()
+            and self._selected_value(self.laptop_backend_row) == "tlp"
         )
 
     def _sync_kernel_row(self):
@@ -1729,6 +1751,7 @@ class OptionsPage(Adw.NavigationPage):
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()
         s.laptop = self.laptop_row.get_active()
         s.laptop_thinkpad = self.thinkpad_row.get_active()
+        s.laptop_backend = self._selected_value(self.laptop_backend_row)
         s.undervolt_enable = self.undervolt_row.get_active()
         s.cpu = self._selected_value(self.cpu_row)
         kernel_value = self._selected_value(self.kernel_row)

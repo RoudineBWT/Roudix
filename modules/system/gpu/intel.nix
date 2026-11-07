@@ -6,6 +6,10 @@
 #   - Lunar Lake, Battlemage (Arc B-series)                   -> xe by default (kernel >= 6.12)
 #   - Panther Lake (Xe3)                                      -> xe by default (kernel >= 6.17)
 #
+# Vulkan comes from Mesa (ANV, or HasVK for Gen7..Gen8) and needs nothing
+# here: hardware.graphics.enable is enough. Sandy Bridge (Gen6) and older
+# have no Vulkan at all, only OpenGL. Check with `vulkaninfo --summary`.
+#
 # The kernel decides which driver binds, so nothing is hard-coded here:
 # both modules are shipped in the initrd and udev loads the right one.
 # GPUs that are too new for the running kernel (or that you want to move
@@ -17,6 +21,12 @@ let
   # iGPU still drives the screen and needs its own media / compute stack.
   hybridIgpu = cfg.myGpu == "nvidia" && cfg.nvidiaLaptop
     && config.roudix.nvidia_config.intelBusId != null;
+  # Laptop with an Intel CPU and an AMD GPU (myGpu = amd*): the Intel iGPU is
+  # still there and drives the screen, so it needs its media / compute stack
+  # (VA-API decode, QuickSync). Inferred, not detected: no Intel desktop
+  # reaches this, roudix.laptop.enable is false there.
+  hybridAmdDgpu = cfg.myCpu == "intel" && lib.hasPrefix "amd" cfg.myGpu
+    && config.roudix.laptop.enable;
   # i915 module parameters only: they are not xe parameters, so nothing is
   # passed to xe (no risk of handing it a parameter it doesn't know).
   quirkParams = {
@@ -59,7 +69,7 @@ in
     '';
   };
 
-  config = lib.mkIf (cfg.myGpu == "intel" || hybridIgpu) {
+  config = lib.mkIf (cfg.myGpu == "intel" || hybridIgpu || hybridAmdDgpu) {
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
@@ -97,6 +107,7 @@ in
     }];
 
     environment.systemPackages = with pkgs; [
+      vulkan-tools             # vulkaninfo --summary, vkcube
       intel-gpu-tools          # intel_gpu_top
       nvtopPackages.intel      # nvtop, supports i915 and xe
     ];

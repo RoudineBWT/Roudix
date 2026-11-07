@@ -93,6 +93,7 @@
   # instead of erroring; set roudix.gaming.enable = false on non-gaming
   # laptops instead.
   roudix.laptop.enable   = false;             # true on any laptop
+  roudix.laptop.backend  = "tlp";             # "tlp" (battery life) or "tuned" (gaming laptop: keeps game-performance + power-mode selector)
   roudix.laptop.thinkpad = false;             # true on ThinkPads — enables charge thresholds below
   roudix.laptop.batteryChargeThresholds.start = 40; # %
   roudix.laptop.batteryChargeThresholds.stop  = 80; # %

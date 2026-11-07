@@ -15,7 +15,11 @@
 
       blur = {
         enabled = true;
-        optimized = true;
+        # false = translucent windows (terminal...) blur the windows directly
+        # behind them. true shares one cached WALLPAPER blur, so a translucent
+        # window above another window shows the wallpaper through it. Costs a
+        # bit more GPU.
+        optimized = false;
         passes = 2;
         noise = 0.03;
         saturation = 1.0;
