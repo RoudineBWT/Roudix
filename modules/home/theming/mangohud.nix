@@ -74,6 +74,8 @@ let
     arch
     wine
     battery
+    fps
+    fps_metrics=avg,0.01
     frametime
     frame_timing
     winesync
@@ -110,6 +112,7 @@ let
     battery
     fan
     fps
+    fps_metrics=avg,0.01
     frametime
     frame_timing
     frame_count
@@ -125,7 +128,6 @@ let
   '';
 
   hwLook = ''
-    fps_metrics=avg,0.01
     gpu_text=RX 7900 XT
     gpu_color=E5604D
     gpu_load_change
