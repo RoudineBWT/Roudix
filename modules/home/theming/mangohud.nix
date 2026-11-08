@@ -33,7 +33,7 @@ let
     media_player_format={title};{artist};{album}
     network_color=7FB5A0
     battery_color=A8B86A
-    font_file=/run/current-system/sw/share/X11/fonts/IosevkaNerdFont-Bold.ttf
+    font_file=/run/current-system/sw/share/X11/fonts/RoudixSansNerdFontPropo-Bold.ttf
     font_glyph_ranges=korean, chinese, chinese_simplified, japanese, cyrillic, thai, vietnamese, latin_ext_a, latin_ext_b
   '';
 
@@ -201,7 +201,7 @@ let
     round_corners=10
     position=top-left
     table_columns=4
-    font_file=/run/current-system/sw/share/X11/fonts/IosevkaNerdFont-Bold.ttf
+    font_file=/run/current-system/sw/share/X11/fonts/RoudixSansNerdFontPropo-Bold.ttf
     font_glyph_ranges=korean, chinese, chinese_simplified, japanese, cyrillic, thai, vietnamese, latin_ext_a, latin_ext_b
   '';
 in

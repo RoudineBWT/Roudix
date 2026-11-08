@@ -72,6 +72,14 @@ let
     ]
     ++ terminalDesktopIds.${config.roudix.terminal} or [ ];
 
+  # ── Default UI font: RoudixSans ───────────────────────────────────────
+  # Installed on every desktop by pkgs/roudix-mono-font (fonts.packages in
+  # modules/system/nix/common.nix). Shipped as a DEFAULT only, like the
+  # wallpaper and icons: a font picked in the desktop's settings wins and a
+  # rebuild never puts this one back. Same family name in gnome.nix,
+  # cinnamon.nix, kde.nix and cosmic.nix (kept in sync by hand).
+  uiFont = "RoudixSans Nerd Font Propo";
+
   # ── Roudix look & feel, as dconf DEFAULTS ─────────────────────────────
   # Written to the *system* dconf database (/etc/dconf/db/user.d), NOT to
   # the user's own database. dconf reads the user db first and falls back
@@ -108,6 +116,11 @@ let
       cursor-theme = "capitaine-cursors-white";
       cursor-size  = lib.gvariant.mkInt32 (24);
       gtk-enable-primary-paste = true;
+      font-name          = "${uiFont} 11";
+      document-font-name = "${uiFont} 11";
+    };
+    "org/gnome/desktop/wm/preferences" = {
+      titlebar-font = "${uiFont} Bold 11";
     };
 
     # ── App-grid folders ──────────────────────────────────────────────────
