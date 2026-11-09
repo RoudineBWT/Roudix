@@ -192,7 +192,13 @@ for k in nvidiaBusId intelBusId amdgpuBusId; do
 done
 
 # nvidia uses hardware.myKernelChaotic, everything else hardware.myKernel
-if [ "$gpu" = nvidia ]; then
+nvsrc=$(grep -oP '^[[:space:]]*hardware\.nvidiaKernelSource\s*=\s*"\K[^"]+' "$file" 2>/dev/null | head -1)
+if [ "$gpu" = nvidia ] && [ "$nvsrc" = xddxdd ]; then
+  # nvidia with the xddxdd kernels: same key as AMD/Intel
+  if has hardware.myKernel; then
+    set_active hardware.myKernel true; set_active hardware.myKernelChaotic false
+  fi
+elif [ "$gpu" = nvidia ]; then
   if has hardware.myKernelChaotic; then
     set_active hardware.myKernelChaotic true; set_active hardware.myKernel false
   else

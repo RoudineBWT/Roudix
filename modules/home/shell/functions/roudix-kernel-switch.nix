@@ -4,7 +4,8 @@
     set config_file "$NH_FLAKE/hosts/"(hostname)"/local.nix"
     set gpu (grep -oP 'hardware\.myGpu\s*=\s*"\K[^"]+' $config_file 2>/dev/null)
 
-    if test "$gpu" = "nvidia"
+    set nvsrc (grep -oP '^\s*hardware\.nvidiaKernelSource\s*=\s*"\K[^"]+' $config_file 2>/dev/null)
+    if test "$gpu" = "nvidia"; and test "$nvsrc" != "xddxdd"
       set key "myKernelChaotic"
     else
       set key "myKernel"
@@ -28,7 +29,7 @@
         echo "  cachyos-server             Server optimized — no desktop tuning"
         echo "  cachyos-hardened           Security hardened"
       else
-        echo "GPU: non-nvidia — variants come from xddxdd (hardware.myKernel)"
+        echo "Variants come from xddxdd (hardware.myKernel) — on nvidia: hardware.nvidiaKernelSource = \"xddxdd\", module built locally"
         echo "  ── Nixpkgs ─────────────────────────────────────────────────"
         echo "  zen                        linux-zen, cached on cache.nixos.org"
         echo "  nixpkgs-lts                linux LTS, cached on cache.nixos.org"
@@ -111,8 +112,10 @@
       local config_file="$NH_FLAKE/hosts/$(hostname)/local.nix"
       local gpu key
       gpu=$(grep -oP 'hardware\.myGpu\s*=\s*"\K[^"]+' "$config_file" 2>/dev/null)
+      local nvsrc
+      nvsrc=$(grep -oP '^\s*hardware\.nvidiaKernelSource\s*=\s*"\K[^"]+' "$config_file" 2>/dev/null)
       key="myKernel"
-      [[ "$gpu" == "nvidia" ]] && key="myKernelChaotic"
+      [[ "$gpu" == "nvidia" && "$nvsrc" != "xddxdd" ]] && key="myKernelChaotic"
 
       if [[ -z "$kernel" ]]; then
         echo "Usage: roudix-kernel-switch [variant]"
@@ -132,7 +135,7 @@
           echo "  cachyos-server             Server optimized — no desktop tuning"
           echo "  cachyos-hardened           Security hardened"
         else
-          echo "GPU: non-nvidia — variants come from xddxdd (hardware.myKernel)"
+          echo "Variants come from xddxdd (hardware.myKernel) — on nvidia: hardware.nvidiaKernelSource = \"xddxdd\", module built locally"
           echo "  ── Nixpkgs ─────────────────────────────────────────────────"
           echo "  zen                        linux-zen, cached on cache.nixos.org"
           echo "  nixpkgs-lts                linux LTS, cached on cache.nixos.org"

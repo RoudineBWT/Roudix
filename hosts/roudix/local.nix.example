@@ -102,6 +102,15 @@
   # ↑ Only one of the two should be active (uncommented) at a time — comment
   #   out hardware.myKernel and uncomment hardware.myKernelChaotic if you're
   #   on nvidia, and vice versa. The installer does this toggle for you.
+  # Nvidia only: where the kernel comes from. "chaotic" (default) = Chaotic-Nyx
+  # (hardware.myKernelChaotic) with the precompiled nvidia_cachyos module.
+  # "xddxdd" = the same kernels as AMD/Intel (hardware.myKernel — uncomment it
+  # and comment out myKernelChaotic); the Nvidia module is then built locally on
+  # every kernel / driver bump.
+  # hardware.nvidiaKernelSource = "chaotic";
+  # Nvidia only: test the beta driver (nvidiaPackages.beta). Always built
+  # locally, no precompiled module.
+  # hardware.nvidiaBeta = false;
   # Kernels coming from nixpkgs (zen, nixpkgs-*, xanmod-*) can be taken from a
   # fresher nixpkgs than the rest of the system. "nixpkgs" (default, same as
   # the system), "master" or "staging-next". No effect on cachyos-* kernels.
