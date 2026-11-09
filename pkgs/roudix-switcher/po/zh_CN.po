@@ -508,6 +508,46 @@ msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr "吉祥物：开机时挥手，关机时入睡"
 
 #: roudix-switcher.py
+msgid "Hidden"
+msgstr "隐藏"
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr "级别 0 — 隐藏悬浮显示"
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr "仅显示 FPS"
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr "级别 1 — 仅显示帧率"
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr "紧凑"
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr "级别 2 — 横向条：CPU、GPU、内存、帧时间"
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr "扩展"
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr "级别 3 — 增加温度、功耗和频率"
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr "完整"
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr "级别 4 — 全部（默认）"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "稳定版"
 
@@ -920,6 +960,10 @@ msgid "Launchers and tools installed for gaming."
 msgstr "为游戏安装的启动器和工具。"
 
 #: roudix-switcher.py
+msgid "MangoHud — default overlay level"
+msgstr "MangoHud — 默认悬浮显示级别"
+
+#: roudix-switcher.py
 msgid "OBS plugins"
 msgstr "OBS 插件"
 
@@ -1181,6 +1225,10 @@ msgstr "启动壁纸格式"
 #: roudix-switcher.py
 msgid "Boot splash"
 msgstr "启动画面"
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
+msgstr "MangoHud 悬浮显示级别"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

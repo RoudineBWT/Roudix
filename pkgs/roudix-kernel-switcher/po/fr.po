@@ -158,25 +158,36 @@ msgid "Variants"
 msgstr "Variantes"
 
 #: roudix-kernel-switcher.py
-msgid "Chaotic-Nyx (GPU: nvidia)"
-msgstr "Chaotic-Nyx (GPU : nvidia)"
-
-#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Kernel source: {source}"
 msgstr "Source du noyau : {source}"
 
 #: roudix-kernel-switcher.py
-msgid ""
-"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
-"(precompiled driver) stays matched to your kernel."
-msgstr ""
-"GPU Nvidia détecté — seules les variantes Chaotic-Nyx sont affichées, pour "
-"que nvidia_cachyos (pilote précompilé) reste adapté à ton noyau."
+msgid "Nvidia options"
+msgstr "Options Nvidia"
 
 #: roudix-kernel-switcher.py
-msgid "Active kernel"
-msgstr "Noyau actif"
+msgid "Kernel source"
+msgstr "Source du noyau"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+"Chaotic-Nyx : module Nvidia précompilé. xddxdd : plus de noyaux, module "
+"Nvidia compilé localement."
+
+#: roudix-kernel-switcher.py
+msgid "Beta driver"
+msgstr "Pilote bêta"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Test the beta Nvidia driver. Always built locally, so rebuilds take longer."
+msgstr ""
+"Tester le pilote Nvidia bêta. Toujours compilé localement, donc les rebuilds "
+"sont plus longs."
 
 #: roudix-kernel-switcher.py
 msgid "Select a kernel variant above."
@@ -187,22 +198,55 @@ msgid "Apply & Rebuild"
 msgstr "Appliquer et reconstruire"
 
 #: roudix-kernel-switcher.py
+msgid "Chaotic-Nyx (GPU: nvidia)"
+msgstr "Chaotic-Nyx (GPU : nvidia)"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
+"(precompiled driver) stays matched to your kernel."
+msgstr ""
+"GPU Nvidia détecté — seules les variantes Chaotic-Nyx sont affichées, pour "
+"que nvidia_cachyos (pilote précompilé) reste adapté à ton noyau."
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Nvidia GPU detected — these kernels build the Nvidia module locally, so "
+"rebuilds take longer."
+msgstr ""
+"GPU Nvidia détecté — ces noyaux compilent le module Nvidia localement, donc "
+"les rebuilds sont plus longs."
+
+#: roudix-kernel-switcher.py
+msgid "Active kernel"
+msgstr "Noyau actif"
+
+#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Will switch to: {variant}"
 msgstr "Bascule vers : {variant}"
+
+#: roudix-kernel-switcher.py
+msgid "Nvidia options changed."
+msgstr "Options Nvidia modifiées."
 
 #: roudix-kernel-switcher.py
 msgid "Already the active kernel."
 msgstr "C'est déjà le noyau actif."
 
 #: roudix-kernel-switcher.py
-msgid "Apply changes?"
-msgstr "Appliquer les modifications ?"
-
-#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Kernel: <b>{current}</b> → <b>{selected}</b>"
 msgstr "Noyau : <b>{current}</b> → <b>{selected}</b>"
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "Nvidia options: {source}, beta driver: {beta}"
+msgstr "Options Nvidia : {source}, pilote bêta : {beta}"
+
+#: roudix-kernel-switcher.py
+msgid "Apply changes?"
+msgstr "Appliquer les modifications ?"
 
 #: roudix-kernel-switcher.py
 msgid "Your NixOS configuration will be rebuilt. This may take a few minutes."

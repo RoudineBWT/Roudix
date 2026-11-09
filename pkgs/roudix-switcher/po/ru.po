@@ -505,7 +505,8 @@ msgstr "Тёплый градиент, свечение пульсирует з�
 
 #: roudix-switcher.py
 msgid "Rising embers, a progress ring, logo in a growing glow"
-msgstr "Поднимающиеся угольки, кольцо прогресса, логотип в нарастающем свечении"
+msgstr ""
+"Поднимающиеся угольки, кольцо прогресса, логотип в нарастающем свечении"
 
 #: roudix-switcher.py
 msgid "Roudix — ember"
@@ -518,6 +519,46 @@ msgstr "Pandoudix"
 #: roudix-switcher.py
 msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr "Талисман: машет при загрузке, засыпает при выключении"
+
+#: roudix-switcher.py
+msgid "Hidden"
+msgstr "Скрыт"
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr "Уровень 0 — оверлей скрыт"
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr "Только FPS"
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr "Уровень 1 — только частота кадров"
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr "Компактный"
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr "Уровень 2 — горизонтальная панель: CPU, GPU, RAM, время кадра"
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr "Расширенный"
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr "Уровень 3 — добавляет температуры, мощность и частоты"
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr "Полный"
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr "Уровень 4 — всё (по умолчанию)"
 
 #: roudix-switcher.py
 msgid "Stable"
@@ -948,6 +989,10 @@ msgid "Launchers and tools installed for gaming."
 msgstr "Лаунчеры и инструменты, устанавливаемые для игр."
 
 #: roudix-switcher.py
+msgid "MangoHud — default overlay level"
+msgstr "MangoHud — уровень оверлея по умолчанию"
+
+#: roudix-switcher.py
 msgid "OBS plugins"
 msgstr "Плагины OBS"
 
@@ -1221,6 +1266,10 @@ msgstr "Формат обоев загрузчика"
 #: roudix-switcher.py
 msgid "Boot splash"
 msgstr "Экран загрузки"
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
+msgstr "Уровень оверлея MangoHud"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

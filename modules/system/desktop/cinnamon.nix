@@ -106,6 +106,14 @@ let
       "cinnamon-settings.desktop"
     ];
 
+  # ── Default UI font: RoudixSans ───────────────────────────────────────
+  # Installed on every desktop by pkgs/roudix-mono-font (fonts.packages in
+  # modules/system/nix/common.nix). Shipped as a DEFAULT only, like the
+  # wallpaper and icons: a font picked in the desktop's settings wins and a
+  # rebuild never puts this one back. Same family name in gnome.nix,
+  # cinnamon.nix, kde.nix and cosmic.nix (kept in sync by hand).
+  uiFont = "RoudixSans Nerd Font Propo";
+
   # ── Roudix look & feel, as dconf DEFAULTS ─────────────────────────────
   # Same mechanism as gnome.nix: written to the *system* dconf database, so
   # it only applies to keys the user never touched. A rebuild never reverts
@@ -136,7 +144,13 @@ let
       icon-theme   = config.roudix.iconThemeName;   # Papirus-Roudix by default (icon-theme.nix)
       cursor-theme = "capitaine-cursors-white";
       cursor-size  = lib.gvariant.mkInt32 24;
+      font-name    = "${uiFont} 10";
     };
+    # Fonts, continued: window titles and the desktop icon labels. The
+    # interface font above is mirrored in org/gnome/desktop/interface below
+    # (like gtk-theme / color-scheme) for the GTK4 apps.
+    "org/cinnamon/desktop/wm/preferences".titlebar-font = "${uiFont} Bold 10";
+    "org/nemo/desktop".font = "${uiFont} 10";
     # Settings > General > "Disable compositing for full-screen windows"
     # (X11 session): on by default, for games/video at full speed.
     "org/cinnamon/muffin".unredirect-fullscreen-windows = true;
@@ -149,6 +163,7 @@ let
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
       gtk-theme    = "Mint-Y-Dark-Aqua";
+      font-name    = "${uiFont} 10";
     };
     "org/x/apps/portal".color-scheme = "prefer-dark";
     # Terminal chosen in Roudix (gnome-terminal is excluded below).

@@ -3,6 +3,10 @@ let
   cfg         = config.roudix.gaming.gamescopeSession;
   desktopType = config.roudix.desktop.type;
 
+  # Niveau d'overlay MangoApp au démarrage de la session (voir mangohud-presets.nix).
+  mangoPresets = import ./mangohud-presets.nix;
+  mangoPreset  = toString mangoPresets.ids.${config.roudix.gaming.mangohud.defaultPreset};
+
   # ── Per-desktop glue ──────────────────────────────────────────────────────
   # What the Gaming Mode wrapper needs to know about each desktop:
   #   env   : XDG_* variables the display manager would have set for it
@@ -70,6 +74,7 @@ let
     runtimeInputs = [ pkgs.coreutils pkgs.gnugrep pkgs.drm_info pkgs.jq pkgs.mangohud ];
     text = fill ./gamescope-session/launcher.sh {
       inherit tz;
+      mango_preset = mangoPreset;
       decky_setup = if cfg.decky.enable then deckySetup else ":";
       hdr_args    = lib.optionalString cfg.hdr.enable "--hdr-enabled --hdr-itm-enabled";
       extra_args  = lib.escapeShellArgs cfg.extraArgs;

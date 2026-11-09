@@ -50,7 +50,7 @@
       "cachyos-server-lto"
     ];
     default = "cachyos-latest-v3";
-    description = "CachyOS kernel variant (xddxdd/nix-cachyos-kernel) — used when hardware.myGpu != \"nvidia\". \"zen\" maps to pkgs.linuxPackages_zen, \"nixpkgs-lts\" to pkgs.linuxPackages (nixpkgs default LTS), \"nixpkgs-latest\" to pkgs.linuxPackages_latest, \"nixpkgs-testing\" to pkgs.linuxPackages_testing (linux_testing — RC/mainline candidate kernel), \"xanmod-lts\" to pkgs.linuxPackages_xanmod (XanMod LTS branch) and \"xanmod-latest\" to pkgs.linuxPackages_xanmod_latest (XanMod main branch) — all outside the xddxdd overlay. These nixpkgs-sourced kernels can be taken from a fresher nixpkgs, see hardware.myKernelSource.";
+    description = "CachyOS kernel variant (xddxdd/nix-cachyos-kernel) — used when hardware.myGpu != \"nvidia\", or on nvidia when hardware.nvidiaKernelSource = \"xddxdd\". \"zen\" maps to pkgs.linuxPackages_zen, \"nixpkgs-lts\" to pkgs.linuxPackages (nixpkgs default LTS), \"nixpkgs-latest\" to pkgs.linuxPackages_latest, \"nixpkgs-testing\" to pkgs.linuxPackages_testing (linux_testing — RC/mainline candidate kernel), \"xanmod-lts\" to pkgs.linuxPackages_xanmod (XanMod LTS branch) and \"xanmod-latest\" to pkgs.linuxPackages_xanmod_latest (XanMod main branch) — all outside the xddxdd overlay. These nixpkgs-sourced kernels can be taken from a fresher nixpkgs, see hardware.myKernelSource.";
   };
 
   # Chaotic-Nyx's variant set is much smaller (no x86_64-v2/v3/v4/zen4,
@@ -72,7 +72,7 @@
       "cachyos-hardened"
     ];
     default = "cachyos";
-    description = "Chaotic-Nyx kernel variant — used only when hardware.myGpu == \"nvidia\", to benefit from the precompiled nvidia_cachyos cache. \"zen\", \"nixpkgs-lts\", \"nixpkgs-latest\", \"nixpkgs-testing\", \"xanmod-lts\" and \"xanmod-latest\" fall outside this cache: nixpkgs kernel (linuxPackages_zen / linuxPackages / linuxPackages_latest / linuxPackages_testing / linuxPackages_xanmod / linuxPackages_xanmod_latest) + nvidia module recompiled locally (see nvidia.nix)";
+    description = "Chaotic-Nyx kernel variant — used only when hardware.myGpu == \"nvidia\" and hardware.nvidiaKernelSource = \"chaotic\" (default), to benefit from the precompiled nvidia_cachyos cache. \"zen\", \"nixpkgs-lts\", \"nixpkgs-latest\", \"nixpkgs-testing\", \"xanmod-lts\" and \"xanmod-latest\" fall outside this cache: nixpkgs kernel (linuxPackages_zen / linuxPackages / linuxPackages_latest / linuxPackages_testing / linuxPackages_xanmod / linuxPackages_xanmod_latest) + nvidia module recompiled locally (see nvidia.nix)";
   };
 
   options.hardware.myKernelSource = lib.mkOption {
@@ -107,8 +107,13 @@
   config =
     let
       source = config.hardware.myKernelSource;
+      # nvidia hosts take the Chaotic-Nyx kernels unless the user opted into
+      # the xddxdd / nixpkgs list (hardware.nvidiaKernelSource = "xddxdd").
+      useChaotic =
+        config.hardware.myGpu == "nvidia"
+        && config.hardware.nvidiaKernelSource == "chaotic";
       activeVariant =
-        if config.hardware.myGpu == "nvidia"
+        if useChaotic
         then config.hardware.myKernelChaotic
         else config.hardware.myKernel;
 
@@ -229,8 +234,9 @@
       };
     }
 
-    # AMD / Intel / VM branch: xddxdd kernel (nix-cachyos-kernel), no cache
-    # concern from the GPU side (no nvidia module to build).
+    # AMD / Intel / VM branch (and nvidia with hardware.nvidiaKernelSource =
+    # "xddxdd"): xddxdd kernel (nix-cachyos-kernel). On AMD/Intel there is no
+    # nvidia module to build; on nvidia it is built locally (see nvidia.nix).
     #
     # The `pinned` overlay builds against the exact nixpkgs revision the
     # kernels were cached with (binary cache: cache.lantian.pub/lantian, see
@@ -240,7 +246,7 @@
     # wrapping the bare kernel with linuxKernel.packagesFor ourselves.
     # NOTE: the cache must be active BEFORE the first build with this kernel —
     # apply the cache settings once (nixos-rebuild switch) first.
-    (lib.mkIf (config.hardware.myGpu != "nvidia") (
+    (lib.mkIf (!useChaotic) (
       let
         variant = config.hardware.myKernel;
         cachy = name: pkgs.cachyosKernels."linuxPackages-${name}";
@@ -302,7 +308,7 @@
     # nvidia_cachyos (chaotic.nixosModules.default is already imported
     # globally in flake.nix, no need to re-import here — its binary cache
     # is therefore active whether or not the GPU is nvidia)
-    (lib.mkIf (config.hardware.myGpu == "nvidia") {
+    (lib.mkIf useChaotic {
       # zen / nixpkgs-* / xanmod-* come from nixpkgs (see nixpkgsKernels);
       # the associated nvidia module (nvidiaPackages.stable, built locally)
       # is selected in nvidia.nix. Everything else is a Chaotic-Nyx kernel

@@ -152,25 +152,33 @@ msgid "Variants"
 msgstr "变体"
 
 #: roudix-kernel-switcher.py
-msgid "Chaotic-Nyx (GPU: nvidia)"
-msgstr "Chaotic-Nyx（GPU：nvidia）"
-
-#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Kernel source: {source}"
 msgstr "内核来源：{source}"
 
 #: roudix-kernel-switcher.py
-msgid ""
-"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
-"(precompiled driver) stays matched to your kernel."
-msgstr ""
-"检测到 Nvidia GPU — 仅显示 Chaotic-Nyx 变体，以便 nvidia_cachyos（预编译驱"
-"动）始终与你的内核匹配。"
+msgid "Nvidia options"
+msgstr "Nvidia 选项"
 
 #: roudix-kernel-switcher.py
-msgid "Active kernel"
-msgstr "当前内核"
+msgid "Kernel source"
+msgstr "内核来源"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+"Chaotic-Nyx：预编译的 Nvidia 模块。xddxdd：更多内核，Nvidia 模块在本地编译。"
+
+#: roudix-kernel-switcher.py
+msgid "Beta driver"
+msgstr "测试版驱动"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Test the beta Nvidia driver. Always built locally, so rebuilds take longer."
+msgstr "试用 Nvidia 测试版驱动。始终在本地编译，因此重新构建耗时更长。"
 
 #: roudix-kernel-switcher.py
 msgid "Select a kernel variant above."
@@ -181,22 +189,54 @@ msgid "Apply & Rebuild"
 msgstr "应用并重新构建"
 
 #: roudix-kernel-switcher.py
+msgid "Chaotic-Nyx (GPU: nvidia)"
+msgstr "Chaotic-Nyx（GPU：nvidia）"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
+"(precompiled driver) stays matched to your kernel."
+msgstr ""
+"检测到 Nvidia GPU — 仅显示 Chaotic-Nyx 变体，以便 nvidia_cachyos（预编译驱"
+"动）始终与你的内核匹配。"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Nvidia GPU detected — these kernels build the Nvidia module locally, so "
+"rebuilds take longer."
+msgstr ""
+"检测到 Nvidia GPU — 这些内核会在本地编译 Nvidia 模块，因此重新构建耗时更长。"
+
+#: roudix-kernel-switcher.py
+msgid "Active kernel"
+msgstr "当前内核"
+
+#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Will switch to: {variant}"
 msgstr "将切换到：{variant}"
+
+#: roudix-kernel-switcher.py
+msgid "Nvidia options changed."
+msgstr "Nvidia 选项已更改。"
 
 #: roudix-kernel-switcher.py
 msgid "Already the active kernel."
 msgstr "已是当前内核。"
 
 #: roudix-kernel-switcher.py
-msgid "Apply changes?"
-msgstr "应用更改？"
-
-#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Kernel: <b>{current}</b> → <b>{selected}</b>"
 msgstr "内核：<b>{current}</b> → <b>{selected}</b>"
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "Nvidia options: {source}, beta driver: {beta}"
+msgstr "Nvidia 选项：{source}，测试版驱动：{beta}"
+
+#: roudix-kernel-switcher.py
+msgid "Apply changes?"
+msgstr "应用更改？"
 
 #: roudix-kernel-switcher.py
 msgid "Your NixOS configuration will be rebuilt. This may take a few minutes."

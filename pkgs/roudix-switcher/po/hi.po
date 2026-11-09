@@ -510,6 +510,46 @@ msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr "शुभंकर: बूट पर हाथ हिलाता है, शटडाउन पर सो जाता है"
 
 #: roudix-switcher.py
+msgid "Hidden"
+msgstr "छिपा हुआ"
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr "स्तर 0 — ओवरले छिपा हुआ"
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr "केवल FPS"
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr "स्तर 1 — सिर्फ़ फ़्रेम रेट"
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr "कॉम्पैक्ट"
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr "स्तर 2 — क्षैतिज पट्टी: CPU, GPU, RAM, फ़्रेम टाइम"
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr "विस्तृत"
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr "स्तर 3 — तापमान, पावर और क्लॉक जोड़ता है"
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr "पूर्ण"
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr "स्तर 4 — सब कुछ (डिफ़ॉल्ट)"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "स्टेबल"
 
@@ -927,6 +967,10 @@ msgid "Launchers and tools installed for gaming."
 msgstr "गेमिंग के लिए इंस्टॉल किए गए लॉन्चर और टूल।"
 
 #: roudix-switcher.py
+msgid "MangoHud — default overlay level"
+msgstr "MangoHud — डिफ़ॉल्ट ओवरले स्तर"
+
+#: roudix-switcher.py
 msgid "OBS plugins"
 msgstr "OBS प्लगइन"
 
@@ -1194,6 +1238,10 @@ msgstr "बूट वॉलपेपर प्रारूप"
 #: roudix-switcher.py
 msgid "Boot splash"
 msgstr "बूट स्प्लैश"
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
+msgstr "MangoHud ओवरले स्तर"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

@@ -510,6 +510,46 @@ msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr "التميمة: تلوّح عند الإقلاع وتنام عند الإيقاف"
 
 #: roudix-switcher.py
+msgid "Hidden"
+msgstr "مخفي"
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr "المستوى 0 — العرض مخفي"
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr "FPS فقط"
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr "المستوى 1 — معدل الإطارات فقط"
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr "مضغوط"
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr "المستوى 2 — شريط أفقي: CPU وGPU وRAM وزمن الإطار"
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr "موسّع"
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr "المستوى 3 — يضيف درجات الحرارة والطاقة والترددات"
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr "كامل"
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr "المستوى 4 — كل شيء (افتراضي)"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "مستقر"
 
@@ -929,6 +969,10 @@ msgid "Launchers and tools installed for gaming."
 msgstr "المُشغِّلات والأدوات المثبّتة للألعاب."
 
 #: roudix-switcher.py
+msgid "MangoHud — default overlay level"
+msgstr "MangoHud — مستوى العرض الافتراضي"
+
+#: roudix-switcher.py
 msgid "OBS plugins"
 msgstr "إضافات OBS"
 
@@ -1196,6 +1240,10 @@ msgstr "تنسيق خلفية الإقلاع"
 #: roudix-switcher.py
 msgid "Boot splash"
 msgstr "شاشة الإقلاع"
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
+msgstr "مستوى عرض MangoHud"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"
