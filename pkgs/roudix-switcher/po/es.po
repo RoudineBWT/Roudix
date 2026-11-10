@@ -1694,3 +1694,47 @@ msgstr "✗ Error inesperado: {e}"
 #, python-brace-format
 msgid "<span color='red'>✗ Unexpected error: {markup_escape_text}</span>"
 msgstr "<span color='red'>✗ Error inesperado: {markup_escape_text}</span>"
+
+#: roudix-switcher.py
+msgid "Drivers"
+msgstr "Controladores"
+
+#: roudix-switcher.py
+msgid "Mesa-git source"
+msgstr "Origen de mesa-git"
+
+#: roudix-switcher.py
+msgid "Nvidia driver source"
+msgstr "Origen del controlador Nvidia"
+
+#: roudix-switcher.py
+msgid "mesa-git built and cached by Chaotic-Nyx"
+msgstr "mesa-git compilado y almacenado en caché por Chaotic-Nyx"
+
+#: roudix-switcher.py
+msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr "mesa-git de nix-gaming-edge, con una entrada de arranque de respaldo stable-mesa"
+
+#: roudix-switcher.py
+msgid "Beta driver (always built locally)"
+msgstr "Controlador beta (siempre compilado localmente)"
+
+#: roudix-switcher.py
+msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
+msgstr "nvidia_cachyos precompilado en un kernel Chaotic-Nyx, sin compilación local"
+
+#: roudix-switcher.py
+msgid "Always the nixpkgs driver, built locally against your kernel"
+msgstr "Siempre el controlador de nixpkgs, compilado localmente para tu kernel"
+
+#: roudix-switcher.py
+msgid "The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the stable driver. With any other kernel, the beta driver or the nixpkgs source, the module is built locally and rebuilds take longer. The kernel itself is chosen in Roudix Kernel Switcher."
+msgstr "El módulo Nvidia precompilado solo existe para un kernel Chaotic-Nyx con el controlador estable. Con cualquier otro kernel, el controlador beta o el origen nixpkgs, el módulo se compila localmente y las reconstrucciones tardan más. El kernel se elige en Roudix Kernel Switcher."
+
+#: roudix-switcher.py
+msgid "Mesa"
+msgstr "Mesa"
+
+#: roudix-switcher.py
+msgid "Nvidia"
+msgstr "Nvidia"

@@ -111,6 +111,10 @@
   # Nvidia only: test the beta driver (nvidiaPackages.beta). Always built
   # locally, no precompiled module.
   # hardware.nvidiaBeta = false;
+  # Nvidia only: "chaotic" (default) = precompiled nvidia_cachyos when the
+  # kernel is a Chaotic-Nyx cachyos* one, "nixpkgs" = always the nixpkgs driver
+  # built locally.
+  # hardware.nvidiaDriverSource = "chaotic";
   # Kernels coming from nixpkgs (zen, nixpkgs-*, xanmod-*) can be taken from a
   # fresher nixpkgs than the rest of the system. "nixpkgs" (default, same as
   # the system), "master" or "staging-next". No effect on cachyos-* kernels.
@@ -199,6 +203,9 @@
   roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
   roudix.autoupdate.branch    = "main";       # branch to track: "main" (stable), "testing" or "dev"
   roudix.mesa.useGit = false;  # false = mesa stable
+  # Where mesa-git comes from when useGit = true: "chaotic" (default) or
+  # "gaming-edge" (nix-gaming-edge, with a stable-mesa fallback boot entry).
+  # roudix.mesa.gitSource = "chaotic";
   roudix.waydroid.enable = false;
   roudix.matrixClient = "none"; # "element", "cinny" or "none"
   roudix.discord = "none"; # "vencord", "vanilla" or "none"

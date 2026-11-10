@@ -221,6 +221,8 @@ Also available, opt-in (off by default): a torrent client via
 - Whole content-creation group toggleable via `roudix.contentCreation.enable`
 - GPU Screen Recorder
 - Mesa Git option for AMD — enable experimental/bleeding-edge Mesa via `roudix.mesa.useGit = true` in `local.nix` (default: stable nixpkgs Mesa) — ⚠️ **experimental**, the build may fail depending on nixpkgs state
+  - `roudix.mesa.gitSource` picks where mesa-git comes from: `"chaotic"` (default, Chaotic-Nyx) or `"gaming-edge"` (nix-gaming-edge, adds a `stable-mesa` fallback boot entry)
+- Nvidia driver source — `hardware.nvidiaDriverSource = "chaotic"` (default, precompiled `nvidia_cachyos` on a Chaotic-Nyx kernel) or `"nixpkgs"` (always built locally)
 - AMD GPU stability kernel params applied automatically (`mem_sleep_default=deep`, `amdgpu.gpu_recovery=1`, `amdgpu.lockup_timeout=1000`, `amdgpu.runpm=0`, `amdgpu.sg_display=0`) — fixes random freezes and wake-from-sleep issues on RDNA2/RDNA3
 - RGB controller selectable via `roudix.rgb` — `openlinkhub` (Corsair iCUE Link / Commander, auto-updated via CI), `openrgb` (multi-brand: Razer, ASUS, MSI…), or `none`
 - OpenLinkHub web UI available at [http://127.0.0.1:27003](http://127.0.0.1:27003) once the service is running
