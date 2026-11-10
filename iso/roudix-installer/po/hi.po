@@ -946,9 +946,9 @@ msgid ""
 "will still launch games normally but without the roudix-gaming CPU profile. "
 "On a gaming laptop, pick tuned above instead."
 msgstr ""
-"tuned को बंद करके TLP इस्तेमाल करता है: अगर गेमिंग भी चालू है, तो game-"
-"performance खेल सामान्य रूप से चलाएगा, लेकिन roudix-gaming CPU प्रोफ़ाइल के "
-"बिना। गेमिंग लैपटॉप पर इसके बजाय ऊपर tuned चुनें।"
+"tuned को बंद करके TLP इस्तेमाल करता है: अगर गेमिंग भी चालू है, तो game-performance खेल "
+"सामान्य रूप से चलाएगा, लेकिन roudix-gaming CPU प्रोफ़ाइल के बिना। गेमिंग लैपटॉप पर इसके "
+"बजाय ऊपर tuned चुनें।"
 
 #: src/roudix_installer/pages/options.py
 msgid "Laptop power manager"
@@ -973,6 +973,30 @@ msgstr "AMD GPU अंडरवोल्टिंग (lact, amdgpu.ppfeaturemask
 #: src/roudix_installer/pages/options.py
 msgid "Kernel"
 msgstr "कर्नेल"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr "कर्नेल स्रोत (Nvidia)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+"Chaotic-Nyx: पहले से कंपाइल किया हुआ Nvidia मॉड्यूल। xddxdd: अधिक कर्नेल, Nvidia "
+"मॉड्यूल स्थानीय रूप से बनता है।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr "Nvidia ड्राइवर स्रोत"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr "nixpkgs: हमेशा आपके कर्नेल के लिए स्थानीय रूप से बनता है।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr "Nvidia बीटा ड्राइवर (स्थानीय रूप से बना)"
 
 #: src/roudix_installer/pages/options.py
 msgid "GPU / CPU auto-detected — change them above if needed."
@@ -1113,6 +1137,10 @@ msgstr "MangoHud (गेम के अंदर प्रदर्शन ओव�
 #: src/roudix_installer/pages/options.py
 msgid "Mesa git (bleeding-edge graphics drivers)"
 msgstr "Mesa git (सबसे नए ग्राफ़िक्स ड्राइवर)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr "Mesa git स्रोत"
 
 #: src/roudix_installer/pages/options.py
 msgid "Timezone"
@@ -1897,27 +1925,3 @@ msgstr "सभी सवाल पूछे जाएँगे।"
 #: src/roudix_installer/pages/welcome.py
 msgid "Only the questions relevant to this profile will be asked."
 msgstr "केवल इस प्रोफ़ाइल से जुड़े सवाल पूछे जाएँगे।"
-
-#: src/roudix_installer/pages/options.py
-msgid "Kernel source (Nvidia)"
-msgstr "कर्नेल स्रोत (Nvidia)"
-
-#: src/roudix_installer/pages/options.py
-msgid "Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module built locally."
-msgstr "Chaotic-Nyx: पहले से कंपाइल किया हुआ Nvidia मॉड्यूल। xddxdd: अधिक कर्नेल, Nvidia मॉड्यूल स्थानीय रूप से बनता है।"
-
-#: src/roudix_installer/pages/options.py
-msgid "Nvidia driver source"
-msgstr "Nvidia ड्राइवर स्रोत"
-
-#: src/roudix_installer/pages/options.py
-msgid "nixpkgs: always built locally against your kernel."
-msgstr "nixpkgs: हमेशा आपके कर्नेल के लिए स्थानीय रूप से बनता है।"
-
-#: src/roudix_installer/pages/options.py
-msgid "Nvidia beta driver (built locally)"
-msgstr "Nvidia बीटा ड्राइवर (स्थानीय रूप से बना)"
-
-#: src/roudix_installer/pages/options.py
-msgid "Mesa git source"
-msgstr "Mesa git स्रोत"

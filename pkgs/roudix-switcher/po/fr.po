@@ -598,6 +598,33 @@ msgstr ""
 "fois (sudo eacnix-enroll-mok)"
 
 #: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr "Mesa-git (pilotes GPU bleeding-edge)"
+
+#: roudix-switcher.py
+msgid "mesa-git built and cached by Chaotic-Nyx"
+msgstr "mesa-git compilé et mis en cache par Chaotic-Nyx"
+
+#: roudix-switcher.py
+msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr ""
+"mesa-git de nix-gaming-edge, avec une entrée de démarrage de secours stable-"
+"mesa"
+
+#: roudix-switcher.py
+msgid "Beta driver (always built locally)"
+msgstr "Pilote bêta (toujours compilé localement)"
+
+#: roudix-switcher.py
+msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
+msgstr ""
+"nvidia_cachyos précompilé sur un noyau Chaotic-Nyx, sans compilation locale"
+
+#: roudix-switcher.py
+msgid "Always the nixpkgs driver, built locally against your kernel"
+msgstr "Toujours le pilote de nixpkgs, compilé localement pour ton noyau"
+
+#: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
 msgstr "Faible latence (48 kHz, quantum 128) — travail audio, jeux de rythme"
 
@@ -854,10 +881,6 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (apps Android)"
 
 #: roudix-switcher.py
-msgid "Mesa-git (bleeding-edge GPU drivers)"
-msgstr "Mesa-git (pilotes GPU bleeding-edge)"
-
-#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "Auto-update (git pull + rebuild programmé)"
 
@@ -937,6 +960,10 @@ msgstr "Client de chat"
 #: roudix-switcher.py
 msgid "Apps"
 msgstr "Applications"
+
+#: roudix-switcher.py
+msgid "Drivers"
+msgstr "Pilotes"
 
 #: roudix-switcher.py
 msgid "System"
@@ -1212,6 +1239,34 @@ msgstr "Audio (PipeWire)"
 #: roudix-switcher.py
 msgid "System tuning"
 msgstr "Optimisations système"
+
+#: roudix-switcher.py
+msgid "Mesa"
+msgstr "Mesa"
+
+#: roudix-switcher.py
+msgid "Mesa-git source"
+msgstr "Source de mesa-git"
+
+#: roudix-switcher.py
+msgid "Nvidia"
+msgstr "Nvidia"
+
+#: roudix-switcher.py
+msgid "Nvidia driver source"
+msgstr "Source du pilote Nvidia"
+
+#: roudix-switcher.py
+msgid ""
+"The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the "
+"stable driver. With any other kernel, the beta driver or the nixpkgs source, "
+"the module is built locally and rebuilds take longer. The kernel itself is "
+"chosen in Roudix Kernel Switcher."
+msgstr ""
+"Le module Nvidia précompilé n'existe que pour un noyau Chaotic-Nyx avec le "
+"pilote stable. Avec tout autre noyau, le pilote bêta ou la source nixpkgs, "
+"le module est compilé localement et les rebuilds sont plus longs. Le noyau "
+"lui-même se choisit dans Roudix Kernel Switcher."
 
 #: roudix-switcher.py
 msgid "Keyring & portal backend"
@@ -1691,47 +1746,3 @@ msgstr "✗ Erreur inattendue : {e}"
 #, python-brace-format
 msgid "<span color='red'>✗ Unexpected error: {markup_escape_text}</span>"
 msgstr "<span color='red'>✗ Erreur inattendue : {markup_escape_text}</span>"
-
-#: roudix-switcher.py
-msgid "Drivers"
-msgstr "Pilotes"
-
-#: roudix-switcher.py
-msgid "Mesa-git source"
-msgstr "Source de mesa-git"
-
-#: roudix-switcher.py
-msgid "Nvidia driver source"
-msgstr "Source du pilote Nvidia"
-
-#: roudix-switcher.py
-msgid "mesa-git built and cached by Chaotic-Nyx"
-msgstr "mesa-git compilé et mis en cache par Chaotic-Nyx"
-
-#: roudix-switcher.py
-msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
-msgstr "mesa-git de nix-gaming-edge, avec une entrée de démarrage de secours stable-mesa"
-
-#: roudix-switcher.py
-msgid "Beta driver (always built locally)"
-msgstr "Pilote bêta (toujours compilé localement)"
-
-#: roudix-switcher.py
-msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
-msgstr "nvidia_cachyos précompilé sur un noyau Chaotic-Nyx, sans compilation locale"
-
-#: roudix-switcher.py
-msgid "Always the nixpkgs driver, built locally against your kernel"
-msgstr "Toujours le pilote de nixpkgs, compilé localement pour ton noyau"
-
-#: roudix-switcher.py
-msgid "The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the stable driver. With any other kernel, the beta driver or the nixpkgs source, the module is built locally and rebuilds take longer. The kernel itself is chosen in Roudix Kernel Switcher."
-msgstr "Le module Nvidia précompilé n'existe que pour un noyau Chaotic-Nyx avec le pilote stable. Avec tout autre noyau, le pilote bêta ou la source nixpkgs, le module est compilé localement et les rebuilds sont plus longs. Le noyau lui-même se choisit dans Roudix Kernel Switcher."
-
-#: roudix-switcher.py
-msgid "Mesa"
-msgstr "Mesa"
-
-#: roudix-switcher.py
-msgid "Nvidia"
-msgstr "Nvidia"

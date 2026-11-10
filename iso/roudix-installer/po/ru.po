@@ -983,6 +983,30 @@ msgid "Kernel"
 msgstr "Ядро"
 
 #: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr "Источник ядра (Nvidia)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+"Chaotic-Nyx: предкомпилированный модуль Nvidia. xddxdd: больше ядер, модуль "
+"Nvidia собирается локально."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr "Источник драйвера Nvidia"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr "nixpkgs: всегда собирается локально под ваше ядро."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr "Бета-драйвер Nvidia (собирается локально)"
+
+#: src/roudix_installer/pages/options.py
 msgid "GPU / CPU auto-detected — change them above if needed."
 msgstr ""
 "GPU / CPU определены автоматически — при необходимости измените их выше."
@@ -1122,6 +1146,10 @@ msgstr "MangoHud (оверлей производительности в игр�
 #: src/roudix_installer/pages/options.py
 msgid "Mesa git (bleeding-edge graphics drivers)"
 msgstr "Mesa git (новейшие графические драйверы)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr "Источник Mesa git"
 
 #: src/roudix_installer/pages/options.py
 msgid "Timezone"
@@ -1917,27 +1945,3 @@ msgstr "Будут заданы все вопросы."
 #: src/roudix_installer/pages/welcome.py
 msgid "Only the questions relevant to this profile will be asked."
 msgstr "Будут заданы только вопросы, относящиеся к этому профилю."
-
-#: src/roudix_installer/pages/options.py
-msgid "Kernel source (Nvidia)"
-msgstr "Источник ядра (Nvidia)"
-
-#: src/roudix_installer/pages/options.py
-msgid "Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module built locally."
-msgstr "Chaotic-Nyx: предкомпилированный модуль Nvidia. xddxdd: больше ядер, модуль Nvidia собирается локально."
-
-#: src/roudix_installer/pages/options.py
-msgid "Nvidia driver source"
-msgstr "Источник драйвера Nvidia"
-
-#: src/roudix_installer/pages/options.py
-msgid "nixpkgs: always built locally against your kernel."
-msgstr "nixpkgs: всегда собирается локально под ваше ядро."
-
-#: src/roudix_installer/pages/options.py
-msgid "Nvidia beta driver (built locally)"
-msgstr "Бета-драйвер Nvidia (собирается локально)"
-
-#: src/roudix_installer/pages/options.py
-msgid "Mesa git source"
-msgstr "Источник Mesa git"

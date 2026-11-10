@@ -586,6 +586,30 @@ msgstr ""
 "enroll-mok)"
 
 #: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr "Mesa-git (أحدث تعريفات الرسوميات)"
+
+#: roudix-switcher.py
+msgid "mesa-git built and cached by Chaotic-Nyx"
+msgstr "mesa-git مبني ومخزَّن مؤقتًا بواسطة Chaotic-Nyx"
+
+#: roudix-switcher.py
+msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr "mesa-git من nix-gaming-edge مع إدخال إقلاع احتياطي stable-mesa"
+
+#: roudix-switcher.py
+msgid "Beta driver (always built locally)"
+msgstr "برنامج التشغيل التجريبي (يُبنى دائمًا محليًا)"
+
+#: roudix-switcher.py
+msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
+msgstr "nvidia_cachyos مُجمَّع مسبقًا على نواة Chaotic-Nyx دون بناء محلي"
+
+#: roudix-switcher.py
+msgid "Always the nixpkgs driver, built locally against your kernel"
+msgstr "دائمًا برنامج تشغيل nixpkgs، يُبنى محليًا لنواتك"
+
+#: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
 msgstr ""
 "زمن استجابة منخفض (48 كيلوهرتز، quantum 128) — العمل الصوتي وألعاب الإيقاع"
@@ -838,10 +862,6 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (تطبيقات Android)"
 
 #: roudix-switcher.py
-msgid "Mesa-git (bleeding-edge GPU drivers)"
-msgstr "Mesa-git (أحدث تعريفات الرسوميات)"
-
-#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "تحديث تلقائي (git pull مجدول + إعادة بناء)"
 
@@ -919,6 +939,10 @@ msgstr "عميل الدردشة"
 #: roudix-switcher.py
 msgid "Apps"
 msgstr "التطبيقات"
+
+#: roudix-switcher.py
+msgid "Drivers"
+msgstr "برامج التشغيل"
 
 #: roudix-switcher.py
 msgid "System"
@@ -1189,6 +1213,34 @@ msgstr "الصوت (PipeWire)"
 #: roudix-switcher.py
 msgid "System tuning"
 msgstr "ضبط النظام"
+
+#: roudix-switcher.py
+msgid "Mesa"
+msgstr "Mesa"
+
+#: roudix-switcher.py
+msgid "Mesa-git source"
+msgstr "مصدر mesa-git"
+
+#: roudix-switcher.py
+msgid "Nvidia"
+msgstr "Nvidia"
+
+#: roudix-switcher.py
+msgid "Nvidia driver source"
+msgstr "مصدر برنامج تشغيل Nvidia"
+
+#: roudix-switcher.py
+msgid ""
+"The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the "
+"stable driver. With any other kernel, the beta driver or the nixpkgs source, "
+"the module is built locally and rebuilds take longer. The kernel itself is "
+"chosen in Roudix Kernel Switcher."
+msgstr ""
+"وحدة Nvidia المجمَّعة مسبقًا موجودة فقط لنواة Chaotic-Nyx مع برنامج التشغيل "
+"المستقر. مع أي نواة أخرى أو برنامج التشغيل التجريبي أو مصدر nixpkgs تُبنى "
+"الوحدة محليًا وتستغرق إعادة البناء وقتًا أطول. تُختار النواة نفسها في Roudix "
+"Kernel Switcher."
 
 #: roudix-switcher.py
 msgid "Keyring & portal backend"
@@ -1653,47 +1705,3 @@ msgstr "✗ خطأ غير متوقع: {e}"
 #, python-brace-format
 msgid "<span color='red'>✗ Unexpected error: {markup_escape_text}</span>"
 msgstr "<span color='red'>✗ خطأ غير متوقع: {markup_escape_text}</span>"
-
-#: roudix-switcher.py
-msgid "Drivers"
-msgstr "برامج التشغيل"
-
-#: roudix-switcher.py
-msgid "Mesa-git source"
-msgstr "مصدر mesa-git"
-
-#: roudix-switcher.py
-msgid "Nvidia driver source"
-msgstr "مصدر برنامج تشغيل Nvidia"
-
-#: roudix-switcher.py
-msgid "mesa-git built and cached by Chaotic-Nyx"
-msgstr "mesa-git مبني ومخزَّن مؤقتًا بواسطة Chaotic-Nyx"
-
-#: roudix-switcher.py
-msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
-msgstr "mesa-git من nix-gaming-edge مع إدخال إقلاع احتياطي stable-mesa"
-
-#: roudix-switcher.py
-msgid "Beta driver (always built locally)"
-msgstr "برنامج التشغيل التجريبي (يُبنى دائمًا محليًا)"
-
-#: roudix-switcher.py
-msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
-msgstr "nvidia_cachyos مُجمَّع مسبقًا على نواة Chaotic-Nyx دون بناء محلي"
-
-#: roudix-switcher.py
-msgid "Always the nixpkgs driver, built locally against your kernel"
-msgstr "دائمًا برنامج تشغيل nixpkgs، يُبنى محليًا لنواتك"
-
-#: roudix-switcher.py
-msgid "The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the stable driver. With any other kernel, the beta driver or the nixpkgs source, the module is built locally and rebuilds take longer. The kernel itself is chosen in Roudix Kernel Switcher."
-msgstr "وحدة Nvidia المجمَّعة مسبقًا موجودة فقط لنواة Chaotic-Nyx مع برنامج التشغيل المستقر. مع أي نواة أخرى أو برنامج التشغيل التجريبي أو مصدر nixpkgs تُبنى الوحدة محليًا وتستغرق إعادة البناء وقتًا أطول. تُختار النواة نفسها في Roudix Kernel Switcher."
-
-#: roudix-switcher.py
-msgid "Mesa"
-msgstr "Mesa"
-
-#: roudix-switcher.py
-msgid "Nvidia"
-msgstr "Nvidia"
