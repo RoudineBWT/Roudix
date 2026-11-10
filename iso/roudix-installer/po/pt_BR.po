@@ -1920,3 +1920,27 @@ msgstr "Todas as perguntas serão feitas."
 #: src/roudix_installer/pages/welcome.py
 msgid "Only the questions relevant to this profile will be asked."
 msgstr "Apenas as perguntas relevantes para este perfil serão feitas."
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr "Origem do kernel (Nvidia)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module built locally."
+msgstr "Chaotic-Nyx: módulo Nvidia pré-compilado. xddxdd: mais kernels, módulo Nvidia compilado localmente."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr "Origem do driver Nvidia"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr "nixpkgs: sempre compilado localmente para o seu kernel."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr "Driver Nvidia beta (compilado localmente)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr "Origem do Mesa git"

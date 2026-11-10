@@ -188,6 +188,10 @@ class InstallState:
     file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo
     ananicy_enable: bool = False     # roudix.gaming.ananicy.enable — opt-in, only meaningful if gaming.enable
     mesa_use_git: bool = False       # roudix.mesa.useGit — false = mesa stable
+    mesa_git_source: str = "chaotic"  # roudix.mesa.gitSource — chaotic | gaming-edge (only when mesa_use_git)
+    nvidia_kernel_source: str = "chaotic"  # hardware.nvidiaKernelSource — chaotic | xddxdd (nvidia only)
+    nvidia_driver_source: str = "chaotic"  # hardware.nvidiaDriverSource — chaotic | nixpkgs (nvidia only)
+    nvidia_beta: bool = False        # hardware.nvidiaBeta — beta driver, built locally (nvidia only)
 
     # ── Content creation ─────────────────────────────────────────────────
     content_creation_enable: bool = False  # roudix.contentCreation.enable

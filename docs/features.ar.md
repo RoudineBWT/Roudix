@@ -8,6 +8,8 @@
 - مزوّدان للنواة، يُختاران تلقائيًا بحسب `hardware.myGpu`:
   - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)، 36 إصدارًا (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx، 4 إصدارات (`hardware.myKernelChaotic`) — يوفّر `nvidia_cachyos`، وهو تعريف مُجمَّع مسبقًا ومطابق لنواتهم، ولذلك لا تُعاد بناء وحدة Nvidia محليًا عند كل تحديث للنواة
+  - يمكن لـ Nvidia أيضًا استخدام أنوية xddxdd عبر `hardware.nvidiaKernelSource = "xddxdd"` (نفس قائمة AMD/Intel، `hardware.myKernel`)؛ وعندها تُبنى وحدة Nvidia محليًا عند كل تحديث للنواة أو برنامج التشغيل
+  - يحوّل `hardware.nvidiaBeta = true` أجهزة Nvidia إلى برنامج التشغيل التجريبي (يُبنى دائمًا محليًا، دون وحدة مجمَّعة مسبقًا)
 - يمكن أيضًا اختيار نوى nixpkgs العادية مع كلا المزوّدين، خارج طبقة CachyOS تمامًا — `zen` (`linuxPackages_zen`) و`nixpkgs-lts` و`nixpkgs-latest` و`nixpkgs-testing` (RC/mainline) و`xanmod-lts` / `xanmod-latest` (XanMod). على Nvidia تعود هذه النوى إلى وحدة Nvidia تُبنى محليًا (دون ذاكرة التخزين المؤقت `nvidia_cachyos`)
 - يأخذ `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) نوى nixpkgs هذه فقط من nixpkgs أحدث للحصول على تحديثات النواة أبكر، دون المساس ببقية النظام
 - تفعيل ZRAM (100% من الذاكرة، zstd، swappiness 150)
@@ -200,6 +202,8 @@ input المسمى [betterbird-nix](https://github.com/TheAnachronism/betterbird
 - يمكن تفعيل/تعطيل مجموعة إنشاء المحتوى بأكملها عبر `roudix.contentCreation.enable`
 - GPU Screen Recorder
 - خيار Mesa Git لـ AMD — فعّل Mesa التجريبي/الأحدث عبر `roudix.mesa.useGit = true` في `local.nix` (الافتراضي: Mesa المستقر من nixpkgs) — ⚠️ **تجريبي**، وقد يفشل البناء بحسب حالة nixpkgs
+  - يحدد `roudix.mesa.gitSource` مصدر mesa-git: `"chaotic"` (الافتراضي، Chaotic-Nyx) أو `"gaming-edge"` (nix-gaming-edge، ويضيف إدخال إقلاع احتياطيًا `stable-mesa`)
+- مصدر برنامج تشغيل Nvidia — `hardware.nvidiaDriverSource = "chaotic"` (الافتراضي، `nvidia_cachyos` مجمَّع مسبقًا على نواة Chaotic-Nyx) أو `"nixpkgs"` (يُبنى دائمًا محليًا)
 - تُطبَّق تلقائيًا معاملات نواة لاستقرار معالجات AMD الرسومية (`mem_sleep_default=deep` و`amdgpu.gpu_recovery=1` و`amdgpu.lockup_timeout=1000` و`amdgpu.runpm=0` و`amdgpu.sg_display=0`) — تعالج التجمّد العشوائي ومشكلات الاستيقاظ من السكون على RDNA2/RDNA3
 - يمكن اختيار متحكم RGB عبر `roudix.rgb` — `openlinkhub` (Corsair iCUE Link / Commander، يُحدَّث تلقائيًا عبر CI) أو `openrgb` (متعدد الشركات: Razer وASUS وMSI…) أو `none`
 - واجهة OpenLinkHub على الويب متاحة على [http://127.0.0.1:27003](http://127.0.0.1:27003) بمجرد تشغيل الخدمة

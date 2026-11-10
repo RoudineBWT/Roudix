@@ -1897,3 +1897,27 @@ msgstr "सभी सवाल पूछे जाएँगे।"
 #: src/roudix_installer/pages/welcome.py
 msgid "Only the questions relevant to this profile will be asked."
 msgstr "केवल इस प्रोफ़ाइल से जुड़े सवाल पूछे जाएँगे।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr "कर्नेल स्रोत (Nvidia)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module built locally."
+msgstr "Chaotic-Nyx: पहले से कंपाइल किया हुआ Nvidia मॉड्यूल। xddxdd: अधिक कर्नेल, Nvidia मॉड्यूल स्थानीय रूप से बनता है।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr "Nvidia ड्राइवर स्रोत"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr "nixpkgs: हमेशा आपके कर्नेल के लिए स्थानीय रूप से बनता है।"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr "Nvidia बीटा ड्राइवर (स्थानीय रूप से बना)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr "Mesa git स्रोत"

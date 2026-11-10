@@ -1881,3 +1881,27 @@ msgstr "将询问所有问题。"
 #: src/roudix_installer/pages/welcome.py
 msgid "Only the questions relevant to this profile will be asked."
 msgstr "只会询问与此配置文件相关的问题。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr "内核来源（Nvidia）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module built locally."
+msgstr "Chaotic-Nyx：预编译的 Nvidia 模块。xddxdd：更多内核，Nvidia 模块在本地编译。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr "Nvidia 驱动来源"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr "nixpkgs：始终针对你的内核在本地编译。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr "Nvidia 测试版驱动（本地编译）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr "Mesa git 来源"

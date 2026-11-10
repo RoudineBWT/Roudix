@@ -8,6 +8,8 @@
 - Два поставщика ядер, выбираемые автоматически по `hardware.myGpu`:
   - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 36 варианта (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 варианта (`hardware.myKernelChaotic`) — поставляет `nvidia_cachyos`, предсобранный драйвер, подогнанный под их ядро, поэтому модуль Nvidia не пересобирается локально при каждом обновлении ядра
+  - Nvidia также может использовать ядра xddxdd через `hardware.nvidiaKernelSource = "xddxdd"` (тот же список, что у AMD/Intel, `hardware.myKernel`); тогда модуль Nvidia собирается локально при каждом обновлении ядра или драйвера
+  - `hardware.nvidiaBeta = true` переключает хосты Nvidia на бета-драйвер (всегда собирается локально, без предсобранного модуля)
 - «Чистые» ядра из nixpkgs тоже можно выбрать у обоих поставщиков, полностью вне оверлея CachyOS — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod). На Nvidia они переходят на локально пересобираемый модуль Nvidia (без кэша `nvidia_cachyos`)
 - `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) берёт только эти ядра nixpkgs из более свежего nixpkgs, чтобы раньше получать обновления ядра, не затрагивая остальную систему
 - ZRAM включён (100% ОЗУ, zstd, swappiness 150)
@@ -200,6 +202,8 @@ Cressida — неофициальный нативный клиент Discord (C
 - Всю группу для создания контента можно включать/отключать через `roudix.contentCreation.enable`
 - GPU Screen Recorder
 - Опция Mesa Git для AMD — включает экспериментальную/самую свежую Mesa через `roudix.mesa.useGit = true` в `local.nix` (по умолчанию: стабильная Mesa из nixpkgs) — ⚠️ **экспериментально**, сборка может завершиться ошибкой в зависимости от состояния nixpkgs
+  - `roudix.mesa.gitSource` выбирает источник mesa-git: `"chaotic"` (по умолчанию, Chaotic-Nyx) или `"gaming-edge"` (nix-gaming-edge, добавляет резервную загрузочную запись `stable-mesa`)
+- Источник драйвера Nvidia — `hardware.nvidiaDriverSource = "chaotic"` (по умолчанию, предсобранный `nvidia_cachyos` на ядре Chaotic-Nyx) или `"nixpkgs"` (всегда собирается локально)
 - Параметры ядра для стабильности GPU AMD применяются автоматически (`mem_sleep_default=deep`, `amdgpu.gpu_recovery=1`, `amdgpu.lockup_timeout=1000`, `amdgpu.runpm=0`, `amdgpu.sg_display=0`) — устраняют случайные зависания и проблемы при выходе из сна на RDNA2/RDNA3
 - RGB-контроллер выбирается через `roudix.rgb` — `openlinkhub` (Corsair iCUE Link / Commander, автоматически обновляется через CI), `openrgb` (разные бренды: Razer, ASUS, MSI…) или `none`
 - Веб-интерфейс OpenLinkHub доступен по адресу [http://127.0.0.1:27003](http://127.0.0.1:27003) после запуска службы

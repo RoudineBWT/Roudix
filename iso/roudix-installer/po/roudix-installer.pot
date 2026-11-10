@@ -1852,3 +1852,27 @@ msgstr ""
 #: src/roudix_installer/pages/welcome.py
 msgid "Only the questions relevant to this profile will be asked."
 msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module built locally."
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr ""
