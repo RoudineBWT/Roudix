@@ -505,7 +505,8 @@ msgstr "Dégradé chaud, halo qui pulse derrière le logo"
 
 #: roudix-switcher.py
 msgid "Rising embers, a progress ring, logo in a growing glow"
-msgstr "Braises qui montent, anneau de progression, logo dans une lueur grandissante"
+msgstr ""
+"Braises qui montent, anneau de progression, logo dans une lueur grandissante"
 
 #: roudix-switcher.py
 msgid "Roudix — ember"
@@ -518,6 +519,46 @@ msgstr "Pandoudix"
 #: roudix-switcher.py
 msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr "La mascotte : salue au démarrage, dort à l'extinction"
+
+#: roudix-switcher.py
+msgid "Hidden"
+msgstr "Caché"
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr "Niveau 0 — overlay caché"
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr "FPS seulement"
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr "Niveau 1 — seulement le nombre d’images par seconde"
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr "Compact"
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr "Niveau 2 — barre horizontale : CPU, GPU, RAM, frametime"
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr "Étendu"
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr "Niveau 3 — ajoute températures, puissances et fréquences"
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr "Complet"
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr "Niveau 4 — tout (par défaut)"
 
 #: roudix-switcher.py
 msgid "Stable"
@@ -555,6 +596,33 @@ msgid ""
 msgstr ""
 "Kernel OGC de Bazzite — la clé d'Universal Blue doit être enregistrée une "
 "fois (sudo eacnix-enroll-mok)"
+
+#: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr "Mesa-git (pilotes GPU bleeding-edge)"
+
+#: roudix-switcher.py
+msgid "mesa-git built and cached by Chaotic-Nyx"
+msgstr "mesa-git compilé et mis en cache par Chaotic-Nyx"
+
+#: roudix-switcher.py
+msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr ""
+"mesa-git de nix-gaming-edge, avec une entrée de démarrage de secours stable-"
+"mesa"
+
+#: roudix-switcher.py
+msgid "Beta driver (always built locally)"
+msgstr "Pilote bêta (toujours compilé localement)"
+
+#: roudix-switcher.py
+msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
+msgstr ""
+"nvidia_cachyos précompilé sur un noyau Chaotic-Nyx, sans compilation locale"
+
+#: roudix-switcher.py
+msgid "Always the nixpkgs driver, built locally against your kernel"
+msgstr "Toujours le pilote de nixpkgs, compilé localement pour ton noyau"
 
 #: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
@@ -813,10 +881,6 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (apps Android)"
 
 #: roudix-switcher.py
-msgid "Mesa-git (bleeding-edge GPU drivers)"
-msgstr "Mesa-git (pilotes GPU bleeding-edge)"
-
-#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "Auto-update (git pull + rebuild programmé)"
 
@@ -898,6 +962,10 @@ msgid "Apps"
 msgstr "Applications"
 
 #: roudix-switcher.py
+msgid "Drivers"
+msgstr "Pilotes"
+
+#: roudix-switcher.py
 msgid "System"
 msgstr "Système"
 
@@ -944,6 +1012,10 @@ msgstr "Versions"
 #: roudix-switcher.py
 msgid "Launchers and tools installed for gaming."
 msgstr "Lanceurs et outils installés pour le gaming."
+
+#: roudix-switcher.py
+msgid "MangoHud — default overlay level"
+msgstr "MangoHud — niveau d’overlay par défaut"
 
 #: roudix-switcher.py
 msgid "OBS plugins"
@@ -1169,6 +1241,34 @@ msgid "System tuning"
 msgstr "Optimisations système"
 
 #: roudix-switcher.py
+msgid "Mesa"
+msgstr "Mesa"
+
+#: roudix-switcher.py
+msgid "Mesa-git source"
+msgstr "Source de mesa-git"
+
+#: roudix-switcher.py
+msgid "Nvidia"
+msgstr "Nvidia"
+
+#: roudix-switcher.py
+msgid "Nvidia driver source"
+msgstr "Source du pilote Nvidia"
+
+#: roudix-switcher.py
+msgid ""
+"The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the "
+"stable driver. With any other kernel, the beta driver or the nixpkgs source, "
+"the module is built locally and rebuilds take longer. The kernel itself is "
+"chosen in Roudix Kernel Switcher."
+msgstr ""
+"Le module Nvidia précompilé n'existe que pour un noyau Chaotic-Nyx avec le "
+"pilote stable. Avec tout autre noyau, le pilote bêta ou la source nixpkgs, "
+"le module est compilé localement et les rebuilds sont plus longs. Le noyau "
+"lui-même se choisit dans Roudix Kernel Switcher."
+
+#: roudix-switcher.py
 msgid "Keyring & portal backend"
 msgstr "Backend keyring et portail"
 
@@ -1219,6 +1319,10 @@ msgstr "Format du fond de démarrage"
 #: roudix-switcher.py
 msgid "Boot splash"
 msgstr "Écran de démarrage"
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
+msgstr "Niveau d’overlay MangoHud"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

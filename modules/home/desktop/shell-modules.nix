@@ -23,7 +23,7 @@ in
   # flake modules' own default (latest) package.
   config = lib.mkMerge [
     (lib.mkIf (dp.useNixpkgs "dms" && has [ "programs" "dank-material-shell" "package" ]) {
-      programs.dank-material-shell.package = pkgs.dms-shell;
+      programs.dank-material-shell.package = pkgs.dux-shell;
     })
     (lib.mkIf (dp.useNixpkgs "caelestia" && has [ "programs" "caelestia" "package" ]) {
       programs.caelestia.package = pkgs.caelestia-shell;

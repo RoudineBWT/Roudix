@@ -6,6 +6,14 @@ let
   # /run/current-system/sw/share/backgrounds through desktop-integration.nix).
   wallpaper = "/run/current-system/sw/share/backgrounds/roudix/roudix-ember-cove.png";
 
+  # ── Default UI font: RoudixSans ───────────────────────────────────────
+  # Installed on every desktop by pkgs/roudix-mono-font (fonts.packages in
+  # modules/system/nix/common.nix). Shipped as a DEFAULT only, like the
+  # wallpaper and icons: a font picked in the desktop's settings wins and a
+  # rebuild never puts this one back. Same family name in gnome.nix,
+  # cinnamon.nix, kde.nix and cosmic.nix (kept in sync by hand).
+  uiFont = "RoudixSans Nerd Font Propo";
+
   # ── How Roudix ships its COSMIC defaults without overriding the user ─────
   # cosmic-config (libcosmic) looks a key up in the user's own
   # ~/.config/cosmic/<id>/v<N>/<key> first, and only when that file does not
@@ -145,6 +153,10 @@ let
       # Qt palettes) and the Roudix icon theme (modules/system/desktop/icon-theme.nix).
       (mkDefault "com.system76.CosmicTk" "apply_theme_global" "true")
       (mkDefault "com.system76.CosmicTk" "icon_theme" (ron.str config.roudix.iconThemeName))
+      # Settings > Desktop > Appearance > Interface font (libcosmic apps: panel,
+      # dock, Settings, Files...). Monospace font left to COSMIC's own default.
+      (mkDefault "com.system76.CosmicTk" "interface_font"
+        ''(family: ${ron.str uiFont}, weight: Normal, stretch: Normal, style: Normal)'')
       (mkDefault "com.system76.CosmicAppList" "favorites" (ron.list (map ron.str favoriteApps)))
       (mkDefault "com.system76.CosmicAppLibrary" "groups" appLibraryGroups)
       (mkDefault "com.system76.CosmicComp" "xkb_config" xkbConfig)
@@ -179,6 +191,14 @@ in
 
     # ── Look & feel defaults (see the top of this file) ───────────────────
     environment.pathsToLink = [ "/share/cosmic" "/share/desktop-directories" ];
+
+    # COSMIC has no GTK font setting: GTK apps (the Roudix apps, browsers...)
+    # read org.gnome.desktop.interface. System dconf DEFAULT, like gnome.nix:
+    # gtk-theme.nix only writes the theme / icon / cursor keys to the user's
+    # db, so it never shadows this one, and anything the user sets wins.
+    programs.dconf.profiles.user.databases = [
+      { settings."org/gnome/desktop/interface".font-name = "${uiFont} 10"; }
+    ];
 
     # Roudix has its own scheduler stack (SCX, optional ananicy-cpp): two
     # process schedulers fighting over priorities help nobody. The nixpkgs

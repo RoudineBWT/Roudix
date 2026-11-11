@@ -72,6 +72,7 @@
     nerd-fonts.iosevka
     nerd-fonts.hurmit
     nerd-fonts.fantasque-sans-mono
+    (callPackage ../../../pkgs/roudix-mono-font { })
   ];
 
   # ── User ────────────────────────────────────────────────────────────────

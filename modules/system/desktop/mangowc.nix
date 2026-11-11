@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, username, ... }:
 let
   isMango     = config.roudix.desktop.type == "mangowc";
   shellType   = config.roudix.desktop.shell or "noctalia";
@@ -20,8 +20,6 @@ let
   };
 in
 {
-  imports = [ ./ly.nix ];
-
   # ── User-facing options ────────────────────────────────────────────────
   options.roudix.mangowc = {
     scratchpadApps = lib.mkOption {
@@ -88,7 +86,16 @@ in
       systemd.enable = true;
     };
 
-    # ── Noctalia greeter (replaces ly when shell == noctalia) ────────────
+    # ── DMS greeter (when shell == dms or caelestia, i.e. !isNoctalia) ───────
+    # Replaces ly. Same greeter as niri/hyprland; "mango" is in its
+    # compositor.name enum.
+    programs.dms-greeter = lib.mkIf (!isNoctalia) {
+      enable = true;
+      compositor.name = "mango";
+      configHome = "/home/${username}";
+    };
+
+    # ── Noctalia greeter (when shell == noctalia) ────────────────────────
     services.displayManager.noctalia-greeter = lib.mkIf isNoctalia {
       enable = true;
       greeter-args = "--session mangowc";
@@ -119,19 +126,17 @@ in
       };
     };
 
-    # ⚠ kde branch not tested in a real session. The "ly" sub-case (shell
-    # != noctalia) should be reliable — ly is a classic display manager.
-    # The "greetd" sub-case (shell == noctalia) has a known caveat: the
-    # "greetd" PAM service doesn't substack "login" (nixpkgs#357201),
-    # which has already broken kwallet auto-unlock for other greetd users
-    # — see discourse.nixos.org "Auto-Unlock kwallet with greetd
-    # login-manager". Verify after a rebuild.
+    # ⚠ kde branch not tested in a real session. Both greeters (noctalia-greeter
+    # and dms-greeter) run on greetd, so the keyring is wired to the "greetd"
+    # PAM service whichever shell is used. Known caveat: the "greetd" PAM
+    # service doesn't substack "login" (nixpkgs#357201), which has already
+    # broken kwallet auto-unlock for other greetd users — see
+    # discourse.nixos.org "Auto-Unlock kwallet with greetd login-manager".
+    # Verify after a rebuild.
     services.gnome.gnome-keyring.enable = !isKdeIntegration;
     services.dbus.enable = true;
-    security.pam.services.ly.enableGnomeKeyring     = lib.mkIf (!isNoctalia && !isKdeIntegration) true;
-    security.pam.services.greetd.enableGnomeKeyring = lib.mkIf (isNoctalia && !isKdeIntegration) true;
-    security.pam.services.ly.kwallet.enable          = lib.mkIf (!isNoctalia && isKdeIntegration) true;
-    security.pam.services.greetd.kwallet.enable      = lib.mkIf (isNoctalia && isKdeIntegration) true;
+    security.pam.services.greetd.enableGnomeKeyring = lib.mkIf (!isKdeIntegration) true;
+    security.pam.services.greetd.kwallet.enable     = lib.mkIf isKdeIntegration true;
 
     environment.systemPackages = lib.optionals needsPolkit [
       (if isKdeIntegration then pkgs.kdePackages.polkit-kde-agent-1 else pkgs.polkit_gnome)

@@ -104,25 +104,27 @@ config = lib.mkIf isHyprland {
     terminal = "ghostty";
   };
 
+  # ── UWSM / graphical-session.target ────────────────────────────────────
+  # UWSM manages graphical-session.target itself — NixOS's fake target
+  # marks it as already active before login, which makes UWSM fail.
+  # (moved here from the removed ly.nix)
+  systemd.user.targets.nixos-fake-graphical-session = {
+    enable = false;
+    unitConfig.DefaultDependencies = "no";
+    wantedBy = lib.mkForce [];
+  };
+
   # ── Keyring ───────────────────────────────────────────────────────────
-  # ⚠ kde branch not tested in a real session. ly.nix enables "ly" as the
-  # display manager for hyprland unconditionally (useLy = isHyprland,
-  # regardless of isNoctalia), while this block keeps noctalia-greeter
-  # (greetd) active when isNoctalia — so both DMs can run at the same time
-  # when isNoctalia == true. That's a pre-existing conflict on ly.nix's
-  # side, not introduced here. Until it's resolved there (either
-  # isHyprland && !isNoctalia, or removing the noctalia-greeter block from
-  # this file), the keyring is wired to both possible PAM services to stay
-  # correct either way.
-  # Separately known caveat: the "greetd" PAM service doesn't substack
-  # "login" (nixpkgs#357201), which has already broken kwallet auto-unlock
-  # for other greetd users — see discourse.nixos.org "Auto-Unlock kwallet
+  # ⚠ kde branch not tested in a real session. Both greeters
+  # (noctalia-greeter and dms-greeter) run on greetd, so the keyring is
+  # wired to the "greetd" PAM service whichever shell is used.
+  # Known caveat: the "greetd" PAM service doesn't substack "login"
+  # (nixpkgs#357201), which has already broken kwallet auto-unlock for
+  # other greetd users — see discourse.nixos.org "Auto-Unlock kwallet
   # with greetd login-manager".
   services.gnome.gnome-keyring.enable = !isKdeIntegration;
-  security.pam.services.ly.enableGnomeKeyring     = lib.mkIf (!isKdeIntegration) true;
-  security.pam.services.greetd.enableGnomeKeyring = lib.mkIf (isNoctalia && !isKdeIntegration) true;
-  security.pam.services.ly.kwallet.enable         = lib.mkIf isKdeIntegration true;
-  security.pam.services.greetd.kwallet.enable     = lib.mkIf (isNoctalia && isKdeIntegration) true;
+  security.pam.services.greetd.enableGnomeKeyring = lib.mkIf (!isKdeIntegration) true;
+  security.pam.services.greetd.kwallet.enable     = lib.mkIf isKdeIntegration true;
 
 
   environment.systemPackages = with pkgs; [

@@ -4,6 +4,13 @@ let
 
   wallpaperDark = "${roudixBranding}/share/wallpapers/RoudixEmberCove/contents/images/2560x1440.png";
 
+  # Default UI font: RoudixSans (installed by pkgs/roudix-mono-font). Qt6 font
+  # string: family,size,pixelSize,styleHint,weight,style,underline,strikeout,
+  # fixedPitch,... — 400 = Regular, 700 = Bold.
+  uiFont = "RoudixSans Nerd Font Propo";
+  qtFont = size: weight:
+    "${uiFont},${toString size},-1,5,${toString weight},0,0,0,0,0,0,0,0,0,0,1";
+
   roudixMenu = {
       text = ''
         <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
@@ -65,6 +72,20 @@ lib.mkIf isKde {
   environment.etc."xdg/kcminputrc".text = ''
     [Keyboard]
     NumLock=0
+  '';
+
+  # Fonts: same fallback mechanism. System Settings > Text & Fonts > Fonts
+  # writes the user's own ~/.config/kdeglobals, which wins; a rebuild never
+  # touches it. Fixed-width font left to Plasma's own default.
+  environment.etc."xdg/kdeglobals".text = ''
+    [General]
+    font=${qtFont 10 400}
+    menuFont=${qtFont 10 400}
+    toolBarFont=${qtFont 10 400}
+    smallestReadableFont=${qtFont 8 400}
+
+    [WM]
+    activeFont=${qtFont 10 700}
   '';
 
   environment.etc."xdg/kscreenlockerrc".text = ''

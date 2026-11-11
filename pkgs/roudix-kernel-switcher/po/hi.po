@@ -156,25 +156,36 @@ msgid "Variants"
 msgstr "वेरिएंट"
 
 #: roudix-kernel-switcher.py
-msgid "Chaotic-Nyx (GPU: nvidia)"
-msgstr "Chaotic-Nyx (GPU: nvidia)"
-
-#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Kernel source: {source}"
 msgstr "कर्नल स्रोत: {source}"
 
 #: roudix-kernel-switcher.py
-msgid ""
-"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
-"(precompiled driver) stays matched to your kernel."
-msgstr ""
-"Nvidia GPU मिला — सिर्फ़ Chaotic-Nyx वेरिएंट दिखाए जा रहे हैं, ताकि nvidia_cachyos "
-"(पहले से कंपाइल किया हुआ ड्राइवर) आपके कर्नल से मेल खाता रहे।"
+msgid "Nvidia options"
+msgstr "Nvidia विकल्प"
 
 #: roudix-kernel-switcher.py
-msgid "Active kernel"
-msgstr "सक्रिय कर्नल"
+msgid "Kernel source"
+msgstr "कर्नेल स्रोत"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+"Chaotic-Nyx: पहले से कंपाइल किया हुआ Nvidia मॉड्यूल। xddxdd: अधिक कर्नेल, Nvidia "
+"मॉड्यूल स्थानीय रूप से बनता है।"
+
+#: roudix-kernel-switcher.py
+msgid "Beta driver"
+msgstr "बीटा ड्राइवर"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Test the beta Nvidia driver. Always built locally, so rebuilds take longer."
+msgstr ""
+"Nvidia बीटा ड्राइवर आज़माएँ। यह हमेशा स्थानीय रूप से बनता है, इसलिए रीबिल्ड में अधिक "
+"समय लगता है।"
 
 #: roudix-kernel-switcher.py
 msgid "Select a kernel variant above."
@@ -185,22 +196,55 @@ msgid "Apply & Rebuild"
 msgstr "लागू करें और रीबिल्ड करें"
 
 #: roudix-kernel-switcher.py
+msgid "Chaotic-Nyx (GPU: nvidia)"
+msgstr "Chaotic-Nyx (GPU: nvidia)"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
+"(precompiled driver) stays matched to your kernel."
+msgstr ""
+"Nvidia GPU मिला — सिर्फ़ Chaotic-Nyx वेरिएंट दिखाए जा रहे हैं, ताकि nvidia_cachyos "
+"(पहले से कंपाइल किया हुआ ड्राइवर) आपके कर्नल से मेल खाता रहे।"
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Nvidia GPU detected — these kernels build the Nvidia module locally, so "
+"rebuilds take longer."
+msgstr ""
+"Nvidia GPU मिला — ये कर्नेल Nvidia मॉड्यूल को स्थानीय रूप से बनाते हैं, इसलिए रीबिल्ड में "
+"अधिक समय लगता है।"
+
+#: roudix-kernel-switcher.py
+msgid "Active kernel"
+msgstr "सक्रिय कर्नल"
+
+#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Will switch to: {variant}"
 msgstr "इस पर स्विच होगा: {variant}"
+
+#: roudix-kernel-switcher.py
+msgid "Nvidia options changed."
+msgstr "Nvidia विकल्प बदले गए।"
 
 #: roudix-kernel-switcher.py
 msgid "Already the active kernel."
 msgstr "यह पहले से सक्रिय कर्नल है।"
 
 #: roudix-kernel-switcher.py
-msgid "Apply changes?"
-msgstr "बदलाव लागू करें?"
-
-#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Kernel: <b>{current}</b> → <b>{selected}</b>"
 msgstr "कर्नल: <b>{current}</b> → <b>{selected}</b>"
+
+#: roudix-kernel-switcher.py
+#, python-brace-format
+msgid "Nvidia options: {source}, beta driver: {beta}"
+msgstr "Nvidia विकल्प: {source}, बीटा ड्राइवर: {beta}"
+
+#: roudix-kernel-switcher.py
+msgid "Apply changes?"
+msgstr "बदलाव लागू करें?"
 
 #: roudix-kernel-switcher.py
 msgid "Your NixOS configuration will be rebuilt. This may take a few minutes."

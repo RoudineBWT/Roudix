@@ -154,22 +154,31 @@ msgid "Variants"
 msgstr ""
 
 #: roudix-kernel-switcher.py
-msgid "Chaotic-Nyx (GPU: nvidia)"
-msgstr ""
-
-#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Kernel source: {source}"
 msgstr ""
 
 #: roudix-kernel-switcher.py
-msgid ""
-"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
-"(precompiled driver) stays matched to your kernel."
+msgid "Nvidia options"
 msgstr ""
 
 #: roudix-kernel-switcher.py
-msgid "Active kernel"
+msgid "Kernel source"
+msgstr ""
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+
+#: roudix-kernel-switcher.py
+msgid "Beta driver"
+msgstr ""
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Test the beta Nvidia driver. Always built locally, so rebuilds take longer."
 msgstr ""
 
 #: roudix-kernel-switcher.py
@@ -181,8 +190,32 @@ msgid "Apply & Rebuild"
 msgstr ""
 
 #: roudix-kernel-switcher.py
+msgid "Chaotic-Nyx (GPU: nvidia)"
+msgstr ""
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Nvidia GPU detected — only Chaotic-Nyx variants are shown, so nvidia_cachyos "
+"(precompiled driver) stays matched to your kernel."
+msgstr ""
+
+#: roudix-kernel-switcher.py
+msgid ""
+"Nvidia GPU detected — these kernels build the Nvidia module locally, so "
+"rebuilds take longer."
+msgstr ""
+
+#: roudix-kernel-switcher.py
+msgid "Active kernel"
+msgstr ""
+
+#: roudix-kernel-switcher.py
 #, python-brace-format
 msgid "Will switch to: {variant}"
+msgstr ""
+
+#: roudix-kernel-switcher.py
+msgid "Nvidia options changed."
 msgstr ""
 
 #: roudix-kernel-switcher.py
@@ -190,12 +223,17 @@ msgid "Already the active kernel."
 msgstr ""
 
 #: roudix-kernel-switcher.py
-msgid "Apply changes?"
+#, python-brace-format
+msgid "Kernel: <b>{current}</b> → <b>{selected}</b>"
 msgstr ""
 
 #: roudix-kernel-switcher.py
 #, python-brace-format
-msgid "Kernel: <b>{current}</b> → <b>{selected}</b>"
+msgid "Nvidia options: {source}, beta driver: {beta}"
+msgstr ""
+
+#: roudix-kernel-switcher.py
+msgid "Apply changes?"
 msgstr ""
 
 #: roudix-kernel-switcher.py

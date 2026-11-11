@@ -510,6 +510,46 @@ msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr "التميمة: تلوّح عند الإقلاع وتنام عند الإيقاف"
 
 #: roudix-switcher.py
+msgid "Hidden"
+msgstr "مخفي"
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr "المستوى 0 — العرض مخفي"
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr "FPS فقط"
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr "المستوى 1 — معدل الإطارات فقط"
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr "مضغوط"
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr "المستوى 2 — شريط أفقي: CPU وGPU وRAM وزمن الإطار"
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr "موسّع"
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr "المستوى 3 — يضيف درجات الحرارة والطاقة والترددات"
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr "كامل"
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr "المستوى 4 — كل شيء (افتراضي)"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "مستقر"
 
@@ -544,6 +584,30 @@ msgid ""
 msgstr ""
 "نواة OGC من Bazzite — يجب تسجيل مفتاح Universal Blue مرة واحدة (sudo eacnix-"
 "enroll-mok)"
+
+#: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr "Mesa-git (أحدث تعريفات الرسوميات)"
+
+#: roudix-switcher.py
+msgid "mesa-git built and cached by Chaotic-Nyx"
+msgstr "mesa-git مبني ومخزَّن مؤقتًا بواسطة Chaotic-Nyx"
+
+#: roudix-switcher.py
+msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr "mesa-git من nix-gaming-edge مع إدخال إقلاع احتياطي stable-mesa"
+
+#: roudix-switcher.py
+msgid "Beta driver (always built locally)"
+msgstr "برنامج التشغيل التجريبي (يُبنى دائمًا محليًا)"
+
+#: roudix-switcher.py
+msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
+msgstr "nvidia_cachyos مُجمَّع مسبقًا على نواة Chaotic-Nyx دون بناء محلي"
+
+#: roudix-switcher.py
+msgid "Always the nixpkgs driver, built locally against your kernel"
+msgstr "دائمًا برنامج تشغيل nixpkgs، يُبنى محليًا لنواتك"
 
 #: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
@@ -798,10 +862,6 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (تطبيقات Android)"
 
 #: roudix-switcher.py
-msgid "Mesa-git (bleeding-edge GPU drivers)"
-msgstr "Mesa-git (أحدث تعريفات الرسوميات)"
-
-#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "تحديث تلقائي (git pull مجدول + إعادة بناء)"
 
@@ -881,6 +941,10 @@ msgid "Apps"
 msgstr "التطبيقات"
 
 #: roudix-switcher.py
+msgid "Drivers"
+msgstr "برامج التشغيل"
+
+#: roudix-switcher.py
 msgid "System"
 msgstr "النظام"
 
@@ -927,6 +991,10 @@ msgstr "الإصدارات"
 #: roudix-switcher.py
 msgid "Launchers and tools installed for gaming."
 msgstr "المُشغِّلات والأدوات المثبّتة للألعاب."
+
+#: roudix-switcher.py
+msgid "MangoHud — default overlay level"
+msgstr "MangoHud — مستوى العرض الافتراضي"
 
 #: roudix-switcher.py
 msgid "OBS plugins"
@@ -1147,6 +1215,34 @@ msgid "System tuning"
 msgstr "ضبط النظام"
 
 #: roudix-switcher.py
+msgid "Mesa"
+msgstr "Mesa"
+
+#: roudix-switcher.py
+msgid "Mesa-git source"
+msgstr "مصدر mesa-git"
+
+#: roudix-switcher.py
+msgid "Nvidia"
+msgstr "Nvidia"
+
+#: roudix-switcher.py
+msgid "Nvidia driver source"
+msgstr "مصدر برنامج تشغيل Nvidia"
+
+#: roudix-switcher.py
+msgid ""
+"The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the "
+"stable driver. With any other kernel, the beta driver or the nixpkgs source, "
+"the module is built locally and rebuilds take longer. The kernel itself is "
+"chosen in Roudix Kernel Switcher."
+msgstr ""
+"وحدة Nvidia المجمَّعة مسبقًا موجودة فقط لنواة Chaotic-Nyx مع برنامج التشغيل "
+"المستقر. مع أي نواة أخرى أو برنامج التشغيل التجريبي أو مصدر nixpkgs تُبنى "
+"الوحدة محليًا وتستغرق إعادة البناء وقتًا أطول. تُختار النواة نفسها في Roudix "
+"Kernel Switcher."
+
+#: roudix-switcher.py
 msgid "Keyring & portal backend"
 msgstr "سلسلة المفاتيح وواجهة البوابة الخلفية"
 
@@ -1196,6 +1292,10 @@ msgstr "تنسيق خلفية الإقلاع"
 #: roudix-switcher.py
 msgid "Boot splash"
 msgstr "شاشة الإقلاع"
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
+msgstr "مستوى عرض MangoHud"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

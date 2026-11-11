@@ -202,11 +202,18 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
         t = _set_nullable_string_option(t, f"roudix.nvidia_config.{key}", prime_ids.get(key, ""))
     t = _sub_bool(t, "roudix.laptop.enable", state.laptop)
     t = _sub_bool(t, "roudix.laptop.thinkpad", state.laptop_thinkpad)
+    t = _sub_string(t, "roudix.laptop.backend", state.laptop_backend)
     t = _sub_bool(t, "roudix.undervolt.only-amd.enable", state.undervolt_enable)
     t = _sub_string(t, "hardware.myCpu", state.cpu)
     is_nvidia = state.gpu == "nvidia"
-    t = _set_kernel_option(t, "hardware.myKernel", not is_nvidia, state.kernel)
-    t = _set_kernel_option(t, "hardware.myKernelChaotic", is_nvidia, state.kernel_chaotic)
+    # nvidia hosts take the Chaotic-Nyx kernels unless they opted into xddxdd's
+    use_chaotic = is_nvidia and state.nvidia_kernel_source == "chaotic"
+    t = _set_kernel_option(t, "hardware.myKernel", not use_chaotic, state.kernel)
+    t = _set_kernel_option(t, "hardware.myKernelChaotic", use_chaotic, state.kernel_chaotic)
+    if is_nvidia:
+        t = _set_string_option(t, "hardware.nvidiaKernelSource", state.nvidia_kernel_source)
+        t = _set_string_option(t, "hardware.nvidiaDriverSource", state.nvidia_driver_source)
+        t = _set_bool_option(t, "hardware.nvidiaBeta", state.nvidia_beta)
     t = _sub_list_single(t, "roudix.browsers", state.browser)
     t = _sub_bool(t, "roudix.zen.enable", state.zen_browser)
     t = _sub_string(t, "roudix.zen.variant", state.zen_variant)
@@ -235,6 +242,8 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
         t = _set_bool_option(t, "roudix.gaming.apps.mangohud.enable", state.gaming_apps_mangohud)
         t = _set_bool_option(t, "roudix.gaming.steam.millennium.enable", state.gaming_steam_millennium)
     t = _sub_bool(t, "roudix.mesa.useGit", state.mesa_use_git)
+    if state.mesa_use_git:
+        t = _set_string_option(t, "roudix.mesa.gitSource", state.mesa_git_source)
     t = _sub_string(t, "time.timeZone", state.timezone)
     t = _sub_string(t, "environment.sessionVariables.TZ", state.timezone)
     t = _sub_string(t, "i18n.defaultLocale", state.locale)
@@ -339,6 +348,7 @@ def _expected_values(state: InstallState) -> list:
         "roudix.musicPlayer": state.music_player, "roudix.mailClient": state.mail_client,
         "roudix.passwordManager": state.password_manager,
         "roudix.apps.fluxer.channel": state.app_fluxer_channel,
+        "roudix.laptop.backend": state.laptop_backend,
     }
     bools = {
         "hardware.nvidiaLaptop": state.nvidia_laptop, "roudix.laptop.enable": state.laptop,
@@ -352,6 +362,14 @@ def _expected_values(state: InstallState) -> list:
         "roudix.boot.secureBoot.enable": _boot_security(state)[0],
         "roudix.boot.eac.enable": _boot_security(state)[1],
     }
+    # only the options patch_local_nix() actually writes (they ship commented
+    # out in local.nix.example, so an unwritten one would not match)
+    if state.mesa_use_git:
+        strings["roudix.mesa.gitSource"] = state.mesa_git_source
+    if state.gpu == "nvidia":
+        strings["hardware.nvidiaKernelSource"] = state.nvidia_kernel_source
+        strings["hardware.nvidiaDriverSource"] = state.nvidia_driver_source
+        bools["hardware.nvidiaBeta"] = state.nvidia_beta
     out = [(k, "str", v) for k, v in strings.items()]
     out += [(k, "bool", v) for k, v in bools.items()]
     out.append(("roudix.browsers", "list1", state.browser))

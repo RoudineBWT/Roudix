@@ -6,9 +6,13 @@ hl.bind("SUPER + SHIFT + Q", global("caelestia:session"))
 hl.bind("SUPER + ALT + L", global("caelestia:lock"))
 hl.bind("ALT + TAB", global("caelestia:sidebar"))
 
-hl.bind("XF86AudioRaiseVolume", global("caelestia:volumeUp"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", global("caelestia:volumeDown"), { locked = true, repeating = true })
-hl.bind("XF86AudioMute", global("caelestia:mute"), { locked = true })
+-- Caelestia declares no volume/mute global shortcuts (caelestia:volumeUp,
+-- volumeDown and mute do not exist), only brightnessUp/brightnessDown. Audio keys
+-- go through wpctl, like the upstream caelestia-dots keybinds.
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true, repeating = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true })
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true })
 hl.bind("XF86MonBrightnessUp", global("caelestia:brightnessUp"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", global("caelestia:brightnessDown"), { locked = true, repeating = true })
 

@@ -179,7 +179,28 @@ def detect_current_gpu() -> str | None:
         return None
 
 
+def detect_nvidia_source() -> str:
+    """hardware.nvidiaKernelSource: "chaotic" (default) or "xddxdd"."""
+    try:
+        text = open(CONFIG_FILE).read()
+        m = re.search(r'^[ \t]*hardware\.nvidiaKernelSource\s*=\s*"([^"]+)"', text, re.M)
+        return "xddxdd" if (m and m.group(1) == "xddxdd") else "chaotic"
+    except OSError:
+        return "chaotic"
+
+
+def detect_nvidia_beta() -> bool:
+    """hardware.nvidiaBeta (active line only, default false)."""
+    try:
+        text = open(CONFIG_FILE).read()
+        m = re.search(r'^[ \t]*hardware\.nvidiaBeta\s*=\s*(true|false)', text, re.M)
+        return bool(m and m.group(1) == "true")
+    except OSError:
+        return False
+
+
 def detect_current_kernel(is_nvidia: bool) -> str | None:
+    """is_nvidia = "reads the Chaotic-Nyx key" (nvidia and source == chaotic)."""
     key = "myKernelChaotic" if is_nvidia else "myKernel"
     try:
         text = open(CONFIG_FILE).read()
@@ -189,19 +210,42 @@ def detect_current_kernel(is_nvidia: bool) -> str | None:
         return None
 
 
-def set_kernel(kernel: str, is_nvidia: bool) -> bool | str:
-    key = "myKernelChaotic" if is_nvidia else "myKernel"
+def _set_option_text(content: str, key: str, literal: str) -> str:
+    """Set `hardware.<key> = <literal>;` in a local.nix text: replace the active
+    line, else uncomment a commented one, else add it before the last `}`."""
+    active = re.compile(rf'^([ \t]*hardware\.{key}[ \t]*=[ \t]*)[^;\n]*;', re.M)
+    if active.search(content):
+        return active.sub(lambda m: f"{m.group(1)}{literal};", content, count=1)
+    commented = re.compile(rf'^([ \t]*)#[ \t]*(hardware\.{key}[ \t]*=[ \t]*)[^;\n]*;', re.M)
+    if commented.search(content):
+        return commented.sub(lambda m: f"{m.group(1)}{m.group(2)}{literal};", content, count=1)
+    idx = content.rstrip().rfind("}")
+    if idx == -1:
+        return content
+    return content[:idx] + f"  hardware.{key} = {literal};\n" + content[idx:]
+
+
+def write_config(kernel: str | None, chaotic: bool, gpu_nvidia: bool,
+                 source: str, beta: bool) -> bool | str:
+    """One write for everything: the kernel key, and on nvidia hosts the
+    kernel source and beta-driver options."""
     try:
         with open(CONFIG_FILE) as f:
             content = f.read()
-        new = re.sub(
-            rf'hardware\.{key}\s*=\s*"[^"]*"',
-            f'hardware.{key} = "{kernel}"',
-            content,
-        )
+        if gpu_nvidia:
+            content = _set_option_text(content, "nvidiaKernelSource", f'"{source}"')
+            content = _set_option_text(content, "nvidiaBeta", "true" if beta else "false")
+            # Only one of myKernel / myKernelChaotic should be active at a time
+            other = "myKernel" if chaotic else "myKernelChaotic"
+            content = re.sub(rf'^([ \t]*)(hardware\.{other}[ \t]*=)',
+                             lambda m: f"{m.group(1)}# {m.group(2)}", content, flags=re.M)
+        if kernel:
+            key = "myKernelChaotic" if chaotic else "myKernel"
+            content = _set_option_text(content, key, f'"{kernel}"')
         with open(CONFIG_FILE, "w") as f:
-            f.write(new)
-        log.info("Configuration updated: hardware.%s = '%s'.", key, kernel)
+            f.write(content)
+        log.info("Configuration updated: kernel=%s chaotic=%s source=%s beta=%s",
+                 kernel, chaotic, source, beta)
         return True
     except Exception as e:
         log.error("Failed to write configuration: %s", e)
@@ -214,9 +258,17 @@ class KernelPage(Gtk.Box):
     def __init__(self, window: "KernelSwitcher"):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self._win      = window
-        self._is_nvidia = detect_current_gpu() == "nvidia"
+        self._gpu_nvidia  = detect_current_gpu() == "nvidia"
+        self._source      = detect_nvidia_source() if self._gpu_nvidia else "xddxdd"
+        self._beta        = detect_nvidia_beta() if self._gpu_nvidia else False
+        self._orig_source = self._source
+        self._orig_beta   = self._beta
+        # "_is_nvidia" = "uses the Chaotic-Nyx catalogue" (nvidia host that did
+        # not opt into hardware.nvidiaKernelSource = "xddxdd")
+        self._is_nvidia = self._gpu_nvidia and self._source == "chaotic"
         self._catalogue = KERNELS_CHAOTIC if self._is_nvidia else KERNELS
-        self._current  = detect_current_kernel(self._is_nvidia)
+        self._active_kernel = detect_current_kernel(self._is_nvidia)
+        self._current  = self._active_kernel
         self._selected = self._current
         self._anchor   = Gtk.CheckButton()
 
@@ -232,61 +284,58 @@ class KernelPage(Gtk.Box):
         body.set_margin_end(16)
         scroll.set_child(body)
 
-        source_label = tr("Chaotic-Nyx (GPU: nvidia)") if self._is_nvidia else "xddxdd"
-        source_note = Gtk.Label(label=tr("Kernel source: {source}").format(source=source_label))
-        source_note.set_halign(Gtk.Align.START)
-        source_note.add_css_class("dim-label")
-        source_note.add_css_class("caption")
-        source_note.set_margin_bottom(8)
-        body.append(source_note)
+        self._source_note = Gtk.Label(
+            label=tr("Kernel source: {source}").format(source=self._source_label()))
+        self._source_note.set_halign(Gtk.Align.START)
+        self._source_note.add_css_class("dim-label")
+        self._source_note.add_css_class("caption")
+        self._source_note.set_margin_bottom(8)
+        body.append(self._source_note)
 
-        if self._is_nvidia:
-            nvidia_note = Gtk.Label(
-                label=tr("Nvidia GPU detected — only Chaotic-Nyx variants are shown, "
-                         "so nvidia_cachyos (precompiled driver) stays matched to your kernel.")
-            )
-            nvidia_note.set_halign(Gtk.Align.START)
-            nvidia_note.set_wrap(True)
-            nvidia_note.add_css_class("dim-label")
-            nvidia_note.add_css_class("caption")
-            nvidia_note.set_margin_bottom(12)
-            body.append(nvidia_note)
+        if self._gpu_nvidia:
+            self._nvidia_note = Gtk.Label(label=self._nvidia_note_text())
+            self._nvidia_note.set_halign(Gtk.Align.START)
+            self._nvidia_note.set_wrap(True)
+            self._nvidia_note.add_css_class("dim-label")
+            self._nvidia_note.add_css_class("caption")
+            self._nvidia_note.set_margin_bottom(12)
+            body.append(self._nvidia_note)
 
-        if self._current:
-            banner = Adw.ActionRow()
-            banner.set_title(tr("Active kernel"))
-            banner.set_subtitle(self._current)
-            banner.add_css_class("card")
-            banner.set_margin_bottom(16)
-            body.append(banner)
+            opts_lbl = Gtk.Label(label=tr("Nvidia options").upper())
+            opts_lbl.set_halign(Gtk.Align.START)
+            opts_lbl.set_margin_bottom(4)
+            opts_lbl.add_css_class("caption-heading")
+            body.append(opts_lbl)
 
-        for group_name, entries in self._catalogue.items():
-            grp_lbl = Gtk.Label(label=GROUP_TITLES.get(group_name, group_name).upper())
-            grp_lbl.set_halign(Gtk.Align.START)
-            grp_lbl.set_margin_top(8)
-            grp_lbl.set_margin_bottom(4)
-            grp_lbl.add_css_class("caption-heading")
-            body.append(grp_lbl)
+            opts = Gtk.ListBox()
+            opts.set_selection_mode(Gtk.SelectionMode.NONE)
+            opts.add_css_class("boxed-list")
+            opts.set_margin_bottom(12)
+            body.append(opts)
 
-            lb = Gtk.ListBox()
-            lb.set_selection_mode(Gtk.SelectionMode.NONE)
-            lb.add_css_class("boxed-list")
-            lb.set_margin_bottom(12)
-            body.append(lb)
+            self._src_row = Adw.ComboRow()
+            self._src_row.set_title(tr("Kernel source"))
+            self._src_row.set_subtitle(
+                tr("Chaotic-Nyx: precompiled Nvidia module. "
+                   "xddxdd: more kernels, Nvidia module built locally."))
+            self._src_row.set_model(Gtk.StringList.new(["Chaotic-Nyx", "xddxdd"]))
+            self._src_row.set_selected(0 if self._source == "chaotic" else 1)
+            self._src_row.connect("notify::selected", self._on_source_changed)
+            opts.append(self._src_row)
 
-            for variant, desc in entries:
-                row = Adw.ActionRow()
-                row.set_title(variant)
-                row.set_subtitle(desc)
-                check = Gtk.CheckButton()
-                check.set_group(self._anchor)
-                check.set_valign(Gtk.Align.CENTER)
-                if variant == self._current:
-                    check.set_active(True)
-                check.connect("toggled", self._on_toggled, variant)
-                row.add_prefix(check)
-                row.set_activatable_widget(check)
-                lb.append(row)
+            self._beta_row = Adw.SwitchRow()
+            self._beta_row.set_title(tr("Beta driver"))
+            self._beta_row.set_subtitle(
+                tr("Test the beta Nvidia driver. Always built locally, "
+                   "so rebuilds take longer."))
+            self._beta_row.set_active(self._beta)
+            self._beta_row.connect("notify::active", self._on_beta_toggled)
+            opts.append(self._beta_row)
+
+        # The kernel list is rebuilt when the Nvidia kernel source changes
+        self._cat_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        body.append(self._cat_box)
+        self._build_catalogue()
 
         sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
         self.append(sep)
@@ -361,23 +410,114 @@ class KernelPage(Gtk.Box):
         term_scroll.set_child(self._log_tv)
         self.append(term_scroll)
 
+    def _source_label(self) -> str:
+        return tr("Chaotic-Nyx (GPU: nvidia)") if self._is_nvidia else "xddxdd"
+
+    def _nvidia_note_text(self) -> str:
+        if self._is_nvidia:
+            return tr("Nvidia GPU detected — only Chaotic-Nyx variants are shown, "
+                      "so nvidia_cachyos (precompiled driver) stays matched to your kernel.")
+        return tr("Nvidia GPU detected — these kernels build the Nvidia module locally, "
+                  "so rebuilds take longer.")
+
+    def _build_catalogue(self):
+        child = self._cat_box.get_first_child()
+        while child is not None:
+            nxt = child.get_next_sibling()
+            self._cat_box.remove(child)
+            child = nxt
+        self._anchor = Gtk.CheckButton()
+
+        if self._current:
+            banner = Adw.ActionRow()
+            banner.set_title(tr("Active kernel"))
+            banner.set_subtitle(self._current)
+            banner.add_css_class("card")
+            banner.set_margin_bottom(16)
+            self._cat_box.append(banner)
+
+        for group_name, entries in self._catalogue.items():
+            grp_lbl = Gtk.Label(label=GROUP_TITLES.get(group_name, group_name).upper())
+            grp_lbl.set_halign(Gtk.Align.START)
+            grp_lbl.set_margin_top(8)
+            grp_lbl.set_margin_bottom(4)
+            grp_lbl.add_css_class("caption-heading")
+            self._cat_box.append(grp_lbl)
+
+            lb = Gtk.ListBox()
+            lb.set_selection_mode(Gtk.SelectionMode.NONE)
+            lb.add_css_class("boxed-list")
+            lb.set_margin_bottom(12)
+            self._cat_box.append(lb)
+
+            for variant, desc in entries:
+                row = Adw.ActionRow()
+                row.set_title(variant)
+                row.set_subtitle(desc)
+                check = Gtk.CheckButton()
+                check.set_group(self._anchor)
+                check.set_valign(Gtk.Align.CENTER)
+                if variant == self._selected:
+                    check.set_active(True)
+                check.connect("toggled", self._on_toggled, variant)
+                row.add_prefix(check)
+                row.set_activatable_widget(check)
+                lb.append(row)
+
+    def _on_source_changed(self, row, _pspec):
+        self._source = "chaotic" if row.get_selected() == 0 else "xddxdd"
+        self._is_nvidia = self._source == "chaotic"
+        self._catalogue = KERNELS_CHAOTIC if self._is_nvidia else KERNELS
+        # The "active kernel" only makes sense for the source in the config;
+        # on the other source the user has to pick one.
+        self._current = self._active_kernel if self._source == self._orig_source else None
+        self._selected = self._current
+        self._nvidia_note.set_label(self._nvidia_note_text())
+        self._source_note.set_label(
+            tr("Kernel source: {source}").format(source=self._source_label()))
+        self._build_catalogue()
+        self._refresh_apply()
+
+    def _on_beta_toggled(self, row, _pspec):
+        self._beta = row.get_active()
+        self._refresh_apply()
+
+    def _refresh_apply(self):
+        source_changed = self._gpu_nvidia and self._source != self._orig_source
+        beta_changed = self._gpu_nvidia and self._beta != self._orig_beta
+        kernel_changed = bool(self._selected) and self._selected != self._current
+        if source_changed and not self._selected:
+            can, msg = False, tr("Select a kernel variant above.")
+        elif kernel_changed:
+            can, msg = True, tr("Will switch to: {variant}").format(variant=self._selected)
+        elif source_changed or beta_changed:
+            can, msg = True, tr("Nvidia options changed.")
+        elif self._selected:
+            can, msg = False, tr("Already the active kernel.")
+        else:
+            can, msg = False, tr("Select a kernel variant above.")
+        self._apply_btn.set_sensitive(can)
+        self._status_lbl.set_label(msg)
+
     def _on_toggled(self, check, variant):
         if check.get_active():
             self._selected = variant
-            changed = variant != self._current
-            self._apply_btn.set_sensitive(changed)
-            self._status_lbl.set_label(
-                tr("Will switch to: {variant}").format(variant=variant) if changed
-                else tr("Already the active kernel."))
+            self._refresh_apply()
 
     def _on_apply(self, _btn):
-        if not self._selected:
+        if not self._apply_btn.get_sensitive():
             return
+        shown = self._selected or self._active_kernel or "?"
+        body = tr("Kernel: <b>{current}</b> → <b>{selected}</b>").format(
+            current=self._active_kernel or "?", selected=shown)
+        if self._gpu_nvidia and (self._source != self._orig_source
+                                 or self._beta != self._orig_beta):
+            body += "\n" + tr("Nvidia options: {source}, beta driver: {beta}").format(
+                source=self._source, beta="✓" if self._beta else "✗")
         dialog = Adw.AlertDialog()
         dialog.set_heading(tr("Apply changes?"))
         dialog.set_body(
-            tr("Kernel: <b>{current}</b> → <b>{selected}</b>").format(
-                current=self._current or "?", selected=self._selected) + "\n\n" +
+            body + "\n\n" +
             tr("Your NixOS configuration will be rebuilt. This may take a few minutes.")
         )
         dialog.set_body_use_markup(True)
@@ -391,7 +531,8 @@ class KernelPage(Gtk.Box):
     def _on_confirm(self, dialog, response):
         if response != "confirm":
             return
-        result = set_kernel(self._selected, self._is_nvidia)
+        result = write_config(self._selected, self._is_nvidia, self._gpu_nvidia,
+                              self._source, self._beta)
         if result is not True:
             self._status_lbl.set_label(tr("✗ Error writing config: {error}").format(error=result))
             return
@@ -475,8 +616,13 @@ class KernelPage(Gtk.Box):
             GLib.source_remove(self._pulse_source)
             self._pulse_source = None
         if rc == 0:
-            self._current = kernel
-            self._status_lbl.set_label(tr("✓ Done — reboot to apply {kernel}.").format(kernel=kernel))
+            if kernel:
+                self._active_kernel = kernel
+            self._orig_source = self._source
+            self._orig_beta = self._beta
+            self._current = self._active_kernel
+            self._status_lbl.set_label(
+                tr("✓ Done — reboot to apply {kernel}.").format(kernel=self._active_kernel or "?"))
             self._term_line("", "dim")
             self._term_line(tr("✓ Rebuild completed successfully. Reboot to apply changes."), "ok")
         else:

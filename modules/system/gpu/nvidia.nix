@@ -10,16 +10,32 @@ let
   # nvidia_cachyos module for the nixpkgs kernels (zen, nixpkgs-*, xanmod-*).
   # Every myKernelChaotic value that is not a "cachyos*" one is a nixpkgs
   # kernel — no list to keep in sync with kernel.nix.
-  nixpkgsKernel = !(hasPrefix "cachyos" config.hardware.myKernelChaotic);
+  useChaotic = config.hardware.nvidiaKernelSource == "chaotic";
+  chaoticCachyos = useChaotic && hasPrefix "cachyos" config.hardware.myKernelChaotic;
+
+  # The precompiled nvidia_cachyos only exists for a Chaotic-Nyx cachyos*
+  # kernel AND the stable branch. Everything else (xddxdd kernels, nixpkgs
+  # kernels, beta driver) builds the module locally, which is the same as the
+  # old "nixpkgsKernel" case.
+  localModule =
+    !chaoticCachyos
+    || config.hardware.nvidiaBeta
+    || config.hardware.nvidiaDriverSource == "nixpkgs";
+
+  # Name of the kernel actually in use, for warnings.
+  activeKernel =
+    if useChaotic then config.hardware.myKernelChaotic else config.hardware.myKernel;
 
   nvidiaDriverPackage =
-    # zen / nixpkgs-* / xanmod-*: no precompiled module on Chaotic-Nyx's side
-    # for these nixpkgs kernels, so nixpkgs builds the nvidia module locally
-    # against the chosen kernel (config.boot.kernelPackages, which follows
-    # hardware.myKernelSource, see kernel.nix). All other variants keep the
-    # precompiled nvidia_cachyos module.
-    if nixpkgsKernel then
-      config.boot.kernelPackages.nvidiaPackages.stable
+    # xddxdd / zen / nixpkgs-* / xanmod-* kernels, or the beta branch: nixpkgs
+    # builds the nvidia module locally against the chosen kernel
+    # (config.boot.kernelPackages, which follows hardware.myKernelSource, see
+    # kernel.nix). Only a Chaotic-Nyx cachyos* kernel on the stable branch
+    # keeps the precompiled nvidia_cachyos module.
+    if localModule then
+      (if config.hardware.nvidiaBeta
+       then config.boot.kernelPackages.nvidiaPackages.beta
+       else config.boot.kernelPackages.nvidiaPackages.stable)
     else
       let
         drivers = {
@@ -81,9 +97,13 @@ in
         "hardware.nvidiaLaptop = true but roudix.nvidia_config.nvidiaBusId and intelBusId/amdgpuBusId are not set: PRIME is NOT configured (the NVIDIA GPU stays powered and nothing is offloaded). Fill them in local.nix, format \"PCI:1:0:0\" in decimal (see `lspci`)."
       ++ lib.optional
         (config.hardware.myGpu == "nvidia"
-          && nixpkgsKernel
+          && localModule
           && !config.hardware.nvidiaOpen)
-        "hardware.myKernelChaotic = \"${config.hardware.myKernelChaotic}\" with a closed-source NVIDIA driver (hardware.nvidiaOpen = false): the kernel module is not available from any binary cache (nixpkgs only caches the open module for zen/nixpkgs kernels; Chaotic-Nyx doesn't build these at all) and will be compiled locally on every driver bump.";
+        "Kernel \"${activeKernel}\" / driver \"${if config.hardware.nvidiaBeta then "beta" else "stable"}\" with a closed-source NVIDIA driver (hardware.nvidiaOpen = false): the kernel module is not available from any binary cache and will be compiled locally on every kernel or driver bump."
+      ++ lib.optional
+        (config.hardware.myGpu == "nvidia" && chaoticCachyos
+          && (config.hardware.nvidiaBeta || config.hardware.nvidiaDriverSource == "nixpkgs"))
+        "hardware.nvidiaBeta = true or hardware.nvidiaDriverSource = \"nixpkgs\" on the Chaotic-Nyx kernel \"${config.hardware.myKernelChaotic}\" (LTO): the module is built locally against that kernel instead of using the precompiled nvidia_cachyos. If that build fails, pick a nixpkgs kernel or hardware.nvidiaKernelSource = \"xddxdd\" with a non-LTO variant.";
     }
     # Active nvidia_config quand myGpu == "nvidia"
     (mkIf (config.hardware.myGpu == "nvidia") {

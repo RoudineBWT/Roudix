@@ -218,6 +218,16 @@ msgstr "अमान्य --laptop: %s"
 
 #: roudix-hw-sync
 #, sh-printf-format
+msgid "Invalid --tlp: %s"
+msgstr "अमान्य --tlp: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --thinkpad: %s"
+msgstr "अमान्य --thinkpad: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
 msgid "local.nix not found: %s"
 msgstr "local.nix नहीं मिला: %s"
 
@@ -233,6 +243,11 @@ msgstr "GPU की पहचान नहीं हो सकी, --gpu ... इ�
 #, sh-printf-format
 msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
 msgstr "पहचाना गया: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Laptop (TLP): %s  ThinkPad: %s"
+msgstr "लैपटॉप (TLP): %s  ThinkPad: %s"
 
 #: roudix-hw-sync
 msgid ""

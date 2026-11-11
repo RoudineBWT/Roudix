@@ -508,6 +508,46 @@ msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr "吉祥物：开机时挥手，关机时入睡"
 
 #: roudix-switcher.py
+msgid "Hidden"
+msgstr "隐藏"
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr "级别 0 — 隐藏悬浮显示"
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr "仅显示 FPS"
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr "级别 1 — 仅显示帧率"
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr "紧凑"
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr "级别 2 — 横向条：CPU、GPU、内存、帧时间"
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr "扩展"
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr "级别 3 — 增加温度、功耗和频率"
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr "完整"
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr "级别 4 — 全部（默认）"
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr "稳定版"
 
@@ -542,6 +582,30 @@ msgid ""
 msgstr ""
 "Bazzite OGC 内核 — 需要先注册一次 Universal Blue 的密钥（sudo eacnix-enroll-"
 "mok）"
+
+#: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr "Mesa-git（最新的显卡驱动）"
+
+#: roudix-switcher.py
+msgid "mesa-git built and cached by Chaotic-Nyx"
+msgstr "由 Chaotic-Nyx 构建并缓存的 mesa-git"
+
+#: roudix-switcher.py
+msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr "来自 nix-gaming-edge 的 mesa-git，附带 stable-mesa 回退启动项"
+
+#: roudix-switcher.py
+msgid "Beta driver (always built locally)"
+msgstr "测试版驱动（始终在本地编译）"
+
+#: roudix-switcher.py
+msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
+msgstr "Chaotic-Nyx 内核上的预编译 nvidia_cachyos，无需本地编译"
+
+#: roudix-switcher.py
+msgid "Always the nixpkgs driver, built locally against your kernel"
+msgstr "始终使用 nixpkgs 的驱动，针对你的内核在本地编译"
 
 #: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
@@ -789,10 +853,6 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid（Android 应用）"
 
 #: roudix-switcher.py
-msgid "Mesa-git (bleeding-edge GPU drivers)"
-msgstr "Mesa-git（最新的显卡驱动）"
-
-#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "自动更新（定时 git pull + 重新构建）"
 
@@ -872,6 +932,10 @@ msgid "Apps"
 msgstr "应用"
 
 #: roudix-switcher.py
+msgid "Drivers"
+msgstr "驱动"
+
+#: roudix-switcher.py
 msgid "System"
 msgstr "系统"
 
@@ -918,6 +982,10 @@ msgstr "版本"
 #: roudix-switcher.py
 msgid "Launchers and tools installed for gaming."
 msgstr "为游戏安装的启动器和工具。"
+
+#: roudix-switcher.py
+msgid "MangoHud — default overlay level"
+msgstr "MangoHud — 默认悬浮显示级别"
 
 #: roudix-switcher.py
 msgid "OBS plugins"
@@ -1134,6 +1202,33 @@ msgid "System tuning"
 msgstr "系统调优"
 
 #: roudix-switcher.py
+msgid "Mesa"
+msgstr "Mesa"
+
+#: roudix-switcher.py
+msgid "Mesa-git source"
+msgstr "mesa-git 来源"
+
+#: roudix-switcher.py
+msgid "Nvidia"
+msgstr "Nvidia"
+
+#: roudix-switcher.py
+msgid "Nvidia driver source"
+msgstr "Nvidia 驱动来源"
+
+#: roudix-switcher.py
+msgid ""
+"The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the "
+"stable driver. With any other kernel, the beta driver or the nixpkgs source, "
+"the module is built locally and rebuilds take longer. The kernel itself is "
+"chosen in Roudix Kernel Switcher."
+msgstr ""
+"预编译的 Nvidia 模块仅适用于使用稳定版驱动的 Chaotic-Nyx 内核。使用其他内核、"
+"测试版驱动或 nixpkgs 来源时，模块会在本地编译，重新构建耗时更长。内核本身在 "
+"Roudix Kernel Switcher 中选择。"
+
+#: roudix-switcher.py
 msgid "Keyring & portal backend"
 msgstr "密钥环与 portal 后端"
 
@@ -1181,6 +1276,10 @@ msgstr "启动壁纸格式"
 #: roudix-switcher.py
 msgid "Boot splash"
 msgstr "启动画面"
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
+msgstr "MangoHud 悬浮显示级别"
 
 #: roudix-switcher.py
 msgid "Zen profile (tweaks)"

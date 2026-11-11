@@ -32,6 +32,20 @@ refresh_hz() {
   printf '%s\n' "$hz"
 }
 
+# MangoApp + niveaux du réglage Steam « Performance overlay » : même contrat que
+# gamescope-session-plus (ChimeraOS). Sans ces variables, Steam ne propose pas
+# les niveaux et ne sait pas piloter MangoApp. Steam écrit le niveau choisi
+# (preset=N) dans $MANGOHUD_CONFIGFILE ; le rendu de chaque niveau vient de
+# ~/.config/MangoHud/presets.conf (modules/home/theming/mangohud.nix), que
+# MangoApp lit quel que soit ce fichier. Il est réécrit à chaque démarrage :
+# le niveau de départ est roudix.gaming.mangohud.defaultPreset.
+export STEAM_MANGOAPP_PRESETS_SUPPORTED=1
+export STEAM_USE_MANGOAPP=1
+export STEAM_DISABLE_MANGOAPP_ATOM_WORKAROUND=1
+MANGOHUD_CONFIGFILE="${XDG_RUNTIME_DIR:-/tmp}/roudix-mangoapp.conf"
+export MANGOHUD_CONFIGFILE
+echo "preset=@mango_preset@" > "$MANGOHUD_CONFIGFILE"
+
 @decky_setup@
 
 exec gamescope --steam \

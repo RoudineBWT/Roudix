@@ -2,7 +2,7 @@ from gi.repository import Adw, Gtk
 
 from roudix_installer import existing_nixos, host_defaults, host_profile
 from roudix_installer.state import valid_username
-from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_main_screen, detect_screen_count, is_bios_boot
+from roudix_installer.hardware_detect import detect_cpu, detect_gpu, detect_laptop, detect_thinkpad, detect_main_screen, detect_screen_count, is_bios_boot
 from roudix_installer.i18n import tr, trc, tr_noop
 from roudix_installer.ui_helpers import page_with_header
 
@@ -609,6 +609,13 @@ class OptionsPage(Adw.NavigationPage):
             state.nvidia_laptop = nvidia_laptop_detected
         if cpu_detected:
             state.cpu = cpu_detected
+        # Laptop (TLP) / ThinkPad: only ever switched ON by detection, so a
+        # profile that seeded them (hosts/nixie) is never turned off.
+        if nvidia_laptop_detected or detect_laptop():
+            state.laptop = True
+        if detect_thinkpad():
+            state.laptop = True
+            state.laptop_thinkpad = True
 
         hw_group = Adw.PreferencesGroup(title=tr("Hardware"))
         self.gpu_row = self._combo(
@@ -651,12 +658,23 @@ class OptionsPage(Adw.NavigationPage):
         self.laptop_gaming_note = Gtk.Label(
             label=tr("Disables tuned in favor of TLP: if gaming is also enabled, "
                 "game-performance will still launch games normally but "
-                "without the roudix-gaming CPU profile."),
+                "without the roudix-gaming CPU profile. On a gaming laptop, "
+                "pick tuned above instead."),
             css_classes=["dim-label", "caption"],
             wrap=True,
             xalign=0,
             visible=False,
         )
+
+        self.laptop_backend_row = self._combo(
+            tr("Laptop power manager"),
+            [
+                ("tlp", tr("TLP — best battery life")),
+                ("tuned", tr("tuned — gaming laptop (keeps game-performance)")),
+            ],
+            state.laptop_backend,
+        )
+        hw_group.add(self.laptop_backend_row)
 
         self.thinkpad_row = Adw.SwitchRow(
             title=tr("ThinkPad (40/80% battery charge thresholds)")
@@ -679,6 +697,32 @@ class OptionsPage(Adw.NavigationPage):
 
         self.kernel_row = self._combo(tr("Kernel"), _kernels(), state.kernel)
         hw_group.add(self.kernel_row)
+
+        # Nvidia only (see _sync_nvidia_row): where the kernel and the driver
+        # come from, and the beta driver.
+        self.nvidia_kernel_source_row = self._combo(
+            tr("Kernel source (Nvidia)"),
+            [("chaotic", "Chaotic-Nyx"), ("xddxdd", "xddxdd")],
+            state.nvidia_kernel_source,
+        )
+        self.nvidia_kernel_source_row.set_subtitle(
+            tr("Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module built locally.")
+        )
+        hw_group.add(self.nvidia_kernel_source_row)
+
+        self.nvidia_driver_source_row = self._combo(
+            tr("Nvidia driver source"),
+            [("chaotic", "Chaotic-Nyx"), ("nixpkgs", "nixpkgs")],
+            state.nvidia_driver_source,
+        )
+        self.nvidia_driver_source_row.set_subtitle(
+            tr("nixpkgs: always built locally against your kernel.")
+        )
+        hw_group.add(self.nvidia_driver_source_row)
+
+        self.nvidia_beta_row = Adw.SwitchRow(title=tr("Nvidia beta driver (built locally)"))
+        self.nvidia_beta_row.set_active(state.nvidia_beta)
+        hw_group.add(self.nvidia_beta_row)
         box.append(hw_group)
         box.append(self.laptop_gaming_note)
 
@@ -889,6 +933,15 @@ class OptionsPage(Adw.NavigationPage):
         )
         self.mesa_git_row.set_active(state.mesa_use_git)
         sys_group.add(self.mesa_git_row)
+
+        self.mesa_git_source_row = self._combo(
+            tr("Mesa git source"),
+            [("chaotic", "Chaotic-Nyx"), ("gaming-edge", "nix-gaming-edge")],
+            state.mesa_git_source,
+        )
+        sys_group.add(self.mesa_git_source_row)
+        self.mesa_git_row.connect("notify::active", lambda *_: self._sync_mesa_row())
+        self._sync_mesa_row()
 
         self.timezone_row = self._combo(
             tr("Timezone"), _timezones(), state.timezone
@@ -1278,7 +1331,9 @@ class OptionsPage(Adw.NavigationPage):
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_nvidia_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_undervolt_row())
         self.gpu_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
+        self.nvidia_kernel_source_row.connect("notify::selected", lambda *_: self._sync_kernel_row())
         self.laptop_row.connect("notify::active", lambda *_: self._sync_laptop_row())
+        self.laptop_backend_row.connect("notify::selected", lambda *_: self._sync_laptop_row())
         self.gaming_row.connect("notify::active", lambda *_: self._sync_laptop_row())
         self.browser_row.connect("notify::selected", lambda *_: self._sync_brave_row())
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
@@ -1322,9 +1377,13 @@ class OptionsPage(Adw.NavigationPage):
     HOST_ROW_KEYS = {
         "gpu_row": ["hardware.myGpu"], "nvidia_laptop_row": ["hardware.nvidiaLaptop"],
         "laptop_row": ["roudix.laptop.enable"], "thinkpad_row": ["roudix.laptop.thinkpad"],
+        "laptop_backend_row": ["roudix.laptop.backend"],
         "laptop_gaming_note": ["roudix.gaming.enable"],
         "undervolt_row": ["roudix.undervolt.only-amd.enable"], "cpu_row": ["hardware.myCpu"],
         "kernel_row": ["hardware.myKernel", "hardware.myKernelChaotic"],
+        "nvidia_kernel_source_row": ["hardware.nvidiaKernelSource"],
+        "nvidia_driver_source_row": ["hardware.nvidiaDriverSource"],
+        "nvidia_beta_row": ["hardware.nvidiaBeta"],
         "browser_row": ["roudix.browsers"], "brave_variant_row": ["roudix.browsers"],
         "zen_row": ["roudix.zen.enable"], "zen_variant_row": ["roudix.zen.variant"],
         "zen_mods_row": ["roudix.zen.mods"], "zen_sine_row": ["roudix.zen.sine.enable"],
@@ -1339,7 +1398,8 @@ class OptionsPage(Adw.NavigationPage):
         "vm_guest_row": ["roudix.vmGuest.enable"], "gaming_row": ["roudix.gaming.enable"],
         "ananicy_row": ["roudix.gaming.ananicy.enable"],
         "millennium_row": ["roudix.gaming.steam.millennium.enable"],
-        "mesa_git_row": ["roudix.mesa.useGit"], "timezone_row": ["time.timeZone"],
+        "mesa_git_row": ["roudix.mesa.useGit"], "mesa_git_source_row": ["roudix.mesa.gitSource"],
+        "timezone_row": ["time.timeZone"],
         "locale_row": ["i18n.defaultLocale"], "keymap_row": ["console.keyMap"],
         "gfx_keyboard_row": ["roudix.keyboardLayout"],
         "rgb_row": ["roudix.rgb"], "rgb_note": ["roudix.rgb"],
@@ -1376,10 +1436,10 @@ class OptionsPage(Adw.NavigationPage):
     }
     # group -> rows it contains (a group with no visible row is hidden too)
     HOST_GROUP_ROWS = {
-        "hw_group": ["gpu_row", "nvidia_laptop_row", "laptop_row", "thinkpad_row", "undervolt_row", "cpu_row", "kernel_row"],
+        "hw_group": ["gpu_row", "nvidia_laptop_row", "laptop_row", "laptop_backend_row", "thinkpad_row", "undervolt_row", "cpu_row", "kernel_row", "nvidia_kernel_source_row", "nvidia_driver_source_row", "nvidia_beta_row"],
         "browser_group": ["browser_row", "brave_variant_row", "zen_row", "zen_variant_row", "zen_mods_row", "zen_sine_row", "zen_sine_mods_row"],
         "desktop_group": ["desktop_row", "shell_row", "latest_de_row", "latest_shell_row", "latest_note", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
-        "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
+        "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "mesa_git_source_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
         "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
         "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "boot_aspect_row", "boot_resolution_row", "secure_boot_row", "eac_row", "eac_vendor_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
         "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row", "app_fluxer_channel_row", "app_cressida_row"],
@@ -1397,6 +1457,9 @@ class OptionsPage(Adw.NavigationPage):
             "cpu": ["amd", "intel"],
             "kernel": vals(_kernels()),
             "kernel_chaotic": vals(_kernels_chaotic()),
+            "nvidia_kernel_source": ["chaotic", "xddxdd"],
+            "nvidia_driver_source": ["chaotic", "nixpkgs"],
+            "mesa_git_source": ["chaotic", "gaming-edge"],
             "browser": vals(_browsers()),
             "desktop": vals(_desktops()),
             "desktop_shell": lambda st: vals(_shells(st.desktop)),
@@ -1467,7 +1530,7 @@ class OptionsPage(Adw.NavigationPage):
             widget._host_hidden = hidden
             widget._host_original_set_visible(not hidden)
         # let the existing sync methods recompute the dynamic rows
-        for name in ("_sync_nvidia_row", "_sync_undervolt_row", "_sync_laptop_row", "_sync_kernel_row",
+        for name in ("_sync_nvidia_row", "_sync_undervolt_row", "_sync_laptop_row", "_sync_kernel_row", "_sync_mesa_row",
                      "_sync_brave_row", "_sync_shell_row", "_sync_latest_rows", "_sync_desktop_integration_row",
                      "_sync_file_manager_row", "_sync_memory_rows", "_sync_zen_rows",
                      "_sync_spicetify_rows", "_sync_ananicy_row", "_sync_content_creation_rows",
@@ -1535,9 +1598,14 @@ class OptionsPage(Adw.NavigationPage):
         )
 
     def _sync_nvidia_row(self):
-        self.nvidia_laptop_row.set_visible(
-            self._selected_value(self.gpu_row) == "nvidia"
-        )
+        is_nvidia = self._selected_value(self.gpu_row) == "nvidia"
+        self.nvidia_laptop_row.set_visible(is_nvidia)
+        for row in (self.nvidia_kernel_source_row, self.nvidia_driver_source_row,
+                    self.nvidia_beta_row):
+            row.set_visible(is_nvidia)
+
+    def _sync_mesa_row(self):
+        self.mesa_git_source_row.set_visible(self.mesa_git_row.get_active())
 
     def _sync_undervolt_row(self):
         self.undervolt_row.set_visible(
@@ -1546,19 +1614,25 @@ class OptionsPage(Adw.NavigationPage):
 
     def _sync_laptop_row(self):
         self.thinkpad_row.set_visible(self.laptop_row.get_active())
+        self.laptop_backend_row.set_visible(self.laptop_row.get_active())
         self.laptop_gaming_note.set_visible(
             self.laptop_row.get_active() and self.gaming_row.get_active()
+            and self._selected_value(self.laptop_backend_row) == "tlp"
         )
 
     def _sync_kernel_row(self):
         is_nvidia = self._selected_value(self.gpu_row) == "nvidia"
-        pairs = _kernels_chaotic() if is_nvidia else _kernels()
-        current = self.state.kernel_chaotic if is_nvidia else self.state.kernel
+        # Chaotic-Nyx list on nvidia unless the user opted into xddxdd's
+        use_chaotic = is_nvidia and (
+            self._selected_value(self.nvidia_kernel_source_row) == "chaotic"
+        )
+        pairs = _kernels_chaotic() if use_chaotic else _kernels()
+        current = self.state.kernel_chaotic if use_chaotic else self.state.kernel
         values = [v for v, _ in pairs]
         labels = [l for _, l in pairs]
         self.kernel_row.set_title(
             tr("Kernel (Chaotic-Nyx)")
-            if is_nvidia
+            if use_chaotic
             else tr("Kernel (xddxdd)")
         )
         self.kernel_row.set_model(Gtk.StringList.new(labels))
@@ -1729,10 +1803,14 @@ class OptionsPage(Adw.NavigationPage):
         s.nvidia_laptop = self.nvidia_laptop_row.get_active()
         s.laptop = self.laptop_row.get_active()
         s.laptop_thinkpad = self.thinkpad_row.get_active()
+        s.laptop_backend = self._selected_value(self.laptop_backend_row)
         s.undervolt_enable = self.undervolt_row.get_active()
         s.cpu = self._selected_value(self.cpu_row)
         kernel_value = self._selected_value(self.kernel_row)
-        if s.gpu == "nvidia":
+        s.nvidia_kernel_source = self._selected_value(self.nvidia_kernel_source_row)
+        s.nvidia_driver_source = self._selected_value(self.nvidia_driver_source_row)
+        s.nvidia_beta = self.nvidia_beta_row.get_active()
+        if s.gpu == "nvidia" and s.nvidia_kernel_source == "chaotic":
             s.kernel_chaotic = kernel_value
         else:
             s.kernel = kernel_value
@@ -1778,6 +1856,7 @@ class OptionsPage(Adw.NavigationPage):
         s.gaming_apps_vintagestory = self.gaming_apps_rows["vintagestory"].get_active()
         s.gaming_apps_mangohud = self.gaming_apps_rows["mangohud"].get_active()
         s.mesa_use_git = self.mesa_git_row.get_active()
+        s.mesa_git_source = self._selected_value(self.mesa_git_source_row)
         s.timezone = self._selected_value(self.timezone_row)
         s.locale = self._selected_value(self.locale_row)
         s.keymap = self._selected_value(self.keymap_row)

@@ -948,11 +948,24 @@ msgstr "Portátil (TLP)"
 #: src/roudix_installer/pages/options.py
 msgid ""
 "Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
-"will still launch games normally but without the roudix-gaming CPU profile."
+"will still launch games normally but without the roudix-gaming CPU profile. "
+"On a gaming laptop, pick tuned above instead."
 msgstr ""
 "Desactiva tuned en favor de TLP: si el gaming también está activado, game-"
 "performance seguirá lanzando los juegos con normalidad, pero sin el perfil "
-"de CPU roudix-gaming."
+"de CPU roudix-gaming. En un portátil gaming, elige tuned más arriba."
+
+#: src/roudix_installer/pages/options.py
+msgid "Laptop power manager"
+msgstr "Gestor de energía del portátil"
+
+#: src/roudix_installer/pages/options.py
+msgid "TLP — best battery life"
+msgstr "TLP — mayor duración de batería"
+
+#: src/roudix_installer/pages/options.py
+msgid "tuned — gaming laptop (keeps game-performance)"
+msgstr "tuned — portátil gaming (mantiene game-performance)"
 
 #: src/roudix_installer/pages/options.py
 msgid "ThinkPad (40/80% battery charge thresholds)"
@@ -965,6 +978,30 @@ msgstr "Undervolting de GPU AMD (lact, amdgpu.ppfeaturemask)"
 #: src/roudix_installer/pages/options.py
 msgid "Kernel"
 msgstr "Kernel"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr "Origen del kernel (Nvidia)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+"Chaotic-Nyx: módulo Nvidia precompilado. xddxdd: más kernels, módulo Nvidia "
+"compilado localmente."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr "Origen del controlador Nvidia"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr "nixpkgs: siempre compilado localmente para tu kernel."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr "Controlador Nvidia beta (compilado localmente)"
 
 #: src/roudix_installer/pages/options.py
 msgid "GPU / CPU auto-detected — change them above if needed."
@@ -1106,6 +1143,10 @@ msgstr "MangoHud (overlay de rendimiento en juego)"
 #: src/roudix_installer/pages/options.py
 msgid "Mesa git (bleeding-edge graphics drivers)"
 msgstr "Mesa git (drivers gráficos de vanguardia)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr "Origen de Mesa git"
 
 #: src/roudix_installer/pages/options.py
 msgid "Timezone"

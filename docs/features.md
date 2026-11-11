@@ -7,7 +7,9 @@
 - CachyOS kernel with NTSync enabled (`ntsync` module)
 - Two kernel providers, selected automatically by `hardware.myGpu`:
   - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 36 variants (`hardware.myKernel`)
-  - Nvidia → Chaotic-Nyx, 4 variants (`hardware.myKernelChaotic`) — ships `nvidia_cachyos`, a precompiled driver matched to their kernel, so no local Nvidia module rebuild on kernel bumps
+  - Nvidia → Chaotic-Nyx by default, 4 variants (`hardware.myKernelChaotic`) — ships `nvidia_cachyos`, a precompiled driver matched to their kernel, so no local Nvidia module rebuild on kernel bumps
+  - Nvidia can opt into the xddxdd kernels instead with `hardware.nvidiaKernelSource = "xddxdd"` (same list as AMD/Intel, `hardware.myKernel`); the Nvidia module is then built locally on every kernel / driver bump
+  - `hardware.nvidiaBeta = true` switches Nvidia hosts to the beta driver (always built locally, no precompiled module)
 - Plain nixpkgs kernels also selectable on both providers, outside the CachyOS overlay entirely — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod). On Nvidia these fall back to a locally-rebuilt Nvidia module (no `nvidia_cachyos` cache)
 - `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) takes only those nixpkgs kernels from a fresher nixpkgs for earlier kernel bumps, without touching the rest of the system
 - ZRAM enabled (100% RAM, zstd, swappiness 150)
@@ -38,6 +40,7 @@
 - `protonup-qt` on KDE, `protonplus` on other DEs
 - Heroic, Lutris, Faugus Launcher, Prism Launcher (Minecraft, or Modrinth App as an alternative — `roudix.gaming.apps.modrinth.enable`) and Vintage Story (via roudix-caches)
 - Each gaming app individually toggleable via `roudix.gaming.apps.<lutris|heroic|faugus|prismlauncher|vintagestory|mangohud>.enable` (all `true` by default)
+- Hybrid-graphics laptops (AMD or NVIDIA dedicated GPU, with `roudix.laptop.enable`): the integrated GPU keeps the desktop and apps, the dedicated one is used on demand. `game-performance %command%` in Steam launch options runs the game on the dedicated GPU (`ROUDIX_NO_DGPU=1` opts a game out); `roudix-dgpu <command>` does the same for anything else (it wraps `switcherooctl launch`), and GNOME/KDE offer "Launch using dedicated GPU". The Steam client itself stays on the integrated GPU. For Minecraft, set Prism Launcher's *Settings → Custom commands → Wrapper command* to `roudix-dgpu`: only Java runs on the dedicated GPU, the launcher stays on the integrated one (Prism's own "Use discrete GPU" instance option is reported unreliable with AMD + AMD laptops). Same wrapper command for Heroic / Lutris. If a Vulkan game still picks the integrated GPU, add `DRI_PRIME=1!` to its launch options (the `!` hides the other GPU from Vulkan)
 - Optional [Millennium](https://github.com/SteamClientHomebrew/Millennium) modded Steam client (themes + plugins) — off by default, enable with `roudix.gaming.steam.millennium.enable = true` (or from the installer). Unofficial mod; the `game-performance` sandbox tweak and the Proton compat tools keep working, and setting it back to `false` restores stock Steam
 - Optional console-like Gaming Mode: `roudix.gaming.gamescopeSession.enable` adds a "Steam (Gaming Mode)" session on the login screen (Steam Big Picture in gamescope, VRR/HDR/MangoApp, refresh rate detected at launch). "Switch to Desktop" in Steam opens your desktop, and the "Return to Gaming Mode" app goes back without passing through the login screen. Based on GLF-OS; supports niri, umbriel, GNOME, KDE, Hyprland and MangoWC
 - Optional Decky Loader (Steam plugins) via `roudix.gaming.gamescopeSession.decky.enable`, fetched from Jovian-NixOS' flake input (`nix flake update jovian` to bump it, no sha to maintain by hand); no binary cache, so it is compiled locally on the first rebuild
@@ -218,6 +221,8 @@ Also available, opt-in (off by default): a torrent client via
 - Whole content-creation group toggleable via `roudix.contentCreation.enable`
 - GPU Screen Recorder
 - Mesa Git option for AMD — enable experimental/bleeding-edge Mesa via `roudix.mesa.useGit = true` in `local.nix` (default: stable nixpkgs Mesa) — ⚠️ **experimental**, the build may fail depending on nixpkgs state
+  - `roudix.mesa.gitSource` picks where mesa-git comes from: `"chaotic"` (default, Chaotic-Nyx) or `"gaming-edge"` (nix-gaming-edge, adds a `stable-mesa` fallback boot entry)
+- Nvidia driver source — `hardware.nvidiaDriverSource = "chaotic"` (default, precompiled `nvidia_cachyos` on a Chaotic-Nyx kernel) or `"nixpkgs"` (always built locally)
 - AMD GPU stability kernel params applied automatically (`mem_sleep_default=deep`, `amdgpu.gpu_recovery=1`, `amdgpu.lockup_timeout=1000`, `amdgpu.runpm=0`, `amdgpu.sg_display=0`) — fixes random freezes and wake-from-sleep issues on RDNA2/RDNA3
 - RGB controller selectable via `roudix.rgb` — `openlinkhub` (Corsair iCUE Link / Commander, auto-updated via CI), `openrgb` (multi-brand: Razer, ASUS, MSI…), or `none`
 - OpenLinkHub web UI available at [http://127.0.0.1:27003](http://127.0.0.1:27003) once the service is running

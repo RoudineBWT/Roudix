@@ -23,6 +23,51 @@
       description = "Use open NVIDIA drivers. Enable for Turing/RTX 20xx and newer. Unsupported for GTX 10xx/16xx.";
     };
 
+    hardware.nvidiaKernelSource = lib.mkOption {
+      type = lib.types.enum [ "chaotic" "xddxdd" ];
+      default = "chaotic";
+      description = ''
+        Where the kernel comes from on nvidia hosts (hardware.myGpu = "nvidia").
+
+        "chaotic" (default): Chaotic-Nyx kernels (hardware.myKernelChaotic),
+                  with the precompiled nvidia_cachyos module matched to the
+                  kernel — no local Nvidia module build on kernel bumps.
+        "xddxdd": xddxdd/nix-cachyos-kernel and the nixpkgs kernels, i.e. the
+                  same list as AMD/Intel (hardware.myKernel). The Nvidia
+                  module is not precompiled for these kernels and is built
+                  locally on every kernel / driver bump.
+
+        Ignored on non-nvidia hosts.
+      '';
+    };
+
+    hardware.nvidiaDriverSource = lib.mkOption {
+      type = lib.types.enum [ "chaotic" "nixpkgs" ];
+      default = "chaotic";
+      description = ''
+        Where the NVIDIA kernel module comes from (hardware.myGpu = "nvidia").
+
+        "chaotic": the precompiled nvidia_cachyos of Chaotic-Nyx. It only
+                   exists for a Chaotic-Nyx cachyos* kernel on the stable
+                   branch; on any other kernel (or with hardware.nvidiaBeta)
+                   nixpkgs builds the module locally whatever this says.
+        "nixpkgs": always the nixpkgs driver, built locally against the
+                   running kernel.
+      '';
+    };
+
+    hardware.nvidiaBeta = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Use the beta NVIDIA driver (nvidiaPackages.beta) instead of the stable
+        one, for people who want to test it. The module is always built
+        locally (no precompiled nvidia_cachyos for the beta branch), so
+        expect a longer build on every driver bump. Only used when
+        hardware.myGpu = "nvidia".
+      '';
+    };
+
     hardware.nvidiaLaptop = lib.mkOption {
       type = lib.types.bool;
       default = false;

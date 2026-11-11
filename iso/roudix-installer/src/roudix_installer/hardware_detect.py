@@ -171,3 +171,42 @@ def detect_main_screen():
         return None, None
     width, height = max(screens, key=lambda wh: wh[0] * wh[1])
     return f"{width}x{height}", aspect_of(width, height)
+
+
+# DMI chassis types that are portable machines: Portable, Laptop, Notebook,
+# Sub Notebook, Convertible, Detachable.
+_LAPTOP_CHASSIS = {8, 9, 10, 14, 31, 32}
+
+
+def _read(path: str) -> str:
+    try:
+        return Path(path).read_text().strip()
+    except OSError:
+        return ""
+
+
+def detect_laptop() -> bool:
+    """
+    True when the machine looks like a laptop: DMI chassis type says so, or a
+    system battery is present. Peripheral batteries (wireless mouse, gamepad)
+    are ignored: the kernel marks them scope=Device. Best effort, only used to
+    pre-select the "Laptop (TLP)" switch.
+    """
+    chassis = _read("/sys/class/dmi/id/chassis_type")
+    if chassis.isdigit() and int(chassis) in _LAPTOP_CHASSIS:
+        return True
+    ps = Path("/sys/class/power_supply")
+    if ps.is_dir():
+        for dev in ps.iterdir():
+            if (_read(f"{dev}/type") == "Battery"
+                    and _read(f"{dev}/scope").lower() != "device"):
+                return True
+    return False
+
+
+def detect_thinkpad() -> bool:
+    """True on Lenovo ThinkPads (thinkpad_acpi charge thresholds)."""
+    ident = " ".join(
+        _read(f"/sys/class/dmi/id/{f}") for f in ("product_family", "product_version")
+    )
+    return "thinkpad" in ident.lower()

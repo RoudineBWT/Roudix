@@ -499,6 +499,46 @@ msgid "The mascot: waves on boot, sleeps on shutdown"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Hidden"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 0 — overlay hidden"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "FPS only"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 1 — just the frame rate"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Compact"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 2 — horizontal bar: CPU, GPU, RAM, frame time"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Extended"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 3 — adds temperatures, power and clocks"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Full"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Level 4 — everything (default)"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Stable"
 msgstr ""
 
@@ -528,6 +568,30 @@ msgstr ""
 msgid ""
 "Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-"
 "enroll-mok)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "mesa-git built and cached by Chaotic-Nyx"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Beta driver (always built locally)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Always the nixpkgs driver, built locally against your kernel"
 msgstr ""
 
 #: roudix-switcher.py
@@ -776,10 +840,6 @@ msgid "Waydroid (Android apps)"
 msgstr ""
 
 #: roudix-switcher.py
-msgid "Mesa-git (bleeding-edge GPU drivers)"
-msgstr ""
-
-#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr ""
 
@@ -856,6 +916,10 @@ msgid "Apps"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Drivers"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "System"
 msgstr ""
 
@@ -899,6 +963,10 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Launchers and tools installed for gaming."
+msgstr ""
+
+#: roudix-switcher.py
+msgid "MangoHud — default overlay level"
 msgstr ""
 
 #: roudix-switcher.py
@@ -1106,6 +1174,30 @@ msgid "System tuning"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Mesa"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Mesa-git source"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Nvidia"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Nvidia driver source"
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the "
+"stable driver. With any other kernel, the beta driver or the nixpkgs source, "
+"the module is built locally and rebuilds take longer. The kernel itself is "
+"chosen in Roudix Kernel Switcher."
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Keyring & portal backend"
 msgstr ""
 
@@ -1145,6 +1237,10 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Boot splash"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "MangoHud overlay level"
 msgstr ""
 
 #: roudix-switcher.py

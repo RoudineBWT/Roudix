@@ -944,7 +944,20 @@ msgstr ""
 #: src/roudix_installer/pages/options.py
 msgid ""
 "Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
-"will still launch games normally but without the roudix-gaming CPU profile."
+"will still launch games normally but without the roudix-gaming CPU profile. "
+"On a gaming laptop, pick tuned above instead."
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Laptop power manager"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "TLP — best battery life"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "tuned — gaming laptop (keeps game-performance)"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py
@@ -957,6 +970,28 @@ msgstr ""
 
 #: src/roudix_installer/pages/options.py
 msgid "Kernel"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py
@@ -1093,6 +1128,10 @@ msgstr ""
 
 #: src/roudix_installer/pages/options.py
 msgid "Mesa git (bleeding-edge graphics drivers)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py

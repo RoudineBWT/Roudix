@@ -87,12 +87,12 @@ in
       services.displayManager.noctalia-greeter.package = pkgs.noctalia-greeter;
     })
     (lib.mkIf (dp.useNixpkgs dmsGreeterKey && has [ "programs" "dms-greeter" "package" ]) {
-      programs.dms-greeter.package = pkgs.dms-greeter;
+      programs.dms-greeter.package = pkgs.dux-greeter;
     })
 
     # DMS / MangoWC: the flake NixOS module may not expose `package`.
     (lib.mkIf (dp.useNixpkgs "dms" && has [ "programs" "dank-material-shell" "package" ]) {
-      programs.dank-material-shell.package = pkgs.dms-shell;
+      programs.dank-material-shell.package = pkgs.dux-shell;
     })
 
     # Caelestia is driven by Hyprland global shortcuts only: on the other

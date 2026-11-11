@@ -2,7 +2,7 @@
 ## [overview] and [hot_corners].
 ##
 ## Docs: https://docs.noctalia.dev/umbriel/configuration/
-##       https://docs.noctalia.dev/umbriel/workspace-overview/
+##       https://docs.noctalia.dev/umbriel/workspaces-overview/
 { ... }:
 {
   programs.umbriel.settings = {

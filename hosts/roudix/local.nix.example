@@ -93,6 +93,7 @@
   # instead of erroring; set roudix.gaming.enable = false on non-gaming
   # laptops instead.
   roudix.laptop.enable   = false;             # true on any laptop
+  roudix.laptop.backend  = "tlp";             # "tlp" (battery life) or "tuned" (gaming laptop: keeps game-performance + power-mode selector)
   roudix.laptop.thinkpad = false;             # true on ThinkPads — enables charge thresholds below
   roudix.laptop.batteryChargeThresholds.start = 40; # %
   roudix.laptop.batteryChargeThresholds.stop  = 80; # %
@@ -101,6 +102,19 @@
   # ↑ Only one of the two should be active (uncommented) at a time — comment
   #   out hardware.myKernel and uncomment hardware.myKernelChaotic if you're
   #   on nvidia, and vice versa. The installer does this toggle for you.
+  # Nvidia only: where the kernel comes from. "chaotic" (default) = Chaotic-Nyx
+  # (hardware.myKernelChaotic) with the precompiled nvidia_cachyos module.
+  # "xddxdd" = the same kernels as AMD/Intel (hardware.myKernel — uncomment it
+  # and comment out myKernelChaotic); the Nvidia module is then built locally on
+  # every kernel / driver bump.
+  # hardware.nvidiaKernelSource = "chaotic";
+  # Nvidia only: test the beta driver (nvidiaPackages.beta). Always built
+  # locally, no precompiled module.
+  # hardware.nvidiaBeta = false;
+  # Nvidia only: "chaotic" (default) = precompiled nvidia_cachyos when the
+  # kernel is a Chaotic-Nyx cachyos* one, "nixpkgs" = always the nixpkgs driver
+  # built locally.
+  # hardware.nvidiaDriverSource = "chaotic";
   # Kernels coming from nixpkgs (zen, nixpkgs-*, xanmod-*) can be taken from a
   # fresher nixpkgs than the rest of the system. "nixpkgs" (default, same as
   # the system), "master" or "staging-next". No effect on cachyos-* kernels.
@@ -145,6 +159,7 @@
   roudix.gaming.apps.modrinth.enable      = false; # alternative to Prism Launcher
   roudix.gaming.apps.vintagestory.enable  = false;
   roudix.gaming.apps.mangohud.enable      = false;
+  roudix.gaming.mangohud.defaultPreset    = "compact"; # "off", "fps", "compact", "extended", "full"
   # Steam client: false = stock Steam (default). true = Millennium, a modded
   # Steam client with theme/plugin support (github:SteamClientHomebrew/Millennium).
   # Only applies if roudix.gaming.enable = true.
@@ -188,6 +203,9 @@
   roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
   roudix.autoupdate.branch    = "main";       # branch to track: "main" (stable), "testing" or "dev"
   roudix.mesa.useGit = false;  # false = mesa stable
+  # Where mesa-git comes from when useGit = true: "chaotic" (default) or
+  # "gaming-edge" (nix-gaming-edge, with a stable-mesa fallback boot entry).
+  # roudix.mesa.gitSource = "chaotic";
   roudix.waydroid.enable = false;
   roudix.matrixClient = "none"; # "element", "cinny" or "none"
   roudix.discord = "none"; # "vencord", "vanilla" or "none"

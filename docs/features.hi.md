@@ -8,6 +8,8 @@
 - दो कर्नेल प्रदाता, जो `hardware.myGpu` के आधार पर अपने-आप चुने जाते हैं:
   - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 36 वैरिएंट (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 वैरिएंट (`hardware.myKernelChaotic`) — `nvidia_cachyos` देता है, जो उनके कर्नेल से मेल खाता पहले से कंपाइल किया हुआ ड्राइवर है, इसलिए कर्नेल अपडेट पर Nvidia मॉड्यूल को लोकल रूप से दोबारा नहीं बनाना पड़ता
+  - Nvidia `hardware.nvidiaKernelSource = "xddxdd"` के साथ xddxdd के कर्नेल भी उपयोग कर सकता है (AMD/Intel जैसी ही सूची, `hardware.myKernel`); तब Nvidia मॉड्यूल हर कर्नेल या ड्राइवर अपडेट पर स्थानीय रूप से बनता है
+  - `hardware.nvidiaBeta = true` Nvidia होस्ट को बीटा ड्राइवर पर ले जाता है (हमेशा स्थानीय रूप से बनता है, कोई पहले से कंपाइल मॉड्यूल नहीं)
 - सादे nixpkgs कर्नेल भी दोनों प्रदाताओं पर चुने जा सकते हैं, CachyOS ओवरले से पूरी तरह बाहर — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod)। Nvidia पर ये लोकल रूप से दोबारा बनाए गए Nvidia मॉड्यूल पर लौट आते हैं (`nvidia_cachyos` कैश नहीं मिलता)
 - `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) सिर्फ़ इन्हीं nixpkgs कर्नेल को ज़्यादा नए nixpkgs से लेता है ताकि कर्नेल अपडेट जल्दी मिलें, और बाकी सिस्टम को छुए बिना
 - ZRAM सक्षम (100% RAM, zstd, swappiness 150)
@@ -199,6 +201,8 @@ input से लिया जाता है — अभी nixpkgs में �
 - पूरा कंटेंट-क्रिएशन समूह `roudix.contentCreation.enable` से चालू/बंद किया जा सकता है
 - GPU Screen Recorder
 - AMD के लिए Mesa Git विकल्प — `local.nix` में `roudix.mesa.useGit = true` से प्रायोगिक/अत्याधुनिक Mesa चालू करें (डिफ़ॉल्ट: nixpkgs का स्थिर Mesa) — ⚠️ **प्रायोगिक**, nixpkgs की स्थिति के अनुसार बिल्ड फ़ेल हो सकता है
+  - `roudix.mesa.gitSource` तय करता है कि mesa-git कहाँ से आए: `"chaotic"` (डिफ़ॉल्ट, Chaotic-Nyx) या `"gaming-edge"` (nix-gaming-edge, `stable-mesa` फ़ॉलबैक बूट एंट्री जोड़ता है)
+- Nvidia ड्राइवर स्रोत — `hardware.nvidiaDriverSource = "chaotic"` (डिफ़ॉल्ट, Chaotic-Nyx कर्नेल पर पहले से कंपाइल `nvidia_cachyos`) या `"nixpkgs"` (हमेशा स्थानीय रूप से बनता है)
 - AMD GPU स्थिरता के कर्नेल पैरामीटर अपने-आप लागू होते हैं (`mem_sleep_default=deep`, `amdgpu.gpu_recovery=1`, `amdgpu.lockup_timeout=1000`, `amdgpu.runpm=0`, `amdgpu.sg_display=0`) — RDNA2/RDNA3 पर अचानक फ़्रीज़ और स्लीप से जागने की समस्याएँ ठीक करते हैं
 - RGB कंट्रोलर `roudix.rgb` से चुना जा सकता है — `openlinkhub` (Corsair iCUE Link / Commander, CI के ज़रिए अपने-आप अपडेट), `openrgb` (कई ब्रांड: Razer, ASUS, MSI…) या `none`
 - सर्विस चलने के बाद OpenLinkHub का वेब UI [http://127.0.0.1:27003](http://127.0.0.1:27003) पर उपलब्ध है

@@ -8,6 +8,8 @@
 - 两个内核提供方，由 `hardware.myGpu` 自动选择：
   - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)，36 个变体（`hardware.myKernel`）
   - Nvidia → Chaotic-Nyx，4 个变体（`hardware.myKernelChaotic`）— 附带 `nvidia_cachyos`，一个与其内核配套的预编译驱动，因此内核升级时无需在本地重新编译 Nvidia 模块
+  - Nvidia 也可以通过 `hardware.nvidiaKernelSource = "xddxdd"` 改用 xddxdd 的内核（与 AMD/Intel 相同的列表，`hardware.myKernel`）；此时 Nvidia 模块会在每次内核或驱动更新时在本地编译
+  - `hardware.nvidiaBeta = true` 会让 Nvidia 主机改用测试版驱动（始终在本地编译，没有预编译模块）
 - 两个提供方都可以选择原版 nixpkgs 内核，完全独立于 CachyOS overlay — `zen`（`linuxPackages_zen`）、`nixpkgs-lts`、`nixpkgs-latest`、`nixpkgs-testing`（RC/mainline）、`xanmod-lts` / `xanmod-latest`（XanMod）。在 Nvidia 上，这些内核会回退到本地重新编译的 Nvidia 模块（没有 `nvidia_cachyos` 缓存）
 - `hardware.myKernelSource`（`nixpkgs` / `master` / `staging-next`）只会从较新的 nixpkgs 中获取这些 nixpkgs 内核，以便更早升级内核，而不影响系统的其余部分
 - 启用 ZRAM（100% 内存，zstd，swappiness 150）
@@ -200,6 +202,8 @@ input — 目前还不在 nixpkgs 中）或 `"geary"`（轻量级 GNOME 客户�
 - 整个内容创作组可通过 `roudix.contentCreation.enable` 开关
 - GPU Screen Recorder
 - 面向 AMD 的 Mesa Git 选项 — 通过 `local.nix` 中的 `roudix.mesa.useGit = true` 启用实验性/最前沿的 Mesa（默认：nixpkgs 的稳定版 Mesa）— ⚠️ **实验性**，视 nixpkgs 状态而定，构建可能失败
+  - `roudix.mesa.gitSource` 选择 mesa-git 的来源：`"chaotic"`（默认，Chaotic-Nyx）或 `"gaming-edge"`（nix-gaming-edge，附带 `stable-mesa` 回退启动项）
+- Nvidia 驱动来源 — `hardware.nvidiaDriverSource = "chaotic"`（默认，Chaotic-Nyx 内核上的预编译 `nvidia_cachyos`）或 `"nixpkgs"`（始终在本地编译）
 - 自动应用 AMD GPU 稳定性内核参数（`mem_sleep_default=deep`、`amdgpu.gpu_recovery=1`、`amdgpu.lockup_timeout=1000`、`amdgpu.runpm=0`、`amdgpu.sg_display=0`）— 修复 RDNA2/RDNA3 上的随机卡死和睡眠唤醒问题
 - 通过 `roudix.rgb` 选择 RGB 控制器 — `openlinkhub`（Corsair iCUE Link / Commander，通过 CI 自动更新）、`openrgb`（多品牌：Razer、ASUS、MSI…）或 `none`
 - 服务运行后，可在 [http://127.0.0.1:27003](http://127.0.0.1:27003) 访问 OpenLinkHub 网页界面

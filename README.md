@@ -110,7 +110,7 @@ roudix/
     │   ├── desktop/                 # One module per DE + shared desktop settings
     │   │   ├── default.nix          # roudix.desktop.type / .shell / .latest
     │   │   ├── niri / hyprland / mangowc / umbriel / gnome / kde / cinnamon / cosmic .nix
-    │   │   └── ly.nix · keyboard.nix · icon-theme.nix · desktop-integration.nix
+    │   │   └── keyboard.nix · icon-theme.nix · desktop-integration.nix
     │   ├── boot/                    # Bootloader, kernel & CPU
     │   │   └── boot.nix · secure-boot.nix · boot.local.nix (gitignored) · kernel.nix · cpu.nix · bootloader/
     │   ├── apps/                    # App-selection modules (one roudix.* option each)

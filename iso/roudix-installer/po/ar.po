@@ -943,10 +943,24 @@ msgstr "حاسوب محمول (TLP)"
 #: src/roudix_installer/pages/options.py
 msgid ""
 "Disables tuned in favor of TLP: if gaming is also enabled, game-performance "
-"will still launch games normally but without the roudix-gaming CPU profile."
+"will still launch games normally but without the roudix-gaming CPU profile. "
+"On a gaming laptop, pick tuned above instead."
 msgstr ""
 "يعطّل tuned لصالح TLP: إذا كان الألعاب مفعّلًا أيضًا، فسيستمر game-performance "
-"في تشغيل الألعاب بشكل طبيعي ولكن دون ملف CPU الخاص بـ roudix-gaming."
+"في تشغيل الألعاب بشكل طبيعي ولكن دون ملف CPU الخاص بـ roudix-gaming. على "
+"حاسوب محمول للألعاب، اختر tuned من الأعلى بدلًا من ذلك."
+
+#: src/roudix_installer/pages/options.py
+msgid "Laptop power manager"
+msgstr "مدير طاقة الحاسوب المحمول"
+
+#: src/roudix_installer/pages/options.py
+msgid "TLP — best battery life"
+msgstr "TLP — أفضل عمر للبطارية"
+
+#: src/roudix_installer/pages/options.py
+msgid "tuned — gaming laptop (keeps game-performance)"
+msgstr "tuned — حاسوب محمول للألعاب (يُبقي game-performance)"
 
 #: src/roudix_installer/pages/options.py
 msgid "ThinkPad (40/80% battery charge thresholds)"
@@ -959,6 +973,30 @@ msgstr "خفض جهد GPU من AMD (lact وamdgpu.ppfeaturemask)"
 #: src/roudix_installer/pages/options.py
 msgid "Kernel"
 msgstr "النواة"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr "مصدر النواة (Nvidia)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+"Chaotic-Nyx: وحدة Nvidia مُجمَّعة مسبقًا. xddxdd: المزيد من الأنوية، وتُبنى وحدة "
+"Nvidia محليًا."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr "مصدر برنامج تشغيل Nvidia"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr "nixpkgs: يُبنى دائمًا محليًا لنواتك."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr "برنامج تشغيل Nvidia التجريبي (يُبنى محليًا)"
 
 #: src/roudix_installer/pages/options.py
 msgid "GPU / CPU auto-detected — change them above if needed."
@@ -1099,6 +1137,10 @@ msgstr "MangoHud (عرض الأداء داخل اللعبة)"
 #: src/roudix_installer/pages/options.py
 msgid "Mesa git (bleeding-edge graphics drivers)"
 msgstr "Mesa git (أحدث تعريفات الرسوميات)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr "مصدر Mesa git"
 
 #: src/roudix_installer/pages/options.py
 msgid "Timezone"

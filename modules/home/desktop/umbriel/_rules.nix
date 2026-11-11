@@ -327,17 +327,25 @@ in
 
   layer_rule = [
     # From the official Umbriel/Noctalia example:
-    # https://docs.noctalia.dev/umbriel/rules/#layer-rules
+    # https://docs.noctalia.dev/umbriel/layer-rules/
     {
       match.namespace = "^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd|desktop-widget-[^\"]*)$";
       blur = true;
       blur_ignore_alpha = 0.5;
       blur_popups = true;
     }
+    # Panels/docks/notifications open over windows: blur the live content
+    # behind them instead of the cached wallpaper blur (docs: layer-rules).
+    # The bar only covers the wallpaper, so it keeps the cheaper optimized blur.
+    {
+      match.namespace = "^noctalia-(notification|dock|panel|attached-panel|osd)$";
+      blur_optimized = false;
+    }
     {
       match.namespace = "^noctalia-window-switcher$";
       blur = true;
       blur_ignore_alpha = 0.0;
+      blur_optimized = false;
     }
   ];
   };
