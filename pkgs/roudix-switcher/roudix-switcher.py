@@ -748,6 +748,24 @@ EAC_VENDORS = [
     {"id": "bazzite", "name": "bazzite", "subtitle": tr("Bazzite OGC kernel — Universal Blue's key must be enrolled once (sudo eacnix-enroll-mok)"), "icon": "bazzite.svg"},
 ]
 
+# "Drivers" page. roudix.mesa.useGit (on/off) + roudix.mesa.gitSource (which
+# mesa-git) and hardware.nvidiaDriverSource / hardware.nvidiaBeta
+# (modules/system/gpu/*.nix).
+DRIVERS_MESA_TOGGLES = [
+    {"id": "mesaGit", "name": tr("Mesa-git (bleeding-edge GPU drivers)"), "key": "roudix.mesa.useGit", "default": False},
+]
+MESA_GIT_SOURCES = [
+    {"id": "chaotic",     "name": "Chaotic-Nyx",     "subtitle": tr("mesa-git built and cached by Chaotic-Nyx")},
+    {"id": "gaming-edge", "name": "nix-gaming-edge", "subtitle": tr("mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry")},
+]
+DRIVERS_NVIDIA_TOGGLES = [
+    {"id": "nvidiaBeta", "name": tr("Beta driver (always built locally)"), "key": "hardware.nvidiaBeta", "default": False},
+]
+NVIDIA_DRIVER_SOURCES = [
+    {"id": "chaotic", "name": "Chaotic-Nyx", "subtitle": tr("Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build")},
+    {"id": "nixpkgs", "name": "nixpkgs",      "subtitle": tr("Always the nixpkgs driver, built locally against your kernel")},
+]
+
 # roudix.pipewire.* (modules/system/audio/pipewire.nix) — all off by default:
 # PipeWire runs with its upstream defaults unless one of these is turned on.
 PIPEWIRE_TOGGLES = [
@@ -977,7 +995,6 @@ SYSTEM_TOGGLES = [
     {"id": "virtualization", "name": tr("Virtualization (QEMU/KVM)"),        "key": "roudix.virtualization.enable",  "default": False},
     {"id": "vmCurator",      "name": tr("vm-curator (libvirt-free QEMU TUI)"), "key": "roudix.virtualization.vmCurator.enable", "default": False},
     {"id": "waydroid",       "name": tr("Waydroid (Android apps)"),          "key": "roudix.waydroid.enable",        "default": False},
-    {"id": "mesaGit",        "name": tr("Mesa-git (bleeding-edge GPU drivers)"), "key": "roudix.mesa.useGit",        "default": False},
     {"id": "autoupdate",     "name": tr("Auto-update (scheduled git pull + rebuild)"), "key": "roudix.autoupdate.enable", "default": False},
     {"id": "laptop",         "name": tr("Laptop — TLP (disables tuned)"), "key": "roudix.laptop.enable", "default": False},
     {"id": "laptopThinkpad", "name": tr("ThinkPad — 40/80% charge thresholds"), "key": "roudix.laptop.thinkpad", "default": False},
@@ -1907,6 +1924,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             ("filemanager", tr("File Manager")),
             ("chat",        tr("Chat Client")),
             ("apps",        tr("Apps")),
+            ("drivers",     tr("Drivers")),
             ("system",      tr("System")),
             ("integration", tr("Integration")),
             ("icon_theme", tr("Icon Theme")),
@@ -2670,6 +2688,56 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
 
         self.content_stack.add_named(system_page, "system")
 
+        # ── "Drivers" page: mesa-git on/off + source, Nvidia driver source ──
+        drivers_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        drivers_page.set_margin_top(4)
+        drivers_page.set_margin_start(16)
+        drivers_page.set_margin_end(16)
+        drivers_page.set_margin_bottom(16)
+
+        self._drivers_gpu_nvidia = current_gpu == "nvidia"
+
+        self.mesa_toggles = host_filter_items(DRIVERS_MESA_TOGGLES)
+        mesa_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.mesa_toggles}
+        self.mesa_group = ToggleListGroup(tr("Mesa"), self.mesa_toggles, mesa_current)
+        drivers_page.append(self.mesa_group)
+
+        self.mesa_source_selector = SelectorGroup(
+            tr("Mesa-git source"), MESA_GIT_SOURCES,
+            get_active_string_option("roudix.mesa.gitSource", "chaotic"), dark,
+        )
+        drivers_page.append(self.mesa_source_selector)
+        mesa_switch = self.mesa_group.switches.get("mesaGit")
+        if mesa_switch is not None:
+            self.mesa_source_selector.set_sensitive(mesa_switch.get_active())
+            mesa_switch.connect("notify::active",
+                                lambda sw, _p: self.mesa_source_selector.set_sensitive(sw.get_active()))
+
+        self.nvidia_driver_toggles = host_filter_items(DRIVERS_NVIDIA_TOGGLES)
+        nvidia_driver_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.nvidia_driver_toggles}
+        self.nvidia_driver_group = ToggleListGroup(tr("Nvidia"), self.nvidia_driver_toggles, nvidia_driver_current)
+        drivers_page.append(self.nvidia_driver_group)
+
+        self.nvidia_source_selector = SelectorGroup(
+            tr("Nvidia driver source"), NVIDIA_DRIVER_SOURCES,
+            get_active_string_option("hardware.nvidiaDriverSource", "chaotic"), dark,
+        )
+        drivers_page.append(self.nvidia_source_selector)
+
+        self.nvidia_driver_note = Gtk.Label(
+            label=tr("The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the stable "
+                     "driver. With any other kernel, the beta driver or the nixpkgs source, the module "
+                     "is built locally and rebuilds take longer. The kernel itself is chosen in "
+                     "Roudix Kernel Switcher."),
+            halign=Gtk.Align.START,
+        )
+        self.nvidia_driver_note.add_css_class("dim-label")
+        self.nvidia_driver_note.set_wrap(True)
+        self.nvidia_driver_note.set_xalign(0)
+        drivers_page.append(self.nvidia_driver_note)
+
+        self.content_stack.add_named(drivers_page, "drivers")
+
         # ── "Integration" page: keyring/portal backend ─────────────────────
         integration_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
         integration_page.set_margin_top(4)
@@ -2780,6 +2848,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
              "label": tr("Boot splash"),                  "relevant": lambda de: True},
             {"widget": self.eac_vendor_selector,          "key": "roudix.boot.eac.vendor",    "default": "fedora",
              "label": tr("EAC kernel"),                   "relevant": lambda de: self._boot_is_limine() and not self._boot_is_bios() and self._eac_enabled()},
+            {"widget": self.mesa_source_selector,         "key": "roudix.mesa.gitSource",        "default": "chaotic",
+             "label": tr("Mesa-git source"),              "relevant": lambda de: self._mesa_git_on()},
+            {"widget": self.nvidia_source_selector,       "key": "hardware.nvidiaDriverSource",   "default": "chaotic",
+             "label": tr("Nvidia driver source"),         "relevant": lambda de: self._drivers_gpu_nvidia},
             {"widget": self.mangohud_preset_selector,     "key": "roudix.gaming.mangohud.defaultPreset", "default": "full",
              "label": tr("MangoHud overlay level"),       "relevant": lambda de: self._mangohud_enabled()},
             {"widget": self.fluxer_channel_selector,      "key": "roudix.apps.fluxer.channel", "default": "stable",
@@ -2800,6 +2872,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             ("zen",   self.zen_tweaks,          self.zen_tweaks_group,      lambda de: self.zen_switch.get_active()),
             ("ff",    self.firefox_tweaks,      self.firefox_tweaks_group,  lambda de: self.browser_group.switches["firefox"].get_active()),
             ("boot",  self.boot_security_toggles, self.boot_security_group, lambda de: not self._boot_is_bios()),
+            ("mesa",  self.mesa_toggles,        self.mesa_group,            lambda de: True),
+            ("nvdrv", self.nvidia_driver_toggles, self.nvidia_driver_group, lambda de: self._drivers_gpu_nvidia),
             ("pw",    self.pipewire_toggles,    self.pipewire_group,        lambda de: True),
             ("tune0", self.tuning_master_items, self.tuning_master_group,   lambda de: True),
             ("tune",  self.tuning_items,        self.tuning_group,          lambda de: self._tuning_master_on()),
@@ -3045,6 +3119,13 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.spicetify_theme_selector,  host_lists("roudix.spicetify.theme")),
                 (self.spicetify_group,           bool(self.spicetify_toggles)),
             ],
+            "drivers": [
+                (self.mesa_group,              bool(self.mesa_toggles)),
+                (self.mesa_source_selector,    host_lists("roudix.mesa.gitSource", "roudix.mesa.useGit")),
+                (self.nvidia_driver_group,     bool(self.nvidia_driver_toggles) and self._drivers_gpu_nvidia),
+                (self.nvidia_source_selector,  host_lists("hardware.nvidiaDriverSource", "hardware.myGpu") and self._drivers_gpu_nvidia),
+                (self.nvidia_driver_note,      self._drivers_gpu_nvidia),
+            ],
             "system": [
                 (self.system_group,     bool(self.system_toggles)),
                 (self.rgb_selector,     host_lists("roudix.rgb")),
@@ -3174,6 +3255,10 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
     def _boot_has_wallpaper() -> bool:
         """Only Limine draws the boot wallpaper (systemd-boot has none)."""
         return get_active_string_option("roudix.boot.bootloader", "limine") == "limine"
+
+    def _mesa_git_on(self) -> bool:
+        sw = self.mesa_group.switches.get("mesaGit")
+        return sw is not None and sw.get_active()
 
     def _eac_enabled(self) -> bool:
         sw = self.boot_security_group.switches.get("eac")

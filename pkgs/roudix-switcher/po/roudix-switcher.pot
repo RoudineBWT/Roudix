@@ -571,6 +571,30 @@ msgid ""
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "mesa-git built and cached by Chaotic-Nyx"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Beta driver (always built locally)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Always the nixpkgs driver, built locally against your kernel"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
 msgstr ""
 
@@ -816,10 +840,6 @@ msgid "Waydroid (Android apps)"
 msgstr ""
 
 #: roudix-switcher.py
-msgid "Mesa-git (bleeding-edge GPU drivers)"
-msgstr ""
-
-#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr ""
 
@@ -893,6 +913,10 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Apps"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Drivers"
 msgstr ""
 
 #: roudix-switcher.py
@@ -1147,6 +1171,30 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "System tuning"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Mesa"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Mesa-git source"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Nvidia"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Nvidia driver source"
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the "
+"stable driver. With any other kernel, the beta driver or the nixpkgs source, "
+"the module is built locally and rebuilds take longer. The kernel itself is "
+"chosen in Roudix Kernel Switcher."
 msgstr ""
 
 #: roudix-switcher.py

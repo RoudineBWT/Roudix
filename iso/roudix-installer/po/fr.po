@@ -979,6 +979,30 @@ msgid "Kernel"
 msgstr "Kernel"
 
 #: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr "Source du noyau (Nvidia)"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+"Chaotic-Nyx : module Nvidia précompilé. xddxdd : plus de noyaux, module "
+"Nvidia compilé localement."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr "Source du pilote Nvidia"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr "nixpkgs : toujours compilé localement pour ton noyau."
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr "Pilote Nvidia bêta (compilé localement)"
+
+#: src/roudix_installer/pages/options.py
 msgid "GPU / CPU auto-detected — change them above if needed."
 msgstr "GPU / CPU détectés automatiquement — modifiable ci-dessus si besoin."
 
@@ -1118,6 +1142,10 @@ msgstr "MangoHud (overlay de perfs en jeu)"
 #: src/roudix_installer/pages/options.py
 msgid "Mesa git (bleeding-edge graphics drivers)"
 msgstr "Mesa git (pilotes graphiques bleeding edge)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr "Source de Mesa git"
 
 #: src/roudix_installer/pages/options.py
 msgid "Timezone"

@@ -586,6 +586,31 @@ msgstr ""
 "eacnix-enroll-mok)"
 
 #: roudix-switcher.py
+msgid "Mesa-git (bleeding-edge GPU drivers)"
+msgstr "Mesa-git (सबसे नए GPU ड्राइवर)"
+
+#: roudix-switcher.py
+msgid "mesa-git built and cached by Chaotic-Nyx"
+msgstr "Chaotic-Nyx द्वारा बनाया और कैश किया गया mesa-git"
+
+#: roudix-switcher.py
+msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr "nix-gaming-edge से mesa-git, stable-mesa फ़ॉलबैक बूट एंट्री के साथ"
+
+#: roudix-switcher.py
+msgid "Beta driver (always built locally)"
+msgstr "बीटा ड्राइवर (हमेशा स्थानीय रूप से बनता है)"
+
+#: roudix-switcher.py
+msgid "Precompiled nvidia_cachyos on a Chaotic-Nyx kernel, no local build"
+msgstr ""
+"Chaotic-Nyx कर्नेल पर पहले से कंपाइल किया हुआ nvidia_cachyos, स्थानीय कंपाइलेशन के बिना"
+
+#: roudix-switcher.py
+msgid "Always the nixpkgs driver, built locally against your kernel"
+msgstr "हमेशा nixpkgs का ड्राइवर, आपके कर्नेल के लिए स्थानीय रूप से बनता है"
+
+#: roudix-switcher.py
 msgid "Low latency (48 kHz, quantum 128) — audio work, rhythm games"
 msgstr "कम लेटेंसी (48 kHz, quantum 128) — ऑडियो कार्य, रिदम गेम"
 
@@ -836,10 +861,6 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (Android ऐप)"
 
 #: roudix-switcher.py
-msgid "Mesa-git (bleeding-edge GPU drivers)"
-msgstr "Mesa-git (सबसे नए GPU ड्राइवर)"
-
-#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "ऑटो-अपडेट (समयबद्ध git pull + रीबिल्ड)"
 
@@ -917,6 +938,10 @@ msgstr "चैट क्लाइंट"
 #: roudix-switcher.py
 msgid "Apps"
 msgstr "ऐप"
+
+#: roudix-switcher.py
+msgid "Drivers"
+msgstr "ड्राइवर"
 
 #: roudix-switcher.py
 msgid "System"
@@ -1188,6 +1213,34 @@ msgstr "ऑडियो (PipeWire)"
 #: roudix-switcher.py
 msgid "System tuning"
 msgstr "सिस्टम ट्यूनिंग"
+
+#: roudix-switcher.py
+msgid "Mesa"
+msgstr "Mesa"
+
+#: roudix-switcher.py
+msgid "Mesa-git source"
+msgstr "mesa-git स्रोत"
+
+#: roudix-switcher.py
+msgid "Nvidia"
+msgstr "Nvidia"
+
+#: roudix-switcher.py
+msgid "Nvidia driver source"
+msgstr "Nvidia ड्राइवर स्रोत"
+
+#: roudix-switcher.py
+msgid ""
+"The precompiled Nvidia module only exists for a Chaotic-Nyx kernel on the "
+"stable driver. With any other kernel, the beta driver or the nixpkgs source, "
+"the module is built locally and rebuilds take longer. The kernel itself is "
+"chosen in Roudix Kernel Switcher."
+msgstr ""
+"पहले से कंपाइल किया हुआ Nvidia मॉड्यूल केवल स्थिर ड्राइवर वाले Chaotic-Nyx कर्नेल के लिए "
+"मौजूद है। किसी अन्य कर्नेल, बीटा ड्राइवर या nixpkgs स्रोत के साथ मॉड्यूल स्थानीय रूप से "
+"बनता है और रीबिल्ड में अधिक समय लगता है। कर्नेल स्वयं Roudix Kernel Switcher में चुना "
+"जाता है।"
 
 #: roudix-switcher.py
 msgid "Keyring & portal backend"

@@ -17,7 +17,10 @@ let
   # kernel AND the stable branch. Everything else (xddxdd kernels, nixpkgs
   # kernels, beta driver) builds the module locally, which is the same as the
   # old "nixpkgsKernel" case.
-  localModule = !chaoticCachyos || config.hardware.nvidiaBeta;
+  localModule =
+    !chaoticCachyos
+    || config.hardware.nvidiaBeta
+    || config.hardware.nvidiaDriverSource == "nixpkgs";
 
   # Name of the kernel actually in use, for warnings.
   activeKernel =
@@ -98,8 +101,9 @@ in
           && !config.hardware.nvidiaOpen)
         "Kernel \"${activeKernel}\" / driver \"${if config.hardware.nvidiaBeta then "beta" else "stable"}\" with a closed-source NVIDIA driver (hardware.nvidiaOpen = false): the kernel module is not available from any binary cache and will be compiled locally on every kernel or driver bump."
       ++ lib.optional
-        (config.hardware.myGpu == "nvidia" && config.hardware.nvidiaBeta && chaoticCachyos)
-        "hardware.nvidiaBeta = true on the Chaotic-Nyx kernel \"${config.hardware.myKernelChaotic}\" (LTO): the beta module is built locally against that kernel instead of using the precompiled nvidia_cachyos. If that build fails, pick a nixpkgs kernel or hardware.nvidiaKernelSource = \"xddxdd\" with a non-LTO variant.";
+        (config.hardware.myGpu == "nvidia" && chaoticCachyos
+          && (config.hardware.nvidiaBeta || config.hardware.nvidiaDriverSource == "nixpkgs"))
+        "hardware.nvidiaBeta = true or hardware.nvidiaDriverSource = \"nixpkgs\" on the Chaotic-Nyx kernel \"${config.hardware.myKernelChaotic}\" (LTO): the module is built locally against that kernel instead of using the precompiled nvidia_cachyos. If that build fails, pick a nixpkgs kernel or hardware.nvidiaKernelSource = \"xddxdd\" with a non-LTO variant.";
     }
     # Active nvidia_config quand myGpu == "nvidia"
     (mkIf (config.hardware.myGpu == "nvidia") {

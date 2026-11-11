@@ -79,8 +79,9 @@ class SummaryPage(Adw.NavigationPage):
                       or tr("no partition assigned"),
         }[s.disk.mode]
 
-        kernel_display = s.kernel_chaotic if s.gpu == "nvidia" else s.kernel
-        kernel_source = "Chaotic-Nyx" if s.gpu == "nvidia" else "xddxdd"
+        use_chaotic = s.gpu == "nvidia" and s.nvidia_kernel_source == "chaotic"
+        kernel_display = s.kernel_chaotic if use_chaotic else s.kernel
+        kernel_source = "Chaotic-Nyx" if use_chaotic else "xddxdd"
 
         machine = "VM" if s.vm_guest else tr("bare metal")
         gaming_state = tr("enabled") if s.gaming else tr("disabled")

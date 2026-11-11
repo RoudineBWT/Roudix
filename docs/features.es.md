@@ -8,6 +8,8 @@
 - Dos proveedores de kernel, elegidos automáticamente según `hardware.myGpu`:
   - AMD/Intel → [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel), 36 variantes (`hardware.myKernel`)
   - Nvidia → Chaotic-Nyx, 4 variantes (`hardware.myKernelChaotic`) — incluye `nvidia_cachyos`, un driver precompilado a juego con su kernel, de modo que el módulo de Nvidia no se recompila localmente en cada actualización del kernel
+  - Nvidia también puede usar los kernels de xddxdd con `hardware.nvidiaKernelSource = "xddxdd"` (la misma lista que AMD/Intel, `hardware.myKernel`); el módulo de Nvidia se compila entonces localmente en cada actualización del kernel o del driver
+  - `hardware.nvidiaBeta = true` cambia los equipos Nvidia al driver beta (siempre compilado localmente, sin módulo precompilado)
 - También se pueden elegir kernels "planos" de nixpkgs en ambos proveedores, completamente al margen del overlay de CachyOS — `zen` (`linuxPackages_zen`), `nixpkgs-lts`, `nixpkgs-latest`, `nixpkgs-testing` (RC/mainline), `xanmod-lts` / `xanmod-latest` (XanMod). En Nvidia, estos recurren a un módulo de Nvidia recompilado localmente (sin la caché de `nvidia_cachyos`)
 - `hardware.myKernelSource` (`nixpkgs` / `master` / `staging-next`) toma únicamente esos kernels de nixpkgs desde un nixpkgs más reciente para adelantar las actualizaciones del kernel, sin tocar el resto del sistema
 - ZRAM activado (100 % de la RAM, zstd, swappiness 150)
@@ -200,6 +202,8 @@ También disponible, opt-in (desactivado por defecto): un cliente de torrents me
 - Todo el grupo de creación de contenido se puede activar/desactivar mediante `roudix.contentCreation.enable`
 - GPU Screen Recorder
 - Opción Mesa Git para AMD — activa un Mesa experimental/de última hora mediante `roudix.mesa.useGit = true` en `local.nix` (por defecto: Mesa estable de nixpkgs) — ⚠️ **experimental**, la compilación puede fallar según el estado de nixpkgs
+  - `roudix.mesa.gitSource` elige el origen de mesa-git: `"chaotic"` (por defecto, Chaotic-Nyx) o `"gaming-edge"` (nix-gaming-edge, añade una entrada de arranque de respaldo `stable-mesa`)
+- Origen del driver de Nvidia — `hardware.nvidiaDriverSource = "chaotic"` (por defecto, `nvidia_cachyos` precompilado en un kernel Chaotic-Nyx) o `"nixpkgs"` (siempre compilado localmente)
 - Parámetros del kernel para la estabilidad de las GPU AMD aplicados automáticamente (`mem_sleep_default=deep`, `amdgpu.gpu_recovery=1`, `amdgpu.lockup_timeout=1000`, `amdgpu.runpm=0`, `amdgpu.sg_display=0`) — corrigen bloqueos aleatorios y problemas al despertar de la suspensión en RDNA2/RDNA3
 - Controlador RGB seleccionable mediante `roudix.rgb` — `openlinkhub` (Corsair iCUE Link / Commander, actualizado automáticamente mediante CI), `openrgb` (multimarca: Razer, ASUS, MSI…) o `none`
 - La interfaz web de OpenLinkHub está disponible en [http://127.0.0.1:27003](http://127.0.0.1:27003) una vez que el servicio está en marcha

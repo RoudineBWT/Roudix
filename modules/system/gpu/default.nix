@@ -41,6 +41,21 @@
       '';
     };
 
+    hardware.nvidiaDriverSource = lib.mkOption {
+      type = lib.types.enum [ "chaotic" "nixpkgs" ];
+      default = "chaotic";
+      description = ''
+        Where the NVIDIA kernel module comes from (hardware.myGpu = "nvidia").
+
+        "chaotic": the precompiled nvidia_cachyos of Chaotic-Nyx. It only
+                   exists for a Chaotic-Nyx cachyos* kernel on the stable
+                   branch; on any other kernel (or with hardware.nvidiaBeta)
+                   nixpkgs builds the module locally whatever this says.
+        "nixpkgs": always the nixpkgs driver, built locally against the
+                   running kernel.
+      '';
+    };
+
     hardware.nvidiaBeta = lib.mkOption {
       type = lib.types.bool;
       default = false;

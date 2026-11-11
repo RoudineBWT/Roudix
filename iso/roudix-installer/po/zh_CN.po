@@ -944,8 +944,9 @@ msgid ""
 "will still launch games normally but without the roudix-gaming CPU profile. "
 "On a gaming laptop, pick tuned above instead."
 msgstr ""
-"用 TLP 取代 tuned：如果同时启用了游戏功能，game-performance 仍会正常启动游戏，但不会使用 roudix-gaming 的 "
-"CPU 配置。在游戏本上，请改为在上方选择 tuned。"
+"用 TLP 取代 tuned：如果同时启用了游戏功能，game-performance 仍会正常启动游"
+"戏，但不会使用 roudix-gaming 的 CPU 配置。在游戏本上，请改为在上方选择 "
+"tuned。"
 
 #: src/roudix_installer/pages/options.py
 msgid "Laptop power manager"
@@ -970,6 +971,29 @@ msgstr "AMD GPU 降压（lact、amdgpu.ppfeaturemask）"
 #: src/roudix_installer/pages/options.py
 msgid "Kernel"
 msgstr "内核"
+
+#: src/roudix_installer/pages/options.py
+msgid "Kernel source (Nvidia)"
+msgstr "内核来源（Nvidia）"
+
+#: src/roudix_installer/pages/options.py
+msgid ""
+"Chaotic-Nyx: precompiled Nvidia module. xddxdd: more kernels, Nvidia module "
+"built locally."
+msgstr ""
+"Chaotic-Nyx：预编译的 Nvidia 模块。xddxdd：更多内核，Nvidia 模块在本地编译。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia driver source"
+msgstr "Nvidia 驱动来源"
+
+#: src/roudix_installer/pages/options.py
+msgid "nixpkgs: always built locally against your kernel."
+msgstr "nixpkgs：始终针对你的内核在本地编译。"
+
+#: src/roudix_installer/pages/options.py
+msgid "Nvidia beta driver (built locally)"
+msgstr "Nvidia 测试版驱动（本地编译）"
 
 #: src/roudix_installer/pages/options.py
 msgid "GPU / CPU auto-detected — change them above if needed."
@@ -1109,6 +1133,10 @@ msgstr "MangoHud（游戏内性能显示）"
 #: src/roudix_installer/pages/options.py
 msgid "Mesa git (bleeding-edge graphics drivers)"
 msgstr "Mesa git（最新的显卡驱动）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Mesa git source"
+msgstr "Mesa git 来源"
 
 #: src/roudix_installer/pages/options.py
 msgid "Timezone"

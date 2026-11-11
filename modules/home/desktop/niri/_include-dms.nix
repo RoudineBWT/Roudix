@@ -4,7 +4,8 @@
 { config, pkgs, lib, ... }:
 let
   niriPkg = config.programs.niri.package;
-  withDms = config.programs.niri.finalConfig + ''
+  baseConfig = config.programs.niri.finalConfigFile;
+  extra = ''
 
     include "dms/alttab.kdl"
     include "dms/wpblur.kdl"
@@ -18,12 +19,13 @@ in
     target = "niri/config.kdl";
     force = true;
     source = pkgs.runCommand "config.kdl" {
-      config = withDms;
-      passAsFile = [ "config" ];
+      inherit extra;
+      passAsFile = [ "extra" ];
       buildInputs = [ niriPkg ];
     } ''
-      niri validate -c $configPath
-      cp $configPath $out
+      cat ${baseConfig} $extraPath > config.kdl
+      niri validate -c config.kdl
+      cp config.kdl $out
     '';
   };
 }
