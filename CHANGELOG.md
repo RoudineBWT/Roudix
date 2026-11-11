@@ -7,6 +7,15 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 
 ## [Unreleased]
 
+## [2026.11.11] - 2026-11-11
+
+### Changed
+- feat(roudix): add options for Mesa-git and Nvidia driver sources
+- feat(roudix-mono-font): add RoudixMono and RoudixSans Nerd Fonts
+- feat(system/gaming): add MangoHud preset management
+- fix(umbriel): update documentation and blur settings
+- feat(roudix-installer): add support for hybrid-graphics laptops
+
 ## [2026.11.05] - 2026-11-05
 
 ### Changed
