@@ -7,6 +7,11 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 
 ## [Unreleased]
 
+## [2026.11.12] - 2026-11-12
+
+### Changed
+- fix(roudix-switcher): update icon for Vesktop option
+
 ## [2026.11.11] - 2026-11-11
 
 ### Changed
