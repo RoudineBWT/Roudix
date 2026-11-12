@@ -66,7 +66,7 @@ in
       # hence the conditional // instead of hardcoding both keys. Size and
       # position stay the same in both cases so Discord+Telegram sit
       # side by side (top_left/top_right).
-      match.app_id = "^(discord|Element)$";
+      match.app_id = "^(discord|vesktop|Element)$";
       default_output = "DP-3";
       default_workspace = 1;
       default_floating_size_px = { width = 1316; height = 1011; };

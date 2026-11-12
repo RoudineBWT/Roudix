@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 let
   cfg = config.roudix.pipewire;
 in
@@ -53,8 +53,11 @@ in
         alsa.enable = true;
         alsa.support32Bit = true; # Steam / Wine
         pulse.enable = true;
-        jack.enable = true;
+        # services.pipewire.jack.enable is deprecated (global LD_LIBRARY_PATH
+        # impurity). JACK apps are started through the `pw-jack` wrapper
+        # instead: `pw-jack <app>`.
       };
+      environment.systemPackages = [ pkgs.pipewire.jack ];
     }
 
     (lib.mkIf cfg.lowLatency.enable {

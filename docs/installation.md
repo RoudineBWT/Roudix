@@ -129,7 +129,7 @@ Edit `hosts/roudix/local.nix` to match your hardware:
   roudix.rgb          = "openlinkhub";        # "openlinkhub", "openrgb" or "none" — see below
   roudix.mesa.useGit  = false;                # true = mesa-git (experimental, build may fail), false = nixpkgs stable
   roudix.matrixClient = "none";               # "element", "cinny" or "none"
-  roudix.discord      = "vencord";            # "vencord", "vanilla" or "none"
+  roudix.discord      = "vencord";            # "vencord", "vanilla", "vesktop" or "none"
   roudix.editor       = "zed";                # "zed", "vscode", "neovim" or "none"
 
   # ── Gaming apps (all true by default — disable what you don't want) ────────

@@ -375,6 +375,10 @@ msgid "Vanilla (no patch)"
 msgstr ""
 
 #: src/roudix_installer/pages/options.py
+msgid "Vesktop (standalone Vencord)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
 msgid "Telegram (official client)"
 msgstr ""
 

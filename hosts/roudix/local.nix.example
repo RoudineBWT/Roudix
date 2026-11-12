@@ -208,7 +208,7 @@
   # roudix.mesa.gitSource = "chaotic";
   roudix.waydroid.enable = false;
   roudix.matrixClient = "none"; # "element", "cinny" or "none"
-  roudix.discord = "none"; # "vencord", "vanilla" or "none"
+  roudix.discord = "none"; # "vencord", "vanilla", "vesktop" or "none"
   roudix.telegram = "none"; # "telegram" (official), "ayugram" (fork: ghost mode, anti-recall...) or "none"
   roudix.videoPlayer = "none"; # "vlc", "clapper" (GTK4), "mpv" (+ yt-dlp), "celluloid" or "none"
   roudix.torrentClient = "none"; # "qbittorrent", "fragments" (minimal GNOME client), "deluge" or "none"
