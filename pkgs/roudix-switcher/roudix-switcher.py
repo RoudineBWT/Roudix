@@ -408,7 +408,7 @@ MATRIX_CLIENTS = [
 DISCORD_OPTIONS = [
     {"id": "vencord", "name": "Vencord", "subtitle": tr("Discord with Vencord already patched in"), "icon": "vencord.svg"},
     {"id": "vanilla", "name": "Vanilla", "subtitle": tr("Discord with no client patches"),            "icon": "discord.svg"},
-    {"id": "vesktop", "name": "Vesktop", "subtitle": tr("Standalone Vencord client, native Wayland"), "icon": "discord.svg"},
+    {"id": "vesktop", "name": "Vesktop", "subtitle": tr("Standalone Vencord client, native Wayland"), "icon": "vesktop.svg"},
     {"id": "none",    "name": tr("None"),    "subtitle": tr("Don't install a Discord client"),           "icon": "none.svg"},
 ]
 
