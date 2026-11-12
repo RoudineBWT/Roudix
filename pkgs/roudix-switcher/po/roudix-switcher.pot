@@ -876,6 +876,10 @@ msgid "Waydroid (Android apps)"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Printing (CUPS + network printers)"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Scanners (SANE: network + HP)"
 msgstr ""
 
@@ -909,6 +913,18 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Fstrim (automatic TRIM for SSD/NVMe)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Monthly btrfs scrub"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Hibernation (needs swap, off by default)"
 msgstr ""
 
 #: roudix-switcher.py
