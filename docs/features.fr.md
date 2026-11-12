@@ -209,7 +209,7 @@ pas encore dans nixpkgs) ou `"geary"` (client léger GNOME) ;
 
 ## Autre
 
-- Discord sélectionnable via `roudix.discord` — `"vencord"` (client patché, défaut), `"vanilla"` (non patché) ou `"none"` (non installé)
+- Discord sélectionnable via `roudix.discord` — `"vencord"` (client patché, défaut), `"vanilla"` (non patché), `"vesktop"` (client Vencord autonome, Wayland natif) ou `"none"` (non installé)
 - Telegram sélectionnable via `roudix.telegram` — `"telegram"` (client officiel Telegram Desktop), `"ayugram"` (fork non-officiel : mode fantôme, anti-suppression, historique local des messages...) ou `"none"` (défaut, non installé)
 - Éditeur de code sélectionnable via `roudix.editor` — `"zed"` (défaut), `"vscode"`, `"neovim"` ou `"none"` (gère le tien, ex : AppImage/Flatpak)
 - Disposition clavier graphique (Wayland) via `roudix.keyboardLayout` / `roudix.keyboardVariant` (XKB, ex : `"be"` / `"intl"`) — indépendant de `console.keyMap`, qui ne couvre que la TTY avant le lancement de la session graphique ; sans effet sur GNOME/KDE, qui gèrent leur propre disposition

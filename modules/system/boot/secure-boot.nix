@@ -71,6 +71,11 @@ in
           by Fedora or Universal Blue; your normal entry and kernel are not
           touched. Needs UEFI, Secure Boot ON in the firmware and a TPM 2.0.
           Whether EAC accepts this setup is not confirmed by Epic yet.
+
+          With Limine, the "eac" specialisation also shows in Limine's menu.
+          Do NOT boot it from there (that runs the vendor kernel behind
+          Limine, which EAC rejects): use `sudo eac-reboot` or the
+          "NixOS EAC" firmware entry.
         '';
         type = lib.types.bool;
         default = false;
@@ -196,12 +201,6 @@ in
           roudix.boot.eac: hybrid NVIDIA laptops (hardware.nvidiaLaptop) are not
           covered by eacnix's tests; the EAC entry may come up without the NVIDIA
           GPU (PRIME offload). The normal entry is not affected.
-        ''
-        ++ lib.optional limine ''
-          roudix.boot.eac: with Limine, the "eac" specialisation also shows in
-          Limine's menu. Do NOT boot it from there (that runs the vendor kernel
-          behind Limine, which EAC rejects): use `sudo eac-reboot` or the
-          "NixOS EAC" firmware entry.
         '';
     })
   ]);

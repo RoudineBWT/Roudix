@@ -208,7 +208,7 @@ Also available, opt-in (off by default): a torrent client via
 
 ## Other
 
-- Discord selectable via `roudix.discord` — `"vencord"` (patched client, default), `"vanilla"` (unpatched) or `"none"` (not installed)
+- Discord selectable via `roudix.discord` — `"vencord"` (patched client, default), `"vanilla"` (unpatched), `"vesktop"` (standalone Vencord client, native Wayland) or `"none"` (not installed)
 - Telegram selectable via `roudix.telegram` — `"telegram"` (official Telegram Desktop), `"ayugram"` (unofficial fork: ghost mode, anti-recall, local message history...) or `"none"` (default, not installed)
 - Code editor selectable via `roudix.editor` — `"zed"` (default), `"vscode"`, `"neovim"` or `"none"` (manage your own, e.g. AppImage/Flatpak)
 - Graphical (Wayland) keyboard layout via `roudix.keyboardLayout` / `roudix.keyboardVariant` (XKB, e.g. `"be"` / `"intl"`) — independent from `console.keyMap`, which only covers the TTY before the graphical session starts; has no effect on GNOME/KDE, which manage their own layout

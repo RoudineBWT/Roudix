@@ -157,7 +157,7 @@ class InstallState:
     eac_enable: bool = False         # roudix.boot.eac.enable — separate "NixOS EAC" boot entry for EAC Linux v2 (experimental, Limine only)
     eac_vendor: str = "fedora"       # roudix.boot.eac.vendor — fedora | bazzite
     matrix_client: str = "none"      # none | element | cinny
-    discord: str = "none"            # roudix.discord — vencord | vanilla | none
+    discord: str = "none"            # roudix.discord — vencord | vanilla | vesktop | none
     telegram: str = "none"           # roudix.telegram — none | telegram | ayugram
     video_player: str = "none"       # roudix.videoPlayer — vlc | clapper | mpv | celluloid | none
     torrent_client: str = "none"     # roudix.torrentClient — none | qbittorrent | fragments | deluge

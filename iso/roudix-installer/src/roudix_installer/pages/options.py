@@ -260,6 +260,7 @@ def _discord():
     return [
         ("vencord", tr("Vencord (pre-installed)")),
         ("vanilla", tr("Vanilla (no patch)")),
+        ("vesktop", tr("Vesktop (standalone Vencord)")),
         ("none", tr("None")),
     ]
 
