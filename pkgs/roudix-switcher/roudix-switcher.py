@@ -648,6 +648,24 @@ PASSWORD_MANAGERS = [
     {"id": "none",       "name": tr("None"),    "subtitle": tr("Don't install a password manager"),          "icon": "none.svg"},
 ]
 
+# roudix.office (modules/system/apps/utilities/office.nix) — enum, exposed as
+# a SelectorGroup. No bundled art: plain text rows, like UMBRIEL_EFFECTS.
+OFFICE_SUITES = [
+    {"id": "libreoffice", "name": "LibreOffice", "subtitle": tr("Writer, Calc, Impress")},
+    {"id": "none",        "name": tr("None"),    "subtitle": tr("Don't install an office suite")},
+]
+
+# roudix.officeDictionaries (same file) — list option, one switch per allowed
+# value. Without a dictionary LibreOffice has no spell-check on NixOS.
+OFFICE_DICTIONARIES = [
+    {"id": "en", "name": tr("English")},
+    {"id": "fr", "name": tr("French")},
+    {"id": "es", "name": tr("Spanish")},
+    {"id": "de", "name": tr("German")},
+    {"id": "it", "name": tr("Italian")},
+    {"id": "pt", "name": tr("Portuguese")},
+]
+
 # roudix.umbriel.effects (modules/system/desktop/umbriel.nix) — shader /
 # animation setup, Umbriel only. "*-mocha" = fixed Roudix palette, the others
 # follow the Noctalia palette. No icons: plain text rows.
@@ -996,6 +1014,8 @@ SYSTEM_TOGGLES = [
     {"id": "virtualization", "name": tr("Virtualization (QEMU/KVM)"),        "key": "roudix.virtualization.enable",  "default": False},
     {"id": "vmCurator",      "name": tr("vm-curator (libvirt-free QEMU TUI)"), "key": "roudix.virtualization.vmCurator.enable", "default": False},
     {"id": "waydroid",       "name": tr("Waydroid (Android apps)"),          "key": "roudix.waydroid.enable",        "default": False},
+    {"id": "scanners",       "name": tr("Scanners (SANE: network + HP)"),    "key": "roudix.printing.scanners.enable", "default": False},
+    {"id": "openvpn",        "name": tr("OpenVPN (NetworkManager plugin)"),  "key": "roudix.vpn.openvpn.enable",     "default": False},
     {"id": "autoupdate",     "name": tr("Auto-update (scheduled git pull + rebuild)"), "key": "roudix.autoupdate.enable", "default": False},
     {"id": "laptop",         "name": tr("Laptop — TLP (disables tuned)"), "key": "roudix.laptop.enable", "default": False},
     {"id": "laptopThinkpad", "name": tr("ThinkPad — 40/80% charge thresholds"), "key": "roudix.laptop.thinkpad", "default": False},
@@ -2529,6 +2549,22 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         )
         apps_page.append(self.password_manager_selector)
 
+        self.office_selector = SelectorGroup(
+            tr("Office suite"),
+            OFFICE_SUITES,
+            get_active_string_option("roudix.office", "none"),
+            dark,
+        )
+        apps_page.append(self.office_selector)
+
+        office_dicts_now = set(get_active_list_option("roudix.officeDictionaries", []))
+        self.office_dictionaries_group = ToggleListGroup(
+            tr("Office dictionaries"),
+            OFFICE_DICTIONARIES,
+            {d["id"]: d["id"] in office_dicts_now for d in OFFICE_DICTIONARIES},
+        )
+        apps_page.append(self.office_dictionaries_group)
+
         self.content_stack.add_named(apps_page, "apps")
 
         # ── "System" page: independent toggles + RGB backend ───────────────
@@ -2839,6 +2875,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
              "label": tr("Umbriel effects"),              "relevant": lambda de: de == "umbriel"},
             {"widget": self.password_manager_selector,    "key": "roudix.passwordManager",     "default": "none",
              "label": tr("Password manager"),             "relevant": lambda de: True},
+            {"widget": self.office_selector,              "key": "roudix.office",              "default": "none",
+             "label": tr("Office suite"),                 "relevant": lambda de: True},
             {"widget": self.autoupdate_interval_selector, "key": "roudix.autoupdate.interval", "default": "1h",
              "label": tr("Update interval"),              "relevant": lambda de: True},
             {"widget": self.boot_aspect_selector,         "key": "roudix.boot.wallpaperAspect", "default": "16x9",
@@ -2886,6 +2924,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             {"items": UMBRIEL_DISABLED_EFFECTS, "group": self.umbriel_disabled_group,
              "key": "roudix.umbriel.disabledEffects", "label": tr("Umbriel — disabled effects"),
              "relevant": lambda de: de == "umbriel"},
+            {"items": OFFICE_DICTIONARIES, "group": self.office_dictionaries_group,
+             "key": "roudix.officeDictionaries", "label": tr("Office dictionaries"),
+             "relevant": lambda de: True},
         ]
 
         self._apply_host_filter()
@@ -3117,6 +3158,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.music_player_selector,  host_lists("roudix.musicPlayer")),
                 (self.mail_client_selector,   host_lists("roudix.mailClient")),
                 (self.password_manager_selector, host_lists("roudix.passwordManager")),
+                (self.office_selector,           host_lists("roudix.office")),
+                (self.office_dictionaries_group, host_lists("roudix.officeDictionaries")),
                 (self.spicetify_theme_selector,  host_lists("roudix.spicetify.theme")),
                 (self.spicetify_group,           bool(self.spicetify_toggles)),
             ],
@@ -3385,6 +3428,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.mail_client_selector.update_icons(dark)
         self.umbriel_effects_selector.update_icons(dark)
         self.password_manager_selector.update_icons(dark)
+        self.office_selector.update_icons(dark)
         self.autoupdate_interval_selector.update_icons(dark)
         self.spicetify_theme_selector.update_icons(dark)
         self.fluxer_channel_selector.update_icons(dark)

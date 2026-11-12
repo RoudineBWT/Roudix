@@ -155,6 +155,9 @@ class SummaryPage(Adw.NavigationPage):
             (tr("Music player"), s.music_player),
             (tr("Mail client"), s.mail_client),
             (tr("Password manager"), s.password_manager),
+            (tr("Office suite"), s.office),
+            (tr("Scanners (SANE)"), tr("enabled") if s.printing_scanners else tr("disabled")),
+            ("OpenVPN", tr("enabled") if s.vpn_openvpn else tr("disabled")),
             ("Waydroid", tr("enabled") if s.waydroid_enable else tr("disabled")),
             ("Apps", ", ".join(filter(None, [
                 "+ GIMP" if s.app_gimp else "",

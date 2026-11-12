@@ -447,6 +447,10 @@ msgid "Proton Pass (cloud-synced vault)"
 msgstr "Proton Pass (bóveda sincronizada en la nube)"
 
 #: src/roudix_installer/pages/options.py
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
 msgid "Colorful (default)"
 msgstr "Colorful (por defecto)"
 
@@ -1309,6 +1313,22 @@ msgstr "Cliente de correo"
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Password manager"
 msgstr "Gestor de contraseñas"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Office suite"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Scanners (SANE)"
+msgstr ""
+
+#: src/roudix_installer/pages/options.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr ""
 
 #: src/roudix_installer/pages/options.py
 msgid "Turn on the ones you want preinstalled."

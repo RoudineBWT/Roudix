@@ -9,5 +9,7 @@
     ./environment.nix
     ./tuning.nix
     ./btrfs.nix
+    ./security-mitigations.nix
+    ./vpn.nix
   ];
 }

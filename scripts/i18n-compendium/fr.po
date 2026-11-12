@@ -11,3 +11,48 @@ msgstr "Vesktop (Vencord autonome)"
 
 msgid "Standalone Vencord client, native Wayland"
 msgstr "Client Vencord autonome, Wayland natif"
+
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice (Writer, Calc, Impress)"
+
+msgid "Office suite"
+msgstr "Suite bureautique"
+
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr "Dictionnaires de la suite bureautique (séparés par des virgules : en, fr, es, de, it, pt)"
+
+msgid "Scanners (SANE)"
+msgstr "Scanners (SANE)"
+
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (plugin NetworkManager)"
+
+msgid "Writer, Calc, Impress"
+msgstr "Writer, Calc, Impress"
+
+msgid "English"
+msgstr "Anglais"
+
+msgid "French"
+msgstr "Français"
+
+msgid "Spanish"
+msgstr "Espagnol"
+
+msgid "German"
+msgstr "Allemand"
+
+msgid "Italian"
+msgstr "Italien"
+
+msgid "Portuguese"
+msgstr "Portugais"
+
+msgid "Scanners (SANE: network + HP)"
+msgstr "Scanners (SANE : réseau + HP)"
+
+msgid "Office dictionaries"
+msgstr "Dictionnaires de correction"
+
+msgid "Don't install an office suite"
+msgstr "Ne pas installer de suite bureautique"

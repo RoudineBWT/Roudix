@@ -42,6 +42,8 @@
   roudix.gaming.ananicy.enable = lib.mkDefault false;
   roudix.flatpak.enable        = lib.mkDefault false;
   roudix.printing.enable       = lib.mkDefault false; # CUPS + Avahi + drivers, see modules/system/apps/utilities/printing.nix
+  roudix.printing.scanners.enable = lib.mkDefault false; # SANE (sane-airscan + HPLIP), same file
+  roudix.vpn.openvpn.enable    = lib.mkDefault false; # NetworkManager OpenVPN plugin, see modules/system/core/vpn.nix
   roudix.fstrim.enable         = lib.mkDefault true;
   roudix.tuning.enable         = lib.mkDefault true;  # CachyOS-Settings-style tuning, see modules/system/core/tuning.nix
   roudix.virtualization.enable = lib.mkDefault false;
@@ -69,6 +71,8 @@
   roudix.torrentClient = lib.mkDefault "none";
   roudix.mailClient    = lib.mkDefault "none";
   roudix.passwordManager = lib.mkDefault "none";
+  roudix.office          = lib.mkDefault "none";
+  roudix.officeDictionaries = lib.mkDefault [ ];
   roudix.apps.gimp.enable        = lib.mkDefault false;
   roudix.apps.inkscape.enable    = lib.mkDefault false;
   roudix.apps.songrec.enable     = lib.mkDefault false;

@@ -196,6 +196,8 @@
   roudix.desktopIntegration = "gnome"; # "gnome" or "kde"
   roudix.flatpak.enable       = false;       # enable Flatpak support
   roudix.printing.enable      = false;       # CUPS + Avahi (network printers) + common drivers (Gutenprint, HPLIP, brlaser...)
+  roudix.printing.scanners.enable = false;   # SANE: network scanners (sane-airscan, driverless) + HP (HPLIP); adds you to the scanner and lp groups
+  roudix.vpn.openvpn.enable   = false;       # NetworkManager OpenVPN plugin (import .ovpn files); WireGuard already works natively
   roudix.virtualization.enable = false;      # enable libvirt / virt-manager
   roudix.virtualization.vmCurator.enable = false; # enable vm-curator / qemu-kvm -- alternative to virt-manager
   roudix.vmGuest.enable       = false;       # enable only inside a VM
@@ -215,6 +217,8 @@
   roudix.musicPlayer = "none"; # "spotify" (+ Spicetify), "ytmdesktop", "sonora" (Spotify/YT Music/... in one native app) or "none"
   roudix.mailClient = "none"; # "thunderbird" (full-featured), "betterbird" (Thunderbird fork), "geary" (lightweight GNOME) or "none"
   roudix.passwordManager = "none"; # "bitwarden" (cloud), "keepassxc" (local vault), "protonpass" (cloud) or "none"
+  roudix.office = "none"; # "libreoffice" (Writer, Calc, Impress) or "none"
+  roudix.officeDictionaries = [ ]; # spell-check + hyphenation, any of "en" "fr" "es" "de" "it" "pt" (needs an office suite to be useful)
   # "Common" apps — all off by default, set to true the ones you want:
   roudix.apps.gimp.enable        = false;
   roudix.apps.inkscape.enable    = false;

@@ -383,6 +383,38 @@ msgid "Don't install a password manager"
 msgstr "Не устанавливать менеджер паролей"
 
 #: roudix-switcher.py
+msgid "Writer, Calc, Impress"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Don't install an office suite"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "English"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "French"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Spanish"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "German"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Italian"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Portuguese"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Clean: no shaders, no animated effects"
 msgstr "Чисто: без шейдеров и анимированных эффектов"
 
@@ -886,6 +918,14 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (приложения Android)"
 
 #: roudix-switcher.py
+msgid "Scanners (SANE: network + HP)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "Автообновление (git pull по расписанию + пересборка)"
 
@@ -1151,6 +1191,14 @@ msgstr "Почтовый клиент"
 #: roudix-switcher.py
 msgid "Password manager"
 msgstr "Менеджер паролей"
+
+#: roudix-switcher.py
+msgid "Office suite"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Office dictionaries"
+msgstr ""
 
 #: roudix-switcher.py
 msgid "Toggles"

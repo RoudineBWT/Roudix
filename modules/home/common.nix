@@ -86,11 +86,26 @@ in
     bibata-cursors
     starship
   ])
+  ++ [ pkgs.xdg-user-dirs ]
   ++ lib.optional (desktopType != "kde") pkgs.xdg-user-dirs-gtk;
 
-  xdg.userDirs = {
-    enable = true;
-    createDirectories = true;
+  # Do NOT enable home-manager's xdg.userDirs: it writes ~/.config/user-dirs.dirs
+  # with hardcoded English names (Documents, Downloads, ...) and creates them,
+  # whatever the system language. xdg-user-dirs-update picks the names from the
+  # session locale instead (Documents -> Documents, Downloads -> Téléchargements...).
+  xdg.userDirs.enable = false;
+
+  # xdg-user-dirs-gtk only runs through XDG autostart, which niri / mangowc /
+  # hyprland sessions do not reliably honour — so run it ourselves at login.
+  # Idempotent: it never renames existing folders or overrides a user's
+  # ~/.config/user-dirs.dirs.
+  systemd.user.services.xdg-user-dirs-update = {
+    Unit.Description = "Create XDG user directories in the session language";
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update";
+    };
+    Install.WantedBy = [ "default.target" ];
   };
 
   # On GNOME this key is a system dconf *default* instead (see

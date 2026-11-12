@@ -94,6 +94,9 @@ OPTION_TO_ATTR = {
     "roudix.musicPlayer": "music_player",
     "roudix.mailClient": "mail_client",
     "roudix.passwordManager": "password_manager",
+    "roudix.office": "office",
+    "roudix.printing.scanners.enable": "printing_scanners",
+    "roudix.vpn.openvpn.enable": "vpn_openvpn",
     "roudix.waydroid.enable": "waydroid_enable",
     "roudix.apps.gimp.enable": "app_gimp",
     "roudix.apps.inkscape.enable": "app_inkscape",
@@ -132,7 +135,8 @@ OPTION_TO_ATTR = {
 
 # Options whose Nix value is a list but whose wizard field isn't the same shape.
 BROWSERS_KEY = "roudix.browsers"            # ["helium"] -> state.browser = "helium" ([] -> "none")
-LIST_ATTRS = {"roudix.zen.mods": "zen_mods", "roudix.zen.sine.mods": "zen_sine_mods"}
+LIST_ATTRS = {"roudix.zen.mods": "zen_mods", "roudix.zen.sine.mods": "zen_sine_mods",
+              "roudix.officeDictionaries": "office_dictionaries"}
 
 _ASSIGN = re.compile(r"^\s*([A-Za-z_][\w.\-]*)\s*=\s*(.+?)\s*;")
 _STRING = re.compile(r'^"([^"]*)"$')

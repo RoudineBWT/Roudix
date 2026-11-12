@@ -65,6 +65,8 @@ declare -A VAR_KEY=(
   [DISCORD]=roudix.discord             [TELEGRAM]=roudix.telegram
   [VIDEO_PLAYER]=roudix.videoPlayer    [TORRENT_CLIENT]=roudix.torrentClient
   [MAIL_CLIENT]=roudix.mailClient      [WAYDROID]=roudix.waydroid.enable
+  [OFFICE]=roudix.office               [OFFICE_DICTS]=roudix.officeDictionaries
+  [SCANNERS]=roudix.printing.scanners.enable  [OPENVPN]=roudix.vpn.openvpn.enable
 )
 
 key_in_host_example() {
@@ -1259,6 +1261,28 @@ pick "Mail client:" MAIL_CLIENT \
   "betterbird|Betterbird — fine-tuned Thunderbird fork" \
   "geary|Geary — lightweight GNOME/libadwaita mail client"
 
+pick "Office suite:" OFFICE \
+  "none|None" \
+  "libreoffice|LibreOffice — Writer, Calc, Impress"
+
+OFFICE_DICTS=""
+if ! hidden_var OFFICE_DICTS; then
+  echo -e "\n${BOLD}Spell-check dictionaries (roudix.officeDictionaries) — comma-separated among en, fr, es, de, it, pt; leave empty for none:${NC}"
+  read -rp "Dictionaries: " OFFICE_DICTS
+fi
+# keep only the codes the Nix option accepts (an unknown one would fail the build)
+OFFICE_DICTS_CLEAN=""
+for _d in $(echo "$OFFICE_DICTS" | tr ',' ' '); do
+  case "$_d" in en|fr|es|de|it|pt) [[ " $OFFICE_DICTS_CLEAN " == *" $_d "* ]] || OFFICE_DICTS_CLEAN+="$_d ";; *) warn "Unknown dictionary '$_d' ignored.";; esac
+done
+OFFICE_DICTS="${OFFICE_DICTS_CLEAN% }"
+
+pick_bool "Enable scanner support? (SANE: network scanners + HP, adds you to the scanner/lp groups)" SCANNERS \
+  "Yes" "No"
+
+pick_bool "Add the OpenVPN plugin to NetworkManager? (WireGuard already works natively)" OPENVPN \
+  "Yes" "No"
+
 pick_bool "Enable Waydroid? (Android container)" WAYDROID \
   "Yes" "No"
 
@@ -1355,6 +1379,10 @@ sed -i "s/roudix\.videoPlayer[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.videoPla
 sed -i "s/roudix\.torrentClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.torrentClient = \"${TORRENT_CLIENT}\"/" hosts/${HOSTNAME}/local.nix
 sed -i "s/roudix\.mailClient[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.mailClient = \"${MAIL_CLIENT}\"/" hosts/${HOSTNAME}/local.nix
 sed -i -E "s/roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.waydroid.enable = ${WAYDROID}/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.office[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.office = \"${OFFICE}\"/" hosts/${HOSTNAME}/local.nix
+sed -i "s/roudix\.officeDictionaries[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.officeDictionaries = [$(nix_list_from_csv "${OFFICE_DICTS// /,}")]/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.printing\.scanners\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.printing.scanners.enable = ${SCANNERS}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.vpn\.openvpn\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vpn.openvpn.enable = ${OPENVPN}/" hosts/${HOSTNAME}/local.nix
 
 if [[ "$RGB" == "openlinkhub" ]]; then
   sed -i -E "s/roudix\.memory\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.memory.enable = ${MEMORY_ENABLE}/"   hosts/${HOSTNAME}/local.nix
@@ -1431,6 +1459,9 @@ check_opt "roudix.videoPlayer"         "roudix\.videoPlayer[[:space:]]*=[[:space
 check_opt "roudix.torrentClient"       "roudix\.torrentClient[[:space:]]*=[[:space:]]*\"${TORRENT_CLIENT}\""
 check_opt "roudix.mailClient"          "roudix\.mailClient[[:space:]]*=[[:space:]]*\"${MAIL_CLIENT}\""
 check_opt "roudix.waydroid.enable"     "roudix\.waydroid\.enable[[:space:]]*=[[:space:]]*${WAYDROID}"
+check_opt "roudix.office"              "roudix\.office[[:space:]]*=[[:space:]]*\"${OFFICE}\""
+check_opt "roudix.printing.scanners.enable" "roudix\.printing\.scanners\.enable[[:space:]]*=[[:space:]]*${SCANNERS}"
+check_opt "roudix.vpn.openvpn.enable"  "roudix\.vpn\.openvpn\.enable[[:space:]]*=[[:space:]]*${OPENVPN}"
 if [[ "$RGB" == "openlinkhub" ]]; then
   check_opt "roudix.memory.enable" "roudix\.memory\.enable[[:space:]]*=[[:space:]]*${MEMORY_ENABLE}"
   check_opt "roudix.memory.type"   "roudix\.memory\.type[[:space:]]*=[[:space:]]*\"${MEMORY_TYPE}\""
@@ -1488,6 +1519,9 @@ echo -e "
   ${BOLD}Video player  :${NC} ${VIDEO_PLAYER}
   ${BOLD}Torrent client:${NC} ${TORRENT_CLIENT}
   ${BOLD}Mail client   :${NC} ${MAIL_CLIENT}
+  ${BOLD}Office suite  :${NC} ${OFFICE}$([ -n "$OFFICE_DICTS" ] && echo " (dictionaries: $OFFICE_DICTS)")
+  ${BOLD}Scanners      :${NC} $SCANNERS
+  ${BOLD}OpenVPN       :${NC} $OPENVPN
   ${BOLD}Waydroid      :${NC} $WAYDROID
   ${BOLD}Config dir    :${NC} $INSTALL_DIR
 "

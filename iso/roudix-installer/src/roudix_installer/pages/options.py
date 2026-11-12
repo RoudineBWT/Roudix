@@ -329,6 +329,13 @@ def _password_manager():
     ]
 
 
+def _office():
+    return [
+        ("none", tr("None")),
+        ("libreoffice", tr("LibreOffice (Writer, Calc, Impress)")),
+    ]
+
+
 def _spicetify_themes():
     return [
         ("colorful", tr("Colorful (default)")),
@@ -1156,6 +1163,23 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.password_manager_row)
 
+        self.office_row = self._combo(tr("Office suite"), _office(), state.office)
+        extra_group.add(self.office_row)
+
+        self.office_dictionaries_row = Adw.EntryRow(
+            title=tr("Office dictionaries (comma-separated: en, fr, es, de, it, pt)")
+        )
+        self.office_dictionaries_row.set_text(", ".join(state.office_dictionaries))
+        extra_group.add(self.office_dictionaries_row)
+
+        self.printing_scanners_row = Adw.SwitchRow(title=tr("Scanners (SANE)"))
+        self.printing_scanners_row.set_active(state.printing_scanners)
+        extra_group.add(self.printing_scanners_row)
+
+        self.vpn_openvpn_row = Adw.SwitchRow(title=tr("OpenVPN (NetworkManager plugin)"))
+        self.vpn_openvpn_row.set_active(state.vpn_openvpn)
+        extra_group.add(self.vpn_openvpn_row)
+
         self.waydroid_row = Adw.SwitchRow(title="Waydroid (Android)")
         self.waydroid_row.set_active(state.waydroid_enable)
         extra_group.add(self.waydroid_row)
@@ -1418,6 +1442,9 @@ class OptionsPage(Adw.NavigationPage):
         "telegram_row": ["roudix.telegram"], "video_player_row": ["roudix.videoPlayer"],
         "torrent_client_row": ["roudix.torrentClient"], "music_player_row": ["roudix.musicPlayer"],
         "mail_client_row": ["roudix.mailClient"], "password_manager_row": ["roudix.passwordManager"],
+        "office_row": ["roudix.office"], "office_dictionaries_row": ["roudix.officeDictionaries"],
+        "printing_scanners_row": ["roudix.printing.scanners.enable"],
+        "vpn_openvpn_row": ["roudix.vpn.openvpn.enable"],
         "waydroid_row": ["roudix.waydroid.enable"],
         "app_gimp_row": ["roudix.apps.gimp.enable"], "app_inkscape_row": ["roudix.apps.inkscape.enable"],
         "app_songrec_row": ["roudix.apps.songrec.enable"], "app_easyeffects_row": ["roudix.apps.easyeffects.enable"],
@@ -1442,7 +1469,7 @@ class OptionsPage(Adw.NavigationPage):
         "desktop_group": ["desktop_row", "shell_row", "latest_de_row", "latest_shell_row", "latest_note", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
         "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "mesa_git_source_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
         "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
-        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "boot_aspect_row", "boot_resolution_row", "secure_boot_row", "eac_row", "eac_vendor_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "waydroid_row"],
+        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "boot_aspect_row", "boot_resolution_row", "secure_boot_row", "eac_row", "eac_vendor_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "office_row", "office_dictionaries_row", "printing_scanners_row", "vpn_openvpn_row", "waydroid_row"],
         "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row", "app_fluxer_channel_row", "app_cressida_row"],
         "cc_group": ["content_creation_row", "obs_row", "video_editor_row", "virtual_camera_row", "chatterino_row"],
     }
@@ -1484,6 +1511,7 @@ class OptionsPage(Adw.NavigationPage):
             "mail_client": vals(_mail_client()),
             "app_fluxer_channel": vals(_fluxer_channel()),
             "password_manager": vals(_password_manager()),
+            "office": vals(_office()),
             "spicetify_theme": vals(_spicetify_themes()),
             "timezone": vals(_timezones()),
             "locale": vals(_locales()),
@@ -1891,6 +1919,10 @@ class OptionsPage(Adw.NavigationPage):
         s.music_player = self._selected_value(self.music_player_row)
         s.mail_client = self._selected_value(self.mail_client_row)
         s.password_manager = self._selected_value(self.password_manager_row)
+        s.office = self._selected_value(self.office_row)
+        s.office_dictionaries = self._split_list(self.office_dictionaries_row.get_text())
+        s.printing_scanners = self.printing_scanners_row.get_active()
+        s.vpn_openvpn = self.vpn_openvpn_row.get_active()
         s.waydroid_enable = self.waydroid_row.get_active()
         s.app_gimp = self.app_gimp_row.get_active()
         s.app_inkscape = self.app_inkscape_row.get_active()

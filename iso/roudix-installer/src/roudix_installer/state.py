@@ -176,6 +176,10 @@ class InstallState:
     app_cressida: bool = False
     mail_client: str = "none"
     password_manager: str = "none"
+    office: str = "none"             # roudix.office — libreoffice | none
+    office_dictionaries: list = field(default_factory=list)  # roudix.officeDictionaries — subset of OFFICE_DICTIONARIES
+    printing_scanners: bool = False  # roudix.printing.scanners.enable — SANE (sane-airscan + HPLIP)
+    vpn_openvpn: bool = False        # roudix.vpn.openvpn.enable — NetworkManager OpenVPN plugin
 
     # ── Spicetify (only meaningful if music_player == "spotify") ────────────
     spicetify_theme: str = "colorful"        # roudix.spicetify.theme — colorful | comfy

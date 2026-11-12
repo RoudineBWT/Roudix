@@ -374,6 +374,38 @@ msgid "Don't install a password manager"
 msgstr "عدم تثبيت مدير كلمات مرور"
 
 #: roudix-switcher.py
+msgid "Writer, Calc, Impress"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Don't install an office suite"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "English"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "French"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Spanish"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "German"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Italian"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Portuguese"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Clean: no shaders, no animated effects"
 msgstr "نظيف: بدون شيدرز ولا مؤثرات متحركة"
 
@@ -866,6 +898,14 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (تطبيقات Android)"
 
 #: roudix-switcher.py
+msgid "Scanners (SANE: network + HP)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "تحديث تلقائي (git pull مجدول + إعادة بناء)"
 
@@ -1127,6 +1167,14 @@ msgstr "عميل البريد"
 #: roudix-switcher.py
 msgid "Password manager"
 msgstr "مدير كلمات المرور"
+
+#: roudix-switcher.py
+msgid "Office suite"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Office dictionaries"
+msgstr ""
 
 #: roudix-switcher.py
 msgid "Toggles"

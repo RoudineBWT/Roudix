@@ -56,6 +56,23 @@ jobs:
         if: always()
         run: scripts/ci-stubs.sh remove
 
+  pure-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      # Builtins-only policy tests: no nixpkgs, no network.
+      - name: Offline policy tests
+        run: |
+          for t in tests/*.nix; do
+            echo "::group::$t"
+            test "$(nix-instantiate --eval --strict "$t")" = true
+            echo "::endgroup::"
+          done
+
   python:
     runs-on: ubuntu-latest
     steps:

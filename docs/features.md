@@ -193,6 +193,12 @@ Also available, opt-in (off by default): a torrent client via
 `"fragments"` (minimal GNOME/libadwaita client), `"deluge"` (plugin-based) or
 `"none"` (default).
 
+Also opt-in (off by default): an office suite via `roudix.office` — `"libreoffice"` (Writer, Calc, Impress) or `"none"` (default). On NixOS LibreOffice ships without spell-check dictionaries, so `roudix.officeDictionaries` installs them system-wide (hunspell + hyphenation): a list among `"en"`, `"fr"`, `"es"`, `"de"`, `"it"` and `"pt"`, e.g. `[ "fr" "en" ]`.
+
+`roudix.printing.scanners.enable` turns on scanner support through SANE — network scanners via `sane-airscan` (driverless, eSCL/AirScan) and HP scanners via HPLIP — and adds your user to the `scanner` and `lp` groups. It's independent from `roudix.printing.enable` (CUPS): a standalone scanner works without it. Brother and legacy Epson backends aren't included; add them to `hardware.sane.extraBackends` in `local.nix`.
+
+`roudix.vpn.openvpn.enable` adds the NetworkManager OpenVPN plugin so `.ovpn` files can be imported from the network settings. WireGuard already works natively in NetworkManager and needs nothing.
+
 ## Spicetify
 
 - Theme: `roudix.spicetify.theme` — `"colorful"` (default, sanoojes/spicetify-colorful) or `"comfy"` (bundled Comfy theme)
