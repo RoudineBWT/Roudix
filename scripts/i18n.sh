@@ -2,7 +2,9 @@
 # i18n.sh — gettext workflow for the installer (iso/roudix-installer) and the Roudix apps
 # (pkgs/roudix-welcome, roudix-switcher, roudix-store, roudix-config, roudix-kernel-switcher, roudix-hw-sync, roudix-scheduler, roudix-firewall).
 #
-#   scripts/i18n.sh update  [component…]   re-extract strings -> po/<domain>.pot, merge into every po/*.po
+#   scripts/i18n.sh update  [component…]   re-extract strings -> po/<domain>.pot, merge into every po/*.po,
+#                                          and fill new messages from scripts/i18n-compendium/<lang>.po
+#                                          (translate a new string there once: `update` then leaves no gap)
 #   scripts/i18n.sh compile [component…]   po/*.po -> <locale dir>/<lang>/LC_MESSAGES/<domain>.mo
 #                                          (to run from the source tree; Nix does it at build)
 #   scripts/i18n.sh check   [component…]   fail if a .po is out of date, has untranslated/fuzzy entries, or is invalid
@@ -93,13 +95,33 @@ stats() {  # prints "<lang>: N translated, M fuzzy, K untranslated"; sets BAD=1 
     fi
 }
 
+# Translation memory shared by every component: scripts/i18n-compendium/<lang>.po.
+# msgmerge only takes from it the messages still missing from po/<lang>.po (exact
+# msgid), so it never overwrites an existing translation, and it is tried before
+# fuzzy matching, so a fully covered new string never ends up fuzzy.
 cmd_update() {
     mkdir -p po
     extract "$POT"
+    local po lang comp args missing
     for po in po/*.po; do
         [ -e "$po" ] || continue
-        msgmerge --update --backup=off --quiet "$po" "$POT"
-        BAD=0; stats "$po"
+        lang=$(basename "$po" .po)
+        comp="$ROOT/scripts/i18n-compendium/$lang.po"
+        args=()
+        [ -e "$comp" ] && args=(--compendium="$comp")
+        msgmerge --update --backup=off --quiet "${args[@]}" "$po" "$POT"
+        stats "$po"
+        # Required languages must come out complete: say exactly what is missing.
+        case "$REQUIRED_LANGS" in
+            *" $lang "*)
+                missing=$({ msgattrib --no-wrap --untranslated --no-obsolete "$po"
+                            msgattrib --no-wrap --only-fuzzy --no-obsolete "$po"; } | grep '^msgid "[^"]' || true)
+                if [ -n "$missing" ]; then
+                    echo "  $lang still has untranslated/fuzzy messages:"
+                    sed 's/^/    /' <<<"$missing"
+                    echo "  -> add them to scripts/i18n-compendium/$lang.po and rerun: scripts/i18n.sh update $COMP"
+                fi ;;
+        esac
     done
 }
 
@@ -154,6 +176,8 @@ case "$CMD" in
         done
         if [ "$CMD" = check ]; then
             [ "$BAD" -eq 0 ] && echo "i18n OK" || { echo "i18n check FAILED (scripts/i18n.sh update, then translate)" >&2; exit 1; }
+        elif [ "$CMD" = update ]; then
+            [ "$BAD" -eq 0 ] && echo "i18n update OK (check will pass)" || { echo "i18n update: a required language is incomplete (see above)" >&2; exit 1; }
         fi
         ;;
     new)

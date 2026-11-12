@@ -10,7 +10,7 @@ in
 {
   programs.niri.settings.window-rules = [
     {
-      matches = [ { at-startup = true; app-id = "discord"; } ];
+      matches = [ { at-startup = true; app-id = "^(discord|vesktop)$"; } ];
       open-on-workspace = ws.chat;
       default-column-width.fixed = 1316;
       default-window-height.fixed = 1011;

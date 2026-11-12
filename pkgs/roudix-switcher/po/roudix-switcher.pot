@@ -214,6 +214,10 @@ msgid "Discord with no client patches"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Standalone Vencord client, native Wayland"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Don't install a Discord client"
 msgstr ""
 

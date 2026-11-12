@@ -1232,6 +1232,7 @@ pick "Matrix client:" MATRIX_CLIENT \
 pick "Discord:" DISCORD \
   "vencord|Discord with Vencord patched in (recommended)" \
   "vanilla|Discord vanilla, no client patch" \
+  "vesktop|Vesktop — standalone Vencord client (native Wayland)" \
   "none|Don't install Discord"
 
 pick "Telegram:" TELEGRAM \

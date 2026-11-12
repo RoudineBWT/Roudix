@@ -14,11 +14,11 @@ in
     # Communication / utility apps
   ]
   ++ (if scratchpadApps then [
-    "is_named_scratchpad:1,width:1316,height:1011,app_id:^discord$"
+    "is_named_scratchpad:1,width:1316,height:1011,app_id:^(discord|vesktop)$"
     "is_named_scratchpad:1,width:1316,height:1011,app_id:^Element$"
     "is_named_scratchpad:1,width:555,height:1011,app_id:^(org\\.telegram\\.desktop|TelegramDesktop)$"
   ] else [
-    "tags:4,monitor:DP-3,app_id:^discord$"
+    "tags:4,monitor:DP-3,app_id:^(discord|vesktop)$"
     "tags:4,monitor:DP-3,app_id:^Element$"
     "tags:4,monitor:DP-3,app_id:^(org\\.telegram\\.desktop|TelegramDesktop)$"
   ])

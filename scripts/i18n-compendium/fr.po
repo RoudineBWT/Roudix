@@ -1,0 +1,13 @@
+# Shared translation memory for scripts/i18n.sh (msgmerge --compendium).
+# `update` fills any still-untranslated message of every component from here,
+# so a new string only needs its translation added once, in this file.
+# Existing translations in po/*.po are never overwritten.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Vesktop (standalone Vencord)"
+msgstr "Vesktop (Vencord autonome)"
+
+msgid "Standalone Vencord client, native Wayland"
+msgstr "Client Vencord autonome, Wayland natif"
