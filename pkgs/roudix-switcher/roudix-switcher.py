@@ -1014,6 +1014,7 @@ SYSTEM_TOGGLES = [
     {"id": "virtualization", "name": tr("Virtualization (QEMU/KVM)"),        "key": "roudix.virtualization.enable",  "default": False},
     {"id": "vmCurator",      "name": tr("vm-curator (libvirt-free QEMU TUI)"), "key": "roudix.virtualization.vmCurator.enable", "default": False},
     {"id": "waydroid",       "name": tr("Waydroid (Android apps)"),          "key": "roudix.waydroid.enable",        "default": False},
+    {"id": "printing",       "name": tr("Printing (CUPS + network printers)"), "key": "roudix.printing.enable",        "default": False},
     {"id": "scanners",       "name": tr("Scanners (SANE: network + HP)"),    "key": "roudix.printing.scanners.enable", "default": False},
     {"id": "openvpn",        "name": tr("OpenVPN (NetworkManager plugin)"),  "key": "roudix.vpn.openvpn.enable",     "default": False},
     {"id": "autoupdate",     "name": tr("Auto-update (scheduled git pull + rebuild)"), "key": "roudix.autoupdate.enable", "default": False},
@@ -1028,6 +1029,9 @@ SYSTEM_TOGGLES = [
     # Manager option too: same story as fastfetch above.
     {"id": "welcome",        "name": tr("Roudix Welcome (shown at session start)"), "key": "roudix.welcome.enable", "default": True, "file": HOME_CONFIG_FILE},
     {"id": "fstrim",         "name": tr("Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
+    {"id": "btrfsScrub",     "name": tr("Monthly btrfs scrub"),               "key": "roudix.btrfs.autoScrub",        "default": True},
+    {"id": "mitigations",    "name": tr("Kernel CVE mitigations (module blacklists)"), "key": "roudix.security.mitigations.enable", "default": True},
+    {"id": "hibernation",    "name": tr("Hibernation (needs swap, off by default)"), "key": "roudix.boot.hibernation.enable", "default": False},
     {"id": "vmGuest",        "name": tr("VM guest (QEMU/Spice agent)"),     "key": "roudix.vmGuest.enable",         "default": False},
     {"id": "podman",         "name": "Podman",                          "key": "roudix.podman.enable",          "default": False},
     {"id": "distrobox",      "name": "Distrobox",                       "key": "roudix.distrobox.enable",       "default": False},

@@ -1,0 +1,282 @@
+# English translations for PACKAGE package.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — modern (RDNA / GCN 3+, RX 400 and newer)"
+msgstr "AMD — modern (RDNA / GCN 3+, RX 400 and newer)"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — integrated (Ryzen APU)"
+msgstr "AMD — integrated (Ryzen APU)"
+
+#: roudix-hw-sync-gui.py
+msgid "AMD — legacy (GCN 1.x / 2.x, HD 7xxx, R9 2xx)"
+msgstr "AMD — legacy (GCN 1.x / 2.x, HD 7xxx, R9 2xx)"
+
+#: roudix-hw-sync-gui.py
+msgid "Intel (integrated or Arc)"
+msgstr "Intel (integrated or Arc)"
+
+#: roudix-hw-sync-gui.py
+msgid "Detection failed."
+msgstr "Detection failed."
+
+#: roudix-hw-sync-gui.py
+msgid ""
+"New PC, new graphics card or new processor? Roudix looks at your hardware "
+"and updates your configuration to match. Nothing is changed until you press "
+"a button below."
+msgstr ""
+"New PC, new graphics card or new processor? Roudix looks at your hardware "
+"and updates your configuration to match. Nothing is changed until you press "
+"a button below."
+
+#: roudix-hw-sync-gui.py
+msgid "Your hardware"
+msgstr "Your hardware"
+
+#: roudix-hw-sync-gui.py
+msgid "Processor (CPU)"
+msgstr "Processor (CPU)"
+
+#: roudix-hw-sync-gui.py
+msgid "Graphics card (GPU)"
+msgstr "Graphics card (GPU)"
+
+#: roudix-hw-sync-gui.py
+msgid "Laptop with an NVIDIA graphics card"
+msgstr "Laptop with an NVIDIA graphics card"
+
+#: roudix-hw-sync-gui.py
+msgid "Hybrid graphics (Optimus): Intel/AMD chip + NVIDIA card"
+msgstr "Hybrid graphics (Optimus): Intel/AMD chip + NVIDIA card"
+
+#: roudix-hw-sync-gui.py
+msgid "Checking…"
+msgstr "Checking…"
+
+#: roudix-hw-sync-gui.py
+msgid "Preview of the changes"
+msgstr "Preview of the changes"
+
+#: roudix-hw-sync-gui.py
+msgid "Re-detect"
+msgstr "Re-detect"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply"
+msgstr "Apply"
+
+#: roudix-hw-sync-gui.py
+msgid "Only update local.nix, no rebuild"
+msgstr "Only update local.nix, no rebuild"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply & Rebuild"
+msgstr "Apply & Rebuild"
+
+#: roudix-hw-sync-gui.py
+msgid "Could not detect your hardware"
+msgstr "Could not detect your hardware"
+
+#: roudix-hw-sync-gui.py
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+#: roudix-hw-sync-gui.py
+msgid "Your configuration already matches this hardware"
+msgstr "Your configuration already matches this hardware"
+
+#: roudix-hw-sync-gui.py
+#, python-format
+msgid "%d line will be updated in local.nix"
+msgid_plural "%d lines will be updated in local.nix"
+msgstr[0] "%d line will be updated in local.nix"
+msgstr[1] "%d lines will be updated in local.nix"
+
+#: roudix-hw-sync-gui.py
+msgid "Apply changes?"
+msgstr "Apply changes?"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "CPU: <b>{cpu}</b>"
+msgstr "CPU: <b>{cpu}</b>"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "GPU: <b>{gpu}</b>"
+msgstr "GPU: <b>{gpu}</b>"
+
+#: roudix-hw-sync-gui.py
+msgid "no"
+msgstr "no"
+
+#: roudix-hw-sync-gui.py
+msgid "yes"
+msgstr "yes"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "Hybrid laptop: <b>{answer}</b>"
+msgstr "Hybrid laptop: <b>{answer}</b>"
+
+#: roudix-hw-sync-gui.py
+msgid "A backup of your settings is kept as <tt>local.nix.bak</tt>."
+msgstr "A backup of your settings is kept as <tt>local.nix.bak</tt>."
+
+#: roudix-hw-sync-gui.py
+msgid "Your system will then be rebuilt, this can take a few minutes."
+msgstr "Your system will then be rebuilt, this can take a few minutes."
+
+#: roudix-hw-sync-gui.py
+msgid "Cancel"
+msgstr "Cancel"
+
+#: roudix-hw-sync-gui.py
+msgid "✗ Could not write local.nix"
+msgstr "✗ Could not write local.nix"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ local.nix updated — rebuild to apply"
+msgstr "✓ local.nix updated — rebuild to apply"
+
+#: roudix-hw-sync-gui.py
+msgid "Backup saved as local.nix.bak"
+msgstr "Backup saved as local.nix.bak"
+
+#: roudix-hw-sync-gui.py
+msgid "Rebuilding…"
+msgstr "Rebuilding…"
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "Running: {cmd}"
+msgstr "Running: {cmd}"
+
+#: roudix-hw-sync-gui.py
+msgid "ERROR: 'nh' not found in PATH."
+msgstr "ERROR: 'nh' not found in PATH."
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "ERROR: {error}"
+msgstr "ERROR: {error}"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ Done — reboot to use your new hardware settings"
+msgstr "✓ Done — reboot to use your new hardware settings"
+
+#: roudix-hw-sync-gui.py
+msgid "✓ Rebuild completed. Reboot to apply the changes."
+msgstr "✓ Rebuild completed. Reboot to apply the changes."
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit {rc})"
+msgstr "✗ Rebuild failed (exit {rc})"
+
+#: roudix-hw-sync-gui.py
+msgid "See the log below. Your local.nix was already updated."
+msgstr "See the log below. Your local.nix was already updated."
+
+#: roudix-hw-sync-gui.py
+#, python-brace-format
+msgid "✗ Rebuild failed (exit code {rc})."
+msgstr "✗ Rebuild failed (exit code {rc})."
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Unknown option: %s"
+msgstr "Unknown option: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --gpu: %s"
+msgstr "Invalid --gpu: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --cpu: %s"
+msgstr "Invalid --cpu: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --laptop: %s"
+msgstr "Invalid --laptop: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --tlp: %s"
+msgstr "Invalid --tlp: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Invalid --thinkpad: %s"
+msgstr "Invalid --thinkpad: %s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "local.nix not found: %s"
+msgstr "local.nix not found: %s"
+
+#: roudix-hw-sync
+msgid "CPU vendor not detected, use --cpu amd|intel"
+msgstr "CPU vendor not detected, use --cpu amd|intel"
+
+#: roudix-hw-sync
+msgid "GPU not detected, use --gpu ..."
+msgstr "GPU not detected, use --gpu ..."
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+msgstr "Detected: CPU=%s  GPU=%s  nvidiaLaptop=%s"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Laptop (TLP): %s  ThinkPad: %s"
+msgstr "Laptop (TLP): %s  ThinkPad: %s"
+
+#: roudix-hw-sync
+msgid ""
+"warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), "
+"module default applies"
+msgstr ""
+"warning: no hardware.myKernelChaotic line in local.nix (nvidia uses it), "
+"module default applies"
+
+#: roudix-hw-sync
+msgid "Nothing to change."
+msgstr "Nothing to change."
+
+#: roudix-hw-sync
+msgid "(dry-run: file left untouched)"
+msgstr "(dry-run: file left untouched)"
+
+#: roudix-hw-sync
+#, sh-printf-format
+msgid "Done. Backup: %s"
+msgstr "Done. Backup: %s"
+
+#: roudix-hw-sync
+#, sh-format
+msgid ""
+"Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)"
+msgstr ""
+"Now rebuild: rebuild   (or: nh os boot --accept-flake-config path:$NH_FLAKE)"
