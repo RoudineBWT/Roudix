@@ -138,6 +138,14 @@ msgid "Flat, soft-toned set (pkgs.colloid-icon-theme)"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Oversteer (racing wheel configuration)"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "GPU-accelerated, Roudix default"
 msgstr ""
 
@@ -367,6 +375,10 @@ msgid "Writer, Calc, Impress"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Don't install an office suite"
 msgstr ""
 
@@ -593,7 +605,17 @@ msgid ""
 msgstr ""
 
 #: roudix-switcher.py
+msgid ""
+"Create the sbctl keys at install time if missing (enrolling them stays "
+"manual)"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
 msgstr ""
 
 #: roudix-switcher.py
@@ -616,6 +638,10 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
 msgstr ""
 
 #: roudix-switcher.py
@@ -642,6 +668,26 @@ msgstr ""
 msgid ""
 "Never autosuspend USB devices (fixes USB audio dropouts, costs laptop "
 "battery)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"Best battery life (default) — disables tuned, so game-performance does "
+"nothing"
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"Gaming laptop: keeps game-performance and the desktop power-mode selector"
 msgstr ""
 
 #: roudix-switcher.py
@@ -896,6 +942,7 @@ msgid "Laptop — TLP (disables tuned)"
 msgstr ""
 
 #: roudix-switcher.py
+#, no-python-format
 msgid "ThinkPad — 40/80% charge thresholds"
 msgstr ""
 
@@ -921,6 +968,16 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Kernel CVE mitigations (module blacklists)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or "
+"AFS/Kerberos"
 msgstr ""
 
 #: roudix-switcher.py
@@ -1161,6 +1218,10 @@ msgstr ""
 
 #: roudix-switcher.py
 msgid "Toggles"
+msgstr ""
+
+#: roudix-switcher.py
+msgid "Laptop power backend"
 msgstr ""
 
 #: roudix-switcher.py

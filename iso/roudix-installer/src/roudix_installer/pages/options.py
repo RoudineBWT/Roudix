@@ -212,6 +212,18 @@ def _bootloaders():
     ]
 
 
+def _plymouth_themes():
+    # roudix.boot.plymouth.theme — "none" is not a theme: it sets plymouth.enable = false.
+    return [
+        ("roudix", tr("Roudix — logo, gentle pulse (default)")),
+        ("roudix-spin", tr("Roudix Spin — logo turning slowly")),
+        ("roudix-gradient", tr("Roudix Gradient — warm gradient, glow behind the logo")),
+        ("roudix-ember", tr("Roudix Ember — rising embers, progress ring")),
+        ("roudix-panda", tr("Pandoudix — the mascot")),
+        ("none", tr("No splash — plain text boot")),
+    ]
+
+
 def _eac_vendors():
     # roudix.boot.eac.vendor — whose signed kernel the "NixOS EAC" entry boots.
     return [
@@ -333,6 +345,7 @@ def _office():
     return [
         ("none", tr("None")),
         ("libreoffice", tr("LibreOffice (Writer, Calc, Impress)")),
+        ("onlyoffice", tr("ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)")),
     ]
 
 
@@ -728,6 +741,13 @@ class OptionsPage(Adw.NavigationPage):
         )
         hw_group.add(self.nvidia_driver_source_row)
 
+        self.nvidia_open_row = Adw.SwitchRow(title=tr("Open kernel modules"))
+        self.nvidia_open_row.set_subtitle(
+            tr("RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards.")
+        )
+        self.nvidia_open_row.set_active(state.nvidia_open)
+        hw_group.add(self.nvidia_open_row)
+
         self.nvidia_beta_row = Adw.SwitchRow(title=tr("Nvidia beta driver (built locally)"))
         self.nvidia_beta_row.set_active(state.nvidia_beta)
         hw_group.add(self.nvidia_beta_row)
@@ -1066,6 +1086,11 @@ class OptionsPage(Adw.NavigationPage):
         )
         extra_group.add(self.bootloader_row)
 
+        self.plymouth_row = self._combo(
+            tr("Boot splash"), _plymouth_themes(), state.plymouth_theme
+        )
+        extra_group.add(self.plymouth_row)
+
         # Limine stretches its wallpaper to the screen: the format must match
         # the MAIN screen = the connected one with the highest resolution.
         # Detection only pre-selects an entry, the user can always change it.
@@ -1171,6 +1196,13 @@ class OptionsPage(Adw.NavigationPage):
         )
         self.office_dictionaries_row.set_text(", ".join(state.office_dictionaries))
         extra_group.add(self.office_dictionaries_row)
+
+        self.printing_enable_row = Adw.SwitchRow(title=tr("Printing (CUPS)"))
+        self.printing_enable_row.set_subtitle(
+            tr("Common printer drivers and network printer discovery.")
+        )
+        self.printing_enable_row.set_active(state.printing_enable)
+        extra_group.add(self.printing_enable_row)
 
         self.printing_scanners_row = Adw.SwitchRow(title=tr("Scanners (SANE)"))
         self.printing_scanners_row.set_active(state.printing_scanners)
@@ -1408,7 +1440,7 @@ class OptionsPage(Adw.NavigationPage):
         "kernel_row": ["hardware.myKernel", "hardware.myKernelChaotic"],
         "nvidia_kernel_source_row": ["hardware.nvidiaKernelSource"],
         "nvidia_driver_source_row": ["hardware.nvidiaDriverSource"],
-        "nvidia_beta_row": ["hardware.nvidiaBeta"],
+        "nvidia_beta_row": ["hardware.nvidiaBeta"], "nvidia_open_row": ["hardware.nvidiaOpen"],
         "browser_row": ["roudix.browsers"], "brave_variant_row": ["roudix.browsers"],
         "zen_row": ["roudix.zen.enable"], "zen_variant_row": ["roudix.zen.variant"],
         "zen_mods_row": ["roudix.zen.mods"], "zen_sine_row": ["roudix.zen.sine.enable"],
@@ -1443,6 +1475,8 @@ class OptionsPage(Adw.NavigationPage):
         "torrent_client_row": ["roudix.torrentClient"], "music_player_row": ["roudix.musicPlayer"],
         "mail_client_row": ["roudix.mailClient"], "password_manager_row": ["roudix.passwordManager"],
         "office_row": ["roudix.office"], "office_dictionaries_row": ["roudix.officeDictionaries"],
+        "printing_enable_row": ["roudix.printing.enable"],
+        "plymouth_row": ["roudix.boot.plymouth.theme"],
         "printing_scanners_row": ["roudix.printing.scanners.enable"],
         "vpn_openvpn_row": ["roudix.vpn.openvpn.enable"],
         "waydroid_row": ["roudix.waydroid.enable"],
@@ -1464,12 +1498,12 @@ class OptionsPage(Adw.NavigationPage):
     }
     # group -> rows it contains (a group with no visible row is hidden too)
     HOST_GROUP_ROWS = {
-        "hw_group": ["gpu_row", "nvidia_laptop_row", "laptop_row", "laptop_backend_row", "thinkpad_row", "undervolt_row", "cpu_row", "kernel_row", "nvidia_kernel_source_row", "nvidia_driver_source_row", "nvidia_beta_row"],
+        "hw_group": ["gpu_row", "nvidia_laptop_row", "laptop_row", "laptop_backend_row", "thinkpad_row", "undervolt_row", "cpu_row", "kernel_row", "nvidia_kernel_source_row", "nvidia_driver_source_row", "nvidia_open_row", "nvidia_beta_row"],
         "browser_group": ["browser_row", "brave_variant_row", "zen_row", "zen_variant_row", "zen_mods_row", "zen_sine_row", "zen_sine_mods_row"],
         "desktop_group": ["desktop_row", "shell_row", "latest_de_row", "latest_shell_row", "latest_note", "default_shell_row", "terminal_row", "file_manager_row", "editor_row", "desktop_integration_row"],
         "sys_group": ["vm_guest_row", "gaming_row", "ananicy_row", "millennium_row", "mesa_git_row", "mesa_git_source_row", "timezone_row", "locale_row", "keymap_row", "gfx_keyboard_row"],
         "rgb_group": ["rgb_row", "memory_rgb_row", "memory_type_row", "memory_smbus_row", "memory_sku_row"],
-        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "boot_aspect_row", "boot_resolution_row", "secure_boot_row", "eac_row", "eac_vendor_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "office_row", "office_dictionaries_row", "printing_scanners_row", "vpn_openvpn_row", "waydroid_row"],
+        "extra_group": ["gta_fix_row", "flatpak_row", "virt_row", "autoupdate_row", "autoupdate_interval_row", "branch_row", "bootloader_row", "plymouth_row", "boot_aspect_row", "boot_resolution_row", "secure_boot_row", "eac_row", "eac_vendor_row", "matrix_row", "discord_row", "telegram_row", "video_player_row", "torrent_client_row", "music_player_row", "mail_client_row", "password_manager_row", "office_row", "office_dictionaries_row", "printing_enable_row", "printing_scanners_row", "vpn_openvpn_row", "waydroid_row"],
         "apps_group": ["app_gimp_row", "app_inkscape_row", "spicetify_theme_row", "spicetify_color_scheme_row", "spicetify_adblock_row", "spicetify_hide_podcasts_row", "spicetify_marketplace_row", "app_songrec_row", "app_easyeffects_row", "app_signal_row", "app_zapzap_row", "app_fluxer_row", "app_fluxer_channel_row", "app_cressida_row"],
         "cc_group": ["content_creation_row", "obs_row", "video_editor_row", "virtual_camera_row", "chatterino_row"],
     }
@@ -1500,6 +1534,7 @@ class OptionsPage(Adw.NavigationPage):
             "bootloader": vals(_bootloaders()),
             "boot_aspect": vals(_boot_aspects()),
             "eac_vendor": vals(_eac_vendors()),
+            "plymouth_theme": vals(_plymouth_themes()),
             "boot_resolution": lambda st: [v for v, _ in _boot_resolutions(detect_main_screen()[0])],
             "branch": vals(_branches()),
             "matrix_client": vals(_matrix()),
@@ -1630,7 +1665,7 @@ class OptionsPage(Adw.NavigationPage):
         is_nvidia = self._selected_value(self.gpu_row) == "nvidia"
         self.nvidia_laptop_row.set_visible(is_nvidia)
         for row in (self.nvidia_kernel_source_row, self.nvidia_driver_source_row,
-                    self.nvidia_beta_row):
+                    self.nvidia_open_row, self.nvidia_beta_row):
             row.set_visible(is_nvidia)
 
     def _sync_mesa_row(self):
@@ -1839,6 +1874,7 @@ class OptionsPage(Adw.NavigationPage):
         s.nvidia_kernel_source = self._selected_value(self.nvidia_kernel_source_row)
         s.nvidia_driver_source = self._selected_value(self.nvidia_driver_source_row)
         s.nvidia_beta = self.nvidia_beta_row.get_active()
+        s.nvidia_open = self.nvidia_open_row.get_active()
         if s.gpu == "nvidia" and s.nvidia_kernel_source == "chaotic":
             s.kernel_chaotic = kernel_value
         else:
@@ -1905,6 +1941,7 @@ class OptionsPage(Adw.NavigationPage):
         s.autoupdate_interval = self.autoupdate_interval_row.get_text()
         s.branch = self._selected_value(self.branch_row)
         s.bootloader = self._selected_value(self.bootloader_row)
+        s.plymouth_theme = self._selected_value(self.plymouth_row)
         s.boot_aspect = self._selected_value(self.boot_aspect_row)
         s.boot_resolution = self._selected_value(self.boot_resolution_row)
         # Hidden (so never wanted) in legacy BIOS mode, whatever the host defaults say.
@@ -1921,6 +1958,7 @@ class OptionsPage(Adw.NavigationPage):
         s.password_manager = self._selected_value(self.password_manager_row)
         s.office = self._selected_value(self.office_row)
         s.office_dictionaries = self._split_list(self.office_dictionaries_row.get_text())
+        s.printing_enable = self.printing_enable_row.get_active()
         s.printing_scanners = self.printing_scanners_row.get_active()
         s.vpn_openvpn = self.vpn_openvpn_row.get_active()
         s.waydroid_enable = self.waydroid_row.get_active()

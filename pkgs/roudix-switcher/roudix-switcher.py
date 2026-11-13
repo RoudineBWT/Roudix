@@ -348,6 +348,8 @@ GAMING_APPS = [
     {"id": "modrinth",      "name": "Modrinth",       "key": "roudix.gaming.apps.modrinth.enable",      "default": False},
     {"id": "vintagestory",  "name": "Vintage Story",  "key": "roudix.gaming.apps.vintagestory.enable",  "default": False},
     {"id": "mangohud",      "name": "MangoHud",       "key": "roudix.gaming.apps.mangohud.enable",      "default": False},
+    {"id": "goverlay",      "name": tr("GOverlay (GUI to configure MangoHud / vkBasalt)"), "key": "roudix.gaming.apps.goverlay.enable", "default": False},
+    {"id": "oversteer",     "name": tr("Oversteer (racing wheel configuration)"),           "key": "roudix.gaming.apps.oversteer.enable", "default": False},
 ]
 
 TERMINALS = [
@@ -649,10 +651,12 @@ PASSWORD_MANAGERS = [
 ]
 
 # roudix.office (modules/system/apps/utilities/office.nix) — enum, exposed as
-# a SelectorGroup. No bundled art: plain text rows, like UMBRIEL_EFFECTS.
+# a SelectorGroup. Bundled art: icons/{dark,light}/libreoffice.svg and
+# onlyoffice.svg (both from the Papirus icon theme, GPL-3.0).
 OFFICE_SUITES = [
-    {"id": "libreoffice", "name": "LibreOffice", "subtitle": tr("Writer, Calc, Impress")},
-    {"id": "none",        "name": tr("None"),    "subtitle": tr("Don't install an office suite")},
+    {"id": "libreoffice", "name": "LibreOffice", "subtitle": tr("Writer, Calc, Impress"), "icon": "libreoffice.svg"},
+    {"id": "onlyoffice",  "name": "ONLYOFFICE",  "subtitle": tr("Word-style editors built around .docx / .xlsx / .pptx"), "icon": "onlyoffice.svg"},
+    {"id": "none",        "name": tr("None"),    "subtitle": tr("Don't install an office suite"), "icon": "none.svg"},
 ]
 
 # roudix.officeDictionaries (same file) — list option, one switch per allowed
@@ -758,8 +762,12 @@ FLUXER_CHANNELS = [
 BOOT_SECURITY_TOGGLES = [
     {"id": "secureBoot", "name": tr("Secure Boot — sign the bootloader with sbctl (the keys must exist: roudix-secureboot create-keys)"),
      "key": "roudix.boot.secureBoot.enable", "default": False},
+    {"id": "autoKeys",   "name": tr("Create the sbctl keys at install time if missing (enrolling them stays manual)"),
+     "key": "roudix.boot.secureBoot.autoGenerateKeys", "default": False},
     {"id": "eac",        "name": tr("EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"),
      "key": "roudix.boot.eac.enable",        "default": False},
+    {"id": "eacBootOrder", "name": tr("List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"),
+     "key": "roudix.boot.eac.addToBootOrder", "default": False},
 ]
 # roudix.boot.eac.vendor — whose signed kernel the “NixOS EAC” entry boots.
 EAC_VENDORS = [
@@ -778,6 +786,7 @@ MESA_GIT_SOURCES = [
     {"id": "gaming-edge", "name": "nix-gaming-edge", "subtitle": tr("mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry")},
 ]
 DRIVERS_NVIDIA_TOGGLES = [
+    {"id": "nvidiaOpen", "name": tr("Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"), "key": "hardware.nvidiaOpen", "default": True},
     {"id": "nvidiaBeta", "name": tr("Beta driver (always built locally)"), "key": "hardware.nvidiaBeta", "default": False},
 ]
 NVIDIA_DRIVER_SOURCES = [
@@ -794,6 +803,22 @@ PIPEWIRE_TOGGLES = [
      "key": "roudix.pipewire.realtimeTweaks.enable",   "default": False},
     {"id": "usbNoAutosuspend", "name": tr("Never autosuspend USB devices (fixes USB audio dropouts, costs laptop battery)"),
      "key": "roudix.pipewire.usbNoAutosuspend.enable", "default": False},
+]
+
+# roudix.boot.plymouth.enable / .quiet (modules/system/boot/plymouth.nix) — both
+# ON by default. "quiet" only matters while the splash is enabled.
+PLYMOUTH_TOGGLES = [
+    {"id": "enable", "name": tr("Boot splash (Plymouth) — off = plain text boot"),
+     "key": "roudix.boot.plymouth.enable", "default": True},
+    {"id": "quiet",  "name": tr("Hide kernel / initrd messages during boot (turn off to debug a boot problem)"),
+     "key": "roudix.boot.plymouth.quiet",  "default": True},
+]
+
+# roudix.laptop.backend (modules/system/power/laptop.nix) — only used when
+# roudix.laptop.enable is on.
+LAPTOP_BACKENDS = [
+    {"id": "tlp",   "name": "TLP",   "subtitle": tr("Best battery life (default) — disables tuned, so game-performance does nothing")},
+    {"id": "tuned", "name": "tuned", "subtitle": tr("Gaming laptop: keeps game-performance and the desktop power-mode selector")},
 ]
 
 # roudix.tuning.* (modules/system/core/tuning.nix) — CachyOS-Settings-style
@@ -1019,6 +1044,7 @@ SYSTEM_TOGGLES = [
     {"id": "openvpn",        "name": tr("OpenVPN (NetworkManager plugin)"),  "key": "roudix.vpn.openvpn.enable",     "default": False},
     {"id": "autoupdate",     "name": tr("Auto-update (scheduled git pull + rebuild)"), "key": "roudix.autoupdate.enable", "default": False},
     {"id": "laptop",         "name": tr("Laptop — TLP (disables tuned)"), "key": "roudix.laptop.enable", "default": False},
+    # xgettext:no-python-format
     {"id": "laptopThinkpad", "name": tr("ThinkPad — 40/80% charge thresholds"), "key": "roudix.laptop.thinkpad", "default": False},
     {"id": "undervoltAmd",   "name": tr("AMD GPU undervolt (LACT)"),         "key": "roudix.undervolt.only-amd.enable", "default": False},
     # "file": roudix.fastfetch.useNix is a Home Manager option (defined in
@@ -1031,6 +1057,10 @@ SYSTEM_TOGGLES = [
     {"id": "fstrim",         "name": tr("Fstrim (automatic TRIM for SSD/NVMe)"), "key": "roudix.fstrim.enable",          "default": True},
     {"id": "btrfsScrub",     "name": tr("Monthly btrfs scrub"),               "key": "roudix.btrfs.autoScrub",        "default": True},
     {"id": "mitigations",    "name": tr("Kernel CVE mitigations (module blacklists)"), "key": "roudix.security.mitigations.enable", "default": True},
+    {"id": "blacklistCopyFail",  "name": tr("  ↳ Blacklist algif_aead (“Copy Fail”)"),
+     "key": "roudix.security.mitigations.blacklistCopyFail", "default": True},
+    {"id": "blacklistDirtyFrag", "name": tr("  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or AFS/Kerberos"),
+     "key": "roudix.security.mitigations.blacklistDirtyFrag", "default": True},
     {"id": "hibernation",    "name": tr("Hibernation (needs swap, off by default)"), "key": "roudix.boot.hibernation.enable", "default": False},
     {"id": "vmGuest",        "name": tr("VM guest (QEMU/Spice agent)"),     "key": "roudix.vmGuest.enable",         "default": False},
     {"id": "podman",         "name": "Podman",                          "key": "roudix.podman.enable",          "default": False},
@@ -2594,6 +2624,23 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.system_group = ToggleListGroup(tr("Toggles"), self.system_toggles, system_current)
         system_page.append(self.system_group)
 
+        # The two mitigation sub-options only act while the master is on.
+        mit_switch = self.system_group.switches.get("mitigations")
+        if mit_switch is not None:
+            mit_switch.connect("notify::active", lambda *_: self._update_mitigations_cascade())
+        self._update_mitigations_cascade()
+
+        # roudix.laptop.backend — TLP or tuned, only meaningful on a laptop.
+        self.laptop_backend_selector = SelectorGroup(
+            tr("Laptop power backend"),
+            LAPTOP_BACKENDS, get_active_string_option("roudix.laptop.backend", "tlp"), dark,
+        )
+        system_page.append(self.laptop_backend_selector)
+        laptop_switch = self.system_group.switches.get("laptop")
+        if laptop_switch is not None:
+            laptop_switch.connect("notify::active", lambda *_: self._update_laptop_backend_visibility())
+        self._update_laptop_backend_visibility()
+
         current_rgb = get_string_option("roudix.rgb", "none")
         self.rgb_selector = SelectorGroup(tr("RGB backend"), RGB_BACKENDS, current_rgb, dark)
         system_page.append(self.rgb_selector)
@@ -2674,6 +2721,16 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         )
         system_page.append(self.plymouth_selector)
 
+        # roudix.boot.plymouth.enable / .quiet — both on by default.
+        self.plymouth_toggles = host_filter_items(PLYMOUTH_TOGGLES)
+        plymouth_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.plymouth_toggles}
+        self.plymouth_group = ToggleListGroup("", self.plymouth_toggles, plymouth_current)
+        system_page.append(self.plymouth_group)
+        plymouth_switch = self.plymouth_group.switches.get("enable")
+        if plymouth_switch is not None:
+            plymouth_switch.connect("notify::active", lambda *_: self._update_plymouth_cascade())
+        self._update_plymouth_cascade()
+
         # roudix.boot.secureBoot / roudix.boot.eac — Secure Boot with Limine or systemd-boot, EAC Limine only, all off by default.
         self.boot_security_toggles = host_filter_items(BOOT_SECURITY_TOGGLES)
         boot_security_current = {t["id"]: get_bool_option(t["key"], t["default"]) for t in self.boot_security_toggles}
@@ -2702,6 +2759,9 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         eac_switch = self.boot_security_group.switches.get("eac")
         if eac_switch is not None:
             eac_switch.connect("notify::active", lambda *_: self._update_boot_security_visibility())
+        sb_switch = self.boot_security_group.switches.get("secureBoot")
+        if sb_switch is not None:
+            sb_switch.connect("notify::active", lambda *_: self._update_boot_security_visibility())
         self._update_boot_security_visibility()
 
         # roudix.pipewire.* — extras, all off by default.
@@ -2889,6 +2949,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
              "label": tr("Limine menu resolution"),       "relevant": lambda de: self._boot_has_wallpaper()},
             {"widget": self.plymouth_selector,            "key": "roudix.boot.plymouth.theme", "default": "roudix",
              "label": tr("Boot splash"),                  "relevant": lambda de: True},
+            {"widget": self.laptop_backend_selector,      "key": "roudix.laptop.backend",     "default": "tlp",
+             "label": tr("Laptop power backend"),         "relevant": lambda de: self._laptop_enabled()},
             {"widget": self.eac_vendor_selector,          "key": "roudix.boot.eac.vendor",    "default": "fedora",
              "label": tr("EAC kernel"),                   "relevant": lambda de: self._boot_is_limine() and not self._boot_is_bios() and self._eac_enabled()},
             {"widget": self.mesa_source_selector,         "key": "roudix.mesa.gitSource",        "default": "chaotic",
@@ -2917,6 +2979,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             ("boot",  self.boot_security_toggles, self.boot_security_group, lambda de: not self._boot_is_bios()),
             ("mesa",  self.mesa_toggles,        self.mesa_group,            lambda de: True),
             ("nvdrv", self.nvidia_driver_toggles, self.nvidia_driver_group, lambda de: self._drivers_gpu_nvidia),
+            ("plym",  self.plymouth_toggles,    self.plymouth_group,        lambda de: True),
             ("pw",    self.pipewire_toggles,    self.pipewire_group,        lambda de: True),
             ("tune0", self.tuning_master_items, self.tuning_master_group,   lambda de: True),
             ("tune",  self.tuning_items,        self.tuning_group,          lambda de: self._tuning_master_on()),
@@ -3184,6 +3247,8 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 (self.boot_resolution_selector, host_lists("roudix.boot.menuResolution")),
                 (self.boot_resolution_note,     host_lists("roudix.boot.menuResolution")),
                 (self.plymouth_selector,        host_lists("roudix.boot.plymouth.theme")),
+                (self.plymouth_group,           bool(self.plymouth_toggles)),
+                (self.laptop_backend_selector,  host_lists("roudix.laptop.backend")),
                 (self.boot_security_group,      bool(self.boot_security_toggles)),
                 (self.eac_vendor_selector,      host_lists("roudix.boot.eac.vendor")),
                 (self.boot_security_note,       bool(self.boot_security_toggles)),
@@ -3312,6 +3377,38 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         sw = self.boot_security_group.switches.get("eac")
         return False if sw is None else sw.get_active()
 
+    @staticmethod
+    def _set_toggle_row_sensitive(group, item_id: str, sensitive: bool):
+        """Grey out (not hide) one row of a ToggleListGroup."""
+        sw = group.switches.get(item_id)
+        if sw is None:
+            return
+        row = sw.get_ancestor(Adw.ActionRow)
+        (row or sw).set_sensitive(sensitive)
+
+    def _update_mitigations_cascade(self):
+        """The Copy Fail / Dirty Frag blacklists only act while the CVE
+        mitigations master switch is on."""
+        sw = self.system_group.switches.get("mitigations")
+        on = True if sw is None else sw.get_active()
+        for item_id in ("blacklistCopyFail", "blacklistDirtyFrag"):
+            self._set_toggle_row_sensitive(self.system_group, item_id, on)
+
+    def _laptop_enabled(self) -> bool:
+        sw = self.system_group.switches.get("laptop")
+        return False if sw is None else sw.get_active()
+
+    def _update_laptop_backend_visibility(self):
+        """TLP vs tuned only means something on a laptop."""
+        self.laptop_backend_selector.set_visible(self._laptop_enabled())
+
+    def _update_plymouth_cascade(self):
+        """The theme and the quiet switch only act while the splash is on."""
+        sw = self.plymouth_group.switches.get("enable")
+        on = True if sw is None else sw.get_active()
+        self.plymouth_selector.set_sensitive(on)
+        self._set_toggle_row_sensitive(self.plymouth_group, "quiet", on)
+
     def _update_boot_security_visibility(self):
         """Secure Boot signing works with Limine and systemd-boot; the EAC entry
         is Limine-only, and its kernel choice only matters while it is on."""
@@ -3329,6 +3426,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
                 eac_row.set_visible(limine)
             if not limine:
                 eac_sw.set_active(False)
+        # Dependants: greyed out while their parent switch is off; the
+        # boot-order entry belongs to the (Limine-only) EAC entry.
+        sb_sw = self.boot_security_group.switches.get("secureBoot")
+        self._set_toggle_row_sensitive(
+            self.boot_security_group, "autoKeys", True if sb_sw is None else sb_sw.get_active())
+        order_sw = self.boot_security_group.switches.get("eacBootOrder")
+        if order_sw is not None:
+            order_row = order_sw.get_ancestor(Adw.ActionRow)
+            if order_row is not None:
+                order_row.set_visible(limine)
+            if not limine:
+                order_sw.set_active(False)
+        self._set_toggle_row_sensitive(
+            self.boot_security_group, "eacBootOrder", self._eac_enabled())
         self.boot_security_group.set_visible(bool(self.boot_security_toggles))
         self.boot_security_note.set_visible(bool(self.boot_security_toggles))
         self.eac_vendor_selector.set_visible(limine and self._eac_enabled())
@@ -3434,6 +3545,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.password_manager_selector.update_icons(dark)
         self.office_selector.update_icons(dark)
         self.autoupdate_interval_selector.update_icons(dark)
+        self.laptop_backend_selector.update_icons(dark)
         self.spicetify_theme_selector.update_icons(dark)
         self.fluxer_channel_selector.update_icons(dark)
 

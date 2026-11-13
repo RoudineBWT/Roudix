@@ -67,6 +67,8 @@ declare -A VAR_KEY=(
   [MAIL_CLIENT]=roudix.mailClient      [WAYDROID]=roudix.waydroid.enable
   [OFFICE]=roudix.office               [OFFICE_DICTS]=roudix.officeDictionaries
   [SCANNERS]=roudix.printing.scanners.enable  [OPENVPN]=roudix.vpn.openvpn.enable
+  [PRINTING]=roudix.printing.enable    [NVIDIA_OPEN]=hardware.nvidiaOpen
+  [PLYMOUTH_THEME]=roudix.boot.plymouth.theme  [BIOS_DEVICE]=roudix.boot.biosDevice
 )
 
 key_in_host_example() {
@@ -637,6 +639,16 @@ else
 fi
 fi
 
+# Open NVIDIA kernel modules (hardware.nvidiaOpen, default true). The open driver
+# does not support GTX 10xx/16xx cards: those need the proprietary modules.
+NVIDIA_OPEN=""
+if [[ "$GPU" == "nvidia" ]]; then
+  _nv_model="$(lspci -mm 2>/dev/null | awk -F'"' 'tolower($0) ~ /nvidia/ && /VGA|3D/ { print $6 }' | head -n1 || true)"
+  [[ -n "$_nv_model" ]] && info "NVIDIA GPU: ${BOLD}${_nv_model}${NC}"
+  pick_bool "Use the open NVIDIA kernel modules? (RTX 20xx and newer; choose No for GTX 10xx/16xx)" NVIDIA_OPEN \
+    "Yes — RTX 20xx / newer (default)" "No — GTX 10xx / 16xx (proprietary modules)"
+fi
+
 UNDERVOLT="false"
 if [[ "$GPU" == "amd" || "$GPU" == "amd-legacy" ]]; then
   pick_bool "Enable AMD GPU undervolting? (lact + amdgpu.ppfeaturemask)" UNDERVOLT \
@@ -1140,9 +1152,39 @@ if [[ "$AUTOUPDATE" == "true" ]] && ! hidden_key roudix.autoupdate.interval; the
   [[ -n "$input_interval" ]] && AUTOUPDATE_INTERVAL="$input_interval"
 fi
 
-pick "Bootloader:" BOOTLOADER \
-  "limine|Limine — modern, fast, multi-disk support (recommended)" \
-  "systemd-boot|systemd-boot — simple UEFI bootloader"
+BIOS_DEVICE=""
+if [[ -d /sys/firmware/efi ]]; then
+  pick "Bootloader:" BOOTLOADER \
+    "limine|Limine — modern, fast, multi-disk support (recommended)" \
+    "systemd-boot|systemd-boot — simple UEFI bootloader"
+else
+  # Legacy BIOS: systemd-boot is UEFI only, so Limine it is, installed on a DISK
+  # (roudix.boot.biosDevice) rather than on an EFI system partition.
+  if hidden_var BOOTLOADER; then BOOTLOADER=""; else BOOTLOADER="limine"; fi
+  if ! hidden_key roudix.boot.biosDevice; then
+    if [[ -f modules/system/boot/boot.nix ]] && ! grep -q biosDevice modules/system/boot/boot.nix; then
+      error "Legacy BIOS boot detected, but branch '${BRANCH:-?}' has no roudix.boot.biosDevice: it can only install in UEFI mode. Use a branch with BIOS support, or boot this machine in UEFI mode."
+    fi
+    info "Legacy BIOS mode: the bootloader is Limine (systemd-boot is UEFI only)."
+    # Default = the disk holding /: follow the mount source down to its parent disk
+    # (works through btrfs subvolumes, LUKS and LVM).
+    _root_src="$(findmnt -no SOURCE / 2>/dev/null | sed 's/\[.*//' || true)"
+    _root_disk=""
+    if [[ -n "$_root_src" ]]; then
+      _root_disk="$(lsblk -nsro NAME,TYPE "$_root_src" 2>/dev/null | awk '$2=="disk" && !d { print "/dev/" $1; d=1 }' || true)"
+    fi
+    while true; do
+      echo -e "\n${BOLD}Disk to install Limine on (the DISK, not a partition — e.g. /dev/sda)${_root_disk:+ [default: ${_root_disk}]}:${NC}"
+      read -rp "Disk: " _bios_in
+      BIOS_DEVICE="${_bios_in:-$_root_disk}"
+      if [[ -b "$BIOS_DEVICE" && "$(lsblk -dno TYPE "$BIOS_DEVICE" 2>/dev/null || true)" == "disk" ]]; then
+        break
+      fi
+      warn "'${BIOS_DEVICE}' is not a disk — enter the whole disk (e.g. /dev/sda, /dev/nvme0n1), not a partition."
+    done
+    echo "  (needs a GPT disk with a 1 MiB BIOS boot partition (type EF02) and a /boot Limine can read: FAT or ext4, not btrfs)"
+  fi
+fi
 
 # Limine boot wallpaper format. The wallpaper is stretched to the screen, so it
 # has to match the aspect ratio of the MAIN screen — the connected one with the
@@ -1226,6 +1268,19 @@ if [[ "$BOOTLOADER" == "limine" ]]; then
 fi
 fi
 
+# Boot splash (Plymouth): theme, or none = plain text boot (roudix.boot.plymouth.enable = false).
+pick "Boot splash (Plymouth):" PLYMOUTH_THEME \
+  "roudix|Roudix logo, gentle pulse (default)" \
+  "roudix-spin|Roudix logo turning slowly" \
+  "roudix-gradient|Warm gradient background, glow behind the logo" \
+  "roudix-ember|Embers rising, progress ring (the showy one)" \
+  "roudix-panda|Pandoudix, the mascot (waves on boot, sleeps on shutdown)" \
+  "none|No splash — plain text boot"
+PLYMOUTH_ENABLE=""
+if [[ -n "$PLYMOUTH_THEME" ]]; then
+  if [[ "$PLYMOUTH_THEME" == "none" ]]; then PLYMOUTH_ENABLE="false"; else PLYMOUTH_ENABLE="true"; fi
+fi
+
 pick "Matrix client:" MATRIX_CLIENT \
   "none|None" \
   "element|Element Desktop — full-featured Matrix client" \
@@ -1263,7 +1318,8 @@ pick "Mail client:" MAIL_CLIENT \
 
 pick "Office suite:" OFFICE \
   "none|None" \
-  "libreoffice|LibreOffice — Writer, Calc, Impress"
+  "libreoffice|LibreOffice — Writer, Calc, Impress" \
+  "onlyoffice|ONLYOFFICE — Word-style editors, .docx / .xlsx / .pptx"
 
 OFFICE_DICTS=""
 if ! hidden_var OFFICE_DICTS; then
@@ -1276,6 +1332,9 @@ for _d in $(echo "$OFFICE_DICTS" | tr ',' ' '); do
   case "$_d" in en|fr|es|de|it|pt) [[ " $OFFICE_DICTS_CLEAN " == *" $_d "* ]] || OFFICE_DICTS_CLEAN+="$_d ";; *) warn "Unknown dictionary '$_d' ignored.";; esac
 done
 OFFICE_DICTS="${OFFICE_DICTS_CLEAN% }"
+
+pick_bool "Enable printing? (CUPS + network printers via Avahi + common drivers: Gutenprint, HPLIP, brlaser...)" PRINTING \
+  "Yes" "No"
 
 pick_bool "Enable scanner support? (SANE: network scanners + HP, adds you to the scanner/lp groups)" SCANNERS \
   "Yes" "No"
@@ -1383,6 +1442,30 @@ sed -i "s/roudix\.office[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.office = \"${
 sed -i "s/roudix\.officeDictionaries[[:space:]]*=[[:space:]]*\[[^]]*\]/roudix.officeDictionaries = [$(nix_list_from_csv "${OFFICE_DICTS// /,}")]/" hosts/${HOSTNAME}/local.nix
 sed -i -E "s/roudix\.printing\.scanners\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.printing.scanners.enable = ${SCANNERS}/" hosts/${HOSTNAME}/local.nix
 sed -i -E "s/roudix\.vpn\.openvpn\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.vpn.openvpn.enable = ${OPENVPN}/" hosts/${HOSTNAME}/local.nix
+sed -i -E "s/roudix\.printing\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.printing.enable = ${PRINTING}/" hosts/${HOSTNAME}/local.nix
+
+# Plymouth: "none" turns the splash off and leaves the theme alone.
+if [[ -n "$PLYMOUTH_ENABLE" ]]; then
+  sed -i -E "s/roudix\.boot\.plymouth\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.boot.plymouth.enable = ${PLYMOUTH_ENABLE}/" hosts/${HOSTNAME}/local.nix
+  if [[ "$PLYMOUTH_THEME" != "none" ]]; then
+    sed -i "s/roudix\.boot\.plymouth\.theme[[:space:]]*=[[:space:]]*\"[^\"]*\"/roudix.boot.plymouth.theme = \"${PLYMOUTH_THEME}\"/" hosts/${HOSTNAME}/local.nix
+  fi
+fi
+
+# hardware.nvidiaOpen ships commented out in local.nix.example: uncomment it with the chosen value.
+if [[ -n "$NVIDIA_OPEN" ]]; then
+  set_bool_option hosts/${HOSTNAME}/local.nix "hardware.nvidiaOpen" "$NVIDIA_OPEN"
+fi
+
+# Legacy BIOS: the disk Limine goes on. UEFI keeps biosDevice = "".
+if [[ -n "$BIOS_DEVICE" ]]; then
+  if grep -qE '^[[:space:]]*#?[[:space:]]*roudix\.boot\.biosDevice[[:space:]]*=' hosts/${HOSTNAME}/local.nix; then
+    sed -i -E "s@^([[:space:]]*)#?[[:space:]]*(roudix\.boot\.biosDevice[[:space:]]*=[[:space:]]*)\"[^\"]*\"@\1\2\"${BIOS_DEVICE}\"@" hosts/${HOSTNAME}/local.nix
+  else
+    # an example older than BIOS support: add the line after the bootloader one
+    sed -i -E "/^[[:space:]]*roudix\.boot\.bootloader[[:space:]]*=/a\\  roudix.boot.biosDevice = \"${BIOS_DEVICE}\";" hosts/${HOSTNAME}/local.nix
+  fi
+fi
 
 if [[ "$RGB" == "openlinkhub" ]]; then
   sed -i -E "s/roudix\.memory\.enable[[:space:]]*=[[:space:]]*(true|false)/roudix.memory.enable = ${MEMORY_ENABLE}/"   hosts/${HOSTNAME}/local.nix
@@ -1462,6 +1545,13 @@ check_opt "roudix.waydroid.enable"     "roudix\.waydroid\.enable[[:space:]]*=[[:
 check_opt "roudix.office"              "roudix\.office[[:space:]]*=[[:space:]]*\"${OFFICE}\""
 check_opt "roudix.printing.scanners.enable" "roudix\.printing\.scanners\.enable[[:space:]]*=[[:space:]]*${SCANNERS}"
 check_opt "roudix.vpn.openvpn.enable"  "roudix\.vpn\.openvpn\.enable[[:space:]]*=[[:space:]]*${OPENVPN}"
+check_opt "roudix.printing.enable"     "roudix\.printing\.enable[[:space:]]*=[[:space:]]*${PRINTING}"
+if [[ -n "$PLYMOUTH_ENABLE" ]]; then
+  check_opt "roudix.boot.plymouth.enable" "roudix\.boot\.plymouth\.enable[[:space:]]*=[[:space:]]*${PLYMOUTH_ENABLE}"
+  [[ "$PLYMOUTH_THEME" == "none" ]] || check_opt "roudix.boot.plymouth.theme" "roudix\.boot\.plymouth\.theme[[:space:]]*=[[:space:]]*\"${PLYMOUTH_THEME}\""
+fi
+[[ -z "$NVIDIA_OPEN" ]] || check_opt "hardware.nvidiaOpen" "^[[:space:]]*hardware\.nvidiaOpen[[:space:]]*=[[:space:]]*${NVIDIA_OPEN}"
+[[ -z "$BIOS_DEVICE" ]] || check_opt "roudix.boot.biosDevice" "roudix\.boot\.biosDevice[[:space:]]*=[[:space:]]*\"${BIOS_DEVICE}\""
 if [[ "$RGB" == "openlinkhub" ]]; then
   check_opt "roudix.memory.enable" "roudix\.memory\.enable[[:space:]]*=[[:space:]]*${MEMORY_ENABLE}"
   check_opt "roudix.memory.type"   "roudix\.memory\.type[[:space:]]*=[[:space:]]*\"${MEMORY_TYPE}\""
@@ -1482,7 +1572,7 @@ echo -e "
   ${BOLD}User          :${NC} $USERNAME
   ${BOLD}RGB           :${NC} $RGB
   ${BOLD}RAM RGB       :${NC} $MEMORY_ENABLE $([ "$MEMORY_ENABLE" == "true" ] && echo "($MEMORY_TYPE, $MEMORY_SMBUS${MEMORY_SKU:+, SKU: $MEMORY_SKU})")
-  ${BOLD}GPU           :${NC} $GPU
+  ${BOLD}GPU           :${NC} $GPU$([ -n "$NVIDIA_OPEN" ] && echo " (open kernel modules: $NVIDIA_OPEN)")
   ${BOLD}CPU           :${NC} $CPU
   ${BOLD}Kernel        :${NC} $([ "$GPU" == "nvidia" ] && echo "$KERNEL_CHAOTIC (Chaotic-Nyx)" || echo "$KERNEL (xddxdd)")
   ${BOLD}Browser       :${NC} $BROWSER
@@ -1511,7 +1601,8 @@ echo -e "
   ${BOLD}Virtualization:${NC} $VIRTUALIZATION
   ${BOLD}Branch        :${NC} $BRANCH
   ${BOLD}Auto-update   :${NC} $AUTOUPDATE $([ "$AUTOUPDATE" == "true" ] && echo "(every $AUTOUPDATE_INTERVAL)")
-  ${BOLD}Bootloader    :${NC} $BOOTLOADER$([ "$BOOTLOADER" == "limine" ] && echo " (wallpaper $BOOT_ASPECT, menu $BOOT_RES)")
+  ${BOLD}Bootloader    :${NC} $BOOTLOADER$([ "$BOOTLOADER" == "limine" ] && echo " (wallpaper $BOOT_ASPECT, menu $BOOT_RES)")$([ -n "$BIOS_DEVICE" ] && echo " — legacy BIOS, installed on $BIOS_DEVICE")
+  ${BOLD}Boot splash   :${NC} ${PLYMOUTH_THEME:-n/a}
   ${BOLD}Secure Boot   :${NC} $SECURE_BOOT$([ "$EAC" == "true" ] && echo " (EAC entry: $EAC_VENDOR)")
   ${BOLD}Matrix client :${NC} $MATRIX_CLIENT
   ${BOLD}Discord       :${NC} ${DISCORD}
@@ -1520,6 +1611,7 @@ echo -e "
   ${BOLD}Torrent client:${NC} ${TORRENT_CLIENT}
   ${BOLD}Mail client   :${NC} ${MAIL_CLIENT}
   ${BOLD}Office suite  :${NC} ${OFFICE}$([ -n "$OFFICE_DICTS" ] && echo " (dictionaries: $OFFICE_DICTS)")
+  ${BOLD}Printing      :${NC} $PRINTING
   ${BOLD}Scanners      :${NC} $SCANNERS
   ${BOLD}OpenVPN       :${NC} $OPENVPN
   ${BOLD}Waydroid      :${NC} $WAYDROID

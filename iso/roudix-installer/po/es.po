@@ -336,6 +336,30 @@ msgid "Limine (recommended)"
 msgstr "Limine (recomendado)"
 
 #: src/roudix_installer/pages/options.py
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — logo con pulso suave (predeterminado)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — logo que gira lentamente"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — degradado cálido con resplandor detrás del logo"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — brasas que ascienden, anillo de progreso"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — la mascota"
+
+#: src/roudix_installer/pages/options.py
+msgid "No splash — plain text boot"
+msgstr "Sin pantalla de arranque — arranque en texto plano"
+
+#: src/roudix_installer/pages/options.py
 msgid "Fedora kernel (nothing to enroll)"
 msgstr "Kernel de Fedora (nada que registrar)"
 
@@ -448,7 +472,11 @@ msgstr "Proton Pass (bóveda sincronizada en la nube)"
 
 #: src/roudix_installer/pages/options.py
 msgid "LibreOffice (Writer, Calc, Impress)"
-msgstr ""
+msgstr "LibreOffice (Writer, Calc, Impress)"
+
+#: src/roudix_installer/pages/options.py
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (editores al estilo Word, .docx / .xlsx / .pptx)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Colorful (default)"
@@ -1008,6 +1036,14 @@ msgid "nixpkgs: always built locally against your kernel."
 msgstr "nixpkgs: siempre compilado localmente para tu kernel."
 
 #: src/roudix_installer/pages/options.py
+msgid "Open kernel modules"
+msgstr "Módulos de kernel abiertos"
+
+#: src/roudix_installer/pages/options.py
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "RTX 20xx y posteriores. Desactívalo para las tarjetas GTX 10xx / 16xx."
+
+#: src/roudix_installer/pages/options.py
 msgid "Nvidia beta driver (built locally)"
 msgstr "Controlador Nvidia beta (compilado localmente)"
 
@@ -1228,6 +1264,10 @@ msgstr "Rama (instalación + actualizaciones)"
 msgid "Bootloader"
 msgstr "Gestor de arranque"
 
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Boot splash"
+msgstr "Pantalla de arranque"
+
 #: src/roudix_installer/pages/options.py
 msgid "Boot wallpaper format (Limine)"
 msgstr "Formato del fondo de arranque (Limine)"
@@ -1316,19 +1356,30 @@ msgstr "Gestor de contraseñas"
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Office suite"
-msgstr ""
+msgstr "Suite ofimática"
 
 #: src/roudix_installer/pages/options.py
 msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
 msgstr ""
+"Diccionarios de la suite ofimática (separados por comas: en, fr, es, de, it, "
+"pt)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Printing (CUPS)"
+msgstr "Impresión (CUPS)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Common printer drivers and network printer discovery."
+msgstr ""
+"Controladores de impresora habituales y detección de impresoras de red."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Scanners (SANE)"
-msgstr ""
+msgstr "Escáneres (SANE)"
 
 #: src/roudix_installer/pages/options.py
 msgid "OpenVPN (NetworkManager plugin)"
-msgstr ""
+msgstr "OpenVPN (complemento de NetworkManager)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Turn on the ones you want preinstalled."
@@ -1649,9 +1700,9 @@ msgid ""
 "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing "
 "outside an ISO) — cloning straight from GitHub instead."
 msgstr ""
-"No se encontró /iso-cfg (la ISO aún no se ha reconstruido con "
-"isoImage.contents, o se está probando fuera de una ISO) — se clona "
-"directamente desde GitHub."
+"No se encontró /iso-cfg (la ISO aún no se ha reconstruido con isoImage."
+"contents, o se está probando fuera de una ISO) — se clona directamente desde "
+"GitHub."
 
 #: src/roudix_installer/pages/progress.py
 #, python-brace-format
@@ -1892,6 +1943,11 @@ msgstr "Virtualización"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Extras row: nothing selected"
+msgid "none"
+msgstr "ninguno"
+
+#
+#: src/roudix_installer/pages/summary.py
 msgid "none"
 msgstr "ninguno"
 

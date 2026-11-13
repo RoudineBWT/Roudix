@@ -174,7 +174,7 @@ También disponible, opt-in (desactivado por defecto): un cliente de torrents me
 `"fragments"` (cliente mínimo de GNOME/libadwaita), `"deluge"` (basado en plugins) o
 `"none"` (por defecto).
 
-También disponibles, opcionales (desactivados por defecto): una suite ofimática con `roudix.office` — `"libreoffice"` (Writer, Calc, Impress) o `"none"` (por defecto). En NixOS, LibreOffice se entrega sin diccionarios de corrección, así que `roudix.officeDictionaries` los instala para todo el sistema (hunspell + separación silábica): una lista entre `"en"`, `"fr"`, `"es"`, `"de"`, `"it"` y `"pt"`, por ejemplo `[ "es" "en" ]`.
+También disponibles, opcionales (desactivados por defecto): una suite ofimática con `roudix.office` — `"libreoffice"` (Writer, Calc, Impress), `"onlyoffice"` (ONLYOFFICE Desktop Editors, pensado en torno a los formatos .docx / .xlsx / .pptx) o `"none"` (por defecto). En NixOS, LibreOffice se entrega sin diccionarios de corrección, así que `roudix.officeDictionaries` los instala para todo el sistema (hunspell + separación silábica): una lista entre `"en"`, `"fr"`, `"es"`, `"de"`, `"it"` y `"pt"`, por ejemplo `[ "es" "en" ]`.
 
 `roudix.printing.scanners.enable` activa el soporte de escáneres mediante SANE — escáneres de red con `sane-airscan` (sin controlador, eSCL/AirScan) y escáneres HP con HPLIP — y añade tu usuario a los grupos `scanner` y `lp`. Es independiente de `roudix.printing.enable` (CUPS): un escáner solo funciona sin él. Los backends de Brother y los Epson antiguos no están incluidos; añádelos a `hardware.sane.extraBackends` en `local.nix`.
 

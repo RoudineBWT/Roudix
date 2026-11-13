@@ -11,3 +11,135 @@ msgstr "Vesktop (Vencord independiente)"
 
 msgid "Standalone Vencord client, native Wayland"
 msgstr "Cliente Vencord independiente, Wayland nativo"
+
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — logo con pulso suave (predeterminado)"
+
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — logo que gira lentamente"
+
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — degradado cálido con resplandor detrás del logo"
+
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — brasas que ascienden, anillo de progreso"
+
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — la mascota"
+
+msgid "No splash — plain text boot"
+msgstr "Sin pantalla de arranque — arranque en texto plano"
+
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice (Writer, Calc, Impress)"
+
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (editores al estilo Word, .docx / .xlsx / .pptx)"
+
+msgid "Open kernel modules"
+msgstr "Módulos de kernel abiertos"
+
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "RTX 20xx y posteriores. Desactívalo para las tarjetas GTX 10xx / 16xx."
+
+msgid "Boot splash"
+msgstr "Pantalla de arranque"
+
+msgid "Office suite"
+msgstr "Suite ofimática"
+
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr "Diccionarios de la suite ofimática (separados por comas: en, fr, es, de, it, pt)"
+
+msgid "Printing (CUPS)"
+msgstr "Impresión (CUPS)"
+
+msgid "Common printer drivers and network printer discovery."
+msgstr "Controladores de impresora habituales y detección de impresoras de red."
+
+msgid "Scanners (SANE)"
+msgstr "Escáneres (SANE)"
+
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (complemento de NetworkManager)"
+
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay (interfaz para configurar MangoHud / vkBasalt)"
+
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer (configuración de volantes de carreras)"
+
+msgid "Writer, Calc, Impress"
+msgstr "Writer, Calc, Impress"
+
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "Editores al estilo Word pensados en torno a .docx / .xlsx / .pptx"
+
+msgid "Don't install an office suite"
+msgstr "No instalar una suite ofimática"
+
+msgid "English"
+msgstr "Inglés"
+
+msgid "French"
+msgstr "Francés"
+
+msgid "Spanish"
+msgstr "Español"
+
+msgid "German"
+msgstr "Alemán"
+
+msgid "Italian"
+msgstr "Italiano"
+
+msgid "Portuguese"
+msgstr "Portugués"
+
+msgid "Create the sbctl keys at install time if missing (enrolling them stays manual)"
+msgstr "Crear las claves de sbctl durante la instalación si faltan (registrarlas sigue siendo manual)"
+
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr "Mostrar «NixOS EAC» en el menú de arranque del firmware (si no: sudo eac-reboot)"
+
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr "Módulos de kernel abiertos (RTX 20xx y posteriores — desactívalo para GTX 10xx/16xx)"
+
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr "Pantalla de arranque (Plymouth) — desactivada = arranque en texto plano"
+
+msgid "Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr "Ocultar los mensajes del kernel / initrd durante el arranque (desactívalo para depurar un problema de arranque)"
+
+msgid "Best battery life (default) — disables tuned, so game-performance does nothing"
+msgstr "Mayor autonomía (predeterminado) — desactiva tuned, así que game-performance no hace nada"
+
+msgid "Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr "Portátil gaming: mantiene game-performance y el selector de modo de energía del escritorio"
+
+msgid "Printing (CUPS + network printers)"
+msgstr "Impresión (CUPS + impresoras de red)"
+
+msgid "Scanners (SANE: network + HP)"
+msgstr "Escáneres (SANE: red + HP)"
+
+msgid "Monthly btrfs scrub"
+msgstr "Scrub mensual de btrfs"
+
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "Mitigaciones de CVE del kernel (listas negras de módulos)"
+
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ Poner algif_aead en lista negra («Copy Fail»)"
+
+msgid "  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or AFS/Kerberos"
+msgstr "  ↳ Poner esp4/esp6/rxrpc en lista negra («Dirty Frag») — desactívalo SOLO si usas IPsec o AFS/Kerberos"
+
+msgid "Hibernation (needs swap, off by default)"
+msgstr "Hibernación (requiere swap, desactivada por defecto)"
+
+msgid "Office dictionaries"
+msgstr "Diccionarios de la suite ofimática"
+
+msgid "Laptop power backend"
+msgstr "Motor de energía del portátil"

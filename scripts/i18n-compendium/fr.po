@@ -56,3 +56,81 @@ msgstr "Dictionnaires de correction"
 
 msgid "Don't install an office suite"
 msgstr "Ne pas installer de suite bureautique"
+
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay (interface pour configurer MangoHud / vkBasalt)"
+
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer (configuration des volants de course)"
+
+msgid "Create the sbctl keys at install time if missing (enrolling them stays manual)"
+msgstr "Créer les clés sbctl à l’installation si elles manquent (leur enrôlement reste manuel)"
+
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr "Lister « NixOS EAC » dans le menu de démarrage du firmware (sinon : sudo eac-reboot)"
+
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr "Modules noyau ouverts (RTX 20xx et plus récent — à désactiver pour les GTX 10xx/16xx)"
+
+msgid "Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr "Masquer les messages du noyau / de l’initrd au démarrage (à désactiver pour diagnostiquer un problème de boot)"
+
+msgid "Best battery life (default) — disables tuned, so game-performance does nothing"
+msgstr "Meilleure autonomie (par défaut) — désactive tuned, donc game-performance ne fait rien"
+
+msgid "Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr "Portable de jeu : garde game-performance et le sélecteur de mode d’alimentation du bureau"
+
+msgid "Printing (CUPS + network printers)"
+msgstr "Impression (CUPS + imprimantes réseau)"
+
+msgid "Monthly btrfs scrub"
+msgstr "Scrub btrfs mensuel"
+
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "Mitigations CVE du noyau (modules en liste noire)"
+
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ Mettre algif_aead en liste noire (« Copy Fail »)"
+
+msgid "  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or AFS/Kerberos"
+msgstr "  ↳ Mettre esp4/esp6/rxrpc en liste noire (« Dirty Frag ») — à désactiver UNIQUEMENT avec IPsec ou AFS/Kerberos"
+
+msgid "Hibernation (needs swap, off by default)"
+msgstr "Hibernation (nécessite un swap, désactivée par défaut)"
+
+msgid "Laptop power backend"
+msgstr "Gestion d’énergie du portable"
+
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr "Écran de démarrage (Plymouth) — désactivé = démarrage en texte brut"
+
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — logo, pulsation douce (par défaut)"
+
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — logo qui tourne lentement"
+
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — dégradé chaud, halo derrière le logo"
+
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — braises qui montent, anneau de progression"
+
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — la mascotte"
+
+msgid "Open kernel modules"
+msgstr "Modules noyau ouverts"
+
+msgid "Boot splash"
+msgstr "Écran de démarrage"
+
+msgid "Common printer drivers and network printer discovery."
+msgstr "Pilotes d’imprimante courants et détection des imprimantes réseau."
+
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "Éditeurs de type Word pensés autour des formats .docx / .xlsx / .pptx"
+
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (éditeurs de type Word, .docx / .xlsx / .pptx)"

@@ -174,7 +174,7 @@ Cressida — неофициальный нативный клиент Discord (C
 `"fragments"` (минималистичный клиент GNOME/libadwaita), `"deluge"` (на плагинах) или
 `"none"` (по умолчанию).
 
-Также доступны, по желанию (по умолчанию отключены): офисный пакет через `roudix.office` — `"libreoffice"` (Writer, Calc, Impress) или `"none"` (по умолчанию). В NixOS LibreOffice поставляется без словарей проверки орфографии, поэтому `roudix.officeDictionaries` устанавливает их для всей системы (hunspell + переносы): список из `"en"`, `"fr"`, `"es"`, `"de"`, `"it"` и `"pt"`, например `[ "fr" "en" ]`.
+Также доступны, по желанию (по умолчанию отключены): офисный пакет через `roudix.office` — `"libreoffice"` (Writer, Calc, Impress), `"onlyoffice"` (ONLYOFFICE Desktop Editors, ориентированный на форматы .docx / .xlsx / .pptx) или `"none"` (по умолчанию). В NixOS LibreOffice поставляется без словарей проверки орфографии, поэтому `roudix.officeDictionaries` устанавливает их для всей системы (hunspell + переносы): список из `"en"`, `"fr"`, `"es"`, `"de"`, `"it"` и `"pt"`, например `[ "fr" "en" ]`.
 
 `roudix.printing.scanners.enable` включает поддержку сканеров через SANE — сетевые сканеры через `sane-airscan` (без драйверов, eSCL/AirScan) и сканеры HP через HPLIP — и добавляет вашего пользователя в группы `scanner` и `lp`. Опция не зависит от `roudix.printing.enable` (CUPS): отдельный сканер работает и без него. Бэкенды Brother и старых Epson не включены; добавьте их в `hardware.sane.extraBackends` в `local.nix`.
 

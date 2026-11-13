@@ -4,6 +4,7 @@ let
 
   officePackage = {
     libreoffice = pkgs.libreoffice;
+    onlyoffice  = pkgs.onlyoffice-desktopeditors;
     none        = null;
   }.${officeType};
 in

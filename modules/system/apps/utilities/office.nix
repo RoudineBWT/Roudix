@@ -16,11 +16,15 @@ in
   # Read on the home-manager side (modules/home/apps/utilities/office.nix) via
   # osConfig — same pattern as roudix.passwordManager / roudix.torrentClient.
   options.roudix.office = lib.mkOption {
-    type = lib.types.enum [ "none" "libreoffice" ];
+    type = lib.types.enum [ "none" "libreoffice" "onlyoffice" ];
     default = "none";
     description = ''
       "none"        : No office suite installed.
       "libreoffice" : LibreOffice (`pkgs.libreoffice`) — Writer, Calc, Impress.
+      "onlyoffice"  : ONLYOFFICE Desktop Editors (`pkgs.onlyoffice-desktopeditors`) —
+                      document, spreadsheet and presentation editors built around
+                      the Microsoft Office formats (.docx, .xlsx, .pptx). Ships its
+                      own dictionaries, so `roudix.officeDictionaries` is not needed.
     '';
   };
 

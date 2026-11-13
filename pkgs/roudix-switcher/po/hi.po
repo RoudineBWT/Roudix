@@ -147,6 +147,14 @@ msgid "Flat, soft-toned set (pkgs.colloid-icon-theme)"
 msgstr "फ़्लैट, हल्के रंगों वाला सेट (pkgs.colloid-icon-theme)"
 
 #: roudix-switcher.py
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay (MangoHud / vkBasalt कॉन्फ़िगर करने का GUI)"
+
+#: roudix-switcher.py
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer (रेसिंग व्हील कॉन्फ़िगरेशन)"
+
+#: roudix-switcher.py
 msgid "GPU-accelerated, Roudix default"
 msgstr "GPU-एक्सेलरेटेड, Roudix का डिफ़ॉल्ट"
 
@@ -375,35 +383,39 @@ msgstr "पासवर्ड मैनेजर इंस्टॉल न क�
 
 #: roudix-switcher.py
 msgid "Writer, Calc, Impress"
-msgstr ""
+msgstr "Writer, Calc, Impress"
+
+#: roudix-switcher.py
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "Word जैसे संपादक, जो .docx / .xlsx / .pptx प्रारूपों के आधार पर बने हैं"
 
 #: roudix-switcher.py
 msgid "Don't install an office suite"
-msgstr ""
+msgstr "ऑफ़िस सूट इंस्टॉल न करें"
 
 #: roudix-switcher.py
 msgid "English"
-msgstr ""
+msgstr "अंग्रेज़ी"
 
 #: roudix-switcher.py
 msgid "French"
-msgstr ""
+msgstr "फ़्रेंच"
 
 #: roudix-switcher.py
 msgid "Spanish"
-msgstr ""
+msgstr "स्पैनिश"
 
 #: roudix-switcher.py
 msgid "German"
-msgstr ""
+msgstr "जर्मन"
 
 #: roudix-switcher.py
 msgid "Italian"
-msgstr ""
+msgstr "इतालवी"
 
 #: roudix-switcher.py
 msgid "Portuguese"
-msgstr ""
+msgstr "पुर्तगाली"
 
 #: roudix-switcher.py
 msgid "Clean: no shaders, no animated effects"
@@ -606,8 +618,19 @@ msgstr ""
 "secureboot create-keys)"
 
 #: roudix-switcher.py
+msgid ""
+"Create the sbctl keys at install time if missing (enrolling them stays "
+"manual)"
+msgstr ""
+"यदि sbctl कुंजियाँ मौजूद नहीं हैं तो इंस्टॉल के समय बनाएँ (उन्हें दर्ज करना मैन्युअल ही रहता है)"
+
+#: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
 msgstr "EAC Linux v2 — अलग “NixOS EAC” बूट एंट्री (प्रायोगिक)"
+
+#: roudix-switcher.py
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr "फ़र्मवेयर बूट मेनू में “NixOS EAC” दिखाएँ (अन्यथा: sudo eac-reboot)"
 
 #: roudix-switcher.py
 msgid "Fedora kernel — nothing to enroll"
@@ -632,6 +655,10 @@ msgstr "Chaotic-Nyx द्वारा बनाया और कैश कि�
 #: roudix-switcher.py
 msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
 msgstr "nix-gaming-edge से mesa-git, stable-mesa फ़ॉलबैक बूट एंट्री के साथ"
+
+#: roudix-switcher.py
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr "ओपन कर्नेल मॉड्यूल (RTX 20xx और नए — GTX 10xx/16xx के लिए बंद करें)"
 
 #: roudix-switcher.py
 msgid "Beta driver (always built locally)"
@@ -661,6 +688,28 @@ msgid ""
 msgstr ""
 "USB डिवाइस को कभी ऑटोसस्पेंड न करें (USB ऑडियो ड्रॉपआउट ठीक करता है, लैपटॉप की बैटरी "
 "खर्च होती है)"
+
+#: roudix-switcher.py
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr "बूट स्प्लैश (Plymouth) — बंद = सादा टेक्स्ट बूट"
+
+#: roudix-switcher.py
+msgid ""
+"Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr "बूट के दौरान कर्नेल / initrd संदेश छिपाएँ (बूट समस्या डिबग करने के लिए बंद करें)"
+
+#: roudix-switcher.py
+msgid ""
+"Best battery life (default) — disables tuned, so game-performance does "
+"nothing"
+msgstr ""
+"सबसे अच्छी बैटरी लाइफ़ (डिफ़ॉल्ट) — tuned को बंद करता है, इसलिए game-performance कुछ "
+"नहीं करता"
+
+#: roudix-switcher.py
+msgid ""
+"Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr "गेमिंग लैपटॉप: game-performance और डेस्कटॉप का पावर-मोड चयनकर्ता बनाए रखता है"
 
 #: roudix-switcher.py
 msgid "CachyOS-style system tuning"
@@ -897,12 +946,16 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (Android ऐप)"
 
 #: roudix-switcher.py
+msgid "Printing (CUPS + network printers)"
+msgstr "प्रिंटिंग (CUPS + नेटवर्क प्रिंटर)"
+
+#: roudix-switcher.py
 msgid "Scanners (SANE: network + HP)"
-msgstr ""
+msgstr "स्कैनर (SANE: नेटवर्क + HP)"
 
 #: roudix-switcher.py
 msgid "OpenVPN (NetworkManager plugin)"
-msgstr ""
+msgstr "OpenVPN (NetworkManager प्लगइन)"
 
 #: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
@@ -913,6 +966,7 @@ msgid "Laptop — TLP (disables tuned)"
 msgstr "लैपटॉप — TLP (tuned को बंद करता है)"
 
 #: roudix-switcher.py
+#, no-python-format
 msgid "ThinkPad — 40/80% charge thresholds"
 msgstr "ThinkPad — 40/80% चार्ज सीमा"
 
@@ -931,6 +985,30 @@ msgstr "Roudix Welcome (सत्र शुरू होने पर दिख�
 #: roudix-switcher.py
 msgid "Fstrim (automatic TRIM for SSD/NVMe)"
 msgstr "Fstrim (SSD/NVMe के लिए स्वचालित TRIM)"
+
+#: roudix-switcher.py
+msgid "Monthly btrfs scrub"
+msgstr "मासिक btrfs scrub"
+
+#: roudix-switcher.py
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "कर्नेल CVE शमन (मॉड्यूल ब्लैकलिस्ट)"
+
+#: roudix-switcher.py
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ algif_aead को ब्लैकलिस्ट करें (“Copy Fail”)"
+
+#: roudix-switcher.py
+msgid ""
+"  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or "
+"AFS/Kerberos"
+msgstr ""
+"  ↳ esp4/esp6/rxrpc को ब्लैकलिस्ट करें (“Dirty Frag”) — केवल IPsec या AFS/Kerberos "
+"के साथ बंद करें"
+
+#: roudix-switcher.py
+msgid "Hibernation (needs swap, off by default)"
+msgstr "हाइबरनेशन (swap ज़रूरी, डिफ़ॉल्ट रूप से बंद)"
 
 #: roudix-switcher.py
 msgid "VM guest (QEMU/Spice agent)"
@@ -1167,15 +1245,19 @@ msgstr "पासवर्ड मैनेजर"
 
 #: roudix-switcher.py
 msgid "Office suite"
-msgstr ""
+msgstr "ऑफ़िस सूट"
 
 #: roudix-switcher.py
 msgid "Office dictionaries"
-msgstr ""
+msgstr "ऑफ़िस शब्दकोश"
 
 #: roudix-switcher.py
 msgid "Toggles"
 msgstr "टॉगल"
+
+#: roudix-switcher.py
+msgid "Laptop power backend"
+msgstr "लैपटॉप पावर बैकएंड"
 
 #: roudix-switcher.py
 msgid "RGB backend"

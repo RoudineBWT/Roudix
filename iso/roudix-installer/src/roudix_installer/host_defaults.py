@@ -69,6 +69,9 @@ OPTION_TO_ATTR = {
     "hardware.nvidiaKernelSource": "nvidia_kernel_source",
     "hardware.nvidiaDriverSource": "nvidia_driver_source",
     "hardware.nvidiaBeta": "nvidia_beta",
+    "hardware.nvidiaOpen": "nvidia_open",
+    "roudix.printing.enable": "printing_enable",
+    "roudix.boot.plymouth.theme": "plymouth_theme",
     "time.timeZone": "timezone",
     "i18n.defaultLocale": "locale",
     "console.keyMap": "keymap",
@@ -226,4 +229,7 @@ def seed_state(state: InstallState, hostname: str, allowed: dict | None = None) 
             put(LIST_ATTRS[option], value)
         elif option == BROWSERS_KEY and isinstance(value, list):
             put("browser", value[0] if value else "none")
+    # splash off in the example = the wizard's "none" choice (wins over the theme)
+    if values.get("roudix.boot.plymouth.enable") is False:
+        put("plymouth_theme", "none")
     return applied
