@@ -173,6 +173,12 @@ input से लिया जाता है — अभी nixpkgs में �
 `"fragments"` (न्यूनतम GNOME/libadwaita क्लाइंट), `"deluge"` (प्लगइन-आधारित) या
 `"none"` (डिफ़ॉल्ट)।
 
+इसके अलावा उपलब्ध, opt-in (डिफ़ॉल्ट रूप से बंद): `roudix.office` के ज़रिए ऑफ़िस सुइट — `"libreoffice"` (Writer, Calc, Impress), `"onlyoffice"` (ONLYOFFICE Desktop Editors, .docx / .xlsx / .pptx फ़ॉर्मैट पर केंद्रित) या `"none"` (डिफ़ॉल्ट)। NixOS पर LibreOffice बिना स्पेल-चेक डिक्शनरी के आता है, इसलिए `roudix.officeDictionaries` उन्हें पूरे सिस्टम में इंस्टॉल करता है (hunspell + हाइफ़नेशन): `"en"`, `"fr"`, `"es"`, `"de"`, `"it"` और `"pt"` में से एक सूची, जैसे `[ "fr" "en" ]`।
+
+`roudix.printing.scanners.enable` SANE के ज़रिए स्कैनर सपोर्ट चालू करता है — नेटवर्क स्कैनर `sane-airscan` से (ड्राइवर-रहित, eSCL/AirScan) और HP स्कैनर HPLIP से — और आपके यूज़र को `scanner` व `lp` ग्रुप में जोड़ता है। यह `roudix.printing.enable` (CUPS) से स्वतंत्र है: अकेला स्कैनर उसके बिना भी चलता है। Brother और पुराने Epson बैकएंड शामिल नहीं हैं; उन्हें `local.nix` में `hardware.sane.extraBackends` में जोड़ें।
+
+`roudix.vpn.openvpn.enable` NetworkManager का OpenVPN प्लगइन जोड़ता है, ताकि नेटवर्क सेटिंग्स से `.ovpn` फ़ाइलें इम्पोर्ट की जा सकें। WireGuard NetworkManager में पहले से नेटिवली काम करता है और उसे कुछ नहीं चाहिए।
+
 ## Spicetify
 
 - थीम: `roudix.spicetify.theme` — `"colorful"` (डिफ़ॉल्ट, sanoojes/spicetify-colorful) या `"comfy"` (साथ में आने वाली Comfy थीम)

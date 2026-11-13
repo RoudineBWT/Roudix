@@ -339,6 +339,30 @@ msgid "Limine (recommended)"
 msgstr "Limine (recomendado)"
 
 #: src/roudix_installer/pages/options.py
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — logo com pulsação suave (padrão)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — logo girando lentamente"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — gradiente quente com brilho atrás do logo"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — brasas subindo, anel de progresso"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — o mascote"
+
+#: src/roudix_installer/pages/options.py
+msgid "No splash — plain text boot"
+msgstr "Sem tela de boot — boot em texto simples"
+
+#: src/roudix_installer/pages/options.py
 msgid "Fedora kernel (nothing to enroll)"
 msgstr "Kernel do Fedora (nada para registrar)"
 
@@ -447,6 +471,14 @@ msgstr "KeePassXC (cofre local, offline)"
 #: src/roudix_installer/pages/options.py
 msgid "Proton Pass (cloud-synced vault)"
 msgstr "Proton Pass (cofre sincronizado na nuvem)"
+
+#: src/roudix_installer/pages/options.py
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice (Writer, Calc, Impress)"
+
+#: src/roudix_installer/pages/options.py
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (editores no estilo Word, .docx / .xlsx / .pptx)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Colorful (default)"
@@ -1006,6 +1038,14 @@ msgid "nixpkgs: always built locally against your kernel."
 msgstr "nixpkgs: sempre compilado localmente para o seu kernel."
 
 #: src/roudix_installer/pages/options.py
+msgid "Open kernel modules"
+msgstr "Módulos de kernel abertos"
+
+#: src/roudix_installer/pages/options.py
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "RTX 20xx e mais recentes. Desative para placas GTX 10xx / 16xx."
+
+#: src/roudix_installer/pages/options.py
 msgid "Nvidia beta driver (built locally)"
 msgstr "Driver Nvidia beta (compilado localmente)"
 
@@ -1226,6 +1266,10 @@ msgstr "Branch (instalação + atualizações)"
 msgid "Bootloader"
 msgstr "Bootloader"
 
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Boot splash"
+msgstr "Tela de boot"
+
 #: src/roudix_installer/pages/options.py
 msgid "Boot wallpaper format (Limine)"
 msgstr "Formato do papel de parede de boot (Limine)"
@@ -1312,6 +1356,32 @@ msgstr "Cliente de e-mail"
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Password manager"
 msgstr "Gerenciador de senhas"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Office suite"
+msgstr "Suíte de escritório"
+
+#: src/roudix_installer/pages/options.py
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr ""
+"Dicionários da suíte de escritório (separados por vírgulas: en, fr, es, de, "
+"it, pt)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Printing (CUPS)"
+msgstr "Impressão (CUPS)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Common printer drivers and network printer discovery."
+msgstr "Drivers de impressora comuns e descoberta de impressoras de rede."
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Scanners (SANE)"
+msgstr "Scanners (SANE)"
+
+#: src/roudix_installer/pages/options.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (plugin do NetworkManager)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Turn on the ones you want preinstalled."
@@ -1874,6 +1944,11 @@ msgstr "Virtualização"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Extras row: nothing selected"
+msgid "none"
+msgstr "nenhum"
+
+#
+#: src/roudix_installer/pages/summary.py
 msgid "none"
 msgstr "nenhum"
 

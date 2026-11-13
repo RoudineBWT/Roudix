@@ -333,6 +333,30 @@ msgid "Limine (recommended)"
 msgstr "Limine (موصى به)"
 
 #: src/roudix_installer/pages/options.py
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — الشعار بنبض هادئ (افتراضي)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — الشعار يدور ببطء"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — تدرّج لوني دافئ مع توهّج خلف الشعار"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — جمرات متصاعدة وحلقة تقدّم"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — التميمة"
+
+#: src/roudix_installer/pages/options.py
+msgid "No splash — plain text boot"
+msgstr "بدون شاشة إقلاع — إقلاع نصي عادي"
+
+#: src/roudix_installer/pages/options.py
 msgid "Fedora kernel (nothing to enroll)"
 msgstr "نواة Fedora (لا شيء لتسجيله)"
 
@@ -440,6 +464,14 @@ msgstr "KeePassXC (خزنة محلية بدون إنترنت)"
 #: src/roudix_installer/pages/options.py
 msgid "Proton Pass (cloud-synced vault)"
 msgstr "Proton Pass (خزنة متزامنة سحابيًا)"
+
+#: src/roudix_installer/pages/options.py
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice (Writer وCalc وImpress)"
+
+#: src/roudix_installer/pages/options.py
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (محررات بنمط Word، بصيغ .docx / .xlsx / .pptx)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Colorful (default)"
@@ -999,6 +1031,14 @@ msgid "nixpkgs: always built locally against your kernel."
 msgstr "nixpkgs: يُبنى دائمًا محليًا لنواتك."
 
 #: src/roudix_installer/pages/options.py
+msgid "Open kernel modules"
+msgstr "وحدات النواة المفتوحة"
+
+#: src/roudix_installer/pages/options.py
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "لبطاقات RTX 20xx وما بعدها. عطّلها لبطاقات GTX 10xx / 16xx."
+
+#: src/roudix_installer/pages/options.py
 msgid "Nvidia beta driver (built locally)"
 msgstr "برنامج تشغيل Nvidia التجريبي (يُبنى محليًا)"
 
@@ -1187,8 +1227,8 @@ msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
 msgstr ""
-"لا يتم الكشف عن SMBus / SKU الذاكرة تلقائيًا — اعثر عليهما عبر \"i2cdetect "
-"-l\" و\"sudo dmidecode -t memory | grep 'Part Number'\"."
+"لا يتم الكشف عن SMBus / SKU الذاكرة تلقائيًا — اعثر عليهما عبر \"i2cdetect -"
+"l\" و\"sudo dmidecode -t memory | grep 'Part Number'\"."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Extras"
@@ -1217,6 +1257,10 @@ msgstr "الفرع (التثبيت + التحديثات)"
 #: src/roudix_installer/pages/options.py
 msgid "Bootloader"
 msgstr "مدير الإقلاع"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Boot splash"
+msgstr "شاشة الإقلاع"
 
 #: src/roudix_installer/pages/options.py
 msgid "Boot wallpaper format (Limine)"
@@ -1303,6 +1347,30 @@ msgstr "عميل البريد"
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Password manager"
 msgstr "مدير كلمات المرور"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Office suite"
+msgstr "حزمة المكتب"
+
+#: src/roudix_installer/pages/options.py
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr "قواميس المكتب (مفصولة بفواصل: en, fr, es, de, it, pt)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Printing (CUPS)"
+msgstr "الطباعة (CUPS)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Common printer drivers and network printer discovery."
+msgstr "برامج تشغيل الطابعات الشائعة واكتشاف الطابعات الشبكية."
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Scanners (SANE)"
+msgstr "الماسحات الضوئية (SANE)"
+
+#: src/roudix_installer/pages/options.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (إضافة NetworkManager)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Turn on the ones you want preinstalled."
@@ -1857,6 +1925,11 @@ msgstr "المحاكاة الافتراضية"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Extras row: nothing selected"
+msgid "none"
+msgstr "لا شيء"
+
+#
+#: src/roudix_installer/pages/summary.py
 msgid "none"
 msgstr "لا شيء"
 

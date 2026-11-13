@@ -146,6 +146,14 @@ msgid "Flat, soft-toned set (pkgs.colloid-icon-theme)"
 msgstr "扁平、柔和色调的图标集 (pkgs.colloid-icon-theme)"
 
 #: roudix-switcher.py
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay（用于配置 MangoHud / vkBasalt 的图形界面）"
+
+#: roudix-switcher.py
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer（赛车方向盘配置）"
+
+#: roudix-switcher.py
 msgid "GPU-accelerated, Roudix default"
 msgstr "GPU 加速，Roudix 默认"
 
@@ -372,6 +380,42 @@ msgid "Don't install a password manager"
 msgstr "不安装密码管理器"
 
 #: roudix-switcher.py
+msgid "Writer, Calc, Impress"
+msgstr "Writer、Calc、Impress"
+
+#: roudix-switcher.py
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "围绕 .docx / .xlsx / .pptx 格式打造的类 Word 编辑器"
+
+#: roudix-switcher.py
+msgid "Don't install an office suite"
+msgstr "不安装办公套件"
+
+#: roudix-switcher.py
+msgid "English"
+msgstr "英语"
+
+#: roudix-switcher.py
+msgid "French"
+msgstr "法语"
+
+#: roudix-switcher.py
+msgid "Spanish"
+msgstr "西班牙语"
+
+#: roudix-switcher.py
+msgid "German"
+msgstr "德语"
+
+#: roudix-switcher.py
+msgid "Italian"
+msgstr "意大利语"
+
+#: roudix-switcher.py
+msgid "Portuguese"
+msgstr "葡萄牙语"
+
+#: roudix-switcher.py
 msgid "Clean: no shaders, no animated effects"
 msgstr "简洁：无着色器，无动画效果"
 
@@ -572,8 +616,18 @@ msgstr ""
 "create-keys）"
 
 #: roudix-switcher.py
+msgid ""
+"Create the sbctl keys at install time if missing (enrolling them stays "
+"manual)"
+msgstr "若缺少 sbctl 密钥，则在安装时创建（注册密钥仍需手动完成）"
+
+#: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
 msgstr "EAC Linux v2 — 单独的“NixOS EAC”启动项（实验性）"
+
+#: roudix-switcher.py
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr "在固件启动菜单中列出“NixOS EAC”（否则：sudo eac-reboot）"
 
 #: roudix-switcher.py
 msgid "Fedora kernel — nothing to enroll"
@@ -600,6 +654,10 @@ msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
 msgstr "来自 nix-gaming-edge 的 mesa-git，附带 stable-mesa 回退启动项"
 
 #: roudix-switcher.py
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr "开源内核模块（RTX 20xx 及更新——GTX 10xx/16xx 请关闭）"
+
+#: roudix-switcher.py
 msgid "Beta driver (always built locally)"
 msgstr "测试版驱动（始终在本地编译）"
 
@@ -624,6 +682,26 @@ msgid ""
 "Never autosuspend USB devices (fixes USB audio dropouts, costs laptop "
 "battery)"
 msgstr "从不自动挂起 USB 设备（修复 USB 音频中断，会消耗笔记本电量）"
+
+#: roudix-switcher.py
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr "启动画面（Plymouth）——关闭 = 纯文本启动"
+
+#: roudix-switcher.py
+msgid ""
+"Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr "启动时隐藏内核 / initrd 消息（排查启动问题时请关闭）"
+
+#: roudix-switcher.py
+msgid ""
+"Best battery life (default) — disables tuned, so game-performance does "
+"nothing"
+msgstr "最长续航（默认）——停用 tuned，因此 game-performance 不起作用"
+
+#: roudix-switcher.py
+msgid ""
+"Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr "游戏笔记本：保留 game-performance 和桌面的电源模式选择器"
 
 #: roudix-switcher.py
 msgid "CachyOS-style system tuning"
@@ -857,6 +935,18 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid（Android 应用）"
 
 #: roudix-switcher.py
+msgid "Printing (CUPS + network printers)"
+msgstr "打印（CUPS + 网络打印机）"
+
+#: roudix-switcher.py
+msgid "Scanners (SANE: network + HP)"
+msgstr "扫描仪（SANE：网络 + HP）"
+
+#: roudix-switcher.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN（NetworkManager 插件）"
+
+#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "自动更新（定时 git pull + 重新构建）"
 
@@ -865,6 +955,7 @@ msgid "Laptop — TLP (disables tuned)"
 msgstr "笔记本 — TLP（会禁用 tuned）"
 
 #: roudix-switcher.py
+#, no-python-format
 msgid "ThinkPad — 40/80% charge thresholds"
 msgstr "ThinkPad — 40/80% 充电阈值"
 
@@ -883,6 +974,30 @@ msgstr "Roudix Welcome（会话启动时显示）"
 #: roudix-switcher.py
 msgid "Fstrim (automatic TRIM for SSD/NVMe)"
 msgstr "Fstrim（SSD/NVMe 自动 TRIM）"
+
+#: roudix-switcher.py
+msgid "Monthly btrfs scrub"
+msgstr "每月 btrfs scrub"
+
+#: roudix-switcher.py
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "内核 CVE 缓解措施（模块黑名单）"
+
+#: roudix-switcher.py
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ 将 algif_aead 加入黑名单（“Copy Fail”）"
+
+#: roudix-switcher.py
+msgid ""
+"  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or "
+"AFS/Kerberos"
+msgstr ""
+"  ↳ 将 esp4/esp6/rxrpc 加入黑名单（“Dirty Frag”）——仅在使用 IPsec 或 AFS/"
+"Kerberos 时才关闭"
+
+#: roudix-switcher.py
+msgid "Hibernation (needs swap, off by default)"
+msgstr "休眠（需要 swap，默认关闭）"
 
 #: roudix-switcher.py
 msgid "VM guest (QEMU/Spice agent)"
@@ -1116,8 +1231,20 @@ msgid "Password manager"
 msgstr "密码管理器"
 
 #: roudix-switcher.py
+msgid "Office suite"
+msgstr "办公套件"
+
+#: roudix-switcher.py
+msgid "Office dictionaries"
+msgstr "办公套件词典"
+
+#: roudix-switcher.py
 msgid "Toggles"
 msgstr "开关"
+
+#: roudix-switcher.py
+msgid "Laptop power backend"
+msgstr "笔记本电源管理后端"
 
 #: roudix-switcher.py
 msgid "RGB backend"
@@ -1194,8 +1321,8 @@ msgid ""
 "firmware (docs/secure-boot-eac.md). Epic has not confirmed that EAC accepts "
 "this setup yet."
 msgstr ""
-"请先创建并注册 sbctl 密钥，再在固件中开启 Secure Boot（docs/secure-boot-"
-"eac.md）。Epic 尚未确认 EAC 会接受这种配置。"
+"请先创建并注册 sbctl 密钥，再在固件中开启 Secure Boot（docs/secure-boot-eac."
+"md）。Epic 尚未确认 EAC 会接受这种配置。"
 
 #: roudix-switcher.py
 msgid "Audio (PipeWire)"

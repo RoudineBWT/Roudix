@@ -7,5 +7,6 @@
     ./terminal.nix
     ./torrent-client.nix
     ./printing.nix
+    ./office.nix
   ];
 }

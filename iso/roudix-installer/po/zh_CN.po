@@ -331,6 +331,30 @@ msgid "Limine (recommended)"
 msgstr "Limine（推荐）"
 
 #: src/roudix_installer/pages/options.py
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — 徽标，轻柔脉动（默认）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — 徽标缓缓旋转"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — 暖色渐变，徽标后方泛光"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — 升腾的火星，进度环"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — 吉祥物"
+
+#: src/roudix_installer/pages/options.py
+msgid "No splash — plain text boot"
+msgstr "无启动画面 — 纯文本启动"
+
+#: src/roudix_installer/pages/options.py
 msgid "Fedora kernel (nothing to enroll)"
 msgstr "Fedora 内核（无需注册密钥）"
 
@@ -438,6 +462,14 @@ msgstr "KeePassXC（本地离线密码库）"
 #: src/roudix_installer/pages/options.py
 msgid "Proton Pass (cloud-synced vault)"
 msgstr "Proton Pass（云同步密码库）"
+
+#: src/roudix_installer/pages/options.py
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice（Writer、Calc、Impress）"
+
+#: src/roudix_installer/pages/options.py
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE（类 Word 编辑器，.docx / .xlsx / .pptx）"
 
 #: src/roudix_installer/pages/options.py
 msgid "Colorful (default)"
@@ -996,6 +1028,14 @@ msgid "nixpkgs: always built locally against your kernel."
 msgstr "nixpkgs：始终针对你的内核在本地编译。"
 
 #: src/roudix_installer/pages/options.py
+msgid "Open kernel modules"
+msgstr "开源内核模块"
+
+#: src/roudix_installer/pages/options.py
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "适用于 RTX 20xx 及更新的显卡。GTX 10xx / 16xx 显卡请关闭。"
+
+#: src/roudix_installer/pages/options.py
 msgid "Nvidia beta driver (built locally)"
 msgstr "Nvidia 测试版驱动（本地编译）"
 
@@ -1183,8 +1223,8 @@ msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
 msgstr ""
-"SMBus / 内存 SKU 不会自动检测 — 请通过 \"i2cdetect -l\" 和 \"sudo dmidecode "
-"-t memory | grep 'Part Number'\" 查找。"
+"SMBus / 内存 SKU 不会自动检测 — 请通过 \"i2cdetect -l\" 和 \"sudo dmidecode -"
+"t memory | grep 'Part Number'\" 查找。"
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Extras"
@@ -1213,6 +1253,10 @@ msgstr "分支（安装 + 更新）"
 #: src/roudix_installer/pages/options.py
 msgid "Bootloader"
 msgstr "引导程序"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Boot splash"
+msgstr "启动画面"
 
 #: src/roudix_installer/pages/options.py
 msgid "Boot wallpaper format (Limine)"
@@ -1297,6 +1341,30 @@ msgstr "邮件客户端"
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Password manager"
 msgstr "密码管理器"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Office suite"
+msgstr "办公套件"
+
+#: src/roudix_installer/pages/options.py
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr "办公套件词典（以逗号分隔：en, fr, es, de, it, pt）"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Printing (CUPS)"
+msgstr "打印（CUPS）"
+
+#: src/roudix_installer/pages/options.py
+msgid "Common printer drivers and network printer discovery."
+msgstr "常用打印机驱动及网络打印机发现。"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Scanners (SANE)"
+msgstr "扫描仪（SANE）"
+
+#: src/roudix_installer/pages/options.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN（NetworkManager 插件）"
 
 #: src/roudix_installer/pages/options.py
 msgid "Turn on the ones you want preinstalled."
@@ -1588,8 +1656,8 @@ msgid ""
 "Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
 "local.nix generation may fail."
 msgstr ""
-"警告：在分支“{branch}”上未找到 hosts/{host}/local.nix.example — 生成 "
-"local.nix 可能会失败。"
+"警告：在分支“{branch}”上未找到 hosts/{host}/local.nix.example — 生成 local."
+"nix 可能会失败。"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Copying the configuration…"
@@ -1840,6 +1908,11 @@ msgstr "虚拟化"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Extras row: nothing selected"
+msgid "none"
+msgstr "无"
+
+#
+#: src/roudix_installer/pages/summary.py
 msgid "none"
 msgstr "无"
 

@@ -11,3 +11,135 @@ msgstr "Vesktop (स्टैंडअलोन Vencord)"
 
 msgid "Standalone Vencord client, native Wayland"
 msgstr "स्टैंडअलोन Vencord क्लाइंट, नेटिव Wayland"
+
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — लोगो, हल्की धड़कन (डिफ़ॉल्ट)"
+
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — धीरे-धीरे घूमता लोगो"
+
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — गर्म ग्रेडिएंट, लोगो के पीछे चमक"
+
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — ऊपर उठते अंगारे, प्रगति रिंग"
+
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — शुभंकर"
+
+msgid "No splash — plain text boot"
+msgstr "कोई स्प्लैश नहीं — सादा टेक्स्ट बूट"
+
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice (Writer, Calc, Impress)"
+
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (Word जैसे संपादक, .docx / .xlsx / .pptx)"
+
+msgid "Open kernel modules"
+msgstr "ओपन कर्नेल मॉड्यूल"
+
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "RTX 20xx और नए कार्ड के लिए। GTX 10xx / 16xx कार्ड के लिए बंद करें।"
+
+msgid "Boot splash"
+msgstr "बूट स्प्लैश"
+
+msgid "Office suite"
+msgstr "ऑफ़िस सूट"
+
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr "ऑफ़िस शब्दकोश (अल्पविराम से अलग करें: en, fr, es, de, it, pt)"
+
+msgid "Printing (CUPS)"
+msgstr "प्रिंटिंग (CUPS)"
+
+msgid "Common printer drivers and network printer discovery."
+msgstr "आम प्रिंटर ड्राइवर और नेटवर्क प्रिंटर की खोज।"
+
+msgid "Scanners (SANE)"
+msgstr "स्कैनर (SANE)"
+
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (NetworkManager प्लगइन)"
+
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay (MangoHud / vkBasalt कॉन्फ़िगर करने का GUI)"
+
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer (रेसिंग व्हील कॉन्फ़िगरेशन)"
+
+msgid "Writer, Calc, Impress"
+msgstr "Writer, Calc, Impress"
+
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "Word जैसे संपादक, जो .docx / .xlsx / .pptx प्रारूपों के आधार पर बने हैं"
+
+msgid "Don't install an office suite"
+msgstr "ऑफ़िस सूट इंस्टॉल न करें"
+
+msgid "English"
+msgstr "अंग्रेज़ी"
+
+msgid "French"
+msgstr "फ़्रेंच"
+
+msgid "Spanish"
+msgstr "स्पैनिश"
+
+msgid "German"
+msgstr "जर्मन"
+
+msgid "Italian"
+msgstr "इतालवी"
+
+msgid "Portuguese"
+msgstr "पुर्तगाली"
+
+msgid "Create the sbctl keys at install time if missing (enrolling them stays manual)"
+msgstr "यदि sbctl कुंजियाँ मौजूद नहीं हैं तो इंस्टॉल के समय बनाएँ (उन्हें दर्ज करना मैन्युअल ही रहता है)"
+
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr "फ़र्मवेयर बूट मेनू में “NixOS EAC” दिखाएँ (अन्यथा: sudo eac-reboot)"
+
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr "ओपन कर्नेल मॉड्यूल (RTX 20xx और नए — GTX 10xx/16xx के लिए बंद करें)"
+
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr "बूट स्प्लैश (Plymouth) — बंद = सादा टेक्स्ट बूट"
+
+msgid "Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr "बूट के दौरान कर्नेल / initrd संदेश छिपाएँ (बूट समस्या डिबग करने के लिए बंद करें)"
+
+msgid "Best battery life (default) — disables tuned, so game-performance does nothing"
+msgstr "सबसे अच्छी बैटरी लाइफ़ (डिफ़ॉल्ट) — tuned को बंद करता है, इसलिए game-performance कुछ नहीं करता"
+
+msgid "Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr "गेमिंग लैपटॉप: game-performance और डेस्कटॉप का पावर-मोड चयनकर्ता बनाए रखता है"
+
+msgid "Printing (CUPS + network printers)"
+msgstr "प्रिंटिंग (CUPS + नेटवर्क प्रिंटर)"
+
+msgid "Scanners (SANE: network + HP)"
+msgstr "स्कैनर (SANE: नेटवर्क + HP)"
+
+msgid "Monthly btrfs scrub"
+msgstr "मासिक btrfs scrub"
+
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "कर्नेल CVE शमन (मॉड्यूल ब्लैकलिस्ट)"
+
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ algif_aead को ब्लैकलिस्ट करें (“Copy Fail”)"
+
+msgid "  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or AFS/Kerberos"
+msgstr "  ↳ esp4/esp6/rxrpc को ब्लैकलिस्ट करें (“Dirty Frag”) — केवल IPsec या AFS/Kerberos के साथ बंद करें"
+
+msgid "Hibernation (needs swap, off by default)"
+msgstr "हाइबरनेशन (swap ज़रूरी, डिफ़ॉल्ट रूप से बंद)"
+
+msgid "Office dictionaries"
+msgstr "ऑफ़िस शब्दकोश"
+
+msgid "Laptop power backend"
+msgstr "लैपटॉप पावर बैकएंड"

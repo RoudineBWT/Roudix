@@ -9,5 +9,6 @@
     ./secure-boot.nix
     ./kernel.nix
     ./cpu.nix
+    ./hibernation.nix
   ];
 }
