@@ -176,7 +176,6 @@
     # binary, and its source build pins its own Rust toolchain.
     sonora ={
       url = "github:sonorahq/sonora";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # EAC Linux v2 boot path: a separate "NixOS EAC" boot entry running a
