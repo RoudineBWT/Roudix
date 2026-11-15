@@ -156,6 +156,7 @@ class InstallState:
     secure_boot: bool = False        # roudix.boot.secureBoot.enable — sign the bootloader (Limine with sbctl, systemd-boot with lanzaboote; UEFI only). Keys are created at install, enrolling them in the firmware stays manual
     eac_enable: bool = False         # roudix.boot.eac.enable — separate "NixOS EAC" boot entry for EAC Linux v2 (experimental, Limine only)
     eac_vendor: str = "fedora"       # roudix.boot.eac.vendor — fedora | bazzite
+    plymouth_theme: str = "roudix"   # roudix.boot.plymouth.theme — roudix | roudix-spin | roudix-gradient | roudix-ember | roudix-panda | none (= plymouth.enable false)
     matrix_client: str = "none"      # none | element | cinny
     discord: str = "none"            # roudix.discord — vencord | vanilla | vesktop | none
     telegram: str = "none"           # roudix.telegram — none | telegram | ayugram
@@ -176,6 +177,11 @@ class InstallState:
     app_cressida: bool = False
     mail_client: str = "none"
     password_manager: str = "none"
+    office: str = "none"             # roudix.office — libreoffice | onlyoffice | none
+    office_dictionaries: list = field(default_factory=list)  # roudix.officeDictionaries — subset of OFFICE_DICTIONARIES
+    printing_enable: bool = False    # roudix.printing.enable — CUPS + Avahi + common drivers
+    printing_scanners: bool = False  # roudix.printing.scanners.enable — SANE (sane-airscan + HPLIP)
+    vpn_openvpn: bool = False        # roudix.vpn.openvpn.enable — NetworkManager OpenVPN plugin
 
     # ── Spicetify (only meaningful if music_player == "spotify") ────────────
     spicetify_theme: str = "colorful"        # roudix.spicetify.theme — colorful | comfy
@@ -191,6 +197,7 @@ class InstallState:
     mesa_git_source: str = "chaotic"  # roudix.mesa.gitSource — chaotic | gaming-edge (only when mesa_use_git)
     nvidia_kernel_source: str = "chaotic"  # hardware.nvidiaKernelSource — chaotic | xddxdd (nvidia only)
     nvidia_driver_source: str = "chaotic"  # hardware.nvidiaDriverSource — chaotic | nixpkgs (nvidia only)
+    nvidia_open: bool = True         # hardware.nvidiaOpen — open kernel modules; GTX 10xx/16xx need false (nvidia only)
     nvidia_beta: bool = False        # hardware.nvidiaBeta — beta driver, built locally (nvidia only)
 
     # ── Content creation ─────────────────────────────────────────────────

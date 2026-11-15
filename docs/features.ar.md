@@ -174,6 +174,12 @@ input المسمى [betterbird-nix](https://github.com/TheAnachronism/betterbird
 أو `"fragments"` (عميل GNOME/libadwaita بسيط) أو `"deluge"` (قائم على الإضافات) أو
 `"none"` (الافتراضي).
 
+يتوفر أيضًا، بشكل اختياري (معطّل افتراضيًا): حزمة مكتبية عبر `roudix.office` — `"libreoffice"` (Writer وCalc وImpress)، `"onlyoffice"` (ONLYOFFICE Desktop Editors، مصمَّم حول صيغ .docx / .xlsx / .pptx) أو `"none"` (الافتراضي). على NixOS يأتي LibreOffice بلا قواميس للتدقيق الإملائي، لذلك تثبّتها `roudix.officeDictionaries` على مستوى النظام (hunspell + تقطيع المقاطع): قائمة من بين `"en"` و`"fr"` و`"es"` و`"de"` و`"it"` و`"pt"`، مثل `[ "fr" "en" ]`.
+
+يفعّل `roudix.printing.scanners.enable` دعم الماسحات الضوئية عبر SANE — الماسحات الشبكية عبر `sane-airscan` (دون تعريفات، eSCL/AirScan) وماسحات HP عبر HPLIP — ويضيف مستخدمك إلى المجموعتين `scanner` و`lp`. وهو مستقل عن `roudix.printing.enable` (CUPS): تعمل الماسحة المنفردة من دونه. لا تُضمَّن واجهات Brother وEpson القديمة؛ أضفها إلى `hardware.sane.extraBackends` في `local.nix`.
+
+يضيف `roudix.vpn.openvpn.enable` إضافة OpenVPN لـ NetworkManager لاستيراد ملفات `.ovpn` من إعدادات الشبكة. يعمل WireGuard أصلًا في NetworkManager ولا يحتاج إلى شيء.
+
 ## Spicetify
 
 - السمة: `roudix.spicetify.theme` — `"colorful"` (الافتراضية، sanoojes/spicetify-colorful) أو `"comfy"` (سمة Comfy المضمَّنة)

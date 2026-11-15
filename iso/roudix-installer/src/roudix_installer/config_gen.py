@@ -12,6 +12,9 @@ from roudix_installer.hardware_detect import detect_prime_bus_ids
 from roudix_installer.host_profile import FIXED, restore_fixed_lines
 from roudix_installer.state import InstallState, valid_hostname, valid_username
 
+# roudix.officeDictionaries accepts exactly these codes (modules/system/apps/utilities/office.nix)
+OFFICE_DICTIONARIES = ("en", "fr", "es", "de", "it", "pt")
+
 
 def _sub_string(text: str, key: str, value: str) -> str:
     """key = "...";  ->  key = "value";  (keeps original indentation/spacing)"""
@@ -214,6 +217,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
         t = _set_string_option(t, "hardware.nvidiaKernelSource", state.nvidia_kernel_source)
         t = _set_string_option(t, "hardware.nvidiaDriverSource", state.nvidia_driver_source)
         t = _set_bool_option(t, "hardware.nvidiaBeta", state.nvidia_beta)
+        t = _set_bool_option(t, "hardware.nvidiaOpen", state.nvidia_open)
     t = _sub_list_single(t, "roudix.browsers", state.browser)
     t = _sub_bool(t, "roudix.zen.enable", state.zen_browser)
     t = _sub_string(t, "roudix.zen.variant", state.zen_variant)
@@ -277,6 +281,17 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.musicPlayer", state.music_player)
     t = _sub_string(t, "roudix.mailClient", state.mail_client)
     t = _sub_string(t, "roudix.passwordManager", state.password_manager)
+    t = _sub_string(t, "roudix.office", state.office)
+    # unknown codes would fail the Nix enum check at build time: keep known ones only
+    t = _sub_list(t, "roudix.officeDictionaries",
+                  [d for d in dict.fromkeys(state.office_dictionaries) if d in OFFICE_DICTIONARIES])
+    t = _sub_bool(t, "roudix.printing.enable", state.printing_enable)
+    t = _sub_bool(t, "roudix.printing.scanners.enable", state.printing_scanners)
+    # "none" switches the splash off and leaves the theme alone
+    t = _sub_bool(t, "roudix.boot.plymouth.enable", state.plymouth_theme != "none")
+    if state.plymouth_theme != "none":
+        t = _sub_string(t, "roudix.boot.plymouth.theme", state.plymouth_theme)
+    t = _sub_bool(t, "roudix.vpn.openvpn.enable", state.vpn_openvpn)
     t = _sub_bool(t, "roudix.waydroid.enable", state.waydroid_enable)
 
     t = _set_bool_option(t, "roudix.apps.gimp.enable", state.app_gimp)
@@ -346,7 +361,7 @@ def _expected_values(state: InstallState) -> list:
         "roudix.discord": state.discord, "roudix.telegram": state.telegram,
         "roudix.videoPlayer": state.video_player, "roudix.torrentClient": state.torrent_client,
         "roudix.musicPlayer": state.music_player, "roudix.mailClient": state.mail_client,
-        "roudix.passwordManager": state.password_manager,
+        "roudix.passwordManager": state.password_manager, "roudix.office": state.office,
         "roudix.apps.fluxer.channel": state.app_fluxer_channel,
         "roudix.laptop.backend": state.laptop_backend,
     }
@@ -358,6 +373,10 @@ def _expected_values(state: InstallState) -> list:
         "roudix.mesa.useGit": state.mesa_use_git, "roudix.hosts.gtaFix.enable": state.gta_fix,
         "roudix.flatpak.enable": state.flatpak, "roudix.virtualization.enable": state.virtualization,
         "roudix.autoupdate.enable": state.autoupdate, "roudix.waydroid.enable": state.waydroid_enable,
+        "roudix.printing.enable": state.printing_enable,
+        "roudix.boot.plymouth.enable": state.plymouth_theme != "none",
+        "roudix.printing.scanners.enable": state.printing_scanners,
+        "roudix.vpn.openvpn.enable": state.vpn_openvpn,
         "roudix.zen.enable": state.zen_browser, "roudix.contentCreation.enable": state.content_creation_enable,
         "roudix.boot.secureBoot.enable": _boot_security(state)[0],
         "roudix.boot.eac.enable": _boot_security(state)[1],
@@ -370,6 +389,9 @@ def _expected_values(state: InstallState) -> list:
         strings["hardware.nvidiaKernelSource"] = state.nvidia_kernel_source
         strings["hardware.nvidiaDriverSource"] = state.nvidia_driver_source
         bools["hardware.nvidiaBeta"] = state.nvidia_beta
+        bools["hardware.nvidiaOpen"] = state.nvidia_open
+    if state.plymouth_theme != "none":
+        strings["roudix.boot.plymouth.theme"] = state.plymouth_theme
     out = [(k, "str", v) for k, v in strings.items()]
     out += [(k, "bool", v) for k, v in bools.items()]
     out.append(("roudix.browsers", "list1", state.browser))

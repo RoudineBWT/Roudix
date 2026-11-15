@@ -136,8 +136,8 @@ msgid ""
 "Auto-recolored to the current Noctalia accent if roudix.desktop.shell = "
 "\"noctalia\"; plain Tela otherwise"
 msgstr ""
-"Se recolorea automáticamente con el acento actual de Noctalia si "
-"roudix.desktop.shell = \"noctalia\"; Tela normal en los demás casos"
+"Se recolorea automáticamente con el acento actual de Noctalia si roudix."
+"desktop.shell = \"noctalia\"; Tela normal en los demás casos"
 
 #: roudix-switcher.py
 msgid "Flat, colorful Material-style set (pkgs.qogir-icon-theme)"
@@ -150,6 +150,14 @@ msgstr "Inspirado en macOS Big Sur (pkgs.whitesur-icon-theme)"
 #: roudix-switcher.py
 msgid "Flat, soft-toned set (pkgs.colloid-icon-theme)"
 msgstr "Conjunto plano de tonos suaves (pkgs.colloid-icon-theme)"
+
+#: roudix-switcher.py
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay (interfaz para configurar MangoHud / vkBasalt)"
+
+#: roudix-switcher.py
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer (configuración de volantes de carreras)"
 
 #: roudix-switcher.py
 msgid "GPU-accelerated, Roudix default"
@@ -382,6 +390,42 @@ msgid "Don't install a password manager"
 msgstr "No instalar un gestor de contraseñas"
 
 #: roudix-switcher.py
+msgid "Writer, Calc, Impress"
+msgstr "Writer, Calc, Impress"
+
+#: roudix-switcher.py
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "Editores al estilo Word pensados en torno a .docx / .xlsx / .pptx"
+
+#: roudix-switcher.py
+msgid "Don't install an office suite"
+msgstr "No instalar una suite ofimática"
+
+#: roudix-switcher.py
+msgid "English"
+msgstr "Inglés"
+
+#: roudix-switcher.py
+msgid "French"
+msgstr "Francés"
+
+#: roudix-switcher.py
+msgid "Spanish"
+msgstr "Español"
+
+#: roudix-switcher.py
+msgid "German"
+msgstr "Alemán"
+
+#: roudix-switcher.py
+msgid "Italian"
+msgstr "Italiano"
+
+#: roudix-switcher.py
+msgid "Portuguese"
+msgstr "Portugués"
+
+#: roudix-switcher.py
 msgid "Clean: no shaders, no animated effects"
 msgstr "Limpio: sin shaders ni efectos animados"
 
@@ -586,8 +630,22 @@ msgstr ""
 "existir: roudix-secureboot create-keys)"
 
 #: roudix-switcher.py
+msgid ""
+"Create the sbctl keys at install time if missing (enrolling them stays "
+"manual)"
+msgstr ""
+"Crear las claves de sbctl durante la instalación si faltan (registrarlas "
+"sigue siendo manual)"
+
+#: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
 msgstr "EAC Linux v2 — entrada de arranque «NixOS EAC» aparte (experimental)"
+
+#: roudix-switcher.py
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr ""
+"Mostrar «NixOS EAC» en el menú de arranque del firmware (si no: sudo eac-"
+"reboot)"
 
 #: roudix-switcher.py
 msgid "Fedora kernel — nothing to enroll"
@@ -614,6 +672,12 @@ msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
 msgstr ""
 "mesa-git de nix-gaming-edge, con una entrada de arranque de respaldo stable-"
 "mesa"
+
+#: roudix-switcher.py
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr ""
+"Módulos de kernel abiertos (RTX 20xx y posteriores — desactívalo para GTX "
+"10xx/16xx)"
 
 #: roudix-switcher.py
 msgid "Beta driver (always built locally)"
@@ -646,6 +710,33 @@ msgid ""
 msgstr ""
 "No suspender nunca automáticamente los dispositivos USB (corrige cortes de "
 "audio USB, gasta batería en portátiles)"
+
+#: roudix-switcher.py
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr ""
+"Pantalla de arranque (Plymouth) — desactivada = arranque en texto plano"
+
+#: roudix-switcher.py
+msgid ""
+"Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr ""
+"Ocultar los mensajes del kernel / initrd durante el arranque (desactívalo "
+"para depurar un problema de arranque)"
+
+#: roudix-switcher.py
+msgid ""
+"Best battery life (default) — disables tuned, so game-performance does "
+"nothing"
+msgstr ""
+"Mayor autonomía (predeterminado) — desactiva tuned, así que game-performance "
+"no hace nada"
+
+#: roudix-switcher.py
+msgid ""
+"Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr ""
+"Portátil gaming: mantiene game-performance y el selector de modo de energía "
+"del escritorio"
 
 #: roudix-switcher.py
 msgid "CachyOS-style system tuning"
@@ -890,6 +981,18 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (aplicaciones Android)"
 
 #: roudix-switcher.py
+msgid "Printing (CUPS + network printers)"
+msgstr "Impresión (CUPS + impresoras de red)"
+
+#: roudix-switcher.py
+msgid "Scanners (SANE: network + HP)"
+msgstr "Escáneres (SANE: red + HP)"
+
+#: roudix-switcher.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (complemento de NetworkManager)"
+
+#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "Actualización automática (git pull programado + reconstrucción)"
 
@@ -898,6 +1001,7 @@ msgid "Laptop — TLP (disables tuned)"
 msgstr "Portátil — TLP (desactiva tuned)"
 
 #: roudix-switcher.py
+#, no-python-format
 msgid "ThinkPad — 40/80% charge thresholds"
 msgstr "ThinkPad — umbrales de carga 40/80 %"
 
@@ -916,6 +1020,30 @@ msgstr "Roudix Welcome (se muestra al iniciar la sesión)"
 #: roudix-switcher.py
 msgid "Fstrim (automatic TRIM for SSD/NVMe)"
 msgstr "Fstrim (TRIM automático para SSD/NVMe)"
+
+#: roudix-switcher.py
+msgid "Monthly btrfs scrub"
+msgstr "Scrub mensual de btrfs"
+
+#: roudix-switcher.py
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "Mitigaciones de CVE del kernel (listas negras de módulos)"
+
+#: roudix-switcher.py
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ Poner algif_aead en lista negra («Copy Fail»)"
+
+#: roudix-switcher.py
+msgid ""
+"  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or "
+"AFS/Kerberos"
+msgstr ""
+"  ↳ Poner esp4/esp6/rxrpc en lista negra («Dirty Frag») — desactívalo SOLO "
+"si usas IPsec o AFS/Kerberos"
+
+#: roudix-switcher.py
+msgid "Hibernation (needs swap, off by default)"
+msgstr "Hibernación (requiere swap, desactivada por defecto)"
 
 #: roudix-switcher.py
 msgid "VM guest (QEMU/Spice agent)"
@@ -1156,8 +1284,20 @@ msgid "Password manager"
 msgstr "Gestor de contraseñas"
 
 #: roudix-switcher.py
+msgid "Office suite"
+msgstr "Suite ofimática"
+
+#: roudix-switcher.py
+msgid "Office dictionaries"
+msgstr "Diccionarios de la suite ofimática"
+
+#: roudix-switcher.py
 msgid "Toggles"
 msgstr "Interruptores"
+
+#: roudix-switcher.py
+msgid "Laptop power backend"
+msgstr "Motor de energía del portátil"
 
 #: roudix-switcher.py
 msgid "RGB backend"

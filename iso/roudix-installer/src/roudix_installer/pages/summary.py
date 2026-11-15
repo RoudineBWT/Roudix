@@ -143,6 +143,7 @@ class SummaryPage(Adw.NavigationPage):
                 f"autoupdate {s.autoupdate_interval}" if s.autoupdate else "",
             ])) or trc("summary, Extras row: nothing selected", "none")),
             ("Bootloader", s.bootloader + (f" ({s.boot_aspect} · {s.boot_resolution})" if s.bootloader == "limine" else "")),
+            (tr("Boot splash"), tr("none") if s.plymouth_theme == "none" else s.plymouth_theme),
             (tr("Secure Boot / EAC"), ", ".join(filter(None, [
                 tr("Secure Boot") if s.secure_boot else "",
                 f"EAC ({s.eac_vendor})" if s.eac_enable and s.bootloader == "limine" else "",
@@ -155,6 +156,10 @@ class SummaryPage(Adw.NavigationPage):
             (tr("Music player"), s.music_player),
             (tr("Mail client"), s.mail_client),
             (tr("Password manager"), s.password_manager),
+            (tr("Office suite"), s.office),
+            (tr("Printing (CUPS)"), tr("enabled") if s.printing_enable else tr("disabled")),
+            (tr("Scanners (SANE)"), tr("enabled") if s.printing_scanners else tr("disabled")),
+            ("OpenVPN", tr("enabled") if s.vpn_openvpn else tr("disabled")),
             ("Waydroid", tr("enabled") if s.waydroid_enable else tr("disabled")),
             ("Apps", ", ".join(filter(None, [
                 "+ GIMP" if s.app_gimp else "",

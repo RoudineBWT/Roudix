@@ -11,3 +11,135 @@ msgstr "Vesktop (отдельный Vencord)"
 
 msgid "Standalone Vencord client, native Wayland"
 msgstr "Отдельный клиент Vencord, нативный Wayland"
+
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — логотип с мягкой пульсацией (по умолчанию)"
+
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — медленно вращающийся логотип"
+
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — тёплый градиент, свечение за логотипом"
+
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — поднимающиеся угольки, кольцо прогресса"
+
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — талисман"
+
+msgid "No splash — plain text boot"
+msgstr "Без заставки — обычная текстовая загрузка"
+
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice (Writer, Calc, Impress)"
+
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (редакторы в стиле Word, .docx / .xlsx / .pptx)"
+
+msgid "Open kernel modules"
+msgstr "Открытые модули ядра"
+
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "Для RTX 20xx и новее. Отключите для карт GTX 10xx / 16xx."
+
+msgid "Boot splash"
+msgstr "Заставка загрузки"
+
+msgid "Office suite"
+msgstr "Офисный пакет"
+
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr "Словари офисного пакета (через запятую: en, fr, es, de, it, pt)"
+
+msgid "Printing (CUPS)"
+msgstr "Печать (CUPS)"
+
+msgid "Common printer drivers and network printer discovery."
+msgstr "Распространённые драйверы принтеров и обнаружение сетевых принтеров."
+
+msgid "Scanners (SANE)"
+msgstr "Сканеры (SANE)"
+
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (плагин NetworkManager)"
+
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay (графический интерфейс для настройки MangoHud / vkBasalt)"
+
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer (настройка игровых рулей)"
+
+msgid "Writer, Calc, Impress"
+msgstr "Writer, Calc, Impress"
+
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "Редакторы в стиле Word, ориентированные на форматы .docx / .xlsx / .pptx"
+
+msgid "Don't install an office suite"
+msgstr "Не устанавливать офисный пакет"
+
+msgid "English"
+msgstr "Английский"
+
+msgid "French"
+msgstr "Французский"
+
+msgid "Spanish"
+msgstr "Испанский"
+
+msgid "German"
+msgstr "Немецкий"
+
+msgid "Italian"
+msgstr "Итальянский"
+
+msgid "Portuguese"
+msgstr "Португальский"
+
+msgid "Create the sbctl keys at install time if missing (enrolling them stays manual)"
+msgstr "Создавать ключи sbctl при установке, если их нет (регистрация ключей остаётся ручной)"
+
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr "Показывать «NixOS EAC» в меню загрузки прошивки (иначе: sudo eac-reboot)"
+
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr "Открытые модули ядра (RTX 20xx и новее — отключите для GTX 10xx/16xx)"
+
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr "Заставка загрузки (Plymouth) — выкл. = обычная текстовая загрузка"
+
+msgid "Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr "Скрывать сообщения ядра / initrd при загрузке (отключите для отладки проблем с загрузкой)"
+
+msgid "Best battery life (default) — disables tuned, so game-performance does nothing"
+msgstr "Максимальная автономность (по умолчанию) — отключает tuned, поэтому game-performance ничего не делает"
+
+msgid "Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr "Игровой ноутбук: сохраняет game-performance и переключатель режимов питания рабочего стола"
+
+msgid "Printing (CUPS + network printers)"
+msgstr "Печать (CUPS + сетевые принтеры)"
+
+msgid "Scanners (SANE: network + HP)"
+msgstr "Сканеры (SANE: сетевые + HP)"
+
+msgid "Monthly btrfs scrub"
+msgstr "Ежемесячный scrub btrfs"
+
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "Защита от CVE ядра (чёрные списки модулей)"
+
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ Внести algif_aead в чёрный список («Copy Fail»)"
+
+msgid "  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or AFS/Kerberos"
+msgstr "  ↳ Внести esp4/esp6/rxrpc в чёрный список («Dirty Frag») — отключайте ТОЛЬКО при использовании IPsec или AFS/Kerberos"
+
+msgid "Hibernation (needs swap, off by default)"
+msgstr "Гибернация (нужен swap, по умолчанию отключена)"
+
+msgid "Office dictionaries"
+msgstr "Словари офисного пакета"
+
+msgid "Laptop power backend"
+msgstr "Бэкенд управления питанием ноутбука"

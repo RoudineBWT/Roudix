@@ -151,6 +151,14 @@ msgid "Flat, soft-toned set (pkgs.colloid-icon-theme)"
 msgstr "Flat, teintes douces (pkgs.colloid-icon-theme)"
 
 #: roudix-switcher.py
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay (interface pour configurer MangoHud / vkBasalt)"
+
+#: roudix-switcher.py
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer (configuration des volants de course)"
+
+#: roudix-switcher.py
 msgid "GPU-accelerated, Roudix default"
 msgstr "Accéléré GPU, défaut Roudix"
 
@@ -380,6 +388,42 @@ msgid "Don't install a password manager"
 msgstr "N'installer aucun gestionnaire de mots de passe"
 
 #: roudix-switcher.py
+msgid "Writer, Calc, Impress"
+msgstr "Writer, Calc, Impress"
+
+#: roudix-switcher.py
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "Éditeurs de type Word pensés autour des formats .docx / .xlsx / .pptx"
+
+#: roudix-switcher.py
+msgid "Don't install an office suite"
+msgstr "Ne pas installer de suite bureautique"
+
+#: roudix-switcher.py
+msgid "English"
+msgstr "Anglais"
+
+#: roudix-switcher.py
+msgid "French"
+msgstr "Français"
+
+#: roudix-switcher.py
+msgid "Spanish"
+msgstr "Espagnol"
+
+#: roudix-switcher.py
+msgid "German"
+msgstr "Allemand"
+
+#: roudix-switcher.py
+msgid "Italian"
+msgstr "Italien"
+
+#: roudix-switcher.py
+msgid "Portuguese"
+msgstr "Portugais"
+
+#: roudix-switcher.py
 msgid "Clean: no shaders, no animated effects"
 msgstr "Propre : aucun shader ni effet animé"
 
@@ -585,9 +629,23 @@ msgstr ""
 "exister : roudix-secureboot create-keys)"
 
 #: roudix-switcher.py
+msgid ""
+"Create the sbctl keys at install time if missing (enrolling them stays "
+"manual)"
+msgstr ""
+"Créer les clés sbctl à l’installation si elles manquent (leur enrôlement "
+"reste manuel)"
+
+#: roudix-switcher.py
 msgid "EAC Linux v2 — separate “NixOS EAC” boot entry (experimental)"
 msgstr ""
 "EAC Linux v2 — entrée de démarrage « NixOS EAC » séparée (expérimental)"
+
+#: roudix-switcher.py
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr ""
+"Lister « NixOS EAC » dans le menu de démarrage du firmware (sinon : sudo eac-"
+"reboot)"
 
 #: roudix-switcher.py
 msgid "Fedora kernel — nothing to enroll"
@@ -614,6 +672,12 @@ msgid "mesa-git from nix-gaming-edge, with a stable-mesa fallback boot entry"
 msgstr ""
 "mesa-git de nix-gaming-edge, avec une entrée de démarrage de secours stable-"
 "mesa"
+
+#: roudix-switcher.py
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr ""
+"Modules noyau ouverts (RTX 20xx et plus récent — à désactiver pour les GTX "
+"10xx/16xx)"
 
 #: roudix-switcher.py
 msgid "Beta driver (always built locally)"
@@ -645,6 +709,32 @@ msgid ""
 msgstr ""
 "Ne jamais mettre en veille automatique les périphériques USB (corrige les "
 "coupures audio USB, coûte de la batterie sur portable)"
+
+#: roudix-switcher.py
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr "Écran de démarrage (Plymouth) — désactivé = démarrage en texte brut"
+
+#: roudix-switcher.py
+msgid ""
+"Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr ""
+"Masquer les messages du noyau / de l’initrd au démarrage (à désactiver pour "
+"diagnostiquer un problème de boot)"
+
+#: roudix-switcher.py
+msgid ""
+"Best battery life (default) — disables tuned, so game-performance does "
+"nothing"
+msgstr ""
+"Meilleure autonomie (par défaut) — désactive tuned, donc game-performance ne "
+"fait rien"
+
+#: roudix-switcher.py
+msgid ""
+"Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr ""
+"Portable de jeu : garde game-performance et le sélecteur de mode "
+"d’alimentation du bureau"
 
 #: roudix-switcher.py
 msgid "CachyOS-style system tuning"
@@ -885,6 +975,18 @@ msgid "Waydroid (Android apps)"
 msgstr "Waydroid (apps Android)"
 
 #: roudix-switcher.py
+msgid "Printing (CUPS + network printers)"
+msgstr "Impression (CUPS + imprimantes réseau)"
+
+#: roudix-switcher.py
+msgid "Scanners (SANE: network + HP)"
+msgstr "Scanners (SANE : réseau + HP)"
+
+#: roudix-switcher.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (plugin NetworkManager)"
+
+#: roudix-switcher.py
 msgid "Auto-update (scheduled git pull + rebuild)"
 msgstr "Auto-update (git pull + rebuild programmé)"
 
@@ -893,6 +995,7 @@ msgid "Laptop — TLP (disables tuned)"
 msgstr "Laptop — TLP (désactive tuned)"
 
 #: roudix-switcher.py
+#, no-python-format
 msgid "ThinkPad — 40/80% charge thresholds"
 msgstr "ThinkPad — seuils de charge 40/80%"
 
@@ -911,6 +1014,30 @@ msgstr "Roudix Welcome (affiché au démarrage de la session)"
 #: roudix-switcher.py
 msgid "Fstrim (automatic TRIM for SSD/NVMe)"
 msgstr "Fstrim (TRIM auto pour SSD/NVMe)"
+
+#: roudix-switcher.py
+msgid "Monthly btrfs scrub"
+msgstr "Scrub btrfs mensuel"
+
+#: roudix-switcher.py
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "Mitigations CVE du noyau (modules en liste noire)"
+
+#: roudix-switcher.py
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ Mettre algif_aead en liste noire (« Copy Fail »)"
+
+#: roudix-switcher.py
+msgid ""
+"  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or "
+"AFS/Kerberos"
+msgstr ""
+"  ↳ Mettre esp4/esp6/rxrpc en liste noire (« Dirty Frag ») — à désactiver "
+"UNIQUEMENT avec IPsec ou AFS/Kerberos"
+
+#: roudix-switcher.py
+msgid "Hibernation (needs swap, off by default)"
+msgstr "Hibernation (nécessite un swap, désactivée par défaut)"
 
 #: roudix-switcher.py
 msgid "VM guest (QEMU/Spice agent)"
@@ -1152,8 +1279,20 @@ msgid "Password manager"
 msgstr "Gestionnaire de mots de passe"
 
 #: roudix-switcher.py
+msgid "Office suite"
+msgstr "Suite bureautique"
+
+#: roudix-switcher.py
+msgid "Office dictionaries"
+msgstr "Dictionnaires de correction"
+
+#: roudix-switcher.py
 msgid "Toggles"
 msgstr "Interrupteurs"
+
+#: roudix-switcher.py
+msgid "Laptop power backend"
+msgstr "Gestion d’énergie du portable"
 
 #: roudix-switcher.py
 msgid "RGB backend"

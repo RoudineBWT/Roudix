@@ -335,6 +335,31 @@ msgid "Limine (recommended)"
 msgstr "Limine (recommandé)"
 
 #: src/roudix_installer/pages/options.py
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — logo, pulsation douce (par défaut)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — logo qui tourne lentement"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — dégradé chaud, halo derrière le logo"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — braises qui montent, anneau de progression"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — la mascotte"
+
+#
+#: src/roudix_installer/pages/options.py
+msgid "No splash — plain text boot"
+msgstr "Pas d’écran de démarrage — démarrage en texte brut"
+
+#: src/roudix_installer/pages/options.py
 msgid "Fedora kernel (nothing to enroll)"
 msgstr "Kernel Fedora (rien à enregistrer)"
 
@@ -444,6 +469,14 @@ msgstr "KeePassXC (coffre local, hors-ligne)"
 #: src/roudix_installer/pages/options.py
 msgid "Proton Pass (cloud-synced vault)"
 msgstr "Proton Pass (coffre synchronisé)"
+
+#: src/roudix_installer/pages/options.py
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice (Writer, Calc, Impress)"
+
+#: src/roudix_installer/pages/options.py
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (éditeurs de type Word, .docx / .xlsx / .pptx)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Colorful (default)"
@@ -1003,6 +1036,15 @@ msgid "nixpkgs: always built locally against your kernel."
 msgstr "nixpkgs : toujours compilé localement pour ton noyau."
 
 #: src/roudix_installer/pages/options.py
+msgid "Open kernel modules"
+msgstr "Modules noyau ouverts"
+
+#
+#: src/roudix_installer/pages/options.py
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "RTX 20xx et plus récent. À désactiver pour les GTX 10xx / 16xx."
+
+#: src/roudix_installer/pages/options.py
 msgid "Nvidia beta driver (built locally)"
 msgstr "Pilote Nvidia bêta (compilé localement)"
 
@@ -1192,8 +1234,8 @@ msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
 msgstr ""
-"SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via "
-"« i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' »."
+"SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via « "
+"i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' »."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Extras"
@@ -1222,6 +1264,10 @@ msgstr "Branche (installation + mises à jour)"
 #: src/roudix_installer/pages/options.py
 msgid "Bootloader"
 msgstr "Bootloader"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Boot splash"
+msgstr "Écran de démarrage"
 
 #: src/roudix_installer/pages/options.py
 msgid "Boot wallpaper format (Limine)"
@@ -1309,6 +1355,33 @@ msgstr "Client mail"
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Password manager"
 msgstr "Gestionnaire de mots de passe"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Office suite"
+msgstr "Suite bureautique"
+
+#: src/roudix_installer/pages/options.py
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr ""
+"Dictionnaires de la suite bureautique (séparés par des virgules : en, fr, "
+"es, de, it, pt)"
+
+#
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Printing (CUPS)"
+msgstr "Impression (CUPS)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Common printer drivers and network printer discovery."
+msgstr "Pilotes d’imprimante courants et détection des imprimantes réseau."
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Scanners (SANE)"
+msgstr "Scanners (SANE)"
+
+#: src/roudix_installer/pages/options.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (plugin NetworkManager)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Turn on the ones you want preinstalled."
@@ -1438,8 +1511,8 @@ msgid ""
 "Invalid username: use letters, digits, '_', '-' or '.', starting with a "
 "letter or '_' (max 32)."
 msgstr ""
-"Nom d'utilisateur invalide : utilisez des lettres, des chiffres, « _ », "
-"« - » ou « . », en commençant par une lettre ou « _ » (32 caractères max)."
+"Nom d'utilisateur invalide : utilisez des lettres, des chiffres, « _ », « - "
+"» ou « . », en commençant par une lettre ou « _ » (32 caractères max)."
 
 #: src/roudix_installer/pages/options.py
 msgid ""
@@ -1867,6 +1940,11 @@ msgstr "Virtualisation"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Extras row: nothing selected"
+msgid "none"
+msgstr "aucun"
+
+#
+#: src/roudix_installer/pages/summary.py
 msgid "none"
 msgstr "aucun"
 

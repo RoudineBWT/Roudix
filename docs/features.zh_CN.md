@@ -174,6 +174,12 @@ input — 目前还不在 nixpkgs 中）或 `"geary"`（轻量级 GNOME 客户�
 `"fragments"`（极简的 GNOME/libadwaita 客户端）、`"deluge"`（基于插件）或
 `"none"`（默认）。
 
+另外还提供以下可选功能（默认关闭）：通过 `roudix.office` 安装办公套件 — `"libreoffice"`（Writer、Calc、Impress）、`"onlyoffice"`（ONLYOFFICE Desktop Editors，围绕 .docx / .xlsx / .pptx 格式设计）或 `"none"`（默认）。在 NixOS 上，LibreOffice 默认不带拼写检查词典，因此 `roudix.officeDictionaries` 会在系统范围内安装它们（hunspell + 断字）：可从 `"en"`、`"fr"`、`"es"`、`"de"`、`"it"`、`"pt"` 中选择，例如 `[ "fr" "en" ]`。
+
+`roudix.printing.scanners.enable` 通过 SANE 启用扫描仪支持 — 网络扫描仪使用 `sane-airscan`（免驱动，eSCL/AirScan），HP 扫描仪使用 HPLIP — 并将你的用户加入 `scanner` 和 `lp` 组。它独立于 `roudix.printing.enable`（CUPS）：单独的扫描仪无需 CUPS 也能工作。不包含 Brother 和旧款 Epson 的后端；请在 `local.nix` 中将它们添加到 `hardware.sane.extraBackends`。
+
+`roudix.vpn.openvpn.enable` 会添加 NetworkManager 的 OpenVPN 插件，以便在网络设置中导入 `.ovpn` 文件。WireGuard 在 NetworkManager 中已原生支持，无需额外配置。
+
 ## Spicetify
 
 - 主题：`roudix.spicetify.theme` — `"colorful"`（默认，sanoojes/spicetify-colorful）或 `"comfy"`（内置的 Comfy 主题）

@@ -5,5 +5,6 @@
     ./editor.nix
     ./terminal.nix
     ./torrent-client.nix
+    ./office.nix
   ];
 }

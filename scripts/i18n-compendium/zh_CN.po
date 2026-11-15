@@ -11,3 +11,135 @@ msgstr "Vesktop（独立 Vencord）"
 
 msgid "Standalone Vencord client, native Wayland"
 msgstr "独立的 Vencord 客户端，原生 Wayland"
+
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — 徽标，轻柔脉动（默认）"
+
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — 徽标缓缓旋转"
+
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — 暖色渐变，徽标后方泛光"
+
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — 升腾的火星，进度环"
+
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — 吉祥物"
+
+msgid "No splash — plain text boot"
+msgstr "无启动画面 — 纯文本启动"
+
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice（Writer、Calc、Impress）"
+
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE（类 Word 编辑器，.docx / .xlsx / .pptx）"
+
+msgid "Open kernel modules"
+msgstr "开源内核模块"
+
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "适用于 RTX 20xx 及更新的显卡。GTX 10xx / 16xx 显卡请关闭。"
+
+msgid "Boot splash"
+msgstr "启动画面"
+
+msgid "Office suite"
+msgstr "办公套件"
+
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr "办公套件词典（以逗号分隔：en, fr, es, de, it, pt）"
+
+msgid "Printing (CUPS)"
+msgstr "打印（CUPS）"
+
+msgid "Common printer drivers and network printer discovery."
+msgstr "常用打印机驱动及网络打印机发现。"
+
+msgid "Scanners (SANE)"
+msgstr "扫描仪（SANE）"
+
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN（NetworkManager 插件）"
+
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay（用于配置 MangoHud / vkBasalt 的图形界面）"
+
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer（赛车方向盘配置）"
+
+msgid "Writer, Calc, Impress"
+msgstr "Writer、Calc、Impress"
+
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "围绕 .docx / .xlsx / .pptx 格式打造的类 Word 编辑器"
+
+msgid "Don't install an office suite"
+msgstr "不安装办公套件"
+
+msgid "English"
+msgstr "英语"
+
+msgid "French"
+msgstr "法语"
+
+msgid "Spanish"
+msgstr "西班牙语"
+
+msgid "German"
+msgstr "德语"
+
+msgid "Italian"
+msgstr "意大利语"
+
+msgid "Portuguese"
+msgstr "葡萄牙语"
+
+msgid "Create the sbctl keys at install time if missing (enrolling them stays manual)"
+msgstr "若缺少 sbctl 密钥，则在安装时创建（注册密钥仍需手动完成）"
+
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr "在固件启动菜单中列出“NixOS EAC”（否则：sudo eac-reboot）"
+
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr "开源内核模块（RTX 20xx 及更新——GTX 10xx/16xx 请关闭）"
+
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr "启动画面（Plymouth）——关闭 = 纯文本启动"
+
+msgid "Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr "启动时隐藏内核 / initrd 消息（排查启动问题时请关闭）"
+
+msgid "Best battery life (default) — disables tuned, so game-performance does nothing"
+msgstr "最长续航（默认）——停用 tuned，因此 game-performance 不起作用"
+
+msgid "Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr "游戏笔记本：保留 game-performance 和桌面的电源模式选择器"
+
+msgid "Printing (CUPS + network printers)"
+msgstr "打印（CUPS + 网络打印机）"
+
+msgid "Scanners (SANE: network + HP)"
+msgstr "扫描仪（SANE：网络 + HP）"
+
+msgid "Monthly btrfs scrub"
+msgstr "每月 btrfs scrub"
+
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "内核 CVE 缓解措施（模块黑名单）"
+
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ 将 algif_aead 加入黑名单（“Copy Fail”）"
+
+msgid "  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or AFS/Kerberos"
+msgstr "  ↳ 将 esp4/esp6/rxrpc 加入黑名单（“Dirty Frag”）——仅在使用 IPsec 或 AFS/Kerberos 时才关闭"
+
+msgid "Hibernation (needs swap, off by default)"
+msgstr "休眠（需要 swap，默认关闭）"
+
+msgid "Office dictionaries"
+msgstr "办公套件词典"
+
+msgid "Laptop power backend"
+msgstr "笔记本电源管理后端"

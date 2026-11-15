@@ -333,6 +333,30 @@ msgid "Limine (recommended)"
 msgstr "Limine (अनुशंसित)"
 
 #: src/roudix_installer/pages/options.py
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — लोगो, हल्की धड़कन (डिफ़ॉल्ट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — धीरे-धीरे घूमता लोगो"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — गर्म ग्रेडिएंट, लोगो के पीछे चमक"
+
+#: src/roudix_installer/pages/options.py
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — ऊपर उठते अंगारे, प्रगति रिंग"
+
+#: src/roudix_installer/pages/options.py
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — शुभंकर"
+
+#: src/roudix_installer/pages/options.py
+msgid "No splash — plain text boot"
+msgstr "कोई स्प्लैश नहीं — सादा टेक्स्ट बूट"
+
+#: src/roudix_installer/pages/options.py
 msgid "Fedora kernel (nothing to enroll)"
 msgstr "Fedora कर्नेल (कुछ दर्ज करने की ज़रूरत नहीं)"
 
@@ -440,6 +464,14 @@ msgstr "KeePassXC (लोकल, ऑफ़लाइन वॉल्ट)"
 #: src/roudix_installer/pages/options.py
 msgid "Proton Pass (cloud-synced vault)"
 msgstr "Proton Pass (क्लाउड-सिंक वॉल्ट)"
+
+#: src/roudix_installer/pages/options.py
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice (Writer, Calc, Impress)"
+
+#: src/roudix_installer/pages/options.py
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (Word जैसे संपादक, .docx / .xlsx / .pptx)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Colorful (default)"
@@ -999,6 +1031,14 @@ msgid "nixpkgs: always built locally against your kernel."
 msgstr "nixpkgs: हमेशा आपके कर्नेल के लिए स्थानीय रूप से बनता है।"
 
 #: src/roudix_installer/pages/options.py
+msgid "Open kernel modules"
+msgstr "ओपन कर्नेल मॉड्यूल"
+
+#: src/roudix_installer/pages/options.py
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "RTX 20xx और नए कार्ड के लिए। GTX 10xx / 16xx कार्ड के लिए बंद करें।"
+
+#: src/roudix_installer/pages/options.py
 msgid "Nvidia beta driver (built locally)"
 msgstr "Nvidia बीटा ड्राइवर (स्थानीय रूप से बना)"
 
@@ -1218,6 +1258,10 @@ msgstr "ब्रांच (इंस्टॉल + अपडेट)"
 msgid "Bootloader"
 msgstr "बूटलोडर"
 
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Boot splash"
+msgstr "बूट स्प्लैश"
+
 #: src/roudix_installer/pages/options.py
 msgid "Boot wallpaper format (Limine)"
 msgstr "बूट वॉलपेपर प्रारूप (Limine)"
@@ -1304,6 +1348,30 @@ msgstr "ईमेल क्लाइंट"
 #: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
 msgid "Password manager"
 msgstr "पासवर्ड मैनेजर"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Office suite"
+msgstr "ऑफ़िस सूट"
+
+#: src/roudix_installer/pages/options.py
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr "ऑफ़िस शब्दकोश (अल्पविराम से अलग करें: en, fr, es, de, it, pt)"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Printing (CUPS)"
+msgstr "प्रिंटिंग (CUPS)"
+
+#: src/roudix_installer/pages/options.py
+msgid "Common printer drivers and network printer discovery."
+msgstr "आम प्रिंटर ड्राइवर और नेटवर्क प्रिंटर की खोज।"
+
+#: src/roudix_installer/pages/options.py src/roudix_installer/pages/summary.py
+msgid "Scanners (SANE)"
+msgstr "स्कैनर (SANE)"
+
+#: src/roudix_installer/pages/options.py
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (NetworkManager प्लगइन)"
 
 #: src/roudix_installer/pages/options.py
 msgid "Turn on the ones you want preinstalled."
@@ -1599,8 +1667,8 @@ msgid ""
 "Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
 "local.nix generation may fail."
 msgstr ""
-"चेतावनी: ब्रांच '{branch}' पर hosts/{host}/local.nix.example नहीं मिला — "
-"local.nix बनाना विफल हो सकता है।"
+"चेतावनी: ब्रांच '{branch}' पर hosts/{host}/local.nix.example नहीं मिला — local."
+"nix बनाना विफल हो सकता है।"
 
 #: src/roudix_installer/pages/progress.py
 msgid "Copying the configuration…"
@@ -1855,6 +1923,11 @@ msgstr "वर्चुअलाइज़ेशन"
 
 #: src/roudix_installer/pages/summary.py
 msgctxt "summary, Extras row: nothing selected"
+msgid "none"
+msgstr "कोई नहीं"
+
+#
+#: src/roudix_installer/pages/summary.py
 msgid "none"
 msgstr "कोई नहीं"
 

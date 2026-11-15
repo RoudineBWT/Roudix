@@ -14,7 +14,7 @@
   roudix.desktop.type = "niri";               # "niri", "gnome", "kde", "cinnamon", "cosmic", "hyprland", "mangowc" or "umbriel"
 
   # ── Desktop shell ─────────────────────────────────────────────────────────
-  # Only used when roudix.desktop.type = "niri" or "hyprland"
+  # Only used when roudix.desktop.type = "niri", "hyprland", "mangowc" or "umbriel"
   # Controls which shell/bar stack is enabled for the chosen compositor.
   #   "noctalia"  — Noctalia shell   (github:noctalia-dev/noctalia-shell)
   #   "dms"       — Dux Shell (github:duxlabs-dev/dux-shell)
@@ -78,13 +78,20 @@
   roudix.memory.type    = "ddr5";         # "ddr4" or "ddr5"
   roudix.memory.smBus   = "i2c-9";        # found via: i2cdetect -l
   roudix.memory.sku    = "CMH64GX5M2B5200C40"; # found via: sudo dmidecode -t memory | grep 'Part Number'
-  hardware.myGpu    = "amd";                  # "amd", "nvidia" or "intel"
+  hardware.myGpu    = "amd";                  # "amd", "amd-igpu" (APU), "amd-legacy", "nvidia" or "intel"
   hardware.nvidiaLaptop = false;              # enable this only for Laptops with nvidia Dgpu
   roudix.nvidia_config.nvidiaBusId = null;    # laptop only, e.g. "PCI:1:0:0" (decimal, from lspci) — filled by the installer
   roudix.nvidia_config.intelBusId  = null;    # laptop with Intel iGPU, e.g. "PCI:0:2:0"
   roudix.nvidia_config.amdgpuBusId = null;    # laptop with AMD iGPU, e.g. "PCI:5:0:0"
   roudix.nvidia_config.primeMode   = "offload"; # "offload" (battery, Wayland) or "sync"
   hardware.myCpu    = "intel";               # "intel" or "amd"
+  # hardware.nvidiaOpen = true;               # Nvidia only: open kernel modules (default true). Set false for GTX 10xx/16xx (not supported by the open driver)
+  # AMD APU (hardware.myGpu = "amd-igpu") only:
+  # hardware.amdIgpuQuirks  = [ ];            # if you hit symptoms: "sg-display" (white screen/flicker), "psr" (panel freezes), "deep-sleep" (force S3)
+  # hardware.amdIgpuGttGiB  = null;           # max system RAM (GiB) the iGPU may map as GTT, e.g. 24 (large games / local LLMs); null = kernel default. Keep it below your RAM
+  # hardware.amdIgpuCompute = false;          # OpenCL / ROCm userspace for the APU (rocm-smi, HIP); may need HSA_OVERRIDE_GFX_VERSION
+  # Intel only: hand GPUs to the xe driver instead of i915 (PCI device IDs, 4 hex digits, see `lspci -nn`)
+  # hardware.intelXeForceProbe = [ "e20b" ];
   # hardware.intelIgpuQuirks = [ ];           # Intel iGPU only, if you hit flicker/freezes: "psr", "fbc" and/or "dc-off"
 
   # ── Laptop power (TLP) ────────────────────────────────────────────────────
@@ -122,12 +129,15 @@
 
   # ── Audio (PipeWire) ──────────────────────────────────────────────────────
   # PipeWire runs with its upstream defaults (like Fedora). Extras, all OFF:
+  # roudix.pipewire.enable = true;           # false = skip all Roudix PipeWire configuration
   roudix.pipewire.lowLatency.enable       = false; # 48 kHz, quantum 128 (apps may use 128-512): audio work / rhythm games
   roudix.pipewire.realtimeTweaks.enable   = false; # CachyOS-style: @audio rtprio 99 / nice -11 (PAM) + cpu_dma_latency/rtc0/hpet access (udev); needs the "audio" group
   roudix.pipewire.usbNoAutosuspend.enable = false; # usbcore.autosuspend=-1: never autosuspend any USB device (costs battery on a laptop)
 
   # ── Optional modules ──────────────────────────────────────────────────────
+  # roudix.boot.enable = true;          # false = skip the Roudix boot configuration entirely
   roudix.boot.bootloader = "limine";  # "limine" or "systemd-boot"
+  # roudix.boot.hibernation.enable = false; # suspend-to-disk (S4). Needs a swap at least as big as your RAM and boot.resumeDevice; NVIDIA Blackwell + driver 580+ cannot resume from S4
   roudix.boot.biosDevice = "";  # legacy BIOS only: the DISK to put Limine on (e.g. "/dev/sda"). "" = UEFI. Set by the installers when the ISO was booted in BIOS mode; needs limine, no Secure Boot/EAC
   roudix.boot.wallpaperAspect = "16x9"; # Limine wallpaper format — the one closest to your MAIN screen (the biggest one), so it isn't stretched: "16x9" (1920x1080, 2560x1440, 3840x2160...), "16x10" (1920x1200, 2560x1600...), "21x9" (2560x1080, 3440x1440...) or "4x3" (1024x768, 1280x1024...). Run ./scripts/detect-boot-aspect.sh to find yours; the installers and roudix-switcher suggest it too (change it there if you swap screens). Used with limine
   roudix.boot.menuResolution = "auto"; # Limine menu (and wallpaper) resolution: "auto", or "<width>x<height>" e.g. "2560x1440". With several screens of different sizes Limine can pick the SMALLER one: set your MAIN screen's resolution (the highest one) — ./scripts/detect-boot-aspect.sh --resolution prints it, the installers and roudix-switcher suggest it. If the firmware doesn't offer it, Limine falls back by itself. Used with limine
@@ -159,6 +169,8 @@
   roudix.gaming.apps.modrinth.enable      = false; # alternative to Prism Launcher
   roudix.gaming.apps.vintagestory.enable  = false;
   roudix.gaming.apps.mangohud.enable      = false;
+  # roudix.gaming.apps.goverlay.enable      = false; # GOverlay: GUI to configure MangoHud / vkBasalt
+  # roudix.gaming.apps.oversteer.enable     = false; # Oversteer: racing wheel configuration (+ udev rules)
   roudix.gaming.mangohud.defaultPreset    = "compact"; # "off", "fps", "compact", "extended", "full"
   # Steam client: false = stock Steam (default). true = Millennium, a modded
   # Steam client with theme/plugin support (github:SteamClientHomebrew/Millennium).
@@ -196,12 +208,17 @@
   roudix.desktopIntegration = "gnome"; # "gnome" or "kde"
   roudix.flatpak.enable       = false;       # enable Flatpak support
   roudix.printing.enable      = false;       # CUPS + Avahi (network printers) + common drivers (Gutenprint, HPLIP, brlaser...)
+  roudix.printing.scanners.enable = false;   # SANE: network scanners (sane-airscan, driverless) + HP (HPLIP); adds you to the scanner and lp groups
+  roudix.vpn.openvpn.enable   = false;       # NetworkManager OpenVPN plugin (import .ovpn files); WireGuard already works natively
   roudix.virtualization.enable = false;      # enable libvirt / virt-manager
   roudix.virtualization.vmCurator.enable = false; # enable vm-curator / qemu-kvm -- alternative to virt-manager
   roudix.vmGuest.enable       = false;       # enable only inside a VM
   roudix.autoupdate.enable    = false;         # automatic NixOS updates
   roudix.autoupdate.interval  = "1h";         # check interval (e.g. 1h, 6h, 24h)
   roudix.autoupdate.branch    = "main";       # branch to track: "main" (stable), "testing" or "dev"
+  # roudix.autoupdate.configPath      = "/home/youruser/.config/roudix"; # where the Roudix repo lives (default: ~/.config/roudix)
+  # roudix.autoupdate.minFreeSpaceGB  = 5;        # skip the update if /nix/store has less free space than this
+  # roudix.autoupdate.onBootDelay     = "5min";   # wait this long after boot before the first check
   roudix.mesa.useGit = false;  # false = mesa stable
   # Where mesa-git comes from when useGit = true: "chaotic" (default) or
   # "gaming-edge" (nix-gaming-edge, with a stable-mesa fallback boot entry).
@@ -215,6 +232,8 @@
   roudix.musicPlayer = "none"; # "spotify" (+ Spicetify), "ytmdesktop", "sonora" (Spotify/YT Music/... in one native app) or "none"
   roudix.mailClient = "none"; # "thunderbird" (full-featured), "betterbird" (Thunderbird fork), "geary" (lightweight GNOME) or "none"
   roudix.passwordManager = "none"; # "bitwarden" (cloud), "keepassxc" (local vault), "protonpass" (cloud) or "none"
+  roudix.office = "none"; # "libreoffice" (Writer, Calc, Impress), "onlyoffice" (.docx / .xlsx / .pptx editors) or "none"
+  roudix.officeDictionaries = [ ]; # spell-check + hyphenation, any of "en" "fr" "es" "de" "it" "pt" (for LibreOffice, which has none on NixOS; ONLYOFFICE ships its own)
   # "Common" apps — all off by default, set to true the ones you want:
   roudix.apps.gimp.enable        = false;
   roudix.apps.inkscape.enable    = false;
@@ -239,6 +258,23 @@
   # roudix.spicetify.extensions.adblock.enable = false;
   # roudix.spicetify.extensions.hidePodcasts.enable = false;
   # roudix.spicetify.marketplace.enable = false;
+  # ── System tuning & maintenance (all ON by default — set false to opt out) ─
+  # roudix.tuning.enable             = true;   # CachyOS-Settings-style tuning; master switch for the three below
+  # roudix.tuning.oomd.enable        = true;   # systemd-oomd watches system.slice and user slices
+  # roudix.tuning.ioSchedulers.enable = true;  # per-device I/O scheduler (HDD bfq, SATA/eMMC SSD mq-deadline, NVMe kyber)
+  # roudix.tuning.shortTimeouts.enable = true; # 15 s start / 10 s stop default timeouts + higher open-files limit (faster shutdown when a service hangs)
+  # roudix.tuning.journalMaxUse      = "500M"; # persistent journal cap (SystemMaxUse); null = systemd default
+  # roudix.security.mitigations.enable = true; # blacklist rarely used vulnerable kernel modules (recommended)
+  # roudix.security.mitigations.blacklistCopyFail = true;  # algif_aead ("Copy Fail")
+  # roudix.security.mitigations.blacklistDirtyFrag = true; # esp4/esp6/rxrpc ("Dirty Frag"): set false ONLY if you use IPsec or AFS/Kerberos over rxrpc
+  # roudix.btrfs.autoScrub           = true;   # monthly btrfs scrub (idle I/O priority); no-op without btrfs
+  # roudix.fstrim.enable             = true;   # daily TRIM for SSD/NVMe
+
+  # ── Cinnamon ──────────────────────────────────────────────────────────────
+  # Only used when roudix.desktop.type = "cinnamon"
+  # .desktop ids pinned in the panel window list at first login (applied once per user)
+  # roudix.desktop.cinnamon.pinnedApps = [ "nemo.desktop" "io.roudix.store.desktop" "cinnamon-settings.desktop" ]; # default: browser + these three
+
   # ── Misc ──────────────────────────────────────────────────────────────────
   roudix.hosts.gtaFix.enable  = false;     # fix GTA Online to play with your friends but they need to block battleye telemetry in /etc/hosts and if they are on windows in C:\Windows\System32\drivers\etc\hosts
   # roudix.iconTheme = "tela";

@@ -11,3 +11,135 @@ msgstr "Vesktop (Vencord مستقل)"
 
 msgid "Standalone Vencord client, native Wayland"
 msgstr "عميل Vencord مستقل، Wayland أصلي"
+
+msgid "Roudix — logo, gentle pulse (default)"
+msgstr "Roudix — الشعار بنبض هادئ (افتراضي)"
+
+msgid "Roudix Spin — logo turning slowly"
+msgstr "Roudix Spin — الشعار يدور ببطء"
+
+msgid "Roudix Gradient — warm gradient, glow behind the logo"
+msgstr "Roudix Gradient — تدرّج لوني دافئ مع توهّج خلف الشعار"
+
+msgid "Roudix Ember — rising embers, progress ring"
+msgstr "Roudix Ember — جمرات متصاعدة وحلقة تقدّم"
+
+msgid "Pandoudix — the mascot"
+msgstr "Pandoudix — التميمة"
+
+msgid "No splash — plain text boot"
+msgstr "بدون شاشة إقلاع — إقلاع نصي عادي"
+
+msgid "LibreOffice (Writer, Calc, Impress)"
+msgstr "LibreOffice (Writer وCalc وImpress)"
+
+msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
+msgstr "ONLYOFFICE (محررات بنمط Word، بصيغ .docx / .xlsx / .pptx)"
+
+msgid "Open kernel modules"
+msgstr "وحدات النواة المفتوحة"
+
+msgid "RTX 20xx and newer. Turn off for GTX 10xx / 16xx cards."
+msgstr "لبطاقات RTX 20xx وما بعدها. عطّلها لبطاقات GTX 10xx / 16xx."
+
+msgid "Boot splash"
+msgstr "شاشة الإقلاع"
+
+msgid "Office suite"
+msgstr "حزمة المكتب"
+
+msgid "Office dictionaries (comma-separated: en, fr, es, de, it, pt)"
+msgstr "قواميس المكتب (مفصولة بفواصل: en, fr, es, de, it, pt)"
+
+msgid "Printing (CUPS)"
+msgstr "الطباعة (CUPS)"
+
+msgid "Common printer drivers and network printer discovery."
+msgstr "برامج تشغيل الطابعات الشائعة واكتشاف الطابعات الشبكية."
+
+msgid "Scanners (SANE)"
+msgstr "الماسحات الضوئية (SANE)"
+
+msgid "OpenVPN (NetworkManager plugin)"
+msgstr "OpenVPN (إضافة NetworkManager)"
+
+msgid "GOverlay (GUI to configure MangoHud / vkBasalt)"
+msgstr "GOverlay (واجهة رسومية لضبط MangoHud / vkBasalt)"
+
+msgid "Oversteer (racing wheel configuration)"
+msgstr "Oversteer (ضبط عجلات السباق)"
+
+msgid "Writer, Calc, Impress"
+msgstr "Writer وCalc وImpress"
+
+msgid "Word-style editors built around .docx / .xlsx / .pptx"
+msgstr "محررات بنمط Word مبنية حول صيغ .docx / .xlsx / .pptx"
+
+msgid "Don't install an office suite"
+msgstr "عدم تثبيت حزمة مكتب"
+
+msgid "English"
+msgstr "الإنجليزية"
+
+msgid "French"
+msgstr "الفرنسية"
+
+msgid "Spanish"
+msgstr "الإسبانية"
+
+msgid "German"
+msgstr "الألمانية"
+
+msgid "Italian"
+msgstr "الإيطالية"
+
+msgid "Portuguese"
+msgstr "البرتغالية"
+
+msgid "Create the sbctl keys at install time if missing (enrolling them stays manual)"
+msgstr "إنشاء مفاتيح sbctl أثناء التثبيت إن كانت مفقودة (يبقى تسجيلها يدويًا)"
+
+msgid "List “NixOS EAC” in the firmware boot menu (otherwise: sudo eac-reboot)"
+msgstr "إدراج «NixOS EAC» في قائمة إقلاع البرنامج الثابت (وإلا: sudo eac-reboot)"
+
+msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
+msgstr "وحدات النواة المفتوحة (RTX 20xx وما بعدها — عطّلها لبطاقات GTX 10xx/16xx)"
+
+msgid "Boot splash (Plymouth) — off = plain text boot"
+msgstr "شاشة الإقلاع (Plymouth) — معطّلة = إقلاع نصي عادي"
+
+msgid "Hide kernel / initrd messages during boot (turn off to debug a boot problem)"
+msgstr "إخفاء رسائل النواة / initrd أثناء الإقلاع (عطّلها لتشخيص مشكلة في الإقلاع)"
+
+msgid "Best battery life (default) — disables tuned, so game-performance does nothing"
+msgstr "أفضل عمر للبطارية (افتراضي) — يعطّل tuned، لذا لا يفعل game-performance شيئًا"
+
+msgid "Gaming laptop: keeps game-performance and the desktop power-mode selector"
+msgstr "حاسوب محمول للألعاب: يُبقي game-performance ومحدد وضع الطاقة في سطح المكتب"
+
+msgid "Printing (CUPS + network printers)"
+msgstr "الطباعة (CUPS + الطابعات الشبكية)"
+
+msgid "Scanners (SANE: network + HP)"
+msgstr "الماسحات الضوئية (SANE: الشبكة + HP)"
+
+msgid "Monthly btrfs scrub"
+msgstr "فحص btrfs الشهري (scrub)"
+
+msgid "Kernel CVE mitigations (module blacklists)"
+msgstr "تخفيف ثغرات CVE في النواة (قوائم حظر الوحدات)"
+
+msgid "  ↳ Blacklist algif_aead (“Copy Fail”)"
+msgstr "  ↳ حظر algif_aead («Copy Fail»)"
+
+msgid "  ↳ Blacklist esp4/esp6/rxrpc (“Dirty Frag”) — turn off ONLY with IPsec or AFS/Kerberos"
+msgstr "  ↳ حظر esp4/esp6/rxrpc («Dirty Frag») — عطّله فقط عند استخدام IPsec أو AFS/Kerberos"
+
+msgid "Hibernation (needs swap, off by default)"
+msgstr "السبات (يتطلب swap، معطّل افتراضيًا)"
+
+msgid "Office dictionaries"
+msgstr "قواميس المكتب"
+
+msgid "Laptop power backend"
+msgstr "نظام إدارة طاقة الحاسوب المحمول"
