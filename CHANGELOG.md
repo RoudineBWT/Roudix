@@ -7,6 +7,13 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 
 ## [Unreleased]
 
+## [2026.11.15] - 2026-11-15
+
+### Changed
+- feat(office): add ONLYOFFICE Desktop Editors as a second office suite
+- feat(roudix): add new features and translations for Roudix modules
+- feat(roudix): add optional office suite, scanners, and OpenVPN support
+
 ## [2026.11.12] - 2026-11-12
 
 ### Changed
