@@ -143,3 +143,97 @@ msgstr "Словари офисного пакета"
 
 msgid "Laptop power backend"
 msgstr "Бэкенд управления питанием ноутбука"
+
+# --- installer terminal wizard (tui.py) ---
+msgid "Other systems"
+msgstr "Другие системы"
+
+msgid "Found in the EFI NVRAM: switch on the ones to add to Limine's boot menu."
+msgstr "Найдены в EFI NVRAM: включите те, которые нужно добавить в меню загрузки Limine."
+
+msgid "Only letters, digits and . _ + - : , @ / are allowed here."
+msgstr "Здесь допустимы только буквы, цифры и символы . _ + - : , @ /"
+
+msgid "Allowed: {codes}"
+msgstr "Допустимо: {codes}"
+
+msgid "Can't be empty."
+msgstr "Не может быть пустым."
+
+msgid "Gaming extras"
+msgstr "Игровые дополнения"
+
+msgid "Features"
+msgstr "Возможности"
+
+msgid "Content-creation tools"
+msgstr "Инструменты для создания контента"
+
+msgid "OBS plugins"
+msgstr "Плагины OBS"
+
+msgid " or type to filter"
+msgstr " или введите текст для фильтрации"
+
+msgid "Choice"
+msgstr "Выбор"
+
+msgid "Choose one of the entries."
+msgstr "Выберите один из пунктов."
+
+msgid "Out of range."
+msgstr "Вне диапазона."
+
+msgid "No match."
+msgstr "Нет совпадений."
+
+msgctxt "yes/no prompt, yes is the default"
+msgid "[Y/n]"
+msgstr "[Д/н]"
+
+msgctxt "yes/no prompt, no is the default"
+msgid "[y/N]"
+msgstr "[д/Н]"
+
+msgid "Answer yes or no."
+msgstr "Ответьте да или нет."
+
+msgid "Toggle: numbers separated by spaces, a = all, n = none, Enter = continue"
+msgstr "Переключение: номера через пробел, a = все, n = ничего, Enter = продолжить"
+
+msgid "Administrator rights are needed and sudo is not available: run the installer as root."
+msgstr "Нужны права администратора, а sudo недоступен: запустите установщик от имени root."
+
+msgid "Administrator rights are needed: enter your password if asked."
+msgstr "Нужны права администратора: введите пароль, если потребуется."
+
+msgid "No disk found."
+msgstr "Диски не найдены."
+
+msgid "File not found."
+msgstr "Файл не найден."
+
+msgid "Partition it yourself in another terminal (cfdisk, fdisk, parted…), then press Enter."
+msgstr "Разметьте диск самостоятельно в другом терминале (cfdisk, fdisk, parted…), затем нажмите Enter."
+
+msgid "Other systems found in the EFI NVRAM — which ones do you want to add to Limine?"
+msgstr "Другие системы, найденные в EFI NVRAM — какие добавить в Limine?"
+
+msgid "Edit the options"
+msgstr "Изменить параметры"
+
+msgid "Quit"
+msgstr "Выйти"
+
+msgid "What now?"
+msgstr "Что дальше?"
+
+msgid "Start now?"
+msgstr "Начать сейчас?"
+
+msgid "Interrupted — the installation may be incomplete."
+msgstr "Прервано — установка может быть неполной."
+
+msgid "Aborted — nothing was changed."
+msgstr "Отменено — ничего не изменено."
+

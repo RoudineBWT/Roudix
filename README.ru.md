@@ -69,7 +69,6 @@
 
 ```
 roudix/
-├── roudix-installer.sh              # Установщик на Bash
 ├── flake.nix                        # Входы и выходы
 ├── flake.lock
 ├── docs/                            # Документация

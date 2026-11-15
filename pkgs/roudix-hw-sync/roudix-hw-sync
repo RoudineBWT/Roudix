@@ -93,7 +93,7 @@ set_bool_or_add() {
   sed -i "${last}i\\  $1 = $2;  # $3" "$file"
 }
 
-# ── Detect (same logic as roudix-installer.sh) ───────────────────────────
+# ── Detect (same logic as the installer, hardware_detect.py) ───────────────────────────
 cpu="$force_cpu"
 if [ -z "$cpu" ]; then
   if   grep -q AuthenticAMD /proc/cpuinfo 2>/dev/null; then cpu=amd

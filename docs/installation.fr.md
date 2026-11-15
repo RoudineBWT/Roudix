@@ -7,7 +7,7 @@ Il y a trois façons de faire tourner Roudix, selon votre point de départ :
 | Situation | Utiliser |
 |-----------|-----|
 | Machine vierge, rien d'installé | **ISO Roudix** — démarre directement sur un installeur graphique (partitionnement inclus) |
-| NixOS déjà installé (ISO stock, install NixOS d'une autre distro, une VM…) | **`roudix-installer.sh`** — installe la flake Roudix sur votre install existante |
+| NixOS déjà installé (ISO stock, install NixOS d'une autre distro, une VM…) | **`roudix-installer`** — assistant graphique ou terminal, installe la flake Roudix sur votre install existante |
 | Vous voulez le contrôle total sur chaque étape, ou le script ne couvre pas votre cas | **Installation manuelle** (ci-dessous) |
 
 ## Option A — ISO Roudix (recommandé pour une install neuve)
@@ -21,13 +21,13 @@ L'ISO embarque notre propre installeur graphique GTK4/libadwaita (`roudix-instal
 
 > **Note :** le menu de boot propose aussi des spécialisations de disposition clavier (US/BE/FR/DE/CH/UK) si le clavier de votre session live ne correspond pas au vôtre — choisissez-en une avant de lancer l'installeur.
 
-Ce chemin remplace entièrement les deux étapes ci-dessous (pas besoin de `roudix-installer.sh` ni des étapes manuelles) — passez directement à ce qui vient après l'installation une fois le redémarrage effectué.
+Ce chemin remplace entièrement les deux étapes ci-dessous (pas besoin des installeurs de l'Option B ni des étapes manuelles) — passez directement à ce qui vient après l'installation une fois le redémarrage effectué.
 
 ## Option B — Vous avez déjà NixOS installé
 
-Si NixOS est déjà installé (via l'ISO officielle stable/unstable, ou tout autre moyen) et que vous voulez juste installer Roudix par-dessus, il y a deux installeurs : le graphique (depuis une session de bureau) et le script bash (fonctionne depuis un simple TTY).
+Si NixOS est déjà installé (via l'ISO officielle stable/unstable, ou tout autre moyen) et que vous voulez juste installer Roudix par-dessus, le même installeur existe en deux versions : graphique (depuis une session de bureau) et terminal (fonctionne depuis un simple TTY ou en SSH).
 
-> **Note :** installez d'abord NixOS avec l'[ISO stable ou unstable](https://nixos.org/download/), puis lancez l'un des installeurs ci-dessous ou suivez l'installation manuelle.
+> **Note :** installez d'abord NixOS avec l'[ISO stable ou unstable](https://nixos.org/download/), puis lancez l'installeur ci-dessous ou suivez l'installation manuelle.
 
 ### B1 — Installeur graphique (recommandé sur un bureau)
 
@@ -40,28 +40,29 @@ nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 - **Rien n'est effacé.** La configuration va dans `~/.config/roudix` (un dossier existant est déplacé, jamais supprimé), puis `nixos-rebuild boot` construit Roudix et le programme pour le prochain démarrage. Votre système actuel reste dans le menu de démarrage.
 - **Votre `/etc/nixos` est sauvegardé** dans `/var/backups/roudix/nixos-<date>/` avec un `RESTORE.txt` (génération précédente, bootloader, `stateVersion`, et les commandes exactes pour revenir en arrière). `hardware-configuration.nix` est réutilisé tel quel, jamais écrasé.
 - **Simulez d'abord.** Le bouton *Simuler* de la page résumé génère la configuration dans un dossier temporaire, vérifie que chaque option a bien été écrite et fait évaluer tout le système par Nix. Rien n'est modifié sur votre machine.
+- **Autres systèmes** (Windows, une autre distro…) trouvés dans la NVRAM EFI : ajoutables au menu de Limine, un interrupteur par système sous l'option *Bootloader* (UEFI + Limine).
 - Avertissements avant de commencer : peu de place dans `/boot` (une partition EFI de 512 Mo se remplit vite), changement de bootloader, `system.stateVersion` plus ancienne.
 - Le mot de passe administrateur est demandé via une fenêtre polkit (il faut un agent polkit, donc n'importe quelle session de bureau normale).
 
 **Revenir en arrière :** choisissez la génération précédente dans le menu de démarrage, puis `sudo nixos-rebuild switch --rollback`. Si la machine ne démarre plus du tout, `RESTORE.txt` explique comment restaurer l'ancienne configuration depuis une clé live.
 
-### B2 — Script bash (TTY / pas de session graphique)
+### B2 — Installeur terminal (TTY / pas de session graphique)
 
-**Télécharger le script roudix-installer**
+Le même assistant, dans votre terminal (il remplace l'ancien script `roudix-installer.sh`). Lancez-le depuis le compte que vous voulez garder :
 
 ```bash
-nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
-chmod +x roudix-installer.sh
-./roudix-installer.sh
+nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
 ```
 
-L'installeur gère tout de façon interactive :
-- Demande quelle branche installer et suivre (`main` = stable, `testing`, `dev`), la clone, génère `hardware-configuration.nix`, crée tous les fichiers de config locaux
-- **Détecte automatiquement les autres OS** via la NVRAM EFI (`efibootmgr`) — pas besoin de chercher le PARTUUID manuellement
-- **Détecte automatiquement le GPU et le CPU** (`lspci` / `/proc/cpuinfo`) — présélectionne et demande confirmation
-- **Détecte si vous êtes dans une VM** (`systemd-detect-virt`) — active en avance le mode invité VM et prévient que la détection GPU/CPU peut être imprécise
-- Pose des questions sur le kernel, le bureau, le navigateur, l'éditeur, Discord, les applis gaming, la locale, le fuseau horaire, la disposition clavier, le contrôleur RGB, et les modules optionnels
-- Build et applique la configuration
+Tout ce qui est dit pour B1 s'applique — rien n'est effacé, `/etc/nixos` est sauvegardé, *Simuler* avant d'installer — sauf que le mot de passe administrateur est demandé une fois dans le terminal (`sudo`) au lieu d'une fenêtre polkit. Sans session graphique, `roudix-installer` démarre tout seul l'assistant terminal ; `--tui` / `--gui` forcent l'un ou l'autre, `--dry-run` génère et vérifie la configuration sans rien modifier.
+
+- Entrée garde la valeur par défaut affichée entre `[crochets]`, un numéro choisit dans une liste, du texte filtre une longue liste (fuseaux, locales…). Sur l'écran de résumé, *Modifier les options* repasse sur toutes les questions avec vos réponses comme valeurs par défaut.
+- Demande quelle branche installer et suivre (`main` = stable, `testing`, `dev`), la clone, réutilise votre `hardware-configuration.nix`, écrit tous les fichiers de config locaux
+- **Détecte automatiquement les autres OS** via la NVRAM EFI (`efibootmgr`) et les propose comme entrées Limine (UEFI + Limine) — pas besoin de chercher le PARTUUID manuellement
+- **Détecte automatiquement le GPU et le CPU** (`lspci` / `/proc/cpuinfo`) — présélectionne, vous pouvez changer
+- **Détecte si vous êtes dans une VM** (`systemd-detect-virt`) — active d'avance le mode invité VM
+- Pose les questions sur le noyau, le bureau, le navigateur, l'éditeur, Discord, les applis de jeu, la locale, le fuseau, le clavier, le contrôleur RGB et les modules optionnels
+- Construit et applique la configuration
 
 ---
 

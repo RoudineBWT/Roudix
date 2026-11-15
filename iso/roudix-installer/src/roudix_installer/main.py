@@ -1,124 +1,83 @@
 #!/usr/bin/env python3
 """
-Roudix Installer — entry point.
+Roudix Installer — entry point. One installer, two front-ends:
 
-A small GTK4 / libadwaita wizard that replaces Calamares for Roudix.
-It reuses the exact logic of roudix-installer.sh (option choices ->
-Nix config generation) but drives it from a GUI instead of a bash
-prompt loop, and delegates partitioning to disko instead of KPMCore.
+    roudix-installer            asks graphical or terminal when run by hand in a terminal
+                                on a desktop; graphical if launched without a terminal
+                                (menu, autostart), terminal when there is no display
+    roudix-installer --tui      terminal wizard (replaces the old roudix-installer.sh)
+    roudix-installer --gui      graphical wizard (GTK4 / libadwaita)
 
-Flow:
-    Welcome -> Disk -> Options -> Summary -> Progress      (live ISO)
-    Welcome -> Options -> Summary -> Progress               (already on NixOS:
-                                                              no disk page, see existing_nixos.py)
+    --dry-run                   only generate and check the configuration, never
+                                partition, mount or install anything
+    --lang CODE                 skip the language question (en, fr, es, pt_BR, …)
+
+The GTK modules are imported only when the graphical wizard actually starts, so
+the terminal one works where PyGObject is not installed.
 """
+import argparse
+import os
 import sys
 
-import gi
 
-gi.require_version("Gtk", "4.0")
-gi.require_version("Adw", "1")
-from gi.repository import Adw, Gio, Gtk  # noqa: E402
-
-from roudix_installer import existing_nixos
-from roudix_installer.pages.disk import DiskPage
-from roudix_installer.pages.options import OptionsPage
-from roudix_installer.pages.progress import ProgressPage
-from roudix_installer.pages.summary import SummaryPage
-from roudix_installer.pages.welcome import WelcomePage
-from roudix_installer.state import InstallState
+def _parse(argv):
+    parser = argparse.ArgumentParser(prog="roudix-installer", add_help=True,
+                                     description="Roudix installer (graphical or terminal wizard).")
+    ui = parser.add_mutually_exclusive_group()
+    ui.add_argument("--tui", dest="ui", action="store_const", const="tui", help="terminal wizard")
+    ui.add_argument("--gui", dest="ui", action="store_const", const="gui", help="graphical wizard")
+    parser.add_argument("--dry-run", action="store_true", help="generate and check the configuration only")
+    parser.add_argument("--lang", help="language code, skips the question")
+    # What is left is for GTK (Gio.Application options such as --gapplication-service).
+    return parser.parse_known_args(argv)
 
 
-class RoudixInstallerWindow(Adw.ApplicationWindow):
-    def __init__(self, app):
-        super().__init__(application=app, title="Roudix Installer")
-        self.set_default_size(880, 620)
-
-        self.state = InstallState()
-        self.state.mode = existing_nixos.detect_mode()
-        if self.state.mode == existing_nixos.MODE_EXISTING:
-            # The wizard converts the account that is running it: the user
-            # must already exist, and keeps its own password.
-            self.state.username = existing_nixos.current_user()
-
-        # NavigationView *is* the window content — each page brings its own
-        # Adw.ToolbarView/HeaderBar (see ui_helpers.page_with_header), which
-        # is what makes the automatic back button appear per page.
-        self.stack = Adw.NavigationView()
-        self.set_content(self.stack)
-
-        self.pages = {}
-        self._built_for = {}  # page name -> hostname it was built for
-        self.page_factories = {
-            "disk": lambda: DiskPage(self.state, on_next=lambda: self.goto("options")),
-            "options": lambda: OptionsPage(self.state, on_next=lambda: self.goto("summary")),
-            "summary": lambda: SummaryPage(self.state, on_next=lambda: self.goto("progress")),
-            "progress": lambda: ProgressPage(self.state),
-        }
-
-        # Already-installed NixOS: nothing to partition, go straight to Options.
-        first = "options" if self.state.mode == existing_nixos.MODE_EXISTING else "disk"
-        welcome = WelcomePage(self.state, on_next=lambda: self.goto(first))
-        self.stack.push(welcome)
-
-    def goto(self, name: str):
-        # Built on first visit (after language has been chosen on Welcome),
-        # then reused — Adw.NavigationView keeps popped pages alive anyway.
-        # Options and Summary depend on the profile picked on Welcome: if the
-        # user went back and chose another one, build them again.
-        if name in ("options", "summary") and self._built_for.get(name) != self.state.hostname:
-            self.pages.pop(name, None)
-        # Progress is rebuilt on every visit: "Simulate" runs it once, then
-        # comes back to Summary, and the real run must start from a clean log.
-        if name == "progress":
-            self.pages.pop(name, None)
-        if name not in self.pages:
-            self.pages[name] = self.page_factories[name]()
-            self._built_for[name] = self.state.hostname
-        self.stack.push(self.pages[name])
+def _has_display() -> bool:
+    return bool(os.environ.get("WAYLAND_DISPLAY") or os.environ.get("DISPLAY"))
 
 
-class RoudixInstallerApp(Adw.Application):
-    def __init__(self):
-        super().__init__(application_id="dev.roudix.Installer",
-                          flags=Gio.ApplicationFlags.FLAGS_NONE)
+def _ask_ui() -> str:
+    """Ask graphical or terminal. Only called from an interactive terminal with a display,
+    when nothing (--gui/--tui/ROUDIX_INSTALLER_UI) already decided."""
+    print("Roudix installer - choose the interface:")
+    print("  1) Graphical (GTK)   [default]")
+    print("  2) Terminal (TUI)")
+    try:
+        answer = input("> ").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        print()
+        raise SystemExit(130)
+    return "tui" if answer in {"2", "t", "tui", "terminal"} else "gui"
 
-    def do_activate(self):
-        win = self.props.active_window
-        if not win:
-            win = RoudixInstallerWindow(self)
-        win.present()
 
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    args, rest = _parse(argv)
+    if args.dry_run:
+        os.environ["ROUDIX_INSTALLER_DRY_RUN"] = "1"
+    ui = args.ui or os.environ.get("ROUDIX_INSTALLER_UI", "").lower()
+    if not ui:
+        if _has_display() and sys.stdin.isatty() and sys.stdout.isatty():
+            ui = _ask_ui()   # launched by hand from a terminal on a desktop: let the user pick
+        else:
+            ui = "gui" if _has_display() else "tui"   # desktop launcher, SSH, bare TTY: no question
 
-def main():
-    import importlib.resources
+    if ui == "gui":
+        try:
+            from roudix_installer import gui
+        except (ImportError, ValueError) as exc:   # no PyGObject / GTK 4 / libadwaita
+            if args.ui == "gui":
+                print(f"roudix-installer: the graphical wizard is not available ({exc}).", file=sys.stderr)
+                return 1
+            print("roudix-installer: GTK is not available, starting the terminal wizard.", file=sys.stderr)
+        else:
+            if args.lang:
+                from roudix_installer import i18n
+                i18n.set_lang(args.lang)
+            return gui.main([sys.argv[0], *rest])
 
-    from gi.repository import Gdk
-
-    if existing_nixos.detect_mode() == existing_nixos.MODE_EXISTING:
-        # hosts/<n>/local.nix.example must be readable before the first page
-        # (profile list, per-profile questions); on the ISO it is embedded.
-        existing_nixos.prepare_catalog(log=lambda m: print(m, file=sys.stderr))
-
-    app = RoudixInstallerApp()
-
-    def on_startup(*_):
-        # Roudix branding is a dark theme (Catppuccin Mocha) — force dark
-        # so libadwaita's own widgets (popovers, switches...) match instead
-        # of following the live ISO's system light/dark setting.
-        Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.FORCE_DARK)
-
-        provider = Gtk.CssProvider()
-        css_path = importlib.resources.files("roudix_installer") / "style.css"
-        provider.load_from_path(str(css_path))
-        Gtk.StyleContext.add_provider_for_display(
-            Gdk.Display.get_default(),
-            provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
-        )
-
-    app.connect("startup", on_startup)
-    return app.run(sys.argv)
+    from roudix_installer import tui
+    return tui.run(lang=args.lang)
 
 
 if __name__ == "__main__":

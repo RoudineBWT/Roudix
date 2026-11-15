@@ -8,6 +8,8 @@
 #   scripts/i18n.sh compile [component…]   po/*.po -> <locale dir>/<lang>/LC_MESSAGES/<domain>.mo
 #                                          (to run from the source tree; Nix does it at build)
 #   scripts/i18n.sh check   [component…]   fail if a .po is out of date, has untranslated/fuzzy entries, or is invalid
+#   scripts/i18n.sh fix    [component…]   update, then check: one command after any change to a tr("…") string
+#                                          (`nix develop -c scripts/i18n.sh fix`)
 #   scripts/i18n.sh new <lang> [component…] start a new translation, e.g. `new de`
 #
 # Components: installer welcome switcher store config kernel-switcher hw-sync scheduler firewall (default: all of them).
@@ -180,6 +182,10 @@ case "$CMD" in
             [ "$BAD" -eq 0 ] && echo "i18n update OK (check will pass)" || { echo "i18n update: a required language is incomplete (see above)" >&2; exit 1; }
         fi
         ;;
+    fix)
+        shift
+        "$0" update "$@" && "$0" check "$@"
+        ;;
     new)
         lang=${2:?usage: i18n.sh new <lang> [component…]   (e.g. de, es, pt_BR)}
         shift 2
@@ -190,5 +196,5 @@ case "$CMD" in
         done
         ;;
     *)
-        sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 2 ;;
+        sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//'; exit 2 ;;
 esac

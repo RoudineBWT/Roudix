@@ -1,4 +1,3 @@
-import json
 import subprocess
 import threading
 
@@ -8,40 +7,7 @@ from roudix_installer.hardware_detect import is_bios_boot
 from roudix_installer.i18n import tr
 from roudix_installer.ui_helpers import page_with_header
 
-# index-based, not string-based, so the mapping doesn't depend on language
-MOUNTPOINT_VALUES = [None, "/", "/boot", "swap"]
-
-
-def list_disks() -> list[dict]:
-    out = subprocess.run(
-        ["lsblk", "-J", "-o", "NAME,SIZE,MODEL,TYPE"],
-        capture_output=True, text=True, check=True,
-    ).stdout
-    data = json.loads(out)
-    return [
-        {"path": f"/dev/{d['name']}", "size": d.get("size", "?"),
-         "model": d.get("model") or tr("Unknown disk")}
-        for d in data.get("blockdevices", []) if d.get("type") == "disk"
-    ]
-
-
-def list_partitions(disk_path: str) -> list[dict]:
-    name = disk_path.removeprefix("/dev/")
-    out = subprocess.run(
-        ["lsblk", "-J", "-o", "NAME,SIZE,FSTYPE,TYPE", f"/dev/{name}"],
-        capture_output=True, text=True, check=True,
-    ).stdout
-    data = json.loads(out)
-    parts = []
-    for d in data.get("blockdevices", []):
-        for child in d.get("children", []):
-            if child.get("type") == "part":
-                parts.append({
-                    "path": f"/dev/{child['name']}",
-                    "size": child.get("size", "?"),
-                    "fstype": child.get("fstype") or "?",
-                })
-    return parts
+from roudix_installer.disks import MOUNTPOINT_VALUES, list_disks, list_partitions  # noqa: F401 — shared with the TUI
 
 
 class DiskPage(Adw.NavigationPage):

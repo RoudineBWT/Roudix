@@ -1,5 +1,5 @@
 """
-Per-host question filtering — same contract as roudix-installer.sh.
+Per-host question filtering — same contract as the old bash installer.
 
 A host opts in by putting this exact line in hosts/<name>/local.nix.example:
 

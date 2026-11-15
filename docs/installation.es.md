@@ -7,7 +7,7 @@ Hay tres formas de poner Roudix en marcha, según tu punto de partida:
 | Situación | Usa |
 |-----------|-----|
 | Equipo nuevo, sin nada instalado | **ISO de Roudix** — arranca directamente en un instalador gráfico (incluye el particionado) |
-| NixOS ya instalado (ISO oficial, instalación de NixOS de otra distro, una VM…) | **`roudix-installer.sh`** — instala el flake de Roudix sobre tu instalación existente |
+| NixOS ya instalado (ISO oficial, instalación de NixOS de otra distro, una VM…) | **`roudix-installer`** — instala el flake de Roudix sobre tu instalación existente |
 | Quieres controlar cada paso, o el script no cubre tu caso | **Instalación manual** (más abajo) |
 
 ## Opción A — ISO de Roudix (recomendada para una instalación nueva)
@@ -21,7 +21,7 @@ La ISO incluye nuestro propio instalador gráfico GTK4/libadwaita (`roudix-insta
 
 > **Nota:** el menú de arranque también ofrece especializaciones de distribución de teclado (US/BE/FR/DE/CH/UK) por si el teclado de la sesión en vivo no coincide con el físico — elige una antes de iniciar el instalador.
 
-Esta vía sustituye por completo los dos pasos siguientes (no hace falta `roudix-installer.sh` ni los pasos manuales) — pasa a lo que venga después de la instalación una vez que reinicie.
+Esta vía sustituye por completo los dos pasos siguientes (no hace falta `roudix-installer` ni los pasos manuales) — pasa a lo que venga después de la instalación una vez que reinicie.
 
 ## Opción B — Ya tienes NixOS instalado
 
@@ -50,9 +50,7 @@ nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 **Descarga el script roudix-installer**
 
 ```bash
-nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
-chmod +x roudix-installer.sh
-./roudix-installer.sh
+nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
 ```
 
 El instalador lo gestiona todo de forma interactiva:

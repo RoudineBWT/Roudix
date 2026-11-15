@@ -1,5 +1,5 @@
 {
-  description = "Roudix Installer — GTK4/libadwaita wizard + disko backend";
+  description = "Roudix Installer — GTK4/libadwaita or terminal wizard + disko backend";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -51,13 +51,18 @@
         build-system = [ pkgs.python3Packages.setuptools ];
 
         # Runtime tools the wizard shells out to.
+        # Each token must be its own list element: newer nixpkgs' makeCWrapper
+        # rejects a single "--prefix PATH : ..." string ("Unknown argument").
         makeWrapperArgs = [
-          "--prefix PATH : ${pkgs.lib.makeBinPath [
+          "--prefix" "PATH" ":" "${pkgs.lib.makeBinPath [
             disko.packages.${system}.disko
             pkgs.parted
             pkgs.util-linux   # lsblk
             pkgs.nixos-install-tools
             pkgs.git          # "existing NixOS" mode clones the config (a minimal install may not ship git)
+            pkgs.efibootmgr   # terminal wizard: other systems in the firmware boot menu -> Limine entries
+            pkgs.i2c-tools    # RAM RGB: i2cdetect finds the SMBus
+            pkgs.dmidecode    # RAM RGB: the memory part number (needs root)
           ]}"
         ];
 

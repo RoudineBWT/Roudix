@@ -14,7 +14,7 @@ hardware-configuration.nix) is covered by a copy of /etc/nixos plus a
 RESTORE.txt describing how to go back — see backup_files()/restore_text().
 
 Kept free of GTK imports on purpose: it can be unit-tested and, later, reused
-by a TTY front-end to replace roudix-installer.sh.
+by a TTY front-end to replace the old bash installer.
 """
 import os
 import pwd

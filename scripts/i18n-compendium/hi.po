@@ -143,3 +143,97 @@ msgstr "ऑफ़िस शब्दकोश"
 
 msgid "Laptop power backend"
 msgstr "लैपटॉप पावर बैकएंड"
+
+# --- installer terminal wizard (tui.py) ---
+msgid "Other systems"
+msgstr "अन्य सिस्टम"
+
+msgid "Found in the EFI NVRAM: switch on the ones to add to Limine's boot menu."
+msgstr "EFI NVRAM में मिले: जिन्हें Limine के बूट मेनू में जोड़ना है उन्हें चालू करें।"
+
+msgid "Only letters, digits and . _ + - : , @ / are allowed here."
+msgstr "यहाँ केवल अक्षर, अंक और . _ + - : , @ / की अनुमति है।"
+
+msgid "Allowed: {codes}"
+msgstr "अनुमत: {codes}"
+
+msgid "Can't be empty."
+msgstr "खाली नहीं हो सकता।"
+
+msgid "Gaming extras"
+msgstr "गेमिंग एक्स्ट्रा"
+
+msgid "Features"
+msgstr "सुविधाएँ"
+
+msgid "Content-creation tools"
+msgstr "कंटेंट बनाने के टूल"
+
+msgid "OBS plugins"
+msgstr "OBS प्लगइन"
+
+msgid " or type to filter"
+msgstr " या फ़िल्टर करने के लिए टाइप करें"
+
+msgid "Choice"
+msgstr "विकल्प"
+
+msgid "Choose one of the entries."
+msgstr "प्रविष्टियों में से कोई एक चुनें।"
+
+msgid "Out of range."
+msgstr "सीमा से बाहर।"
+
+msgid "No match."
+msgstr "कोई मेल नहीं मिला।"
+
+msgctxt "yes/no prompt, yes is the default"
+msgid "[Y/n]"
+msgstr "[Y/n]"
+
+msgctxt "yes/no prompt, no is the default"
+msgid "[y/N]"
+msgstr "[y/N]"
+
+msgid "Answer yes or no."
+msgstr "हाँ या नहीं में उत्तर दें।"
+
+msgid "Toggle: numbers separated by spaces, a = all, n = none, Enter = continue"
+msgstr "टॉगल: स्पेस से अलग किए गए नंबर, a = सभी, n = कोई नहीं, Enter = आगे बढ़ें"
+
+msgid "Administrator rights are needed and sudo is not available: run the installer as root."
+msgstr "एडमिनिस्ट्रेटर अधिकार चाहिए और sudo उपलब्ध नहीं है: इंस्टॉलर को root के रूप में चलाएँ।"
+
+msgid "Administrator rights are needed: enter your password if asked."
+msgstr "एडमिनिस्ट्रेटर अधिकार चाहिए: पूछे जाने पर अपना पासवर्ड दर्ज करें।"
+
+msgid "No disk found."
+msgstr "कोई डिस्क नहीं मिली।"
+
+msgid "File not found."
+msgstr "फ़ाइल नहीं मिली।"
+
+msgid "Partition it yourself in another terminal (cfdisk, fdisk, parted…), then press Enter."
+msgstr "किसी दूसरे टर्मिनल में खुद पार्टीशन करें (cfdisk, fdisk, parted…), फिर Enter दबाएँ।"
+
+msgid "Other systems found in the EFI NVRAM — which ones do you want to add to Limine?"
+msgstr "EFI NVRAM में मिले अन्य सिस्टम — इनमें से किन्हें Limine में जोड़ना है?"
+
+msgid "Edit the options"
+msgstr "विकल्प संपादित करें"
+
+msgid "Quit"
+msgstr "बाहर निकलें"
+
+msgid "What now?"
+msgstr "अब क्या?"
+
+msgid "Start now?"
+msgstr "अभी शुरू करें?"
+
+msgid "Interrupted — the installation may be incomplete."
+msgstr "बाधित — इंस्टॉलेशन अधूरा हो सकता है।"
+
+msgid "Aborted — nothing was changed."
+msgstr "रद्द किया गया — कुछ भी नहीं बदला गया।"
+

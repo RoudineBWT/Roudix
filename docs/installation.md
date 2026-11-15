@@ -7,7 +7,7 @@ There are three ways to get Roudix running, depending on your starting point:
 | Situation | Use |
 |-----------|-----|
 | Fresh machine, nothing installed yet | **Roudix ISO** — boots straight into a graphical installer (partitioning included) |
-| NixOS already installed (stock ISO, another distro's NixOS install, a VM…) | **`roudix-installer.sh`** — bootstraps the Roudix flake onto your existing install |
+| NixOS already installed (stock ISO, another distro's NixOS install, a VM…) | **`roudix-installer`** — graphical or terminal wizard, bootstraps the Roudix flake onto your existing install |
 | You want full control over every step, or the script doesn't cover your case | **Manual installation** (below) |
 
 ## Option A — Roudix ISO (recommended for a fresh install)
@@ -21,13 +21,13 @@ The ISO ships our own GTK4/libadwaita graphical installer (`roudix-installer`) o
 
 > **Note:** the boot menu also offers keyboard-layout specializations (US/BE/FR/DE/CH/UK) if your live session keyboard doesn't match your physical one — pick one before starting the installer.
 
-This path replaces the two steps below entirely (no need for `roudix-installer.sh` or the manual steps) — skip to whatever comes after installation once it reboots.
+This path replaces the two steps below entirely (no need for the Option B installers or the manual steps) — skip to whatever comes after installation once it reboots.
 
 ## Option B — Already have NixOS installed
 
-If NixOS is already installed (via the official stable/unstable ISO, or any other means) and you just want to bootstrap Roudix on top of it, there are two installers: the graphical one (from a desktop session) and the bash script (works from a bare TTY).
+If NixOS is already installed (via the official stable/unstable ISO, or any other means) and you just want to bootstrap Roudix on top of it, the same installer comes in two flavours: graphical (from a desktop session) and terminal (works from a bare TTY or over SSH).
 
-> **Note:** install NixOS first with the [stable or unstable ISO](https://nixos.org/download/), then run one of the installers below or follow the manual installation.
+> **Note:** install NixOS first with the [stable or unstable ISO](https://nixos.org/download/), then run the installer below or follow the manual installation.
 
 ### B1 — Graphical installer (recommended on a desktop)
 
@@ -40,26 +40,27 @@ nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 - **Nothing is wiped.** The configuration goes to `~/.config/roudix` (an existing folder is moved aside, never deleted), then `nixos-rebuild boot` builds Roudix and schedules it for the next boot. Your current system stays in the boot menu.
 - **Your `/etc/nixos` is backed up** to `/var/backups/roudix/nixos-<date>/` together with a `RESTORE.txt` (previous generation, bootloader, `stateVersion`, and the exact commands to go back). `hardware-configuration.nix` is reused as is, never overwritten.
 - **Simulate first.** The *Simulate* button on the summary page generates the configuration in a temporary folder, checks that every option was written, and makes Nix evaluate the whole system. Nothing on your machine is modified.
+- **Other systems** (Windows, another Linux…) found in the EFI NVRAM can be added to Limine's boot menu: a switch per system under the *Bootloader* option (UEFI + Limine).
 - Pre-flight warnings: little free space in `/boot` (a 512 MB EFI partition fills quickly), a bootloader change, an older `system.stateVersion`.
 - Asks for your administrator password through a polkit dialog (it needs a polkit agent, i.e. any normal desktop session).
 
 **Going back:** pick the previous generation in the boot menu, then `sudo nixos-rebuild switch --rollback`. If the machine does not boot at all, `RESTORE.txt` explains how to restore your old configuration from a live USB.
 
-### B2 — Bash script (TTY / no graphical session)
+### B2 — Terminal installer (TTY / no graphical session)
 
-**Download the roudix-installer script**
+The same wizard, in your terminal (it replaces the former `roudix-installer.sh` script). Run it from the account you want to keep:
 
 ```bash
-nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
-chmod +x roudix-installer.sh
-./roudix-installer.sh
+nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
 ```
 
-The installer handles everything interactively:
-- Asks which branch to install and follow (`main` = stable, `testing`, `dev`), clones it, generates `hardware-configuration.nix`, creates all local config files
-- **Detects other OSes automatically** via EFI NVRAM (`efibootmgr`) — no manual PARTUUID lookup needed
-- **Detects GPU and CPU automatically** (`lspci` / `/proc/cpuinfo`) — pre-selects and asks for confirmation
-- **Detects if running in a VM** (`systemd-detect-virt`) — pre-enables VM guest mode and warns that GPU/CPU detection may be inaccurate
+Everything said for B1 applies — nothing is wiped, `/etc/nixos` is backed up, *Simulate* before installing — except that the administrator password is asked once in the terminal (`sudo`) instead of through a polkit dialog. Without a graphical session `roudix-installer` starts the terminal wizard by itself; `--tui` / `--gui` force one or the other, `--dry-run` only generates and checks the configuration.
+
+- Enter keeps the default shown in `[brackets]`, a number picks from a list, text filters a long list (timezones, locales…). On the summary screen, *Edit the options* goes back over every question with your answers as defaults.
+- Asks which branch to install and follow (`main` = stable, `testing`, `dev`), clones it, reuses your `hardware-configuration.nix`, writes all local config files
+- **Detects other OSes automatically** via EFI NVRAM (`efibootmgr`) and offers them as Limine entries (UEFI + Limine) — no manual PARTUUID lookup needed
+- **Detects GPU and CPU automatically** (`lspci` / `/proc/cpuinfo`) — pre-selects, you can change it
+- **Detects if running in a VM** (`systemd-detect-virt`) — pre-enables VM guest mode
 - Asks about kernel, desktop, browser, editor, Discord, gaming apps, locale, timezone, keymap, RGB controller, and optional modules
 - Builds and applies the configuration
 

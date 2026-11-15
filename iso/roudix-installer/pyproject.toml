@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "roudix-installer"
 version = "0.1.0"
-description = "GTK4/libadwaita installer wizard for Roudix, backed by disko"
+description = "GTK4/libadwaita or terminal installer wizard for Roudix, backed by disko"
 requires-python = ">=3.11"
 
 [project.scripts]

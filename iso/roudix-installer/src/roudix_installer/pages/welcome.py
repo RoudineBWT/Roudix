@@ -4,17 +4,14 @@ from pathlib import Path
 from gi.repository import Adw, Gtk
 
 from roudix_installer import existing_nixos, host_profile, i18n
+from roudix_installer.choices import host_label, host_note, welcome_text
 from roudix_installer.i18n import tr
 from roudix_installer.ui_helpers import page_with_header
 
 REAL_LOGO = Path("/run/current-system/sw/share/icons/hicolor/256x256/apps/roudix-logo.png")
 
 
-def _host_label(name: str) -> str:
-    return {
-        "roudix": tr("roudix — full desktop, every option"),
-        "nixie": tr("nixie — light laptop, few questions"),
-    }.get(name, name)
+_host_label = host_label  # choices.py: shared with the TUI
 
 
 class WelcomePage(Adw.NavigationPage):
@@ -106,12 +103,7 @@ class WelcomePage(Adw.NavigationPage):
     def _show_welcome_step(self):
         self._clear_below_title()
 
-        if self.state.mode == existing_nixos.MODE_EXISTING:
-            text = tr("This machine already runs NixOS. Roudix is built next to your current system: "
-                      "nothing is wiped, /etc/nixos is backed up first, and your previous system stays "
-                      "in the boot menu. Two steps: options, then off we go.")
-        else:
-            text = tr("We're about to install Roudix on this machine. Three steps: disk, options, then off we go.")
+        text = welcome_text(self.state.mode == existing_nixos.MODE_EXISTING)
         subtitle = Gtk.Label(label=text, css_classes=["dim-label"], wrap=True)
         self.box.append(subtitle)
 
@@ -146,10 +138,5 @@ class WelcomePage(Adw.NavigationPage):
     def _on_host_selected(self):
         name = self._hosts[self.host_row.get_selected()]
         self.state.hostname = name
-        if host_profile.find_example(name) is None:
-            note = tr("Warning: this profile can't be found in this ISO — every question will be asked.")
-        elif host_profile.listed_options(name) is None:
-            note = tr("Every question will be asked.")
-        else:
-            note = tr("Only the questions relevant to this profile will be asked.")
+        note = host_note(name)
         self.host_note.set_label(note)

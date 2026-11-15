@@ -7,7 +7,7 @@
 | 情况 | 使用 |
 |-----------|-----|
 | 全新机器，尚未安装任何系统 | **Roudix ISO** — 直接启动进入图形安装程序（包含分区） |
-| 已安装 NixOS（官方 ISO、其他发行版的 NixOS 安装、虚拟机…） | **`roudix-installer.sh`** — 将 Roudix flake 部署到你现有的安装上 |
+| 已安装 NixOS（官方 ISO、其他发行版的 NixOS 安装、虚拟机…） | **`roudix-installer`** — 将 Roudix flake 部署到你现有的安装上 |
 | 你想掌控每一个步骤，或脚本无法覆盖你的情况 | **手动安装**（见下文） |
 
 ## 方案 A — Roudix ISO（全新安装推荐）
@@ -21,7 +21,7 @@ ISO 自带我们自己的 GTK4/libadwaita 图形安装程序（`roudix-installer
 
 > **注意：** 如果临场会话的键盘与你的实体键盘不一致，启动菜单还提供键盘布局特化项（US/BE/FR/DE/CH/UK）— 请在启动安装程序之前选好。
 
-这一路径完全取代下面两个步骤（无需 `roudix-installer.sh`，也无需手动步骤）— 重启后直接看安装完成之后的内容即可。
+这一路径完全取代下面两个步骤（无需 `roudix-installer`，也无需手动步骤）— 重启后直接看安装完成之后的内容即可。
 
 ## 方案 B — 已经安装了 NixOS
 
@@ -50,9 +50,7 @@ nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 **下载 roudix-installer 脚本**
 
 ```bash
-nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
-chmod +x roudix-installer.sh
-./roudix-installer.sh
+nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
 ```
 
 安装程序以交互方式处理所有事情：
