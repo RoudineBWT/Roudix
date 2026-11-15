@@ -103,7 +103,8 @@ UMBRIEL_SETTINGS = [
     _S("tap", "input", tr_noop("Tap to click (touchpad)"), "bool", "input.touchpad.tap"),
     _S("natural", "input", tr_noop("Natural scrolling (touchpad)"), "bool", "input.touchpad.natural_scroll"),
     _S("accel", "input", tr_noop("Mouse acceleration"), "choice", "input.mouse.accel_profile", choices=("flat", "adaptive")),
-    _S("follow", "input", tr_noop("Focus follows mouse"), "bool", "input.focus.follows_mouse"),
+    # Umbriel: string since the focus rework ("off" | "sloppy" | "always"), no longer a bool.
+    _S("follow", "input", tr_noop("Focus follows mouse"), "choice", "input.focus.follows_mouse", choices=("off", "sloppy", "always"), default="off"),
     _S("hide_typing", "input", tr_noop("Hide the cursor while typing"), "bool", "input.cursor.hide_when_typing"),
     _S("cursor_size", "input", tr_noop("Cursor size"), "int", "input.cursor.size", 16, 64),
     _S("cursor_theme", "input", tr_noop("Cursor theme"), "text", "input.cursor.theme"),

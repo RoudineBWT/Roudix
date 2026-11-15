@@ -26,7 +26,11 @@
     mouse.accel_profile = "flat";
 
     focus = {
-      follows_mouse = true; # niri: focus-follows-mouse
+      # Now a string, not a bool: "off" | "sloppy" | "always". "sloppy" is the
+      # equivalent of niri's focus-follows-mouse (pointer motion onto a window
+      # focuses it; a still pointer never steals focus). "always" would also
+      # refocus under a still pointer after layout changes.
+      follows_mouse = "sloppy"; # niri: focus-follows-mouse
       # hover_raises (umbriel e57420b): by default hovering a window with
       # follows_mouse also RAISES it, so sweeping the pointer over a larger
       # window underneath buries the one above (the floating ghostty / chat
