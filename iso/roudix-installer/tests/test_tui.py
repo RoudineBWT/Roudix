@@ -340,5 +340,21 @@ class EntryPoint(Base):
         self.assertEqual(seen, ["1"])
 
 
+
+class LiveDetection(unittest.TestCase):
+    LIVE = "25 1 0:22 / / rw - tmpfs tmpfs rw\n30 25 7:0 / /nix/.ro-store ro - squashfs /dev/loop0 ro\n"
+    INSTALLED = "25 1 259:2 / / rw - ext4 /dev/nvme0n1p2 rw\n26 25 259:1 / /boot rw - vfat /dev/nvme0n1p1 rw\n"
+    IMPERMANENCE = "25 1 0:22 / / rw - tmpfs tmpfs rw\n26 25 259:2 / /nix rw - ext4 /dev/nvme0n1p2 rw\n"
+
+    def test_stock_or_roudix_iso_is_live(self):
+        from roudix_installer import existing_nixos
+        self.assertTrue(existing_nixos.is_live_system(self.LIVE))
+
+    def test_installed_system_is_not_live(self):
+        from roudix_installer import existing_nixos
+        self.assertFalse(existing_nixos.is_live_system(self.INSTALLED))
+        self.assertFalse(existing_nixos.is_live_system(self.IMPERMANENCE))
+
+
 if __name__ == "__main__":
     unittest.main()

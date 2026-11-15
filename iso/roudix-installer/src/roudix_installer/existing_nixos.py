@@ -46,10 +46,35 @@ def detect_mode() -> str:
     forced = os.environ.get("ROUDIX_INSTALLER_MODE", "").strip().lower()
     if forced in (MODE_FRESH, MODE_EXISTING):
         return forced
-    on_live_iso = Path("/iso/iso-cfg").is_dir() or Path("/iso-cfg").is_dir()
-    if Path("/etc/NIXOS").exists() and not on_live_iso:
+    if Path("/etc/NIXOS").exists() and not is_live_system():
         return MODE_EXISTING
     return MODE_FRESH
+
+
+def is_live_system(mountinfo: str | None = None) -> bool:
+    """True when booted from an installer image (the Roudix ISO, a stock NixOS ISO, netboot…),
+    where /etc/NIXOS exists too but there is nothing installed to convert.
+
+    The embedded config (/iso/iso-cfg, /iso-cfg) is only present on an ISO built with
+    isoImage.contents, so it is not enough: a stock NixOS ISO has neither. What every
+    installer image has is the read-only store image mounted on /nix/.ro-store and/or the
+    medium mounted on /iso. (A tmpfs root alone is NOT a sign: impermanence setups have one.)"""
+    if Path("/iso/iso-cfg").is_dir() or Path("/iso-cfg").is_dir():
+        return True
+    if mountinfo is None:
+        try:
+            mountinfo = Path("/proc/self/mountinfo").read_text()
+        except OSError:
+            return False
+    for line in mountinfo.splitlines():
+        head, sep, tail = line.partition(" - ")
+        fields, rest = head.split(), tail.split()
+        if not sep or len(fields) < 5 or not rest:
+            continue
+        mountpoint = fields[4]
+        if mountpoint in ("/iso", "/nix/.ro-store"):
+            return True
+    return False
 
 
 def current_user() -> str:
