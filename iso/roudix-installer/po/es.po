@@ -1705,7 +1705,7 @@ msgstr "Plugins de OBS"
 msgid "Installation complete 🎉"
 msgstr "Instalación completada 🎉"
 
-#: src/roudix_installer/runner.py src/roudix_installer/tui.py
+#: src/roudix_installer/runner.py
 msgid "Error"
 msgstr "Error"
 
@@ -1840,9 +1840,9 @@ msgid ""
 "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing "
 "outside an ISO) — cloning straight from GitHub instead."
 msgstr ""
-"No se encontró /iso-cfg (la ISO aún no se ha reconstruido con "
-"isoImage.contents, o se está probando fuera de una ISO) — se clona "
-"directamente desde GitHub."
+"No se encontró /iso-cfg (la ISO aún no se ha reconstruido con isoImage."
+"contents, o se está probando fuera de una ISO) — se clona directamente desde "
+"GitHub."
 
 #: src/roudix_installer/runner.py
 #, python-brace-format
@@ -1931,6 +1931,39 @@ msgid ""
 msgstr ""
 "✓ Roudix está construido. Reinicia para arrancarlo; tu sistema anterior "
 "sigue en el menú de arranque."
+
+# --- installer: zram during nixos-install ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "Swap comprimido en RAM (zram) activado: {size} GiB."
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Could not enable zram ({reason})."
+msgstr "No se pudo activar zram ({reason})."
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr ""
+"No se pudo añadir swap temporal ({reason}) — la compilación podría quedarse "
+"sin memoria."
+
+#: src/roudix_installer/runner.py
+msgid "not enough free space on the target disk"
+msgstr "no hay suficiente espacio libre en el disco de destino"
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target "
+"disk for the build…"
+msgstr ""
+"Poca memoria ({ram} GiB): añadiendo {size} GiB de swap temporal en el disco "
+"de destino para la compilación…"
 
 #: src/roudix_installer/runner.py
 msgid "Installing the system…"

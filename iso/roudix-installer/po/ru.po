@@ -1702,7 +1702,7 @@ msgstr "Плагины OBS"
 msgid "Installation complete 🎉"
 msgstr "Установка завершена 🎉"
 
-#: src/roudix_installer/runner.py src/roudix_installer/tui.py
+#: src/roudix_installer/runner.py
 msgid "Error"
 msgstr "Ошибка"
 
@@ -1926,6 +1926,39 @@ msgid ""
 msgstr ""
 "✓ Roudix собран. Перезагрузитесь, чтобы запустить его; прежняя система "
 "остаётся в меню загрузки."
+
+# --- installer: zram during nixos-install ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "Сжатый swap в ОЗУ (zram) включён: {size} ГиБ."
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Could not enable zram ({reason})."
+msgstr "Не удалось включить zram ({reason})."
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr ""
+"Не удалось добавить временный swap ({reason}) — при сборке может не хватить "
+"памяти."
+
+#: src/roudix_installer/runner.py
+msgid "not enough free space on the target disk"
+msgstr "недостаточно свободного места на целевом диске"
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target "
+"disk for the build…"
+msgstr ""
+"Мало памяти ({ram} ГиБ): добавляем {size} ГиБ временного swap на целевом "
+"диске для сборки…"
 
 #: src/roudix_installer/runner.py
 msgid "Installing the system…"

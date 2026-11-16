@@ -64,6 +64,7 @@ po/
 - **ISO** : wizard complet (Welcome → Disk → Options → Summary → Progress), partitionnement via disko, puis `nixos-install`.
   Lancé avec un écran, c'est le wizard graphique ; sans écran (TTY, SSH) c'est le wizard terminal.
 - **NixOS déjà installé** (`nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"`) : pas de page disque, config clonée dans `~/.config/roudix`, appliquée avec `nixos-rebuild boot` ; `/etc/nixos` est sauvegardé dans `/var/backups/roudix/` avec un `RESTORE.txt`.
+- **Sans les fonctionnalités expérimentales de Nix** (`experimental Nix feature 'nix-command' is disabled`) : `nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"` (branche par défaut, pas de `ref=`) ; ajoutez `-- --tui` pour la version terminal.
 - Bouton *Simuler* sur la page de résumé : génère la config dans un dossier temporaire et fait évaluer le système par Nix, sans rien modifier.
 - Voir [Installation](../../docs/installation.fr.md) pour le détail côté utilisateur.
 

@@ -37,6 +37,16 @@ ISO वाला ही विज़ार्ड, बस डिस्क पे�
 nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 ```
 
+> **flakes चालू नहीं हैं?** अगर `nix run` जवाब दे `experimental Nix feature 'nix-command' is disabled`, तो ये सुविधाएँ कमांड लाइन में ही दे दें: कुछ कॉन्फ़िगर करने की ज़रूरत नहीं, और कोई ब्रांच चुनने की भी नहीं (डिफ़ॉल्ट ब्रांच इस्तेमाल होती है)।
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
+# टर्मिनल संस्करण:
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
+```
+
+इन्हें हमेशा के लिए चालू करने के लिए `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf` चलाएँ (NixOS पर: `nix.settings.experimental-features = [ "nix-command" "flakes" ];`)। `sudo` आपका `~/.config` नहीं पढ़ता: root के रूप में चलाने के लिए पहले `export NIX_CONFIG="experimental-features = nix-command flakes"` **अलग लाइन में** चलाएँ, फिर `sudo -E nix run …` इस्तेमाल करें।
+
 - **कुछ नहीं मिटाया जाता।** कॉन्फ़िगरेशन `~/.config/roudix` में जाता है (मौजूदा फ़ोल्डर को किनारे कर दिया जाता है, कभी हटाया नहीं जाता), फिर `nixos-rebuild boot` Roudix बनाता है और उसे अगले बूट के लिए तय कर देता है। आपका मौजूदा सिस्टम बूट मेनू में बना रहता है।
 - **आपके `/etc/nixos` का बैकअप** `/var/backups/roudix/nixos-<date>/` में लिया जाता है, साथ में एक `RESTORE.txt` (पिछली जनरेशन, बूटलोडर, `stateVersion` और वापस जाने के सटीक कमांड)। `hardware-configuration.nix` जैसा है वैसा ही दोबारा इस्तेमाल होता है, कभी ओवरराइट नहीं होता।
 - **पहले सिमुलेट करें।** सारांश पेज का *सिमुलेट* बटन कॉन्फ़िगरेशन को एक अस्थायी फ़ोल्डर में बनाता है, जाँचता है कि हर विकल्प लिखा गया, और Nix से पूरे सिस्टम का मूल्यांकन करवाता है। आपकी मशीन पर कुछ नहीं बदलता।

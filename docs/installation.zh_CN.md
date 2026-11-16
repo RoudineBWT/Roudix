@@ -37,6 +37,16 @@ ISO 自带我们自己的 GTK4/libadwaita 图形安装程序（`roudix-installer
 nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 ```
 
+> **未启用 flakes？** 如果 `nix run` 提示 `experimental Nix feature 'nix-command' is disabled`，请在命令行中直接传入这些功能：无需任何配置，也无需选择分支（使用默认分支）。
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
+# 终端版本：
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
+```
+
+要永久启用，请运行 `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`（NixOS 上：`nix.settings.experimental-features = [ "nix-command" "flakes" ];`）。`sudo` 不会读取你的 `~/.config`：以 root 运行时，请先**单独一行**执行 `export NIX_CONFIG="experimental-features = nix-command flakes"`，再使用 `sudo -E nix run …`。
+
 - **不会清除任何内容。** 配置会放到 `~/.config/roudix`（已有的文件夹会被移到一边，绝不会删除），然后 `nixos-rebuild boot` 构建 Roudix 并安排在下次启动时启用。你当前的系统仍保留在启动菜单中。
 - **你的 `/etc/nixos` 会被备份** 到 `/var/backups/roudix/nixos-<date>/`，并附带 `RESTORE.txt`（上一代系统、引导程序、`stateVersion` 以及回退所需的确切命令）。`hardware-configuration.nix` 原样复用，绝不覆盖。
 - **先模拟。** 摘要页上的*模拟*按钮会在临时文件夹中生成配置，检查每个选项是否都已写入，并让 Nix 对整个系统求值。你的机器上不会有任何改动。

@@ -1281,8 +1281,8 @@ msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
 msgstr ""
-"لا يتم الكشف عن SMBus / SKU الذاكرة تلقائيًا — اعثر عليهما عبر \"i2cdetect "
-"-l\" و\"sudo dmidecode -t memory | grep 'Part Number'\"."
+"لا يتم الكشف عن SMBus / SKU الذاكرة تلقائيًا — اعثر عليهما عبر \"i2cdetect -"
+"l\" و\"sudo dmidecode -t memory | grep 'Part Number'\"."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/questions.py
 #: src/roudix_installer/summary_rows.py
@@ -1690,7 +1690,7 @@ msgstr "إضافات OBS"
 msgid "Installation complete 🎉"
 msgstr "اكتمل التثبيت 🎉"
 
-#: src/roudix_installer/runner.py src/roudix_installer/tui.py
+#: src/roudix_installer/runner.py
 msgid "Error"
 msgstr "خطأ"
 
@@ -1910,6 +1910,38 @@ msgid ""
 msgstr ""
 "✓ تم بناء Roudix. أعد التشغيل لبدء استخدامه؛ سيبقى نظامك السابق في قائمة "
 "الإقلاع."
+
+# --- installer: zram during nixos-install ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "تم تفعيل مساحة التبديل المضغوطة في الذاكرة (zram): ‏{size} GiB."
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Could not enable zram ({reason})."
+msgstr "تعذّر تفعيل zram ({reason})."
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr ""
+"تعذّرت إضافة مساحة تبديل مؤقتة ({reason}) — قد تنفد الذاكرة أثناء البناء."
+
+#: src/roudix_installer/runner.py
+msgid "not enough free space on the target disk"
+msgstr "لا توجد مساحة خالية كافية على القرص الهدف"
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target "
+"disk for the build…"
+msgstr ""
+"الذاكرة منخفضة ({ram} GiB): جارٍ إضافة {size} GiB من مساحة التبديل المؤقتة "
+"على القرص الهدف أثناء البناء…"
 
 #: src/roudix_installer/runner.py
 msgid "Installing the system…"

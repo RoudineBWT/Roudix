@@ -1687,7 +1687,7 @@ msgstr "OBS प्लगइन"
 msgid "Installation complete 🎉"
 msgstr "इंस्टॉलेशन पूरा हुआ 🎉"
 
-#: src/roudix_installer/runner.py src/roudix_installer/tui.py
+#: src/roudix_installer/runner.py
 msgid "Error"
 msgstr "त्रुटि"
 
@@ -1800,8 +1800,8 @@ msgid ""
 "Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
 "local.nix generation may fail."
 msgstr ""
-"चेतावनी: ब्रांच '{branch}' पर hosts/{host}/local.nix.example नहीं मिला — "
-"local.nix बनाना विफल हो सकता है।"
+"चेतावनी: ब्रांच '{branch}' पर hosts/{host}/local.nix.example नहीं मिला — local."
+"nix बनाना विफल हो सकता है।"
 
 #: src/roudix_installer/runner.py
 msgid "Copying the configuration…"
@@ -1904,6 +1904,37 @@ msgid ""
 msgstr ""
 "✓ Roudix बन गया है। इसे शुरू करने के लिए रीबूट करें; आपका पिछला सिस्टम बूट मेनू में बना "
 "रहेगा।"
+
+# --- installer: zram during nixos-install ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "RAM में संपीड़ित स्वैप (zram) चालू: {size} GiB।"
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Could not enable zram ({reason})."
+msgstr "zram चालू नहीं हो सका ({reason})।"
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr "अस्थायी स्वैप नहीं जोड़ा जा सका ({reason}) — बिल्ड में मेमोरी कम पड़ सकती है।"
+
+#: src/roudix_installer/runner.py
+msgid "not enough free space on the target disk"
+msgstr "टारगेट डिस्क पर पर्याप्त खाली जगह नहीं है"
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target "
+"disk for the build…"
+msgstr ""
+"मेमोरी कम है ({ram} GiB): बिल्ड के लिए टारगेट डिस्क पर {size} GiB अस्थायी स्वैप जोड़ा "
+"जा रहा है…"
 
 #: src/roudix_installer/runner.py
 msgid "Installing the system…"

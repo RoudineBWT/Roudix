@@ -37,6 +37,16 @@ ISO содержит наш собственный графический уст
 nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 ```
 
+> **Flakes не включены?** Если `nix run` отвечает `experimental Nix feature 'nix-command' is disabled`, передайте нужные функции в командной строке: настраивать ничего не нужно, и выбирать ветку тоже (используется ветка по умолчанию).
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
+# терминальная версия:
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
+```
+
+Чтобы включить их навсегда, выполните `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf` (в NixOS: `nix.settings.experimental-features = [ "nix-command" "flakes" ];`). `sudo` не читает ваш `~/.config`: для запуска от root сначала выполните `export NIX_CONFIG="experimental-features = nix-command flakes"` **отдельной строкой**, затем `sudo -E nix run …`.
+
 - **Ничего не стирается.** Конфигурация попадает в `~/.config/roudix` (существующая папка откладывается в сторону, но никогда не удаляется), затем `nixos-rebuild boot` собирает Roudix и назначает его на следующую загрузку. Ваша текущая система остаётся в меню загрузки.
 - **Ваш `/etc/nixos` копируется** в `/var/backups/roudix/nixos-<date>/` вместе с файлом `RESTORE.txt` (предыдущее поколение, загрузчик, `stateVersion` и точные команды для возврата). `hardware-configuration.nix` используется как есть и никогда не перезаписывается.
 - **Сначала симуляция.** Кнопка *Симуляция* на странице сводки создаёт конфигурацию во временной папке, проверяет, что каждый параметр записан, и заставляет Nix вычислить всю систему. На вашей машине ничего не изменяется.

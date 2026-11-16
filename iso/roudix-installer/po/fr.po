@@ -1290,8 +1290,8 @@ msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
 msgstr ""
-"SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via "
-"« i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' »."
+"SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via « "
+"i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' »."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/questions.py
 #: src/roudix_installer/summary_rows.py
@@ -1581,8 +1581,8 @@ msgid ""
 "Invalid username: use letters, digits, '_', '-' or '.', starting with a "
 "letter or '_' (max 32)."
 msgstr ""
-"Nom d'utilisateur invalide : utilisez des lettres, des chiffres, « _ », "
-"« - » ou « . », en commençant par une lettre ou « _ » (32 caractères max)."
+"Nom d'utilisateur invalide : utilisez des lettres, des chiffres, « _ », « - "
+"» ou « . », en commençant par une lettre ou « _ » (32 caractères max)."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/tui.py
 msgid ""
@@ -1705,7 +1705,7 @@ msgstr "Plugins OBS"
 msgid "Installation complete 🎉"
 msgstr "Installation terminée 🎉"
 
-#: src/roudix_installer/runner.py src/roudix_installer/tui.py
+#: src/roudix_installer/runner.py
 msgid "Error"
 msgstr "Erreur"
 
@@ -1927,6 +1927,39 @@ msgid ""
 msgstr ""
 "✓ Roudix est construit. Redémarre pour le lancer ; ton ancien système reste "
 "dans le menu de démarrage."
+
+# --- installer: zram during nixos-install ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "Swap compressé en RAM (zram) activé : {size} Gio."
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid "Could not enable zram ({reason})."
+msgstr "Impossible d'activer zram ({reason})."
+
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr ""
+"Impossible d'ajouter du swap temporaire ({reason}) — la compilation risque "
+"de manquer de mémoire."
+
+#: src/roudix_installer/runner.py
+msgid "not enough free space on the target disk"
+msgstr "pas assez d'espace libre sur le disque cible"
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+#: src/roudix_installer/runner.py
+#, python-brace-format
+msgid ""
+"Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target "
+"disk for the build…"
+msgstr ""
+"Mémoire faible ({ram} Gio) : ajout de {size} Gio de swap temporaire sur le "
+"disque cible pour la compilation…"
 
 #: src/roudix_installer/runner.py
 msgid "Installing the system…"

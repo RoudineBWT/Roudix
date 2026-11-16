@@ -37,6 +37,16 @@
 nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 ```
 
+> **ميزة flakes غير مفعّلة؟** إذا ردّ `nix run` بالرسالة `experimental Nix feature 'nix-command' is disabled`، فمرّر الميزات في سطر الأوامر: لا حاجة لأي إعداد، ولا لاختيار فرع (يُستخدم الفرع الافتراضي).
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
+# نسخة الطرفية:
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
+```
+
+لتفعيلها بشكل دائم نفّذ `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf` (على NixOS: `nix.settings.experimental-features = [ "nix-command" "flakes" ];`). الأمر `sudo` لا يقرأ `~/.config` الخاص بك: للتشغيل كـ root نفّذ أولًا `export NIX_CONFIG="experimental-features = nix-command flakes"` **في سطر مستقل** ثم استخدم `sudo -E nix run …`.
+
 - **لا يُمسح شيء.** تذهب الإعدادات إلى `~/.config/roudix` (يُنقل أي مجلد موجود جانبًا ولا يُحذف أبدًا)، ثم يبني `nixos-rebuild boot` نظام Roudix ويجدوله للإقلاع التالي. يبقى نظامك الحالي في قائمة الإقلاع.
 - **تُنسخ `/etc/nixos` احتياطيًا** إلى `/var/backups/roudix/nixos-<date>/` مع ملف `RESTORE.txt` (الجيل السابق، مدير الإقلاع، `stateVersion`، والأوامر الدقيقة للعودة). يُعاد استخدام `hardware-configuration.nix` كما هو ولا يُستبدل أبدًا.
 - **جرّب المحاكاة أولًا.** يولّد زر *محاكاة* في صفحة الملخص الإعدادات في مجلد مؤقت، ويتحقق من كتابة كل خيار، ويجعل Nix يقيّم النظام بأكمله. لا يتغيّر شيء على جهازك.
