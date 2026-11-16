@@ -356,5 +356,41 @@ class LiveDetection(unittest.TestCase):
         self.assertFalse(existing_nixos.is_live_system(self.IMPERMANENCE))
 
 
+
+class RootReexec(unittest.TestCase):
+    def test_only_a_live_non_root_real_install_restarts_as_root(self):
+        from unittest import mock
+        from roudix_installer import existing_nixos, main as entry
+        live = mock.patch.object(existing_nixos, "is_live_system", return_value=True)
+        fresh = mock.patch.object(existing_nixos, "detect_mode", return_value=existing_nixos.MODE_FRESH)
+        with live, fresh:
+            with mock.patch("os.geteuid", return_value=1000), mock.patch.dict(os.environ, {}, clear=True):
+                self.assertTrue(entry.needs_root_reexec())
+            with mock.patch("os.geteuid", return_value=0), mock.patch.dict(os.environ, {}, clear=True):
+                self.assertFalse(entry.needs_root_reexec())          # already root
+            with mock.patch("os.geteuid", return_value=1000), \
+                    mock.patch.dict(os.environ, {"ROUDIX_INSTALLER_DRY_RUN": "1"}, clear=True):
+                self.assertFalse(entry.needs_root_reexec())          # dry run touches nothing
+            with mock.patch("os.geteuid", return_value=1000), \
+                    mock.patch.dict(os.environ, {"ROUDIX_INSTALLER_REEXEC": "1"}, clear=True):
+                self.assertFalse(entry.needs_root_reexec())          # no loop
+        with mock.patch.object(existing_nixos, "is_live_system", return_value=False), fresh, \
+                mock.patch("os.geteuid", return_value=1000), mock.patch.dict(os.environ, {}, clear=True):
+            self.assertFalse(entry.needs_root_reexec())              # not an installer image
+
+
+
+class ArrowKeys(unittest.TestCase):
+    def test_scripted_input_keeps_the_numbered_prompt(self):
+        from roudix_installer import tui
+        out = io.StringIO()
+        answers = iter(["2"])
+        con = tui.Console(input_fn=lambda _prompt="": next(answers), out=out, color=False)
+        self.assertFalse(con.arrows_ok())
+        self.assertEqual(con.choice("Pick", [("a", "Alpha"), ("b", "Beta")], default="a"), "b")
+        self.assertIn(" 1) Alpha", out.getvalue())
+
+
+
 if __name__ == "__main__":
     unittest.main()

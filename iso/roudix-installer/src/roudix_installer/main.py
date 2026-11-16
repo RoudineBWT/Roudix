@@ -17,6 +17,7 @@ the terminal one works where PyGObject is not installed.
 """
 import argparse
 import os
+import shutil
 import sys
 
 
@@ -50,11 +51,46 @@ def _ask_ui() -> str:
     return "tui" if answer in {"2", "t", "tui", "terminal"} else "gui"
 
 
+# Variables sudo must set itself for the target user.
+_NO_FORWARD = {"HOME", "USER", "LOGNAME", "MAIL", "SHELL", "SUDO_USER", "SUDO_UID", "SUDO_GID", "SUDO_COMMAND"}
+
+
+def needs_root_reexec() -> bool:
+    """A real install from an installer image (Roudix ISO, stock minimal NixOS ISO…) writes
+    into /mnt/etc/nixos with plain Python (hardware-configuration.nix patch, local.nix…), so
+    the whole process has to be root, not just the commands it spawns through sudo. The
+    desktop launcher already starts it with sudo; `nix run` / a bare terminal does not."""
+    from roudix_installer import existing_nixos
+    if os.geteuid() == 0 or os.environ.get("ROUDIX_INSTALLER_REEXEC"):
+        return False
+    if os.environ.get("ROUDIX_INSTALLER_DRY_RUN"):
+        return False   # the simulation never touches /mnt
+    return existing_nixos.detect_mode() == existing_nixos.MODE_FRESH and existing_nixos.is_live_system()
+
+
+def _reexec_as_root(argv) -> None:
+    """Replace this process by the same installer run through sudo (passwordless on the live
+    ISO). The environment is handed over with env(1), so nothing depends on sudo's
+    SETENV/--preserve-env policy: PATH (disko, nixos-install…), the Nix wrapper's Python
+    variables and the display variables all survive."""
+    if not shutil.which("sudo"):
+        return   # nothing to re-exec with: keep going, ensure_privileges() reports it
+    forwarded = [f"{k}={v}" for k, v in os.environ.items() if k not in _NO_FORWARD and "=" not in k]
+    cmd = ["sudo", "env", *forwarded, "ROUDIX_INSTALLER_REEXEC=1",
+           sys.executable, "-m", "roudix_installer.main", *argv]
+    print("roudix-installer: restarting with administrator rights (sudo)…", file=sys.stderr)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os.execvp("sudo", cmd)
+
+
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     args, rest = _parse(argv)
     if args.dry_run:
         os.environ["ROUDIX_INSTALLER_DRY_RUN"] = "1"
+    if needs_root_reexec():
+        _reexec_as_root(argv)   # does not return unless sudo is missing
     ui = args.ui or os.environ.get("ROUDIX_INSTALLER_UI", "").lower()
     if not ui:
         if _has_display() and sys.stdin.isatty() and sys.stdout.isatty():

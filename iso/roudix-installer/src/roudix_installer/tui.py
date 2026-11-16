@@ -28,6 +28,15 @@ try:   # line editing for input(); also makes the prompt markers in Console._sty
 except ImportError:
     pass
 
+try:   # raw key reading for the arrow-key lists (POSIX terminals only)
+    import select
+    import termios
+    import tty
+except ImportError:   # pragma: no cover
+    termios = None
+
+import unicodedata
+
 from roudix_installer import existing_nixos, host_profile, i18n, multiboot, questions
 from roudix_installer.choices import host_label, host_note, welcome_text
 from roudix_installer.disks import MOUNTPOINT_VALUES, list_disks, list_partitions
@@ -110,22 +119,145 @@ class Console:
             print(file=self.out)
             raise Aborted
 
+    # ── arrow-key lists ──
+    def arrows_ok(self) -> bool:
+        """Arrow keys only on the real terminal: not with a scripted input (tests), a pipe,
+        a dumb terminal, or where termios is missing. Everything else keeps the numbered prompt."""
+        return bool(termios and self._input is input and self.out is sys.stdout
+                    and sys.stdin.isatty() and sys.stdout.isatty()
+                    and os.environ.get("TERM", "dumb") != "dumb"
+                    and os.environ.get("ROUDIX_INSTALLER_NO_ARROWS") is None)
+
+    @staticmethod
+    def _read_key() -> str:
+        """One key from the terminal (already in cbreak mode): 'up', 'down', 'home', 'end',
+        'enter', or the character typed; "" for anything else."""
+        fd = sys.stdin.fileno()
+        data = os.read(fd, 1)
+        if data == b"\x1b":
+            while select.select([fd], [], [], 0.05)[0]:   # the rest of an escape sequence
+                data += os.read(fd, 1)
+                if (len(data) > 2 and data[-1:].isalpha()) or data[-1:] == b"~":
+                    break
+        else:   # a multi-byte UTF-8 character
+            first = data[:1]
+            need = 3 if first >= b"\xf0" else 2 if first >= b"\xe0" else 1 if first >= b"\xc0" else 0
+            while need:
+                data += os.read(fd, 1)
+                need -= 1
+        if data == b"\x03":
+            raise KeyboardInterrupt
+        if data in (b"\x04", b""):
+            raise EOFError
+        if data in (b"\r", b"\n"):
+            return "enter"
+        keys = {b"\x1b[A": "up", b"\x1bOA": "up", b"\x1b[B": "down", b"\x1bOB": "down",
+                b"\x1b[H": "home", b"\x1b[1~": "home", b"\x1bOH": "home",
+                b"\x1b[F": "end", b"\x1b[4~": "end", b"\x1bOF": "end"}
+        if data in keys:
+            return keys[data]
+        if data[:1] == b"\x1b":
+            return ""
+        return data.decode("utf-8", "replace")
+
+    @staticmethod
+    def _clip(text: str, width: int) -> str:
+        """Cut `text` to `width` terminal cells (wide CJK characters count for two)."""
+        out, used = [], 0
+        for ch in text:
+            w = 2 if unicodedata.east_asian_width(ch) in ("W", "F") else 0 if unicodedata.combining(ch) else 1
+            if used + w > width:
+                break
+            out.append(ch)
+            used += w
+        return "".join(out)
+
+    def _list_lines(self, active: list, cursor: int, default) -> list:
+        width = max(20, shutil.get_terminal_size((80, 24)).columns - 1)
+        lines = []
+        for i, (value, label) in enumerate(active):
+            mark = ">" if i == cursor else "*" if value == default else " "
+            text = self._clip(f" {mark}{i + 1:>2}) {label}", width)
+            if self.vt:
+                for sym, rep in _CONSOLE_SYMBOLS.items():
+                    text = text.replace(sym, rep)
+            lines.append(self._fmt(text, "1;32" if i == cursor else "32" if value == default else ""))
+        return lines
+
+    def _pick_arrows(self, active: list, default, prompt: str):
+        """Up/Down move the highlight, Enter picks it, Home/End jump. A digit or a letter
+        switches to the usual line prompt with that character already typed, so numbers and
+        the filter work as before. Returns ("index", i) or ("text", raw)."""
+        cursor = next((i for i, (v, _) in enumerate(active) if v == default), 0)
+        out = self.out
+        drawn = 0
+        label = "  " + prompt.rstrip(": ") + " \u2191\u2193: "
+        if self.vt:
+            label = label.replace("\u2191\u2193", "up/down")
+        fd = sys.stdin.fileno()
+        saved = termios.tcgetattr(fd)
+        try:
+            tty.setcbreak(fd)   # keys arrive one by one and are not echoed
+            while True:
+                if drawn:
+                    out.write(f"\033[{drawn}A\r\033[J")
+                lines = self._list_lines(active, cursor, default)
+                out.write("\n".join(lines) + "\n" + self._fmt(label, "1"))
+                out.flush()
+                drawn = len(lines)
+                key = self._read_key()
+                if key == "up":
+                    cursor = (cursor - 1) % len(active)
+                elif key == "down":
+                    cursor = (cursor + 1) % len(active)
+                elif key == "home":
+                    cursor = 0
+                elif key == "end":
+                    cursor = len(active) - 1
+                elif key == "enter":
+                    out.write(f"\r\033[K{self._fmt(label, '1')}{cursor + 1}\n")
+                    out.flush()
+                    return ("index", cursor)
+                elif key and key.isprintable() and not key.isspace():
+                    # Typed text: the same prompt as without arrows, first character already in.
+                    termios.tcsetattr(fd, termios.TCSADRAIN, saved)
+                    out.write("\r\033[K")
+                    out.flush()
+                    readline.set_startup_hook(lambda: (readline.insert_text(key), readline.redisplay()))
+                    try:
+                        raw = input(self._styled_prompt("  " + prompt)).strip()
+                    finally:
+                        readline.set_startup_hook(None)
+                    return ("text", raw)
+        except (EOFError, KeyboardInterrupt):
+            print(file=out)
+            raise Aborted
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, saved)
+
     def choice(self, title: str, pairs: list, default=None, hint: str = ""):
-        """Pick one value of [(value, label)]. Enter = default, number = that entry,
-        any other text filters the list (long lists). Returns the value."""
+        """Pick one value of [(value, label)]. Arrow keys + Enter, or a number, or any other
+        text to filter the list (long lists). Enter alone = the default. Returns the value."""
         active = list(pairs)
         self.say()
         self.say(title, "bold")
         if hint:
             self.note(hint)
+        arrows = self.arrows_ok() and "readline" in sys.modules
         while True:
-            for i, (value, label) in enumerate(active, 1):
-                mark = "*" if value == default else " "
-                self.say(f" {mark}{i:>2}) {label}", "green" if value == default else "")
             shown_default = next((i for i, (v, _) in enumerate(active, 1) if v == default), None)
             filter_hint = tr(" or type to filter") if len(pairs) > 9 else ""
             prompt = tr("Choice") + (f" [{shown_default}]" if shown_default else "") + filter_hint + ": "
-            raw = self.ask("  " + prompt)
+            if arrows:
+                kind, picked = self._pick_arrows(active, default, prompt)
+                if kind == "index":
+                    return active[picked][0]
+                raw = picked
+            else:
+                for i, (value, label) in enumerate(active, 1):
+                    mark = "*" if value == default else " "
+                    self.say(f" {mark}{i:>2}) {label}", "green" if value == default else "")
+                raw = self.ask("  " + prompt)
             if not raw:
                 if shown_default:
                     return default
