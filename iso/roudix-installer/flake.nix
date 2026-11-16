@@ -57,7 +57,8 @@
           "--prefix" "PATH" ":" "${pkgs.lib.makeBinPath [
             disko.packages.${system}.disko
             pkgs.parted
-            pkgs.util-linux   # lsblk
+            pkgs.util-linux   # lsblk, and fallocate/mkswap/swapon for the temporary install swap
+            pkgs.btrfs-progs  # `btrfs filesystem mkswapfile`: the same swap file on a btrfs target
             pkgs.nixos-install-tools
             pkgs.git          # "existing NixOS" mode clones the config (a minimal install may not ship git)
             pkgs.efibootmgr   # terminal wizard: other systems in the firmware boot menu -> Limine entries

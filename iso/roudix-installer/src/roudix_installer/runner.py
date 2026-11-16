@@ -11,6 +11,7 @@ thread when it has a main loop to keep alive):
 Both are called from whichever thread runs `run()`: a GTK front-end must hop to
 its main loop (GLib.idle_add) inside its callbacks.
 """
+import contextlib
 import os
 import pwd
 import shutil
@@ -19,7 +20,7 @@ import tempfile
 from pathlib import Path
 from typing import Callable, Optional
 
-from roudix_installer import btrfs_patch, config_gen, disko_gen, existing_nixos, host_profile
+from roudix_installer import btrfs_patch, config_gen, disko_gen, existing_nixos, host_profile, swap
 from roudix_installer.i18n import tr
 
 
@@ -494,14 +495,95 @@ class InstallRunner:
 
     # ── Install ───────────────────────────────────────────────────────────
 
+    SWAP_FILE = "/mnt/.roudix-install-swap"
+
+    @contextlib.contextmanager
+    def _temp_swap(self):
+        """Extra memory while nixos-install runs, when RAM + swap is short (see swap.py): zram
+        first (high priority), then a swap file on the target disk. Best effort: a failure only
+        logs a warning. Everything is removed afterwards."""
+        mem_kib, swap_kib = swap.read_meminfo()
+        zram = self._add_zram(mem_kib) if swap.low_memory(mem_kib, swap_kib) else None
+        active = self._add_swap(mem_kib, swap_kib)
+        try:
+            yield
+        finally:
+            cleanup = []
+            if active:
+                cleanup += [["swapoff", self.SWAP_FILE], ["rm", "-f", self.SWAP_FILE]]
+            if zram:
+                cleanup += [["swapoff", zram], ["zramctl", "--reset", zram]]
+            for cmd in cleanup:
+                try:
+                    self._run_cmd(cmd)
+                except Exception:  # noqa: BLE001
+                    pass
+
+    def _add_zram(self, mem_kib: int) -> Optional[str]:
+        """Compressed swap in RAM, priority 100 (before any disk swap). Returns the device."""
+        if not shutil.which("zramctl"):
+            return None
+        mib = swap.zram_size_mib(mem_kib)
+        try:
+            self._run_cmd(["modprobe", "zram"])
+            dev = ""
+            for algo in (["--algorithm", "zstd"], []):   # older kernels: the default algorithm
+                proc = subprocess.run(self.priv(["zramctl", "--find", "--size", f"{mib}M", *algo]),
+                                      capture_output=True, text=True, stdin=subprocess.DEVNULL)
+                if proc.returncode == 0 and proc.stdout.strip():
+                    dev = proc.stdout.strip().splitlines()[0]
+                    break
+            if not dev:
+                raise RuntimeError("zramctl --find failed")
+            try:
+                limit = int(mem_kib * 1024 * swap.ZRAM_RAM_SHARE)
+                self._run_cmd(["sh", "-c", f"echo {limit} > /sys/block/{os.path.basename(dev)}/mem_limit"])
+            except Exception:  # noqa: BLE001
+                pass   # only a safety cap
+            self._run_cmd(["mkswap", dev])
+            self._run_cmd(["swapon", "--priority", "100", dev])
+            self.log(tr("Compressed RAM swap (zram) enabled: {size} GiB.").format(size=f"{mib / 1024:g}"))
+            return dev
+        except Exception as exc:  # noqa: BLE001
+            self.log(tr("Could not enable zram ({reason}).").format(reason=exc))
+            return None
+
+    def _add_swap(self, mem_kib: int, swap_kib: int) -> bool:
+        path = self.SWAP_FILE
+        try:
+            stat = os.statvfs("/mnt")
+            mib, why = swap.plan(mem_kib, swap_kib, stat.f_bavail * stat.f_frsize)
+            if why == "no-space":
+                self.log(tr("Could not add temporary swap ({reason}) — the build may run out of memory.")
+                         .format(reason=tr("not enough free space on the target disk")))
+            if not mib:
+                return False
+            self.log(tr("Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target disk for the build…")
+                     .format(ram=f"{mem_kib / 1048576:.1f}", size=f"{mib / 1024:g}"))
+            self._run_cmd(["rm", "-f", path])
+            if swap.fstype_of("/mnt") == "btrfs":
+                self._run_cmd(["btrfs", "filesystem", "mkswapfile", "--size", f"{mib}M", path])
+            else:
+                self._run_cmd(["fallocate", "-l", f"{mib}M", path])
+                self._run_cmd(["chmod", "600", path])
+                self._run_cmd(["mkswap", path])
+            self._run_cmd(["swapon", "--priority", "10", path])
+            return True
+        except Exception as exc:  # noqa: BLE001
+            self.log(tr("Could not add temporary swap ({reason}) — the build may run out of memory.").format(reason=exc))
+            with contextlib.suppress(Exception):
+                self._run_cmd(["rm", "-f", path])
+            return False
+
     def _step_install(self):
         self.status(tr("Installing the system…"), 0.75)
-        self._run_cmd([
-            "nixos-install",
-            "--flake", f"/mnt/etc/nixos#{self.state.hostname}",
-            "--no-root-passwd",
-            "--option", "accept-flake-config", "true",
-        ])
+        with self._temp_swap():
+            self._run_cmd([
+                "nixos-install",
+                "--flake", f"/mnt/etc/nixos#{self.state.hostname}",
+                "--no-root-passwd",
+                "--option", "accept-flake-config", "true",
+            ])
 
         if self.state.password:
             self.status(tr("Setting the password…"), 0.9)

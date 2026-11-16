@@ -226,3 +226,20 @@ msgstr "Abandonné — rien n'a été modifié."
 
 msgid "Found in the EFI NVRAM: switch on the ones to add to Limine's boot menu."
 msgstr "Trouvés dans la NVRAM EFI : active ceux à ajouter au menu de démarrage de Limine."
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+msgid "Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target disk for the build…"
+msgstr "Mémoire faible ({ram} Gio) : ajout de {size} Gio de swap temporaire sur le disque cible pour la compilation…"
+
+msgid "Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr "Impossible d'ajouter du swap temporaire ({reason}) — la compilation risque de manquer de mémoire."
+
+msgid "not enough free space on the target disk"
+msgstr "pas assez d'espace libre sur le disque cible"
+
+# --- installer: zram during nixos-install ---
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "Swap compressé en RAM (zram) activé : {size} Gio."
+
+msgid "Could not enable zram ({reason})."
+msgstr "Impossible d'activer zram ({reason})."

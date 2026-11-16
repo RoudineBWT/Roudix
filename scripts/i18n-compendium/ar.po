@@ -237,3 +237,20 @@ msgstr "تمت المقاطعة — قد يكون التثبيت غير مكتم
 msgid "Aborted — nothing was changed."
 msgstr "أُلغي — لم يتم تغيير أي شيء."
 
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+msgid "Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target disk for the build…"
+msgstr "الذاكرة منخفضة ({ram} GiB): جارٍ إضافة {size} GiB من مساحة التبديل المؤقتة على القرص الهدف أثناء البناء…"
+
+msgid "Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr "تعذّرت إضافة مساحة تبديل مؤقتة ({reason}) — قد تنفد الذاكرة أثناء البناء."
+
+msgid "not enough free space on the target disk"
+msgstr "لا توجد مساحة خالية كافية على القرص الهدف"
+
+# --- installer: zram during nixos-install ---
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "تم تفعيل مساحة التبديل المضغوطة في الذاكرة (zram): ‏{size} GiB."
+
+msgid "Could not enable zram ({reason})."
+msgstr "تعذّر تفعيل zram ({reason})."

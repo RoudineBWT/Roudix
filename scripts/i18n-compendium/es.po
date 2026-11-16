@@ -237,3 +237,20 @@ msgstr "Interrumpido — es posible que la instalación esté incompleta."
 msgid "Aborted — nothing was changed."
 msgstr "Cancelado — no se ha modificado nada."
 
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+msgid "Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target disk for the build…"
+msgstr "Poca memoria ({ram} GiB): añadiendo {size} GiB de swap temporal en el disco de destino para la compilación…"
+
+msgid "Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr "No se pudo añadir swap temporal ({reason}) — la compilación podría quedarse sin memoria."
+
+msgid "not enough free space on the target disk"
+msgstr "no hay suficiente espacio libre en el disco de destino"
+
+# --- installer: zram during nixos-install ---
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "Swap comprimido en RAM (zram) activado: {size} GiB."
+
+msgid "Could not enable zram ({reason})."
+msgstr "No se pudo activar zram ({reason})."

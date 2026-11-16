@@ -237,3 +237,20 @@ msgstr "बाधित — इंस्टॉलेशन अधूरा ह�
 msgid "Aborted — nothing was changed."
 msgstr "रद्द किया गया — कुछ भी नहीं बदला गया।"
 
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+msgid "Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target disk for the build…"
+msgstr "मेमोरी कम है ({ram} GiB): बिल्ड के लिए टारगेट डिस्क पर {size} GiB अस्थायी स्वैप जोड़ा जा रहा है…"
+
+msgid "Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr "अस्थायी स्वैप नहीं जोड़ा जा सका ({reason}) — बिल्ड में मेमोरी कम पड़ सकती है।"
+
+msgid "not enough free space on the target disk"
+msgstr "टारगेट डिस्क पर पर्याप्त खाली जगह नहीं है"
+
+# --- installer: zram during nixos-install ---
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "RAM में संपीड़ित स्वैप (zram) चालू: {size} GiB।"
+
+msgid "Could not enable zram ({reason})."
+msgstr "zram चालू नहीं हो सका ({reason})।"
