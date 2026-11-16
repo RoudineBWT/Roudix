@@ -218,6 +218,7 @@
       };
       roudixWelcome = pkgs.callPackage ./pkgs/roudix-welcome {};
       roudixConfig = pkgs.callPackage ./pkgs/roudix-config {};
+      roudix-cursor = pkgs.callPackage ./pkgs/roudix-cursor {};
       roudixStore = pkgs.callPackage ./pkgs/roudix-store {
         nixos-appstream-data = inputs.nixos-appstream-data.packages.${system}.appstream-data;
       };

@@ -2,7 +2,7 @@
 ## [input.mouse], [input.cursor], [input.focus].
 ##
 ## Docs: https://docs.noctalia.dev/umbriel/input/
-{ osConfig, ... }:
+{ osConfig, roudix-cursor, ... }:
 {
   programs.umbriel.settings = {
   input = {
@@ -54,7 +54,7 @@
     };
 
     cursor = {
-      theme = "Bibata-Modern-Ice"; # misc.kdl: cursor { xcursor-theme ... }
+      theme = roudix-cursor.themeName; # misc.kdl: cursor { xcursor-theme ... }
       size = 24;
       hide_when_typing = true;
       hide_timeout_ms = 1000; # niri: hide-after-inactive-ms 1000

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, roudixBranding, ... }:
+{ config, lib, pkgs, inputs, roudixBranding, roudix-cursor, ... }:
 let
   isGnome = config.roudix.desktop.type == "gnome";
   cfg = config.roudix.gnome;
@@ -113,7 +113,7 @@ let
       color-scheme = "prefer-dark";
       icon-theme   = config.roudix.iconThemeName;   # Papirus-Roudix by default (icon-theme.nix)
       gtk-theme    = "adw-gtk3-dark";
-      cursor-theme = "capitaine-cursors-white";
+      cursor-theme = roudix-cursor.themeName;
       cursor-size  = lib.gvariant.mkInt32 (24);
       gtk-enable-primary-paste = true;
       font-name          = "${uiFont} 11";
@@ -326,6 +326,7 @@ in
       adw-gtk3
       papirus-icon-theme
       capitaine-cursors
+      roudix-cursor
     ] ++ cfg.extraExtensions;
 
     environment.gnome.excludePackages = with pkgs; [

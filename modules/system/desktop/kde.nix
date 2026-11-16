@@ -1,4 +1,4 @@
-{ config, lib, pkgs, roudixBranding, ... }:
+{ config, lib, pkgs, roudixBranding, roudix-cursor, ... }:
 let
   isKde = config.roudix.desktop.type == "kde";
 
@@ -156,6 +156,7 @@ lib.mkIf isKde {
     kdePackages.qtwebengine
     papirus-icon-theme
     capitaine-cursors
+    roudix-cursor
     vlc
     digikam
   ];
