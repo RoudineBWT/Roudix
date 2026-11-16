@@ -68,16 +68,40 @@ def needs_root_reexec() -> bool:
     return existing_nixos.detect_mode() == existing_nixos.MODE_FRESH and existing_nixos.is_live_system()
 
 
+def _launcher() -> list:
+    """The command that starts this very installer again, as it was started.
+
+    Under Nix the program is a wrapper (bin/roudix-installer) that sets PATH, the Python
+    search path and GTK's variables, then runs bin/.roudix-installer-wrapped. A bare
+    `python -m roudix_installer.main` would not find the package (it lives in the app's own
+    closure, not in the interpreter's), so go through the wrapper. From a source checkout
+    (`python -m roudix_installer.main`, tests) fall back to the interpreter."""
+    argv0 = os.path.abspath(sys.argv[0]) if sys.argv and sys.argv[0] else ""
+    base = os.path.basename(argv0)
+    candidates = []
+    if base.startswith(".") and base.endswith("-wrapped"):
+        candidates.append(os.path.join(os.path.dirname(argv0), base[1:-len("-wrapped")]))
+    if argv0 and not base.endswith(".py"):
+        candidates.append(argv0)
+    found = shutil.which("roudix-installer")
+    if found:
+        candidates.append(found)
+    for cand in candidates:
+        if os.path.isfile(cand) and os.access(cand, os.X_OK):
+            return [cand]
+    pkg_parent = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return ["env", f"PYTHONPATH={pkg_parent}", sys.executable, "-m", "roudix_installer.main"]
+
+
 def _reexec_as_root(argv) -> None:
     """Replace this process by the same installer run through sudo (passwordless on the live
     ISO). The environment is handed over with env(1), so nothing depends on sudo's
-    SETENV/--preserve-env policy: PATH (disko, nixos-install…), the Nix wrapper's Python
-    variables and the display variables all survive."""
+    SETENV/--preserve-env policy: PATH (disko, nixos-install…), the display variables and
+    the rest survive."""
     if not shutil.which("sudo"):
         return   # nothing to re-exec with: keep going, ensure_privileges() reports it
     forwarded = [f"{k}={v}" for k, v in os.environ.items() if k not in _NO_FORWARD and "=" not in k]
-    cmd = ["sudo", "env", *forwarded, "ROUDIX_INSTALLER_REEXEC=1",
-           sys.executable, "-m", "roudix_installer.main", *argv]
+    cmd = ["sudo", "env", *forwarded, "ROUDIX_INSTALLER_REEXEC=1", *_launcher(), *argv]
     print("roudix-installer: restarting with administrator rights (sudo)…", file=sys.stderr)
     sys.stdout.flush()
     sys.stderr.flush()
