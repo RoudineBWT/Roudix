@@ -165,6 +165,10 @@ msgid "Nemo — Cinnamon"
 msgstr "Nemo — Cinnamon"
 
 #: src/roudix_installer/choices.py
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia, Wayland nativo"
+
+#: src/roudix_installer/choices.py
 msgid "Zed — fast, modern (recommended)"
 msgstr "Zed — rápido y moderno (recomendado)"
 
@@ -1705,7 +1709,7 @@ msgstr "Plugins de OBS"
 msgid "Installation complete 🎉"
 msgstr "Instalación completada 🎉"
 
-#: src/roudix_installer/runner.py
+#: src/roudix_installer/runner.py src/roudix_installer/tui.py
 msgid "Error"
 msgstr "Error"
 
@@ -1840,9 +1844,9 @@ msgid ""
 "/iso-cfg not found (ISO not (yet) rebuilt with isoImage.contents, or testing "
 "outside an ISO) — cloning straight from GitHub instead."
 msgstr ""
-"No se encontró /iso-cfg (la ISO aún no se ha reconstruido con isoImage."
-"contents, o se está probando fuera de una ISO) — se clona directamente desde "
-"GitHub."
+"No se encontró /iso-cfg (la ISO aún no se ha reconstruido con "
+"isoImage.contents, o se está probando fuera de una ISO) — se clona "
+"directamente desde GitHub."
 
 #: src/roudix_installer/runner.py
 #, python-brace-format

@@ -163,6 +163,10 @@ msgid "Nemo — Cinnamon"
 msgstr "Nemo — Cinnamon"
 
 #: src/roudix_installer/choices.py
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia, Wayland natif"
+
+#: src/roudix_installer/choices.py
 msgid "Zed — fast, modern (recommended)"
 msgstr "Zed — rapide, moderne (recommandé)"
 
@@ -1290,8 +1294,8 @@ msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
 msgstr ""
-"SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via « "
-"i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' »."
+"SMBus / SKU RAM ne sont pas détectés automatiquement — trouvez-les via "
+"« i2cdetect -l » et « sudo dmidecode -t memory | grep 'Part Number' »."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/questions.py
 #: src/roudix_installer/summary_rows.py
@@ -1581,8 +1585,8 @@ msgid ""
 "Invalid username: use letters, digits, '_', '-' or '.', starting with a "
 "letter or '_' (max 32)."
 msgstr ""
-"Nom d'utilisateur invalide : utilisez des lettres, des chiffres, « _ », « - "
-"» ou « . », en commençant par une lettre ou « _ » (32 caractères max)."
+"Nom d'utilisateur invalide : utilisez des lettres, des chiffres, « _ », "
+"« - » ou « . », en commençant par une lettre ou « _ » (32 caractères max)."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/tui.py
 msgid ""
@@ -1705,7 +1709,7 @@ msgstr "Plugins OBS"
 msgid "Installation complete 🎉"
 msgstr "Installation terminée 🎉"
 
-#: src/roudix_installer/runner.py
+#: src/roudix_installer/runner.py src/roudix_installer/tui.py
 msgid "Error"
 msgstr "Erreur"
 

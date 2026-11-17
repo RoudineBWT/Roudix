@@ -136,8 +136,8 @@ msgid ""
 "Auto-recolored to the current Noctalia accent if roudix.desktop.shell = "
 "\"noctalia\"; plain Tela otherwise"
 msgstr ""
-"Se recolorea automáticamente con el acento actual de Noctalia si roudix."
-"desktop.shell = \"noctalia\"; Tela normal en los demás casos"
+"Se recolorea automáticamente con el acento actual de Noctalia si "
+"roudix.desktop.shell = \"noctalia\"; Tela normal en los demás casos"
 
 #: roudix-switcher.py
 msgid "Flat, colorful Material-style set (pkgs.qogir-icon-theme)"
@@ -214,6 +214,10 @@ msgstr "Ligero, el gestor de archivos de XFCE"
 #: roudix-switcher.py
 msgid "Lightweight, Qt-based"
 msgstr "Ligero, basado en Qt"
+
+#: roudix-switcher.py
+msgid "Noctalia's native Wayland file manager"
+msgstr "El gestor de archivos nativo de Wayland de Noctalia"
 
 #: roudix-switcher.py
 msgid "Full-featured Matrix client"

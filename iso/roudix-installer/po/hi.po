@@ -164,6 +164,10 @@ msgid "Nemo — Cinnamon"
 msgstr "Nemo — Cinnamon"
 
 #: src/roudix_installer/choices.py
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia, नेटिव Wayland"
+
+#: src/roudix_installer/choices.py
 msgid "Zed — fast, modern (recommended)"
 msgstr "Zed — तेज़, आधुनिक (अनुशंसित)"
 
@@ -1687,7 +1691,7 @@ msgstr "OBS प्लगइन"
 msgid "Installation complete 🎉"
 msgstr "इंस्टॉलेशन पूरा हुआ 🎉"
 
-#: src/roudix_installer/runner.py
+#: src/roudix_installer/runner.py src/roudix_installer/tui.py
 msgid "Error"
 msgstr "त्रुटि"
 
@@ -1800,8 +1804,8 @@ msgid ""
 "Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
 "local.nix generation may fail."
 msgstr ""
-"चेतावनी: ब्रांच '{branch}' पर hosts/{host}/local.nix.example नहीं मिला — local."
-"nix बनाना विफल हो सकता है।"
+"चेतावनी: ब्रांच '{branch}' पर hosts/{host}/local.nix.example नहीं मिला — "
+"local.nix बनाना विफल हो सकता है।"
 
 #: src/roudix_installer/runner.py
 msgid "Copying the configuration…"

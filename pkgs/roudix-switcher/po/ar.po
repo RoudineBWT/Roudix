@@ -131,8 +131,8 @@ msgid ""
 "Auto-recolored to the current Noctalia accent if roudix.desktop.shell = "
 "\"noctalia\"; plain Tela otherwise"
 msgstr ""
-"يُعاد تلوينها تلقائيًا بلون Noctalia المميز الحالي إذا كان roudix.desktop."
-"shell = \"noctalia\"؛ وإلا فهي Tela العادية"
+"يُعاد تلوينها تلقائيًا بلون Noctalia المميز الحالي إذا كان "
+"roudix.desktop.shell = \"noctalia\"؛ وإلا فهي Tela العادية"
 
 #: roudix-switcher.py
 msgid "Flat, colorful Material-style set (pkgs.qogir-icon-theme)"
@@ -209,6 +209,10 @@ msgstr "خفيف، مدير ملفات XFCE"
 #: roudix-switcher.py
 msgid "Lightweight, Qt-based"
 msgstr "خفيف، مبني على Qt"
+
+#: roudix-switcher.py
+msgid "Noctalia's native Wayland file manager"
+msgstr "مدير ملفات Noctalia الأصلي لـ Wayland"
 
 #: roudix-switcher.py
 msgid "Full-featured Matrix client"
@@ -1404,8 +1408,8 @@ msgid ""
 "{len} additional theme(s) detected on the system (a package you added by "
 "hand, or dropped into ~/.icons)."
 msgstr ""
-"تم الكشف عن {len} سمة إضافية على النظام (حزمة أضفتها يدويًا، أو وُضعت في ~/."
-"icons)."
+"تم الكشف عن {len} سمة إضافية على النظام (حزمة أضفتها يدويًا، أو وُضعت في "
+"~/.icons)."
 
 #: roudix-switcher.py
 msgid ""

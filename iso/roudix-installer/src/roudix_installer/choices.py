@@ -162,13 +162,19 @@ def _terminals():
     ]
 
 
-def _file_managers():
-    return [
+def _file_managers(shell=None):
+    base = [
         ("nautilus", tr("Nautilus — GNOME Files (recommended)")),
         ("dolphin", tr("Dolphin — KDE")),
         ("thunar", tr("Thunar — XFCE, lightweight")),
         ("nemo", tr("Nemo — Cinnamon")),
     ]
+    # Luciole is Noctalia's own file manager: only offered with the Noctalia
+    # shell (the NixOS module asserts roudix.fileManager = "luciole" needs
+    # roudix.desktop.shell = "noctalia").
+    if shell == "noctalia":
+        base = base + [("luciole", tr("Luciole — Noctalia, native Wayland"))]
+    return base
 
 
 def _editors():
@@ -658,7 +664,7 @@ def seed_allowed():
         "desktop_shell": lambda st: vals(_shells(st.desktop)),
         "default_shell": vals(_default_shells()),
         "terminal": vals(_terminals()),
-        "file_manager": vals(_file_managers()),
+        "file_manager": lambda st: vals(_file_managers(st.desktop_shell)),
         "editor": vals(_editors()),
         "desktop_integration": vals(_desktop_integrations()),
         "rgb": vals(_rgb_options()),

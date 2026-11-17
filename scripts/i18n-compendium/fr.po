@@ -243,3 +243,9 @@ msgstr "Swap compressé en RAM (zram) activé : {size} Gio."
 
 msgid "Could not enable zram ({reason})."
 msgstr "Impossible d'activer zram ({reason})."
+
+msgid "Noctalia's native Wayland file manager"
+msgstr "Gestionnaire de fichiers Wayland natif de Noctalia"
+
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia, Wayland natif"

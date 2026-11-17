@@ -133,6 +133,14 @@ def _eac_vendor(state: InstallState) -> str:
     return "bazzite" if state.gpu == "nvidia" else state.eac_vendor
 
 
+def _file_manager_value(state: InstallState) -> str:
+    """Luciole only works with the Noctalia shell (the NixOS module asserts it):
+    never write that pair, whatever the state was seeded or left with."""
+    if state.file_manager == "luciole" and state.desktop_shell != "noctalia":
+        return "nautilus"
+    return state.file_manager
+
+
 def _bios_device(state: InstallState) -> str:
     """roudix.boot.biosDevice as written: the DISK Limine goes on in legacy BIOS
     mode (the one picked on the Disk page, whatever the partitioning mode),
@@ -232,7 +240,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.editor", state.editor)
     t = _sub_string(t, "roudix.desktopIntegration", state.desktop_integration)
     t = _sub_string(t, "roudix.terminal", state.terminal)
-    t = _sub_string(t, "roudix.fileManager", state.file_manager)
+    t = _sub_string(t, "roudix.fileManager", _file_manager_value(state))
     t = _sub_string(t, "roudix.shell", state.default_shell)
     t = _sub_bool(t, "roudix.vmGuest.enable", state.vm_guest)
     t = _sub_bool(t, "roudix.gaming.enable", state.gaming)
@@ -349,7 +357,7 @@ def _expected_values(state: InstallState) -> list:
         "roudix.rgb": state.rgb, "hardware.myGpu": state.gpu, "hardware.myCpu": state.cpu,
         "roudix.desktop.type": state.desktop, "roudix.desktop.shell": state.desktop_shell,
         "roudix.editor": state.editor, "roudix.desktopIntegration": state.desktop_integration,
-        "roudix.terminal": state.terminal, "roudix.fileManager": state.file_manager,
+        "roudix.terminal": state.terminal, "roudix.fileManager": _file_manager_value(state),
         "roudix.shell": state.default_shell, "time.timeZone": state.timezone,
         "i18n.defaultLocale": state.locale, "console.keyMap": state.keymap,
         "roudix.keyboardLayout": state.keyboard_layout, "roudix.keyboardVariant": state.keyboard_variant,

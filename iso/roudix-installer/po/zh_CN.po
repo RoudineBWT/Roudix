@@ -163,6 +163,10 @@ msgid "Nemo — Cinnamon"
 msgstr "Nemo — Cinnamon"
 
 #: src/roudix_installer/choices.py
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia，原生 Wayland"
+
+#: src/roudix_installer/choices.py
 msgid "Zed — fast, modern (recommended)"
 msgstr "Zed — 快速、现代（推荐）"
 
@@ -1273,8 +1277,8 @@ msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
 msgstr ""
-"SMBus / 内存 SKU 不会自动检测 — 请通过 \"i2cdetect -l\" 和 \"sudo dmidecode -"
-"t memory | grep 'Part Number'\" 查找。"
+"SMBus / 内存 SKU 不会自动检测 — 请通过 \"i2cdetect -l\" 和 \"sudo dmidecode "
+"-t memory | grep 'Part Number'\" 查找。"
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/questions.py
 #: src/roudix_installer/summary_rows.py
@@ -1677,7 +1681,7 @@ msgstr "OBS 插件"
 msgid "Installation complete 🎉"
 msgstr "安装完成 🎉"
 
-#: src/roudix_installer/runner.py
+#: src/roudix_installer/runner.py src/roudix_installer/tui.py
 msgid "Error"
 msgstr "错误"
 
@@ -1788,8 +1792,8 @@ msgid ""
 "Warning: hosts/{host}/local.nix.example not found on branch '{branch}' — "
 "local.nix generation may fail."
 msgstr ""
-"警告：在分支“{branch}”上未找到 hosts/{host}/local.nix.example — 生成 local."
-"nix 可能会失败。"
+"警告：在分支“{branch}”上未找到 hosts/{host}/local.nix.example — 生成 "
+"local.nix 可能会失败。"
 
 #: src/roudix_installer/runner.py
 msgid "Copying the configuration…"

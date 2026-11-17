@@ -211,6 +211,10 @@ msgid "Lightweight, Qt-based"
 msgstr "हल्का, Qt-आधारित"
 
 #: roudix-switcher.py
+msgid "Noctalia's native Wayland file manager"
+msgstr "Noctalia का नेटिव Wayland फ़ाइल मैनेजर"
+
+#: roudix-switcher.py
 msgid "Full-featured Matrix client"
 msgstr "पूरी सुविधाओं वाला Matrix क्लाइंट"
 

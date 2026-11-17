@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, config, inputs, ... }:
 with lib;
 let
   # Nemo + its default extensions + nemo-terminal (F4 embedded terminal, see
@@ -43,7 +43,20 @@ let
     "nemo"       = { package = nemoWithTerminal;               command = "nemo";       extras = [ pkgs.gvfs pkgs.file-roller pkgs.p7zip pkgs.unrar pkgs.zip pkgs.unzip ]; };
     "thunar"     = { package = pkgs.thunar;           command = "thunar";     extras = [ pkgs.gvfs pkgs.thunar-volman ]; };
     "pcmanfm-qt" = { package = pkgs.libsForQt5.pcmanfm-qt; command = "pcmanfm-qt"; extras = []; };
+    # Luciole (Noctalia family, native Wayland / OpenGL ES, no Qt or GTK).
+    # Only valid with roudix.desktop.shell = "noctalia" (assertion below).
+    # Package from its flake (no nixpkgs attribute yet). Its wrapper already
+    # brings ffmpeg / poppler / 7zip / xdg-terminal-exec and the GIO modules;
+    # gvfs is added (like nautilus) for the Trash and SFTP/SMB/WebDAV daemons.
+    # It is also an Open/Save portal backend, but that stays opt-in
+    # (portals.conf), so nothing else is switched here.
+    "luciole"    = { package = inputs.luciole.packages.${pkgs.stdenv.hostPlatform.system}.default; command = "luciole"; extras = [ pkgs.gvfs ]; };
   };
+
+  # Managers that only make sense with a given shell. Everything not listed
+  # here works with any shell.
+  shellOnlyFileManagers = { luciole = "noctalia"; };
+  neededShell = shellOnlyFileManagers.${config.roudix.fileManager} or null;
 in
 {
   options.roudix.fileManager = mkOption {
@@ -56,10 +69,21 @@ in
       Default file manager: installed, and wired to the niri MOD+E bind
       as well as the "open a terminal here" integration (nautilus via
       nautilus-open-any-terminal, nemo via a Cinnamon dconf default).
+
+      "luciole" (Noctalia's native Wayland file manager) is only available
+      with roudix.desktop.shell = "noctalia".
     '';
   };
 
   config = mkIf (elem config.roudix.desktop.type [ "niri" "hyprland" "mangowc" "umbriel" ]) {
+    # Same idea as the caelestia assertion (modules/system/desktop/default.nix):
+    # fail with a readable message instead of installing a file manager that
+    # doesn't belong to the selected shell.
+    assertions = [{
+      assertion = neededShell == null || neededShell == config.roudix.desktop.shell;
+      message = "roudix: roudix.fileManager = \"${config.roudix.fileManager}\" needs roudix.desktop.shell = \"${toString neededShell}\" (currently \"${config.roudix.desktop.shell}\"). Pick another file manager (nautilus, dolphin, thunar, nemo, pcmanfm-qt) or switch the shell back.";
+    }];
+
     environment.systemPackages =
       [ fileManagerDefs.${config.roudix.fileManager}.package ]
       ++ fileManagerDefs.${config.roudix.fileManager}.extras;

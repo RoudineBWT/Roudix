@@ -164,6 +164,10 @@ msgid "Nemo — Cinnamon"
 msgstr "Nemo — Cinnamon"
 
 #: src/roudix_installer/choices.py
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia، Wayland أصلي"
+
+#: src/roudix_installer/choices.py
 msgid "Zed — fast, modern (recommended)"
 msgstr "Zed — سريع وحديث (موصى به)"
 
@@ -1281,8 +1285,8 @@ msgid ""
 "SMBus / RAM SKU aren't auto-detected — find them via \"i2cdetect -l\" and "
 "\"sudo dmidecode -t memory | grep 'Part Number'\"."
 msgstr ""
-"لا يتم الكشف عن SMBus / SKU الذاكرة تلقائيًا — اعثر عليهما عبر \"i2cdetect -"
-"l\" و\"sudo dmidecode -t memory | grep 'Part Number'\"."
+"لا يتم الكشف عن SMBus / SKU الذاكرة تلقائيًا — اعثر عليهما عبر \"i2cdetect "
+"-l\" و\"sudo dmidecode -t memory | grep 'Part Number'\"."
 
 #: src/roudix_installer/pages/options.py src/roudix_installer/questions.py
 #: src/roudix_installer/summary_rows.py
@@ -1690,7 +1694,7 @@ msgstr "إضافات OBS"
 msgid "Installation complete 🎉"
 msgstr "اكتمل التثبيت 🎉"
 
-#: src/roudix_installer/runner.py
+#: src/roudix_installer/runner.py src/roudix_installer/tui.py
 msgid "Error"
 msgstr "خطأ"
 
