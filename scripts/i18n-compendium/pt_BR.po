@@ -143,3 +143,114 @@ msgstr "Dicionários da suíte de escritório"
 
 msgid "Laptop power backend"
 msgstr "Back-end de energia do notebook"
+
+# --- installer terminal wizard (tui.py) ---
+msgid "Other systems"
+msgstr "Outros sistemas"
+
+msgid "Found in the EFI NVRAM: switch on the ones to add to Limine's boot menu."
+msgstr "Encontrados na NVRAM EFI: ative os que deseja adicionar ao menu de boot do Limine."
+
+msgid "Only letters, digits and . _ + - : , @ / are allowed here."
+msgstr "Aqui só são permitidos letras, dígitos e . _ + - : , @ /"
+
+msgid "Allowed: {codes}"
+msgstr "Permitido: {codes}"
+
+msgid "Can't be empty."
+msgstr "Não pode ficar vazio."
+
+msgid "Gaming extras"
+msgstr "Extras para jogos"
+
+msgid "Features"
+msgstr "Recursos"
+
+msgid "Content-creation tools"
+msgstr "Ferramentas de criação de conteúdo"
+
+msgid "OBS plugins"
+msgstr "Plugins do OBS"
+
+msgid " or type to filter"
+msgstr " ou digite para filtrar"
+
+msgid "Choice"
+msgstr "Escolha"
+
+msgid "Choose one of the entries."
+msgstr "Escolha uma das entradas."
+
+msgid "Out of range."
+msgstr "Fora do intervalo."
+
+msgid "No match."
+msgstr "Nenhuma correspondência."
+
+msgctxt "yes/no prompt, yes is the default"
+msgid "[Y/n]"
+msgstr "[S/n]"
+
+msgctxt "yes/no prompt, no is the default"
+msgid "[y/N]"
+msgstr "[s/N]"
+
+msgid "Answer yes or no."
+msgstr "Responda sim ou não."
+
+msgid "Toggle: numbers separated by spaces, a = all, n = none, Enter = continue"
+msgstr "Alternar: números separados por espaços, a = tudo, n = nada, Enter = continuar"
+
+msgid "Administrator rights are needed and sudo is not available: run the installer as root."
+msgstr "São necessárias permissões de administrador e o sudo não está disponível: execute o instalador como root."
+
+msgid "Administrator rights are needed: enter your password if asked."
+msgstr "São necessárias permissões de administrador: digite sua senha se solicitado."
+
+msgid "No disk found."
+msgstr "Nenhum disco encontrado."
+
+msgid "File not found."
+msgstr "Arquivo não encontrado."
+
+msgid "Partition it yourself in another terminal (cfdisk, fdisk, parted…), then press Enter."
+msgstr "Particione você mesmo em outro terminal (cfdisk, fdisk, parted…) e pressione Enter."
+
+msgid "Other systems found in the EFI NVRAM — which ones do you want to add to Limine?"
+msgstr "Outros sistemas encontrados na NVRAM EFI — quais você quer adicionar ao Limine?"
+
+msgid "Edit the options"
+msgstr "Editar as opções"
+
+msgid "Quit"
+msgstr "Sair"
+
+msgid "What now?"
+msgstr "E agora?"
+
+msgid "Start now?"
+msgstr "Começar agora?"
+
+msgid "Interrupted — the installation may be incomplete."
+msgstr "Interrompido — a instalação pode estar incompleta."
+
+msgid "Aborted — nothing was changed."
+msgstr "Cancelado — nada foi alterado."
+
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+msgid "Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target disk for the build…"
+msgstr "Pouca memória ({ram} GiB): adicionando {size} GiB de swap temporário no disco de destino para a compilação…"
+
+msgid "Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr "Não foi possível adicionar swap temporário ({reason}) — a compilação pode ficar sem memória."
+
+msgid "not enough free space on the target disk"
+msgstr "não há espaço livre suficiente no disco de destino"
+
+# --- installer: zram during nixos-install ---
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "Swap comprimido na RAM (zram) ativado: {size} GiB."
+
+msgid "Could not enable zram ({reason})."
+msgstr "Não foi possível ativar o zram ({reason})."

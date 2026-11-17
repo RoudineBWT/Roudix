@@ -69,7 +69,6 @@
 
 ```
 roudix/
-├── roudix-installer.sh              # مثبّت مبني على Bash
 ├── flake.nix                        # المدخلات والمخرجات
 ├── flake.lock
 ├── docs/                            # التوثيق

@@ -20,6 +20,8 @@
           # rsync — pkgs/roudix-branding lives at the repo root, not under
           # iso/, hence the path through roudix-cfg.
           roudixBranding = nixpkgs.legacyPackages.${system}.callPackage ./roudix-cfg/pkgs/roudix-branding {};
+          # gnome.nix also needs the Roudix cursor theme (pkgs/roudix-cursor).
+          roudix-cursor = nixpkgs.legacyPackages.${system}.callPackage ./roudix-cfg/pkgs/roudix-cursor {};
           # gnome.nix (imported below) expects an "inputs" arg; empty dummy
           # since we don't need the main flake's inputs here.
           inputs = {};

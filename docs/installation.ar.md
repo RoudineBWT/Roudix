@@ -7,7 +7,7 @@
 | الحالة | ما تستخدمه |
 |-----------|-----|
 | جهاز جديد، لم يُثبَّت عليه شيء بعد | **ISO الخاصة بـ Roudix** — تُقلع مباشرة إلى مثبّت رسومي (يشمل تقسيم القرص) |
-| NixOS مثبّت بالفعل (ISO الرسمية، تثبيت NixOS من توزيعة أخرى، آلة افتراضية…) | **`roudix-installer.sh`** — يثبّت flake الخاص بـ Roudix فوق تثبيتك الحالي |
+| NixOS مثبّت بالفعل (ISO الرسمية، تثبيت NixOS من توزيعة أخرى، آلة افتراضية…) | **`roudix-installer`** — يثبّت flake الخاص بـ Roudix فوق تثبيتك الحالي |
 | تريد التحكم الكامل في كل خطوة، أو لا يغطي السكربت حالتك | **التثبيت اليدوي** (أدناه) |
 
 ## الخيار A — ISO الخاصة بـ Roudix (موصى بها للتثبيت الجديد)
@@ -21,7 +21,7 @@
 
 > **ملاحظة:** تتيح قائمة الإقلاع أيضًا تخصيصات لتخطيط لوحة المفاتيح (US/BE/FR/DE/CH/UK) إن لم تطابق لوحة مفاتيح الجلسة الحيّة لوحتك الفعلية — اختر واحدًا قبل بدء المثبّت.
 
-يحلّ هذا المسار محل الخطوتين التاليتين بالكامل (لا حاجة إلى `roudix-installer.sh` ولا إلى الخطوات اليدوية) — انتقل إلى ما يلي التثبيت بعد إعادة التشغيل.
+يحلّ هذا المسار محل الخطوتين التاليتين بالكامل (لا حاجة إلى `roudix-installer` ولا إلى الخطوات اليدوية) — انتقل إلى ما يلي التثبيت بعد إعادة التشغيل.
 
 ## الخيار B — لديك NixOS مثبّت بالفعل
 
@@ -37,6 +37,16 @@
 nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 ```
 
+> **ميزة flakes غير مفعّلة؟** إذا ردّ `nix run` بالرسالة `experimental Nix feature 'nix-command' is disabled`، فمرّر الميزات في سطر الأوامر: لا حاجة لأي إعداد، ولا لاختيار فرع (يُستخدم الفرع الافتراضي).
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
+# نسخة الطرفية:
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
+```
+
+لتفعيلها بشكل دائم نفّذ `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf` (على NixOS: `nix.settings.experimental-features = [ "nix-command" "flakes" ];`). الأمر `sudo` لا يقرأ `~/.config` الخاص بك: للتشغيل كـ root نفّذ أولًا `export NIX_CONFIG="experimental-features = nix-command flakes"` **في سطر مستقل** ثم استخدم `sudo -E nix run …`.
+
 - **لا يُمسح شيء.** تذهب الإعدادات إلى `~/.config/roudix` (يُنقل أي مجلد موجود جانبًا ولا يُحذف أبدًا)، ثم يبني `nixos-rebuild boot` نظام Roudix ويجدوله للإقلاع التالي. يبقى نظامك الحالي في قائمة الإقلاع.
 - **تُنسخ `/etc/nixos` احتياطيًا** إلى `/var/backups/roudix/nixos-<date>/` مع ملف `RESTORE.txt` (الجيل السابق، مدير الإقلاع، `stateVersion`، والأوامر الدقيقة للعودة). يُعاد استخدام `hardware-configuration.nix` كما هو ولا يُستبدل أبدًا.
 - **جرّب المحاكاة أولًا.** يولّد زر *محاكاة* في صفحة الملخص الإعدادات في مجلد مؤقت، ويتحقق من كتابة كل خيار، ويجعل Nix يقيّم النظام بأكمله. لا يتغيّر شيء على جهازك.
@@ -50,9 +60,7 @@ nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 **نزّل سكربت roudix-installer**
 
 ```bash
-nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
-chmod +x roudix-installer.sh
-./roudix-installer.sh
+nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
 ```
 
 يتولى المثبّت كل شيء بشكل تفاعلي:

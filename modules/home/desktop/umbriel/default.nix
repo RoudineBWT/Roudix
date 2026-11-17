@@ -42,6 +42,8 @@ in
   ]
   ++ lib.optionals (osConfig.roudix.desktop.type == "umbriel" && isNoctalia) [
     ./_include-noctalia.nix
+    # Opt-in live cursor reload — read the header of that file first:
+    # ./_include-cursor.nix
   ];
 
   config = lib.mkIf (osConfig.roudix.desktop.type == "umbriel") {

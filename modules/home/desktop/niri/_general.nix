@@ -1,6 +1,6 @@
 ## _general.nix — niri: prefer-no-csd, screenshot-path, environment,
 ## debug, hotkey-overlay, spawn-at-startup, cursor (vary by shell).
-{ osConfig, lib, pkgs, ... }:
+{ osConfig, lib, pkgs, roudix-cursor, ... }:
 let
   integrationApps = import ../_integration-apps.nix { inherit pkgs osConfig; };
   shellType = osConfig.roudix.desktop.shell or "noctalia";
@@ -57,10 +57,10 @@ in
     // (lib.optionalAttrs isNoctalia { GTK_IM_MODULE = "simple"; });
 
     cursor = if isNoctalia then {
-      theme = "Bibata-Modern-Ice";
+      theme = roudix-cursor.themeName;
       size = 24;
     } else {
-      theme = "capitaine-cursors-white";
+      theme = roudix-cursor.themeName;
       size = 32;
     };
 

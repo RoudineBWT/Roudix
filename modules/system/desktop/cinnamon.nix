@@ -1,4 +1,4 @@
-{ config, lib, pkgs, roudixBranding, ... }:
+{ config, lib, pkgs, roudixBranding, roudix-cursor, ... }:
 let
   isCinnamon = config.roudix.desktop.type == "cinnamon";
 
@@ -142,7 +142,7 @@ let
     "org/cinnamon/desktop/interface" = {
       gtk-theme    = "Mint-Y-Dark-Aqua";
       icon-theme   = config.roudix.iconThemeName;   # Papirus-Roudix by default (icon-theme.nix)
-      cursor-theme = "capitaine-cursors-white";
+      cursor-theme = roudix-cursor.themeName;
       cursor-size  = lib.gvariant.mkInt32 24;
       font-name    = "${uiFont} 10";
     };
@@ -294,6 +294,7 @@ in
       (lib.hiPrio roudixBranding)
       papirus-icon-theme
       capitaine-cursors
+      roudix-cursor
       roudixLightdmWallpaper
     ];
   };

@@ -1,4 +1,4 @@
-{ lib, pkgs, osConfig, inputs, ... }:
+{ lib, pkgs, osConfig, inputs, roudix-cursor, ... }:
 let
   wallpaperDark = "/run/current-system/sw/share/wallpapers/RoudixEmberCove/contents/images/2560x1440.png";
 
@@ -55,7 +55,7 @@ in
           if [ ! -f "$marker" ]; then
             plasma-apply-lookandfeel -a org.kde.breezedark.desktop
             plasma-apply-colorscheme RoudixDark
-            plasma-apply-cursortheme capitaine-cursors-white
+            plasma-apply-cursortheme ${roudix-cursor.themeName}
             # Icons via kwriteconfig6 rather than plasma-manager: keeps
             # kdeglobals a normal, writable file (papirusSync / telaSync
             # patch its [Icons] Theme= key with sed).

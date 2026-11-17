@@ -1,7 +1,8 @@
 from gi.repository import Adw, Gtk
 
 from roudix_installer import existing_nixos
-from roudix_installer.i18n import tr, trc
+from roudix_installer.i18n import tr
+from roudix_installer.summary_rows import summary_rows
 from roudix_installer.ui_helpers import page_with_header
 
 
@@ -44,21 +45,6 @@ class SummaryPage(Adw.NavigationPage):
         self.state.dry_run = dry_run
         self.on_next()
 
-    @staticmethod
-    def _versions_rows(s):
-        """nixpkgs (default) or latest (flake) version of the chosen
-        compositor and shell — omitted when neither has a flake version."""
-        parts = []
-        names = {}  # niri / MangoWC / Umbriel: always the flake version
-        shells = {"noctalia": "Noctalia", "dms": "DMS", "caelestia": "Caelestia"}
-        latest = tr("latest (flake)")
-        nixpkgs = "nixpkgs"
-        if s.desktop in names:
-            parts.append(f"{names[s.desktop]}: {latest if getattr(s, 'latest_' + s.desktop) else nixpkgs}")
-        if s.desktop in ("niri", "hyprland", "mangowc", "umbriel") and s.desktop_shell in shells:
-            parts.append(f"{shells[s.desktop_shell]}: {latest if getattr(s, 'latest_' + s.desktop_shell) else nixpkgs}")
-        return [(tr("Versions"), " · ".join(parts))] if parts else []
-
     def _refresh(self):
         # Same Adw.PreferencesGroup gotcha as disk.py's partition list:
         # get_first_child()/get_next_sibling() on the group walks its
@@ -69,127 +55,7 @@ class SummaryPage(Adw.NavigationPage):
             self.group.remove(row)
         self._rows.clear()
 
-        s = self.state
-        swap_label = f", swap {s.disk.swap_size_gb}G" if s.disk.enable_swap else tr(", no swap (zram)")
-        wiped = tr("wiped")
-        disk_label = {
-            "simple": f"{s.disk.device} — {s.disk.filesystem}, /boot {s.disk.boot_size_gb}G{swap_label} ({wiped})",
-            "advanced": f"{s.disk.advanced_disko_path} (" + tr("custom disko") + ")",
-            "manual": ", ".join(f"{dev} → {mp}" for dev, mp in s.disk.manual_partitions.items())
-                      or tr("no partition assigned"),
-        }[s.disk.mode]
-
-        use_chaotic = s.gpu == "nvidia" and s.nvidia_kernel_source == "chaotic"
-        kernel_display = s.kernel_chaotic if use_chaotic else s.kernel
-        kernel_source = "Chaotic-Nyx" if use_chaotic else "xddxdd"
-
-        machine = "VM" if s.vm_guest else tr("bare metal")
-        gaming_state = tr("enabled") if s.gaming else tr("disabled")
-        obs_plugins = ", ".join(filter(None, [
-                        'vkcapture' if s.obs_plugin_vkcapture else '',
-                        'pipewire-audio' if s.obs_plugin_pipewire_audio_capture else '',
-                        'background-removal' if s.obs_plugin_background_removal else '',
-                        'move-transition' if s.obs_plugin_move_transition else '',
-                        'aitum-multistream' if s.obs_plugin_aitum_multistream else '',
-                        'gstreamer' if s.obs_plugin_gstreamer else '',
-                        'composite-blur' if s.obs_plugin_composite_blur else '',
-                        'advanced-scene-switcher' if s.obs_plugin_advanced_scene_switcher else '',
-                        'input-overlay' if s.obs_plugin_input_overlay else '',
-                        'waveform' if s.obs_plugin_waveform else '',
-                    ])) or tr("no plugins")
-        if s.mode == existing_nixos.MODE_EXISTING:
-            head_rows = [
-                (tr("Mode"), tr("Existing NixOS — nothing is wiped")),
-                (tr("User"), s.username),
-                (tr("Profile / host"), s.hostname),
-                (tr("Safety net"), tr("/etc/nixos is copied to {dir} (with a RESTORE.txt), and your current "
-                                       "system stays in the boot menu.").format(dir=existing_nixos.BACKUP_ROOT)),
-            ]
-        else:
-            head_rows = [
-                (tr("Disk"), disk_label),
-                (tr("User"), s.username),
-                (tr("Profile / host"), s.hostname),
-                (tr("Password"), tr("set ✓") if s.password else tr("⚠ not set")),
-            ]
-        rows = [
-            *head_rows,
-            ("GPU", f"{s.gpu}" + (tr(" (Optimus laptop)") if s.nvidia_laptop else "")),
-            ("CPU", s.cpu),
-            ("Kernel", f"{kernel_display} ({kernel_source})"),
-            (tr("Browser"), s.browser + (" + Zen" if s.zen_browser else "")),
-            (tr("Desktop"), f"{s.desktop}" + (f" + {s.desktop_shell}" if s.desktop in ("niri", "hyprland", "mangowc", "umbriel") else "")),
-            *self._versions_rows(s),
-            (tr("Editor"), s.editor),
-            (
-                tr("Keyring / portal"),
-                s.desktop_integration if s.desktop in ("niri", "hyprland", "mangowc", "umbriel") else tr("n/a (managed by the desktop)"),
-            ),
-            (tr("Shell"), s.default_shell),
-            ("VM / Gaming", f"{machine} — gaming "
-                            f"{gaming_state}"
-                            f"{' + Millennium' if s.gaming and s.gaming_steam_millennium else ''}"),
-            (tr("Locale"), f"{s.timezone} — {s.locale} — {s.keymap}"),
-            (
-                tr("Graphical keyboard"),
-                f"{s.keyboard_layout}" + (f" ({s.keyboard_variant})" if s.keyboard_variant else ""),
-            ),
-            ("RGB", s.rgb + (f", RAM {s.memory_type}" if s.rgb == "openlinkhub" and s.memory_rgb_enable else "")),
-            (tr("Branch"), s.branch),
-            (tr("Extras"), ", ".join(filter(None, [
-                "GTA fix" if s.gta_fix else "",
-                "Flatpak" if s.flatpak else "",
-                tr("Virtualization") if s.virtualization else "",
-                f"autoupdate {s.autoupdate_interval}" if s.autoupdate else "",
-            ])) or trc("summary, Extras row: nothing selected", "none")),
-            ("Bootloader", s.bootloader + (f" ({s.boot_aspect} · {s.boot_resolution})" if s.bootloader == "limine" else "")),
-            (tr("Boot splash"), tr("none") if s.plymouth_theme == "none" else s.plymouth_theme),
-            (tr("Secure Boot / EAC"), ", ".join(filter(None, [
-                tr("Secure Boot") if s.secure_boot else "",
-                f"EAC ({s.eac_vendor})" if s.eac_enable and s.bootloader == "limine" else "",
-            ])) or trc("summary, Secure Boot / EAC row: nothing selected", "off")),
-            ("Matrix", s.matrix_client),
-            ("Discord", s.discord),
-            ("Telegram", s.telegram),
-            (tr("Video player"), s.video_player),
-            (tr("Torrent client"), s.torrent_client),
-            (tr("Music player"), s.music_player),
-            (tr("Mail client"), s.mail_client),
-            (tr("Password manager"), s.password_manager),
-            (tr("Office suite"), s.office),
-            (tr("Printing (CUPS)"), tr("enabled") if s.printing_enable else tr("disabled")),
-            (tr("Scanners (SANE)"), tr("enabled") if s.printing_scanners else tr("disabled")),
-            ("OpenVPN", tr("enabled") if s.vpn_openvpn else tr("disabled")),
-            ("Waydroid", tr("enabled") if s.waydroid_enable else tr("disabled")),
-            ("Apps", ", ".join(filter(None, [
-                "+ GIMP" if s.app_gimp else "",
-                "+ Inkscape" if s.app_inkscape else "",
-                "+ SongRec" if s.app_songrec else "",
-                "+ EasyEffects" if s.app_easyeffects else "",
-                "+ Signal" if s.app_signal else "",
-                "+ ZapZap" if s.app_zapzap else "",
-                (("+ Fluxer" + (" (canary)" if s.app_fluxer_channel == "canary" else "")) if s.app_fluxer else ""),
-                "+ Cressida" if s.app_cressida else "",
-            ])) or trc("summary, Apps row: nothing selected", "none")),
-        ] + ([
-            ("Spicetify", f"{s.spicetify_theme}"
-                + (f" ({s.spicetify_color_scheme})" if s.spicetify_color_scheme else "")
-                + " — " + (", ".join(filter(None, [
-                    "adblock" if s.spicetify_adblock else "",
-                    tr("hide podcasts") if s.spicetify_hide_podcasts else "",
-                    "marketplace" if s.spicetify_marketplace else "",
-                ])) or tr("no extensions"))),
-        ] if s.music_player == "spotify" else []) + [
-            (
-                tr("Content Creation"),
-                (
-                    f"OBS ({obs_plugins}) — {s.video_editor}"
-                    + (" — Chatterino" if s.chatterino_enable else "")
-                )
-                if s.content_creation_enable
-                else tr("disabled"),
-            ),
-        ]
+        rows = summary_rows(self.state)
         for title, value in rows:
             row = Adw.ActionRow(title=title, subtitle=value)
             self.group.add(row)

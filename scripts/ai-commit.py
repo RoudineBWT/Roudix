@@ -198,7 +198,7 @@ def scope_of(path: str) -> str | None:
         return re.sub(r"\.nix$", "", parts[2])
     return {"hosts": "hosts", "docs": "docs", ".github": "ci", "scripts": "scripts",
             "iso": "installer", "assets": "assets", "dotfiles": "dotfiles"}.get(top) or (
-        "installer" if path == "roudix-installer.sh" else "docs" if path.endswith(".md") else None)
+        "docs" if path.endswith(".md") else None)
 
 
 def common_scope(files: list[dict]) -> str | None:

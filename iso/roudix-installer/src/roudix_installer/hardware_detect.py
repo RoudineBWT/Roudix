@@ -1,15 +1,16 @@
 """
-Best-effort hardware auto-detection for the GTK installer.
+Best-effort hardware auto-detection for the installer (GTK and TUI).
 
-Mirrors the sysfs/procfs detection roudix-installer.sh already does
-(same PCI vendor IDs, same /proc/cpuinfo check). Runs once when the
-Options page is built and only picks a sensible pre-selected combo
-entry — it never locks anything in, the user can always override it
-in the UI afterwards, exactly like the "Confirm? [Y/n]" step in the
-bash installer.
+sysfs/procfs detection (PCI vendor IDs, /proc/cpuinfo…). Runs once when the
+options are built and only picks a sensible default — it never locks
+anything in, the user can always override it afterwards.
 """
 import re
+import subprocess
 from pathlib import Path
+
+from roudix_installer.sysutil import run_maybe_root
+
 
 def is_bios_boot() -> bool:
     """True when the running system was booted in legacy BIOS mode.
@@ -64,7 +65,7 @@ def detect_gpu():
 
     Never returns "amd-legacy" — telling GCN 1.x/2.x apart from modern
     RDNA needs a PCI-ID generation lookup that's out of scope here, same
-    as roudix-installer.sh (which also just asks a follow-up question
+    as the old bash installer (which also just asks a follow-up question
     once "amd" is confirmed).
     """
     vendors = _pci_display_vendors()
@@ -210,3 +211,51 @@ def detect_thinkpad() -> bool:
         _read(f"/sys/class/dmi/id/{f}") for f in ("product_family", "product_version")
     )
     return "thinkpad" in ident.lower()
+
+
+# ── Detection the old bash installer did (VM, RAM SMBus bus and part number) ──
+
+_VM_DMI_HINTS = ("qemu", "kvm", "virtualbox", "vmware", "xen", "bochs", "parallels",
+                 "virtual machine")
+
+
+def detect_vm() -> str:
+    """Name of the hypervisor ("kvm", "oracle", "vmware"…), "" on bare metal.
+
+    `systemd-detect-virt --vm` first (containers are not VMs), then the DMI
+    strings for a live system where it is missing."""
+    try:
+        proc = subprocess.run(["systemd-detect-virt", "--vm"], capture_output=True,
+                              text=True, timeout=5, stdin=subprocess.DEVNULL)
+        out = proc.stdout.strip()
+        if out and out != "none":
+            return out
+    except (OSError, subprocess.SubprocessError):
+        pass
+    ident = " ".join(_read(f"/sys/class/dmi/id/{f}") for f in ("sys_vendor", "product_name")).lower()
+    return next((hint for hint in _VM_DMI_HINTS if hint in ident), "")
+
+
+def detect_smbus() -> str:
+    """i2c bus of the chipset SMBus ("i2c-0"…) where the RAM RGB sits, "" if unknown.
+    Needs `i2cdetect` (i2c-tools)."""
+    for line in run_maybe_root(["i2cdetect", "-l"]).splitlines():
+        if re.search(r"smbus|i801|piix4|nforce", line, re.I) and line.split():
+            return line.split()[0]
+    return ""
+
+
+_NO_SKU = {"", "unknown", "notspecified", "nodimm", "undefined", "[empty]", "empty"}
+
+
+def detect_ram_sku() -> str:
+    """Part number of the first populated memory module ("CMH64GX5M2B5200C40"), "" if unknown.
+    Needs `dmidecode` and root."""
+    for line in run_maybe_root(["dmidecode", "-t", "memory"]).splitlines():
+        m = re.match(r"\s*Part Number:\s*(.*)$", line)
+        if not m:
+            continue
+        sku = re.sub(r"\s+", "", m.group(1))
+        if sku.lower() not in _NO_SKU:
+            return sku
+    return ""

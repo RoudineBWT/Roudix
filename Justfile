@@ -60,6 +60,10 @@ py:
     if command -v ruff >/dev/null; then ruff=(ruff); else ruff=(nix run nixpkgs#ruff --); fi
     "${ruff[@]}" check --select E9,F63,F7,F82 --no-cache pkgs iso scripts
 
+# Installer tests (terminal wizard, questions, multiboot, runner) — no GTK, no root, nothing installed
+installer-test:
+    python3 -m unittest discover -s iso/roudix-installer/tests -v
+
 # Stale repo-relative paths in pkgs/ and the installer — same as CI
 paths:
     python3 scripts/check-path-refs.py
@@ -67,6 +71,10 @@ paths:
 # Installer translations: re-extract strings and merge them into po/*.po (then translate what is empty/fuzzy)
 i18n-update:
     scripts/i18n.sh update
+
+# update + check in one go
+i18n-fix:
+    scripts/i18n.sh fix
 
 # Installer translations: compile po/*.po to .mo (needed to run the installer from the source tree)
 i18n-compile:
@@ -81,7 +89,7 @@ i18n-new lang:
     scripts/i18n.sh new {{lang}}
 
 # Everything CI checks, in one go
-ci: paths py lint i18n-check check-all
+ci: paths py installer-test lint i18n-check check-all
 
 # Regroupe les commits "auto:" de gitwatch en UN commit au vrai message (IA locale), à relire. Ajoute -n pour juste voir le message.
 ship *args:

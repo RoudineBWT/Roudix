@@ -69,7 +69,6 @@
 
 ```
 roudix/
-├── roudix-installer.sh              # Bash-based installer
 ├── flake.nix / flake.lock           # Inputs & outputs (one nixosConfigurations entry per hosts/<name>/)
 ├── version.nix / branding.nix       # Roudix OS branding (os-release, distroName)
 ├── Justfile                         # Dev tasks (`just ci`)

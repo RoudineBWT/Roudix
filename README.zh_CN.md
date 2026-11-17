@@ -69,7 +69,6 @@
 
 ```
 roudix/
-├── roudix-installer.sh              # 基于 Bash 的安装脚本
 ├── flake.nix                        # 输入与输出
 ├── flake.lock
 ├── docs/                            # 文档

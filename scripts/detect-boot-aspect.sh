@@ -12,7 +12,7 @@
 #   scripts/detect-boot-aspect.sh --count      only the number of connected screens (for scripts)
 #   scripts/detect-boot-aspect.sh 2560x1440    same as no argument, for a given resolution
 #
-# The installers (roudix-installer, roudix-installer.sh) and roudix-switcher
+# The installers (roudix-installer, GTK and terminal) and roudix-switcher
 # do the same detection and suggest the result. Exit code 1 = no screen found.
 set -euo pipefail
 
