@@ -42,7 +42,7 @@ in
     "tags:9,monitor:DP-3,app_id:^brave-browser$"
 
     # Desktop / file / media apps
-    "tags:6,monitor:DP-1,app_id:^(org\\.(gnome\\.Nautilus|kde\\.dolphin)|nemo)$"
+    "tags:6,monitor:DP-1,app_id:^(org\\.(gnome\\.Nautilus|kde\\.dolphin)|nemo|dev\\.noctalia\\.luciole)$"
     "is_floating:1,app_id:^(org\\.(gnome\\.Nautilus|kde\\.dolphin)|nemo)$,title:^(Save As|Open)$"
     "tags:6,monitor:DP-1,app_id:^org\\.(gnome\\.TextEditor|kde\\.kate)$"
   ]

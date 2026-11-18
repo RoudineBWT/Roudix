@@ -232,7 +232,7 @@ in
       # ⚠ niri's case-insensitive (?i) prefix isn't confirmed supported by
       # Umbriel (ECMAScript regex, no flags mentioned in the doc) — verify
       # that mixed-case dialog titles are still excluded correctly.
-      match.app_id = "^(org\\.(gnome\\.Nautilus|kde\\.dolphin)|nemo)$";
+      match.app_id = "^(org\\.(gnome\\.Nautilus|kde\\.dolphin)|nemo|dev\\.noctalia\\.luciole)$";
       match.title = "^(?!(Open|Open File|Save As|Save File|Enregistrer|Enregistrer Sous|Ouvrir|Choisir un Fichier)$).*$";
       default_output = "DP-1";
       default_workspace = 5;
