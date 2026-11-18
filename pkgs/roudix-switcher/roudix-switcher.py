@@ -815,6 +815,8 @@ PIPEWIRE_TOGGLES = [
      "key": "roudix.pipewire.realtimeTweaks.enable",   "default": False},
     {"id": "usbNoAutosuspend", "name": tr("Never autosuspend USB devices (fixes USB audio dropouts, costs laptop battery)"),
      "key": "roudix.pipewire.usbNoAutosuspend.enable", "default": False},
+    {"id": "elgatoWave3Fix",   "name": tr("Elgato Wave:3 mic fix (mic silent when playback starts first; renames its devices)"),
+     "key": "roudix.pipewire.elgatoWave3Fix.enable",   "default": False},
 ]
 
 # roudix.boot.plymouth.enable / .quiet (modules/system/boot/plymouth.nix) — both

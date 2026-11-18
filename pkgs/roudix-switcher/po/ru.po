@@ -711,6 +711,14 @@ msgstr ""
 "расходует заряд ноутбука)"
 
 #: roudix-switcher.py
+msgid ""
+"Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
+"devices)"
+msgstr ""
+"Исправление микрофона Elgato Wave:3 (микрофон молчит, если воспроизведение "
+"начинается первым; переименовывает устройства)"
+
+#: roudix-switcher.py
 msgid "Boot splash (Plymouth) — off = plain text boot"
 msgstr "Заставка загрузки (Plymouth) — выкл. = обычная текстовая загрузка"
 

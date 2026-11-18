@@ -696,6 +696,14 @@ msgstr ""
 "المحمول)"
 
 #: roudix-switcher.py
+msgid ""
+"Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
+"devices)"
+msgstr ""
+"إصلاح ميكروفون Elgato Wave:3 (الميكروفون صامت إذا بدأ التشغيل أولاً؛ يعيد "
+"تسمية أجهزته)"
+
+#: roudix-switcher.py
 msgid "Boot splash (Plymouth) — off = plain text boot"
 msgstr "شاشة الإقلاع (Plymouth) — معطّلة = إقلاع نصي عادي"
 

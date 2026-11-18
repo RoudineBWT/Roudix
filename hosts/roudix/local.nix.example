@@ -133,6 +133,7 @@
   roudix.pipewire.lowLatency.enable       = false; # 48 kHz, quantum 128 (apps may use 128-512): audio work / rhythm games
   roudix.pipewire.realtimeTweaks.enable   = false; # CachyOS-style: @audio rtprio 99 / nice -11 (PAM) + cpu_dma_latency/rtc0/hpet access (udev); needs the "audio" group
   roudix.pipewire.usbNoAutosuspend.enable = false; # usbcore.autosuspend=-1: never autosuspend any USB device (costs battery on a laptop)
+  roudix.pipewire.elgatoWave3Fix.enable   = false; # Elgato Wave:3 only: mic captures silence when playback starts first. WirePlumber script starts the capture first; nodes become "Wave3 Sink" / "wave3-source" (re-select them in your apps)
 
   # ── Optional modules ──────────────────────────────────────────────────────
   # roudix.boot.enable = true;          # false = skip the Roudix boot configuration entirely

@@ -716,6 +716,14 @@ msgstr ""
 "audio USB, gasta batería en portátiles)"
 
 #: roudix-switcher.py
+msgid ""
+"Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
+"devices)"
+msgstr ""
+"Corrección del micrófono Elgato Wave:3 (micrófono mudo si la reproducción "
+"empieza primero; renombra sus dispositivos)"
+
+#: roudix-switcher.py
 msgid "Boot splash (Plymouth) — off = plain text boot"
 msgstr ""
 "Pantalla de arranque (Plymouth) — desactivada = arranque en texto plano"
