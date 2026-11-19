@@ -254,3 +254,9 @@ msgstr "已启用内存压缩交换（zram）：{size} GiB。"
 
 msgid "Could not enable zram ({reason})."
 msgstr "无法启用 zram（{reason}）。"
+
+msgid "Noctalia's native Wayland file manager"
+msgstr "Noctalia 的原生 Wayland 文件管理器"
+
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia，原生 Wayland"

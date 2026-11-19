@@ -72,6 +72,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Luciole — native Wayland file manager from the Noctalia family. One of
+    # the roudix.fileManager choices, offered ONLY with roudix.desktop.shell =
+    # "noctalia" (assertion in modules/system/apps/utilities/filemanager.nix).
+    # No `nixpkgs.follows` on purpose: its package overrides gdk-pixbuf /
+    # librsvg against the glycin version of the nixpkgs it pins, so it must
+    # build with that revision.
+    luciole = {
+      url = "github:noctalia-dev/luciole";
+    };
+
     caelestia-shell = {
          url = "github:caelestia-dots/shell";
          inputs.nixpkgs.follows = "nixpkgs";

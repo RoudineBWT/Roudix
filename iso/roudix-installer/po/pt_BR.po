@@ -166,6 +166,10 @@ msgid "Nemo — Cinnamon"
 msgstr "Nemo — Cinnamon"
 
 #: src/roudix_installer/choices.py
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia, Wayland nativo"
+
+#: src/roudix_installer/choices.py
 msgid "Zed — fast, modern (recommended)"
 msgstr "Zed — rápido e moderno (recomendado)"
 
@@ -1707,7 +1711,7 @@ msgstr "Plugins do OBS"
 msgid "Installation complete 🎉"
 msgstr "Instalação concluída 🎉"
 
-#: src/roudix_installer/runner.py
+#: src/roudix_installer/runner.py src/roudix_installer/tui.py
 msgid "Error"
 msgstr "Erro"
 

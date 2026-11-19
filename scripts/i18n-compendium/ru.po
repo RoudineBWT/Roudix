@@ -254,3 +254,9 @@ msgstr "Сжатый swap в ОЗУ (zram) включён: {size} ГиБ."
 
 msgid "Could not enable zram ({reason})."
 msgstr "Не удалось включить zram ({reason})."
+
+msgid "Noctalia's native Wayland file manager"
+msgstr "Нативный файловый менеджер Wayland от Noctalia"
+
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia, нативный Wayland"

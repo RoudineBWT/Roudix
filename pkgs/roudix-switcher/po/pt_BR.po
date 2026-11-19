@@ -136,8 +136,8 @@ msgid ""
 "Auto-recolored to the current Noctalia accent if roudix.desktop.shell = "
 "\"noctalia\"; plain Tela otherwise"
 msgstr ""
-"Recolorido automaticamente com o destaque atual do Noctalia se roudix."
-"desktop.shell = \"noctalia\"; Tela comum nos outros casos"
+"Recolorido automaticamente com o destaque atual do Noctalia se "
+"roudix.desktop.shell = \"noctalia\"; Tela comum nos outros casos"
 
 #: roudix-switcher.py
 msgid "Flat, colorful Material-style set (pkgs.qogir-icon-theme)"
@@ -214,6 +214,10 @@ msgstr "Leve, o gerenciador de arquivos do XFCE"
 #: roudix-switcher.py
 msgid "Lightweight, Qt-based"
 msgstr "Leve, baseado em Qt"
+
+#: roudix-switcher.py
+msgid "Noctalia's native Wayland file manager"
+msgstr "O gerenciador de arquivos Wayland nativo da Noctalia"
 
 #: roudix-switcher.py
 msgid "Full-featured Matrix client"
@@ -673,8 +677,8 @@ msgstr ""
 #: roudix-switcher.py
 msgid "Open kernel modules (RTX 20xx and newer — turn off for GTX 10xx/16xx)"
 msgstr ""
-"Módulos de kernel abertos (RTX 20xx e mais recentes — desative para GTX "
-"10xx/16xx)"
+"Módulos de kernel abertos (RTX 20xx e mais recentes — desative para GTX 10xx/"
+"16xx)"
 
 #: roudix-switcher.py
 msgid "Beta driver (always built locally)"
@@ -707,6 +711,14 @@ msgid ""
 msgstr ""
 "Nunca suspender automaticamente dispositivos USB (corrige falhas de áudio "
 "USB, gasta bateria em notebooks)"
+
+#: roudix-switcher.py
+msgid ""
+"Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
+"devices)"
+msgstr ""
+"Correção do microfone Elgato Wave:3 (microfone mudo quando a reprodução "
+"começa primeiro; renomeia os dispositivos)"
 
 #: roudix-switcher.py
 msgid "Boot splash (Plymouth) — off = plain text boot"

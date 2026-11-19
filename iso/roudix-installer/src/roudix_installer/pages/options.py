@@ -367,7 +367,7 @@ class OptionsPage(Adw.NavigationPage):
 
         self.file_manager_row = self._combo(
             tr("File manager"),
-            _file_managers(),
+            _file_managers(state.desktop_shell),
             state.file_manager,
         )
         desktop_group.add(self.file_manager_row)
@@ -888,6 +888,7 @@ class OptionsPage(Adw.NavigationPage):
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_shell_row())
         self.desktop_row.connect("notify::selected", lambda *_: self._sync_latest_rows())
         self.shell_row.connect("notify::selected", lambda *_: self._sync_latest_rows())
+        self.shell_row.connect("notify::selected", lambda *_: self._sync_file_manager_choices())
         self.rgb_row.connect("notify::selected", lambda *_: self._sync_memory_rows())
         self.memory_rgb_row.connect("notify::active", lambda *_: self._sync_memory_rows())
         self.zen_row.connect("notify::active", lambda *_: self._sync_zen_rows())
@@ -1189,6 +1190,31 @@ class OptionsPage(Adw.NavigationPage):
         self.shell_row.set_model(Gtk.StringList.new(labels))
         self.shell_row.set_selected(values.index(current) if current in values else 0)
         self._rows[id(self.shell_row)] = values
+        # The file manager list depends on the shell (Luciole: Noctalia only).
+        self._sync_file_manager_choices()
+
+    def _sync_file_manager_choices(self):
+        """Offer Luciole only while the selected shell is Noctalia. If it was
+        picked and the shell changes, the selection falls back to Nautilus."""
+        if not hasattr(self, "file_manager_row"):
+            return
+        try:
+            shell = self._selected_value(self.shell_row)
+        except (KeyError, IndexError):
+            # shell_row's model is being rebuilt by _sync_shell_row, which
+            # calls this again once it is consistent.
+            return
+        pairs = _file_managers(shell)
+        values = [v for v, _ in pairs]
+        if values == self._rows[id(self.file_manager_row)]:
+            return
+        try:
+            current = self._selected_value(self.file_manager_row)
+        except (KeyError, IndexError):
+            current = self.state.file_manager
+        self._rows[id(self.file_manager_row)] = values
+        self.file_manager_row.set_model(Gtk.StringList.new([l for _, l in pairs]))
+        self.file_manager_row.set_selected(values.index(current) if current in values else 0)
 
     def _sync_latest_rows(self):
         """Show the nixpkgs/latest switch of the selected compositor and of

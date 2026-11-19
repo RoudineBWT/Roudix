@@ -254,3 +254,9 @@ msgstr "Swap comprimido na RAM (zram) ativado: {size} GiB."
 
 msgid "Could not enable zram ({reason})."
 msgstr "Não foi possível ativar o zram ({reason})."
+
+msgid "Noctalia's native Wayland file manager"
+msgstr "O gerenciador de arquivos Wayland nativo da Noctalia"
+
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia, Wayland nativo"

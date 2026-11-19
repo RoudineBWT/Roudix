@@ -202,7 +202,7 @@ class InstallState:
     spicetify_marketplace: bool = True
 
     terminal: str = "ghostty"        # ghostty | kitty | alacritty | foot | wezterm
-    file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo
+    file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo | luciole (Noctalia shell only)
     ananicy_enable: bool = False     # roudix.gaming.ananicy.enable — opt-in, only meaningful if gaming.enable
     mesa_use_git: bool = False       # roudix.mesa.useGit — false = mesa stable
     mesa_git_source: str = "chaotic"  # roudix.mesa.gitSource — chaotic | gaming-edge (only when mesa_use_git)

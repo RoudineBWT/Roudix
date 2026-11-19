@@ -254,3 +254,9 @@ msgstr "RAM में संपीड़ित स्वैप (zram) चाल�
 
 msgid "Could not enable zram ({reason})."
 msgstr "zram चालू नहीं हो सका ({reason})।"
+
+msgid "Noctalia's native Wayland file manager"
+msgstr "Noctalia का नेटिव Wayland फ़ाइल मैनेजर"
+
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia, नेटिव Wayland"

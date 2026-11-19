@@ -166,6 +166,10 @@ msgid "Nemo — Cinnamon"
 msgstr ""
 
 #: src/roudix_installer/choices.py
+msgid "Luciole — Noctalia, native Wayland"
+msgstr ""
+
+#: src/roudix_installer/choices.py
 msgid "Zed — fast, modern (recommended)"
 msgstr ""
 
@@ -1660,7 +1664,7 @@ msgstr ""
 msgid "Installation complete 🎉"
 msgstr ""
 
-#: src/roudix_installer/runner.py
+#: src/roudix_installer/runner.py src/roudix_installer/tui.py
 msgid "Error"
 msgstr ""
 

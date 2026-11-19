@@ -202,6 +202,10 @@ msgid "Lightweight, Qt-based"
 msgstr ""
 
 #: roudix-switcher.py
+msgid "Noctalia's native Wayland file manager"
+msgstr ""
+
+#: roudix-switcher.py
 msgid "Full-featured Matrix client"
 msgstr ""
 
@@ -668,6 +672,12 @@ msgstr ""
 msgid ""
 "Never autosuspend USB devices (fixes USB audio dropouts, costs laptop "
 "battery)"
+msgstr ""
+
+#: roudix-switcher.py
+msgid ""
+"Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
+"devices)"
 msgstr ""
 
 #: roudix-switcher.py

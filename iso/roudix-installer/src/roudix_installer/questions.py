@@ -320,7 +320,7 @@ def build() -> list:
         Q("terminal", D, tr_noop("Terminal"), "choice", "terminal", keys=("roudix.terminal",),
           choices=lambda s, c: _terminals()),
         Q("file_manager", D, tr_noop("File manager"), "choice", "file_manager", keys=("roudix.fileManager",),
-          choices=lambda s, c: _file_managers(), force=_file_manager_force),
+          choices=lambda s, c: _file_managers(s.desktop_shell), force=_file_manager_force),
         Q("editor", D, tr_noop("Code editor"), "choice", "editor", keys=("roudix.editor",),
           choices=lambda s, c: _editors()),
         Q("desktop_integration", D, tr_noop("Keyring / xdg-desktop-portal"), "choice", "desktop_integration",

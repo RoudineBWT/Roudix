@@ -254,3 +254,9 @@ msgstr "تم تفعيل مساحة التبديل المضغوطة في الذا
 
 msgid "Could not enable zram ({reason})."
 msgstr "تعذّر تفعيل zram ({reason})."
+
+msgid "Noctalia's native Wayland file manager"
+msgstr "مدير ملفات Noctalia الأصلي لـ Wayland"
+
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia، Wayland أصلي"

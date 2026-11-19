@@ -210,6 +210,10 @@ msgid "Lightweight, Qt-based"
 msgstr "轻量，基于 Qt"
 
 #: roudix-switcher.py
+msgid "Noctalia's native Wayland file manager"
+msgstr "Noctalia 的原生 Wayland 文件管理器"
+
+#: roudix-switcher.py
 msgid "Full-featured Matrix client"
 msgstr "功能完整的 Matrix 客户端"
 
@@ -682,6 +686,12 @@ msgid ""
 "Never autosuspend USB devices (fixes USB audio dropouts, costs laptop "
 "battery)"
 msgstr "从不自动挂起 USB 设备（修复 USB 音频中断，会消耗笔记本电量）"
+
+#: roudix-switcher.py
+msgid ""
+"Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
+"devices)"
+msgstr "Elgato Wave:3 麦克风修复（播放先于录音启动时麦克风无声；会重命名其设备）"
 
 #: roudix-switcher.py
 msgid "Boot splash (Plymouth) — off = plain text boot"
@@ -1321,8 +1331,8 @@ msgid ""
 "firmware (docs/secure-boot-eac.md). Epic has not confirmed that EAC accepts "
 "this setup yet."
 msgstr ""
-"请先创建并注册 sbctl 密钥，再在固件中开启 Secure Boot（docs/secure-boot-eac."
-"md）。Epic 尚未确认 EAC 会接受这种配置。"
+"请先创建并注册 sbctl 密钥，再在固件中开启 Secure Boot（docs/secure-boot-"
+"eac.md）。Epic 尚未确认 EAC 会接受这种配置。"
 
 #: roudix-switcher.py
 msgid "Audio (PipeWire)"

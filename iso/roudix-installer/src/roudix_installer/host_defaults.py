@@ -216,8 +216,9 @@ def seed_state(state: InstallState, hostname: str, allowed: dict | None = None) 
             applied[attr] = value
 
     values = example_values(hostname)
-    # desktop first: the shell row's allowed values depend on it
-    for option, value in sorted(values.items(), key=lambda kv: kv[0] != "roudix.desktop.type"):
+    # desktop first (the shell row's allowed values depend on it), then the
+    # shell (the file manager row's allowed values depend on it: Luciole)
+    for option, value in sorted(values.items(), key=lambda kv: (kv[0] != "roudix.desktop.type", kv[0] != "roudix.desktop.shell")):
         if option in OPTION_TO_ATTR:
             attr = OPTION_TO_ATTR[option]
             if attr == "spicetify_color_scheme" and value is None:
