@@ -3066,7 +3066,7 @@ class MainWindow(Adw.ApplicationWindow):
         if app.source == "flatpak":
             where = tr("System") if scope == "system" else tr("User")
             return f"{localnix.FLATPAK_REMOTE_LABELS.get(remote, remote)} · {where}"
-        where = {"system": tr("System"), "profile": tr("User (quick, no rebuild)")}.get(scope, tr("User (Home Manager)"))
+        where = {"system": tr("System"), "profile": tr("User (instant, nix profile)")}.get(scope, tr("User (Home Manager)"))
         return f"{'Nix' if remote == 'nixpkgs' else self.backend.flake_label(remote)} · {where}"
 
     def _source_scope_key(self, app: AppEntry, remote: str, scope: str) -> str:

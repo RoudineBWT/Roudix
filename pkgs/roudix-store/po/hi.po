@@ -1069,8 +1069,8 @@ msgid "User (Home Manager)"
 msgstr "उपयोगकर्ता (Home Manager)"
 
 #: roudix_store/ui.py
-msgid "User (quick, no rebuild)"
-msgstr "उपयोगकर्ता (त्वरित, बिना रीबिल्ड)"
+msgid "User (instant, nix profile)"
+msgstr "उपयोगकर्ता (तुरंत, nix profile)"
 
 #: roudix_store/ui.py
 msgid "installed via config"

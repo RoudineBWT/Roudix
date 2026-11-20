@@ -1083,8 +1083,8 @@ msgid "User (Home Manager)"
 msgstr "Utilisateur (Home Manager)"
 
 #: roudix_store/ui.py
-msgid "User (quick, no rebuild)"
-msgstr "Utilisateur (rapide, sans rebuild)"
+msgid "User (instant, nix profile)"
+msgstr "Utilisateur (instantané, nix profile)"
 
 #: roudix_store/ui.py
 msgid "installed via config"

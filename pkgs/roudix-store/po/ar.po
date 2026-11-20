@@ -1071,8 +1071,8 @@ msgid "User (Home Manager)"
 msgstr "المستخدم (Home Manager)"
 
 #: roudix_store/ui.py
-msgid "User (quick, no rebuild)"
-msgstr "المستخدم (سريع، دون إعادة بناء)"
+msgid "User (instant, nix profile)"
+msgstr "المستخدم (فوري، nix profile)"
 
 #: roudix_store/ui.py
 msgid "installed via config"
