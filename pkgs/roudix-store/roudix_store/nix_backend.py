@@ -4,6 +4,10 @@ State is declarative: a package is "installed" when its nixpkgs attribute name
 sits in the managed block of local.nix. Install/remove edits that block, then
 runs `nh os switch`; if the rebuild fails the files are restored.
 
+Quick Nix installs ("profile" scopes) skip the rebuild too: they run
+`nix profile add/remove` on the user's profile and are not recorded in local.nix.
+Installing the same app through Home Manager afterwards drops the profile copy.
+
 Flatpak-only batches skip the rebuild: they run `flatpak install/uninstall`
 directly (then clean unused runtimes) and record the result in local.nix, so a
 later rebuild finds nothing to do. A batch that also touches Nix packages still
@@ -78,6 +82,8 @@ class NixBackend:
         # the flakes the store offers, written by roudix.store.flakeSources at the last switch:
         # {flake: {"label": str, "packages": {attr: {pname, version, description, out, alias, name…}}}}
         self.flake_catalog: dict[str, dict] = {}
+        # what `nix profile list` holds: {"<flake>#<attr>": element name}, e.g. "nixpkgs#htop" -> "htop"
+        self.profile_refs: dict[str, str] = {}
         self.scope = "home"  # set by the UI switch: "home" (user) or "system"
         self.reload_state()
         # The cached index is read right away (versions are right on the first display), then
@@ -91,6 +97,7 @@ class NixBackend:
         self.flatpak_actual = self._flatpak_list()
         self._load_flake_catalog()
         self._refresh_nix_actual()
+        self.profile_refs = self._profile_list()
         if force_refresh:
             threading.Thread(target=self._load_index, args=(True,), daemon=True).start()
 
@@ -239,11 +246,116 @@ class NixBackend:
             names[scope] |= {entry["pname"] for entry in entries.values()}
         self.nix_actual = names
 
+    # ── nix profile (quick installs, no rebuild) ─────────────────────────
+    @staticmethod
+    def _profile_list() -> dict[str, str]:
+        """{"<flake>#<attr>": element name} for what `nix profile list --json` reports."""
+        nix = shutil.which("nix")
+        if not nix:
+            return {}
+        try:
+            out = subprocess.run([nix, "profile", "list", "--json"], capture_output=True, text=True, timeout=30).stdout
+            data = json.loads(out or "{}")
+        except (OSError, subprocess.SubprocessError, ValueError):
+            return {}
+        elements = data.get("elements") if isinstance(data, dict) else None
+        if not isinstance(elements, dict):  # very old Nix: a list indexed by position, no names: not supported
+            return {}
+        refs: dict[str, str] = {}
+        for name, elem in elements.items():
+            if not isinstance(elem, dict):
+                continue
+            flake = str(elem.get("originalUrl") or "")
+            flake = flake[len("flake:"):] if flake.startswith("flake:") else flake
+            # "legacyPackages.x86_64-linux.kdePackages.kate" -> "kdePackages.kate"
+            attr = ".".join(str(elem.get("attrPath") or "").split(".")[2:])
+            if flake and attr:
+                refs[f"{flake}#{attr}"] = str(name)
+        return refs
+
+    def profile_available(self) -> bool:
+        return shutil.which("nix") is not None
+
+    def _profile_has(self, app: AppEntry, remote: str) -> bool:
+        if remote == "nixpkgs":
+            return any(f"nixpkgs#{p}" in self.profile_refs for p in app.pkg_names)
+        ref = self.flake_ref_for(app, remote)
+        return bool(ref) and ref in self.profile_refs
+
+    def _apply_profile_direct(self, changes, say: Callable[[str], None]) -> tuple[bool, str]:
+        """changes: [(action, pkg, "profile"|"profile-flake")] -> `nix profile add/remove`, one by one."""
+        nix = shutil.which("nix")
+        if not nix:
+            return False, tr("nix was not found in PATH.")
+        say(tr("Quick install — using nix profile, no rebuild."))
+        refs = self._profile_list()
+        failures: list[str] = []
+        for action, pkg, key in changes:
+            ref = pkg if key == "profile-flake" else f"nixpkgs#{pkg}"
+            if action == "install":
+                if ref in refs:
+                    say(tr("{pkg} is already in your profile.").format(pkg=pkg))
+                    continue
+                args = ["profile", "add", ref]
+                env = None
+                if key == "profile":  # nixpkgs: unfree packages need the env var, which needs --impure
+                    args.insert(2, "--impure")
+                    env = {**os.environ, "NIXPKGS_ALLOW_UNFREE": "1"}
+                code = self._run_nix(nix, args, say, env)
+                if code != 0:
+                    failures.append(tr("{pkg}: nix profile add failed").format(pkg=pkg))
+            elif action == "remove":
+                name = refs.get(ref)
+                if name is None:
+                    say(tr("{pkg} is not in your profile.").format(pkg=pkg))
+                    continue
+                if self._run_nix(nix, ["profile", "remove", name], say) != 0:
+                    failures.append(tr("{pkg}: nix profile remove failed").format(pkg=pkg))
+            else:
+                failures.append(tr("'{action}' is not supported on Roudix (updates come from the flake).").format(action=action))
+        self.profile_refs = self._profile_list()
+        self._refresh_nix_actual()
+        if failures:
+            return False, "; ".join(failures)
+        return True, tr("Applied.")
+
+    @staticmethod
+    def _run_nix(nix: str, args: list[str], say: Callable[[str], None], env: dict | None = None) -> int:
+        say("$ nix " + " ".join(args))
+        try:
+            proc = subprocess.Popen([nix, "--extra-experimental-features", "nix-command flakes", *args],
+                                    stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                    text=True, env=env)
+            for raw in proc.stdout:
+                line = next((p.strip() for p in reversed(raw.split("\r")) if p.strip()), "")
+                if line:
+                    say(line)
+            return proc.wait()
+        except OSError as exc:
+            say(str(exc))
+            return 1
+
+    def _drop_profile_duplicates(self, new: dict[str, set[str]], say: Callable[[str], None]) -> None:
+        """After a rebuild: what Home Manager (or the system) now declares no longer needs its profile copy."""
+        nix = shutil.which("nix")
+        if not nix:
+            return
+        declared = {f"nixpkgs#{p}" for s in ("home", "system") for p in new[s]}
+        declared |= new["home-flake"] | new["system-flake"]
+        for ref, name in self._profile_list().items():
+            if ref in declared:
+                say(tr("{pkg} is now in your configuration — removing the quick-install copy.").format(pkg=ref.partition("#")[2]))
+                self._run_nix(nix, ["profile", "remove", name], say)
+        self.profile_refs = self._profile_list()
+
     # ── nix: where an app is declared, "user" (Home Manager, modules/home) or "system" ──
     @staticmethod
     def nix_scope_key(scope: str, remote: str = "nixpkgs") -> str:
         """local.nix scope for a Nix install: nixpkgs "user" -> "home", "system" -> "system";
-        a flake package goes to "home-flake" / "system-flake"."""
+        a flake package goes to "home-flake" / "system-flake". "profile" is the quick install
+        (nix profile, nothing in local.nix): "profile" / "profile-flake"."""
+        if scope == "profile":
+            return "profile" if remote == "nixpkgs" else "profile-flake"
         if remote != "nixpkgs":
             return "home-flake" if scope == "user" else "system-flake"
         return "home" if scope == "user" else "system"
@@ -339,6 +451,16 @@ class NixBackend:
         return found
 
     def nix_state(self, app: AppEntry, scope: str, remote: str = "nixpkgs") -> str | None:
+        """Like `_nix_state`, plus the quick-install "profile" scope ("declared": the store can remove it);
+        a profile install is not reported as "installed via config" under "user"."""
+        if scope == "profile":
+            return "declared" if self._profile_has(app, remote) else None
+        state = self._nix_state(app, scope, remote)
+        if state == "external" and scope == "user" and self._profile_has(app, remote):
+            return None
+        return state
+
+    def _nix_state(self, app: AppEntry, scope: str, remote: str = "nixpkgs") -> str | None:
         """"declared" when local.nix holds `app` (from `remote`) for the "user" or "system" scope (the
         store can remove it); "external" when it is installed there by something else (Roudix modules,
         nix profile…: the store only shows it); else None."""
@@ -371,7 +493,7 @@ class NixBackend:
         """[(remote, scope)] where `app` is installed or declared; store-managed ones first."""
         found = []
         for order, remote in enumerate(self.nix_remotes(app)):
-            for scope in ("user", "system"):
+            for scope in ("user", "profile", "system"):
                 state = self.nix_state(app, scope, remote)
                 if state:
                     found.append((0 if state == "declared" else 1, order, scope, remote))
@@ -553,7 +675,7 @@ class NixBackend:
             info = (self._index or {}).get(app.primary_pkg or "")
             if info:
                 app.candidate_version = info["version"] or app.candidate_version
-        declared = any(self.nix_state(app, scope, remote) == "declared" for remote in remotes for scope in ("user", "system"))
+        declared = any(self.nix_state(app, scope, remote) == "declared" for remote in remotes for scope in ("user", "profile", "system"))
         app.installed_version = (app.candidate_version or ("declared" if declared else "installed")) if app.installed else None
         app.repo_ids = remotes
 
@@ -657,6 +779,24 @@ class NixBackend:
         return None
 
     def apply_changes(self, changes, event_cb: Callable[[dict], None] | None = None) -> tuple[bool, str]:
+        """changes: [(action, attr, scope)]. Quick installs (profile scopes) run first with `nix profile`,
+        the rest goes through `_apply_declared`."""
+        quick = [c for c in changes if c[2] in localnix.PROFILE_SCOPES]
+        rest = [c for c in changes if c[2] not in localnix.PROFILE_SCOPES]
+        if not quick:
+            return self._apply_declared(rest, event_cb)
+
+        def say(msg: str) -> None:
+            if event_cb:
+                event_cb({"event": "log", "message": msg})
+
+        ok, message = self._apply_profile_direct(quick, say)
+        if not rest:
+            return ok, message
+        ok2, message2 = self._apply_declared(rest, event_cb)
+        return ok and ok2, (message2 if ok else f"{message}; {message2}")
+
+    def _apply_declared(self, changes, event_cb: Callable[[dict], None] | None = None) -> tuple[bool, str]:
         """changes: [(action, attr, scope)].
 
         Flatpak-only batch: `flatpak install/uninstall` directly, no rebuild.
@@ -706,6 +846,7 @@ class NixBackend:
             return False, tr("Rebuild failed — local.nix restored.")
         self.installed = new
         self.flatpak_actual = self._flatpak_list()
+        self._drop_profile_duplicates(new, say)
         self._refresh_nix_actual()
         return True, tr("Applied.")
 

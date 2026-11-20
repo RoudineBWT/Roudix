@@ -2873,11 +2873,12 @@ class MainWindow(Adw.ApplicationWindow):
         return app.source in ("nix", "flatpak") and bool(app.primary_pkg)
 
     def _source_options(self, app: AppEntry) -> list[tuple[str, str]]:
-        """[(remote, "system"|"user")]. Nix: nixpkgs, then one more remote per flake that provides the
-        app; user = Home Manager."""
+        """[(remote, "profile"|"user"|"system")]. Nix: nixpkgs, then one more remote per flake that provides
+        the app; profile = quick install (nix profile, no rebuild), user = Home Manager."""
         if app.source == "flatpak":
             return [(remote, scope) for remote in app.repo_ids for scope in ("system", "user")]
-        return [(remote, scope) for remote in self.backend.nix_remotes(app) for scope in ("user", "system")]
+        scopes = ("profile", "user", "system") if self.backend.profile_available() else ("user", "system")
+        return [(remote, scope) for remote in self.backend.nix_remotes(app) for scope in scopes]
 
     def _source_state(self, app: AppEntry, remote: str, scope: str) -> str | None:
         if app.source == "flatpak":
@@ -2893,7 +2894,7 @@ class MainWindow(Adw.ApplicationWindow):
         if app.source == "flatpak":
             where = tr("System") if scope == "system" else tr("User")
             return f"{localnix.FLATPAK_REMOTE_LABELS.get(remote, remote)} · {where}"
-        where = tr("System") if scope == "system" else tr("User (Home Manager)")
+        where = {"system": tr("System"), "profile": tr("User (quick, no rebuild)")}.get(scope, tr("User (Home Manager)"))
         return f"{'Nix' if remote == 'nixpkgs' else self.backend.flake_label(remote)} · {where}"
 
     def _source_scope_key(self, app: AppEntry, remote: str, scope: str) -> str:
@@ -2925,7 +2926,8 @@ class MainWindow(Adw.ApplicationWindow):
                 return installed[0]
         if app.source == "flatpak":
             return (app.repo_ids[0] if app.repo_ids else "flathub", "system")
-        return (self.backend.nix_remotes(app)[0] if self.backend else "nixpkgs", "user")
+        quick = bool(self.backend) and self.backend.profile_available()
+        return (self.backend.nix_remotes(app)[0] if self.backend else "nixpkgs", "profile" if quick else "user")
 
     def _populate_detail_sources(self, app: AppEntry, reset: bool = False) -> None:
         has = bool(self.backend) and self._has_sources(app)
@@ -2963,7 +2965,7 @@ class MainWindow(Adw.ApplicationWindow):
 
     @staticmethod
     def _default_source(app: AppEntry, options: list[tuple[str, str]]) -> tuple[str, str]:
-        return options[0]  # Flatpak: Flathub system; Nix: user (Home Manager)
+        return options[0]  # Flatpak: Flathub system; Nix: quick user install (nix profile), else user (Home Manager)
 
     def _on_detail_source_changed(self, *_args) -> None:
         if self._detail_source_populating or not getattr(self, "current_app", None):

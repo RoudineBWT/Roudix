@@ -128,6 +128,11 @@ in
         lib.filter (p: p != null) (map resolve cfg.systemPackages)
         ++ lib.filter (p: p != null) (map resolveFlake cfg.systemFlakePackages);
 
+      # Quick installs run `nix profile add <flake>#<attr>`: pin each offered flake input in the registry
+      # so that resolves to the revision this system uses (nixpkgs is already pinned by NixOS itself)
+      nix.registry = lib.mapAttrs (n: _: { flake = lib.mkDefault inputs.${n}; })
+        (lib.filterAttrs (n: _: inputs ? ${n}) cfg.flakeSources);
+
       # the flakes Roudix proposes in the store (add yours with roudix.store.flakeSources.<input>)
       # field by field at default priority: overriding `exclude` of one flake keeps its label and aliases
       roudix.store.flakeSources = lib.mapAttrs (_: spec: lib.mapAttrs (_: lib.mkDefault) spec) {

@@ -35,6 +35,10 @@ SCOPES = {
 }
 FLAKE_SCOPES = ("home-flake", "system-flake")
 NIX_SCOPES = ("home", "system") + FLAKE_SCOPES  # the ones that need a rebuild
+# Quick installs: `nix profile add/remove`, no rebuild and nothing written to local.nix.
+#   profile        -> "nixpkgs#<attr>" in the user's nix profile
+#   profile-flake  -> "<flake>#<attr>" in the user's nix profile
+PROFILE_SCOPES = ("profile", "profile-flake")
 # Flatpak scope key by (remote, system?) and back
 FLATPAK_SCOPES = {
     ("flathub", True): "flatpak",
