@@ -191,14 +191,53 @@ msgid "failed"
 msgstr "échec"
 
 #: roudix_store/nix_backend.py
-msgid "Repositories are managed by the Roudix flake."
-msgstr "Les dépôts sont gérés par le flake Roudix."
+msgid "nix was not found in PATH."
+msgstr "nix est introuvable dans le PATH."
+
+#: roudix_store/nix_backend.py
+msgid "Quick install — using nix profile, no rebuild."
+msgstr "Installation rapide — via nix profile, sans rebuild."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already in your profile."
+msgstr "{pkg} est déjà dans ton profil."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile add failed"
+msgstr "{pkg} : échec de nix profile add"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not in your profile."
+msgstr "{pkg} n'est pas dans ton profil."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile remove failed"
+msgstr "{pkg} : échec de nix profile remove"
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
 msgid "'{action}' is not supported on Roudix (updates come from the flake)."
 msgstr ""
 "« {action} » n'est pas géré sur Roudix (les mises à jour viennent du flake)."
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr "Appliqué."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is now in your configuration — removing the quick-install copy."
+msgstr ""
+"{pkg} est maintenant dans ta configuration — suppression de la copie "
+"d'installation rapide."
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
+msgstr "Les dépôts sont gérés par le flake Roudix."
 
 #: roudix_store/nix_backend.py
 msgid "Nothing to change."
@@ -216,10 +255,6 @@ msgid ""
 msgstr ""
 "Les apps Flatpak sont installées/supprimées par nix-flatpak pendant le "
 "switch — ça peut prendre un moment."
-
-#: roudix_store/nix_backend.py
-msgid "Applied."
-msgstr "Appliqué."
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
@@ -303,6 +338,10 @@ msgstr "{len} fichiers RPM"
 #, python-brace-format
 msgid "{len} packages"
 msgstr "{len} paquets"
+
+#: roudix_store/ui.py
+msgid "Home"
+msgstr "Accueil"
 
 #: roudix_store/ui.py
 msgid "Installed"
@@ -887,6 +926,14 @@ msgid "Important Notices"
 msgstr "Annonces importantes"
 
 #: roudix_store/ui.py
+msgid "Featured apps"
+msgstr "Apps à la une"
+
+#: roudix_store/ui.py
+msgid "Browse by category"
+msgstr "Parcourir par catégorie"
+
+#: roudix_store/ui.py
 msgid "Queued actions"
 msgstr "Actions en attente"
 
@@ -959,6 +1006,16 @@ msgid "All"
 msgstr "Tout"
 
 #: roudix_store/ui.py
+msgid "Welcome to Roudix Store"
+msgstr "Bienvenue sur Roudix Store"
+
+#: roudix_store/ui.py
+msgid "Pick a featured app, browse a category, or use the search bar above."
+msgstr ""
+"Choisis une app mise en avant, parcours une catégorie ou utilise la barre de "
+"recherche en haut."
+
+#: roudix_store/ui.py
 #, python-brace-format
 msgid "Showing {n_repos} repositories."
 msgstr "{n_repos} dépôts affichés."
@@ -1024,6 +1081,10 @@ msgstr "Utilisateur"
 #: roudix_store/ui.py
 msgid "User (Home Manager)"
 msgstr "Utilisateur (Home Manager)"
+
+#: roudix_store/ui.py
+msgid "User (quick, no rebuild)"
+msgstr "Utilisateur (rapide, sans rebuild)"
 
 #: roudix_store/ui.py
 msgid "installed via config"
@@ -1248,60 +1309,3 @@ msgstr "Confirmer l'installation"
 #, python-brace-format
 msgid "You have {len} package(s) ready. Do you want to install them?"
 msgstr "{len} paquet(s) prêt(s). Veux-tu les installer ?"
-
-#: roudix_store/ui.py
-msgid "Home"
-msgstr "Accueil"
-
-#: roudix_store/ui.py
-msgid "Welcome to Roudix Store"
-msgstr "Bienvenue sur Roudix Store"
-
-#: roudix_store/ui.py
-msgid "Pick a featured app, browse a category, or use the search bar above."
-msgstr "Choisis une app mise en avant, parcours une catégorie ou utilise la barre de recherche en haut."
-
-#: roudix_store/ui.py
-msgid "Featured apps"
-msgstr "Apps à la une"
-
-#: roudix_store/ui.py
-msgid "Browse by category"
-msgstr "Parcourir par catégorie"
-
-#: roudix_store/ui.py
-msgid "User (quick, no rebuild)"
-msgstr "Utilisateur (rapide, sans rebuild)"
-
-#: roudix_store/ui.py
-msgid "Quick install — using nix profile, no rebuild."
-msgstr "Installation rapide — via nix profile, sans rebuild."
-
-#: roudix_store/ui.py
-#, python-brace-format
-msgid "{pkg} is already in your profile."
-msgstr "{pkg} est déjà dans ton profil."
-
-#: roudix_store/ui.py
-#, python-brace-format
-msgid "{pkg} is not in your profile."
-msgstr "{pkg} n'est pas dans ton profil."
-
-#: roudix_store/ui.py
-#, python-brace-format
-msgid "{pkg}: nix profile add failed"
-msgstr "{pkg} : échec de nix profile add"
-
-#: roudix_store/ui.py
-#, python-brace-format
-msgid "{pkg}: nix profile remove failed"
-msgstr "{pkg} : échec de nix profile remove"
-
-#: roudix_store/ui.py
-msgid "nix was not found in PATH."
-msgstr "nix est introuvable dans le PATH."
-
-#: roudix_store/ui.py
-#, python-brace-format
-msgid "{pkg} is now in your configuration — removing the quick-install copy."
-msgstr "{pkg} est maintenant dans ta configuration — suppression de la copie d'installation rapide."
