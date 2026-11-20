@@ -27,6 +27,7 @@ from . import localnix
 from . import update_output
 from . import launcher
 from . import flatpak_support
+from . import featured
 
 import json
 from pathlib import Path as _Path
@@ -194,6 +195,7 @@ class QueueItem:
 
 CATEGORY_GROUPS = {
     "system": {
+        "home": tr("Home"),
         "installed": tr("Installed"),
         "queue": tr("Queue"),
     },
@@ -213,6 +215,7 @@ CATEGORY_GROUPS = {
 
 CATEGORY_ICONS = {
     "system": {
+        "home": "go-home-symbolic",
         "installed": "emblem-default-symbolic",
         "queue": "view-list-symbolic",
     },
@@ -522,6 +525,11 @@ windowhandle > box.top-bar {
   background: alpha(@window_bg_color, 0.5);
   border-left: 1px solid alpha(currentColor, 0.1);
 }
+button.home-category {
+  padding: 14px 10px;
+  border-radius: 12px;
+}
+
 """
 
 
@@ -1133,9 +1141,9 @@ class MainWindow(Adw.ApplicationWindow):
         self.backend: NixBackend | None = None
         self.apps: list[AppEntry] = []
         self.current_items: list[AppEntry] = []
-        self.current_page = "audiovideo"
+        self.current_page = "home"
         self.source = "nix"  # "nix" or "flatpak": the active catalog (sidebar switch)
-        self.current_group = "categories"
+        self.current_group = "system"
         self.news_panel_visible = True
         self.news_text = tr("Loading news…")
         self.current_subcategory: str | None = None
@@ -1369,6 +1377,7 @@ class MainWindow(Adw.ApplicationWindow):
         bottom_bar.append(self.bottom_apply_button)
 
         self._build_list_page()
+        self._build_home_page()
         self._build_queue_page()
         self._build_repo_page()
         self._build_detail_page()
@@ -1832,6 +1841,101 @@ class MainWindow(Adw.ApplicationWindow):
         self.news_panel_content_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         self.news_panel_card.append(self.news_panel_content_box)
 
+    # ── welcome page: featured apps, then the categories ─────────────────
+    def _build_home_page(self) -> None:
+        self.home_scroller = Gtk.ScrolledWindow()
+        self.home_scroller.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.home_scroller.set_vexpand(True)
+        self.home_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
+        self.home_box.set_margin_top(8)
+        self.home_box.set_margin_bottom(24)
+        self.home_box.set_margin_start(12)
+        self.home_box.set_margin_end(12)
+        self.home_scroller.set_child(self.home_box)
+        self.stack.add_titled(self.home_scroller, "home", tr("Home"))
+
+    def _featured_apps(self) -> list[AppEntry]:
+        """The featured entries (featured.py) the catalog of the active source really has."""
+        by_key: dict[str, AppEntry] = {}
+        for app in self.apps:
+            if app.source == self.source:
+                for key in (*app.pkg_names, *app.flake_refs):
+                    by_key.setdefault(key, app)
+        out: list[AppEntry] = []
+        for key in featured.featured_for(self.source):
+            app = by_key.get(key)
+            if app is not None and app not in out:
+                out.append(app)
+            if len(out) >= featured.MAX_FEATURED:
+                break
+        return out
+
+    def _home_heading(self, text: str) -> Gtk.Widget:
+        label = Gtk.Label(label=text, xalign=0)
+        label.add_css_class("title-3")
+        label.set_margin_top(6)
+        return label
+
+    def _home_tiles(self, apps: list[AppEntry], cols: int = 3) -> Gtk.Widget:
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        for start in range(0, len(apps), cols):
+            chunk = apps[start:start + cols]
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            row.set_homogeneous(True)
+            for app in chunk:
+                row.append(AppCardTile(app, (lambda entry: self._run_action_for_app(entry, None)),
+                                       self._open_details, self._queued_state_label))
+            for _ in range(cols - len(chunk)):
+                spacer = Gtk.Box()
+                spacer.set_hexpand(True)
+                row.append(spacer)
+            box.append(row)
+        return box
+
+    def _home_categories(self) -> Gtk.Widget:
+        flow = Gtk.FlowBox()
+        flow.set_selection_mode(Gtk.SelectionMode.NONE)
+        flow.set_homogeneous(True)
+        flow.set_min_children_per_line(2)
+        flow.set_max_children_per_line(5)
+        flow.set_column_spacing(8)
+        flow.set_row_spacing(8)
+        for key, title in CATEGORY_GROUPS["categories"].items():
+            inner = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+            icon = Gtk.Image.new_from_icon_name(CATEGORY_ICONS["categories"].get(key, "applications-other-symbolic"))
+            icon.set_pixel_size(32)
+            inner.append(icon)
+            label = Gtk.Label(label=title)
+            label.set_wrap(True)
+            label.set_justify(Gtk.Justification.CENTER)
+            inner.append(label)
+            button = Gtk.Button()
+            button.add_css_class("home-category")
+            button.set_child(inner)
+            button.connect("clicked", lambda _b, k=key: self._switch_page("categories", k))
+            flow.append(button)
+        return flow
+
+    def _refresh_home_page(self) -> None:
+        child = self.home_box.get_first_child()
+        while child is not None:
+            next_child = child.get_next_sibling()
+            self.home_box.remove(child)
+            child = next_child
+        apps = self._featured_apps()
+        if apps:
+            self.home_box.append(self._home_heading(tr("Featured apps")))
+            self.home_box.append(self._home_tiles(apps))
+        self.home_box.append(self._home_heading(tr("Browse by category")))
+        self.home_box.append(self._home_categories())
+
+    def _details_back(self) -> None:
+        """Back from an app's page: the welcome page is not the list page."""
+        if not self.current_search_text and self.current_group == "system" and self.current_page == "home":
+            self._refresh_main_page(preserve_scroll=False)
+        else:
+            self.stack.set_visible_child_name("list")
+
     def _build_queue_page(self) -> None:
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         box.set_margin_top(8)
@@ -1914,7 +2018,7 @@ class MainWindow(Adw.ApplicationWindow):
         top = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
         self.detail_box.append(top)
         back = Gtk.Button(label=tr("← Back"))
-        back.connect("clicked", lambda *_: self.stack.set_visible_child_name("list"))
+        back.connect("clicked", lambda *_: self._details_back())
         top.append(back)
 
         top_spacer = Gtk.Box()
@@ -2391,6 +2495,8 @@ class MainWindow(Adw.ApplicationWindow):
         scroller = None
         if visible == "list" and hasattr(self, "list_scroller"):
             scroller = self.list_scroller
+        elif visible == "home" and hasattr(self, "home_scroller"):
+            scroller = self.home_scroller
         elif visible == "repos" and hasattr(self, "repo_scroll"):
             scroller = self.repo_scroll
         elif visible == "details":
@@ -2409,6 +2515,8 @@ class MainWindow(Adw.ApplicationWindow):
         scroller = None
         if visible == "list" and hasattr(self, "list_scroller"):
             scroller = self.list_scroller
+        elif visible == "home" and hasattr(self, "home_scroller"):
+            scroller = self.home_scroller
         elif visible == "repos" and hasattr(self, "repo_scroll"):
             scroller = self.repo_scroll
         elif visible == "details":
@@ -2425,6 +2533,8 @@ class MainWindow(Adw.ApplicationWindow):
         scroller = None
         if visible == "list" and hasattr(self, "list_scroller"):
             scroller = self.list_scroller
+        elif visible == "home" and hasattr(self, "home_scroller"):
+            scroller = self.home_scroller
         elif visible == "repos" and hasattr(self, "repo_scroll"):
             scroller = self.repo_scroll
         elif visible == "details":
@@ -2441,6 +2551,22 @@ class MainWindow(Adw.ApplicationWindow):
         else:
             visible_before, scroll_before = None, 0.0
         in_search_mode = bool(self.current_search_text)
+        if not in_search_mode and self.current_group == "system" and self.current_page == "home":
+            self.title_label.set_text(tr("Welcome to Roudix Store"))
+            self.status_label.set_text(tr("Pick a featured app, browse a category, or use the search bar above."))
+            self.category_filter_entry.set_visible(False)
+            self.view_toggle_box.set_visible(False)
+            self.news_toggle_button.set_visible(False)
+            self.news_panel_revealer.set_reveal_child(False)
+            self.updates_action_bar.set_visible(False)
+            self.current_items = []
+            self._refresh_home_page()
+            self.stack.set_visible_child_name("home")
+            if preserve_scroll:
+                GLib.idle_add(self._restore_scroll_position, visible_before, scroll_before)
+            else:
+                GLib.idle_add(self._scroll_visible_page_to_top)
+            return
         if not in_search_mode and self.current_group == "system" and self.current_page == "repositories":
             self.title_label.set_text(CATEGORY_GROUPS["system"]["repositories"])
             n_repos = len(getattr(self, 'repos', []))
@@ -2517,35 +2643,12 @@ class MainWindow(Adw.ApplicationWindow):
 
         items = [app for app in self.apps if app.source == self.source]
         needle = self.current_search_text.casefold()
+        if not needle and self.current_group == "system" and self.current_page == "home":
+            return []  # the welcome page has its own widgets, no list to build
         show_local_filter = ((self.current_group == "categories") or (self.current_group == "system" and self.current_page in {"installed", "updates"})) and not bool(needle)
 
         if needle:
-            items = [
-                app for app in items
-                if needle in app.name.casefold()
-                or needle in app.summary.casefold()
-                or needle in app.description.casefold()
-                or any(needle in item.casefold() for item in app.categories)
-                or any(needle in item.casefold() for item in app.keywords)
-                or any(needle in item.casefold() for item in app.pkg_names)
-            ]
-            if self.current_repo_filter != "__all__":
-                items = [app for app in items if self.current_repo_filter in app.repo_ids]
-
-            merged: list[AppEntry] = list(items)
-            seen_pkgs = {pkg for app in merged for pkg in app.pkg_names}
-            if self.backend is not None and self.source == "nix":
-                try:
-                    fallback = self.backend.search_packages(needle, repo_id=self.current_repo_filter)
-                except Exception:
-                    fallback = []
-                for app in fallback:
-                    if any(pkg in seen_pkgs for pkg in app.pkg_names):
-                        continue
-                    merged.append(app)
-                    seen_pkgs.update(app.pkg_names)
-
-            merged.sort(key=lambda item: self._search_rank_key(item, needle))
+            merged = self._global_search(needle)
             self._page_items_cache[cache_key] = list(merged)
             return list(merged)
         else:
@@ -2595,8 +2698,63 @@ class MainWindow(Adw.ApplicationWindow):
             items = [app for app in items if self.current_repo_filter in app.repo_ids]
 
         items.sort(key=lambda item: item.name.casefold())
+        if show_local_filter and self.current_category_filter_text and self.current_group == "categories" and not self.current_subcategory:
+            items += self._category_filter_extras(items, self.current_category_filter_text.casefold())
         self._page_items_cache[cache_key] = list(items)
         return list(items)
+
+    def _global_search(self, needle: str) -> list[AppEntry]:
+        """What the top search bar finds for `needle` (already casefolded): the catalog first, then the
+        nixpkgs index for packages the catalog doesn't know; best matches first."""
+        items = [app for app in self.apps if app.source == self.source]
+        items = [
+            app for app in items
+            if needle in app.name.casefold()
+            or needle in app.summary.casefold()
+            or needle in app.description.casefold()
+            or any(needle in item.casefold() for item in app.categories)
+            or any(needle in item.casefold() for item in app.keywords)
+            or any(needle in item.casefold() for item in app.pkg_names)
+        ]
+        if self.current_repo_filter != "__all__":
+            items = [app for app in items if self.current_repo_filter in app.repo_ids]
+
+        merged: list[AppEntry] = list(items)
+        seen_pkgs = {pkg for app in merged for pkg in app.pkg_names}
+        if self.backend is not None and self.source == "nix":
+            try:
+                fallback = self.backend.search_packages(needle, repo_id=self.current_repo_filter)
+            except Exception:
+                fallback = []
+            for app in fallback:
+                if any(pkg in seen_pkgs for pkg in app.pkg_names):
+                    continue
+                merged.append(app)
+                seen_pkgs.update(app.pkg_names)
+
+        merged.sort(key=lambda item: self._search_rank_key(item, needle))
+        return merged
+
+    def _category_filter_extras(self, items: list[AppEntry], needle: str, limit: int = 60) -> list[AppEntry]:
+        """Apps the filter of a category page should also offer: those the search bar finds for `needle`
+        that the category list doesn't have because they carry no category of their own (nixpkgs
+        packages from the index, flake packages). Apps filed under another category stay out."""
+        page = self.current_page.casefold()
+        others = [key for key in CATEGORY_GROUPS["categories"] if key != page]
+        seen = {pkg for app in items for pkg in app.pkg_names}
+        extras: list[AppEntry] = []
+        for app in self._global_search(needle):
+            if any(pkg in seen for pkg in app.pkg_names):
+                continue
+            if any(self._has_category(app, key) for key in others):
+                continue
+            if not ((app.launchables or app.kind != "PACKAGE") or not should_hide_from_standard_catalog(app)):
+                continue
+            extras.append(app)
+            seen.update(app.pkg_names)
+            if len(extras) >= limit:
+                break
+        return extras
 
     def _search_rank_key(self, app: AppEntry, needle: str) -> tuple[int, int, int, str]:
         pkg_names = [pkg.casefold() for pkg in app.pkg_names if pkg]
