@@ -94,8 +94,7 @@ msgid "✗ Failed — local.nix restored."
 msgstr "✗ Falhou — local.nix restaurado."
 
 #: roudix_store/flatpak_support.py
-msgid ""
-"No Flatpak remote yet — the metadata will be fetched at the next start."
+msgid "No Flatpak remote yet — the metadata will be fetched at the next start."
 msgstr ""
 "Ainda não há repositório Flatpak — os metadados serão obtidos na próxima "
 "inicialização."
@@ -192,14 +191,51 @@ msgid "failed"
 msgstr "falhou"
 
 #: roudix_store/nix_backend.py
-msgid "Repositories are managed by the Roudix flake."
-msgstr "Os repositórios são gerenciados pelo flake do Roudix."
+msgid "nix was not found in PATH."
+msgstr "nix não foi encontrado no PATH."
+
+#: roudix_store/nix_backend.py
+msgid "Quick install — using nix profile, no rebuild."
+msgstr "Instalação rápida — usando nix profile, sem rebuild."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already in your profile."
+msgstr "{pkg} já está no seu perfil."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile add failed"
+msgstr "{pkg}: falha no nix profile add"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not in your profile."
+msgstr "{pkg} não está no seu perfil."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile remove failed"
+msgstr "{pkg}: falha no nix profile remove"
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
 msgid "'{action}' is not supported on Roudix (updates come from the flake)."
 msgstr ""
 "“{action}” não é compatível com o Roudix (as atualizações vêm do flake)."
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr "Aplicado."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is now in your configuration — removing the quick-install copy."
+msgstr "{pkg} agora está na sua configuração — removendo a cópia da instalação rápida."
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
+msgstr "Os repositórios são gerenciados pelo flake do Roudix."
 
 #: roudix_store/nix_backend.py
 msgid "Nothing to change."
@@ -217,10 +253,6 @@ msgid ""
 msgstr ""
 "Os aplicativos Flatpak são instalados/removidos pelo nix-flatpak durante o "
 "switch — isso pode demorar um pouco."
-
-#: roudix_store/nix_backend.py
-msgid "Applied."
-msgstr "Aplicado."
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
@@ -304,6 +336,10 @@ msgstr "{len} arquivos RPM"
 #, python-brace-format
 msgid "{len} packages"
 msgstr "{len} pacotes"
+
+#: roudix_store/ui.py
+msgid "Home"
+msgstr "Início"
 
 #: roudix_store/ui.py
 msgid "Installed"
@@ -865,8 +901,8 @@ msgstr "Primeiro uso: obtendo o catálogo do Flathub…"
 
 #: roudix_store/ui.py
 msgid ""
-"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update "
-"--appstream"
+"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update --"
+"appstream"
 msgstr ""
 "Ainda não há dados do Flathub. O roudix.flatpak.enable está ativado? Tente: "
 "flatpak update --appstream"
@@ -886,6 +922,14 @@ msgstr "Tente outra categoria ou outro termo de busca."
 #: roudix_store/ui.py
 msgid "Important Notices"
 msgstr "Avisos importantes"
+
+#: roudix_store/ui.py
+msgid "Featured apps"
+msgstr "Apps em destaque"
+
+#: roudix_store/ui.py
+msgid "Browse by category"
+msgstr "Navegar por categoria"
 
 #: roudix_store/ui.py
 msgid "Queued actions"
@@ -961,6 +1005,14 @@ msgid "All"
 msgstr "Tudo"
 
 #: roudix_store/ui.py
+msgid "Welcome to Roudix Store"
+msgstr "Bem-vindo ao Roudix Store"
+
+#: roudix_store/ui.py
+msgid "Pick a featured app, browse a category, or use the search bar above."
+msgstr "Escolha um app em destaque, navegue por uma categoria ou use a barra de busca acima."
+
+#: roudix_store/ui.py
 #, python-brace-format
 msgid "Showing {n_repos} repositories."
 msgstr "Exibindo {n_repos} repositórios."
@@ -1029,6 +1081,10 @@ msgid "User (Home Manager)"
 msgstr "Usuário (Home Manager)"
 
 #: roudix_store/ui.py
+msgid "User (instant, nix profile)"
+msgstr "Usuário (instantâneo, nix profile)"
+
+#: roudix_store/ui.py
 msgid "installed via config"
 msgstr "instalado via config"
 
@@ -1075,8 +1131,7 @@ msgstr "{action} de {pkg} colocada na fila"
 #: roudix_store/ui.py
 #, python-brace-format
 msgid "Queued {action} for {pkg} — press Apply to run it"
-msgstr ""
-"{action} de {pkg} colocada na fila — pressione Aplicar para executá-la"
+msgstr "{action} de {pkg} colocada na fila — pressione Aplicar para executá-la"
 
 #: roudix_store/ui.py
 #, python-brace-format
@@ -1157,8 +1212,8 @@ msgstr "{display_name}: falhou"
 #: roudix_store/ui.py
 #, python-brace-format
 msgid ""
-"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s)"
-" remain."
+"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s) "
+"remain."
 msgstr ""
 "Fila concluída. {done_count} item(ns) concluído(s) removido(s); {len} com "
 "falha permanecem."
@@ -1175,8 +1230,7 @@ msgstr "A fila está vazia."
 #: roudix_store/ui.py
 #, python-brace-format
 msgid ""
-"Running {action} for {target}. {done} done, {failed} failed, {queued} "
-"queued."
+"Running {action} for {target}. {done} done, {failed} failed, {queued} queued."
 msgstr ""
 "{action} de {target} em andamento. {done} concluído(s), {failed} com falha, "
 "{queued} na fila."

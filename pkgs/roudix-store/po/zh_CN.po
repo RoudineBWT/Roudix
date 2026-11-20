@@ -94,8 +94,7 @@ msgid "✗ Failed — local.nix restored."
 msgstr "✗ 失败 — 已还原 local.nix。"
 
 #: roudix_store/flatpak_support.py
-msgid ""
-"No Flatpak remote yet — the metadata will be fetched at the next start."
+msgid "No Flatpak remote yet — the metadata will be fetched at the next start."
 msgstr "尚无 Flatpak 软件源 — 元数据将在下次启动时获取。"
 
 #: roudix_store/flatpak_support.py roudix_store/nix_backend.py
@@ -190,13 +189,50 @@ msgid "failed"
 msgstr "失败"
 
 #: roudix_store/nix_backend.py
-msgid "Repositories are managed by the Roudix flake."
-msgstr "软件源由 Roudix flake 管理。"
+msgid "nix was not found in PATH."
+msgstr "在 PATH 中找不到 nix。"
+
+#: roudix_store/nix_backend.py
+msgid "Quick install — using nix profile, no rebuild."
+msgstr "快速安装 — 使用 nix profile，无需重新构建。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already in your profile."
+msgstr "{pkg} 已在你的配置文件中。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile add failed"
+msgstr "{pkg}：nix profile add 失败"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not in your profile."
+msgstr "{pkg} 不在你的配置文件中。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile remove failed"
+msgstr "{pkg}：nix profile remove 失败"
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
 msgid "'{action}' is not supported on Roudix (updates come from the flake)."
 msgstr "Roudix 不支持“{action}”（更新来自 flake）。"
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr "已应用。"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is now in your configuration — removing the quick-install copy."
+msgstr "{pkg} 现已加入你的配置 — 正在移除快速安装的副本。"
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
+msgstr "软件源由 Roudix flake 管理。"
 
 #: roudix_store/nix_backend.py
 msgid "Nothing to change."
@@ -211,11 +247,8 @@ msgstr "local.nix 已更新（{scope}）：{changed}"
 msgid ""
 "Flatpak apps are installed/removed by nix-flatpak during the switch — this "
 "can take a while."
-msgstr "Flatpak 应用将在 switch 期间由 nix-flatpak 安装/移除 — 这可能需要一些时间。"
-
-#: roudix_store/nix_backend.py
-msgid "Applied."
-msgstr "已应用。"
+msgstr ""
+"Flatpak 应用将在 switch 期间由 nix-flatpak 安装/移除 — 这可能需要一些时间。"
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
@@ -296,6 +329,10 @@ msgstr "{len} 个 RPM 文件"
 #, python-brace-format
 msgid "{len} packages"
 msgstr "{len} 个软件包"
+
+#: roudix_store/ui.py
+msgid "Home"
+msgstr "主页"
 
 #: roudix_store/ui.py
 msgid "Installed"
@@ -805,8 +842,9 @@ msgid ""
 "the system (a few minutes). The Flathub catalog is then fetched and Roudix "
 "Store has to be restarted for Flatpak to be picked up."
 msgstr ""
-"这将把“roudix.flatpak.enable = true”写入你的 local.nix，然后重新构建系统（需要几分钟）。之后会获取 "
-"Flathub 目录，并且需要重启 Roudix Store 才能识别 Flatpak。"
+"这将把“roudix.flatpak.enable = true”写入你的 local.nix，然后重新构建系统（需"
+"要几分钟）。之后会获取 Flathub 目录，并且需要重启 Roudix Store 才能识别 "
+"Flatpak。"
 
 #: roudix_store/ui.py
 msgid "Cancel"
@@ -852,10 +890,11 @@ msgstr "首次使用：正在获取 Flathub 目录…"
 
 #: roudix_store/ui.py
 msgid ""
-"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update "
-"--appstream"
+"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update --"
+"appstream"
 msgstr ""
-"暂无 Flathub 数据。roudix.flatpak.enable 是否已启用？请尝试：flatpak update --appstream"
+"暂无 Flathub 数据。roudix.flatpak.enable 是否已启用？请尝试：flatpak update "
+"--appstream"
 
 #: roudix_store/ui.py
 msgid "List"
@@ -872,6 +911,14 @@ msgstr "请尝试其他分类或搜索词。"
 #: roudix_store/ui.py
 msgid "Important Notices"
 msgstr "重要通知"
+
+#: roudix_store/ui.py
+msgid "Featured apps"
+msgstr "精选应用"
+
+#: roudix_store/ui.py
+msgid "Browse by category"
+msgstr "按类别浏览"
 
 #: roudix_store/ui.py
 msgid "Queued actions"
@@ -946,6 +993,14 @@ msgid "All"
 msgstr "全部"
 
 #: roudix_store/ui.py
+msgid "Welcome to Roudix Store"
+msgstr "欢迎使用 Roudix Store"
+
+#: roudix_store/ui.py
+msgid "Pick a featured app, browse a category, or use the search bar above."
+msgstr "选择一款精选应用、浏览某个类别，或使用上方的搜索栏。"
+
+#: roudix_store/ui.py
 #, python-brace-format
 msgid "Showing {n_repos} repositories."
 msgstr "正在显示 {n_repos} 个软件源。"
@@ -1012,6 +1067,10 @@ msgid "User (Home Manager)"
 msgstr "用户（Home Manager）"
 
 #: roudix_store/ui.py
+msgid "User (instant, nix profile)"
+msgstr "用户（即时，nix profile）"
+
+#: roudix_store/ui.py
 msgid "installed via config"
 msgstr "通过配置安装"
 
@@ -1046,7 +1105,8 @@ msgstr "已将 {primary_pkg} 从队列中移除"
 msgid ""
 "{primary_pkg} comes from the Roudix configuration, not from the store — "
 "remove it from your config to uninstall it."
-msgstr "{primary_pkg} 来自 Roudix 配置，而非商店 — 请从你的配置中移除它以卸载。"
+msgstr ""
+"{primary_pkg} 来自 Roudix 配置，而非商店 — 请从你的配置中移除它以卸载。"
 
 #: roudix_store/ui.py
 #, python-brace-format
@@ -1137,8 +1197,8 @@ msgstr "{display_name}：失败"
 #: roudix_store/ui.py
 #, python-brace-format
 msgid ""
-"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s)"
-" remain."
+"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s) "
+"remain."
 msgstr "队列已结束。已清除 {done_count} 个已完成项；仍有 {len} 个失败项。"
 
 #: roudix_store/ui.py
@@ -1153,9 +1213,10 @@ msgstr "队列为空。"
 #: roudix_store/ui.py
 #, python-brace-format
 msgid ""
-"Running {action} for {target}. {done} done, {failed} failed, {queued} "
-"queued."
-msgstr "正在对 {target} 执行{action}。已完成 {done} 项，失败 {failed} 项，排队 {queued} 项。"
+"Running {action} for {target}. {done} done, {failed} failed, {queued} queued."
+msgstr ""
+"正在对 {target} 执行{action}。已完成 {done} 项，失败 {failed} 项，排队 "
+"{queued} 项。"
 
 #: roudix_store/ui.py
 #, python-brace-format

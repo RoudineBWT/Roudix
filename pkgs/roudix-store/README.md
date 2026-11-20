@@ -92,3 +92,19 @@ Installing one records `"<flake>#<attr>"` in `roudix.store.flakePackages` (user)
 # in hosts/<host>/local.nix: offer another input, or tune one (a field you set replaces Roudix's default for it)
 roudix.store.flakeSources.my-flake = { label = "My flake"; exclude = [ "internal-tool" ]; aliases = { foo-custom = "foo"; }; };
 ```
+
+## Welcome page: featured apps that change by themselves
+
+The *Home* page shows 9 apps. Per source (`nix` / `flatpak`) there are two lists: `pinned` (always
+first) and `pool` (the rest is drawn from it; the draw changes every day and is the same for
+everybody, since the date is the seed — no network needed). The built-in lists are in
+`roudix_store/featured.py`. To change them without a new release, host a `featured.json`
+(template: `featured.example.json`) and point the store at it:
+
+```nix
+roudix.store.featuredUrl = "https://raw.githubusercontent.com/<user>/<repo>/main/featured.json";
+```
+
+The store fetches it at most once a day in the background and keeps a copy in
+`~/.cache/roudix-store/`; offline it uses that copy, then the built-in lists. A file at
+`/etc/roudix-store/featured.json` (or the one `ROUDIX_STORE_FEATURED` names) overrides both.

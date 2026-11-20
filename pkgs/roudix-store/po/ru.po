@@ -10,7 +10,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: roudix-store.py
 msgid "Search apps…"
@@ -94,8 +95,7 @@ msgid "✗ Failed — local.nix restored."
 msgstr "✗ Ошибка — local.nix восстановлен."
 
 #: roudix_store/flatpak_support.py
-msgid ""
-"No Flatpak remote yet — the metadata will be fetched at the next start."
+msgid "No Flatpak remote yet — the metadata will be fetched at the next start."
 msgstr ""
 "Репозитория Flatpak пока нет — метаданные будут получены при следующем "
 "запуске."
@@ -192,13 +192,50 @@ msgid "failed"
 msgstr "ошибка"
 
 #: roudix_store/nix_backend.py
-msgid "Repositories are managed by the Roudix flake."
-msgstr "Репозиториями управляет flake Roudix."
+msgid "nix was not found in PATH."
+msgstr "nix не найден в PATH."
+
+#: roudix_store/nix_backend.py
+msgid "Quick install — using nix profile, no rebuild."
+msgstr "Быстрая установка — через nix profile, без пересборки."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already in your profile."
+msgstr "{pkg} уже есть в вашем профиле."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile add failed"
+msgstr "{pkg}: не удалось выполнить nix profile add"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not in your profile."
+msgstr "{pkg} нет в вашем профиле."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile remove failed"
+msgstr "{pkg}: не удалось выполнить nix profile remove"
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
 msgid "'{action}' is not supported on Roudix (updates come from the flake)."
 msgstr "«{action}» не поддерживается в Roudix (обновления приходят из flake)."
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr "Применено."
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is now in your configuration — removing the quick-install copy."
+msgstr "{pkg} теперь в вашей конфигурации — удаляется копия быстрой установки."
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
+msgstr "Репозиториями управляет flake Roudix."
 
 #: roudix_store/nix_backend.py
 msgid "Nothing to change."
@@ -216,10 +253,6 @@ msgid ""
 msgstr ""
 "Приложения Flatpak устанавливаются и удаляются через nix-flatpak во время "
 "switch — это может занять некоторое время."
-
-#: roudix_store/nix_backend.py
-msgid "Applied."
-msgstr "Применено."
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
@@ -300,6 +333,10 @@ msgstr "Файлов RPM: {len}"
 #, python-brace-format
 msgid "{len} packages"
 msgstr "Пакетов: {len}"
+
+#: roudix_store/ui.py
+msgid "Home"
+msgstr "Главная"
 
 #: roudix_store/ui.py
 msgid "Installed"
@@ -859,8 +896,8 @@ msgstr "Первое использование: получение катало
 
 #: roudix_store/ui.py
 msgid ""
-"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update "
-"--appstream"
+"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update --"
+"appstream"
 msgstr ""
 "Данных Flathub пока нет. Включён ли roudix.flatpak.enable? Попробуйте: "
 "flatpak update --appstream"
@@ -880,6 +917,14 @@ msgstr "Попробуйте другую категорию или другой
 #: roudix_store/ui.py
 msgid "Important Notices"
 msgstr "Важные объявления"
+
+#: roudix_store/ui.py
+msgid "Featured apps"
+msgstr "Рекомендуемые приложения"
+
+#: roudix_store/ui.py
+msgid "Browse by category"
+msgstr "Обзор по категориям"
 
 #: roudix_store/ui.py
 msgid "Queued actions"
@@ -954,6 +999,14 @@ msgid "All"
 msgstr "Все"
 
 #: roudix_store/ui.py
+msgid "Welcome to Roudix Store"
+msgstr "Добро пожаловать в Roudix Store"
+
+#: roudix_store/ui.py
+msgid "Pick a featured app, browse a category, or use the search bar above."
+msgstr "Выберите рекомендуемое приложение, откройте категорию или воспользуйтесь строкой поиска выше."
+
+#: roudix_store/ui.py
 #, python-brace-format
 msgid "Showing {n_repos} repositories."
 msgstr "Показано репозиториев: {n_repos}."
@@ -1019,6 +1072,10 @@ msgstr "Пользователь"
 #: roudix_store/ui.py
 msgid "User (Home Manager)"
 msgstr "Пользователь (Home Manager)"
+
+#: roudix_store/ui.py
+msgid "User (instant, nix profile)"
+msgstr "Пользователь (мгновенно, nix profile)"
 
 #: roudix_store/ui.py
 msgid "installed via config"
@@ -1149,8 +1206,8 @@ msgstr "{display_name}: ошибка"
 #: roudix_store/ui.py
 #, python-brace-format
 msgid ""
-"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s)"
-" remain."
+"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s) "
+"remain."
 msgstr ""
 "Очередь завершена. Убрано завершённых элементов: {done_count}; с ошибкой "
 "осталось: {len}."
@@ -1167,11 +1224,10 @@ msgstr "Очередь пуста."
 #: roudix_store/ui.py
 #, python-brace-format
 msgid ""
-"Running {action} for {target}. {done} done, {failed} failed, {queued} "
-"queued."
+"Running {action} for {target}. {done} done, {failed} failed, {queued} queued."
 msgstr ""
-"Выполняется {action}: {target}. Готово: {done}, ошибок: {failed}, в очереди:"
-" {queued}."
+"Выполняется {action}: {target}. Готово: {done}, ошибок: {failed}, в очереди: "
+"{queued}."
 
 #: roudix_store/ui.py
 #, python-brace-format
