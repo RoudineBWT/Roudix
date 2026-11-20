@@ -1855,20 +1855,33 @@ class MainWindow(Adw.ApplicationWindow):
         self.stack.add_titled(self.home_scroller, "home", tr("Home"))
 
     def _featured_apps(self) -> list[AppEntry]:
-        """The featured entries (featured.py) the catalog of the active source really has."""
+        """What the welcome page shows: the pinned apps, then a draw from the pool that changes
+        every day (featured.py), limited to what the catalog of the active source really has."""
         by_key: dict[str, AppEntry] = {}
         for app in self.apps:
             if app.source == self.source:
                 for key in (*app.pkg_names, *app.flake_refs):
                     by_key.setdefault(key, app)
         out: list[AppEntry] = []
-        for key in featured.featured_for(self.source):
-            app = by_key.get(key)
-            if app is not None and app not in out:
+        # a few more keys than tiles: two keys can lead to the same app
+        for key in featured.select(self.source, by_key.__contains__, limit=featured.MAX_FEATURED + 6):
+            app = by_key[key]
+            if app not in out:
                 out.append(app)
-            if len(out) >= featured.MAX_FEATURED:
-                break
-        return out
+        return out[:featured.MAX_FEATURED]
+
+    def _maybe_refresh_featured(self) -> None:
+        """Once per run: look for a newer remote featured list in the background."""
+        if getattr(self, "_featured_checked", False):
+            return
+        self._featured_checked = True
+        featured.refresh_async(lambda: GLib.idle_add(self._featured_changed))
+
+    def _featured_changed(self) -> bool:
+        if (not self.current_search_text and self.current_group == "system" and self.current_page == "home"
+                and self.stack.get_visible_child_name() == "home"):
+            self._refresh_home_page()
+        return False
 
     def _home_heading(self, text: str) -> Gtk.Widget:
         label = Gtk.Label(label=text, xalign=0)
@@ -2194,6 +2207,7 @@ class MainWindow(Adw.ApplicationWindow):
         self._switch_page(self.current_group, self.current_page)
         self._refresh_queue_page()
         self._maybe_first_appstream_update()
+        self._maybe_refresh_featured()
         return False
 
     def _fetch_news_text(self) -> str:

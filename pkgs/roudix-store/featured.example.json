@@ -1,0 +1,10 @@
+{
+  "nix": {
+    "pinned": ["roudix-caches#faugus"],
+    "pool": ["firefox", "vlc", "mpv", "gimp", "krita", "inkscape", "blender", "obs-studio", "audacity", "libreoffice-fresh", "thunderbird", "telegram-desktop", "discord", "steam", "heroic", "lutris"]
+  },
+  "flatpak": {
+    "pinned": [],
+    "pool": ["org.mozilla.firefox", "org.videolan.VLC", "org.gimp.GIMP", "org.kde.krita", "org.inkscape.Inkscape", "org.blender.Blender", "com.obsproject.Studio", "org.audacityteam.Audacity", "org.libreoffice.LibreOffice", "org.mozilla.Thunderbird", "org.telegram.desktop", "com.discordapp.Discord", "com.valvesoftware.Steam", "com.heroicgameslauncher.hgl", "net.lutris.Lutris"]
+  }
+}
