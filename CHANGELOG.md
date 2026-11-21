@@ -7,6 +7,20 @@ once they build, then to `main` — so an entry shows up here when it reaches `m
 
 ## [Unreleased]
 
+## [2026.11.21] - 2026-11-21
+
+### Changed
+- feat(roudix-store): add dynamic featured app list
+- feat(roudix-store): add featured app support
+- feat(pipewire): add Elgato Wave:3 microphone fix
+- feat(roudix): add Luciole as a file manager choice
+- feat(roudix-cursor): add cursor theme and live recolouring support
+- fix(roudix-installer): add a temporary zram/swap file for nixos-install on low-memory machines
+- fix(roudix-installer): re-run through the Nix wrapper when restarting as root
+- fix(roudix-installer): restart as root on installer images before installing feat(roudix-installer): pick list entries with the arrow keys in the TUI
+- fix(roudix-installer): detect stock NixOS live ISOs so the disk and user steps show up
+- fix(roudix-installer): fix nix build, add UI choice, fill missing translations
+
 ## [2026.11.15] - 2026-11-15
 
 ### Changed
