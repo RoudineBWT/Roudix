@@ -215,6 +215,10 @@ msgid "Lightweight, Qt-based"
 msgstr "Léger, en Qt"
 
 #: roudix-switcher.py
+msgid "Noctalia's native Wayland file manager"
+msgstr "Gestionnaire de fichiers Wayland natif de Noctalia"
+
+#: roudix-switcher.py
 msgid "Full-featured Matrix client"
 msgstr "Client Matrix complet"
 
@@ -709,6 +713,14 @@ msgid ""
 msgstr ""
 "Ne jamais mettre en veille automatique les périphériques USB (corrige les "
 "coupures audio USB, coûte de la batterie sur portable)"
+
+#: roudix-switcher.py
+msgid ""
+"Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
+"devices)"
+msgstr ""
+"Correctif micro Elgato Wave:3 (micro muet quand la lecture démarre en "
+"premier ; renomme ses périphériques)"
 
 #: roudix-switcher.py
 msgid "Boot splash (Plymouth) — off = plain text boot"

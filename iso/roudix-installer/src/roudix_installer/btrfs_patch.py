@@ -1,5 +1,5 @@
 """
-Mirrors the btrfs subvolume auto-patch block from roudix-installer.sh:
+Mirrors the btrfs subvolume auto-patch block from the old bash installer:
 scans /proc/mounts for active btrfs mounts, extracts subvol/compress/
 ssd/discard from the real mount options, and injects (or replaces) the
 `options = [ ... ];` line in the matching fileSystems."<mountpoint>"

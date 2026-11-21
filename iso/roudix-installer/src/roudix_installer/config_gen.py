@@ -1,5 +1,5 @@
 """
-Patches hosts/roudix/local.nix the same way roudix-installer.sh does:
+Patches hosts/roudix/local.nix the same way the old bash installer does:
 copy from local.nix.example, then regex-replace each value in place.
 Same option keys, same regex targets — just Python re.sub instead of
 sed, so it's easy to diff against the bash script when it changes.
@@ -8,6 +8,7 @@ import re
 import shutil
 from pathlib import Path
 
+from roudix_installer import multiboot
 from roudix_installer.hardware_detect import detect_prime_bus_ids
 from roudix_installer.host_profile import FIXED, restore_fixed_lines
 from roudix_installer.state import InstallState, valid_hostname, valid_username
@@ -132,6 +133,14 @@ def _eac_vendor(state: InstallState) -> str:
     return "bazzite" if state.gpu == "nvidia" else state.eac_vendor
 
 
+def _file_manager_value(state: InstallState) -> str:
+    """Luciole only works with the Noctalia shell (the NixOS module asserts it):
+    never write that pair, whatever the state was seeded or left with."""
+    if state.file_manager == "luciole" and state.desktop_shell != "noctalia":
+        return "nautilus"
+    return state.file_manager
+
+
 def _bios_device(state: InstallState) -> str:
     """roudix.boot.biosDevice as written: the DISK Limine goes on in legacy BIOS
     mode (the one picked on the Disk page, whatever the partitioning mode),
@@ -231,7 +240,7 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
     t = _sub_string(t, "roudix.editor", state.editor)
     t = _sub_string(t, "roudix.desktopIntegration", state.desktop_integration)
     t = _sub_string(t, "roudix.terminal", state.terminal)
-    t = _sub_string(t, "roudix.fileManager", state.file_manager)
+    t = _sub_string(t, "roudix.fileManager", _file_manager_value(state))
     t = _sub_string(t, "roudix.shell", state.default_shell)
     t = _sub_bool(t, "roudix.vmGuest.enable", state.vm_guest)
     t = _sub_bool(t, "roudix.gaming.enable", state.gaming)
@@ -343,12 +352,12 @@ def patch_local_nix(state: InstallState, local_nix_text: str) -> str:
 
 def _expected_values(state: InstallState) -> list:
     """(key, kind, value) for the options patch_local_nix() always writes —
-    the same set roudix-installer.sh re-checks with check_opt()."""
+    the same set the old bash installer re-checks with check_opt()."""
     strings = {
         "roudix.rgb": state.rgb, "hardware.myGpu": state.gpu, "hardware.myCpu": state.cpu,
         "roudix.desktop.type": state.desktop, "roudix.desktop.shell": state.desktop_shell,
         "roudix.editor": state.editor, "roudix.desktopIntegration": state.desktop_integration,
-        "roudix.terminal": state.terminal, "roudix.fileManager": state.file_manager,
+        "roudix.terminal": state.terminal, "roudix.fileManager": _file_manager_value(state),
         "roudix.shell": state.default_shell, "time.timeZone": state.timezone,
         "i18n.defaultLocale": state.locale, "console.keyMap": state.keymap,
         "roudix.keyboardLayout": state.keyboard_layout, "roudix.keyboardVariant": state.keyboard_variant,
@@ -401,7 +410,7 @@ def _expected_values(state: InstallState) -> list:
 def verify_local_nix(state: InstallState, example_text: str, result_text: str) -> list:
     """Keys whose value did NOT land in local.nix. Every substitution above is a
     silent no-op when its pattern stops matching (e.g. local.nix.example's
-    format drifts), so check the result — what roudix-installer.sh does with
+    format drifts), so check the result — what the old bash installer does with
     check_opt(). Keys absent from the example (hidden for this host) and lines
     marked `roudix-installer: fixed` are legitimately left alone."""
     missing = []
@@ -435,7 +444,8 @@ def write_config(state: InstallState, config_root: Path):
     """
     config_root is the already-copied /iso-cfg tree (== /mnt/etc/nixos).
     Mirrors: username.nix, local.nix from example + sed, home/local.nix
-    copied verbatim, boot.local.nix copied verbatim (EFI detection TODO).
+    copied verbatim, boot.local.nix = the other systems chosen by the user
+    (state.other_os) or the example copied verbatim.
     """
     check_identity(state)
     check_bios_support(state, config_root)
@@ -453,5 +463,9 @@ def write_config(state: InstallState, config_root: Path):
     shutil.copy(home_dir / "local.nix.example", home_dir / "local.nix")
 
     boot_example = config_root / "modules" / "system" / "boot" / "boot.local.nix.example"
-    if boot_example.exists():
+    if state.other_os:
+        # Other systems picked by the user (TUI): Limine entries, see multiboot.py
+        boot_local.parent.mkdir(parents=True, exist_ok=True)
+        boot_local.write_text(multiboot.render(state.other_os))
+    elif boot_example.exists():
         shutil.copy(boot_example, boot_local)

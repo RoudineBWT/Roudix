@@ -7,7 +7,7 @@
 | स्थिति | क्या इस्तेमाल करें |
 |-----------|-----|
 | नई मशीन, अभी कुछ इंस्टॉल नहीं | **Roudix ISO** — सीधे ग्राफ़िकल इंस्टॉलर में बूट होता है (पार्टिशनिंग शामिल) |
-| NixOS पहले से इंस्टॉल है (आधिकारिक ISO, किसी दूसरे डिस्ट्रो का NixOS इंस्टॉल, VM…) | **`roudix-installer.sh`** — आपके मौजूदा इंस्टॉल पर Roudix flake लगाता है |
+| NixOS पहले से इंस्टॉल है (आधिकारिक ISO, किसी दूसरे डिस्ट्रो का NixOS इंस्टॉल, VM…) | **`roudix-installer`** — आपके मौजूदा इंस्टॉल पर Roudix flake लगाता है |
 | आप हर चरण पर पूरा नियंत्रण चाहते हैं, या स्क्रिप्ट आपका मामला कवर नहीं करती | **मैनुअल इंस्टॉलेशन** (नीचे) |
 
 ## विकल्प A — Roudix ISO (नए इंस्टॉल के लिए अनुशंसित)
@@ -21,7 +21,7 @@ ISO में हमारा अपना GTK4/libadwaita ग्राफ़ि
 
 > **नोट:** अगर लाइव सेशन का कीबोर्ड आपके भौतिक कीबोर्ड से मेल नहीं खाता तो बूट मेनू कीबोर्ड-लेआउट विशेषीकरण (US/BE/FR/DE/CH/UK) भी देता है — इंस्टॉलर शुरू करने से पहले एक चुन लें।
 
-यह रास्ता नीचे के दोनों चरणों की जगह पूरी तरह ले लेता है (`roudix-installer.sh` या मैनुअल चरणों की ज़रूरत नहीं) — रीबूट होने के बाद इंस्टॉलेशन के बाद वाले हिस्से पर जाएँ।
+यह रास्ता नीचे के दोनों चरणों की जगह पूरी तरह ले लेता है (`roudix-installer` या मैनुअल चरणों की ज़रूरत नहीं) — रीबूट होने के बाद इंस्टॉलेशन के बाद वाले हिस्से पर जाएँ।
 
 ## विकल्प B — NixOS पहले से इंस्टॉल है
 
@@ -37,6 +37,16 @@ ISO वाला ही विज़ार्ड, बस डिस्क पे�
 nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 ```
 
+> **flakes चालू नहीं हैं?** अगर `nix run` जवाब दे `experimental Nix feature 'nix-command' is disabled`, तो ये सुविधाएँ कमांड लाइन में ही दे दें: कुछ कॉन्फ़िगर करने की ज़रूरत नहीं, और कोई ब्रांच चुनने की भी नहीं (डिफ़ॉल्ट ब्रांच इस्तेमाल होती है)।
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
+# टर्मिनल संस्करण:
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
+```
+
+इन्हें हमेशा के लिए चालू करने के लिए `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf` चलाएँ (NixOS पर: `nix.settings.experimental-features = [ "nix-command" "flakes" ];`)। `sudo` आपका `~/.config` नहीं पढ़ता: root के रूप में चलाने के लिए पहले `export NIX_CONFIG="experimental-features = nix-command flakes"` **अलग लाइन में** चलाएँ, फिर `sudo -E nix run …` इस्तेमाल करें।
+
 - **कुछ नहीं मिटाया जाता।** कॉन्फ़िगरेशन `~/.config/roudix` में जाता है (मौजूदा फ़ोल्डर को किनारे कर दिया जाता है, कभी हटाया नहीं जाता), फिर `nixos-rebuild boot` Roudix बनाता है और उसे अगले बूट के लिए तय कर देता है। आपका मौजूदा सिस्टम बूट मेनू में बना रहता है।
 - **आपके `/etc/nixos` का बैकअप** `/var/backups/roudix/nixos-<date>/` में लिया जाता है, साथ में एक `RESTORE.txt` (पिछली जनरेशन, बूटलोडर, `stateVersion` और वापस जाने के सटीक कमांड)। `hardware-configuration.nix` जैसा है वैसा ही दोबारा इस्तेमाल होता है, कभी ओवरराइट नहीं होता।
 - **पहले सिमुलेट करें।** सारांश पेज का *सिमुलेट* बटन कॉन्फ़िगरेशन को एक अस्थायी फ़ोल्डर में बनाता है, जाँचता है कि हर विकल्प लिखा गया, और Nix से पूरे सिस्टम का मूल्यांकन करवाता है। आपकी मशीन पर कुछ नहीं बदलता।
@@ -50,9 +60,7 @@ nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 **roudix-installer स्क्रिप्ट डाउनलोड करें**
 
 ```bash
-nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
-chmod +x roudix-installer.sh
-./roudix-installer.sh
+nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
 ```
 
 इंस्टॉलर सब कुछ इंटरैक्टिव ढंग से संभालता है:

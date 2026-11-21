@@ -401,6 +401,18 @@ FILE_MANAGERS = [
 # Like Integration: no effect on gnome/kde, which keep their native manager.
 FILE_MANAGER_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
 
+# Only offered while the graphical shell is Noctalia (the NixOS module asserts
+# the same thing: roudix.fileManager = "luciole" needs roudix.desktop.shell =
+# "noctalia").
+FILE_MANAGER_LUCIOLE = [
+    {"id": "luciole", "name": "Luciole", "subtitle": tr("Noctalia's native Wayland file manager"), "icon": "luciole.svg"},
+]
+
+
+def file_managers_for_shell(shell_id: str) -> list:
+    """Return the file manager list appropriate for the given graphical shell."""
+    return FILE_MANAGERS + (FILE_MANAGER_LUCIOLE if shell_id == "noctalia" else [])
+
 MATRIX_CLIENTS = [
     {"id": "element", "name": "Element", "subtitle": tr("Full-featured Matrix client"),      "icon": "element.svg"},
     {"id": "cinny",   "name": "Cinny",   "subtitle": tr("Lightweight Matrix client"),                 "icon": "cinny.svg"},
@@ -803,6 +815,8 @@ PIPEWIRE_TOGGLES = [
      "key": "roudix.pipewire.realtimeTweaks.enable",   "default": False},
     {"id": "usbNoAutosuspend", "name": tr("Never autosuspend USB devices (fixes USB audio dropouts, costs laptop battery)"),
      "key": "roudix.pipewire.usbNoAutosuspend.enable", "default": False},
+    {"id": "elgatoWave3Fix",   "name": tr("Elgato Wave:3 mic fix (mic silent when playback starts first; renames its devices)"),
+     "key": "roudix.pipewire.elgatoWave3Fix.enable",   "default": False},
 ]
 
 # roudix.boot.plymouth.enable / .quiet (modules/system/boot/plymouth.nix) — both
@@ -2165,7 +2179,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         self.latest_group.append(self.latest_note)
         desktop_page.append(self.latest_group)
 
-        self.shell_selector.on_selected = lambda _id: self._update_latest_shell_row()
+        self.shell_selector.on_selected = lambda _id: self._on_shell_selected()
         self._update_latest_de_row()
         self._update_latest_shell_row()
 
@@ -2487,7 +2501,12 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         filemanager_page.set_margin_bottom(16)
 
         current_filemanager = get_string_option("roudix.fileManager", "nautilus")
-        self.filemanager_selector = SelectorGroup(tr("File manager"), FILE_MANAGERS, current_filemanager, dark)
+        initial_filemanagers = file_managers_for_shell(self.shell_selector.selected_id)
+        if current_filemanager not in {fm["id"] for fm in initial_filemanagers}:
+            # e.g. "luciole" left over from a Noctalia setup while the shell is
+            # now DMS: show (and, on Apply, write) a valid choice instead.
+            current_filemanager = "nautilus"
+        self.filemanager_selector = SelectorGroup(tr("File manager"), initial_filemanagers, current_filemanager, dark)
         filemanager_page.append(self.filemanager_selector)
 
         self.content_stack.add_named(filemanager_page, "filemanager")
@@ -3480,6 +3499,20 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
             self.latest_shell_switch.set_active(get_bool_option(latest_option_key(shell), False))
         self._update_latest_group_visibility()
 
+    def _on_shell_selected(self):
+        """Shell changed: refresh the flake-version switch and the file
+        managers that depend on the shell (Luciole needs Noctalia)."""
+        self._update_latest_shell_row()
+        self._sync_filemanager_items()
+
+    def _sync_filemanager_items(self):
+        """Reconcile the file manager list with the selected shell. If Luciole
+        was selected and the shell stops being Noctalia, the selection falls
+        back to the first remaining entry (Nautilus)."""
+        self.filemanager_selector.sync_items(
+            file_managers_for_shell(self.shell_selector.selected_id)
+        )
+
     def _on_de_toggled(self, check, *_):
         """Affiche/cache le shell selector et met à jour la liste selon le DE choisi."""
         new_de  = self.de_selector.selected_id
@@ -3515,6 +3548,7 @@ class RoudixSwitcherWindow(Adw.ApplicationWindow):
         # Hyprland → Noctalia/DMS + Caelestia, etc.)
         self.shell_selector.sync_items(shells_for_de(new_de))
         self._update_latest_shell_row()
+        self._sync_filemanager_items()
 
         log.debug(
             "DE changed to '%s' — shell selector updated (shells: %s)",

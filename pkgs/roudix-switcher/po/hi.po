@@ -211,6 +211,10 @@ msgid "Lightweight, Qt-based"
 msgstr "हल्का, Qt-आधारित"
 
 #: roudix-switcher.py
+msgid "Noctalia's native Wayland file manager"
+msgstr "Noctalia का नेटिव Wayland फ़ाइल मैनेजर"
+
+#: roudix-switcher.py
 msgid "Full-featured Matrix client"
 msgstr "पूरी सुविधाओं वाला Matrix क्लाइंट"
 
@@ -688,6 +692,14 @@ msgid ""
 msgstr ""
 "USB डिवाइस को कभी ऑटोसस्पेंड न करें (USB ऑडियो ड्रॉपआउट ठीक करता है, लैपटॉप की बैटरी "
 "खर्च होती है)"
+
+#: roudix-switcher.py
+msgid ""
+"Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
+"devices)"
+msgstr ""
+"Elgato Wave:3 माइक फ़िक्स (प्लेबैक पहले शुरू होने पर माइक मौन रहता है; इसके "
+"डिवाइस का नाम बदल देता है)"
 
 #: roudix-switcher.py
 msgid "Boot splash (Plymouth) — off = plain text boot"

@@ -1,4 +1,4 @@
-{ osConfig, ... }:
+{ osConfig, roudix-cursor, ... }:
 let
   terminalCmd = osConfig.roudix.terminal or "ghostty";
 in
@@ -17,7 +17,7 @@ in
     "_JAVA_AWT_WM_NONREPARENTING,1"
     "ELECTRON_OZONE_PLATFORM_HINT,auto"
     "QT_QPA_PLATFORMTHEME,qt6ct"
-    "XCURSOR_THEME,capitaine-cursors-white"
+    "XCURSOR_THEME,${roudix-cursor.themeName}"
     "XCURSOR_SIZE,24"
   ];
 }

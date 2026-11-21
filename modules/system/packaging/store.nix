@@ -108,6 +108,16 @@ in
         };
       });
     };
+    featuredUrl = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      example = "https://raw.githubusercontent.com/<user>/<repo>/main/featured.json";
+      description = ''
+        https URL of a featured.json (see pkgs/roudix-store/featured.example.json) that decides which apps
+        the store's welcome page puts forward. The store fetches it at most once a day, keeps a copy in
+        ~/.cache/roudix-store and falls back to its built-in list when offline. Empty: built-in list only.
+      '';
+    };
     flatpaks = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
@@ -127,6 +137,13 @@ in
       environment.systemPackages =
         lib.filter (p: p != null) (map resolve cfg.systemPackages)
         ++ lib.filter (p: p != null) (map resolveFlake cfg.systemFlakePackages);
+
+      # Quick installs run `nix profile add <flake>#<attr>`: pin each offered flake input in the registry
+      # so that resolves to the revision this system uses (nixpkgs is already pinned by NixOS itself)
+      nix.registry = lib.mapAttrs (n: _: { flake = lib.mkDefault inputs.${n}; })
+        (lib.filterAttrs (n: _: inputs ? ${n}) cfg.flakeSources);
+
+      environment.etc."roudix-store/featured-url" = lib.mkIf (cfg.featuredUrl != "") { text = cfg.featuredUrl + "\n"; };
 
       # the flakes Roudix proposes in the store (add yours with roudix.store.flakeSources.<input>)
       # field by field at default priority: overriding `exclude` of one flake keeps its label and aliases

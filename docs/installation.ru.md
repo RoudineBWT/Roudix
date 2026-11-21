@@ -7,7 +7,7 @@
 | Ситуация | Что использовать |
 |-----------|-----|
 | Новая машина, ничего ещё не установлено | **ISO Roudix** — сразу загружается в графический установщик (включая разметку диска) |
-| NixOS уже установлена (официальный ISO, установка NixOS из другого дистрибутива, ВМ…) | **`roudix-installer.sh`** — разворачивает flake Roudix поверх вашей существующей установки |
+| NixOS уже установлена (официальный ISO, установка NixOS из другого дистрибутива, ВМ…) | **`roudix-installer`** — разворачивает flake Roudix поверх вашей существующей установки |
 | Вы хотите контролировать каждый шаг, или скрипт не подходит для вашего случая | **Ручная установка** (ниже) |
 
 ## Вариант A — ISO Roudix (рекомендуется для чистой установки)
@@ -21,7 +21,7 @@ ISO содержит наш собственный графический уст
 
 > **Примечание:** в меню загрузки также есть специализации раскладки клавиатуры (US/BE/FR/DE/CH/UK) — на случай, если клавиатура живой сессии не совпадает с физической; выберите нужную до запуска установщика.
 
-Этот путь полностью заменяет два шага ниже (`roudix-installer.sh` и ручные шаги не нужны) — после перезагрузки переходите к тому, что идёт после установки.
+Этот путь полностью заменяет два шага ниже (`roudix-installer` и ручные шаги не нужны) — после перезагрузки переходите к тому, что идёт после установки.
 
 ## Вариант B — NixOS уже установлена
 
@@ -37,6 +37,16 @@ ISO содержит наш собственный графический уст
 nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 ```
 
+> **Flakes не включены?** Если `nix run` отвечает `experimental Nix feature 'nix-command' is disabled`, передайте нужные функции в командной строке: настраивать ничего не нужно, и выбирать ветку тоже (используется ветка по умолчанию).
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
+# терминальная версия:
+nix --extra-experimental-features 'nix-command flakes' run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
+```
+
+Чтобы включить их навсегда, выполните `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf` (в NixOS: `nix.settings.experimental-features = [ "nix-command" "flakes" ];`). `sudo` не читает ваш `~/.config`: для запуска от root сначала выполните `export NIX_CONFIG="experimental-features = nix-command flakes"` **отдельной строкой**, затем `sudo -E nix run …`.
+
 - **Ничего не стирается.** Конфигурация попадает в `~/.config/roudix` (существующая папка откладывается в сторону, но никогда не удаляется), затем `nixos-rebuild boot` собирает Roudix и назначает его на следующую загрузку. Ваша текущая система остаётся в меню загрузки.
 - **Ваш `/etc/nixos` копируется** в `/var/backups/roudix/nixos-<date>/` вместе с файлом `RESTORE.txt` (предыдущее поколение, загрузчик, `stateVersion` и точные команды для возврата). `hardware-configuration.nix` используется как есть и никогда не перезаписывается.
 - **Сначала симуляция.** Кнопка *Симуляция* на странице сводки создаёт конфигурацию во временной папке, проверяет, что каждый параметр записан, и заставляет Nix вычислить всю систему. На вашей машине ничего не изменяется.
@@ -50,9 +60,7 @@ nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer"
 **Скачайте скрипт roudix-installer**
 
 ```bash
-nix-shell -p wget --run "wget https://github.com/RoudineBWT/Roudix/raw/refs/heads/main/roudix-installer.sh"
-chmod +x roudix-installer.sh
-./roudix-installer.sh
+nix run "github:RoudineBWT/Roudix?dir=iso/roudix-installer" -- --tui
 ```
 
 Установщик всё делает в интерактивном режиме:

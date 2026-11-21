@@ -1,13 +1,11 @@
 """
 Single source of truth for everything the wizard collects.
-Field names/values map 1:1 onto what roudix-installer.sh already
+Field names/values map 1:1 onto what the old bash installer already
 asks for and sed-writes into hosts/roudix/local.nix — same options,
 same defaults, just fed by GUI state instead of `read -p`.
 
-Deliberately NOT covered yet (same as the TODO list in the installer
-README): EFI multi-boot NVRAM detection and btrfs subvolume auto-patch
-of hardware-configuration.nix. These stay manual/skipped for now —
-flagged, not silently dropped.
+Other systems found in the EFI NVRAM (`other_os`) are detected by multiboot.py and
+chosen in both wizards (GTK options page, TUI); nothing chosen = boot.local.nix left empty.
 
 RAM RGB SMBus/SKU are no longer auto-detect TODOs: local.nix.example
 now ships explicit roudix.memory.smBus / roudix.memory.sku keys, so
@@ -29,6 +27,16 @@ def valid_username(name: str) -> bool:
 
 def valid_hostname(name: str) -> bool:
     return bool(_HOSTNAME_RE.fullmatch(name or ""))
+
+
+# Free text typed by the user ends up inside a Nix string ("…") of local.nix, written
+# without escaping: refuse anything that could close the string or open an
+# interpolation ( " ' $ { } \\ backtick newline ).
+_SAFE_TEXT_RE = re.compile(r"^[\w .+:,@/-]*$")
+
+
+def safe_nix_text(text: str) -> bool:
+    return bool(_SAFE_TEXT_RE.fullmatch(text or ""))
 
 
 @dataclass
@@ -86,7 +94,7 @@ class InstallState:
                                               # (ships nvidia_cachyos precompiled, no local module rebuild).
                                               # NOTE: local.nix.example currently only has a hardware.myKernel
                                               # line — the myKernelChaotic key exists in the module system and
-                                              # is actively sed-patched by roudix-installer.sh, but has no
+                                              # is actively sed-patched by the old bash installer, but has no
                                               # placeholder line in this particular example file to substitute
                                               # into. Worth checking upstream / adding the line back.
 
@@ -151,6 +159,9 @@ class InstallState:
     autoupdate_interval: str = "1h"
     branch: str = "main"             # roudix.autoupdate.branch — main | testing | dev (also the branch cloned)
     bootloader: str = "limine"       # limine | systemd-boot
+    # Other systems to list in Limine's menu: [(label, partuuid, efi_path), ...] — written to
+    # modules/system/boot/boot.local.nix (multiboot.py). Empty = NixOS only.
+    other_os: list = field(default_factory=list)
     boot_aspect: str = "16x9"        # roudix.boot.wallpaperAspect — 16x9 | 16x10 | 21x9 | 4x3 (Limine wallpaper, main screen)
     boot_resolution: str = "auto"    # roudix.boot.menuResolution — "auto" | "<w>x<h>" (Limine menu; main screen with several screens)
     secure_boot: bool = False        # roudix.boot.secureBoot.enable — sign the bootloader (Limine with sbctl, systemd-boot with lanzaboote; UEFI only). Keys are created at install, enrolling them in the firmware stays manual
@@ -191,7 +202,7 @@ class InstallState:
     spicetify_marketplace: bool = True
 
     terminal: str = "ghostty"        # ghostty | kitty | alacritty | foot | wezterm
-    file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo
+    file_manager: str = "nautilus"   # roudix.fileManager — dolphin | thunar | nautilus | nemo | luciole (Noctalia shell only)
     ananicy_enable: bool = False     # roudix.gaming.ananicy.enable — opt-in, only meaningful if gaming.enable
     mesa_use_git: bool = False       # roudix.mesa.useGit — false = mesa stable
     mesa_git_source: str = "chaotic"  # roudix.mesa.gitSource — chaotic | gaming-edge (only when mesa_use_git)

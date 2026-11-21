@@ -1,4 +1,4 @@
-{ pkgs, inputs, config, lib, username, ... }:
+{ pkgs, inputs, config, lib, username, roudix-cursor, ... }:
 {
   # ── Nix settings ────────────────────────────────────────────────────────
   nix.settings = {
@@ -89,6 +89,7 @@
     yazi
     capitaine-cursors
     bibata-cursors
+    roudix-cursor
     efibootmgr
     pciutils
     dmidecode

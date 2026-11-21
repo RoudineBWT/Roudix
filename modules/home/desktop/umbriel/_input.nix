@@ -2,7 +2,7 @@
 ## [input.mouse], [input.cursor], [input.focus].
 ##
 ## Docs: https://docs.noctalia.dev/umbriel/input/
-{ osConfig, ... }:
+{ osConfig, roudix-cursor, ... }:
 {
   programs.umbriel.settings = {
   input = {
@@ -26,7 +26,11 @@
     mouse.accel_profile = "flat";
 
     focus = {
-      follows_mouse = true; # niri: focus-follows-mouse
+      # Now a string, not a bool: "off" | "sloppy" | "always". "sloppy" is the
+      # equivalent of niri's focus-follows-mouse (pointer motion onto a window
+      # focuses it; a still pointer never steals focus). "always" would also
+      # refocus under a still pointer after layout changes.
+      follows_mouse = "sloppy"; # niri: focus-follows-mouse
       # hover_raises (umbriel e57420b): by default hovering a window with
       # follows_mouse also RAISES it, so sweeping the pointer over a larger
       # window underneath buries the one above (the floating ghostty / chat
@@ -50,7 +54,7 @@
     };
 
     cursor = {
-      theme = "Bibata-Modern-Ice"; # misc.kdl: cursor { xcursor-theme ... }
+      theme = roudix-cursor.themeName; # misc.kdl: cursor { xcursor-theme ... }
       size = 24;
       hide_when_typing = true;
       hide_timeout_ms = 1000; # niri: hide-after-inactive-ms 1000

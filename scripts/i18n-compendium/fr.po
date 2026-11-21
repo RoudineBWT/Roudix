@@ -134,3 +134,118 @@ msgstr "Éditeurs de type Word pensés autour des formats .docx / .xlsx / .pptx"
 
 msgid "ONLYOFFICE (Word-style editors, .docx / .xlsx / .pptx)"
 msgstr "ONLYOFFICE (éditeurs de type Word, .docx / .xlsx / .pptx)"
+
+msgid "Only letters, digits and . _ + - : , @ / are allowed here."
+msgstr "Seuls les lettres, chiffres et . _ + - : , @ / sont autorisés ici."
+
+msgid "Allowed: {codes}"
+msgstr "Autorisés : {codes}"
+
+msgid "Gaming extras"
+msgstr "Extras gaming"
+
+msgid "Features"
+msgstr "Fonctionnalités"
+
+msgid " or type to filter"
+msgstr " ou tape pour filtrer"
+
+msgid "Choice"
+msgstr "Choix"
+
+msgid "Choose one of the entries."
+msgstr "Choisis l'une des entrées."
+
+msgid "Out of range."
+msgstr "Hors limites."
+
+msgid "No match."
+msgstr "Aucun résultat."
+
+msgctxt "yes/no prompt, yes is the default"
+msgid "[Y/n]"
+msgstr "[O/n]"
+
+msgctxt "yes/no prompt, no is the default"
+msgid "[y/N]"
+msgstr "[o/N]"
+
+msgid "Answer yes or no."
+msgstr "Réponds par oui ou non."
+
+msgid "Toggle: numbers separated by spaces, a = all, n = none, Enter = continue"
+msgstr "Bascule : numéros séparés par des espaces, a = tout, n = rien, Entrée = continuer"
+
+msgid "Administrator rights are needed and sudo is not available: run the installer as root."
+msgstr "Les droits administrateur sont nécessaires et sudo n'est pas disponible : lance l'installeur en root."
+
+msgid "Administrator rights are needed: enter your password if asked."
+msgstr "Les droits administrateur sont nécessaires : saisis ton mot de passe si on te le demande."
+
+msgid "No disk found."
+msgstr "Aucun disque trouvé."
+
+msgid "File not found."
+msgstr "Fichier introuvable."
+
+msgid "Partition it yourself in another terminal (cfdisk, fdisk, parted…), then press Enter."
+msgstr "Partitionne le disque toi-même dans un autre terminal (cfdisk, fdisk, parted…), puis appuie sur Entrée."
+
+msgid "Other systems found in the EFI NVRAM — which ones do you want to add to Limine?"
+msgstr "Autres systèmes trouvés dans la NVRAM EFI — lesquels veux-tu ajouter à Limine ?"
+
+msgid "Edit the options"
+msgstr "Modifier les options"
+
+msgid "Quit"
+msgstr "Quitter"
+
+msgid "What now?"
+msgstr "Et maintenant ?"
+
+msgid "Start now?"
+msgstr "Démarrer maintenant ?"
+
+msgid "Interrupted — the installation may be incomplete."
+msgstr "Interrompu — l'installation est peut-être incomplète."
+
+msgid "Can't be empty."
+msgstr "Ne peut pas être vide."
+
+msgid "Content-creation tools"
+msgstr "Outils de création de contenu"
+
+msgid "OBS plugins"
+msgstr "Plugins OBS"
+
+msgid "Other systems"
+msgstr "Autres systèmes"
+
+msgid "Aborted — nothing was changed."
+msgstr "Abandonné — rien n'a été modifié."
+
+msgid "Found in the EFI NVRAM: switch on the ones to add to Limine's boot menu."
+msgstr "Trouvés dans la NVRAM EFI : active ceux à ajouter au menu de démarrage de Limine."
+
+# --- installer: temporary swap for nixos-install (swap.py / runner.py) ---
+msgid "Low memory ({ram} GiB): adding {size} GiB of temporary swap on the target disk for the build…"
+msgstr "Mémoire faible ({ram} Gio) : ajout de {size} Gio de swap temporaire sur le disque cible pour la compilation…"
+
+msgid "Could not add temporary swap ({reason}) — the build may run out of memory."
+msgstr "Impossible d'ajouter du swap temporaire ({reason}) — la compilation risque de manquer de mémoire."
+
+msgid "not enough free space on the target disk"
+msgstr "pas assez d'espace libre sur le disque cible"
+
+# --- installer: zram during nixos-install ---
+msgid "Compressed RAM swap (zram) enabled: {size} GiB."
+msgstr "Swap compressé en RAM (zram) activé : {size} Gio."
+
+msgid "Could not enable zram ({reason})."
+msgstr "Impossible d'activer zram ({reason})."
+
+msgid "Noctalia's native Wayland file manager"
+msgstr "Gestionnaire de fichiers Wayland natif de Noctalia"
+
+msgid "Luciole — Noctalia, native Wayland"
+msgstr "Luciole — Noctalia, Wayland natif"

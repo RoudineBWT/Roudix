@@ -1,4 +1,4 @@
-{ osConfig, ... }:
+{ osConfig, roudix-cursor, ... }:
 {
   wayland.windowManager.mango.settings = {
     xkb_rules_layout = osConfig.roudix.keyboardLayout;
@@ -33,7 +33,7 @@
     auto_reload_config = 1;
 
     cursor_size = 24;
-    cursor_theme = "capitaine-cursors-white";
+    cursor_theme = roudix-cursor.themeName;
     cursor_hide_timeout = 0;
   };
 }

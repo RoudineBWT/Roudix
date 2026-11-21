@@ -88,7 +88,7 @@ Both bootloaders get the same Secure Boot support; pick with
 
 The same options are exposed outside `local.nix`, all off by default:
 
-- **GTK installer and `roudix-installer.sh`** ask for them on the options page:
+- **The GTK and terminal installers** ask for them on the options page:
   "Secure Boot (sign the bootloader)" with Limine or systemd-boot, and, only with
   Limine, "EAC Linux v2 boot entry (experimental)" and, once that one is on, the
   EAC kernel (Fedora or Bazzite OGC). With Secure Boot on, the sbctl keys are created on the new

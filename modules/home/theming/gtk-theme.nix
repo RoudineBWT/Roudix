@@ -1,4 +1,4 @@
-{ lib, pkgs, osConfig, ... }:
+{ lib, pkgs, osConfig, roudix-cursor, ... }:
 
 let
   desktopType = osConfig.roudix.desktop.type;
@@ -53,7 +53,7 @@ let
     else iconThemes.${iconThemeChoice} or { name = iconThemeChoice; package = null; };
 
   themeName  = "adw-gtk3-dark";
-  cursorName = "capitaine-cursors-white";
+  cursorName = roudix-cursor.themeName;   # Bibata Modern in the Roudix palette (pkgs/roudix-cursor)
   cursorSize = 24;
 in
 {
@@ -72,7 +72,7 @@ in
       };
       cursorTheme = {
         name    = cursorName;
-        package = pkgs.capitaine-cursors;
+        package = roudix-cursor;
         size    = cursorSize;
       };
     };
@@ -84,12 +84,30 @@ in
     # as a GTK 4 theme is set, to import the theme from there).
     gtk.gtk4.theme = lib.mkIf (desktopType == "cosmic") null;
 
-    home.pointerCursor = {
-      enable  = true;
-      name    = cursorName;
-      package = pkgs.capitaine-cursors;
-      size    = cursorSize;
-      gtk.enable = true;
+    # Not home.pointerCursor: it makes Home Manager own
+    # ~/.icons/<name> and ~/.local/share/icons/<name> as store symlinks, which
+    # is exactly where theming/bibata-cursor.nix puts the live-recoloured
+    # revision of the same theme name on Noctalia sessions. So set by hand what
+    # it would have set (gtk.cursorTheme above already installs the package).
+    home.sessionVariables = {
+      XCURSOR_THEME = cursorName;
+      XCURSOR_SIZE  = toString cursorSize;
+    };
+
+    home.file.".icons/default/index.theme".text = ''
+      [Icon Theme]
+      Name=Default
+      Inherits=${cursorName}
+    '';
+    xdg.dataFile."icons/default/index.theme".text = ''
+      [Icon Theme]
+      Name=Default
+      Inherits=${cursorName}
+    '';
+
+    xresources.properties = {
+      "Xcursor.theme" = cursorName;
+      "Xcursor.size"  = cursorSize;
     };
 
     # Chromium-family browsers (Helium, Brave, Chromium itself) read the

@@ -20,6 +20,9 @@ in
     # Chromium-family browsers incl. Helium). Imported unconditionally;
     # a no-op on gnome/kde, which theme themselves natively.
     ./theming/gtk-theme.nix
+    # Live recolour of the cursor from the Noctalia palette (bare compositors +
+    # Noctalia only; no-op elsewhere). Static theme: pkgs/roudix-cursor.
+    ./theming/bibata-cursor.nix
     # App-selection implementations (which package for each roudix.*
     # choice — discord, terminal, editor, browsers, content creation...).
     # Mirrors modules/system/apps/, which only declares the options.

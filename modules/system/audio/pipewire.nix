@@ -41,6 +41,20 @@ in
       type = lib.types.bool;
       default = false;
     };
+
+    elgatoWave3Fix.enable = lib.mkOption {
+      description = ''
+        Elgato Wave:3 workaround: its microphone captures only silence when
+        playback on the device starts before the capture. Disables the
+        auto-created Wave:3 sink and lets a WirePlumber script start the capture
+        first, then create the sink (jmansar/wavexlr-on-linux-cfg, MIT, see
+        dotfiles/wireplumber/). Only the Wave:3 is touched; its nodes become
+        "Wave3 Sink" and "wave3-source" (re-select them in your apps). Off by
+        default.
+      '';
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
@@ -90,6 +104,31 @@ in
 
     (lib.mkIf cfg.usbNoAutosuspend.enable {
       boot.kernelParams = [ "usbcore.autosuspend=-1" ];
+    })
+
+    (lib.mkIf cfg.elgatoWave3Fix.enable {
+      services.pipewire.wireplumber.extraScripts."wavedevicefix.lua" =
+        builtins.readFile ../../../dotfiles/wireplumber/wavedevicefix.lua;
+
+      services.pipewire.wireplumber.extraConfig."51-wave3" = {
+        "wireplumber.components" = [{
+          name = "wavedevicefix.lua";
+          type = "script/lua";
+          provides = "custom.wave3fix";
+          arguments = { device = "wave3"; };
+        }];
+        "wireplumber.profiles".main."custom.wave3fix" = "required";
+        "monitor.alsa.rules" = [
+          {
+            matches = [ { "node.name" = "~alsa_output.usb-Elgato_Systems_Elgato_Wave_3_*"; } ];
+            actions.update-props."node.disabled" = true;
+          }
+          {
+            matches = [ { "node.name" = "~alsa_input.usb-Elgato_Systems_Elgato_Wave_3_*"; } ];
+            actions.update-props."node.name" = "wave3-source";
+          }
+        ];
+      };
     })
   ]);
 

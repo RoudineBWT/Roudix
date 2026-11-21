@@ -94,8 +94,7 @@ msgid "✗ Failed — local.nix restored."
 msgstr "✗ विफल — local.nix पहले जैसा कर दिया गया।"
 
 #: roudix_store/flatpak_support.py
-msgid ""
-"No Flatpak remote yet — the metadata will be fetched at the next start."
+msgid "No Flatpak remote yet — the metadata will be fetched at the next start."
 msgstr "अभी कोई Flatpak रिमोट नहीं है — मेटाडेटा अगली शुरुआत पर लाया जाएगा।"
 
 #: roudix_store/flatpak_support.py roudix_store/nix_backend.py
@@ -190,13 +189,50 @@ msgid "failed"
 msgstr "विफल"
 
 #: roudix_store/nix_backend.py
-msgid "Repositories are managed by the Roudix flake."
-msgstr "रिपॉज़िटरी Roudix flake द्वारा प्रबंधित हैं।"
+msgid "nix was not found in PATH."
+msgstr "PATH में nix नहीं मिला।"
+
+#: roudix_store/nix_backend.py
+msgid "Quick install — using nix profile, no rebuild."
+msgstr "त्वरित इंस्टॉल — nix profile से, बिना रीबिल्ड के।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already in your profile."
+msgstr "{pkg} पहले से आपकी प्रोफ़ाइल में है।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile add failed"
+msgstr "{pkg}: nix profile add विफल रहा"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not in your profile."
+msgstr "{pkg} आपकी प्रोफ़ाइल में नहीं है।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile remove failed"
+msgstr "{pkg}: nix profile remove विफल रहा"
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
 msgid "'{action}' is not supported on Roudix (updates come from the flake)."
 msgstr "Roudix पर “{action}” समर्थित नहीं है (अपडेट flake से आते हैं)।"
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr "लागू किया गया।"
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is now in your configuration — removing the quick-install copy."
+msgstr "{pkg} अब आपके कॉन्फ़िगरेशन में है — त्वरित इंस्टॉल की प्रति हटाई जा रही है।"
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
+msgstr "रिपॉज़िटरी Roudix flake द्वारा प्रबंधित हैं।"
 
 #: roudix_store/nix_backend.py
 msgid "Nothing to change."
@@ -212,12 +248,8 @@ msgid ""
 "Flatpak apps are installed/removed by nix-flatpak during the switch — this "
 "can take a while."
 msgstr ""
-"Flatpak ऐप्स switch के दौरान nix-flatpak द्वारा इंस्टॉल/हटाए जाते हैं — "
-"इसमें कुछ समय लग सकता है।"
-
-#: roudix_store/nix_backend.py
-msgid "Applied."
-msgstr "लागू किया गया।"
+"Flatpak ऐप्स switch के दौरान nix-flatpak द्वारा इंस्टॉल/हटाए जाते हैं — इसमें कुछ समय "
+"लग सकता है।"
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
@@ -298,6 +330,10 @@ msgstr "{len} RPM फ़ाइलें"
 #, python-brace-format
 msgid "{len} packages"
 msgstr "{len} पैकेज"
+
+#: roudix_store/ui.py
+msgid "Home"
+msgstr "होम"
 
 #: roudix_store/ui.py
 msgid "Installed"
@@ -807,9 +843,9 @@ msgid ""
 "the system (a few minutes). The Flathub catalog is then fetched and Roudix "
 "Store has to be restarted for Flatpak to be picked up."
 msgstr ""
-"यह आपकी local.nix में “roudix.flatpak.enable = true” लिखता है, फिर सिस्टम "
-"रीबिल्ड करता है (कुछ मिनट)। इसके बाद Flathub कैटलॉग लाया जाएगा और Flatpak "
-"पहचाने जाने के लिए Roudix Store को रीस्टार्ट करना होगा।"
+"यह आपकी local.nix में “roudix.flatpak.enable = true” लिखता है, फिर सिस्टम रीबिल्ड "
+"करता है (कुछ मिनट)। इसके बाद Flathub कैटलॉग लाया जाएगा और Flatpak पहचाने जाने के "
+"लिए Roudix Store को रीस्टार्ट करना होगा।"
 
 #: roudix_store/ui.py
 msgid "Cancel"
@@ -840,8 +876,7 @@ msgid ""
 "Flatpak support is enabled. Restart Roudix Store so Flatpak apps are picked "
 "up."
 msgstr ""
-"Flatpak सपोर्ट चालू है। Flatpak ऐप्स पहचाने जाने के लिए Roudix Store "
-"रीस्टार्ट करें।"
+"Flatpak सपोर्ट चालू है। Flatpak ऐप्स पहचाने जाने के लिए Roudix Store रीस्टार्ट करें।"
 
 #: roudix_store/ui.py
 msgid "Later"
@@ -857,11 +892,11 @@ msgstr "पहला उपयोग: Flathub कैटलॉग लाया �
 
 #: roudix_store/ui.py
 msgid ""
-"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update "
-"--appstream"
+"No Flathub data yet. Is roudix.flatpak.enable on? Try: flatpak update --"
+"appstream"
 msgstr ""
-"अभी तक Flathub डेटा नहीं है। क्या roudix.flatpak.enable चालू है? आज़माएँ: "
-"flatpak update --appstream"
+"अभी तक Flathub डेटा नहीं है। क्या roudix.flatpak.enable चालू है? आज़माएँ: flatpak "
+"update --appstream"
 
 #: roudix_store/ui.py
 msgid "List"
@@ -878,6 +913,14 @@ msgstr "कोई दूसरी श्रेणी या खोज शब्�
 #: roudix_store/ui.py
 msgid "Important Notices"
 msgstr "महत्वपूर्ण सूचनाएँ"
+
+#: roudix_store/ui.py
+msgid "Featured apps"
+msgstr "विशेष ऐप्स"
+
+#: roudix_store/ui.py
+msgid "Browse by category"
+msgstr "श्रेणी के अनुसार ब्राउज़ करें"
 
 #: roudix_store/ui.py
 msgid "Queued actions"
@@ -952,6 +995,14 @@ msgid "All"
 msgstr "सभी"
 
 #: roudix_store/ui.py
+msgid "Welcome to Roudix Store"
+msgstr "Roudix Store में आपका स्वागत है"
+
+#: roudix_store/ui.py
+msgid "Pick a featured app, browse a category, or use the search bar above."
+msgstr "कोई विशेष ऐप चुनें, किसी श्रेणी में ब्राउज़ करें या ऊपर दिए खोज बार का उपयोग करें।"
+
+#: roudix_store/ui.py
 #, python-brace-format
 msgid "Showing {n_repos} repositories."
 msgstr "{n_repos} रिपॉज़िटरी दिखाई जा रही हैं।"
@@ -1018,6 +1069,10 @@ msgid "User (Home Manager)"
 msgstr "उपयोगकर्ता (Home Manager)"
 
 #: roudix_store/ui.py
+msgid "User (instant, nix profile)"
+msgstr "उपयोगकर्ता (तुरंत, nix profile)"
+
+#: roudix_store/ui.py
 msgid "installed via config"
 msgstr "कॉन्फ़िग के ज़रिए इंस्टॉल"
 
@@ -1053,8 +1108,8 @@ msgid ""
 "{primary_pkg} comes from the Roudix configuration, not from the store — "
 "remove it from your config to uninstall it."
 msgstr ""
-"{primary_pkg} Roudix कॉन्फ़िगरेशन से आता है, स्टोर से नहीं — इसे अनइंस्टॉल "
-"करने के लिए अपने कॉन्फ़िग से हटाएँ।"
+"{primary_pkg} Roudix कॉन्फ़िगरेशन से आता है, स्टोर से नहीं — इसे अनइंस्टॉल करने के लिए "
+"अपने कॉन्फ़िग से हटाएँ।"
 
 #: roudix_store/ui.py
 #, python-brace-format
@@ -1064,8 +1119,7 @@ msgstr "{pkg} के लिए {action} कतार में जोड़ा �
 #: roudix_store/ui.py
 #, python-brace-format
 msgid "Queued {action} for {pkg} — press Apply to run it"
-msgstr ""
-"{pkg} के लिए {action} कतार में जोड़ा गया — चलाने के लिए “लागू करें” दबाएँ"
+msgstr "{pkg} के लिए {action} कतार में जोड़ा गया — चलाने के लिए “लागू करें” दबाएँ"
 
 #: roudix_store/ui.py
 #, python-brace-format
@@ -1146,10 +1200,9 @@ msgstr "{display_name}: विफल"
 #: roudix_store/ui.py
 #, python-brace-format
 msgid ""
-"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s)"
-" remain."
-msgstr ""
-"कतार पूरी हुई। {done_count} पूरे हुए आइटम हटाए गए; {len} विफल आइटम बाकी हैं।"
+"Queue finished. Cleared {done_count} completed item(s); {len} failed item(s) "
+"remain."
+msgstr "कतार पूरी हुई। {done_count} पूरे हुए आइटम हटाए गए; {len} विफल आइटम बाकी हैं।"
 
 #: roudix_store/ui.py
 #, python-brace-format
@@ -1163,11 +1216,9 @@ msgstr "कतार खाली है।"
 #: roudix_store/ui.py
 #, python-brace-format
 msgid ""
-"Running {action} for {target}. {done} done, {failed} failed, {queued} "
-"queued."
+"Running {action} for {target}. {done} done, {failed} failed, {queued} queued."
 msgstr ""
-"{target} के लिए {action} चल रहा है। {done} पूरे, {failed} विफल, {queued} "
-"कतार में।"
+"{target} के लिए {action} चल रहा है। {done} पूरे, {failed} विफल, {queued} कतार में।"
 
 #: roudix_store/ui.py
 #, python-brace-format
@@ -1240,5 +1291,4 @@ msgstr "इंस्टॉलेशन की पुष्टि करें"
 #: roudix_store/ui.py
 #, python-brace-format
 msgid "You have {len} package(s) ready. Do you want to install them?"
-msgstr ""
-"आपके पास {len} पैकेज तैयार हैं। क्या आप इन्हें इंस्टॉल करना चाहते हैं?"
+msgstr "आपके पास {len} पैकेज तैयार हैं। क्या आप इन्हें इंस्टॉल करना चाहते हैं?"

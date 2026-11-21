@@ -14,6 +14,7 @@
       "https://niri-epireyn.cachix.org"
       "https://hyprland.cachix.org"
       "https://umbriel.cachix.org"
+      "https://sonora.cachix.org"
     ];
     extra-trusted-public-keys = [
       "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
@@ -26,6 +27,7 @@
       "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "umbriel.cachix.org-1:JfNq/2yg2S6D6z4Z2dVSZrZlDPQTKtexB6GAVLD98nw="
+      "sonora.cachix.org-1:qbPeDsvZPbwUWHpQS5Oe0bjz5oHAVscHem+MCzwrc9Q="
     ];
   };
 
@@ -68,6 +70,16 @@
     noctalia-greeter = {
       url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Luciole — native Wayland file manager from the Noctalia family. One of
+    # the roudix.fileManager choices, offered ONLY with roudix.desktop.shell =
+    # "noctalia" (assertion in modules/system/apps/utilities/filemanager.nix).
+    # No `nixpkgs.follows` on purpose: its package overrides gdk-pixbuf /
+    # librsvg against the glycin version of the nixpkgs it pins, so it must
+    # build with that revision.
+    luciole = {
+      url = "github:noctalia-dev/luciole";
     };
 
     caelestia-shell = {
@@ -174,7 +186,6 @@
     # binary, and its source build pins its own Rust toolchain.
     sonora ={
       url = "github:sonorahq/sonora";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # EAC Linux v2 boot path: a separate "NixOS EAC" boot entry running a
@@ -217,6 +228,7 @@
       };
       roudixWelcome = pkgs.callPackage ./pkgs/roudix-welcome {};
       roudixConfig = pkgs.callPackage ./pkgs/roudix-config {};
+      roudix-cursor = pkgs.callPackage ./pkgs/roudix-cursor {};
       roudixStore = pkgs.callPackage ./pkgs/roudix-store {
         nixos-appstream-data = inputs.nixos-appstream-data.packages.${system}.appstream-data;
       };

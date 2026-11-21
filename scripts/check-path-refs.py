@@ -88,7 +88,7 @@ CHECKED_SUFFIXES = (".nix", ".example", ".svg", ".policy", ".png", ".md")
 # with a one-line reason if check-path-refs flags a legitimate case.
 ALLOWLIST: set[str] = set()
 
-DEFAULT_SCAN_DIRS = ("pkgs", "iso/roudix-installer", "roudix-installer.sh")
+DEFAULT_SCAN_DIRS = ("pkgs", "iso/roudix-installer")
 
 # Matches a plain quoted literal path, e.g. "modules/system/boot.local.nix"
 LITERAL_RE = re.compile(

@@ -193,12 +193,49 @@ msgid "failed"
 msgstr ""
 
 #: roudix_store/nix_backend.py
-msgid "Repositories are managed by the Roudix flake."
+msgid "nix was not found in PATH."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid "Quick install — using nix profile, no rebuild."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is already in your profile."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile add failed"
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is not in your profile."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg}: nix profile remove failed"
 msgstr ""
 
 #: roudix_store/nix_backend.py
 #, python-brace-format
 msgid "'{action}' is not supported on Roudix (updates come from the flake)."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid "Applied."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+#, python-brace-format
+msgid "{pkg} is now in your configuration — removing the quick-install copy."
+msgstr ""
+
+#: roudix_store/nix_backend.py
+msgid "Repositories are managed by the Roudix flake."
 msgstr ""
 
 #: roudix_store/nix_backend.py
@@ -214,10 +251,6 @@ msgstr ""
 msgid ""
 "Flatpak apps are installed/removed by nix-flatpak during the switch — this "
 "can take a while."
-msgstr ""
-
-#: roudix_store/nix_backend.py
-msgid "Applied."
 msgstr ""
 
 #: roudix_store/nix_backend.py
@@ -298,6 +331,10 @@ msgstr ""
 #: roudix_store/ui.py
 #, python-brace-format
 msgid "{len} packages"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Home"
 msgstr ""
 
 #: roudix_store/ui.py
@@ -874,6 +911,14 @@ msgid "Important Notices"
 msgstr ""
 
 #: roudix_store/ui.py
+msgid "Featured apps"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Browse by category"
+msgstr ""
+
+#: roudix_store/ui.py
 msgid "Queued actions"
 msgstr ""
 
@@ -943,6 +988,14 @@ msgid "All"
 msgstr ""
 
 #: roudix_store/ui.py
+msgid "Welcome to Roudix Store"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "Pick a featured app, browse a category, or use the search bar above."
+msgstr ""
+
+#: roudix_store/ui.py
 #, python-brace-format
 msgid "Showing {n_repos} repositories."
 msgstr ""
@@ -1006,6 +1059,10 @@ msgstr ""
 
 #: roudix_store/ui.py
 msgid "User (Home Manager)"
+msgstr ""
+
+#: roudix_store/ui.py
+msgid "User (instant, nix profile)"
 msgstr ""
 
 #: roudix_store/ui.py
