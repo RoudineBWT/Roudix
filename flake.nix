@@ -79,7 +79,7 @@
     # librsvg against the glycin version of the nixpkgs it pins, so it must
     # build with that revision.
     luciole = {
-      url = "github:noctalia-dev/luciole";
+      url = "github:noctalia-dev/luciole/cachix";
     };
 
     caelestia-shell = {
