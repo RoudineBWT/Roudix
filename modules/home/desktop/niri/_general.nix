@@ -66,7 +66,8 @@ in
 
     spawn-at-startup =
       [
-        { command = [ "xwayland-satellite" ]; }
+        # xwayland-satellite is NOT spawned here: niri >= 25.08 starts it on
+        # demand when it's in PATH (home.packages, default.nix).
         { command = [ "discord" ]; }
       ]
       ++ (if isNoctalia then [
