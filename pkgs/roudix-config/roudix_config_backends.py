@@ -17,7 +17,9 @@ Backends that need a different native shape (Niri, Mango) also store it under
 """
 from __future__ import annotations
 
+import copy
 import json
+import os
 import re
 import shlex
 import shutil
@@ -25,7 +27,7 @@ import subprocess
 from pathlib import Path
 
 from roudix_config_core import (
-    BEGIN, END, TRANSFORMS, _collect, _run_json, config_home, nix_escape, tr, tr_noop,
+    BEGIN, END, TRANSFORMS, _collect, _run_json, config_home, nix_escape, state_dir, tr, tr_noop,
 )
 
 
@@ -55,6 +57,7 @@ GROUPS = {
     "anim": tr("Animations"),
     "input": tr("Mouse, keyboard, cursor"),
     "behavior": tr("Behavior"),
+    "other": tr("Detected in your config"),
 }
 
 
@@ -84,6 +87,217 @@ def _coerce_setting(s: "Setting", value):
 
 def _S(*a, **k) -> "Setting":
     return Setting(*a, **k)
+
+
+# ───────────────────────── adapting to upstream changes ─────────────────────────
+#
+# The catalogs below are hand-written, but the compositors change their variables
+# (a bool becomes a string enum, an int becomes a float, a new key appears...). Three
+# safety nets keep the app working until the catalog is updated:
+#   * _adapt_setting : a curated setting is re-typed to what the live config really holds;
+#   * _discover      : leaves of the live config that the catalog doesn't know show up
+#                      automatically in the "Detected in your config" group (Umbriel);
+#   * Backend.reconcile : stored overrides that no longer fit (type changed, setting gone)
+#                      are dropped and reported instead of being written as a broken mkForce.
+
+_MISSING = object()
+
+
+def _toml_get(live: dict, path: str):
+    cur = live
+    for part in path.split("."):
+        if not isinstance(cur, dict) or part not in cur:
+            return _MISSING
+        cur = cur[part]
+    return cur
+
+
+def _is_num(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def _fits(s: "Setting", v) -> bool:
+    if s.kind == "bool":
+        return isinstance(v, bool)
+    if s.kind == "int":
+        return isinstance(v, int) and not isinstance(v, bool)
+    if s.kind == "float":
+        return _is_num(v)
+    return isinstance(v, str)             # choice / text
+
+
+def _num_bounds(v) -> tuple:
+    hi = max(100, int(abs(v)) * 10)
+    return (0 if v >= 0 else -hi), hi
+
+
+def _adapt_setting(s: "Setting", v) -> "Setting":
+    """`s` itself when the live value `v` fits it, else a copy typed like `v`."""
+    if v is _MISSING or v is None or isinstance(v, (dict, list)):
+        return s
+    a = copy.copy(s)
+    if s.kind == "choice" and isinstance(v, str):
+        if v in s.choices:
+            return s
+        a.choices = s.choices + (v,)       # new enum value in use upstream: offer it too
+        return a
+    if _fits(s, v):
+        return s
+    if isinstance(v, bool):
+        a.kind = "bool"
+    elif isinstance(v, int):
+        a.kind = "int"
+    elif isinstance(v, float):
+        a.kind = "float"
+    else:
+        a.kind = "text"
+    if a.kind in ("int", "float"):
+        a.lo, a.hi = _num_bounds(v)
+        a.step = 1 if a.kind == "int" else 0.1
+    return a
+
+
+_SKIP_TOP = {"output", "keybinds", "window_rule", "layer_rule", "workspace", "scratchpad",
+             "colors", "environment", "include", "binds"}
+_KEY_OK = re.compile(r"[A-Za-z0-9_-]+")
+
+
+def _discover(live: dict, known: set) -> list:
+    """Scalar leaves of the live config that the catalog doesn't cover (Setting id `x:<path>`)."""
+    out: list = []
+
+    def walk(node: dict, parts: list) -> None:
+        for k in sorted(node, key=str):
+            if not isinstance(k, str) or not _KEY_OK.fullmatch(k):
+                continue
+            v, p = node[k], parts + [k]
+            if len(p) == 1 and k in _SKIP_TOP:
+                continue
+            if isinstance(v, dict):
+                if len(p) < 4:
+                    walk(v, p)
+                continue
+            path = ".".join(p)
+            if path in known or v is None or isinstance(v, list):
+                continue
+            title = path.replace(".", " › ")
+            if isinstance(v, bool):
+                out.append(Setting("x:" + path, "other", title, "bool", path))
+            elif isinstance(v, int):
+                lo, hi = _num_bounds(v)
+                out.append(Setting("x:" + path, "other", title, "int", path, lo, hi))
+            elif isinstance(v, float):
+                lo, hi = _num_bounds(v)
+                out.append(Setting("x:" + path, "other", title, "float", path, lo, hi, 0.1))
+            elif isinstance(v, str) and len(v) <= 80 and not any(c in v for c in '"\n$'):
+                out.append(Setting("x:" + path, "other", title, "text", path))
+
+    walk(live, [])
+    return out
+
+
+# ── Umbriel's own schema: `umbriel config schema --json` ──
+# The installed binary lists every key it accepts ({path, type, min, max, values, default,
+# format}); it comes from the parser itself, so it is always the right one for the build
+# that is installed. Cached per binary (the Nix store path changes with each version) and
+# kept on disk as a fallback. Empty when umbriel isn't available: the live-config logic
+# above then takes over.
+
+_SCHEMA_MIN_OPTIONS = 20            # fewer than that = not a real schema, don't trust it
+_schema_mem: dict = {}
+
+
+def umbriel_schema() -> tuple:
+    """(key, {path: option}) for the installed umbriel, or (None, {})."""
+    exe = shutil.which("umbriel")
+    if not exe:
+        return None, {}
+    key = os.path.realpath(exe)
+    if _schema_mem.get("key") == key:
+        return key, _schema_mem["opts"]
+    cache = state_dir() / "umbriel-schema.json"
+    raw = None
+    try:
+        r = subprocess.run([exe, "config", "schema", "--json"], capture_output=True, text=True,
+                           timeout=10, check=True)
+        raw = json.loads(r.stdout)
+        try:
+            cache.parent.mkdir(parents=True, exist_ok=True)
+            cache.write_text(json.dumps({"key": key, "schema": raw}))
+        except OSError:
+            pass
+    except (OSError, subprocess.SubprocessError, json.JSONDecodeError):
+        try:
+            c = json.loads(cache.read_text())
+            if c.get("key") == key:
+                raw = c.get("schema")
+        except (OSError, json.JSONDecodeError):
+            pass
+    items = raw.get("options") if isinstance(raw, dict) else None
+    opts = {o["path"]: o for o in items or [] if isinstance(o, dict) and isinstance(o.get("path"), str)}
+    if len(opts) < _SCHEMA_MIN_OPTIONS:
+        return None, {}
+    _schema_mem.update(key=key, opts=opts)
+    return key, opts
+
+
+def _schema_kind(o: dict):
+    """Setting kind for a schema option, or None for tables / maps / arrays / unknown."""
+    t = str(o.get("type", "")).lower()
+    if t == "bool":
+        return "bool"
+    if t in ("int", "integer"):
+        return "int"
+    if t in ("float", "double", "number"):
+        return "float"
+    if t == "enum" and o.get("values"):
+        return "choice"
+    if t == "string" and o.get("format") not in ("regex", "path"):
+        return "text"
+    return None
+
+
+def _from_schema(s: "Setting", o: dict) -> "Setting":
+    """Curated setting `s` re-typed / re-ranged / re-defaulted from schema option `o`."""
+    kind = _schema_kind(o)
+    if kind is None:
+        return s
+    a = copy.copy(s)
+    a.kind = kind
+    if kind == "choice":
+        a.choices = tuple(str(v) for v in o["values"])
+    elif kind in ("int", "float"):
+        lo, hi = o.get("min"), o.get("max")
+        if _is_num(lo) and _is_num(hi):
+            a.lo, a.hi = lo, hi
+        elif a.lo is None or s.kind != kind:
+            a.lo, a.hi = _num_bounds(o.get("default") if _is_num(o.get("default")) else 0)
+        a.step = s.step if s.kind == kind else (1 if kind == "int" else 0.1)
+    if "default" in o and not isinstance(o["default"], (dict, list)):
+        a.default = o["default"]
+    return a
+
+
+_SCHEMA_SKIP_TOP = _SKIP_TOP | {"drm", "events", "global_shortcuts", "idle", "screencast"}
+
+
+def _discover_schema(opts: dict, known: set) -> list:
+    out: list = []
+    for path in sorted(opts):
+        if path in known or "[" in path or "<" in path:
+            continue
+        top = path.split(".")[0]
+        if top in _SCHEMA_SKIP_TOP or not all(_KEY_OK.fullmatch(x) for x in path.split(".")):
+            continue
+        o = opts[path]
+        kind = _schema_kind(o)
+        if kind is None:
+            continue
+        gid = "all:" + top
+        GROUPS.setdefault(gid, tr("All options") + " · " + top)
+        sp = Setting("x:" + path, gid, path.replace(".", " › "), kind, path)
+        out.append(_from_schema(sp, o))
+    return out
 
 
 UMBRIEL_SETTINGS = [
@@ -479,6 +693,50 @@ class Backend:
     def _chosen(self, values: dict):
         return [s for s in self.settings_catalog() if s.id in values]
 
+    def _can_judge(self) -> bool:
+        return True
+
+    def reconcile(self, data: dict) -> tuple[dict, list[str]]:
+        """Fit the stored settings overrides to the current catalog: a value of the wrong
+        type (the compositor changed it) or for a setting that is gone is dropped, with a
+        message, instead of being forced into the config where it would break the build."""
+        st = (data.get("overrides") or {}).get("settings")
+        if not isinstance(st, dict) or not st:
+            return data, []
+        cat = {s.id: s for s in self.settings_catalog()}
+        can_judge = self._can_judge()
+        keep: dict = {}
+        msgs: list[str] = []
+        for sid, val in st.items():
+            spec = cat.get(sid)
+            if spec is None:
+                if sid.startswith("x:") and not can_judge:      # no schema, no live config: can't judge
+                    keep[sid] = val
+                else:
+                    msgs.append(tr("Setting “{sid}” no longer exists in the compositor config: "
+                                   "your value was removed.").format(sid=sid))
+                continue
+            if not _fits(spec, val) and spec.kind in ("int", "float") and _is_num(val):
+                val = int(round(val)) if spec.kind == "int" else float(val)
+            try:
+                if not _fits(spec, val):
+                    raise ValueError
+                keep[sid] = _coerce_setting(spec, val)
+            except (TypeError, ValueError):
+                msgs.append(tr("Setting “{title}” changed type in the compositor config: "
+                               "your old value was removed.").format(title=spec.title))
+        if keep == st and not msgs:
+            return data, []
+        new = copy.deepcopy(data)
+        ov = new.setdefault("overrides", {})
+        if keep:
+            ov["settings"] = keep
+        else:
+            ov.pop("settings", None)
+        if not ov:
+            new.pop("overrides", None)
+        return new, msgs
+
 
 # ───────────────────────── Umbriel ─────────────────────────
 
@@ -579,8 +837,37 @@ class Umbriel(Backend):
                 lines.append(f"{k} = {val(v)}")
         return "\n".join(lines)
 
+    _cat_key = None
+    _cat = None
+
     def settings_catalog(self) -> list:
-        return UMBRIEL_SETTINGS
+        """The curated list, fitted to the installed Umbriel: its own schema when available
+        (a curated key that no longer exists is hidden, new keys are added), otherwise the
+        live config.toml (re-typed + extra leaves). Cached per binary / config generation."""
+        skey, opts = umbriel_schema()
+        p = config_home() / "umbriel" / "config.toml"
+        try:
+            st = os.stat(p)
+            lkey = (os.path.realpath(p), st.st_mtime_ns, st.st_size)
+        except OSError:
+            lkey = None
+        key = (skey, lkey)
+        if key == self._cat_key and self._cat is not None:
+            return self._cat
+        if opts:
+            cat = [_from_schema(s, opts[s.path]) for s in UMBRIEL_SETTINGS if s.path in opts]
+            cat += _discover_schema(opts, {s.path for s in UMBRIEL_SETTINGS})
+        elif lkey is None:
+            return UMBRIEL_SETTINGS
+        else:
+            live = self.load_live()
+            cat = [_adapt_setting(s, _toml_get(live, s.path)) for s in UMBRIEL_SETTINGS]
+            cat += _discover(live, {s.path for s in UMBRIEL_SETTINGS})
+        Umbriel._cat_key, Umbriel._cat = key, cat
+        return cat
+
+    def _can_judge(self) -> bool:
+        return bool(umbriel_schema()[1]) or bool(self.load_live())
 
     def live_setting(self, live: dict, s):
         cur = live
@@ -597,6 +884,7 @@ class Umbriel(Backend):
         return out
 
     def render_block(self, data: dict) -> str:
+        data, _ = self.reconcile(data)          # never write an override that no longer fits
         nat = self.native_settings((data.get("overrides") or {}).get("settings") or {})
         full = dict(data, native={"settings": nat}) if nat else data
         return _render(self.TEMPLATE, tr("generated by Roudix Config — edit it through the app"), full)
@@ -1025,10 +1313,13 @@ class Niri(Backend):
         if cur is None or not cur.args:
             return None
         v = cur.args[0]
-        if s.kind == "int":
-            return int(float(v))
-        if s.kind == "float":
-            return float(v)
+        try:
+            if s.kind == "int":
+                return int(float(v))
+            if s.kind == "float":
+                return float(v)
+        except (TypeError, ValueError):          # niri changed the value's type: unknown, not a crash
+            return None
         return str(v)
 
     def native_settings(self, values: dict) -> dict:

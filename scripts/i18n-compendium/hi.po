@@ -260,3 +260,15 @@ msgstr "Noctalia का नेटिव Wayland फ़ाइल मैनेज�
 
 msgid "Luciole — Noctalia, native Wayland"
 msgstr "Luciole — Noctalia, नेटिव Wayland"
+
+msgid "Detected in your config"
+msgstr "आपके कॉन्फ़िग में मिला"
+
+msgid "All options"
+msgstr "सभी विकल्प"
+
+msgid "Setting “{sid}” no longer exists in the compositor config: your value was removed."
+msgstr "सेटिंग “{sid}” अब कंपोज़िटर कॉन्फ़िग में मौजूद नहीं है: आपका मान हटा दिया गया।"
+
+msgid "Setting “{title}” changed type in the compositor config: your old value was removed."
+msgstr "सेटिंग “{title}” का प्रकार कंपोज़िटर कॉन्फ़िग में बदल गया: आपका पुराना मान हटा दिया गया।"

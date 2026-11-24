@@ -260,3 +260,15 @@ msgstr "Нативный файловый менеджер Wayland от Noctalia
 
 msgid "Luciole — Noctalia, native Wayland"
 msgstr "Luciole — Noctalia, нативный Wayland"
+
+msgid "Detected in your config"
+msgstr "Обнаружено в вашей конфигурации"
+
+msgid "All options"
+msgstr "Все параметры"
+
+msgid "Setting “{sid}” no longer exists in the compositor config: your value was removed."
+msgstr "Параметр «{sid}» больше не существует в конфигурации композитора: ваше значение удалено."
+
+msgid "Setting “{title}” changed type in the compositor config: your old value was removed."
+msgstr "Параметр «{title}» изменил тип в конфигурации композитора: ваше старое значение удалено."

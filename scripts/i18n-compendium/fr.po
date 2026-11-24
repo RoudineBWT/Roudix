@@ -249,3 +249,15 @@ msgstr "Gestionnaire de fichiers Wayland natif de Noctalia"
 
 msgid "Luciole — Noctalia, native Wayland"
 msgstr "Luciole — Noctalia, Wayland natif"
+
+msgid "Detected in your config"
+msgstr "Détecté dans ta config"
+
+msgid "All options"
+msgstr "Toutes les options"
+
+msgid "Setting “{sid}” no longer exists in the compositor config: your value was removed."
+msgstr "Le réglage « {sid} » n'existe plus dans la config du compositeur : ta valeur a été supprimée."
+
+msgid "Setting “{title}” changed type in the compositor config: your old value was removed."
+msgstr "Le réglage « {title} » a changé de type dans la config du compositeur : ton ancienne valeur a été supprimée."
