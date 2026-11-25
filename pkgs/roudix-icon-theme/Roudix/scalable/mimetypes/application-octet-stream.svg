@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgm23" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shm23" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glm23" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbm23" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fom23" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgm23" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <ellipse cx="24" cy="44.6" rx="14" ry="1.4" fill="#000" opacity="0.22"/>
+  <path d="M11 4.5h17.5L40 16v25.5a3 3 0 0 1-3 3H11a3 3 0 0 1-3-3v-34a3 3 0 0 1 3-3z" fill="url(#pgm23)"/>
+  <path d="M11 4.75h17.2l11.55 11.55v25.2a2.75 2.75 0 0 1-2.75 2.75H11a2.75 2.75 0 0 1-2.75-2.75v-34A2.75 2.75 0 0 1 11 4.75z" fill="none" stroke="#ffffff" stroke-opacity="0.1" stroke-width="0.5"/>
+  <path d="M28.5 4.5V13a3 3 0 0 0 3 3H40z" fill="#ffffff" opacity="0.14"/>
+  <g transform="translate(16 20) scale(0.6667)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" stroke="#000000" opacity="0.3"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /></g>
+  <g transform="translate(16 19) scale(0.6667)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" stroke="url(#glm23)"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /></g>
+</svg>

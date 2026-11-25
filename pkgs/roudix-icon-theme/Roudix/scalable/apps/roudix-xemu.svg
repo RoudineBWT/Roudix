@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt797" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht797" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt797" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt797" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot797" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt797" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt797)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht797)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><circle cx="8.466" cy="8.466" r="7.144" fill="#ffe1b5" style="paint-order:stroke fill markers;fill:#623115;fill-opacity:1"/><circle cx="8.467" cy="8.466" r="5.918" style="fill:none;fill-opacity:1;stroke:#ff9f53;stroke-width:.466962;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/><path d="M10.4 11.93C9.863 10.918 9.204 9.973 8.49 9.08c-.732.916-1.466 1.837-2.06 2.851h-1.27c.72-1.312 1.674-2.473 2.598-3.643L5.264 5.002h1.388l1.867 2.42 1.717-2.42h1.314l-2.285 3.21c.89 1.201 1.82 2.387 2.509 3.718z" style="fill:#ff9f53;fill-opacity:1;stroke-width:.24743"/></g></g>
+</svg>

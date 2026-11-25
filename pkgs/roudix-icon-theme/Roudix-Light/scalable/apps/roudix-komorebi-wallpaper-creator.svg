@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2368" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc2368" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2368" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc2368" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc2368" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc2368" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2368)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2368)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="M 14,62 4,22 53,10 60,48 Z"/> <path style="fill:#f27d34" d="M 14,61 4,21 53,9 60,47 Z"/> <path style="opacity:0.2" d="M 4,16 59,11 60,52 8,60 Z"/> <path style="fill:#ff8c42" d="M 4,15 59,10 60,51 8,59 Z"/> <rect style="opacity:0.2" width="56" height="46" x="4" y="10" rx="2.8" ry="2.8"/> <rect style="fill:#e9732b" width="56" height="46" x="4" y="9" rx="2.8" ry="2.8"/> <circle style="opacity:0.2" cx="47" cy="45" r="13"/> <circle style="fill:#fff6e8" cx="47" cy="44" r="13"/> <circle style="opacity:0.2" cx="47" cy="45" r="10"/> <circle style="fill:#e67028" cx="47" cy="44" r="10"/> <path style="fill:#fff6e8;opacity:0.2" d="M 6.8008 9 C 5.2496 9 4 10.25 4 11.801 L 4 12.801 C 4 11.25 5.2496 10 6.8008 10 L 57.199 10 C 58.75 10 60 11.25 60 12.801 L 60 11.801 C 60 10.25 58.75 9 57.199 9 L 6.8008 9 z"/></g></g>
+</svg>

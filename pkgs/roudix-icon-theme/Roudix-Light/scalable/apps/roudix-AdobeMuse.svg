@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc63" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc63" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc63" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc63" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc63" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc63" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc63)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc63)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path d="m4.0000004 56.200069v1.999971c0 1.549978 1.2495821 2.79996 2.80076 2.79996h50.39928c1.549977 0 2.79996-1.249982 2.79996-2.79996v-1.999971c0 1.549977-1.249983 2.79996-2.79996 2.79996h-50.39928c-1.5503779 0-2.79996-1.249983-2.79996-2.79996z" style="opacity:.2"/> <rect x="4" y="4" width="56" height="56" rx="2.8" ry="2.8" style="fill:#e16922"/> <path d="M 6.8007812,4 C 5.2496034,4 4,5.2496034 4,6.8007812 V 7.8027344 C 4,6.2515566 5.2496034,5.0019531 6.8007812,5.0019531 H 57.199219 C 58.749196,5.0019531 60,6.2515566 60,7.8027344 V 6.8007812 C 60,5.2496035 58.749196,4 57.199219,4 Z" style="fill:#fff6e8;opacity:.1"/> <path d="m55 25v20s-2 2-7 2-7-3-7-5v-17h4v16s0 2 2 2h4v-18z" style="opacity:.2"/> <path d="m55 24v20s-2 2-7 2-7-3-7-5v-17h4v16s0 2 2 2h4v-18z" style="fill:#ffb264"/> <path d="m8 47h6l2.5-19 3.5 19h6l2.5-19 3.5 19h6l-7-28h-5l-3 15-4-15h-5z" style="opacity:.2"/> <path d="m8 46h6l2.5-19 3.5 19h6l2.5-19 3.5 19h6l-7-28h-5l-3 15-4-15h-5z" style="fill:#ffb264"/></g></g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc973" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc973" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc973" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc973" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc973" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc973" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc973)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc973)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><path fill="#ea7227" d="M8.466 1.323a7.143 7.143 0 1 1 0 14.287 7.143 7.143 0 0 1 0-14.287"/><g fill="#fff1dc" stroke-width=".938"><path d="M9.031 4.233H7.902v4.234h1.13"/><path d="M7.338 4.375a4.25 4.25 0 0 0-3.105 4.083c0 2.323 1.895 4.242 4.234 4.242S12.7 10.78 12.7 8.458a4.25 4.25 0 0 0-3.104-4.083v1.093a3.225 3.225 0 0 1 2.046 2.99c0 1.782-1.423 3.21-3.175 3.21s-3.175-1.429-3.175-3.21a3.2 3.2 0 0 1 2.046-3.007"/></g></g></g>
+</svg>

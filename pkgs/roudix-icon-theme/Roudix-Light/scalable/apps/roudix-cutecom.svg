@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc793" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc793" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc793" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc793" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc793" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc793" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc793)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc793)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="m 4.0000004,53.168069 0,1.999971 c 0,1.569978 1.2495821,2.83196 2.80076,2.83196 L 57.20004,58 C 58.750017,58 60,56.738018 60,55.16804 l 0,-1.999971 c 0,1.569978 -1.249983,2.831959 -2.79996,2.831959 l -50.3992796,0 c -1.5503779,0 -2.79996,-1.261981 -2.79996,-2.831959 z"/> <path style="fill:#ff9e52" d="m 11.999886,5.0003861 39.999428,0 0,19.9997139 -39.999428,0 z"/> <rect style="fill:#af521a" width="56" height="34" x="4" y="23" rx="2.8" ry="2.834"/> <g style="opacity:0.4" transform="matrix(1.9999714,0,0,1.9999714,5.760572e-5,-0.9995281)"> <rect width="16" height="2" x="8" y="16"/> <rect width="12" height="2" x="10" y="20"/> <rect width="8" height="2" x="12" y="24"/> </g> <path style="opacity:0.2;fill:#fff6e8" d="M 12 5 L 12 6 L 52 6 L 52 5 L 12 5 z"/></g></g>
+</svg>

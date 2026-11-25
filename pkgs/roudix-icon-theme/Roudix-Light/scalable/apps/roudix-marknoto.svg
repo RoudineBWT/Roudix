@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2616" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc2616" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2616" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc2616" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc2616" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc2616" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2616)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2616)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="M 8,5 C 8,5 4,5 4,9 V 57 C 4,61 8,61 8,61 H 40 L 60,41 V 9 C 60,5 56,5 56,5 Z"/> <path style="fill:#ffb768" d="M 8,4 C 8,4 4,4 4,8 V 56 C 4,60 8,60 8,60 H 40 L 60,40 V 8 C 60,4 56,4 56,4 Z"/> <path style="fill:#ffd79c" d="M 60,40 H 43 C 41.344,40 40,41.344 40,43 V 60 Z"/> <path style="opacity:0.2;fill:#fff6e8" d="M 43,40 C 41.344,40 40,41.344 40,43 V 44 C 40,42.344 41.344,41 43,41 H 59 L 60,40 Z"/> <path style="opacity:0.5" d="M 32.176,19.904 27,39.222 29.898,40 35.074,20.682 Z M 36,20 V 24 L 41,29 36,34 V 38 L 46,29 Z M 26,22 16,31 26,40 V 36 L 21,31 26,26 Z"/> <path style="opacity:0.2;fill:#fff6e8" d="M 8 4 C 8 4 4 4 4 8 L 4 9 C 4 5 8 5 8 5 L 56 5 C 56 5 60 5 60 9 L 60 8 C 60 4 56 4 56 4 L 8 4 z"/></g></g>
+</svg>

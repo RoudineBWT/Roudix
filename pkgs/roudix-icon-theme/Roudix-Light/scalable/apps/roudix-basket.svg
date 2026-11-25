@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt51" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht51" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt51" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt51" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot51" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt51" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt51)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht51)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><rect width="13.229" height="14.287" x="1.852" y="1.323" fill="#ffd79d" fill-rule="evenodd" rx="1.587" ry="1.587"/><rect width="9.525" height=".265" x="3.704" y="6.614" opacity=".1" paint-order="markers stroke fill" ry="0"/><rect width="9.525" height=".265" x="3.704" y="9.524" opacity=".1" paint-order="markers stroke fill" ry="0"/><rect width="9.525" height=".265" x="3.704" y="12.434" opacity=".1" paint-order="markers stroke fill" ry="0"/><path fill="#f27d34" fill-rule="evenodd" d="M3.44 1.323c-.88 0-1.588.708-1.588 1.587v1.588h13.229V2.91c0-.88-.708-1.587-1.587-1.587z"/></g></g>
+</svg>

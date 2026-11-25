@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2238" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc2238" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2238" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc2238" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc2238" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc2238" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2238)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2238)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><path fill="#ff9247" d="M15.61 8.466a7.144 7.144 0 0 1-7.144 7.144 7.144 7.144 0 0 1-7.143-7.144 7.144 7.144 0 0 1 7.143-7.143 7.144 7.144 0 0 1 7.144 7.143"/><rect width="7.937" height="7.937" x="4.498" y="4.498" fill="#894519" rx="1.323" ry="1.323" style="paint-order:markers stroke fill"/><path fill="#ffefd6" d="M9.709 7.773c.299.243.558.383.932.383.299 0 .62-.14.62-.345v-.02c0-.186-.21-.322-.77-.471-.673-.169-1.107-.553-1.107-.986v-.019c0-.617.584-.955 1.257-.955.486 0 .782.162 1.136.376l-.346.471c-.3-.205-.51-.225-.79-.225s-.622.137-.622.305v.058c0 .224.216.329.777.478.673.187 1.074.401 1.074.913v.019c0 .578-.52 1.022-1.23 1.022-.504-.019-.944-.21-1.337-.564M8.777 5.36l-.621 2.175-.621-2.175h-.621l-.622 2.175-.62-2.175H5.05l.932 3.417h.62l.622-2.174.621 2.174h.621l.932-3.417M5.05 10.951h3.106v.621H5.05z"/></g></g>
+</svg>

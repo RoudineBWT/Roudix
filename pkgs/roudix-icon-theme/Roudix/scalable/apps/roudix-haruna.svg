@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt557" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht557" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt557" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt557" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot557" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt557" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt557)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht557)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect style="opacity:0.2" width="56" height="56" x="4" y="5" rx="2.8" ry="2.8"/> <rect style="fill:#a64d18" width="56" height="56" x="4" y="4" rx="2.8" ry="2.8"/> <path style="opacity:0.1;fill:#fff1dc" d="M 6.8007812 4 C 5.2495812 4 4 5.2495812 4 6.8007812 L 4 7.8007812 C 4 6.2495813 5.2495812 5 6.8007812 5 L 57.199219 5 C 58.750419 5 60 6.2495812 60 7.8007812 L 60 6.8007812 C 60 5.2495813 58.750419 4 57.199219 4 L 6.8007812 4 z"/> <path style="opacity:0.2" d="M 10,9 V 57 H 20.062 L 20,39 H 44 V 57 H 54 V 9 H 44 V 29 H 20 V 9 Z"/> <path style="fill:#ffb86a" d="M 10,8 V 56 H 20.062 L 20,38 H 44 V 56 H 54 V 8 H 44 V 28 H 20 V 8 Z"/> <path style="opacity:0.1" d="M 12,15 V 21 H 18 V 15 Z M 46,15 V 21 H 52 V 15 Z M 12,31 V 37 H 18 V 31 Z M 46,31 V 37 H 52 V 31 Z M 12,45 V 51 H 18 V 45 Z M 46,45 V 51 H 52 V 45 Z"/> <path style="fill:#a64d18" d="M 12,14 V 20 H 18 V 14 Z M 46,14 V 20 H 52 V 14 Z M 12,30 V 36 H 18 V 30 Z M 46,30 V 36 H 52 V 30 Z M 12,44 V 50 H 18 V 44 Z M 46,44 V 50 H 52 V 44 Z"/></g></g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc486" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc486" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc486" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc486" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc486" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc486" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc486)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc486)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><circle cx="8.466" cy="8.46" r="7.144" fill="#ffe2b6" style="paint-order:stroke markers fill"/><path fill="#8d461a" d="M8.465 3.941a4.66 4.66 0 0 0-4.659 4.66 4.66 4.66 0 0 0 3.119 4.39.31.31 0 0 0 .299-.307v-.666h-.31c-.46 0-1.008-.122-1.178-.622-.227-.665-.873-.828-.686-.931a.36.36 0 0 1 .23-.042c.259.032.53.292.702.507.305.386.475.466.805.466.314 0 .437-.077.437-.077a.79.79 0 0 1 .345-.671C6.38 10.46 5.516 9.856 5.516 8.6c0-.602.166-1.086.45-1.463a2.36 2.36 0 0 1 .016-1.332c.435 0 .924.237 1.236.491.38-.12.801-.18 1.248-.18s.869.06 1.252.179c.31-.254.799-.49 1.234-.49.127.442.14.879.02 1.31.3.38.476.871.476 1.485 0 1.255-.883 1.862-2.083 2.048a.79.79 0 0 1 .344.67v1.365a.31.31 0 0 0 .3.308A4.66 4.66 0 0 0 13.126 8.6a4.66 4.66 0 0 0-4.66-4.659z"/></g></g>
+</svg>

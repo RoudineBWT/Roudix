@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2128" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc2128" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2128" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc2128" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc2128" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc2128" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2128)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2128)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path d="m9 60h46v1h-46z" opacity=".2"/> <path d="m9 17h46c-2.5104 14.5-2.8192 28.854 0 43h-46c2.7144-13.806 2.6185-28.158 0-43z" fill="#ec762e"/> <path d="m32 7v10h23l-5-10z" fill="#d35e1a"/> <path d="m14 7h18v10h-23z" fill="#ff964b"/> <path d="m14.027 7-0.527 1h19.5v-1z" fill="#fff6e8" opacity=".2"/> <path d="m33 13v1l16.5 3h5.5z" opacity=".2"/> <path d="m55 17-22-4-1-9 18 3" fill="#ff964b"/> <path d="m32 4 0.1133 1.0195 18.432 3.0723-0.5449-1.0918z" fill="#fff6e8" opacity=".2"/> <path d="m24 42c0.0465 3.3225 3.6138 5.998 8 6 4.3862-0.0019 7.9535-2.6775 8-6-2.3974 1.6473-5.1691 1.9908-8 2-2.8309-0.0092-5.6026-0.3527-8-2z" opacity=".2"/> <path d="m24 41c0.0465 3.3225 3.6138 5.998 8 6 4.3862-0.0019 7.9535-2.6775 8-6-2.3974 1.6473-5.1691 1.9908-8 2-2.8309-0.0092-5.6026-0.3527-8-2z" fill="#ad511a"/> <circle cx="17.5" cy="41.5" r="2.5" opacity=".2"/> <circle cx="17.5" cy="40.5" r="2.5" fill="#eb752d"/> <circle cx="46.5" cy="41.5" r="2.5" opacity=".2"/> <circle cx="46.5" cy="40.5" r="2.5" fill="#eb752d"/> <circle cx="22" cy="34" r="5" opacity=".2"/> <circle cx="22" cy="33" r="5" fill="#ad511a"/> <circle cx="20.5" cy="31.5" r="1.5" fill="#ffefd6"/> <circle cx="42" cy="34" r="5" opacity=".2"/> <circle cx="42" cy="33" r="5" fill="#ad511a"/> <circle cx="40.5" cy="31.5" r="1.5" fill="#ffefd6"/></g></g>
+</svg>

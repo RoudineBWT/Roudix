@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt196" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht196" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt196" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt196" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot196" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt196" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt196)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht196)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="54" height="54" x="5" y="5" fill="#f78238" rx="27" ry="27"/><rect width="46" height="46" x="9" y="9" fill="#fff1dc" opacity=".15" rx="23" ry="23"/><path fill="#fff1dc" fill-rule="evenodd" d="M50 26.542C46.626 12.28 33.668 12.399 25.845 16.123c-8.233 4.161-14.196 14.826-10.944 23.757 5.026 13.473 23.527 13.271 29.788.742 1.858-4.594 3.222-7.856-1.888-12.222v5.4L41 30.2s-1.598 3.777-3.296 5.5C35.343 38.094 32 37.4 32 37.4c.63 2.387 5.4 3.601 5.4 3.601-12.38 5.86-12.743-3.934-12.6-6.3.406-6.813 5.883-12.1 13.1-11.722 2.3.177 6.701 1.82 6.701 1.82-1.656-3.79-4.014-4.691-5.4-5.4 5.434-1.797 8.334 3.875 10.8 7.141z"/></g></g>
+</svg>

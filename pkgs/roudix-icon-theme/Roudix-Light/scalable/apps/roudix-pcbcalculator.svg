@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt607" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht607" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt607" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt607" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot607" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt607" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt607)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht607)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path fill="#ff954a" fill-rule="evenodd" d="M14 6c-4.432 0-8 3.568-8 8v36c0 4.432 3.568 8 8 8h19V33h25V14c0-4.432-3.568-8-8-8z" style="paint-order:stroke fill markers"/><path fill="#ffc676" fill-rule="evenodd" d="M33 6h-2v25H6v2h25v25h2V33h25v-2H33z" clip-rule="evenodd"/><path fill="#e26b24" fill-rule="evenodd" d="M33 33v25h17c4.432 0 8-3.568 8-8V33z" style="paint-order:stroke fill markers"/><path fill="#fff6e8" fill-rule="evenodd" d="M20 20v-3h3v3h3v3h-3v3h-3v-3h-3v-3zm27 3h-9v-3h9zm-9 18.5h9v-3h-9zm9 5h-9v-3h9zm-29.879-6.257 2.121 2.121-2.121 2.121 2.121 2.122 2.122-2.122 2.121 2.122 2.121-2.122-2.121-2.121 2.121-2.121-2.121-2.122-2.121 2.122-2.122-2.122z" clip-rule="evenodd"/></g></g>
+</svg>

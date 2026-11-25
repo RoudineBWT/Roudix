@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc821" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc821" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc821" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc821" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc821" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc821" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc821)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc821)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><g stroke-width=".964"><path fill="#e66f28" d="M32 5A27 27 0 0 0 5 32a27 27 0 0 0 3.245 12.783l-.049-.04c1.36 3.197 1.261 4.069 1.047 6.739-.149 1.861-.654 3.76-1.284 4.831-.572.968-1.03 1.97-1.03 2.225 0 .787 4.55.51 8.578-.521 4.48-1.147 5.112-1.265 8.468-.24l.103.033c.149.046.27.08.43.13l-.038-.03A27 27 0 0 0 32 59a27 27 0 0 0 27-27A27 27 0 0 0 32 5"/><path fill="#fff6e8" d="M42.126 43.891c2.024-.967 2.965-2.18 3.29-4.24.247-1.57.133-1.971-2.946-3.454-3.915-1.885-3.674-1.894-5.36.2-1.05 1.303-1.501 1.726-1.842 1.726-3.99-1.079-8.05-4.195-9.34-8.287 0-.175.424-.816.943-1.424 1.527-1.789 1.528-1.833.196-5.115-1.534-3.78-2.053-3.754-3.724-3.823-1.71-.071-2.251.2-3.333 1.676-1.12 1.526-1.52 2.754-1.51 4.638.012 2.392.796 4.312 3.066 7.508 3.897 5.486 7.699 8.464 13.176 10.32 3.35 1.134 5.423 1.211 7.384.275"/></g></g></g>
+</svg>

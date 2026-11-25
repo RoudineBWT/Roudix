@@ -260,3 +260,21 @@ msgstr "O gerenciador de arquivos Wayland nativo da Noctalia"
 
 msgid "Luciole — Noctalia, native Wayland"
 msgstr "Luciole — Noctalia, Wayland nativo"
+
+msgid "Detected in your config"
+msgstr "Detectado na sua configuração"
+
+msgid "All options"
+msgstr "Todas as opções"
+
+msgid "Setting “{sid}” no longer exists in the compositor config: your value was removed."
+msgstr "O ajuste “{sid}” não existe mais na configuração do compositor: seu valor foi removido."
+
+msgid "Setting “{title}” changed type in the compositor config: your old value was removed."
+msgstr "O ajuste “{title}” mudou de tipo na configuração do compositor: seu valor antigo foi removido."
+
+msgid "Made for Roudix: orange glyphs on dark tiles, Roudix folders"
+msgstr "Feito para o Roudix: glifos laranja em blocos escuros, pastas Roudix"
+
+msgid "Made for Roudix, on light tiles"
+msgstr "Feito para o Roudix, em blocos claros"

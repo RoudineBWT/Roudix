@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1273" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1273" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1273" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1273" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1273" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1273" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1273)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1273)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><path fill="#f78237" d="M15.61 8.466a7.144 7.144 0 0 1-7.144 7.144 7.144 7.144 0 0 1-7.143-7.144 7.144 7.144 0 0 1 7.143-7.143 7.144 7.144 0 0 1 7.144 7.143"/><rect width="7.937" height="7.937" x="4.498" y="4.498" fill="#6f3615" rx="1.323" ry="1.323" style="paint-order:markers stroke fill"/><path fill="#ffebcc" d="M7.535 5.982V5.36H5.67v.62h.621v2.175h-.62v.621h1.863v-.621h-.621V5.982m2.047 2.79c-.375-.043-.64-.288-.875-.504l.377-.426c.124.129.31.283.504.309.194.025.443.004.592-.123.15-.127.15-.3.15-.505V5.361h.621l-.002 2.2c.002.437-.164.732-.317.897-.246.251-.564.277-.86.318m-4.1 2.176h3.106v.621H5.05z"/></g></g>
+</svg>

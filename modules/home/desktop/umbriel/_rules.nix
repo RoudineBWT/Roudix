@@ -61,8 +61,9 @@ in
     # match the original niri size/position exactly.
     (
     {
-      # A scratchpad always floats: default_floating=false only makes
-      # sense in tiled mode, default_scratchpad only in scratchpad mode —
+      # A scratchpad floats by default (stacking layout; tiling is opt-in via
+      # layout.mode on a [[scratchpad]], unused here): default_floating=false
+      # only makes sense in tiled mode, default_scratchpad only in scratchpad mode —
       # hence the conditional // instead of hardcoding both keys. Size and
       # position stay the same in both cases so Discord+Telegram sit
       # side by side (top_left/top_right).

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1542" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1542" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1542" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1542" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1542" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1542" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1542)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1542)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="M 32,5 C 22,28 22,29 4,61 4,61 20,52 32,52 44,52 60,61 60,61 42,29 42,28 32,5 Z"/> <path style="fill:#e1681c" d="M 32,4 C 22,27 22,28 4,60 4,60 20,51 32,51 44,51 60,60 60,60 42,28 42,27 32,4 Z"/> <path style="opacity:0.2" d="M 37.551,17.787 C 37.551,17.787 35,19 31,19 31,22 32,22 32,29 32,35 31,43 31,43 L 35,40 38.865,20.766 Z M 31.5,46 A 3.5,3.5 0 0 0 28,49.5 3.5,3.5 0 0 0 29.227,52.16 C 30.166,52.066 31.097,52 32,52 32.608,52 33.232,52.038 33.857,52.082 A 3.5,3.5 0 0 0 35,49.5 3.5,3.5 0 0 0 31.5,46 Z"/> <path style="fill:#fff1dc" d="M 37.551,16.787 C 37.551,16.787 35,18 31,18 31,21 32,21 32,28 32,34 31,42 31,42 L 35,39 38.865,19.766 Z M 31.5,45 A 3.5,3.5 0 0 0 28,48.5 3.5,3.5 0 0 0 29.227,51.16 C 30.166,51.066 31.097,51 32,51 32.608,51 33.232,51.038 33.857,51.082 A 3.5,3.5 0 0 0 35,48.5 3.5,3.5 0 0 0 31.5,45 Z"/> <path style="fill:#fff1dc;opacity:0.2" d="M 32 4 C 22 27 22 28 4 60 C 4 60 4.3001 59.834 4.8027 59.566 C 21.912 29.116 22.168 27.613 32 5 C 41.832 27.613 42.088 29.116 59.197 59.566 C 59.7 59.834 60 60 60 60 C 42 28 42 27 32 4 z"/></g></g>
+</svg>

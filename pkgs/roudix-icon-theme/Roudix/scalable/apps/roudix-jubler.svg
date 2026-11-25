@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc505" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc505" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc505" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc505" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc505" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc505" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc505)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc505)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:.2" d="m29.053 5c-25.053 0-25.105 27-25.105 27h25.053l0.05273-0.24609v3.4746l-0.05273-0.22852c-25.053 0-25 26-25 26h56v-29.475s1.02e-4 -26.525-30.947-26.525z"/> <path style="fill:#ff9f53" d="m29 31 3-14-2.9474-13c-25.053 0-25.105 27-25.105 27z"/> <path style="fill:#d5611a" d="m29.053 60 2.9474-13-3-13c-25.053 0-25 26-25 26z"/> <path style="fill:#c85c19" d="m29.053 4v56h5.9474l25-26v-3.4737s0-26.526-30.947-26.526z"/> <path style="fill:#e66d22" d="m60 60v-26c-25.053 0-25.053 26-25.053 26z"/> <circle style="opacity:.1" cx="41" cy="18" r="3"/> <circle style="fill:#a24b18" cx="41" cy="17" r="3"/> <circle style="fill:#fff1dc" cx="41" cy="17" r="1"/> <path style="fill:#fff1dc;opacity:.2" d="m29.053 4c-25.053 0-25.105 27-25.105 27h0.042969c0.26854-4.6319 2.709-26 25.062-26 30.947 0 30.947 26.525 30.947 26.525v-1s1.02e-4 -26.525-30.947-26.525zm-0.052734 30c-25.053 0-25 26-25 26h0.041016c0.26923-4.5889 2.7093-25 24.959-25l0.052734 0.22852v-1l-0.052734-0.22852z"/> <path style="fill:#fff1dc;opacity:.2" d="m60 34c-25.053 0-25.053 26-25.053 26h0.042968c0.27852-4.5889 2.7601-25 25.01-25v-1z"/></g></g>
+</svg>

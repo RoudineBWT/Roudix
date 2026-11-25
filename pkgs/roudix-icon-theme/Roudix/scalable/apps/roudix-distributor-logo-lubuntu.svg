@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1577" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1577" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1577" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1577" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1577" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1577" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1577)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1577)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><path fill="#df651a" d="M8.38 1.323a7.144 7.144 0 1 1 0 14.287 7.144 7.144 0 0 1 0-14.287"/><path fill="#fff1dc" fill-rule="evenodd" d="M8.467 4.233a4.23 4.23 0 0 0-4.225 4.068c1.403-.99 3.79-2.615 4.382-2.658.196-.249.872-.45.994-.445l-.355.445s-.006.45-.137.537c1.223.817 1.807 3.75 2.057 5.53l-.105.084A4.22 4.22 0 0 0 12.7 8.467a4.233 4.233 0 0 0-4.233-4.234m-.06 3.478c-.33.01-.998.993-1.76 2.045-.366.506-.84 1.198-1.19 1.678l-.25-.275c.716-1.174 1.609-2.607 1.566-2.66-.01-.005-.021-.013-.035-.01-.242.036-1.218 1.251-1.915 2.125A4.23 4.23 0 0 0 8.467 12.7a4.2 4.2 0 0 0 2.514-.833c-.521-1.593-1.528-4.138-2.54-4.144-.01-.002-.024-.012-.034-.012m-2.457.412c-.3-.002-1.07.27-1.708.515.025.632.187 1.227.46 1.757.128-.194.35-.512.483-.707.507-.746 1.006-1.406.89-1.542-.02-.023-.066-.023-.125-.023m-1.713.267-.004.077c0 .035.005.07.006.105zm.473 2.022q.04.076.082.151z" overflow="visible"/></g></g>
+</svg>

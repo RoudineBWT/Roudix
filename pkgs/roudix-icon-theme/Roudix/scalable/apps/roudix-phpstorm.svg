@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2234" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2234" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2234" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2234" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2234" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2234" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2234)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2234)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><path fill="#f37d32" d="M15.61 8.466a7.144 7.144 0 0 1-7.144 7.144 7.144 7.144 0 0 1-7.143-7.144 7.144 7.144 0 0 1 7.143-7.143 7.144 7.144 0 0 1 7.144 7.143"/><rect width="7.937" height="7.937" x="4.498" y="4.498" fill="#6f3615" rx="1.323" ry="1.323" style="paint-order:markers stroke fill"/><path fill="#ffebcc" d="M5.05 10.951h3.106v.621H5.05zm.621-5.591v3.416h.621V7.534h.622c.747 0 1.242-.305 1.242-1.071v-.016c0-.692-.337-1.087-1.141-1.087zm4.356 0c-.673 0-1.257.338-1.257.955v.019c0 .433.435.818 1.108.986.56.15.77.285.77.472v.019c0 .205-.322.345-.62.345-.375 0-.633-.14-.932-.383l-.406.44c.392.355.833.545 1.337.564.71 0 1.23-.444 1.23-1.022v-.02c0-.511-.402-.725-1.074-.911-.561-.15-.777-.255-.777-.48v-.057c0-.169.34-.305.621-.305s.491.02.79.225l.346-.471c-.353-.214-.65-.376-1.136-.376m-3.735.621h.621c.374 0 .622.13.622.466v.016c0 .28-.248.45-.622.45h-.62z"/></g></g>
+</svg>

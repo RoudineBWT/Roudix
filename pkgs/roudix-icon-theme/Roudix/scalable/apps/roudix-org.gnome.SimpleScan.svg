@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt526" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht526" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt526" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt526" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot526" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt526" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt526)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht526)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect style="opacity:0.2" width="58" height="46" x="4" y="-55" rx="4.146" ry="4.6" transform="rotate(90)"/> <rect style="fill:#ef792e" width="58" height="46" x="3" y="-55" rx="4.146" ry="4.6" transform="rotate(90)"/> <path style="fill:#f88339" d="M 15,34.875002 V 10.078124 c 0,0 0,-1.0781238 1.096772,-1.0781238 H 47.903228 C 49,9.0000002 49,10.078124 49,10.078124 v 24.796878"/> <path style="opacity:0.2" d="M 15,35.875 V 54.222656 C 15,54.222656 15,56 16.59375,56 H 37 L 49,44 v -8.125 z"/> <path style="fill:#ffd495" d="M 15,34.875 H 49 V 43 L 41.03125,47.305148 37,55 H 16.59375 C 15,55 15,53.224268 15,53.224268 Z"/> <path style="fill:#ffb86a" d="M 37,55 V 44.636364 C 37,44.636364 37,43 38.636362,43 H 49 Z"/> <rect style="opacity:0.2" width="58" height="6" x="3" y="33" rx="1.45" ry="1.5"/> <rect style="fill:#fff1dc" width="58" height="6" x="3" y="32" rx="1.45" ry="1.5"/> <path style="opacity:0.1;fill:#fff1dc" d="M 13.601562 3 C 11.053163 3 9 4.8475588 9 7.1445312 L 9 8.1445312 C 9 5.8475588 11.053163 4 13.601562 4 L 50.398438 4 C 52.946838 4 55 5.8475588 55 8.1445312 L 55 7.1445312 C 55 4.8475589 52.946838 3 50.398438 3 L 13.601562 3 z"/> <path style="opacity:0.2;fill:#fff1dc" d="M 16.097656 9 C 15.000884 9 15 10.078125 15 10.078125 L 15 11.078125 C 15 11.078125 15.000884 10 16.097656 10 L 47.902344 10 C 48.999116 10 49 11.078125 49 11.078125 L 49 10.078125 C 49 10.078125 48.999116 9 47.902344 9 L 16.097656 9 z"/></g></g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc771" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc771" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc771" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc771" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc771" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc771" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc771)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc771)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><circle r="28" cy="33" cx="32" style="opacity:.2"/> <circle r="28" cy="32" cx="32" style="fill:#f17c33"/> <path style="opacity:.2" d="m32 11c-12 0-22 9-22 22s9 22 22 22 21.8-9 21.8-22-9.8-22-21.8-22zm0 2c11 0 20 9.175219 20 20-0.0073 1.669139 0 3-1 5l-8-8h-19v12h-10c-2-3-2-5-2-9 0-10.824781 9-20 20-20z"/> <path style="fill:#fff6e8" d="m32 10c-12 0-22 9-22 22s9 22 22 22 21.8-9 21.8-22-9.8-22-21.8-22zm0 2c11 0 20 9.175219 20 20-0.0073 1.669139 0 3-1 5l-8-8h-19v12h-10c-2-3-2-5-2-9 0-10.824781 9-20 20-20z"/> <path style="opacity:.2;fill:#fff6e8" d="m32 4a28 28 0 0 0 -28 28 28 28 0 0 0 0.0214844 0.585938 28 28 0 0 1 27.978516 -27.585938 28 28 0 0 1 27.978516 27.414062 28 28 0 0 0 0.021484 -0.414062 28 28 0 0 0 -28 -28z"/></g></g>
+</svg>

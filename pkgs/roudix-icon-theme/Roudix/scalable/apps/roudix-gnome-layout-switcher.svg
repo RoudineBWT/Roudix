@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1907" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1907" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1907" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1907" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1907" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1907" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1907)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1907)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><rect width="14.287" height="14.287" x="1.323" y="1.323" fill="#833e16" rx="7.144" ry="7.144"/><path fill="#f17a30" d="M12.513 4.498a.36.36 0 0 0-.243.106l-2.088 2.11A2.52 2.52 0 0 0 8.425 6 2.54 2.54 0 0 0 5.89 8.535c0 .448.118.868.323 1.233l-1.825 1.825-1.385-1.21a.355.355 0 0 0-.501.033.355.355 0 0 0 .032.502l1.635 1.429a.355.355 0 0 0 .486-.016l1.993-1.993c.459.451 1.086.73 1.777.73a2.54 2.54 0 0 0 2.533-2.533c0-.457-.124-.885-.337-1.256l.028-.026 1.892-1.914 1.392 1.203a.355.355 0 0 0 .501-.037.355.355 0 0 0-.037-.5l-1.643-1.42a.36.36 0 0 0-.217-.087zM8.425 6.712c1.012 0 1.824.812 1.824 1.823 0 1.012-.812 1.824-1.824 1.824s-1.824-.812-1.824-1.824c0-1.011.813-1.823 1.824-1.823" color="#2e1d12" style="font-feature-settings:normal;font-variant-alternates:normal;font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;font-variant-position:normal;font-variation-settings:normal;inline-size:0;isolation:auto;mix-blend-mode:normal;paint-order:stroke markers fill;shape-margin:0;shape-padding:0;text-decoration-color:#2e1d12;text-decoration-line:none;text-decoration-style:solid;text-indent:0;text-orientation:mixed;text-transform:none;white-space:normal"/></g></g>
+</svg>

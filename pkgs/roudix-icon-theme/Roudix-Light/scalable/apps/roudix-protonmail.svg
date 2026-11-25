@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc199" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc199" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc199" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc199" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc199" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc199" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc199)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc199)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect x="6" y="6" width="52" height="52" rx="8" ry="8" fill="#ffe4bc" fill-rule="evenodd" style="paint-order:stroke fill markers"/><g transform="matrix(.57143 0 0 .57142 18.286 20.171)"><path d="m50.217-3.7936c-0.29172 0.027499-0.58074 0.14494-0.83008 0.37109l-25.387 21.623-25.387-21.623c-1.0407-0.88893-2.6133-0.089892-2.6133 1.2676v41.355c0 2.8034 3.004 6 5.8008 6h44.363c3.2236 0 5.8359-2.5814 5.8359-6v-41.355c0-0.99733-0.90804-1.7212-1.7832-1.6387z" fill="#ff994d"/><path d="m40.8 3.8917-20.7 17.633c-1.9 1.6886-4.1539 1.6312-6.0996 0l-18-15.324v33c0 2.8026 2.9983 6 5.8008 6h38.999z" fill="#c1581a"/></g></g></g>
+</svg>

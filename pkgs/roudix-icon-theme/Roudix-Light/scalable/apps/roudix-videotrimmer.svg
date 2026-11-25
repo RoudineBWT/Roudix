@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt770" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht770" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt770" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt770" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot770" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt770" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt770)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht770)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><circle cx="32" cy="32" r="27" fill="#af521a"/><rect width="54" height="38" x="5" y="13" fill="#eb752d" rx="3.121" ry="3.121"/><path fill="#af521a" d="M16 15v5h5v-5zm9 0v5h5v-5zm9 0v5h5v-5zm9 0v5h5v-5zM16 43v5h5v-5zm9 0v5h5v-5zm9 0v5h5v-5zm9 0v5h5v-5z"/><path fill="#fff6e8" d="M5 22v19h13c.554 0 1-.446 1-1V23c0-.554-.446-1-1-1zm20 0c-.554 0-1 .446-1 1v17c0 .554.446 1 1 1h14c.554 0 1-.446 1-1V23c0-.554-.446-1-1-1zm21 0c-.554 0-1 .446-1 1v17c0 .554.446 1 1 1h13V22z"/><path fill="#ffce87" d="M18 7c-2.77 0-5 2.23-5 5v40c0 2.77 2.23 5 5 5h4v-4h-4c-.554 0-1-.446-1-1V12c0-.554.446-1 1-1h4V7zm24 0v4h4c.554 0 1 .446 1 1v40c0 .554-.446 1-1 1h-4v4h4c2.77 0 5-2.23 5-5V12c0-2.77-2.23-5-5-5z"/></g></g>
+</svg>

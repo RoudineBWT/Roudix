@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt446" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht446" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt446" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt446" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot446" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt446" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt446)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht446)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><g transform="translate(-.085 -.085)scale(1.0026)"><circle cx="32" cy="32" r="26.929" fill="#ca5b1a" fill-opacity=".996"/><circle cx="42.5" cy="23" r="1.25" fill="#fff6e8"/><path fill="none" stroke="#fff6e8" stroke-linecap="round" stroke-width="2.5" d="M48.5 28v9.5m-12-5v5m-10-5v10.293M16.5 32.5v10.293M26.483 32.5a4.98 4.98 0 0 0-2.491-4.315 4.98 4.98 0 0 0-4.983 0 4.98 4.98 0 0 0-2.492 4.315m19.966 0a4.98 4.98 0 0 0-2.491-4.315 4.98 4.98 0 0 0-4.983 0 4.98 4.98 0 0 0-2.492 4.315m21.966 4.794a5.98 5.98 0 0 1-2.991 5.182 5.98 5.98 0 0 1-5.983 0 5.98 5.98 0 0 1-2.992-5.182M48.483 23a5.98 5.98 0 0 0-2.991-5.181 5.98 5.98 0 0 0-5.984 0A5.98 5.98 0 0 0 36.517 23"/></g></g></g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt646" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht646" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt646" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt646" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot646" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt646" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt646)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht646)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><g fill="#d75f1a" stroke-width="1.571" transform="translate(3.183 3.161)scale(.89997)"><circle cx="32.02" cy="32.044" r="30.001"/><circle cx="32.02" cy="32.044" r="30.001"/></g><path fill="#fff6e8" d="M29.938 21c-2.42.001-4.813 2.107-4.813 5.5H23.75c-1.519 0-2.75 1.539-2.75 3.438V32h-2.062c-2.658 0-4.813 2.155-4.813 4.813s1.817 4.812 4.125 4.812c1.375 0 2.397-.707 2.75-1.375 1.018 1.375 3.62 2.75 5.5 2.75 2.026 0 4.194-1.202 5.5-2.75 1.04 1.536 2.41 2.75 4.126 2.75 2.267 0 4.125-.806 5.5-2.75 1.006.903 1.397 1.374 2.75 1.375a5.5 5.5 0 1 0 0-11c-.982 0-2.08.63-2.75 1.375 0-3.519-1.912-5.5-5.5-5.5H34.75c0-4.125-2.474-5.501-4.813-5.5zm.688 6.875h5.5v1.375L32 30.625c-.002 2.013-.005 4.313 0 5.184.005 1.29-1.13 2.51-2.719 2.923-1.856.483-3.68-.294-4.078-1.734-.397-1.44.782-3 2.64-3.48.972-.253 1.987-.164 2.782.24z"/></g></g>
+</svg>

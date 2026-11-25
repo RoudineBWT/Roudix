@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc966" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc966" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc966" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc966" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc966" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc966" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc966)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc966)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><g fill-rule="evenodd" stroke-width=".927"><path fill="#f17c33" d="M2.754 4.182A7.2 7.2 0 0 0 1.323 8.49a7.109 7.108 0 0 0 7.144 7.12l2.5-5.12-4.643-.949z"/><path fill="#ffa85b" d="m8.823 5.253 2.144 5.214-2.5 5.143a7.128 7.127 0 0 0 7.143-7.144 7.1 7.1 0 0 0-.765-3.213z"/><path fill="#cd5c1a" d="M8.465 1.324a7.115 7.114 0 0 0-5.713 2.86l3.57 5.355 4.644.928-2.144-5.215h6.022a7.121 7.12 0 0 0-6.379-3.93z"/></g><path fill="#fff6e8" d="M8.466 5.027a3.433 3.433 0 0 1 3.44 3.439 3.433 3.433 0 0 1-3.44 3.44 3.433 3.433 0 0 1-3.439-3.44 3.433 3.433 0 0 1 3.439-3.439"/><path fill="#ee7830" d="M8.465 5.82a2.64 2.64 0 0 1 2.647 2.646 2.64 2.64 0 0 1-2.647 2.646 2.64 2.64 0 0 1-2.644-2.646A2.64 2.64 0 0 1 8.465 5.82"/></g></g>
+</svg>

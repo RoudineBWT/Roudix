@@ -232,6 +232,19 @@ def bootstrap() -> list[str]:
             merged = {**load_seen(), **seen}
             _save_seen(merged)
         old.rename(old.with_name(old.name + ".migrated"))
+    msgs += reconcile_settings()
+    return msgs
+
+
+def reconcile_settings() -> list[str]:
+    """Adapt the stored Settings overrides to what the compositor config offers now
+    (a variable changed type or disappeared upstream): see Backend.reconcile."""
+    data = load_data()
+    if not data:
+        return []
+    new, msgs = backend().reconcile(data)
+    if new != data:
+        save_data(new)
     return msgs
 
 

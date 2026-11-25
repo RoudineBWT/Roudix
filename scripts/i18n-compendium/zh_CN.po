@@ -260,3 +260,21 @@ msgstr "Noctalia 的原生 Wayland 文件管理器"
 
 msgid "Luciole — Noctalia, native Wayland"
 msgstr "Luciole — Noctalia，原生 Wayland"
+
+msgid "Detected in your config"
+msgstr "在你的配置中检测到"
+
+msgid "All options"
+msgstr "所有选项"
+
+msgid "Setting “{sid}” no longer exists in the compositor config: your value was removed."
+msgstr "设置“{sid}”在合成器配置中已不存在：你的值已被移除。"
+
+msgid "Setting “{title}” changed type in the compositor config: your old value was removed."
+msgstr "设置“{title}”在合成器配置中的类型已更改：你之前的值已被移除。"
+
+msgid "Made for Roudix: orange glyphs on dark tiles, Roudix folders"
+msgstr "专为 Roudix 打造：深色图块上的橙色字形，Roudix 文件夹"
+
+msgid "Made for Roudix, on light tiles"
+msgstr "专为 Roudix 打造，浅色图块"

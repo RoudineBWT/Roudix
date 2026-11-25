@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgb116" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shb116" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glb116" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbb116" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fob116" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgb116" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgb116)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shb116)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <path transform="translate(11.000 11.400) scale(1.0833)" d="M5 0C3.338 0 2 1.338 2 3v18c0 1.662 1.338 3 3 3h14c1.662 0 3-1.338 3-3V9l-9-9H5zm1 12a3 3 0 0 1 3-3c1.6 0 2.897 1.257 2.984 2.837L11.5 11l-2.298 3.98c-.068.004-.133.02-.203.02a3 3 0 0 1-3-3zm3.191 5 2.31-4 2.31 4H9.19zM18 16h-3.613L13 13.597V11h5v5zm4-16v7l-7-7h7zm-5 15h-3v-3h3v3z" fill="#000000" opacity="0.3"/>
+  <path transform="translate(11.000 10.400) scale(1.0833)" d="M5 0C3.338 0 2 1.338 2 3v18c0 1.662 1.338 3 3 3h14c1.662 0 3-1.338 3-3V9l-9-9H5zm1 12a3 3 0 0 1 3-3c1.6 0 2.897 1.257 2.984 2.837L11.5 11l-2.298 3.98c-.068.004-.133.02-.203.02a3 3 0 0 1-3-3zm3.191 5 2.31-4 2.31 4H9.19zM18 16h-3.613L13 13.597V11h5v5zm4-16v7l-7-7h7zm-5 15h-3v-3h3v3z" fill="url(#gbb116)"/>
+</svg>

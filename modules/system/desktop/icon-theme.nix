@@ -1,8 +1,15 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, roudix-icon-theme, ... }:
 let
   cfg = config.roudix.iconTheme;
 
-  # ── Roudix icon themes: Papirus-Roudix / Tela-Roudix ─────────────────────
+  # ── Roudix icon themes: Roudix / Roudix-Light, Papirus-Roudix / Tela-Roudix ─
+  # "Roudix" / "Roudix-Light" (pkgs/roudix-icon-theme) is a complete theme drawn
+  # for Roudix: its own app, folder, file-type, device and category icons. It
+  # falls back to Papirus-Dark / Papirus-Light for the symbolic UI icons and
+  # anything it doesn't draw, so Papirus is installed next to it.
+  #
+  # The two themes below (Papirus-Roudix / Tela-Roudix) are the lighter
+  # option, kept for those who prefer the stock look:
   # Same idea as the Noctalia recolor scripts (modules/home/theming/
   # papirus-icon.nix, tela-icon.nix), but built once by Nix, with the fixed
   # Roudix primary from assets/palette/Roudix.json instead of generated at
@@ -109,6 +116,8 @@ let
   # Curated ids -> theme name + the packages that provide it. Anything else is
   # taken as a literal icon-theme name the user made available himself.
   curated = {
+    roudix       = { name = "Roudix";       packages = [ roudix-icon-theme pkgs.papirus-icon-theme ]; };
+    roudix-light = { name = "Roudix-Light"; packages = [ roudix-icon-theme pkgs.papirus-icon-theme ]; };
     papirus  = { name = "Papirus-Roudix"; packages = [ papirusRoudix pkgs.papirus-icon-theme ]; };
     tela     = { name = "Tela-Roudix";    packages = [ telaRoudix pkgs.tela-icon-theme ]; };
     qogir    = { name = "Qogir-dark";     packages = [ pkgs.qogir-icon-theme ]; };
@@ -134,7 +143,11 @@ in
     type    = lib.types.str;
     default = "papirus";
     description = ''
-      Curated choices (each pulls in its own nixpkgs package):
+      Curated choices (each pulls in its own package):
+        "roudix"       : Roudix (pkgs/roudix-icon-theme): the theme drawn for Roudix — brand
+                         logos and app icons in the Roudix palette on dark tiles, Roudix folders,
+                         file types, devices. Falls back to Papirus-Dark for what it doesn't draw.
+        "roudix-light" : same, on light (cream) tiles; falls back to Papirus-Light.
         "papirus"  : Papirus-Roudix on GNOME / KDE / Cinnamon / COSMIC (Papirus-Dark
                      with the folders in the Roudix primary, see above); plain
                      Papirus-Dark on the bare compositors — Roudix's original default.
@@ -167,7 +180,7 @@ in
   };
 
   config = lib.mkIf (builtins.elem config.roudix.desktop.type nativeDesktops) {
-    # Both Roudix themes (+ their stock base) are always installed on these
+    # All the Roudix themes (+ their stock base) are always installed on these
     # desktops, not only the one picked by roudix.iconTheme: the option just
     # seeds the DEFAULT, and the desktop's own settings app (KDE System
     # Settings, GNOME Tweaks, Cinnamon...) can only list what is on the system.
@@ -175,6 +188,7 @@ in
       chosen.packages
       ++ curated.papirus.packages
       ++ curated.tela.packages
+      ++ curated.roudix.packages
     );
   };
 }

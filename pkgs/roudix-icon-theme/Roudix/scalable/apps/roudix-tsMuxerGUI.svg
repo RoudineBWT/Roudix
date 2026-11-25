@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3500" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc3500" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3500" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc3500" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc3500" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc3500" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3500)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3500)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><rect width="13.758" height="13.758" x="1.587" y="1.587" fill="#ffb466" rx="2.117" ry="2.117" style="paint-order:markers fill stroke"/><circle cx="8.466" cy="8.466" r="4.661" opacity=".15" style="paint-order:stroke markers fill"/><g fill="#fff1dc" style="paint-order:stroke markers fill"><path d="M8.466 4.518a3.942 3.942 0 1 0 0 7.885 3.942 3.942 0 0 0 0-7.885"/><path d="M7.75 2.906h1.433v2.509H7.75zm0 8.603h1.433v2.509H7.75zm6.272-3.764v1.433h-2.509V7.745zm-8.603 0v1.433H2.91V7.745zm7.482 4.14-1.012 1.012-1.775-1.774 1.013-1.012zM6.818 5.802 5.805 6.814 4.031 5.04l1.013-1.012zm-1.774 7.095-1.013-1.013 1.774-1.775 1.014 1.015zm6.083-6.083-1.013-1.013 1.775-1.775 1.013 1.015z"/></g><circle cx="8.466" cy="8.466" r="2.381" fill="#f68137" style="paint-order:markers fill stroke"/><path fill="#fff1dc" d="M7.937 7.673V9.26l1.323-.793z" style="paint-order:markers fill stroke"/></g></g>
+</svg>

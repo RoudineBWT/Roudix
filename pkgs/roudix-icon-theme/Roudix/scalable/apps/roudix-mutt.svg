@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt447" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht447" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt447" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt447" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot447" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt447" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt447)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht447)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="52" height="52" x="6" y="6" fill="#904417" rx="8" ry="8" style="paint-order:fill markers stroke"/><path fill="#ffcf89" d="m21.652 17.391-5.478 5.478L18 24.695l3.652-3.652 3.652 3.652 1.826-1.826zm20.696 0-5.478 5.478 1.826 1.826 3.652-3.652L46 24.695l1.826-1.826zm-17.652 9.74a2.435 2.435 0 0 0-2.435 2.434A2.435 2.435 0 0 0 24.696 32a2.435 2.435 0 0 0 2.435-2.435 2.435 2.435 0 0 0-2.435-2.435zm14.609 0a2.435 2.435 0 0 0-2.435 2.434A2.435 2.435 0 0 0 39.305 32a2.435 2.435 0 0 0 2.435-2.435 2.435 2.435 0 0 0-2.435-2.435zm-14.609 7.303s-2.435 2.435-2.435 6.087 2.435 6.087 2.435 6.087h2.435s-2.435-2.434-2.435-6.087 2.435-6.087 2.435-6.087zm4.87 0v2.435H32v6.087a1.218 1.218 0 0 1-2.434 0H27.13a3.652 3.652 0 1 0 7.304 0V36.87h1.218v-2.435zm7.304 0s2.435 2.435 2.435 6.087-2.435 6.087-2.435 6.087h2.435s2.434-2.434 2.434-6.087-2.434-6.087-2.434-6.087z"/></g></g>
+</svg>

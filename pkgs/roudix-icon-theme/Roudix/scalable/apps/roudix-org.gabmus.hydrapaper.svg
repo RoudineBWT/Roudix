@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2905" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2905" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2905" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2905" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2905" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2905" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2905)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2905)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="48" height="36" x="4" y="10" fill="#e97025" rx="3" ry="3" style="paint-order:stroke fill markers"/><rect width="44" height="32" x="6" y="12" opacity=".15" rx="1.048" ry="1.067" style="paint-order:stroke fill markers"/><rect width="48" height="36" x="8" y="14" fill="#fd893f" rx="3" ry="3" style="paint-order:stroke fill markers"/><rect width="44" height="32" x="10" y="16" opacity=".15" rx="1.048" ry="1.067" style="paint-order:stroke fill markers"/><rect width="48" height="36" x="12" y="18" fill="#f37d32" rx="3" ry="3" style="paint-order:stroke fill markers"/><path d="M15 20c-.58 0-1.047.475-1.047 1.066v29.867c0 .591.467 1.067 1.047 1.067h31.953l11-11V21.066c0-.591-.466-1.067-1.047-1.067z" opacity=".15" style="paint-order:stroke fill markers"/><path fill="#ff9d51" d="m47 52 11-11h-9.953c-.58 0-1.047.475-1.047 1.066z" style="paint-order:stroke fill markers"/><path d="M58 41 47 52h9.953c.58 0 1.047-.475 1.047-1.066z" opacity=".05" style="paint-order:stroke fill markers"/></g></g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2598" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2598" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2598" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2598" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2598" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2598" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2598)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2598)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path d="m22 9 4 10 20-5.6s-39 22.6-39 47.6c32-21 47-25 47-25l-2-8-23 8s14-17 28-23c0-8-5-8-5-8z" style="opacity:.2"/> <path d="m22 8 4 10 20-5.6s-39 22.6-39 47.6c32-21 47-25 47-25l-2-8-23 8s14-17 28-23c0-8-5-8-5-8z" style="fill:#ff9247"/> <path d="M 52 4 L 22 8 L 22.378906 8.9492188 L 52 5 C 52 5 56.562113 5.0190583 56.960938 12.017578 C 56.973947 12.011984 56.986991 12.005575 57 12 C 57 4 52 4 52 4 z M 46 13.400391 L 43.074219 14.21875 C 34.081262 20.0021 7 39.139984 7 60 C 7.0081601 59.994645 7.0152796 59.989728 7.0234375 59.984375 C 8.0529362 35.391371 46 13.400391 46 13.400391 z M 52 27 L 30.238281 34.568359 C 29.515262 35.394252 29 36 29 36 L 52 28 L 53.767578 35.070312 C 53.818411 35.055891 54 35 54 35 L 52 27 z " style="fill:#fff1dc;opacity:.2"/></g></g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt317" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht317" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt317" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt317" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot317" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt317" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt317)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht317)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path d="M32 5A26.94 26.94 0 0 0 5 32a26.94 26.94 0 0 0 27 27 26.94 26.94 0 0 0 27-27A26.94 26.94 0 0 0 32 5" style="fill:#ff9046;fill-opacity:1;stroke:none;stroke-opacity:1"/><g transform="translate(-23.125 49.558)scale(.9038)"><rect width="44.934" height="25.844" x="38.526" y="-32.349" ry="4.637" style="fill:#2e1d12;fill-opacity:1;stroke:none;stroke-width:9.97604;stroke-linecap:round"/><rect width="7.787" height="10.887" x="46.392" y="-26.309" ry="3.121" style="fill:#ffe9ca;fill-opacity:1;stroke:none;stroke-width:5.17434;stroke-linecap:round"/><rect width="7.787" height="10.887" x="67.976" y="-26.309" ry="3.121" style="fill:#ffe9ca;fill-opacity:1;stroke:none;stroke-width:5.17434;stroke-linecap:round"/></g></g></g>
+</svg>

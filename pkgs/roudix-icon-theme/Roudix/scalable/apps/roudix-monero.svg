@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2682" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2682" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2682" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2682" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2682" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2682" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2682)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2682)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><defs> <clipPath id="i2682_clipPath856"> <circle cx="32" cy="32" r="28"/> </clipPath> <clipPath id="i2682_clipPath828"> <path d="m3 41h11v-24l18 18 18-18v24h12v6h-18v-15l-12 12-12-12v15h-17z"/> </clipPath> <clipPath id="i2682_clipPath826"> <path d="m3 44h14v-20l15 15 15-15v20h14v-41h-58z"/> </clipPath> </defs> <g transform="matrix(.96429 0 0 .96429 1.1429 1.1429)"> <circle cx="32" cy="32" r="28" clip-path="url(#i2682_clipPath826)" fill="#ec752a"/> <path d="m5 44h12v-20l15 15 15-15v20h13v18h-55z" clip-path="url(#i2682_clipPath856)" fill="#9e4a17"/> <circle cx="32" cy="32" r="28" clip-path="url(#i2682_clipPath828)" fill="#ffe3ba"/> </g></g></g>
+</svg>

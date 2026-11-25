@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3069" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc3069" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3069" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc3069" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc3069" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc3069" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3069)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3069)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="56" height="46" x="4" y="9" fill="#ffdfb0" rx="3" ry="3.209"/><path fill="none" stroke="#4a2a16" stroke-linecap="round" stroke-linejoin="round" d="M27.889 39.707s3.706 5.05 11.074-.283c5.168-3.74 10.786.979 10.786.979" opacity=".15"/><path fill="#b3531a" d="M6.9 9H11v46H6.9C5.238 55 4 53.676 4 51.898V12.103C4 10.325 5.238 9 6.9 9"/><circle cx="7.5" cy="48" r="1.5" fill="#ff8e44"/><path fill="#c85a1a" d="M41.934 21.855c.65.517.798 1.406.332 1.993L30.472 38.67c-.466.586-2.467 1.494-2.858 1.183s.044-2.465.51-3.051L39.918 21.98c.467-.587 1.366-.643 2.016-.125"/></g></g>
+</svg>

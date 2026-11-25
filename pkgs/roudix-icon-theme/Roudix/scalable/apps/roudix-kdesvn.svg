@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2313" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2313" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2313" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2313" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2313" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2313" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2313)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2313)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect style="opacity:.2" width="56" height="56" x="4" y="5" rx="2.8" ry="2.8"/> <rect style="fill:#e86f24" width="56" height="56" x="4" y="4" rx="2.8" ry="2.8"/> <path style="stroke-linejoin:round;stroke:#a24b18;stroke-width:2;fill:none" d="m14 32h28"/> <path style="stroke-linejoin:round;stroke:#a24b18;stroke-width:2;fill:none" d="m27.8 32 6.2-14"/> <path style="stroke-linejoin:round;stroke:#a24b18;stroke-width:2;fill:none" d="m28 32 6 14h14"/> <g style="opacity:.2" transform="matrix(2,0,0,2,0,1)"> <circle cx="7" cy="16" r="2"/> <circle cx="14" cy="16" r="2"/> <circle cx="21" cy="16" r="2"/> <circle cx="17" cy="23" r="2"/> <circle cx="24" cy="23" r="2"/> <circle cx="17" cy="9" r="2"/> </g> <g transform="scale(2)"> <circle style="fill:#fff1dc" cx="7" cy="16" r="2"/> <circle style="fill:#fff1dc" cx="14" cy="16" r="2"/> <circle style="fill:#fff1dc" cx="21" cy="16" r="2"/> <circle style="fill:#fff1dc" cx="17" cy="23" r="2"/> <circle style="fill:#fff1dc" cx="24" cy="23" r="2"/> <circle style="fill:#fff1dc" cx="17" cy="9" r="2"/> </g> <path style="opacity:.2;fill:#fff1dc" d="m6.8007812 4c-1.5512 0-2.8007812 1.2495812-2.8007812 2.8007812v1c0-1.5511999 1.2495812-2.8007812 2.8007812-2.8007812h50.3984378c1.5512 0 2.800781 1.2495812 2.800781 2.8007812v-1c0-1.5511999-1.249581-2.8007812-2.800781-2.8007812h-50.3984378z"/></g></g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1948" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc1948" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1948" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc1948" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc1948" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc1948" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1948)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1948)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect x="5" y="5" width="54" height="54" ry="27" fill="#ffe4bc"/> <g transform="matrix(.67857 0 0 .67857 10.964 13.339)"> <path d="m24 53c-16.345-2.114-17.009-10.529-17.009-10.529l0.0086-19.471-4-4.049 5-7 5 3 4-4v-5.951l8-3 2 5h8l2-5 8 3v6l4 4 5-3 5 7-4 4-0.02 19.471s-0.5 10.29-16.98 10.529z" fill="#ad511a"/> <circle cx="19" cy="27" r="6" fill="#fff6e8"/> <circle cx="19" cy="27" r="4" fill="#ef7931"/> <circle cx="43" cy="27" r="6" fill="#fff6e8"/> <circle cx="43" cy="27" r="4" fill="#ef7931"/> <path d="m31 27v5.996" fill="none" stroke="#fff6e8" stroke-linecap="round" stroke-width="4.0007"/> <path d="m55 40.001h-9v4h-10v-4.001h-5m-24 1e-3h9v4h10v-4.001h5" fill="none" stroke="#fff6e8" stroke-linejoin="round" stroke-width="2"/> </g></g></g>
+</svg>

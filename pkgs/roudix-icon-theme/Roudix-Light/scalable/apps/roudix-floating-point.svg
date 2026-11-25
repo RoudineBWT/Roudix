@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1789" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc1789" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1789" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc1789" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc1789" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc1789" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1789)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1789)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><g> <rect x="4" y="5" width="56" height="56" rx="16.799999" ry="16.799999" style="opacity:.2"/> <rect x="4" y="4" width="56" height="56" rx="16.799999" ry="16.799999" style="fill:#c65a1a"/> <rect transform="matrix(0,-1,-1,0,0,0)" x="-53" y="-52" width="40" height="40" rx="20" ry="20" style="opacity:.2"/> <rect transform="matrix(0,-1,-1,0,0,0)" x="-52" y="-52" width="40" height="40" rx="20" ry="20" style="fill:#dd651e"/> <path d="M 20.800781,4 C 11.493582,4 4,11.493582 4,20.800781 v 1 C 4,12.493582 11.493582,5 20.800781,5 H 43.199219 C 52.506418,5 60,12.493582 60,21.800781 v -1 C 60,11.493582 52.506418,4 43.199219,4 Z" style="fill:#fff6e8;opacity:.1"/> </g></g></g>
+</svg>

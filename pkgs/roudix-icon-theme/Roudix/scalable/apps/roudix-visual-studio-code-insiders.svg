@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1358" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1358" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1358" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1358" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1358" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1358" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1358)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1358)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><g fill-rule="evenodd" stroke-width=".265"><path fill="#f27c32" d="M21.068 2.602a.6.6 0 0 0-.267.1c.138.171-.14 1.785.208 2.004l.272.17v3.892l-.427.32c-.329.247.03 1.666-.056 1.849.095.058.237.12.362.105a.4.4 0 0 0 .12-.036l1.737-.851c.19-.093.38-.17.38-.38V3.87c0-.21-.19-.287-.38-.38l-1.737-.852a.37.37 0 0 0-.212-.035z" style="paint-order:stroke fill markers" transform="translate(-86.042 -10.009)scale(6.1578)"/><path fill="#ae5018" d="m15.041 8.004 5.651-5.223c.257-.237.589-.153.589.337v1.758l-5.224 3.996c-.092.071-.33.243-.538.045l-.528-.502c-.139-.132-.06-.31.05-.411" style="paint-order:stroke fill markers" transform="translate(-86.042 -10.009)scale(6.1578)"/><path fill="#df661a" d="m15.041 5.638 5.651 5.223c.257.237.589.153.589-.338V8.766L16.057 4.77c-.092-.072-.33-.243-.538-.046l-.528.503c-.139.132-.06.31.05.411" style="paint-order:stroke fill markers" transform="translate(-86.042 -10.009)scale(6.1578)"/></g></g></g>
+</svg>

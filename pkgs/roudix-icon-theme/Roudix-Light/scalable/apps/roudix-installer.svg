@@ -1,0 +1,73 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Roudix Installer app icon — squircle base Roudix + emblème
+       Roudix (peach/flamingo/maroon/rosewater) + badge de progression. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#211a15"/>
+      <stop offset="100%" stop-color="#14100d"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <path d="M64 4 C110 4 124 18 124 64 C124 110 110 124 64 124
+           C18 124 4 110 4 64 C4 18 18 4 64 4 Z" fill="url(#bg)"/>
+  <path d="M64 4 C110 4 124 18 124 64 C124 70 123 75 122 80
+           C118 40 96 12 64 12 C32 12 10 40 6 80
+           C5 75 4 70 4 64 C4 18 18 4 64 4 Z" fill="url(#glass)"/>
+
+  <g transform="translate(64,60) scale(0.255)" filter="url(#soft)">
+    <polygon fill="#ff8c42" points="0,-179.5 19,-157 19,-45 -19,-45 -19,-157"/>
+    <polygon fill="#ffc878" points="0,-179.5 -19,-157 0,-134.5"/>
+    <polygon fill="#ffc878" points="0,-179.5 19,-157 0,-134.5"/>
+    <polygon fill="#ff8c42" points="155.5,-89.8 145.5,-62 48.5,-6 29.5,-39 126.5,-95"/>
+    <polygon fill="#ffc878" points="155.5,-89.8 126.5,-95 116.5,-67.3"/>
+    <polygon fill="#ffc878" points="155.5,-89.8 145.5,-62 116.5,-67.3"/>
+    <polygon fill="#ff8c42" points="155.5,89.7 126.5,95 29.5,39 48.5,6 145.5,62"/>
+    <polygon fill="#ffc878" points="155.5,89.7 145.5,62 116.5,67.2"/>
+    <polygon fill="#ffc878" points="155.5,89.7 126.5,95 116.5,67.2"/>
+    <polygon fill="#ff8c42" points="0,179.5 -19,157 -19,45 19,45 19,157"/>
+    <polygon fill="#ffc878" points="0,179.5 19,157 0,134.5"/>
+    <polygon fill="#ffc878" points="0,179.5 -19,157 0,134.5"/>
+    <polygon fill="#ff8c42" points="-155.5,89.8 -145.5,62 -48.5,6 -29.5,39 -126.5,95"/>
+    <polygon fill="#ffc878" points="-155.5,89.8 -126.5,95 -116.5,67.3"/>
+    <polygon fill="#ffc878" points="-155.5,89.8 -145.5,62 -116.5,67.3"/>
+    <polygon fill="#ff8c42" points="-155.5,-89.8 -126.5,-95 -29.5,-39 -48.5,-6 -145.5,-62"/>
+    <polygon fill="#ffc878" points="-155.5,-89.8 -145.5,-62 -116.5,-67.3"/>
+    <polygon fill="#ffc878" points="-155.5,-89.8 -126.5,-95 -116.5,-67.3"/>
+    <polygon fill="#f2b05e" points="62.1,-79.6 103,-103.2 110.1,-122.3 90,-125.7 63.9,-110.7 63.9,-140.8 50.9,-156.5 37.9,-140.8 37.9,-93.6"/>
+    <polygon fill="#ffc878" points="110.1,-122.3 103,-103.2 82.9,-106.6 90,-125.7"/>
+    <polygon fill="#ffc878" points="50.9,-156.5 37.9,-140.8 50.9,-125.1 63.9,-140.8"/>
+    <polygon fill="#f2b05e" points="100,14 140.9,37.6 161,34.2 153.9,15.1 127.8,-0 153.9,-15.1 161,-34.2 140.9,-37.6 100,-14"/>
+    <polygon fill="#ffc878" points="161,34.2 140.9,37.6 133.8,18.5 153.9,15.1"/>
+    <polygon fill="#ffc878" points="161,-34.2 140.9,-37.6 133.8,-18.5 153.9,-15.1"/>
+    <polygon fill="#f2b05e" points="37.9,93.6 37.9,140.8 50.9,156.5 63.9,140.8 63.9,110.7 90,125.7 110.1,122.3 103,103.2 62.1,79.6"/>
+    <polygon fill="#ffc878" points="50.9,156.5 37.9,140.8 50.9,125.1 63.9,140.8"/>
+    <polygon fill="#ffc878" points="110.1,122.3 103,103.2 82.9,106.6 90,125.7"/>
+    <polygon fill="#f2b05e" points="-62.1,79.6 -103,103.2 -110.1,122.3 -90,125.7 -63.9,110.7 -63.9,140.8 -50.9,156.5 -37.9,140.8 -37.9,93.6"/>
+    <polygon fill="#ffc878" points="-110.1,122.3 -103,103.2 -82.9,106.6 -90,125.7"/>
+    <polygon fill="#ffc878" points="-50.9,156.5 -37.9,140.8 -50.9,125.1 -63.9,140.8"/>
+    <polygon fill="#f2b05e" points="-100,-14 -140.9,-37.6 -161,-34.2 -153.9,-15.1 -127.8,0 -153.9,15.1 -161,34.2 -140.9,37.6 -100,14"/>
+    <polygon fill="#ffc878" points="-161,-34.2 -140.9,-37.6 -133.8,-18.5 -153.9,-15.1"/>
+    <polygon fill="#ffc878" points="-161,34.2 -140.9,37.6 -133.8,18.5 -153.9,15.1"/>
+    <polygon fill="#f2b05e" points="-37.9,-93.6 -37.9,-140.8 -50.9,-156.5 -63.9,-140.8 -63.9,-110.7 -90,-125.7 -110.1,-122.3 -103,-103.2 -62.1,-79.6"/>
+    <polygon fill="#ffc878" points="-50.9,-156.5 -37.9,-140.8 -50.9,-125.1 -63.9,-140.8"/>
+    <polygon fill="#ffc878" points="-110.1,-122.3 -103,-103.2 -82.9,-106.6 -90,-125.7"/>
+    <circle r="70.0" fill="#f5ebdd"/>
+    <circle r="51.5" fill="#5c2a12"/>
+    <circle r="46.0" fill="#f2b05e"/>
+    <circle r="27.5" fill="#5c2a12"/>
+    <circle r="20.5" fill="#ff8c42"/>
+  </g>
+
+  <g filter="url(#soft)">
+    <circle cx="92" cy="92" r="19" fill="#a8b86a" stroke="#211a15" stroke-width="3"/>
+    <path d="M92 84 v12 M86 92 l6 7 l6 -7" fill="none" stroke="#211a15" stroke-width="3.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

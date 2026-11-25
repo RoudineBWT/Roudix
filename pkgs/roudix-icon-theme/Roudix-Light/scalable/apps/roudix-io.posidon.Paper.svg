@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2197" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc2197" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2197" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc2197" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc2197" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc2197" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2197)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2197)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><g transform="translate(1 1)"><path fill="#ffe8c7" d="M9 10v44.198C9 56.849 11.043 59 13.563 59H37l16-15.955V10z"/><path fill="#fe8b41" d="M13.562 3c-2.527 0-4.563 2.148-4.563 4.815V10h44V7.815C53 5.148 50.965 3 48.438 3z"/><path fill="#ffd598" d="M53 43H41.424C38.981 43 37 45.054 37 47.586V59z"/><path fill-opacity=".996" d="M17 19v4h1v-1h2v-3zm4 0v4h1v-1h1v1h1v-4zm4 0v4h1v-1h2v-3zm4 0v4h3v-1h-2v-.5h1.5v-1H30V20h2v-1zm4 0v4h1v-1h1v-1h-1v-1h1v1h1v-2zm2 3v1h1v-1zm-17-2h1v1h-1zm4 0h1v1h-1zm4 0h1v1h-1z"/><circle cx="18" cy="42" r="1" fill="#ffac5f"/><circle cx="18" cy="47" r="1" fill="#ffac5f"/><rect width="13.182" height="2" x="22" y="41" fill="#b4541a" rx="1"/><rect width="7.909" height="2" x="22" y="46" fill="#b4541a" rx="1"/><rect width="10" height="2" x="17" y="36" fill="#b4541a" rx="1"/><rect width="29" height="2" x="17" y="26" fill="#b4541a" rx="1"/><rect width="29" height="2" x="17" y="31" fill="#b4541a" rx="1"/></g></g></g>
+</svg>

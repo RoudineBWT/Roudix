@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2218" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2218" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2218" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2218" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2218" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2218" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2218)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2218)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:.2" d="m48 61v-6h6v-6h6v-32h-6v-6h-6v-6h-32v6h-6v6h-6v32h6v6h6v6z"/> <path style="fill:#aa4f18" d="m48 60v-6h6v-6h6v-32h-6v-6h-6v-6h-32v6h-6v6h-6v32h6v6h6v6z"/> <path style="opacity:.2" d="m15 16v34h8l1-6s4 1 6 1 6 0 6-7v-22zm29 0v22c0 7.489976-2.989701 10.654447-6.478516 12h11.478516v-34z"/> <path style="fill:#fff1dc" d="m15 15v34h8l1-6s4 1 6 1 6 0 6-7v-22h-21zm29 0v22c0 7.489976-2.989701 10.654447-6.478516 12h11.478516v-34h-5z"/> <path style="opacity:.2;fill:#fff1dc" d="m16 4v1h32v-1h-32zm-6 6v1h6v-1h-6zm38 0v1h6v-1h-6zm-44 6v1h6v-1h-6zm50 0v1h6v-1h-6z"/></g></g>
+</svg>

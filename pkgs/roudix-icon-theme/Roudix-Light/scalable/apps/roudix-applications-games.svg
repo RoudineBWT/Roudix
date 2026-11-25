@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt29" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht29" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt29" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt29" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot29" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt29" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt29)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht29)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><g transform="translate(0 -280.07)"><circle cx="8.466" cy="288.53" r="7.144" fill="#fd8a40" style="paint-order:stroke markers fill"/><path fill="#fff6e8" d="m4.07 287.872-.344 2.688a.7.7 0 0 0-.022.17c0 .394.328.713.733.713a.74.74 0 0 0 .563-.258v.001l2.001-2.243zm8.793 0-2.931 1.071 2 2.244.001-.001a.74.74 0 0 0 .563.258c.405 0 .733-.32.733-.714a.7.7 0 0 0-.021-.17z"/><path fill="#fff6e8" d="M6.218 285.09a2.249 2.249 0 1 0 1.24 4.123h2.017a2.249 2.249 0 1 0 1.24-4.123H8.092z"/><path fill="#e06821" d="M10.848 285.887a.397.397 0 0 0-.397.397.397.397 0 0 0 .397.397.397.397 0 0 0 .397-.397.397.397 0 0 0-.397-.397"/><path fill="#e8712a" d="M10.054 286.681a.397.397 0 0 0-.397.397.397.397 0 0 0 .397.397.397.397 0 0 0 .397-.397.397.397 0 0 0-.397-.397"/><path fill="#e26a23" d="M11.642 286.681a.397.397 0 0 0-.397.397.397.397 0 0 0 .397.397.397.397 0 0 0 .397-.397.397.397 0 0 0-.397-.397"/><path fill="#d25e1a" d="M10.848 287.475a.397.397 0 0 0-.397.397.397.397 0 0 0 .397.397.397.397 0 0 0 .397-.397.397.397 0 0 0-.397-.397"/><circle cx="6.085" cy="286.95" r=".794" fill="#fd8a40" paint-order="stroke markers fill"/><path fill="#ca5b1a" stroke="#ffd290" stroke-linecap="square" stroke-width=".529" d="M7.144 288.533a.53.53 0 0 0-.53.53.53.53 0 0 0 .53.529.53.53 0 0 0 .529-.53.53.53 0 0 0-.53-.529zm2.646 0a.53.53 0 0 0-.53.53.53.53 0 0 0 .53.529.53.53 0 0 0 .529-.53.53.53 0 0 0-.53-.529z" paint-order="markers stroke fill"/></g></g></g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt286" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht286" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt286" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt286" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot286" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt286" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt286)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht286)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><circle cx="32" cy="1020.4" r="27" fill="#cc5d19" transform="translate(0 -988.36)"/><path d="M29.154 50.397c-4.447-2.401-11.54-6.625-12.423-7.398-1.943-1.7-2.242-3.193-2.242-11.2 0-8.002.296-9.483 2.242-11.213 1.478-1.314 12.442-7.611 13.251-7.611.846 0 1.662 1.466 1.317 2.364-.142.372-2.752 2.109-5.798 3.859-8.081 4.642-7.51 3.688-7.51 12.533 0 6.435.101 7.53.766 8.29 1.082 1.238 12.165 7.538 13.26 7.538 1.217 0 13.025-6.891 13.578-7.924.251-.47.385-3.584.316-7.335l-.121-6.52-6.288 3.667c-3.459 2.016-6.653 3.666-7.099 3.666-1.3 0-1.85-1.497-.944-2.57 1.002-1.187 12.57-7.913 14.155-8.23.98-.196 1.51.028 2.566 1.084l1.331 1.33V32c0 7.663-.316 9.308-2.096 10.893-.498.443-3.627 2.39-6.956 4.327-6.66 3.876-8.864 4.496-11.305 3.178z" style="fill:#fff1dc;stroke-width:.437776;fill-opacity:1"/></g></g>
+</svg>

@@ -286,7 +286,7 @@
   time.timeZone                        = "Europe/Brussels";
   environment.sessionVariables.TZ      = "Europe/Brussels";
   i18n.defaultLocale                   = "en_US.UTF-8";
-  console.keyMap                       = "us-accentos";
+  console.keyMap                       = "us-acentos";
   # ── Graphical keyboard (niri/hyprland/mangowc/umbriel/Cinnamon) ───────────
   # Independent of console.keyMap above (that one is only for the TTY,
   # before the graphical session starts). No effect on GNOME/KDE,

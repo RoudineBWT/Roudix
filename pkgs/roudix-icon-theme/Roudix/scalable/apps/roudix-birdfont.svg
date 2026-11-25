@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc764" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc764" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc764" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc764" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc764" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc764" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc764)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc764)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="M 12.599609,5 C 11.159209,5 10,6.1592094 10,7.5996094 V 19 21 45 47 58.400391 C 10,59.840791 11.159209,61 12.599609,61 H 24 33.400391 40 c 7.756,0 14,-6.244 14,-14 v -2 c 0,-5.105263 -2.93884,-9.554491 -7,-12 4.06116,-2.445509 7,-6.894737 7,-12 V 19 C 54,11.244 47.756,5 40,5 H 33.400391 24 Z"/> <path style="fill:#e36a1e" d="M 12.599609,4 C 11.159209,4 10,5.1592094 10,6.5996094 V 18 20 44 46 57.400391 C 10,58.840791 11.159209,60 12.599609,60 H 24 33.400391 40 c 7.756,0 14,-6.244 14,-14 v -2 c 0,-5.105263 -2.93884,-9.554491 -7,-12 4.06116,-2.445509 7,-6.894737 7,-12 V 18 C 54,10.244 47.756,4 40,4 H 33.400391 24 Z"/> <path style="opacity:0.2;fill:#fff1dc" d="M 12.599609,4 C 11.159209,4 10,5.1592094 10,6.5996094 v 1 C 10,6.1592094 11.159209,5 12.599609,5 H 24 33.400391 40 c 7.756,0 14,6.244 14,14 V 18 C 54,10.244 47.756,4 40,4 H 33.400391 24 Z M 47.771484,32.5 C 47.519153,32.674212 47.262174,32.842126 47,33 c 4.06116,2.445509 7,6.894737 7,12 v -1 c 0,-4.775685 -2.572163,-8.975613 -6.228516,-11.5 z"/> <path style="opacity:0.2" d="m 18,17 v 4 6 6 8 8 h 12 v -8 h 8 v -8 h -8 v -6 h 10 l 2,-10 z"/> <path style="fill:#fff1dc" d="m 18,16 v 4 6 6 8 8 h 12 v -8 h 8 v -8 h -8 v -6 h 10 l 2,-10 z"/> <path style="fill:#fc883e" d="m 18,16 v 4 6 6 8 8 h 4 V 20 H 41.199219 L 42,16 H 22 Z"/></g></g>
+</svg>

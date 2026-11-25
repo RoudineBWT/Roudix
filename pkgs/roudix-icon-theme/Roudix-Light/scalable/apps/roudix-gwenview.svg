@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt556" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht556" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt556" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt556" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot556" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt556" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt556)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht556)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="M 32,11 C 16.536,11 5.222,23.055 4,33 5.222,42.945 16.536,55 32,55 47.464,55 58.778,42.945 60,33 58.778,23.055 47.464,11 32,11 Z"/> <path style="fill:#e36b24" d="M 32,10 C 16.536,10 5.222,22.055 4,32 5.222,41.945 16.536,54 32,54 47.464,54 58.778,41.945 60,32 58.778,22.055 47.464,10 32,10 Z"/> <circle style="opacity:0.1" cx="32" cy="33" r="16"/> <circle style="fill:#ffd699" cx="32" cy="32" r="16"/> <path style="fill:#ff9d51" d="M 42,26 A 4,4 0 0 1 38,30 4,4 0 0 1 34,26 4,4 0 0 1 38,22 4,4 0 0 1 42,26 Z M 26,28 18.961,37 A 14,14 0 0 0 32,46 14,14 0 0 0 45.039,37 H 42 L 37,32 32,36 Z"/> <path style="fill:#fff6e8;opacity:0.1" d="M 32 10 C 16.536 10 5.222 22.055 4 32 C 4.0204 32.166 4.0502 32.333 4.0762 32.5 C 5.6069 22.655 16.794 11 32 11 C 47.206 11 58.393 22.655 59.924 32.5 C 59.95 32.333 59.98 32.166 60 32 C 58.778 22.055 47.464 10 32 10 z"/></g></g>
+</svg>

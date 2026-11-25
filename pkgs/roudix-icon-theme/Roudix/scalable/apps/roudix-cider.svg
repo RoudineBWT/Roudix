@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt89" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht89" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt89" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt89" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot89" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt89" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt89)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht89)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="52" height="52" x="6" y="6" fill="#cc5d19" fill-rule="evenodd" rx="8" ry="8" style="paint-order:stroke fill markers"/><path fill="#572d14" d="M32 15.125A16.875 16.875 0 0 0 15.125 32 16.875 16.875 0 0 0 32 48.875 16.875 16.875 0 0 0 48.875 32 16.875 16.875 0 0 0 32 15.125m-.204 3.375H32A13.5 13.5 0 0 1 45.5 32 13.5 13.5 0 0 1 32 45.5 13.5 13.5 0 0 1 18.5 32a13.5 13.5 0 0 1 13.296-13.5m-2.387 7.541a.9.9 0 0 0-.784.897v10.125a.903.903 0 0 0 1.404.751l7.317-4.878a1.125 1.125 0 0 0 0-1.872l-7.317-4.878a.9.9 0 0 0-.62-.145"/></g></g>
+</svg>
