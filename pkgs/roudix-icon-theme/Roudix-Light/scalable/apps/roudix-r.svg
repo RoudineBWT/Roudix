@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3281" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc3281" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3281" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc3281" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc3281" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc3281" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3281)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3281)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><g fill-rule="evenodd"><path fill="#ffb365" d="M38.747 9.09A28.47 22.63 17.344 0 0 4.826 22.204a28.47 22.63 17.344 0 0 20.43 30.088 28.47 22.63 17.344 0 0 33.92-13.114A28.47 22.63 17.344 0 0 38.746 9.09m1.366 8.757a21.235 16.87 17.344 0 1 15.24 22.435 21.235 16.87 17.344 0 1-25.3 9.771 21.235 16.87 17.344 0 1-15.238-22.432 21.235 16.87 17.344 0 1 25.296-9.775" color="#4a2a16"/><path fill="#d05d1a" d="m55.586 56.513-9.13.005-6.223-9.197s-1.002-1.723-1.618-2.223c-.513-.416-.733-.565-1.241-.565h-1.155l.003 11.973-7.927.004v-30.6h17.258s6.994 1.291 7.136 8.219c.159 7.723-6.76 9.995-6.76 9.995.95.389 8.58 10.6 9.658 12.383m-13.683-23.96-5.604-.004-.002 5.203 5.606-.001s2.597-.008 2.597-2.646c0-2.692-2.597-2.55-2.597-2.55"/></g></svg>
+</svg>

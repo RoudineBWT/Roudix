@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt78" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht78" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt78" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt78" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot78" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt78" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt78)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht78)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="52" height="52" x="6" y="6" fill="#ea7227" rx="8" ry="8"/><rect width="32" height="32" x="16" y="16" fill="#833e16" rx="2.667" style="paint-order:normal"/><circle cx="-42" cy="32" r="3" fill="#e86f24" style="paint-order:normal" transform="rotate(-90)"/><path fill="#fff1dc" d="M35 42a3 3 0 0 0-.407-1.5H32a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5h2.596A3 3 0 0 0 35 42" opacity=".25" style="paint-order:normal"/><circle cx="-42" cy="22.407" r="3" fill="#e86f24" style="paint-order:normal" transform="rotate(-90)"/><path fill="#fff1dc" d="M22.407 39a3 3 0 0 0-1.5.407V42a1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5v-2.596a3 3 0 0 0-1.5-.404" opacity=".25" style="paint-order:normal"/><circle cx="-42" cy="41" r="3" fill="#e86f24" style="paint-order:normal" transform="rotate(-90)"/><path fill="#fff1dc" d="M41 45a3 3 0 0 0 1.5-.407V42a1.5 1.5 0 0 0-1.5-1.5 1.5 1.5 0 0 0-1.5 1.5v2.596A3 3 0 0 0 41 45" opacity=".25" style="paint-order:normal"/><rect width="26" height="18" x="19" y="19" fill="#592e14" ry="1" style="paint-order:normal"/><path fill="#ff974b" d="M21 20h5v16h-5zm8 10h6v6h-6z" style="paint-order:normal"/><path fill="#e97126" d="M38 26h5v10h-5z" style="paint-order:normal"/></svg>
+</svg>

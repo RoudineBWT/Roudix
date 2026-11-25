@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2604" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc2604" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2604" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc2604" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc2604" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc2604" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2604)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2604)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><circle cx="32" cy="33" r="28" style="opacity:.2"/> <circle cx="32" cy="32" r="28" style="fill:#c75a1a"/> <path d="m17 23v10.5c0 4.9 2.7 6.5 2.7 6.5h12.3" style="fill:none;opacity:.2;stroke-linejoin:round;stroke-width:6;stroke:#4a2a16"/> <path d="m17 22v10.5c0 4.9 2.7 6.5 2.7 6.5h12.3" style="fill:none;stroke-linejoin:round;stroke-width:6;stroke:#f8843a"/> <path d="m29 26h17l-14 14h17" style="fill:none;opacity:.2;stroke-linejoin:round;stroke-width:6;stroke:#4a2a16"/> <path d="m29 25h17l-14 14h17" style="fill:none;stroke-linejoin:round;stroke-width:6;stroke:#fff5e5"/> <path d="M 32,4 A 28,28 0 0 0 4,32 28,28 0 0 0 4.0214844,32.585938 28,28 0 0 1 32,5 28,28 0 0 1 59.978516,32.414062 28,28 0 0 0 60,32 28,28 0 0 0 32,4 Z" style="fill:#fff6e8;opacity:.1"/></svg>
+</svg>

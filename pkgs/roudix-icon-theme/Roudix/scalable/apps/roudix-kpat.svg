@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt389" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht389" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt389" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt389" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot389" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt389" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt389)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht389)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><g transform="translate(0 -280.07)"><circle cx="8.466" cy="288.53" r="7.144" fill="#cd5e19" style="paint-order:stroke markers fill"/><path fill="#ffcb80" d="M9.164 284.84a.29.29 0 0 0-.352.204L7.3 290.902a.3.3 0 0 0 .205.36l3.464.964a.29.29 0 0 0 .353-.206l1.511-5.858a.3.3 0 0 0-.205-.36"/><path fill="#ec752a" d="m10.401 287.25-1.26 1.026.596 1.543 1.26-1.025"/><path fill="#ffebcc" d="M4.33 285.683a.3.3 0 0 0-.236.34l1.014 5.973a.29.29 0 0 0 .334.237l3.531-.647a.296.296 0 0 0 .233-.34l-1.014-5.972a.29.29 0 0 0-.332-.237"/><path fill="#e0671b" d="M6.078 287.88a.51.51 0 0 0-.41.594c.162.826 1.286 1.294 1.286 1.294s.867-.854.705-1.68a.51.51 0 0 0-.603-.398.51.51 0 0 0-.417.466.515.515 0 0 0-.562-.276z"/></g></svg>
+</svg>

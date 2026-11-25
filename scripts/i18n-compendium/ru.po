@@ -272,3 +272,9 @@ msgstr "Параметр «{sid}» больше не существует в к�
 
 msgid "Setting “{title}” changed type in the compositor config: your old value was removed."
 msgstr "Параметр «{title}» изменил тип в конфигурации композитора: ваше старое значение удалено."
+
+msgid "Made for Roudix: orange glyphs on dark tiles, Roudix folders"
+msgstr "Создано для Roudix: оранжевые глифы на тёмных плитках, папки Roudix"
+
+msgid "Made for Roudix, on light tiles"
+msgstr "Создано для Roudix, на светлых плитках"

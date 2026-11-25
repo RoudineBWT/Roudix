@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc828" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc828" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc828" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc828" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc828" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc828" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc828)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc828)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><circle cx="8.467" cy="288.53" r="6.879" fill="#ea7327" style="paint-order:stroke markers fill" transform="translate(-.326 -291.168)scale(1.0385)"/><path fill="#fff1dc" d="M6.53 4.23a2.295 2.295 0 0 0-2.297 2.296c0 .392.1.771.273 1.094a4.05 4.05 0 0 0 4.804 4.803c.325.176.699.274 1.093.274A2.295 2.295 0 0 0 12.7 10.4c0-.394-.1-.77-.274-1.095a4.05 4.05 0 0 0-4.804-4.802 2.3 2.3 0 0 0-1.094-.273"/><path fill="#ea7327" d="M8.543 6.045c1.194 0 1.81.63 1.81 1 0 .371-.178.427-.47.427-.57 0-.337-.686-1.403-.686-.353 0-.794.161-.794.574 0 .331.39.453 1.08.623 1.038.278 1.817.556 1.817 1.51 0 .925-.754 1.39-1.947 1.39S6.68 10.169 6.68 9.799s.14-.463.433-.463c.57 0 .494.778 1.56.778.354 0 .877-.161.877-.575 0-.33-.028-.444-.785-.648-.808-.11-2.113-.373-2.113-1.381 0-.926.7-1.465 1.893-1.465"/></svg>
+</svg>

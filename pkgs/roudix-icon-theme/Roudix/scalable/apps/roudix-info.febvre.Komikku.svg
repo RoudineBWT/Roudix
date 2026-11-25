@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2096" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2096" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2096" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2096" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2096" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2096" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2096)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2096)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="42" height="51" x="15" y="9" fill="#bc5619" rx="5" ry="5" style="paint-order:stroke fill markers"/><rect width="42" height="51" x="7" y="5" fill="#ffe3ba" rx="5" ry="5" style="paint-order:stroke fill markers"/><path fill="#ffa75a" d="m45 20-9 1v9h9z"/><path fill="#ffa659" d="M30 9v11l15-3v-7c0-.554-.446-1-1-1z"/><path fill="#ffc071" d="M27 9H11v14l16-3z"/><rect width="9" height="9" x="40" y="47" fill="#ffe3ba" rx="0" ry="0" style="paint-order:stroke fill markers"/><path fill="#ff9046" d="M11 39v12c0 .554.446 1 1 1h32c.554 0 1-.446 1-1v-6z"/><path fill="#ffa659" d="m34 21-23 4v12l23 4zm11 11h-9v9l9 2z"/><path fill="#ffeccf" d="m15 5-8 8h2.273c2.382-.287 4.85-.399 5.727-3.715z"/><path fill="#e76e23" d="M53 5c-2.216 0-4 1.784-4 4v47a4 4 0 0 1 8 0V9c0-2.216-1.784-4-4-4" style="paint-order:stroke fill markers"/></svg>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1080" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1080" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1080" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1080" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1080" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1080" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1080)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1080)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path d="m32 5c9 0 23 13 23 30 0 18-11 26-23 26s-23-9-23-26 13-30 23-30z" style="opacity:.2"/> <path d="m32 4c9 0 23 13 23 30 0 18-11 26-23 26s-23-9-23-26 13-30 23-30z" style="fill:#ff9146"/> <path d="m32 8c-10 0-19 15-19 26 0 5.298676 1.56481 10.203144 4.253906 14.033203l4.746094-2.033203 5 2 5-2 5 2 5-2 4.746094 2.033203c2.689096-3.830059 4.253906-8.734527 4.253906-14.033203 0-11-10-26-19-26z" style="fill:#e76e23"/> <circle cx="22" cy="53" r="3" style="opacity:.2"/> <circle cx="22" cy="52" r="3" style="fill:#fff1dc"/> <circle cx="32" cy="55" r="3" style="opacity:.2"/> <circle cx="32" cy="54" r="3" style="fill:#fff1dc"/> <circle cx="42" cy="53" r="3" style="opacity:.2"/> <circle cx="42" cy="52" r="3" style="fill:#fff1dc"/> <rect x="20" y="18" width="24" height="24" rx="3" ry="3" style="fill:#733716"/> <path d="M 32 4 C 22 4 9 17 9 34 C 9 34.183037 9.0091809 34.359835 9.0117188 34.541016 C 9.2440148 17.767761 22.090668 5 32 5 C 40.924996 5 54.75819 17.786533 54.988281 34.578125 C 54.99088 34.384378 55 34.196118 55 34 C 55 17 41 4 32 4 z " style="fill:#fff1dc;opacity:.2"/></svg>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt100" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht100" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt100" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt100" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot100" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt100" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt100)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht100)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><g transform="translate(4 4)"><circle cx="28" cy="28" r="27" fill="#ea742c"/><circle cx="28" cy="28" r="23" fill="#fff6e8" opacity=".1"/><path fill="#ffefd6" d="M34.22 11.582v8.217l-6.042 6.042-1.173-1.174a.585.585 0 0 0-.83 0c-.23.23-.23.6 0 .83l1.174 1.174-1.69 1.69-2.105-2.105.93-.931a1.174 1.174 0 1 0-1.66-1.66l-3.52 3.522a1.174 1.174 0 1 0 1.66 1.66l.93-.931 2.105 2.105-1.69 1.69-1.174-1.174a.585.585 0 0 0-.83 0c-.23.229-.23.6 0 .83l1.174 1.173-4.868 4.868H13.09l4.695 4.696v-3.522l1.197-1.197c.117.87.491 1.71 1.151 2.37 1.605 1.605 4.265 1.605 5.87 0l1.346-1.345 1.174 1.174a.587.587 0 1 0 .83-.83l-1.174-1.174 1.69-1.69 2.347 2.348a1.174 1.174 0 1 0 1.66-1.66l-2.348-2.348 1.69-1.69 1.174 1.174a.586.586 0 1 0 .83-.83l-1.174-1.174 1.346-1.345c1.605-1.605 1.605-4.266 0-5.87a4.1 4.1 0 0 0-2.37-1.151l2.37-2.37h8.218zm-1.76 14.087a1.76 1.76 0 0 1 1.245 3.006l-1.347 1.346-2.49-2.49 1.346-1.346a1.76 1.76 0 0 1 1.245-.516zm-3.422 2.692 2.49 2.49-1.69 1.69-2.49-2.49zm-3.35 3.35 2.49 2.49-1.69 1.69-2.49-2.49zm-2.52 2.52 2.49 2.49-1.345 1.345a1.76 1.76 0 1 1-2.49-2.49z" style="paint-order:normal"/></g></svg>
+</svg>

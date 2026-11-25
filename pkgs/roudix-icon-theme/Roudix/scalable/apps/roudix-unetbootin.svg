@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3520" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc3520" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3520" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc3520" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc3520" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc3520" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3520)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3520)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><g stroke-opacity=".55" stroke-width="2.8"><rect width="36" height="30" x="14" y="5" fill="#ffbe6f" rx="2" ry="2"/><path fill="#5c2e14" d="M19 14h10v10H19z"/><path fill="#ffac5f" d="M22 14h4v10h-4z"/><rect width="46" height="26" x="9" y="33" fill="#9d4917" rx="3" ry="3"/></g><path fill="#ffe3ba" fill-rule="evenodd" d="m34.065 42.8-1.804 1.804-4.356.796 1.78 1.78-1.696 1.695 2.025 2.025 1.695-1.696 1.694 1.696.836-4.226 1.85-1.849z" opacity=".2"/><path fill="#5c2e14" d="M35 14h10v10H35z"/><path fill="#ffac5f" d="M38 14h4v10h-4z"/></svg>
+</svg>

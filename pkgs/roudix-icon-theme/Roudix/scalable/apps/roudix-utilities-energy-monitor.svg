@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3530" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc3530" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3530" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc3530" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc3530" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc3530" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3530)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3530)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><g stroke-width=".741" transform="translate(-167.87 -184.02)scale(.44021)"><rect width="122.67" height="122.67" x="392.7" y="429.4" fill="#a44c18" rx="61.33"/><g fill-rule="evenodd"><path fill="#eb7328" d="M422.524 485.873a18.2 18.2 0 0 0-3.612.193c-13.193 1.932-14.276 16.285-21.952 27.073 8.921 22.82 31.03 38.926 57.08 38.926 20.21 0 38.022-9.722 49.19-24.718-22.947-28.692-30.065 3.898-49.19-5.29-13.72-8.436-14.578-35.331-31.516-36.19"/><path fill="#fff1dc" d="m457.44 461.2-17.038 27.26h10.222v20.445l17.038-27.26H457.44z"/></g></g></svg>
+</svg>

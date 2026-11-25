@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1771" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc1771" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1771" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc1771" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc1771" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc1771" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1771)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1771)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><g transform="matrix(.9 0 0 .9 .847 .847)"><circle cx="8.466" cy="8.466" r="7.937" fill="#91481a" style="paint-order:stroke markers fill"/><g stroke-width=".294" transform="translate(16.159 -1.574)"><path fill="#e56d26" d="M-9.677 12.025a1.984 1.984 0 0 0-1.984 1.984 1.984 1.984 0 0 0 1.984 1.985 1.984 1.984 0 0 0 1.985-1.985v-1.984z"/><path fill="#db631c" d="M-9.677 8.056h1.985v3.969h-1.985a1.98 1.98 0 0 1-1.984-1.984c0-1.1.885-1.985 1.984-1.985"/><circle cx="-5.708" cy="10.04" r="1.984" fill="#e66f27"/><path fill="#de661f" d="M-9.677 4.087a1.98 1.98 0 0 0-1.984 1.985 1.98 1.98 0 0 0 1.984 1.984h1.985V4.087z"/><path fill="#f58138" d="M-7.692 4.087h1.984c1.1 0 1.984.885 1.984 1.985a1.98 1.98 0 0 1-1.984 1.984h-1.984z"/></g></g></svg>
+</svg>

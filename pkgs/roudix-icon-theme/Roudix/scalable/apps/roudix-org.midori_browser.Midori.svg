@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt581" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht581" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt581" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt581" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot581" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt581" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt581)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht581)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="64" height="64" fill="none" rx="0" ry="0" style="paint-order:stroke fill markers"/><rect width="54" height="54" x="5" y="5" fill="#ffe3ba" rx="27" ry="27"/><path fill="#fa863c" d="M45.43 14.749c-4.293 2.396-21.094-.077-28.237 17.863-1.004 4.737-.485 11.267 4.095 11.558.947.06 1.802.702 2.25 1.43 2.924 4.764 7.141 4.35 8.886 2.075.334-.436.97-.312 1.423.036 5.275 4.054 8.811-2.362 10.613-7.394.717-2.2 4.318-19.447 2.897-21.291-.423-.55-2.276 1.039-3.89 2.734C30.562 35.306 22 25.193 44.951 15.09l.35-.42.238.098"/><path fill="none" stroke="#e1671b" stroke-linejoin="round" stroke-width=".782" d="M46.652 14.486c-4.387.814-24.893 3.122-29.455 18.36-1.332 5.157-.582 12.172 5.353 11.913.42-.018.464.12.613.474 2.444 5.782 8.458 4.73 9.81 2.464.193-.323-.292-.2 0 0 6.124 4.193 9.462-1.61 11.391-6.782 2.356-4.487 3.797-23.169 2.536-21.96-21.482 20.585-21.441 2.454-.248-4.47"/><path fill="none" stroke="#e1671b" stroke-linecap="round" stroke-linejoin="bevel" stroke-width=".782" d="M23.16 44.86c-1.541-7.027.27-8.263.973-10.152m8.775 12.834c-2.004-4.241-1.67-7.741-.247-10.35"/></svg>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt701" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht701" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt701" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt701" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot701" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt701" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt701)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht701)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><rect width="12.7" height="13.758" x="2.117" y="1.587" fill="#ef7931" rx="1.587" ry="1.587"/><path fill="#703a18" d="m8.467 1.587-4.78.001c-.871.01-1.57.713-1.57 1.587v4.211a9.26 9.63 0 0 0 8.466 5.758 9.26 9.63 0 0 0 4.234-1.068V3.175c0-.88-.708-1.587-1.588-1.587H8.467z" opacity=".1" style="paint-order:stroke markers fill"/><path fill="#703a18" d="m8.467 1.587-4.78.001c-.871.01-1.57.713-1.57 1.587v10.583c0 .88.708 1.588 1.587 1.588h4.853a10.583 11.007 0 0 0 6.26-5.69V3.175c0-.88-.708-1.588-1.588-1.588z" opacity=".1" style="paint-order:stroke markers fill"/><path fill="#fff6e8" d="M5.292 3.969a3.175 3.175 0 0 0 3.175 3.175 3.175 3.175 0 0 0 3.175-3.175h-.794A2.38 2.38 0 0 1 8.467 6.35a2.38 2.38 0 0 1-2.382-2.381z" style="paint-order:stroke markers fill"/><circle cx="11.641" cy="12.171" r="4.233" fill="#f9853c"/><path fill="#fff6e8" d="m9.79 12.7 1.851 2.117 1.852-2.117h-1.058v-2.646h-1.587V12.7z"/></svg>
+</svg>

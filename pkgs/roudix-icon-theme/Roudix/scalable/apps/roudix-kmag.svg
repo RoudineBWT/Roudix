@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2357" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2357" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2357" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2357" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2357" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2357" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2357)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2357)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><g transform="translate(0 -1058.5)"><rect width="48" height="56" x="8" y="1062.5" fill="#ffdfb0" rx="6" ry="6"/><path fill="#fa863b" d="M16 1070.5v2h9v-2zm0 4v2h22v-2zm0 6v2h31v-2zm0 4v2h31v-2zm0 4v2h31v-2zm0 6v2h31v-2zm0 4v2h31v-2zm0 4v2h15v-2zm24 7v2h7v-2z"/><path fill="#cd5e19" d="M47 1087.5a10 10 0 0 0-10 10 10 10 0 0 0 10 10h7c1.662 0 3-1.338 3-3v-7a10 10 0 0 0-10-10"/><circle cx="55" cy="1105.5" fill="#8d4217"/><circle cx="-47" cy="1097.5" fill="#ffdfb0" transform="scale(-1 1)"/><circle cx="-47" cy="1097.5" fill="#ffd494" transform="scale(-1 1)"/><path fill="#fe8b41" d="M42.111 1092.5a7 7 0 0 0-2.033 4H49v-4zm-2.031 6a7 7 0 0 0 2.023 4H49v-4z"/></g></svg>
+</svg>

@@ -122,6 +122,14 @@ msgid "gnome-keyring + xdg-desktop-portal-gtk/-gnome (default)"
 msgstr "gnome-keyring + xdg-desktop-portal-gtk/-gnome（默认）"
 
 #: roudix-switcher.py
+msgid "Made for Roudix: orange glyphs on dark tiles, Roudix folders"
+msgstr "专为 Roudix 打造：深色图块上的橙色字形，Roudix 文件夹"
+
+#: roudix-switcher.py
+msgid "Made for Roudix, on light tiles"
+msgstr "专为 Roudix 打造，浅色图块"
+
+#: roudix-switcher.py
 msgid "Fixed theme, Papirus' own blue accent (default)"
 msgstr "固定主题，使用 Papirus 自带的蓝色强调色（默认）"
 
@@ -691,7 +699,8 @@ msgstr "从不自动挂起 USB 设备（修复 USB 音频中断，会消耗笔�
 msgid ""
 "Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
 "devices)"
-msgstr "Elgato Wave:3 麦克风修复（播放先于录音启动时麦克风无声；会重命名其设备）"
+msgstr ""
+"Elgato Wave:3 麦克风修复（播放先于录音启动时麦克风无声；会重命名其设备）"
 
 #: roudix-switcher.py
 msgid "Boot splash (Plymouth) — off = plain text boot"

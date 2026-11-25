@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc585" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc585" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc585" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc585" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc585" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc585" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc585)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc585)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path style="opacity:0.2" width="56" height="56" x="4" y="5" d="m 16,5 h 40 a 4,4 45 0 1 4,4 V 49 A 12,12 135 0 1 48,61 H 8 A 4,4 45 0 1 4,57 V 17 A 12,12 135 0 1 16,5 Z"/> <path style="fill:#dd651e" width="56" height="56" x="4" y="4" d="m 16,4 h 40 a 4,4 45 0 1 4,4 V 48 A 12,12 135 0 1 48,60 L 8,60 A 4,4 45 0 1 4,56 V 16 A 12,12 135 0 1 16,4 Z"/> <path style="fill:#fff6e8;opacity:0.1" d="M 16 4 A 12 12 0 0 0 4 16 L 4 17 A 12 12 0 0 1 16 5 L 56 5 A 4 4 0 0 1 60 9 L 60 8 A 4 4 0 0 0 56 4 L 16 4 z"/> <path style="opacity:0.2" d="M 36,26 48,18 V 40 L 36,48 Z"/> <path style="opacity:0.2" d="M 15,26 27,18 V 40 L 15,48 Z"/> <path style="fill:#fff6e8" d="M 36,25 48,17 V 39 L 36,47 Z"/> <path style="fill:#fff6e8" d="M 15,25 27,17 V 39 L 15,47 Z"/></svg>
+</svg>

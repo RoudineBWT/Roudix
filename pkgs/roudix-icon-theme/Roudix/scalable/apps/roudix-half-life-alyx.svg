@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2003" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2003" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2003" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2003" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2003" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2003" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2003)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2003)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect x="4" y="5" width="56" height="56" rx="4" ry="4" style="opacity:.2"/> <rect x="4" y="4" width="56" height="56" rx="4" ry="4" style="fill:#b85518"/> <path d="M 18,21.007812 21.335938,19 31.546875,34.232422 37.384766,20 45.742188,23.353516 44.251953,27.066406 39.580078,25.189453 30.644531,47 H 24 v -4 h 3.951172 l 1.761719,-4.292969 z" style="opacity:.2"/> <path d="M 18,20.007812 21.335938,18 31.546875,33.232422 37.384766,19 45.742188,22.353516 44.251953,26.066406 39.580078,24.189453 30.644531,46 H 24 v -4 h 3.951172 l 1.761719,-4.292969 z" style="fill:#ffb466"/> <path d="m8 4c-2.216 0-4 1.784-4 4v1c0-2.216 1.784-4 4-4h48c2.216 0 4 1.784 4 4v-1c0-2.216-1.784-4-4-4h-48z" style="fill:#fff1dc;opacity:.2"/></svg>
+</svg>

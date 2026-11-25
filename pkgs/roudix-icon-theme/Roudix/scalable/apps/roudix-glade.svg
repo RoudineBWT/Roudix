@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt229" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht229" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt229" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt229" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot229" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt229" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt229)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht229)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path fill="#ffe3ba" d="M21 6 5 22v30c0 3.324 2.676 6 6 6h42c3.324 0 6-2.676 6-6V12c0-3.324-2.676-6-6-6z"/><circle cx="21.5" cy="31.5" r="2" fill="none" stroke="#ffb567" stroke-miterlimit="10"/><circle cx="21.5" cy="41.5" r="2" fill="none" stroke="#ffb567" stroke-miterlimit="10"/><path fill="#ff994e" d="M11 20h42v1H11zm0 4h42v1H11zm0 23h42v1H11zm0 4h42v1H11z" opacity=".5"/><path fill="#ff994e" d="M15 18v36h-1V18zm35 0v36h-1V18z" opacity=".5"/><path fill="#f58035" d="M6 54h48V22zm41-7H29l18-12z" opacity=".7"/><path fill="#ffb86a" d="M21 6 5 22h10c3.324 0 6-2.676 6-6z"/></svg>
+</svg>

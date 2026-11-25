@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3640" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc3640" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3640" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc3640" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc3640" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc3640" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3640)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3640)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="48.001" height="52" x="8.001" y="5.998" fill="#f78238" rx="5.998" ry="5.998"/><path fill="#9b4817" d="m32 6-18.064.002A5.985 5.985 0 0 0 8 12v15.916A34.999 36.399 0 0 0 40 49.68a34.999 36.399 0 0 0 16-4.037V12c0-3.324-2.675-6-6-6z" opacity=".1" style="paint-order:stroke markers fill"/><path fill="#fff1dc" d="m32 6-18.064.002A5.985 5.985 0 0 0 8 12v40c0 3.324 2.676 6 6 6h18.34A40 41.6 0 0 0 56 36.496V12c0-3.324-2.675-6-6-6z" opacity=".1" style="paint-order:stroke markers fill"/><path fill="#fff1dc" d="M20.002 15.001a12 12 0 0 0 12 12 12 12 0 0 0 12-12h-3.001a9 9 0 0 1-9 9A9 9 0 0 1 23 15z" style="paint-order:stroke markers fill"/><path fill="#fff1dc" d="M13 44c-.554 0-1 .446-1 1v8c0 .554.446 1 1 1h8c.554 0 1-.446 1-1v-8c0-.554-.446-1-1-1zm1 2h2v2h2v-2h2v4h-2v2h-2v-2h-2z"/></svg>
+</svg>

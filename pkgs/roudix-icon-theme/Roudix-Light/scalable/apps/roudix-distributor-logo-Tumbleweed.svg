@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1534" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc1534" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1534" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc1534" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc1534" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc1534" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1534)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1534)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><path fill="#ee7830" d="M8.38 1.323a7.144 7.144 0 1 1 0 14.287 7.144 7.144 0 0 1 0-14.287"/><path fill="#fff6e8" fill-rule="evenodd" d="M6.476 4.233a2.24 2.24 0 0 0-2.243 2.243 2.26 2.26 0 0 0 2.251 2.25l.557.002h-.002.001l1.163.003.003 1.718a2.26 2.26 0 0 0 2.251 2.25 2.24 2.24 0 0 0 2.243-2.242 2.26 2.26 0 0 0-2.251-2.25l-.525-.002-1.193-.002-.004-1.719a2.26 2.26 0 0 0-2.251-2.25m-.001.53q.109 0 .215.014v1.906H4.776a1.701 1.701 0 0 1 1.698-1.92m.744.17c.578.278.977.868.978 1.552l.004 1.716-1.715-.004a1.73 1.73 0 0 1-1.556-.984h2.29zm1.513 3.799 1.716.004a1.73 1.73 0 0 1 1.566 1.008h-2.28v2.266a1.73 1.73 0 0 1-.998-1.562zm1.531 1.54h1.897q.01.093.01.186a1.7 1.7 0 0 1-1.907 1.7z" color="#4a2a16" style="-inkscape-stroke:none"/></svg>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3496" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc3496" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3496" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc3496" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc3496" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc3496" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3496)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3496)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect style="opacity:.2" width="57" height="57" x="-61" y="-61" rx="2.85" ry="2.85" transform="matrix(0,-1,-1,0,0,0)"/> <rect style="fill:#c55a19" width="57" height="57" x="-60" y="-61" rx="2.85" ry="2.85" transform="matrix(0,-1,-1,0,0,0)"/> <rect style="opacity:.2" width="19" height="38" x="10" y="10" rx="4" ry="4"/> <rect style="fill:#fff1dc" width="19" height="38" x="10" y="9" rx="4" ry="4"/> <rect style="opacity:.2" width="20" height="20" x="35" y="10" rx="4" ry="4"/> <rect style="fill:#fff1dc" width="20" height="20" x="35" y="9" rx="4" ry="4"/> <path style="opacity:.2;fill:#fff1dc" d="m6.8496094 3c-1.5789 0-2.8496094 1.2707094-2.8496094 2.8496094v1c0-1.5789 1.2707094-2.8496094 2.8496094-2.8496094h51.300782c1.5789 0 2.849609 1.2707094 2.849609 2.8496094v-1c0-1.5789-1.270709-2.8496094-2.849609-2.8496094h-51.300782z"/></svg>
+</svg>

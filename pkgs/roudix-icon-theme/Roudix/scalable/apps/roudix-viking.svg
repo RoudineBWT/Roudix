@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3052" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc3052" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3052" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc3052" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc3052" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc3052" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3052)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3052)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path style="opacity:0.2" d="m 26,5 0,4.78125 A 24,24 0 0 0 8.7890624,27 L 4,27 4,39 8.78125,39 A 24,24 0 0 0 26,56.210938 L 26,61 38,61 38,56.21875 A 24,24 0 0 0 55.210938,39 L 60,39 60,27 55.21875,27 A 24,24 0 0 0 38,9.789062 L 38,5 26,5 Z"/> <path style="fill:#dd651a" d="m 26,4 0,4.78125 A 24,24 0 0 0 8.7890624,26 L 4,26 4,38 8.78125,38 A 24,24 0 0 0 26,55.210938 L 26,60 38,60 38,55.21875 A 24,24 0 0 0 55.210938,38 L 60,38 60,26 55.21875,26 A 24,24 0 0 0 38,8.7890624 L 38,4 26,4 Z"/> <rect style="opacity:0.2" width="28" height="28" x="-47" y="-46" rx="14" ry="14" transform="matrix(0,-1,-1,0,0,0)"/> <rect style="fill:#fff1dc" width="28" height="28" x="-46" y="-46" rx="14" ry="14" transform="matrix(0,-1,-1,0,0,0)"/> <path style="opacity:0.2;fill:#fff1dc" d="M 26 4 L 26 5 L 38 5 L 38 4 L 26 4 z M 26 8.78125 A 24 24 0 0 0 8.7890625 26 L 4 26 L 4 27 L 8.7890625 27 A 24 24 0 0 1 26 9.78125 L 26 8.78125 z M 38 8.7890625 L 38 9.7890625 A 24 24 0 0 1 55.21875 27 L 60 27 L 60 26 L 55.21875 26 A 24 24 0 0 0 38 8.7890625 z"/></svg>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2373" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2373" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2373" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2373" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2373" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2373" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2373)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2373)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path style="opacity:.2" d="m5 20v25a12.5 3 0 0 0 12.5 3 12.5 3 0 0 0 12.5 -3v-25z"/> <path style="fill:#e56c20" d="m5 19v25a12.5 3 0 0 0 12.5 3 12.5 3 0 0 0 12.5 -3v-25h-25z"/> <ellipse style="opacity:.2" rx="12.5" ry="3" cy="20" cx="17.5"/> <ellipse style="fill:#fd8a40" rx="12.5" ry="3" cy="19" cx="17.5"/> <path style="opacity:.2" d="m41 13-16 33s2 5 17 5 17-5 17-5z"/> <path style="fill:#b35318" d="m41 12-16 33s2 5 17 5 17-5 17-5z"/> <path style="opacity:.2;fill:#fff1dc" d="m41 12l-16 33s0.103107 0.182858 0.277344 0.427734l15.722656-32.427734 17.703125 32.455078c0.188439-0.260089 0.296875-0.455078 0.296875-0.455078l-18-33z"/> <path style="opacity:.2;fill:#fff1dc" d="m17.5 16a12.5 3 0 0 0 -12.5 3 12.5 3 0 0 0 0.1835938 0.511719 12.5 3 0 0 1 12.316406 -2.511719 12.5 3 0 0 1 12.316406 2.488281 12.5 3 0 0 0 0.183594 -0.488281 12.5 3 0 0 0 -12.5 -3z"/></svg>
+</svg>

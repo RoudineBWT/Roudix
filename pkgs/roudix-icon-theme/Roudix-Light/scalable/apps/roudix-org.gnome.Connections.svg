@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt495" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht495" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt495" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt495" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot495" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt495" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt495)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht495)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path fill="#f47f36" d="M22.416 20.84c.147 6.288-1.89 11.756-7.608 15.851l8.527 4.092c-.53-6.978 2.463-12.01 7.608-15.849zm18.915 0c-.147 6.288 1.887 11.756 7.608 15.851l-8.527 4.092c.53-6.978-2.463-12.01-7.608-15.849zm-1.586 22.541c-5.39 2.85-10.974 3.378-16.898-.01l-.006 9.459c5.829-3.494 11.433-2.972 16.898.011z"/><path fill="#ffdead" d="M44 16c0 6.627-5.373 12-12 12s-12-5.373-12-12S25.373 4 32 4s12 5.373 12 12M26 48c0 6.627-5.371 12-12 12-6.627 0-12-5.373-12-12s5.373-12 12-12c6.629 0 12 5.373 12 12m36 0c0 6.627-5.371 12-12 12-6.627 0-12-5.373-12-12s5.373-12 12-12c6.629 0 12 5.373 12 12"/></svg>
+</svg>

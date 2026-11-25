@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1481" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1481" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1481" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1481" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1481" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1481" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1481)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1481)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><defs> <style id="i1481_current-color-scheme" type="text/css">.ColorScheme-Text { color:#c55a19; }</style> </defs> <rect x="1.5875" y="1.5875" width="13.758" height="13.758" rx="2.1166" ry="2.1166" fill="#ffe3ba" stroke-linecap="square" stroke-width=".12979"/> <path d="m3.7041 1.5875c-1.1726 0-2.1166 0.94401-2.1166 2.1166v0.79373h13.758v-0.79373c0-1.1726-0.94402-2.1166-2.1166-2.1166z" fill="#ca5c19" stroke-linecap="square" stroke-width=".12979"/> <rect x="12.964" y="2.9104" width=".794" height=".794" ry=".397" opacity=".35" paint-order="stroke markers fill"/> <rect x="11.376" y="2.9104" width=".794" height=".794" ry=".397" opacity=".35" paint-order="stroke markers fill"/> <rect x="9.7891" y="2.9104" width=".794" height=".794" ry=".397" opacity=".35" paint-order="stroke markers fill"/> <circle cx="12.171" cy="12.171" r="4.2333" fill="#ca5c19" stroke-linecap="square" stroke-width=".14111"/> <path d="m12.197 9.5512-0.37413 0.37465 1.9807 1.9802h-4.2787v0.52916h4.2787l-1.9807 1.9802 0.37413 0.37465 2.6194-2.6194-0.37413-0.37413z" fill="#fff1dc" stroke-linecap="square" stroke-width=".08101"/></svg>
+</svg>

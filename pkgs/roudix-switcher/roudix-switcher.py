@@ -296,6 +296,18 @@ DESKTOP_INTEGRATION_SUPPORTED_DE = {"niri", "hyprland", "mangowc", "umbriel"}
 # there is whatever the user already chose that way, independent of this.
 ICON_THEMES = [
     {
+        "id": "roudix",
+        "name": "Roudix",
+        "subtitle": tr("Made for Roudix: orange glyphs on dark tiles, Roudix folders"),
+        "icon": "icon-theme-roudix.svg",
+    },
+    {
+        "id": "roudix-light",
+        "name": "Roudix Light",
+        "subtitle": tr("Made for Roudix, on light tiles"),
+        "icon": "icon-theme-roudix.svg",
+    },
+    {
         "id": "papirus",
         "name": "Papirus",
         "subtitle": tr("Fixed theme, Papirus' own blue accent (default)"),
@@ -331,6 +343,7 @@ ICON_THEMES = [
 # de-duplicate roudix-switcher's icon-theme scan (see scan_icon_themes())
 # so e.g. a scanned "Papirus-Dark" doesn't show up twice next to "Papirus".
 KNOWN_ICON_THEME_IDS = {
+    "Roudix", "Roudix-Light",
     "Papirus", "Papirus-Dark", "Papirus-Light",
     "Tela", "Tela-dark", "Tela-light",
     "Tela-dark-noctalia", "Tela-light-noctalia", "Tela-noctalia",
@@ -1527,6 +1540,8 @@ def load_icon(icon_filename, dark, icon_theme_name=None):
 # capitalization/suffixing varies by package and isn't worth hardcoding
 # precisely when a prefix match finds it just as well.
 ICON_THEME_PREVIEW_FOLDERS = {
+    "roudix":       "roudix",
+    "roudix-light": "roudix-light",
     "papirus":  "papirus-dark",
     "tela":     "tela-dark",
     "qogir":    "qogir-dark",

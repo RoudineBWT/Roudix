@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2372" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2372" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2372" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2372" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2372" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2372" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2372)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2372)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect style="opacity:.2" transform="matrix(0,-1,-1,0,0,0)" rx="3" ry="2.9473684" height="56" width="56" y="-60" x="-61"/> <rect style="fill:#ffd495" transform="matrix(0,-1,-1,0,0,0)" rx="3" ry="2.9473684" height="56" width="56" y="-60" x="-60"/> <path style="opacity:.1" d="m7 5c-1.6328421 0-2.9472656 1.338-2.9472656 3v50c0 0.835023 0.3318423 1.588009 0.8691406 2.130859l54.261718-54.261718c-0.532121-0.5376209-1.265656-0.869141-2.078125-0.869141z"/> <path style="fill:#f17b30" d="m6.9472656 4c-1.6328421 0-2.9472656 1.338-2.9472656 3v50c0 0.835023 0.3318423 1.588009 0.8691406 2.130859l54.261718-54.261718c-0.532121-0.5376209-1.265656-0.869141-2.078125-0.869141h-50.105468z"/> <path style="opacity:.2;fill:#fff1dc" d="m6.9472656 4c-1.6328421 0-2.9472656 1.338-2.9472656 3v1c0-1.662 1.3144235-3 2.9472656-3h50.105468c1.632842 0 2.947266 1.338 2.947266 3v-1c0-1.662-1.314424-3-2.947266-3h-50.105468z"/></svg>
+</svg>

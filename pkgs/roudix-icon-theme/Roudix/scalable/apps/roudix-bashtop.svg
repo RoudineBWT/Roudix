@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc732" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc732" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc732" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc732" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc732" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc732" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc732)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc732)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="52" height="52" x="6" y="6" fill="#803d16" rx="8" ry="8"/><g stroke-width="1.217"><path fill="#bf5819" d="M21.043 22.26v6.087l2.435 1.218 3.652-1.218V22.26l-3.652-1.217zm15.826 0v6.087l2.435 1.218 2.435-1.218h2.434V22.26H41.74l-2.435-1.217z"/><path fill="#d9631a" d="M21.043 16.174h20.696v6.087H21.043z"/><path fill="#984717" d="M21.043 35.652v6.087l2.435 1.218 3.652-1.218v-6.087l-3.652-1.217zm15.826 0v6.087l2.435 1.218 2.435-1.218h2.434v-6.087H41.74l-2.435-1.217z"/><path fill="#a64d18" d="M21.043 28.347h20.696v7.304H21.043z"/><path fill="#894117" d="M21.043 41.74h20.696v6.086H21.043z"/></g></svg>
+</svg>

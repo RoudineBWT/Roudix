@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt542" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht542" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt542" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt542" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot542" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt542" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt542)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht542)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><path fill="#b15218" d="M2.422 11.214H14.51v.55l-6.045 3.022-6.044-3.023z"/><path fill="#ffa95c" d="M3.52 7.367h9.892v1.649l-.55.275.55.274v5.495H3.521V9.565l.55-.274-.55-.275z"/><path fill="#e76e23" d="M5.719 1.323c-.304 0-.402.284-.55.55L2.422 6.817l6.044.55 6.045-.55-2.748-4.946c-.147-.265-.246-.55-.55-.55a.55.55 0 0 0-.388.162L8.855 3.36a.55.55 0 0 1-.777 0l-1.97-1.876a.55.55 0 0 0-.39-.161z"/><path fill="#f58035" d="M1.872 6.818H15.06a.548.548 0 1 1 0 1.099H1.872a.548.548 0 1 1 0-1.1z"/><path fill="#874017" d="M3.52 9.016v.55h1.1a1.65 1.65 0 0 0 1.648 1.648 1.65 1.65 0 0 0 1.649-1.649h1.099a1.65 1.65 0 0 0 1.648 1.649 1.65 1.65 0 0 0 1.649-1.649h1.099v-.55z"/><path fill="#e97126" d="m14.51 11.764-5.495 1.649-.55 1.098v.55l.55.55h5.495z"/><path fill="#f57f35" d="m2.422 11.764 5.495 1.649 1.099 2.197H2.422z"/></svg>
+</svg>

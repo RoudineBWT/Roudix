@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1705" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc1705" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1705" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc1705" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc1705" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc1705" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1705)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1705)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path d="M 4,14 V 55.222222 C 4,56.762222 5.24775,58 6.8,58 H 57.2014 C 58.7526,58 60,56.7625 60,55.222222 V 14 Z" style="opacity:.2"/> <rect x="9.6000004" y="42.099998" width="44.799999" height="5.5999999" rx="2.1329999" ry="2.322" style="opacity:.2"/> <path d="M 4,13 V 54.222222 C 4,55.762222 5.24775,57 6.8,57 H 57.2014 C 58.7526,57 60,55.7625 60,54.222222 V 13 Z" style="fill:#ffb264"/> <path d="m6.8 7.0000002c-1.55232 0-2.8 1.2381944-2.8 2.7770832v3.2229166h56v-3.2229166c0-1.5388888-1.2474-2.7770832-2.8-2.7770832z" style="fill:#e9722b"/> <path d="M 6.8007812,7 C 5.2484613,7 4,8.238455 4,9.7773438 V 10.777344 C 4,9.2384548 5.2484613,8 6.8007812,8 H 57.199219 C 58.751819,8 60,9.2384548 60,10.777344 V 9.7773438 C 60,8.2384549 58.751819,7 57.199219,7 Z" style="fill:#fff6e8;opacity:.1"/> <rect x="16" y="23" width="24" height="30" style="opacity:.1"/> <rect x="16" y="22" width="24" height="30" style="fill:#ff9c50"/> <path d="m23 20v15c0 10 10 13 10 13h23s-10-3-10-13v-15z" style="opacity:.2"/> <path d="m23 19v15c0 10 10 13 10 13h23s-10-3-10-13v-15z" style="fill:#ffb768"/></svg>
+</svg>

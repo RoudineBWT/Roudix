@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt477" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht477" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt477" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt477" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot477" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt477" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt477)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht477)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="52" height="52" x="6" y="6" fill="#ffe6c2" rx="8" ry="8"/><g transform="translate(12.923 13.538)scale(2.3259)"><path fill="#ffcb7f" d="M1.323 10.319v3.175a6.879 1.587 0 0 0 6.879 1.587 6.879 1.587 0 0 0 6.879-1.587v-3.175z"/><ellipse cx="8.202" cy="10.319" fill="#ffac5f" rx="6.879" ry="1.587"/><path fill="#ffcb7f" d="M1.323 6.35v3.175a6.879 1.587 0 0 0 6.879 1.587 6.879 1.587 0 0 0 6.879-1.587V6.35z"/><ellipse cx="8.202" cy="6.35" fill="#ffac5f" rx="6.879" ry="1.587"/><path fill="#ffcb7f" d="M1.323 2.381v3.175a6.88 1.587 0 0 0 6.879 1.588 6.88 1.587 0 0 0 6.88-1.588V2.381z"/><ellipse cx="8.202" cy="2.381" fill="#ffac5f" rx="6.879" ry="1.587"/><path fill="#fff6e8" d="M1.852 2.988v3.178a6.88 1.587 0 0 0 .53.233V3.226a6.88 1.587 0 0 1-.53-.238m0 3.969v3.177a6.88 1.587 0 0 0 .53.234V7.195a6.88 1.587 0 0 1-.53-.238m0 3.968v3.178a6.88 1.587 0 0 0 .53.233v-3.172a6.88 1.587 0 0 1-.53-.239m.794-7.611v3.175a6.88 1.587 0 0 0 1.323.318V3.63a6.88 1.587 0 0 1-1.323-.316m0 3.969v3.175a6.88 1.587 0 0 0 1.323.317V7.6a6.88 1.587 0 0 1-1.323-.316zm0 3.968v3.176a6.88 1.587 0 0 0 1.323.317v-3.177a6.88 1.587 0 0 1-1.323-.316" opacity=".35"/></g><path fill="#f9853c" d="M51.001 42a8 7.95 0 1 1-16 0 8 7.95 0 1 1 16 0"/><path fill="#fff6e8" d="m47.801 42.052-8 4v-8l4 2z"/></svg>
+</svg>

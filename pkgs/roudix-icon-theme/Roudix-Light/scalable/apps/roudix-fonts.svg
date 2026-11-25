@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt193" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht193" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt193" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt193" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot193" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt193" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt193)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht193)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><g transform="translate(0 -280.07)"><rect width="13.758" height="13.758" x="1.588" y="281.65" fill="#ffdfb0" paint-order="stroke markers fill" rx="2.117" ry="2.117"/><path fill="#8d461a" d="M5.82 284.787h4.435v.878h-3.39v2.274h3.059v.879h-3.06v3.684H5.822z" aria-label="F" font-family="sans-serif" font-size="10.583" font-weight="400" letter-spacing="0" word-spacing="0"/><path fill="#8d461a" d="M11.377 289.77q-.408 0-.645.32-.237.317-.237.871t.234.874q.237.317.648.317.405 0 .642-.32t.237-.87q0-.549-.237-.869-.237-.322-.642-.322zm0-.43q.662 0 1.04.43.377.43.377 1.191 0 .758-.378 1.191-.377.43-1.039.43-.664 0-1.042-.43-.375-.433-.375-1.19 0-.761.375-1.191.378-.43 1.042-.43z" aria-label="o" font-family="sans-serif" font-size="5.644" font-weight="400" letter-spacing="0" word-spacing="0"/></g></svg>
+</svg>

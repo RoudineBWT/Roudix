@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2898" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2898" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2898" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2898" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2898" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2898" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2898)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2898)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path d="m10 27v34h22v-4h22v-30z" style="opacity:.2"/> <rect x="4" y="6" width="11" height="11" style="opacity:.2"/> <rect x="26" y="6" width="11" height="11" style="opacity:.2"/> <path d="m54 27h-6l-1-1h-9l-1 1h-11l-1-1h-8l-1 1h-6v33h12l1-1 1-19 29-1 1-1z" style="fill:#ff9146"/> <path d="m32 38h22v18h-22l-1-2v-15z" style="fill:#a24b18"/> <path d="m21 38h11v11l-1 1h-9l-1-1z" style="fill:#6e3515"/> <rect x="21" y="49" width="11" height="11" style="fill:#ffc474"/> <rect x="4" y="5" width="11" height="11" style="fill:#f37d32"/> <rect x="26" y="5" width="11" height="11" style="fill:#f37d32"/> <rect x="32" y="38" width="22" height="1" style="opacity:.2"/> <rect x="10" y="27" width="44" height="1" style="fill:#fff1dc;opacity:.2"/> <rect x="4" y="5" width="11" height="1" style="fill:#fff1dc;opacity:.2"/> <rect x="26" y="5" width="11" height="1" style="fill:#fff1dc;opacity:.2"/> <rect x="15" y="16" width="11" height="11" style="fill:#f37d32"/> <rect x="37" y="16" width="11" height="11" style="fill:#f37d32"/> <rect x="15" y="16" width="11" height="1" style="fill:#fff1dc;opacity:.2"/> <rect x="37" y="16" width="11" height="1" style="fill:#fff1dc;opacity:.2"/></svg>
+</svg>

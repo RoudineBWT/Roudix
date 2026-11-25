@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc18" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc18" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc18" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc18" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc18" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc18" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc18)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc18)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path d="m4 52v2c0 1.662 1.338 3 3 3h50c1.662 0 3-1.338 3-3v-2c0 1.662-1.338 3-3 3h-50c-1.662 0-3-1.338-3-3z" style="opacity:.2"/> <path d="m4 16v37c0 1.662 1.338 3 3 3h50c1.662 0 3-1.338 3-3v-37z" style="fill:#ffd495"/> <path d="m60 16v-5c0-1.662-1.338-3-3-3h-50c-1.662 0-3 1.338-3 3v5z" style="fill:#d36019"/> <path d="m29 20v19h-8l6-17h-6l-6 17v5h14v10h6v-10h3s11 0 11-14c0-10-11-10-11-10h-3zm6 5h3s5 0 5 5c0 9-5 9-5 9h-3z" style="opacity:.1"/> <path d="m29 19v19h-8l6-17h-6l-6 17v5h14v10h6v-10h3s11 0 11-14c0-10-11-10-11-10h-3zm6 5h3s5 0 5 5c0 9-5 9-5 9h-3z" style="fill:#da641a"/> <path d="m60 53v-37h-28v40h25c1.662 0 3-1.338 3-3z" style="opacity:.15"/> <path d="m7 8c-1.662 0-3 1.338-3 3v1c0-1.662 1.338-3 3-3h50c1.662 0 3 1.338 3 3v-1c0-1.662-1.338-3-3-3z" style="fill:#fff1dc;opacity:.1"/></svg>
+</svg>

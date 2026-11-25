@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc644" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc644" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc644" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc644" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc644" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc644" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc644)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc644)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><g transform="translate(0 -280.07)"><circle cx="8.466" cy="288.53" r="7.144" fill="#e36c25" style="paint-order:stroke markers fill"/><g stroke-width=".969" opacity=".15" paint-order="stroke markers fill"><path d="M8.467 285.53a3.004 3.004 0 0 0-3.005 3.004 3.004 3.004 0 0 0 3.005 3.005 3.004 3.004 0 0 0 3.004-3.005 3.004 3.004 0 0 0-3.004-3.004m0 1.366a1.64 1.64 0 0 1 1.638 1.638 1.64 1.64 0 0 1-1.638 1.64 1.64 1.64 0 0 1-1.64-1.64 1.64 1.64 0 0 1 1.64-1.638"/><path d="M7.92 284.3h1.093v1.911H7.921zm0 6.555h1.093v1.911H7.921zm4.78-2.868v1.092h-1.91v-1.092zm-6.555 0v1.092H4.234v-1.092zm5.701 3.153-.772.773-1.352-1.352.773-.772zm-4.635-4.634-.772.772-1.352-1.352.773-.772zm-1.351 5.407-.773-.772 1.352-1.352.772.772zm4.635-4.635-.773-.772 1.352-1.352.772.772z"/></g><g fill="#fff6e8" paint-order="stroke markers fill"><rect width="3.175" height="5.027" x="6.879" y="288.53" opacity=".65" rx="1.587" ry="1.253"/><path d="M6.88 284.42a3.44 3.44 0 1 0 3.174.002v2.519l-1.587 1.587-1.588-1.587z"/></g></g></svg>
+</svg>

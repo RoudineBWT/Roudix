@@ -22,6 +22,9 @@
           roudixBranding = nixpkgs.legacyPackages.${system}.callPackage ./roudix-cfg/pkgs/roudix-branding {};
           # gnome.nix also needs the Roudix cursor theme (pkgs/roudix-cursor).
           roudix-cursor = nixpkgs.legacyPackages.${system}.callPackage ./roudix-cfg/pkgs/roudix-cursor {};
+          # icon-theme.nix (imported through branding.nix) lists the Roudix icon
+          # theme among the curated choices (pkgs/roudix-icon-theme).
+          roudix-icon-theme = nixpkgs.legacyPackages.${system}.callPackage ./roudix-cfg/pkgs/roudix-icon-theme {};
           # gnome.nix (imported below) expects an "inputs" arg; empty dummy
           # since we don't need the main flake's inputs here.
           inputs = {};

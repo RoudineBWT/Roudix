@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt76" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht76" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt76" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt76" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot76" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt76" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt76)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht76)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><g stroke-linejoin="round" stroke-width="1.482" transform="translate(-.4 -22)scale(1.35)"><circle cx="24" cy="24" r="20" fill="#ff994e" transform="translate(0 16)"/><path fill="#ec762e" d="M24 20A20 20 0 0 0 4 40a20 20 0 0 0 20 20 20 20 0 0 0 14.133-5.867L24 40l14.13-14.133A20 20 0 0 0 24 20"/><circle cx="24" cy="40" r="16" fill="#fff2df"/></g><path fill="#ad511a" fill-rule="evenodd" d="m32 4.308 4.154 1.385s1.72 5.292 3.104 6.676C41.448 14.56 50 19.54 50 30.616c0 8.308-5.538 13.846-12.462 18 6.923-6.923 9.693-9.692 9.693-18 0-11.077-11.077-12.462-11.077-12.462v30.151c0 3.081-2.904 8.195-7.642 10.162-6.007 2.488-12.3 1.068-14.054-3.172-1.754-4.238 1.69-9.691 7.694-12.178 3.588-1.487 6.951-1.828 9.85-.577z"/></svg>
+</svg>

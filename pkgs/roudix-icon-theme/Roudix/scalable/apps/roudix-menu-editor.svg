@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt426" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht426" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt426" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt426" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot426" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt426" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt426)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht426)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><g transform="translate(0 -280.07)"><rect width="13.758" height="13.758" x="1.587" y="281.66" fill="#d7621a" paint-order="stroke markers fill" rx="2.117" ry="2.117"/><rect width="6.879" height="7.938" x="5.027" y="284.56" fill="#fff1dc" stroke="#2e1d12" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".196" stroke-width=".529" paint-order="markers stroke fill" rx=".529" ry=".529"/><path d="M5.027 285.89h6.88v.264h-6.88zm0 1.587h6.88v.265h-6.88zm0 1.588h6.88v.264h-6.88zm0 1.587h6.88v.265h-6.88z" opacity=".1" paint-order="markers stroke fill"/><circle cx="5.821" cy="285.36" r=".265" fill="#d7621a" paint-order="markers stroke fill"/><circle cx="5.821" cy="286.95" r=".265" fill="#d7621a" paint-order="markers stroke fill"/><circle cx="5.821" cy="288.53" r=".265" fill="#d7621a" paint-order="markers stroke fill"/><circle cx="5.821" cy="290.12" r=".265" fill="#d7621a" paint-order="markers stroke fill"/><circle cx="5.821" cy="291.71" r=".265" fill="#d7621a" paint-order="markers stroke fill"/></g></svg>
+</svg>

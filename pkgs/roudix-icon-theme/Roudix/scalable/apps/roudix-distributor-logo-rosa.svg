@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1602" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1602" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1602" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1602" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1602" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1602" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1602)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1602)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><circle style="opacity:0.2" cx="32" cy="33" r="28"/> <circle style="fill:#ae5018" cx="32" cy="32" r="28"/> <path style="fill:#fff1dc;opacity:0.1" d="M 32,4 A 28,28 0 0 0 4,32 28,28 0 0 0 4.0215,32.586 28,28 0 0 1 32,5 28,28 0 0 1 59.979,32.414 28,28 0 0 0 60,32 28,28 0 0 0 32,4 Z"/> <g style="fill:none;stroke:#2e1d12;opacity:0.2;stroke-width:3;stroke-linejoin:round"> <path d="M 48.5,33 C 48.5,42.113 41.113,49.5 32,49.5 22.887,49.5 15.5,42.113 15.5,33 15.5,23.887 22.887,16.5 32,16.5 36.556,16.5 48.5,16.5 48.5,16.5 48.5,16.5 48.5,28.444 48.5,33 Z"/> <path d="M 48.5,16.5 C 48.5,16.5 47,26 39,32.5 31,39 20,45 20,45 V 45 45"/> </g> <g style="fill:none;stroke:#fff1dc;stroke-width:3;stroke-linejoin:round"> <path d="M 48.5,15.5 C 48.5,15.5 47,25 39,31.5 31,38 20,44 20,44 V 44 44"/> <path d="M 48.5,32 C 48.5,41.113 41.113,48.5 32,48.5 22.887,48.5 15.5,41.113 15.5,32 15.5,22.887 22.887,15.5 32,15.5 36.556,15.5 48.5,15.5 48.5,15.5 48.5,15.5 48.5,27.444 48.5,32 Z"/> </g></svg>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1257" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1257" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1257" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1257" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1257" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1257" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1257)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1257)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect style="opacity:0.2" width="56" height="56" x="4" y="5" rx="2.8" ry="2.8"/> <rect style="fill:#ffd495" width="56" height="56" x="4" y="4" rx="2.8" ry="2.8"/> <g transform="matrix(2,0,0,2,1,1)"> <rect style="fill:#eb7328" width="3" height="3" x="14" y="14" ry=".721"/> <rect style="fill:#eb7328" width="3" height="3" x="14" y="10" ry=".721"/> <rect style="fill:#eb7328" width="3" height="3" x="14" y="22" ry=".721"/> <rect style="fill:#eb7328" width="3" height="3" x="14" y="18" ry=".721"/> <rect style="fill:#eb7328" width="3" height="3" x="14" y="6" ry=".721"/> <rect style="fill:#eb7328" width="3" height="3" x="10" y="6" ry=".721"/> <rect style="fill:#eb7328" width="3" height="3" x="6" y="6" ry=".721"/> <rect style="fill:#eb7328" width="3" height="3" x="22" y="6" ry=".721"/> <rect style="fill:#eb7328" width="3" height="3" x="18" y="6" ry=".721"/> </g> <path style="fill:#fff1dc;opacity:0.2" d="M 6.8007812 4 C 5.2495813 4 4 5.2495813 4 6.8007812 L 4 7.8007812 C 4 6.2495813 5.2495813 5 6.8007812 5 L 57.199219 5 C 58.750419 5 60 6.2495813 60 7.8007812 L 60 6.8007812 C 60 5.2495813 58.750419 4 57.199219 4 L 6.8007812 4 z"/></svg>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2985" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc2985" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2985" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc2985" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc2985" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc2985" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2985)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2985)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><defs><linearGradient id="i2985_a" x1="3" x2="-1" y1="507.8" y2="503.8" gradientTransform="matrix(0 1.35 -1.35 0 50.9 53.6)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#93481a"/><stop offset="1" stop-color="#b6541a"/></linearGradient></defs><rect width="48" height="54" x="8" y="5" fill="#ffc272" rx="6" ry="6" style="paint-order:stroke fill markers"/><g stroke-linejoin="round" transform="translate(-.1 -.65)"><path fill="url(#i2985_a)" d="M51.1 53.65h-38v1.3a2.69 2.69 0 0 0 2.7 2.7h32.6c1.496 0 2.7-1.204 2.7-2.7z"/><circle cx="-55.408" cy="-47.342" r=".757" fill="#e46d26" transform="scale(1 -1)rotate(90)"/></g><path fill="#ffe4bc" d="M9 11h46v42H9z"/><path fill="#cf5d1a" d="M10 12h44v40H10z"/><path fill="#ffe4bc" stroke="#e26b24" stroke-linecap="round" stroke-width="1.315" d="M29.908 14.508h13.523l6.762 6.759v20.276H29.908z"/><path fill="#ffe4bc" stroke="#e26b24" stroke-linecap="round" stroke-width="1.315" d="M13.708 21.258h13.523l6.762 6.759v20.276H13.708z"/><path fill="#ffa457" d="M10 31h44v2H10z"/></svg>
+</svg>

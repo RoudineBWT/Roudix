@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3288" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc3288" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3288" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc3288" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc3288" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc3288" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3288)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3288)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><g stroke-width="1.304"><path fill="#f37e36" d="m50 6-36.035.002a7.97 7.97 0 0 0-5.87 2.605l30.402 47.225 17.677-46.93A7.98 7.98 0 0 0 50.004 6z"/><path fill="#ed772f" d="M8.338 8.34A7.97 7.97 0 0 0 6 14v36a7.98 7.98 0 0 0 3.588 6.678l46.244-3.008L32 32.004 8.338 8.341z"/><path fill="#e36c25" d="M55.662 8.338 44.996 19.004l4.333 8.666 8.666 4.334V13.92a7.97 7.97 0 0 0-2.334-5.583z"/><path fill="#ffc273" d="m31.999 31.999 7.826-7.826L47.65 32l-6.522 11.739z" style="paint-order:normal" transform="translate(-21.156 -21.154)scale(1.6611)"/><path fill="#ef7931" d="M57.998 32 31.996 58H50a7.98 7.98 0 0 0 7.998-7.96z"/><path fill="#ff8e44" d="M44.999 45h-26l12.999-13z"/><path fill="#e9722a" d="M18.998 45 8.338 55.662A7.98 7.98 0 0 0 14 58h18l13-13H19z"/></g></svg>
+</svg>

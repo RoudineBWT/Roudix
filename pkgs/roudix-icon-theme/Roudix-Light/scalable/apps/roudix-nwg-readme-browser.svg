@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2826" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc2826" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2826" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc2826" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc2826" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc2826" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2826)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2826)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path d="m12.75 5c-1.5235 0-2.75 1.2488-2.75 2.8v50.4c0 1.5512 1.2265 2.8 2.75 2.8h38.5c1.5235 0 2.75-1.2488 2.75-2.8v-36.2l-15-2-2-15z" style="opacity:.2"/> <path d="m12.75 4c-1.5235 0-2.75 1.2488-2.75 2.8v50.4c0 1.5512 1.2265 2.8 2.75 2.8h38.5c1.5235 0 2.75-1.2488 2.75-2.8v-36.2l-15-2-2-15z" style="fill:#e06821"/> <path d="M 37,5 V 19.166667 C 37,20.731517 38.268526,22 39.833333,22 H 54 Z" style="opacity:.2"/> <path d="M 37,4 V 18.166667 C 37,19.731517 38.268526,21 39.833333,21 H 54 Z" style="fill:#fe8a41"/> <path d="M 12.75,4 C 11.2265,4 10,5.2495813 10,6.8007812 v 1 C 10,6.2495812 11.2265,5 12.75,5 H 37 V 4 Z" style="fill:#fff6e8;opacity:.2"/> <path d="m32 26c-1.662 0-3 1.338-3 3v13c0 1.662 1.338 3 3 3s3-1.338 3-3v-13c0-1.662-1.338-3-3-3zm0 23c-1.662 0-3 1.338-3 3s1.338 3 3 3 3-1.338 3-3-1.338-3-3-3z" style="opacity:.2"/> <path d="m32 25c-1.662 0-3 1.338-3 3v13c0 1.662 1.338 3 3 3s3-1.338 3-3v-13c0-1.662-1.338-3-3-3zm0 23c-1.662 0-3 1.338-3 3s1.338 3 3 3 3-1.338 3-3-1.338-3-3-3z" style="fill:#fff6e8"/></svg>
+</svg>

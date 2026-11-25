@@ -123,6 +123,14 @@ msgid "gnome-keyring + xdg-desktop-portal-gtk/-gnome (default)"
 msgstr "gnome-keyring + xdg-desktop-portal-gtk/-gnome (डिफ़ॉल्ट)"
 
 #: roudix-switcher.py
+msgid "Made for Roudix: orange glyphs on dark tiles, Roudix folders"
+msgstr "Roudix के लिए बनाया गया: गहरे टाइल्स पर नारंगी ग्लिफ़, Roudix फ़ोल्डर"
+
+#: roudix-switcher.py
+msgid "Made for Roudix, on light tiles"
+msgstr "Roudix के लिए बनाया गया, हल्के टाइल्स पर"
+
+#: roudix-switcher.py
 msgid "Fixed theme, Papirus' own blue accent (default)"
 msgstr "तय थीम, Papirus का अपना नीला एक्सेंट (डिफ़ॉल्ट)"
 
@@ -698,8 +706,8 @@ msgid ""
 "Elgato Wave:3 mic fix (mic silent when playback starts first; renames its "
 "devices)"
 msgstr ""
-"Elgato Wave:3 माइक फ़िक्स (प्लेबैक पहले शुरू होने पर माइक मौन रहता है; इसके "
-"डिवाइस का नाम बदल देता है)"
+"Elgato Wave:3 माइक फ़िक्स (प्लेबैक पहले शुरू होने पर माइक मौन रहता है; इसके डिवाइस का "
+"नाम बदल देता है)"
 
 #: roudix-switcher.py
 msgid "Boot splash (Plymouth) — off = plain text boot"

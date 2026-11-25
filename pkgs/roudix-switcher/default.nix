@@ -1,4 +1,4 @@
-{ lib, pkgs }:
+{ lib, pkgs, roudix-icon-theme }:
 let
   # Icon-theme packages kept around purely so the "Icon Theme" page can show
   # each theme's own real "folder" glyph as a live preview (see
@@ -6,13 +6,13 @@ let
   # placeholder art. Picking a theme in the UI does NOT depend on these
   # being installed system-wide — modules/home/theming/gtk-theme.nix pulls in
   # whichever one is actually selected via roudix.iconTheme on its own.
-  iconThemesForPreview = with pkgs; [
+  iconThemesForPreview = (with pkgs; [
     papirus-icon-theme
     tela-icon-theme
     qogir-icon-theme
     whitesur-icon-theme
     colloid-icon-theme
-  ];
+  ]) ++ [ roudix-icon-theme ];
 in
 pkgs.stdenv.mkDerivation {
   pname = "roudix-switcher";

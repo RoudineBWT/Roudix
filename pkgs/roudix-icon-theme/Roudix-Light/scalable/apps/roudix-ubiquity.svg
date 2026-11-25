@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt756" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht756" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt756" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt756" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot756" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt756" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt756)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht756)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="52" height="52" x="6" y="6" fill="#d65f1a" rx="8" ry="8"/><path fill="#fff6e8" fill-rule="evenodd" d="M6 41v9c0 4.432 3.568 8 8 8h36c4.432 0 8-3.568 8-8v-9z" opacity=".5"/><path fill="#7b3f19" d="M32 45c-1.662 0-3 1.338-3 3s1.338 3 3 3a2.99 2.99 0 0 0 2.813-2h8.375A2.99 2.99 0 0 0 49 48c0-1.662-1.338-3-3-3a2.99 2.99 0 0 0-2.813 2h-8.375A2.99 2.99 0 0 0 32 45" opacity=".2"/><path d="M34.81 49h8.375a2.99 2.99 0 0 0 5.813-1c0-1.662-1.338-3-3-3a2.99 2.99 0 0 0-2.813 2H34.81c.188 1 .188 1 0 2" opacity=".5"/><path fill="#d65f1a" d="M18 45c-1.662 0-3 1.338-3 3s1.338 3 3 3a2.99 2.99 0 0 0 2.813-2h8.375A2.99 2.99 0 0 0 35 48c0-1.662-1.338-3-3-3a2.99 2.99 0 0 0-2.813 2h-8.375A2.99 2.99 0 0 0 18 45"/><path fill="#fff2df" d="M30.286 14v17.143l-7.714-7.714L20 26l12 12 12-12-2.571-2.571-7.714 7.714V14z"/></svg>
+</svg>

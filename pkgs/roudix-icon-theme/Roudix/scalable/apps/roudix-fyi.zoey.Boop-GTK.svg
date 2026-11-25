@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1842" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1842" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1842" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1842" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1842" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1842" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1842)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1842)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect x="3.999999" y="5.9999981" width="34" height="34" ry="4.0000014" style="opacity:.2"/> <rect x="4" y="4.9999986" width="34" height="34" ry="4.0000014" style="fill:#ffc172"/> <rect x="14" y="14" width="34" height="34" ry="11.333334" style="opacity:.2"/> <rect x="14.000001" y="13" width="34" height="34" ry="11.333334" style="fill:#f78237"/> <circle cx="43" cy="42" r="17" style="opacity:.2"/> <circle cx="43" cy="41" r="17" style="fill:#b25218"/> <path d="m8 5c-2.2160008 0-4 1.7839992-4 4v1c0-2.2160008 1.7839992-4 4-4h26c2.216001 0 4 1.7839992 4 4v-1c0-2.2160008-1.783999-4-4-4h-26z" style="fill:#fff1dc;opacity:.2"/> <path d="m25.333984 13c-6.278667 0-11.333984 5.055317-11.333984 11.333984v1c0-6.278667 5.055317-11.333984 11.333984-11.333984h11.332032c6.278667 0 11.333984 5.055317 11.333984 11.333984v-1c0-6.278667-5.055317-11.333984-11.333984-11.333984h-11.332032z" style="fill:#fff1dc;opacity:.2"/> <path d="M 43 24 A 17 17 0 0 0 26 41 A 17 17 0 0 0 26.021484 41.580078 A 17 17 0 0 1 43 25 A 17 17 0 0 1 59.978516 41.419922 A 17 17 0 0 0 60 41 A 17 17 0 0 0 43 24 z " style="fill:#fff1dc;opacity:.2"/></svg>
+</svg>

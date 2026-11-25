@@ -1,4 +1,4 @@
-{ lib, pkgs, osConfig, roudix-cursor, ... }:
+{ lib, pkgs, osConfig, roudix-cursor, roudix-icon-theme, ... }:
 
 let
   desktopType = osConfig.roudix.desktop.type;
@@ -27,7 +27,13 @@ let
   # the next Noctalia theme/accent change, not immediately on switch). Any
   # other shell has nothing to generate that variant, so it falls back to
   # plain Tela-dark from nixpkgs.
+  #
+  # "roudix" / "roudix-light": the native Roudix theme (pkgs/roudix-icon-theme).
+  # It falls back to Papirus-Dark / Papirus-Light, which the compositor modules
+  # (niri, hyprland, mangowc, umbriel) already install.
   iconThemes = {
+    roudix       = { name = "Roudix";       package = roudix-icon-theme; };
+    roudix-light = { name = "Roudix-Light"; package = roudix-icon-theme; };
     papirus  = { name = "Papirus-Dark"; package = pkgs.papirus-icon-theme; };
     tela =
       if shellType == "noctalia"

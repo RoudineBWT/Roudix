@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt401" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht401" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt401" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt401" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot401" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt401" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt401)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht401)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect style="opacity:0.2" width="44" height="30" x="16" y="27" ry="2"/> <rect style="fill:#e36a1e" width="44" height="30" x="16" y="26" ry="2"/> <rect style="fill:#a24b18" width="44" height="6" x="16" y="46"/> <path style="fill:#fff1dc;opacity:0.2" d="m48 27h10c1.117 0 2 0.883 2 2v-1c0-1.133-0.875-2-2-2h-10z"/> <rect style="opacity:0.2" width="44" height="30" x="4" y="9" ry="2"/> <rect style="fill:#ffd495" width="44" height="30" x="4" y="8" ry="2"/> <rect style="opacity:0.1" width="18" height="18" x="8" y="13" ry="2"/> <path style="fill:#a24b18" d="M 30,14 V 16 H 39 V 14 Z M 41,14 V 16 H 44 V 14 Z"/> <path style="fill:#f0792e" d="M 30,18 V 20 H 44 V 18 Z M 30,22 V 24 H 34 V 22 Z M 36,22 V 24 H 44 V 22 Z"/> <rect style="opacity:0.2" width="6" height="6" x="38" y="28"/> <rect style="fill:#f27c31" width="18" height="18" x="8" y="12" ry="2"/> <path style="fill:#ffd495" d="M 17,16 A 3,3 0 0 0 14,19 3,3 0 0 0 17,22 3,3 0 0 0 20,19 3,3 0 0 0 17,16 Z M 17,24 C 12,24 12,27 12,27 V 28 H 22 V 27 C 22,27 22,24 17,24 Z"/> <path style="fill:#fff1dc;opacity:0.2" d="M 6 8 C 4.892 8 4 8.892 4 10 L 4 11 C 4 9.892 4.892 9 6 9 L 46 9 C 47.108 9 48 9.892 48 11 L 48 10 C 48 8.892 47.108 8 46 8 L 6 8 z"/></svg>
+</svg>

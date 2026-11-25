@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc820" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc820" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc820" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc820" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc820" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc820" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc820)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc820)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="52" height="52" x="6" y="6" fill="#eb7328" rx="8" ry="8" style="paint-order:stroke fill markers"/><path fill="#fff1dc" d="m6 20.01 9.891 5.699c.526.303 1.38.304 1.907.002l19.233-11.014c.432-.247 1.13-.244 1.559.006l1.812 1.053c.787.458.786 1.199-.003 1.654L17.97 30.35c-.622.359-1.63.357-2.25-.003L6 24.697z"/><path fill="#fff1dc" d="m6 29.414 9.891 5.699c.526.303 1.38.304 1.907.002l19.233-11.014c.432-.247 1.13-.244 1.559.005l1.812 1.054c.787.458.786 1.199-.003 1.654L17.97 39.754c-.622.359-1.63.357-2.25-.003L6 34.101z"/><path fill="#fff1dc" d="m6 38.789 9.891 5.699c.526.303 1.38.304 1.907.002l19.233-11.014c.432-.247 1.13-.244 1.559.005l1.812 1.054c.787.458.786 1.199-.003 1.654L17.97 49.129c-.622.359-1.63.357-2.25-.003L6 43.476z"/></svg>
+</svg>

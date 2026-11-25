@@ -272,3 +272,9 @@ msgstr "El ajuste «{sid}» ya no existe en la configuración del compositor: tu
 
 msgid "Setting “{title}” changed type in the compositor config: your old value was removed."
 msgstr "El ajuste «{title}» ha cambiado de tipo en la configuración del compositor: tu valor anterior se ha eliminado."
+
+msgid "Made for Roudix: orange glyphs on dark tiles, Roudix folders"
+msgstr "Hecho para Roudix: glifos naranjas sobre mosaicos oscuros, carpetas Roudix"
+
+msgid "Made for Roudix, on light tiles"
+msgstr "Hecho para Roudix, sobre mosaicos claros"

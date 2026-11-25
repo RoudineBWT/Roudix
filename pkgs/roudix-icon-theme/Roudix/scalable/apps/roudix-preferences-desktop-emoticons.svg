@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc369" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc369" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc369" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc369" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc369" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc369" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc369)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc369)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><defs><linearGradient id="i369_a"><stop offset="0" stop-color="#ac5018"/><stop offset="1" stop-color="#cc5d19"/></linearGradient><linearGradient xlink:href="#i369_a" id="i369_c" x2="0" y1="538.8" y2="534.8" gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#i369_a" id="i369_b" x2="0" y1="528.8" y2="524.8" gradientUnits="userSpaceOnUse"/></defs><g transform="matrix(2 0 0 2 -769.14 -1031.6)"><rect width="27" height="27" x="387.07" y="518.3" fill="#ffc071" rx="13.5" ry="13.5"/><circle cx="395.57" cy="526.8" r="2" fill="url(#i369_b)"/><circle cx="405.57" cy="526.8" r="2" fill="url(#i369_b)"/><path fill="url(#i369_c)" d="M395.25 535.1a6.156 7.388 0 0 0 5.327 3.694 6.156 7.388 0 0 0 5.321-3.694h-.748a6.156 7.388 0 0 1-4.573 2.462A6.156 7.388 0 0 1 396 535.1z"/></g></svg>
+</svg>

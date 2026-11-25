@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc588" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc588" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc588" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc588" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc588" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc588" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc588)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc588)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="56" height="56" x="4" y="5" rx="14" ry="14" style="opacity:0.2"/> <rect style="fill:#ec762e" width="56" height="56" x="4" y="4" rx="14" ry="14"/> <path style="opacity:0.2" d="m 13,23 v 6 h 6 v 14 h 6 V 29 h 6 v -6 z m 20,0 v 20 h 6 v -7.660156 c 0.795628,-3.348688 5.628186,-2.756044 6,-0.13672 V 43 h 6 V 33.578124 C 50.704906,30.089204 48.062354,27.216698 44.992188,27 43.000406,26.85942 40.829462,28.221946 39,29.953124 V 23 Z"/> <g transform="translate(1,-5e-6)"> <path d="M 12,22.00001 V 28 h 5.999999 V 41.999998 H 24 V 28 h 6 v -5.99999 z" style="fill:#fff6e8"/> <path d="m 32,22.00001 v 19.999988 h 6.000002 V 34.338424 C 38.79563,30.989736 43.628186,31.582258 44,34.201584 V 42 h 6 V 32.57745 C 49.704906,29.08853 47.063758,26.216698 43.993592,26 c -1.991782,-0.14058 -4.164128,1.220112 -5.99359,2.951292 v -6.951274 z" style="fill:#fff6e8"/> </g> <path style="opacity:0.2;fill:#fff6e8" d="M 18 4 C 10.244 4 4 10.244 4 18 L 4 19 C 4 11.244 10.244 5 18 5 L 46 5 C 53.756 5 60 11.244 60 19 L 60 18 C 60 10.244 53.756 4 46 4 L 18 4 z"/></svg>
+</svg>

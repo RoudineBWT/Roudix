@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1340" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc1340" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1340" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc1340" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc1340" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc1340" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1340)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1340)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect x="6" y="6" width="52" height="52" rx="8" ry="8" fill="#c2581a" stroke-width=".92857"/> <path d="m17.698 27.342-4.6642 4.7357c-1.3783 1.4166-1.3783 3.7081 0 5.1247l4.6642 4.7767 7.1695-7.322 4.5442-7.2674-4.5442-7.3902z" fill="#fff6e8" fill-opacity=".9"/> <path d="m24.867 34.658 8.4022 0.62779-1.246-7.9566-7.1562-7.3288z" fill="#ff9348"/> <path d="m24.867 34.658 7.1495 7.3424 7.1562-7.3151 7.1295 7.3015 4.6642-4.7767c1.3775-1.4143 1.3775-3.7036 0-5.1179l-4.6642-4.7357-7.1295-7.3561z" fill="#fff6e8"/></svg>
+</svg>

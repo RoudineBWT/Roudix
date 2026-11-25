@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt80" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="sht80" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt80" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbt80" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="fot80" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgt80" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt80)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht80)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><circle cx="32.02" cy="32.044" r="30.001" fill="none"/><g transform="matrix(1.4359 0 0 1.4444 -13.949 -14.222)"><ellipse cx="32" cy="32" fill="#b25218" rx="19.5" ry="18" style="paint-order:normal"/><path fill="#fff1dc" d="M26.15 23c-3.949-.002-7.15 3.166-7.15 7.071s3.201 7.072 7.15 7.072h11.7c3.949 0 7.15-3.166 7.15-7.072S41.799 23 37.85 23a7.17 7.17 0 0 0-5.853 3.016A7.17 7.17 0 0 0 26.15 23" style="paint-order:normal"/><path fill="#e56c21" d="M32.001 33.286c-2.599 0-5.201 1.929-5.201 3.857s4.194 9 5.201 9 5.199-7.071 5.199-9-2.6-3.857-5.199-3.857"/><path fill="#ab4f18" d="M26.8 28.143c-1.436 0-2.6 1.151-2.6 2.571s1.164 2.572 2.6 2.572 2.6-1.151 2.6-2.572c0-1.42-1.164-2.571-2.6-2.571m10.4 0c-1.436 0-2.6 1.151-2.6 2.571s1.164 2.572 2.6 2.572 2.6-1.151 2.6-2.572c0-1.42-1.164-2.571-2.6-2.571m-11.05 1.286c.359 0 .65.288.65.643s-.291.642-.65.642-.65-.287-.65-.642.291-.643.65-.643m10.4 0c.359 0 .65.288.65.643s-.291.642-.65.642-.65-.287-.65-.642.291-.643.65-.643" style="paint-order:normal"/></g></svg>
+</svg>

@@ -216,8 +216,11 @@
     # Roudix's own apps. Passed to every module through specialArgs (same
     # names as before) and also exposed as `packages.${system}.*` below, so
     # e.g. `nix build .#roudix-disk` works.
+    roudixIconTheme = pkgs.callPackage ./pkgs/roudix-icon-theme {};
     roudixPkgs = {
-      roudixSwitcher = pkgs.callPackage ./pkgs/roudix-switcher {};
+      roudixSwitcher = pkgs.callPackage ./pkgs/roudix-switcher {
+        roudix-icon-theme = roudixIconTheme;   # live folder preview on its "Icon Theme" page
+      };
       roudixBranding = pkgs.callPackage ./pkgs/roudix-branding {};
       roudix-kernel-switcher = pkgs.callPackage ./pkgs/roudix-kernel-switcher {};
       roudix-hw-sync = pkgs.callPackage ./pkgs/roudix-hw-sync {};
@@ -229,6 +232,7 @@
       roudixWelcome = pkgs.callPackage ./pkgs/roudix-welcome {};
       roudixConfig = pkgs.callPackage ./pkgs/roudix-config {};
       roudix-cursor = pkgs.callPackage ./pkgs/roudix-cursor {};
+      roudix-icon-theme = roudixIconTheme;
       roudixStore = pkgs.callPackage ./pkgs/roudix-store {
         nixos-appstream-data = inputs.nixos-appstream-data.packages.${system}.appstream-data;
       };

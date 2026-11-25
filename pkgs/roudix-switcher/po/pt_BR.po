@@ -128,6 +128,14 @@ msgid "gnome-keyring + xdg-desktop-portal-gtk/-gnome (default)"
 msgstr "gnome-keyring + xdg-desktop-portal-gtk/-gnome (padrão)"
 
 #: roudix-switcher.py
+msgid "Made for Roudix: orange glyphs on dark tiles, Roudix folders"
+msgstr "Feito para o Roudix: glifos laranja em blocos escuros, pastas Roudix"
+
+#: roudix-switcher.py
+msgid "Made for Roudix, on light tiles"
+msgstr "Feito para o Roudix, em blocos claros"
+
+#: roudix-switcher.py
 msgid "Fixed theme, Papirus' own blue accent (default)"
 msgstr "Tema fixo, com o destaque azul próprio do Papirus (padrão)"
 

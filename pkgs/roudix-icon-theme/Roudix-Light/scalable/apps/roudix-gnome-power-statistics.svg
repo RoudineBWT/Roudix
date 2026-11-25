@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgt255" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="sht255" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glt255" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbt255" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="fot255" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgt255" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt255)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht255)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path style="opacity:0.2" d="M 4.0508,32 C 4.039,32.334 4,32.662 4,33 4,48.512 16.488,61 32,61 47.512,61 60,48.512 60,33 c 0,-0.33768 -0.03904,-0.66528 -0.05078,-1 -0.528,15.042 -12.776,27 -27.95,27 -15.1744,0 -27.422,-11.958 -27.95,-27 z"/> <path style="fill:#ffb768" d="M 32,4 C 16.488,4 4,16.488 4,32 4,47.512 16.488,60 32,60 47.512,60 60,47.512 60,32 60,16.488 47.512,4 32,4 Z"/> <path style="opacity:0.4;fill:#fff6e8" d="m 32,17 0,12 12,0 -12,20 0,-12 -12,0 z"/> <path style="opacity:0.2;fill:#fff6e8" d="M 32 4 C 16.488 4 4 16.488 4 32 C 4 32.09835 4.0111931 32.193964 4.0175781 32.291016 C 4.3923777 17.110278 16.725784 5 32 5 C 47.27028 5 59.601553 17.104056 59.982422 32.279297 C 59.988351 32.186169 60 32.094265 60 32 C 60 16.488 47.512 4 32 4 z"/> <path style="fill:#9c4c1a" d="m 32,16 0,12 12,0 -12,20 0,-12 -12,0 z"/> <circle style="opacity:0.2" cx="48" cy="47" r="16"/> <circle style="fill:#f37e35" cx="48" cy="46" r="16"/> <g style="fill:#fff6e8" transform="matrix(2,0,0,2,7,4)"> <rect width="3" height="6" x="19" y="20"/> <rect width="3" height="3" x="19" y="16"/> </g></svg>
+</svg>

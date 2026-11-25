@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1618" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1618" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1618" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1618" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1618" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1618" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1618)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1618)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path fill="#ffe3ba" d="M32 5A27 27 0 0 0 5 32a27 27 0 0 0 27 27 27 27 0 0 0 27-27A27 27 0 0 0 32 5"/><g transform="translate(5.818 5.818)scale(.81818)"><path fill="#ff9b4f" d="M32 10a22 22 0 0 0-12.92 4.219l4.941 4.941a15.1 15.1 0 0 1 7.98-2.285A15.125 15.125 0 0 1 47.124 32a15.1 15.1 0 0 1-2.293 7.97l4.944 4.945A22 22 0 0 0 54 32a22 22 0 0 0-22-22"/><path fill="#cd5e19" d="M14.224 19.085A22 22 0 0 0 10 32a22 22 0 0 0 22 22 22 22 0 0 0 12.92-4.219l-4.942-4.941A15.1 15.1 0 0 1 32 47.125 15.125 15.125 0 0 1 16.874 32a15.1 15.1 0 0 1 2.294-7.97z"/><circle cx="32" cy="32" r="8" fill="#ff9b4f"/></g></svg>
+</svg>

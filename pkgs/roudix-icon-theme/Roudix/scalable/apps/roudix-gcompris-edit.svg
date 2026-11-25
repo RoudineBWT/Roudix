@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc1851" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc1851" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc1851" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc1851" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc1851" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc1851" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1851)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1851)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><circle cx="8.466" cy="8.466" r="7.144" fill="#c35a19" style="paint-order:stroke markers fill"/><circle cx="8.466" cy="8.466" r="6.085" fill="#fff1dc" opacity=".15" style="paint-order:stroke markers fill"/><g stroke-width="1.162"><path fill="#ffd495" d="M5.812 2.76A4.07 4.07 0 0 1 9.88 6.829V25.27c0 2.245-1.823 4.069-4.068 4.069s-4.07-1.824-4.07-4.07V6.83a4.07 4.07 0 0 1 4.07-4.07" style="isolation:isolate" transform="translate(7.143 6.018)scale(.22773)"/><path fill="#e76f24" d="M5.812 5.845c.962 0 1.743.781 1.743 1.744v16.447a1.745 1.745 0 0 1-3.487 0V7.589c0-.963.781-1.744 1.744-1.744" style="isolation:isolate" transform="translate(7.143 6.018)scale(.22773)"/><path fill="#fff1dc" d="M9.3-7.838v5.6L5.811.085 2.324-2.239V-7.83a8.13 8.13 0 0 0-4.65 7.335 8.138 8.138 0 1 0 16.275 0A8.13 8.13 0 0 0 9.3-7.838" style="isolation:isolate" transform="translate(7.143 6.018)scale(.22773)"/></g></svg>
+</svg>

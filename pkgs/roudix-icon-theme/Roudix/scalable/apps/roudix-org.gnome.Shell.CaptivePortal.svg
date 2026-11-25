@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc2932" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shc2932" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc2932" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbc2932" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foc2932" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgc2932" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2932)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2932)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><path fill="#ffe6c2" d="m54.509 49.234-18.043 10.43a9.05 9.05 0 0 1-9.035.01L9.63 49.458a9.05 9.05 0 0 1-4.544-7.81L5 22.587a9.05 9.05 0 0 1 4.475-7.85L27.184 4.364a9.05 9.05 0 0 1 9.035-.064l18.132 10.27a8.99 8.99 0 0 1 4.56 7.784l.088 19.06a8.99 8.99 0 0 1-4.49 7.82"/><path fill="#ff9b4f" d="M31.997 17.949c-6.76 0-13.517 2.572-18.66 7.715a2.47 2.47 0 0 0 0 3.498 2.473 2.473 0 0 0 3.5 0 21.4 21.4 0 0 1 30.32 0 2.475 2.475 0 0 0 3.5-3.498c-5.142-5.143-11.9-7.715-18.66-7.715m0 9.897c-4.227 0-8.453 1.605-11.663 4.815a2.47 2.47 0 0 0 0 3.498 2.473 2.473 0 0 0 3.5 0 11.507 11.507 0 0 1 16.327 0 2.473 2.473 0 0 0 3.498 0 2.47 2.47 0 0 0 0-3.498c-3.21-3.21-7.436-4.815-11.662-4.815m.079 9.965a4.33 4.33 0 0 0 0 8.66 4.33 4.33 0 0 0 0-8.66"/></svg>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="bgc3195" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+    <linearGradient id="shc3195" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glc3195" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="gbc3195" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0661a"/><stop offset="1" stop-color="#c98a1e"/></linearGradient>
+    <linearGradient id="foc3195" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4a95a"/><stop offset="1" stop-color="#e0661a"/></linearGradient>
+    <linearGradient id="pgc3195" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fbf5ee"/><stop offset="1" stop-color="#f1e6d9"/></linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3195)"/>
+  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3195)"/>
+  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
+  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="52" height="52" x="6" y="6" fill="#9f4d1a" rx="2" ry="2" style="paint-order:stroke markers fill"/><path fill="#fff6e8" d="M12 15h24v2H12z"/><circle cx="43" cy="16" r="2" fill="#f9853b"/><circle cx="51" cy="16" r="2" fill="#f9853b"/><g fill="#fff6e8"><path d="M12 31h24v2H12z"/><circle cx="43" cy="32" r="2"/><circle cx="51" cy="32" r="2"/><path d="M12 47h24v2H12z"/></g><g fill-rule="evenodd"><rect width="52" height="3" x="6" y="22" fill="#4c2b16" opacity=".5" rx="0" ry="0" style="paint-order:fill markers stroke"/><rect width="52" height="3" x="6" y="38" fill="#4c2b16" opacity=".5" rx="0" ry="0" style="paint-order:fill markers stroke"/><circle cx="46" cy="46" r="18" fill="#ffa155" style="paint-order:fill markers stroke"/></g><path fill="#fff6e8" d="M46 34a12 12 0 0 0-12 12 12 12 0 0 0 12 12 12 12 0 0 0 6.94-2.23l-1.428-1.43A10 10 0 0 1 46 56a10 10 0 0 1-10-10 10 10 0 0 1 10-10 10 10 0 0 1 10 10 2 4 0 0 1-2 4 2 2 0 0 1-2-2v-8h-2v1.54A6 6 0 0 0 46 40a6 6 0 0 0-6 6 6 6 0 0 0 6 6 6 6 0 0 0 4.46-2h.08A4 4 0 0 0 54 52a4 6 0 0 0 4-6 12 12 0 0 0-12-12m0 8a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg>
+</svg>
