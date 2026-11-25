@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc36)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc36)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><g paint-order="markers stroke fill" transform="translate(0 -280.07)"><rect width="12.7" height="13.758" x="2.117" y="281.65" fill="#b05118" rx="2.117" ry="2.117"/><path fill="#fff1dc" d="M4.233 282.716c-.586 0-1.058.472-1.058 1.058v9.525c0 .586.472 1.058 1.058 1.058H12.7c.586 0 1.058-.472 1.058-1.058v-6.35l-4.233-4.233zm6.879 0 2.646 2.645v-1.587c0-.586-.472-1.058-1.058-1.058z"/></g><path fill="#ffb86a" d="M5.292 12.171v-.53H9.79v.53zm0-1.323v-.53h6.35v.53zm0-1.323v-.53h6.35v.53zm0-1.323v-.53h6.35v.53z"/></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><g paint-order="markers stroke fill" transform="translate(0 -280.07)"><rect width="12.7" height="13.758" x="2.117" y="281.65" fill="#b05118" rx="2.117" ry="2.117"/><path fill="#fff1dc" d="M4.233 282.716c-.586 0-1.058.472-1.058 1.058v9.525c0 .586.472 1.058 1.058 1.058H12.7c.586 0 1.058-.472 1.058-1.058v-6.35l-4.233-4.233zm6.879 0 2.646 2.645v-1.587c0-.586-.472-1.058-1.058-1.058z"/></g><path fill="#ffb86a" d="M5.292 12.171v-.53H9.79v.53zm0-1.323v-.53h6.35v.53zm0-1.323v-.53h6.35v.53zm0-1.323v-.53h6.35v.53z"/></g></g>
 </svg>

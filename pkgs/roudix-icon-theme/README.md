@@ -47,6 +47,14 @@ symboliques et tout ce qu'il ne dessine pas, donc Papirus est installé avec lui
 Hors Roudix : copier `Roudix` (et/ou `Roudix-Light`) dans `~/.local/share/icons/` ; `index.theme` y hérite
 d'Adwaita/Breeze (la version Nix remplace ce `Inherits` par Papirus).
 
+## Compatibilité Qt / KDE (important)
+Qt (QtSvg = SVG Tiny 1.2, donc Plasma, Dolphin, Kickoff, le panneau…) **ignore les `<svg>` imbriqués**.
+Les icônes ne doivent donc jamais contenir de `<svg x= y= width= height= viewBox=>` dans la tuile : le glyphe est
+placé avec `<g clip-path><g transform="translate() scale()">` (`tools/flatten_nested_svg.py`, utilisé par
+`build_roudix.py` et `extras_complete.py`). Si des tuiles s'affichent vides sous KDE, lancer :
+
+    python3 tools/flatten_nested_svg.py Roudix Roudix-Light
+
 ## Régénérer
 `pip install svgelements` puis
 `python3 tools/build_roudix.py <Tela-icon-theme> <simple-icons/package> <lucide-static/package> <roudix-logo.svg> <sortie> [<Papirus>/64x64/apps]`

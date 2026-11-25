@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2021)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2021)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="52" height="52" x="6" y="6" rx="8" ry="8" style="fill:#9e4a17;fill-opacity:1;stroke-width:4.72727;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"/><path fill="#ffd9a2" d="M27.074 14v3.977l-7.176 2.577v4.918l-2.24 2.92v8.455l2.24 3.017-2.24 6.957L32.013 50l14.33-3.18-2.238-6.956 2.239-3.017v-8.455l-2.24-2.92v-4.917l-7.176-2.578V14zm4.957 11.514c3.958 0 7.176 3.216 7.176 7.174a7.183 7.183 0 0 1-7.176 7.176 7.16 7.16 0 0 1-7.176-7.176 7.17 7.17 0 0 1 7.176-7.174"/></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="52" height="52" x="6" y="6" rx="8" ry="8" style="fill:#9e4a17;fill-opacity:1;stroke-width:4.72727;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"/><path fill="#ffd9a2" d="M27.074 14v3.977l-7.176 2.577v4.918l-2.24 2.92v8.455l2.24 3.017-2.24 6.957L32.013 50l14.33-3.18-2.238-6.956 2.239-3.017v-8.455l-2.24-2.92v-4.917l-7.176-2.578V14zm4.957 11.514c3.958 0 7.176 3.216 7.176 7.174a7.183 7.183 0 0 1-7.176 7.176 7.16 7.16 0 0 1-7.176-7.176 7.17 7.17 0 0 1 7.176-7.174"/></g></g>
 </svg>

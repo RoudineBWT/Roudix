@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc959)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc959)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><g stroke-width=".741" transform="translate(-.4 -22)scale(1.35)"><rect width="40" height="40" x="4" y="20" fill="#e66e22" rx="20"/><path fill="#ffc575" d="m20.598 28.107-5.195 3L18.805 37H12v6h6.805l-3.402 5.892 5.195 3L24 46l3.403 5.892 5.195-3L29.196 43H36v-6h-6.804l3.402-5.893-5.195-3L24 34z"/></g></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><g stroke-width=".741" transform="translate(-.4 -22)scale(1.35)"><rect width="40" height="40" x="4" y="20" fill="#e66e22" rx="20"/><path fill="#ffc575" d="m20.598 28.107-5.195 3L18.805 37H12v6h6.805l-3.402 5.892 5.195 3L24 46l3.403 5.892 5.195-3L29.196 43H36v-6h-6.804l3.402-5.893-5.195-3L24 34z"/></g></g></g>
 </svg>

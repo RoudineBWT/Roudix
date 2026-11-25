@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3127)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3127)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><circle cx="8.466" cy="8.46" r="7.144" fill="#ef792d" style="paint-order:stroke markers fill"/><circle cx="8.466" cy="8.46" r="6.079" fill="#fff1dc" opacity=".15" style="paint-order:stroke markers fill"/><path fill="#fff1dc" d="M7.408 5.027 6.085 8.202h-2.91v.53h3.307l.926-2.25 2.117 5.424 1.323-3.175h2.91v-.529h-3.307l-.926 2.249z"/></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><circle cx="8.466" cy="8.46" r="7.144" fill="#ef792d" style="paint-order:stroke markers fill"/><circle cx="8.466" cy="8.46" r="6.079" fill="#fff1dc" opacity=".15" style="paint-order:stroke markers fill"/><path fill="#fff1dc" d="M7.408 5.027 6.085 8.202h-2.91v.53h3.307l.926-2.25 2.117 5.424 1.323-3.175h2.91v-.529h-3.307l-.926 2.249z"/></g></g>
 </svg>

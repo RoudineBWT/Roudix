@@ -15,6 +15,7 @@ Usage : python3 tools/extras_complete.py <Tela-icon-theme> <Papirus/64x64/apps> 
 import os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import roudixify
+from flatten_nested_svg import flatten_nested   # Qt ignore les <svg> imbriqués
 
 TELA, PAP = sys.argv[1], sys.argv[2]
 ROOT = sys.argv[3] if len(sys.argv) > 3 else os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
@@ -74,7 +75,7 @@ def do_apps(v, vkey):
     apps = os.path.join(ROOT, v, "scalable", "apps")
     have = {f[:-4] for f in os.listdir(apps)}
     sample = read(os.path.join(apps, "roudix-0ad.svg"))
-    head = sample[:sample.index("  <svg x=")]
+    head = sample[:sample.index("  <clipPath")]
     pap = {f[:-4] for f in os.listdir(PAP) if f.endswith(".svg")}
     names = sorted((tela_names("apps") | pap) - have)
     canon_of = {}                     # fichier source -> nom canonique (ou None si inconvertible)
@@ -99,7 +100,7 @@ def do_apps(v, vkey):
                     (x, y, w, h), inner = res
                     u = f"c{len(canon_of)}"
                     hd = head.replace("t0", u)
-                    body = (f'  <svg x="7" y="6.5" width="34" height="34" viewBox="{x:g} {y:g} {w:g} {h:g}">{inner}</svg>\n</svg>\n')
+                    body = flatten_nested(7, 6.5, 34, 34, f"{x:g} {y:g} {w:g} {h:g}", inner) + "</svg>\n"
                     with open(os.path.join(apps, canon + ".svg"), "w", encoding="utf-8") as f:
                         f.write(hd + body)
                     canon_of[src] = canon

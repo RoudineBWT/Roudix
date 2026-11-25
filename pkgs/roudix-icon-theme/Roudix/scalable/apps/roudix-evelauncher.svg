@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1736)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1736)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect style="opacity:0.2" width="56" height="56" x="4" y="5" rx="2.8" ry="2.8"/> <rect style="fill:#a24b18" width="56" height="56" x="4" y="4" rx="2.8" ry="2.8"/> <path style="opacity:0.2" d="m 13,14 v 8 3 h 8 v -3 h 30 v -8 z m 0,15 v 8 h 38 v -8 z m 0,12 v 3 8 H 51 V 44 H 21 v -3 z"/> <path style="fill:#fff1dc" d="m 13,13 v 8 3 h 8 v -3 h 30 v -8 z m 0,15 v 8 h 38 v -8 z m 0,12 v 3 8 H 51 V 43 H 21 v -3 z"/></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect style="opacity:0.2" width="56" height="56" x="4" y="5" rx="2.8" ry="2.8"/> <rect style="fill:#a24b18" width="56" height="56" x="4" y="4" rx="2.8" ry="2.8"/> <path style="opacity:0.2" d="m 13,14 v 8 3 h 8 v -3 h 30 v -8 z m 0,15 v 8 h 38 v -8 z m 0,12 v 3 8 H 51 V 44 H 21 v -3 z"/> <path style="fill:#fff1dc" d="m 13,13 v 8 3 h 8 v -3 h 30 v -8 z m 0,15 v 8 h 38 v -8 z m 0,12 v 3 8 H 51 V 43 H 21 v -3 z"/></g></g>
 </svg>

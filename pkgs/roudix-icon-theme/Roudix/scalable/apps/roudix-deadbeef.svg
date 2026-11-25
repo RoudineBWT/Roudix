@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt141)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht141)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="48.018" height="48.018" x="-24.01" y="21.25" fill="#944517" rx="14.405" ry="14.405" transform="rotate(-45)"/><path fill="#fb873d" fill-rule="evenodd" d="M23 15v17l9.75-6.375L42.5 32 23 44.75V49l26-17-13-8.5z"/></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="48.018" height="48.018" x="-24.01" y="21.25" fill="#944517" rx="14.405" ry="14.405" transform="rotate(-45)"/><path fill="#fb873d" fill-rule="evenodd" d="M23 15v17l9.75-6.375L42.5 32 23 44.75V49l26-17-13-8.5z"/></g></g>
 </svg>

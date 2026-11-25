@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1189)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1189)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><g paint-order="stroke markers fill" transform="translate(0 -280.07)"><circle cx="8.466" cy="288.53" r="7.144" fill="#f68239"/><circle cx="8.467" cy="288.53" r="2.91" opacity=".15"/><circle cx="8.467" cy="288.53" r="1.588" fill="#f68239"/><path fill="#fff6e8" d="m4.762 284.83 4.234 3.174-1.059 1.058z"/><path fill="#ffd89f" d="m12.17 292.24-4.233-3.175 1.059-1.059z"/></g></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><g paint-order="stroke markers fill" transform="translate(0 -280.07)"><circle cx="8.466" cy="288.53" r="7.144" fill="#f68239"/><circle cx="8.467" cy="288.53" r="2.91" opacity=".15"/><circle cx="8.467" cy="288.53" r="1.588" fill="#f68239"/><path fill="#fff6e8" d="m4.762 284.83 4.234 3.174-1.059 1.058z"/><path fill="#ffd89f" d="m12.17 292.24-4.233-3.175 1.059-1.059z"/></g></g></g>
 </svg>

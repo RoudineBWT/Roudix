@@ -17,6 +17,7 @@ TELA, SI, LUC, LOGO, OUT = sys.argv[1:6]
 PAPIRUS = sys.argv[6] if len(sys.argv) > 6 else None      # .../Papirus/64x64/apps (optionnel)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import roudixify
+from flatten_nested_svg import flatten_nested   # Qt ignore les <svg> imbriqués
 
 # ------------------------------------------------------------------ sources
 tela = set()
@@ -115,7 +116,7 @@ def tile_lucide(st, inner, u="x"):
 
 def tile_import(st, vb, inner, u="x", size=34):
     x, y, w, h = vb
-    body = tile_base(st, u) + f'  <svg x="{24-size/2:g}" y="{23.5-size/2:g}" width="{size}" height="{size}" viewBox="{x:g} {y:g} {w:g} {h:g}">{inner}</svg>\n'
+    body = tile_base(st, u) + flatten_nested(24-size/2, 23.5-size/2, size, size, f"{x:g} {y:g} {w:g} {h:g}", inner)
     return svg(st, body, u).replace('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"', '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48"', 1)
 
 def page(st, inner, u="x"):

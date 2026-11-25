@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3348)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3348)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><g> <path d="m4 53v1c0 1.662 1.338 3 3 3h50c1.662 0 3-1.338 3-3v-1c0 1.662-1.338 3-3 3h-50c-1.662 0-3-1.338-3-3z" style="opacity:.2"/> <rect x="4" y="8" width="56" height="48" rx="3" ry="3" style="fill:#9f4a17"/> <path d="m7 8c-1.662 0-3 1.338-3 3v1c0-1.662 1.338-3 3-3h50c1.662 0 3 1.338 3 3v-1c0-1.662-1.338-3-3-3z" style="fill:#fff1dc;opacity:.1"/> <path d="m8 15v2l6 4v2l-6 4v2h2l8-6v-2l-8-6zm14 12v2h12v-2z" style="opacity:.2"/> <path d="m8 14v2l6 4v2l-6 4v2h2l8-6v-2l-8-6zm14 12v2h12v-2z" style="fill:#fff1dc"/> </g></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><g> <path d="m4 53v1c0 1.662 1.338 3 3 3h50c1.662 0 3-1.338 3-3v-1c0 1.662-1.338 3-3 3h-50c-1.662 0-3-1.338-3-3z" style="opacity:.2"/> <rect x="4" y="8" width="56" height="48" rx="3" ry="3" style="fill:#9f4a17"/> <path d="m7 8c-1.662 0-3 1.338-3 3v1c0-1.662 1.338-3 3-3h50c1.662 0 3 1.338 3 3v-1c0-1.662-1.338-3-3-3z" style="fill:#fff1dc;opacity:.1"/> <path d="m8 15v2l6 4v2l-6 4v2h2l8-6v-2l-8-6zm14 12v2h12v-2z" style="opacity:.2"/> <path d="m8 14v2l6 4v2l-6 4v2h2l8-6v-2l-8-6zm14 12v2h12v-2z" style="fill:#fff1dc"/> </g></g></g>
 </svg>

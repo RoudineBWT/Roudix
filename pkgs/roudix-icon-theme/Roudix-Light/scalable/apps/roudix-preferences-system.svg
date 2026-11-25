@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt638)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht638)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><g paint-order="stroke markers fill" transform="translate(0 -280.07)"><circle cx="8.466" cy="288.53" r="7.144" fill="#f27d35"/><path fill="#d05d1a" d="M8.467 282.71a5.82 5.82 0 0 0-3.705 1.336v8.97a5.82 5.82 0 0 0 3.705 1.335 5.82 5.82 0 0 0 5.82-5.82 5.82 5.82 0 0 0-5.82-5.821"/><circle cx="8.467" cy="288.53" r="5.292" fill="#d05d1a"/><rect width="7.408" height="2.646" x="4.762" y="287.21" fill="#fff6e8" opacity=".35" ry="1.323"/><circle cx="10.583" cy="288.53" r="2.117" fill="#fff6e8"/></g></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><g paint-order="stroke markers fill" transform="translate(0 -280.07)"><circle cx="8.466" cy="288.53" r="7.144" fill="#f27d35"/><path fill="#d05d1a" d="M8.467 282.71a5.82 5.82 0 0 0-3.705 1.336v8.97a5.82 5.82 0 0 0 3.705 1.335 5.82 5.82 0 0 0 5.82-5.82 5.82 5.82 0 0 0-5.82-5.821"/><circle cx="8.467" cy="288.53" r="5.292" fill="#d05d1a"/><rect width="7.408" height="2.646" x="4.762" y="287.21" fill="#fff6e8" opacity=".35" ry="1.323"/><circle cx="10.583" cy="288.53" r="2.117" fill="#fff6e8"/></g></g></g>
 </svg>

@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt324)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht324)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 64 64"><rect width="54" height="54" x="5" y="5" fill="#d8601a" rx="9" ry="9"/><path fill="none" stroke="#fff6e8" stroke-linecap="square" stroke-width="4" d="M27 37a16 16 0 0 1 16-16m-8 16a8 8 0 0 1 8-8"/><path fill="none" stroke="#fff6e8" stroke-linecap="square" stroke-width="4" d="M19 37a24 24 0 0 1 24-24"/><path fill="#fff6e8" d="M41 44h6v8h-6z"/><circle cx="44" cy="38" r="3" fill="#fff6e8"/></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="54" height="54" x="5" y="5" fill="#d8601a" rx="9" ry="9"/><path fill="none" stroke="#fff6e8" stroke-linecap="square" stroke-width="4" d="M27 37a16 16 0 0 1 16-16m-8 16a8 8 0 0 1 8-8"/><path fill="none" stroke="#fff6e8" stroke-linecap="square" stroke-width="4" d="M19 37a24 24 0 0 1 24-24"/><path fill="#fff6e8" d="M41 44h6v8h-6z"/><circle cx="44" cy="38" r="3" fill="#fff6e8"/></g></g>
 </svg>

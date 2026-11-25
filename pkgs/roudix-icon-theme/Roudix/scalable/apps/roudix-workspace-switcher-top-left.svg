@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3173)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3173)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><g paint-order="markers stroke fill" transform="translate(0 -280.067)"><rect width="13.758" height="10.054" x="1.587" y="283.506" fill="#ef782d" rx=".265" ry=".265"/><rect width="6.879" height="4.762" x="1.323" y="283.242" fill="#fff1dc" stroke="#2e1d12" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".098" stroke-width=".265" rx=".265" ry=".265"/><rect width="6.879" height="4.762" x="1.323" y="283.242" fill="#fff1dc" rx=".265" ry=".265"/></g></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><g paint-order="markers stroke fill" transform="translate(0 -280.067)"><rect width="13.758" height="10.054" x="1.587" y="283.506" fill="#ef782d" rx=".265" ry=".265"/><rect width="6.879" height="4.762" x="1.323" y="283.242" fill="#fff1dc" stroke="#2e1d12" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".098" stroke-width=".265" rx=".265" ry=".265"/><rect width="6.879" height="4.762" x="1.323" y="283.242" fill="#fff1dc" rx=".265" ry=".265"/></g></g></g>
 </svg>

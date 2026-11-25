@@ -10,5 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt734)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht734)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <svg x="7" y="6.5" width="34" height="34" viewBox="0 0 16.933 16.933"><rect width="13.758" height="13.758" x="1.587" y="1.587" fill="#863f16" fill-rule="evenodd" rx="2.117" ry="2.117" style="paint-order:stroke fill markers"/><path fill="#e46c20" d="m5.939 4.143 4.994 2.436-1.218 2.496 2.497 1.218-1.218 2.497L6 10.355l1.218-2.497L4.721 6.64Z" style="paint-order:markers stroke fill"/></svg>
+  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><rect width="13.758" height="13.758" x="1.587" y="1.587" fill="#863f16" fill-rule="evenodd" rx="2.117" ry="2.117" style="paint-order:stroke fill markers"/><path fill="#e46c20" d="m5.939 4.143 4.994 2.436-1.218 2.496 2.497 1.218-1.218 2.497L6 10.355l1.218-2.497L4.721 6.64Z" style="paint-order:markers stroke fill"/></g></g>
 </svg>
