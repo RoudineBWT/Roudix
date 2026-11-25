@@ -32,7 +32,7 @@ carré arrondi 48×48 (`rx=10`), dégradé chaud, reflet en haut, liseré fin, g
 
 ## Icônes d'interface (actions / tray / statuts)
 Pas redessinées : ce sont les jeux **monochromes 16/22/24 px de Papirus-Dark** (Papirus-Light pour la variante claire),
-embarqués tels quels (`16x16|22x22|24x24/{actions,panel,status}`, déclarés **avant** `scalable/*` dans `index.theme`).
+embarqués et **recolorés en orange Roudix** (primaire de `Roudix.json` : `#FF8C42` sombre, `#E0661A` clair ; rouge/vert/orange sémantiques conservés) (`16x16|22x22|24x24/{actions,panel,status}`, déclarés **avant** `scalable/*` dans `index.theme`).
 Aux petites tailles (barres d'outils, tray, menus) on a donc `go-previous`, `edit-find`, `audio-volume-*`, engrenage,
 écran… ; à 32 px et plus, les tuiles Roudix. Sans ça, si le thème parent ne fournit pas le nom, KDE/Qt le tronque
 (`go-previous` → `go`) et tombe sur une icône d'app en tuile (gopher Go, haut-parleur Tela…).

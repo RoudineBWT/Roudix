@@ -25,7 +25,7 @@
 
 stdenvNoCC.mkDerivation {
   pname = "roudix-icon-theme";
-  version = "1.5";
+  version = "1.6";
 
   src = ./.;
 

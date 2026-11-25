@@ -10,7 +10,7 @@ Les dossiers sont Fixed 16/22/24 comme dans Papirus, déclarés AVANT scalable/*
 tailles (barres d'outils, tray, menus) on a l'icône monochrome ; à 32+ px les tuiles Roudix.
 Usage : add_papirus_ui.py <papirus-icon-theme (dépôt)> [<Roudix racine>]   (idempotent)
 """
-import os, re, shutil, sys
+import json, os, re, shutil, sys
 
 PAP = sys.argv[1]
 ROOT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.path.dirname(__file__), "..")
@@ -23,6 +23,30 @@ SMALL_ALIASES = {"preferences-system": ("actions", "configure"),
                  "video-display": ("panel", "preferences-desktop-display-randr"),
                  "preferences-desktop-display": ("panel", "preferences-desktop-display-randr")}
 CONTEXT = {"actions": "Actions", "panel": "Status", "status": "Status"}
+
+# Recoloration : le gris/blanc du texte Papirus (#dfdfdf sombre, #444444 clair) et le bleu "highlight"
+# deviennent le primaire Roudix (assets/palette/Roudix.json : #FF8C42 sombre, #E0661A clair).
+# Le <style id="current-color-scheme"> est renommé, sinon KDE le remplace par la couleur du texte
+# du système et l'orange est perdu. Rouge / vert / orange "sémantiques" (erreur, succès) restent.
+PAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "assets", "palette", "Roudix.json")
+try: _p = json.load(open(PAL))
+except OSError: _p = {"dark": {"mPrimary": "#FF8C42"}, "light": {"mPrimary": "#E0661A"}}
+PRIMARY = {"Roudix": _p["dark"]["mPrimary"], "Roudix-Light": _p["light"]["mPrimary"]}
+TEXT = {"Roudix": "#dfdfdf", "Roudix-Light": "#444444"}
+
+def recolor(theme_dir, variant, dirs):
+    n = 0
+    for d in dirs:
+        base = os.path.join(theme_dir, d)
+        for f in os.listdir(base):
+            fp = os.path.join(base, f)
+            if os.path.islink(fp) or not f.endswith(".svg"): continue
+            t = open(fp, encoding="utf-8").read(); o = t
+            t = re.sub(re.escape(TEXT[variant]), PRIMARY[variant], t, flags=re.I)
+            t = re.sub(r"#(?:4285f4|3b5df4)\b", PRIMARY[variant], t, flags=re.I)
+            t = t.replace('id="current-color-scheme"', 'id="roudix-color-scheme"')
+            if t != o: open(fp, "w", encoding="utf-8").write(t); n += 1
+    return n
 
 def copy_dir(src, dst):
     """cp -a du contenu : garde les symlinks relatifs internes, résout les autres."""
@@ -60,6 +84,7 @@ def main():
             for f in os.listdir(p):
                 fp = os.path.join(p, f)
                 if os.path.islink(fp) and not os.path.exists(fp): os.remove(fp)
+        print("  recolorés :", recolor(theme, variant, dirs), "SVG ->", PRIMARY[variant])
         idx = os.path.join(theme, "index.theme")
         s = open(idx, encoding="utf-8").read()
         s = re.sub(r"\n\[(?:16x16|22x22|24x24)/[a-z]+\]\n(?:[^\[\n].*\n)*", "\n", s)       # idempotent
