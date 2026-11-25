@@ -9,7 +9,10 @@
 # and LICENSES.md for the (mixed) licences — the icons converted from Tela /
 # Papirus are GPL-3.0.
 #
-# The theme ships no symbolic UI icons. Whatever it doesn't draw falls back to
+# UI icons (go-previous, edit-find, audio-volume-*, tray/panel...) are Papirus-Dark /
+# Papirus-Light's 16/22/24 px monochrome actions/panel/status sets, embedded as-is
+# (tools/add_papirus_ui.py) so they no longer depend on the parent theme. Whatever the
+# theme still doesn't draw falls back to
 # Papirus-Dark (Papirus-Light for the light variant), then Adwaita / Breeze /
 # hicolor, so Papirus has to be installed next to it — icon-theme.nix and
 # modules/home/theming/gtk-theme.nix do that.
@@ -22,7 +25,7 @@
 
 stdenvNoCC.mkDerivation {
   pname = "roudix-icon-theme";
-  version = "1.4";
+  version = "1.5";
 
   src = ./.;
 

@@ -30,9 +30,16 @@ carré arrondi 48×48 (`rx=10`), dégradé chaud, reflet en haut, liseré fin, g
 **Noms d'icônes** : pris sur Tela (fichiers + alias) ; les alias sont des liens symboliques. `mapping.json` détaille les apps
 (`apps_brand`, `apps_imported`, `apps_generic`). Aperçus dans `previews/`.
 
+## Icônes d'interface (actions / tray / statuts)
+Pas redessinées : ce sont les jeux **monochromes 16/22/24 px de Papirus-Dark** (Papirus-Light pour la variante claire),
+embarqués tels quels (`16x16|22x22|24x24/{actions,panel,status}`, déclarés **avant** `scalable/*` dans `index.theme`).
+Aux petites tailles (barres d'outils, tray, menus) on a donc `go-previous`, `edit-find`, `audio-volume-*`, engrenage,
+écran… ; à 32 px et plus, les tuiles Roudix. Sans ça, si le thème parent ne fournit pas le nom, KDE/Qt le tronque
+(`go-previous` → `go`) et tombe sur une icône d'app en tuile (gopher Go, haut-parleur Tela…).
+Pour régénérer : `python3 tools/add_papirus_ui.py <dépôt papirus-icon-theme>`.
+
 ## Ce qui n'est pas dessiné
-Les icônes **symboliques** de l'interface (actions, statuts, barre du haut) ne sont pas redessinées : elles viennent du thème
-parent (Papirus dans Roudix, Adwaita/Breeze sinon).
+Les icônes **symboliques** (`*-symbolic`) ne sont pas embarquées : elles viennent du thème parent (Papirus dans Roudix, Adwaita/Breeze sinon).
 
 ## Utilisation dans Roudix
 Le thème est un paquet Nix (`default.nix`, `nix build .#roudix-icon-theme`) branché sur l'option existante :

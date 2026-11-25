@@ -17,3 +17,7 @@ Les ~700 icônes converties de Tela/Papirus sont sous **GPL-3.0** : en les redis
     ROUDIX_NO_IMPORT=1 python3 tools/build_roudix.py <Tela> <simple-icons/package> <lucide-static/package> <logo.svg> <sortie>
 
 Les apps concernées retombent alors sur les glyphes génériques Lucide.
+
+## Icônes d'interface Papirus (actions / panel / status)
+`Roudix/{16x16,22x22,24x24}/{actions,panel,status}` (Papirus-Dark) et `Roudix-Light/…` (Papirus-Light) sont copiés tels quels
+depuis Papirus Icon Theme — **GPL-3.0** (voir `COPYING-GPL-3.0`). Source : https://github.com/PapirusDevelopmentTeam/papirus-icon-theme
