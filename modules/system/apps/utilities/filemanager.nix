@@ -57,6 +57,27 @@ let
   # here works with any shell.
   shellOnlyFileManagers = { luciole = "noctalia"; };
   neededShell = shellOnlyFileManagers.${config.roudix.fileManager} or null;
+
+  # ── File picker (xdg-desktop-portal FileChooser) per file manager ──────────
+  # The Open/Save dialog of every app (Zen, Discord, Steam, ...) goes through
+  # the FileChooser portal, so the picker you get is the one of the *backend*
+  # selected for that interface, not of the file manager you installed.
+  # `id` is the name used in portals.conf (= the backend's .portal file),
+  # `portals` the package that ships it.
+  #   nautilus   → xdg-desktop-portal-gnome   (the picker IS Nautilus)
+  #   dolphin    → xdg-desktop-portal-kde     (KDE/KIO dialog, same as Dolphin's)
+  #   luciole    → luciole's own backend      (Open/Save dialogs of Luciole)
+  #   pcmanfm-qt → xdg-desktop-portal-lxqt    (libfm-qt dialog, pcmanfm-qt's lib)
+  #   nemo/thunar have no portal backend of their own → GTK picker.
+  filePickerDefs = {
+    "nautilus"   = { id = "gnome";   portals = [ pkgs.xdg-desktop-portal-gnome ]; };
+    "dolphin"    = { id = "kde";     portals = [ pkgs.kdePackages.xdg-desktop-portal-kde ]; };
+    "nemo"       = { id = "gtk";     portals = []; };
+    "thunar"     = { id = "gtk";     portals = []; };
+    "pcmanfm-qt" = { id = "lxqt";    portals = [ pkgs.lxqt.xdg-desktop-portal-lxqt ]; };
+    "luciole"    = { id = "luciole"; portals = [ fileManagerDefs.luciole.package ]; };
+  };
+  pickerDef = filePickerDefs.${config.roudix.fileManager};
 in
 {
   options.roudix.fileManager = mkOption {
@@ -72,10 +93,49 @@ in
 
       "luciole" (Noctalia's native Wayland file manager) is only available
       with roudix.desktop.shell = "noctalia".
+
+      The Open/Save dialog of other apps (xdg-desktop-portal FileChooser)
+      follows this choice on niri / hyprland / mangowc / umbriel:
+        nautilus → GNOME portal (Nautilus), dolphin → KDE portal,
+        luciole → Luciole's own picker, pcmanfm-qt → LXQt portal,
+        nemo / thunar → GTK portal (no backend of their own).
+      GTK is always kept as a fallback.
     '';
   };
 
-  config = mkIf (elem config.roudix.desktop.type [ "niri" "hyprland" "mangowc" "umbriel" ]) {
+  # Computed from roudix.fileManager, read by the compositor modules
+  # (niri / hyprland / mangowc / umbriel) to fill xdg.portal. Not meant to be
+  # set by hand.
+  options.roudix.filePicker = {
+    backend = mkOption {
+      type = types.str;
+      readOnly = true;
+      internal = true;
+      description = "xdg-desktop-portal backend providing the FileChooser for roudix.fileManager.";
+    };
+    chain = mkOption {
+      type = types.listOf types.str;
+      readOnly = true;
+      internal = true;
+      description = "Ordered FileChooser backends for portals.conf (picker of the file manager, then GTK as a safety net).";
+    };
+    portals = mkOption {
+      type = types.listOf types.package;
+      readOnly = true;
+      internal = true;
+      description = "Packages to add to xdg.portal.extraPortals so the chosen backend exists.";
+    };
+  };
+
+  config = mkMerge [
+  {
+    roudix.filePicker = {
+      backend = pickerDef.id;
+      chain   = [ pickerDef.id ] ++ optional (pickerDef.id != "gtk") "gtk";
+      portals = pickerDef.portals;
+    };
+  }
+  (mkIf (elem config.roudix.desktop.type [ "niri" "hyprland" "mangowc" "umbriel" ]) {
     # Same idea as the caelestia assertion (modules/system/desktop/default.nix):
     # fail with a readable message instead of installing a file manager that
     # doesn't belong to the selected shell.
@@ -120,5 +180,6 @@ in
           };
         }
       ];
-  };
+  })
+  ];
 }

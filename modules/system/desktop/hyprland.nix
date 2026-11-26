@@ -6,6 +6,7 @@ let
   isDms       = shellType == "dms";
   isNoctalia  = shellType == "noctalia";
   isKdeIntegration = config.roudix.desktopIntegration == "kde";
+  fp = config.roudix.filePicker;   # file picker follows roudix.fileManager
 in
 {
 config = lib.mkIf isHyprland {
@@ -49,11 +50,12 @@ config = lib.mkIf isHyprland {
   xdg.portal = {
     enable = true;
     # xdg-desktop-portal-hyprland always stays top priority (ScreenCast) —
-    # only the "fallback" portal (file pickers, etc.) follows
-    # roudix.desktopIntegration.
+    # only the "fallback" portal follows roudix.desktopIntegration, and the
+    # FileChooser follows roudix.fileManager (see roudix.filePicker).
     extraPortals = with pkgs;
       [ xdg-desktop-portal-hyprland ]
-      ++ (if isKdeIntegration then [ kdePackages.xdg-desktop-portal-kde xdg-desktop-portal-gtk ] else [ xdg-desktop-portal-gtk ]);
+      ++ (if isKdeIntegration then [ kdePackages.xdg-desktop-portal-kde xdg-desktop-portal-gtk ] else [ xdg-desktop-portal-gtk ])
+      ++ fp.portals;
     # "*" lets D-Bus arbitration pick between hyprland/gtk for each
     # interface on its own — non-deterministic, and can break randomly on
     # an update (see discourse.nixos.org, "Portals don't work on Hyprland
@@ -63,20 +65,27 @@ config = lib.mkIf isHyprland {
     config.common = {
       default = [ "hyprland" (if isKdeIntegration then "kde" else "gtk") ];
       "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+      "org.freedesktop.impl.portal.FileChooser" = fp.chain;
     };
     # programs.hyprland installs hyprland-portals.conf (hyprland;gtk), and
     # xdg-desktop-portal reads the desktop-specific file
     # (XDG_CURRENT_DESKTOP=Hyprland) BEFORE portals.conf / config.common,
-    # so config.common alone never applied. Forced here in kde mode only.
-    config.hyprland = lib.mkIf isKdeIntegration (lib.mkForce {
-      default = [ "hyprland" "kde" ];
-      "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
-      "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
-      "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
-      # gtk portal only for Settings: dark/light follows dconf
-      # (color-scheme) instead of the KDE portal's kdeglobals (= light).
-      "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
-    });
+    # so config.common alone never applied. config.hyprland is therefore always
+    # defined (not only in kde mode), otherwise the packaged hyprland-portals.conf
+    # (hyprland;gtk) wins and the picker of roudix.fileManager is never used.
+    config.hyprland = lib.mkForce (
+      {
+        default = [ "hyprland" (if isKdeIntegration then "kde" else "gtk") ];
+        "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+        "org.freedesktop.impl.portal.FileChooser" = fp.chain;
+      }
+      // lib.optionalAttrs isKdeIntegration {
+        "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+        # gtk portal only for Settings: dark/light follows dconf
+        # (color-scheme) instead of the KDE portal's kdeglobals (= light).
+        "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
+      }
+    );
   };
 
   # ── Polkit agent ────────────────────────────────────────────────────────

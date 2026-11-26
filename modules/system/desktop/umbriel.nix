@@ -4,6 +4,7 @@ let
   shellType  = config.roudix.desktop.shell or "noctalia";
   isDms      = shellType == "dms";
   isKdeIntegration = config.roudix.desktopIntegration == "kde";
+  fp = config.roudix.filePicker;   # file picker follows roudix.fileManager
 in
 {
   imports = [ inputs.umbriel.nixosModules.default ];
@@ -140,20 +141,23 @@ in
     # default portal. Docs: https://github.com/noctalia-dev/xdg-desktop-portal-umbriel
     xdg.portal = {
       enable = true;
-      extraPortals = with pkgs;
+      extraPortals = (with pkgs;
         if isKdeIntegration
         then [ kdePackages.xdg-desktop-portal-kde xdg-desktop-portal-gtk ]
-        else [ xdg-desktop-portal-gtk xdg-desktop-portal-gnome ];
+        else [ xdg-desktop-portal-gtk xdg-desktop-portal-gnome ])
+        ++ fp.portals;
       # programs.umbriel.portalPackage only sets default = [ umbriel gtk ]
-      # (mkDefault). In kde mode, the fallback is kde and FileChooser is
-      # pinned to it explicitly.
-      config.umbriel = lib.mkIf isKdeIntegration {
-        default = [ "umbriel" "kde" ];
-        "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
-        # gtk portal only for Settings: dark/light follows dconf
-        # (color-scheme) instead of the KDE portal's kdeglobals (= light).
-        "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
-      };
+      # (mkDefault). FileChooser is pinned to the backend of roudix.fileManager
+      # in every mode; the rest only differs in kde mode.
+      config.umbriel = lib.mkMerge [
+        { "org.freedesktop.impl.portal.FileChooser" = fp.chain; }
+        (lib.mkIf isKdeIntegration {
+          default = [ "umbriel" "kde" ];
+          # gtk portal only for Settings: dark/light follows dconf
+          # (color-scheme) instead of the KDE portal's kdeglobals (= light).
+          "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
+        })
+      ];
     };
 
     # ── Polkit ────────────────────────────────────────────────────────────
