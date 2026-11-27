@@ -189,6 +189,27 @@ in
     services.gnome.gnome-keyring.enable = true;
     security.pam.services.greetd.enableGnomeKeyring = true;
 
+    # ── Polkit agent ──────────────────────────────────────────────────────
+    # COSMIC's own agent lives in cosmic-osd, which cosmic-session spawns
+    # itself (not a systemd unit). It is not running on Roudix, so pkexec /
+    # GUI auth prompts (roudix-disk, Roudix Store...) never show a dialog.
+    # Same unit as niri.nix: cosmic-session.target BindsTo
+    # graphical-session.target, so this starts with the session.
+    # If cosmic-osd ever registers as the agent again, drop this block: only
+    # one agent can own a session, the second one fails and restarts in a loop.
+    systemd.user.services.polkit-agent = {
+      description = "GNOME Polkit authentication agent";
+      wantedBy = [ "graphical-session.target" ];
+      after    = [ "graphical-session.target" ];
+      partOf   = [ "graphical-session.target" ];
+      serviceConfig = {
+        Type       = "simple";
+        ExecStart  = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart    = "on-failure";
+        RestartSec = "1s";
+      };
+    };
+
     # ── Look & feel defaults (see the top of this file) ───────────────────
     environment.pathsToLink = [ "/share/cosmic" "/share/desktop-directories" ];
 
@@ -218,6 +239,7 @@ in
     environment.systemPackages = with pkgs; [
       # hiPrio: Roudix's defaults win over any file with the same path
       # shipped by a COSMIC package.
+      polkit_gnome
       (lib.hiPrio cosmicDefaults)
       (lib.hiPrio roudixBranding)
       (writeTextDir "share/desktop-directories/roudix.directory" ''
