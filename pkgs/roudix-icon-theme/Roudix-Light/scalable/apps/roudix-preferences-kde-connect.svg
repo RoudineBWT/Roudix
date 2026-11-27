@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1091)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1091)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><defs><linearGradient id="i1091_a" x1="-22.977" x2="-15.685" y1="280.96" y2="296.25" gradientTransform="matrix(4.0495 0 0 3.7796 110.26 -1058.8)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff8e44"/><stop offset="1" stop-color="#ff9147"/></linearGradient></defs><rect width="36" height="64" x="14" fill="#92481a" rx="6" ry="6"/><rect width="32" height="60" x="16" y="2" fill="url(#i1091_a)" opacity=".5" rx="4" ry="4"/><rect width="12" height="1" x="26" y="60" fill="#8d461a" rx=".5" ry=".5"/><path fill="#fff6e8" d="M29 24a1 1 0 1 0 0 2 1 1 0 0 0 0-2m7 0-2 2 4 4-4 4 2 2 6-6zm-10 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4m5 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6" opacity=".5"/><circle cx="32" cy="4" r="1" fill="#8d461a"/></g></g>
 </svg>

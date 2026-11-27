@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt734)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht734)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(-2.000 -2.600) scale(3.07092)"><path fill="#df6620" d="m5.939 4.143 4.994 2.436-1.218 2.496 2.497 1.218-1.218 2.497L6 10.355l1.218-2.497L4.721 6.64Z" style="paint-order:markers stroke fill"/></g></g>
 </svg>

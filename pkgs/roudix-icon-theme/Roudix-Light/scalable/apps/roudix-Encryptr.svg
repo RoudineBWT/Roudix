@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc115)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc115)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(6.667 6.067) scale(0.54167)"><path style="opacity:0.2" d="m 15.999829,9.000687 0,31.999542 L 31.9996,57 47.999371,41.000229 l -15.999771,0 15.999771,-15.999771 -15.999771,0 15.999771,-15.999771 -31.999542,0 z"/> <path style="fill:#df6721" d="m 47.999371,40.000315 -15.999771,0 0,15.999771 z"/> <path style="fill:#df6721" d="m 47.999371,24.000543 -15.999771,0 0,15.999772 z"/> <path style="fill:#b0521a" d="m 47.999371,8.0007722 -15.999771,0 0,15.9997708 z"/> <path style="fill:#d05d1a" d="m 15.999829,40.000315 15.999771,0 0,15.999771 z"/> <rect style="fill:#d05d1a" width="16" height="32" x="16" y="8"/> <path style="opacity:0.2;fill:#df6721" d="M 6.8007812 4 C 5.2496034 4 4 5.2496034 4 6.8007812 L 4 7.8027344 C 4 6.2515566 5.2496034 5.0019531 6.8007812 5.0019531 L 57.199219 5.0019531 C 58.749196 5.0019531 60 6.2515566 60 7.8027344 L 60 6.8007812 C 60 5.2496035 58.749196 4 57.199219 4 L 6.8007812 4 z"/></g></g>
 </svg>

@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc537)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc537)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(0.889 -0.433) scale(0.72222)"><path style="opacity:0.2" d="m 24,16.000001 v 20 H 15.2 L 31.999999,52.6 48.799997,36.000001 H 40 v -20 z"/> <path style="fill:#f47f34" d="M 24,15 V 35 H 15.2 L 31.999999,51.599999 48.799997,35 H 40 V 15 Z"/> <path style="opacity:0.2;fill:#fff1dc" d="M 24 15 L 24 16 L 40 16 L 40 15 L 24 15 z M 15.199219 35 L 16.210938 36 L 24 36 L 24 35 L 15.199219 35 z M 40 35 L 40 36 L 47.789062 36 L 48.800781 35 L 40 35 z"/> <path style="fill:#fff1dc;opacity:0.1" d="M 6.8007812 4 C 5.2495814 4 4 5.2495814 4 6.8007812 L 4 7.8007812 C 4 6.2495814 5.2495814 5 6.8007812 5 L 57.199219 5 C 58.750419 5 60 6.2495814 60 7.8007812 L 60 6.8007812 C 60 5.2495814 58.750419 4 57.199219 4 L 6.8007812 4 z"/></g></g>
 </svg>

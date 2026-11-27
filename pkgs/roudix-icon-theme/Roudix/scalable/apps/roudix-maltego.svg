@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2262)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2262)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><circle cx="32" cy="33" r="28" style="opacity:.2"/> <circle cx="32" cy="32" r="28" style="fill:#ffd495"/> <path d="M 32,4 A 28,28 0 0 0 4,32 28,28 0 0 0 4.0215,32.586 28,28 0 0 1 32,5 28,28 0 0 1 59.979,32.414 28,28 0 0 0 60,32 28,28 0 0 0 32,4 Z" style="fill:#fff1dc;opacity:.2"/> <circle cx="25" cy="23" r="8" style="opacity:.1"/> <circle cx="25" cy="22" r="8" style="fill:#e56d21"/> <circle cx="44" cy="35" r="8" style="opacity:.1"/> <circle cx="44" cy="34" r="8" style="fill:#f58036"/> <circle cx="25" cy="44" r="8" style="opacity:.1"/> <circle cx="25" cy="43" r="8" style="fill:#e36a1e"/></g></g>
 </svg>

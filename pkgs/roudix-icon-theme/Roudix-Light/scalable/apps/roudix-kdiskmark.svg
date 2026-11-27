@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt363)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht363)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><circle cx="8.466" cy="8.466" r="7.144" fill="#ffe4bc" style="display:inline;fill:#fa873d;fill-opacity:1;paint-order:stroke fill markers"/><g transform="translate(.02 -1.077)"><path d="M103.903 23.073C93.64 23.127 85.251 31.356 85 41.617a1.296 1.296 0 0 0 1.264 1.326 1.296 1.296 0 0 0 1.328-1.264 16.397 16.397 0 0 1 16.325-16.014 16.397 16.397 0 0 1 16.492 15.842 1.296 1.296 0 0 0 1.34 1.25 1.296 1.296 0 0 0 1.25-1.34c-.358-10.257-8.832-18.398-19.096-18.344m11.08 10.371a1.22 1.22 0 0 0-1.044.453l-7.616 9.575c-.715-.297-1.5-.527-2.32-.527-3.326 0-6.048 2.759-6.048 6.048h2.592c0-1.996 1.437-3.456 3.456-3.456 2.018 0 3.456 1.46 3.456 3.456h2.592c0-1.618-.66-3.088-1.725-4.168l7.513-9.448a1.186 1.186 0 0 0-.2-1.68 1.2 1.2 0 0 0-.656-.253" style="fill:#fff6e8;stroke-width:.863994" transform="translate(-19.07 -1.587)scale(.26458)"/><circle cx="8.45" cy="11.375" r="1.255" style="fill:none;fill-opacity:1;stroke:#fff6e8;stroke-width:.695605;stroke-dasharray:none;stroke-opacity:1"/></g></g></g>
 </svg>

@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2777)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2777)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(5.800 5.200) scale(0.52000)"><path d="m10 60h12l38-38v-12z" style="fill:#f17a2f;stop-color:#2e1d12"/> <path d="m20 60h12l28-28v-12z" style="fill:#ffaf61;stop-color:#2e1d12"/> <path d="m30 60h12l18-18v-12z" style="fill:#ff9b50;stop-color:#2e1d12"/> <path d="m40 60h10l10-10v-10z" style="fill:#fc883e;stop-color:#2e1d12"/> <path d="m26 11 5 8-5 8h4l3-4.801 3 4.801h4l-5-8 5-8h-4l-3 4.801-3-4.801zm-16 0h14v2l-9 11h9v3h-14v-2l9-11h-9z" style="opacity:.2"/> <path d="m26 10 5 8-5 8h4l3-4.801 3 4.801h4l-5-8 5-8h-4l-3 4.801-3-4.801zm-16 0h14v2l-9 11h9v3h-14v-2l9-11h-9z" style="fill:#fff1dc"/></g></g>
 </svg>

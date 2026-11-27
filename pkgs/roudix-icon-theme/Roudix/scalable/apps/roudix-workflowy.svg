@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc605)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc605)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(0.889 0.289) scale(0.72222)"><rect style="opacity:0.4;fill:#fff1dc" width="19.5" height="6" x="29.5" y="29" rx="3" ry="3"/> <rect style="opacity:0.4;fill:#fff1dc" width="33" height="6" x="16" y="41" rx="3" ry="3"/> <rect style="opacity:0.4;fill:#fff1dc" width="33" height="6" x="16" y="17" rx="3" ry="3"/> <circle style="opacity:0.2" cx="21" cy="21" r="6"/> <circle style="fill:#fff1dc" cx="21" cy="20" r="6"/> <circle style="opacity:0.2" cx="21" cy="45" r="6"/> <circle style="fill:#fff1dc" cx="21" cy="44" r="6"/> <circle style="opacity:0.2" cx="30" cy="33" r="6"/> <circle style="fill:#fff1dc" cx="30" cy="32" r="6"/> <path style="opacity:0.1;fill:#fff1dc" d="M 5.8984375 3 C 4.2918373 3 3 4.2918373 3 5.8984375 L 3 6.8984375 C 3 5.2918373 4.2918373 4 5.8984375 4 L 58.101562 4 C 59.708163 4 61 5.2918373 61 6.8984375 L 61 5.8984375 C 61 4.2918373 59.708163 3 58.101562 3 L 5.8984375 3 z"/></g></g>
 </svg>

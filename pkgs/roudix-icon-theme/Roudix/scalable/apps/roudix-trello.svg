@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3496)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3496)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(5.222 7.222) scale(0.57778)"><rect style="opacity:.2" width="19" height="38" x="10" y="10" rx="4" ry="4"/> <rect style="fill:#fff1dc" width="19" height="38" x="10" y="9" rx="4" ry="4"/> <rect style="opacity:.2" width="20" height="20" x="35" y="10" rx="4" ry="4"/> <rect style="fill:#fff1dc" width="20" height="20" x="35" y="9" rx="4" ry="4"/> <path style="opacity:.2;fill:#fff1dc" d="m6.8496094 3c-1.5789 0-2.8496094 1.2707094-2.8496094 2.8496094v1c0-1.5789 1.2707094-2.8496094 2.8496094-2.8496094h51.300782c1.5789 0 2.849609 1.2707094 2.849609 2.8496094v-1c0-1.5789-1.270709-2.8496094-2.849609-2.8496094h-51.300782z"/></g></g>
 </svg>

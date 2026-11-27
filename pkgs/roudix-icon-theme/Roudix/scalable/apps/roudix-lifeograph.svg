@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2424)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2424)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(10.235 -1.835) scale(0.76471)"><g style="opacity:0.2" transform="matrix(1.9999714,0,0,1.9999714,5.760572e-5,1.000858)"> <path d="m 9,8 a 5,5 0 0 0 -5,5 5,5 0 0 0 5,5 5,5 0 0 0 5,-5 5,5 0 0 0 -5,-5 z m 0,3 a 2,2 0 0 1 2,2 2,2 0 0 1 -2,2 2,2 0 0 1 -2,-2 2,2 0 0 1 2,-2 z"/> <rect width="2" height="10" x="8" y="-25" transform="scale(1,-1)"/> <rect width="2" height="2" x="10" y="-23" transform="scale(1,-1)"/> </g> <g style="fill:#ffd08c" transform="matrix(1.9999714,0,0,1.9999714,5.760572e-5,8.866e-4)"> <path style="fill:#ffd69b" d="m 9,8 a 5,5 0 0 0 -5,5 5,5 0 0 0 5,5 5,5 0 0 0 5,-5 5,5 0 0 0 -5,-5 z m 0,3 a 2,2 0 0 1 2,2 2,2 0 0 1 -2,2 2,2 0 0 1 -2,-2 2,2 0 0 1 2,-2 z"/> <rect style="fill:#ffd69b" width="2" height="10" x="8" y="-25" transform="scale(1,-1)"/> <rect style="fill:#ffd69b" width="2" height="2" x="10" y="-23" transform="scale(1,-1)"/> </g></g></g>
 </svg>

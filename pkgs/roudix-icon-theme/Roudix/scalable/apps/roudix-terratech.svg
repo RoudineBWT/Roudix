@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2548)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2548)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:.2" d="m32 5-28 28 28 28 28-28z"/> <path style="fill:#e56c20" d="m32 4-28 28 28 28 28-28z"/> <path style="opacity:.1;fill:#fff1dc" d="m32 4l-28 28 0.5 0.5 27.5-27.5 27.5 27.5 0.5-0.5-28-28z"/> <rect style="opacity:.2" rx="3.9999998" ry="4" height="44" width="44" y="11" x="10"/> <rect style="fill:#fb873c" rx="3.9999998" ry="4" height="44" width="44" y="10" x="10"/> <path style="opacity:.2" d="m22 29v-6h6l4 4 4-4h6v6l-4 4 4 4v6h-6l-4-4-4 4h-6v-6l4-4z"/> <path style="fill:#fff1dc" d="m22 28v-6h6l4 4 4-4h6v6l-4 4 4 4v6h-6l-4-4-4 4h-6v-6l4-4z"/> <path style="opacity:.2;fill:#fff1dc" d="m14 10c-2.216 0-4 1.784-4 4v1c0-2.216 1.784-4 4-4h36c2.216 0 4 1.784 4 4v-1c0-2.216-1.784-4-4-4h-36z"/></g></g>
 </svg>

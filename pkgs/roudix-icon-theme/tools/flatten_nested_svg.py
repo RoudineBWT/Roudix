@@ -18,10 +18,27 @@ def flatten_nested(x, y, w, h, vb, inner, ind="  "):
     s = min(w / vw, h / vh)                      # preserveAspectRatio="xMidYMid meet"
     tx = x + (w - vw * s) / 2 - vx * s
     ty = y + (h - vh * s) / 2 - vy * s
-    return (f'{ind}<clipPath id="rvp"><rect x="{n(x)}" y="{n(y)}" width="{n(w)}" height="{n(h)}"/></clipPath>\n'
+    # <clipPath> DOIT être dans <defs> : sinon Qt (SVG Tiny) le dessine comme une forme
+    # normale -> gros carré noir derrière le glyphe.
+    return (f'{ind}<defs><clipPath id="rvp"><rect x="{n(x)}" y="{n(y)}" width="{n(w)}" height="{n(h)}"/></clipPath></defs>\n'
             f'{ind}<g clip-path="url(#rvp)"><g transform="translate({n(tx)} {n(ty)}) scale({n(s)})">{inner}</g></g>\n')
 
+BARE_CLIP = re.compile(r'<clipPath\b.*?</clipPath>', re.S)
+
+def wrap_clippaths(s):
+    """Enveloppe dans <defs> tout <clipPath> qui n'y est pas déjà (idempotent)."""
+    out, last = [], 0
+    for m in BARE_CLIP.finditer(s):
+        pre = s[:m.start()]
+        if pre.rfind("<defs") > pre.rfind("</defs>"):      # déjà dans un <defs>
+            continue
+        out.append(s[last:m.start()]); out.append("<defs>" + m.group(0) + "</defs>")
+        last = m.end()
+    out.append(s[last:])
+    return "".join(out)
+
 def fix_text(s):
+    s = wrap_clippaths(s)
     m = NESTED.search(s)
     if not m:
         return s

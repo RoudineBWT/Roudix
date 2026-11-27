@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1954)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1954)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="M 14.5,8 C 13.115,8 12,9.115 12,10.5 v 45 c 0,1.385 1.115,2.5 2.5,2.5 h 35 C 50.885,58 52,56.885 52,55.5 V 23 L 38.25,21.75 37,8 Z"/> <path fill="#e8722a" d="m14.5 7c-1.385 0-2.5 1.115-2.5 2.5v45c0 1.385 1.115 2.5 2.5 2.5h35c1.385 0 2.5-1.115 2.5-2.5v-32.5l-13.75-1.25-1.25-13.75z"/> <path style="opacity:0.2;fill:#fff6e8" d="M 14.5,7 C 13.115,7 12,8.115 12,9.5 v 1 C 12,9.115 13.115,8 14.5,8 H 37 L 38.25,21.75 52,22 v 0 L 38.25,20.75 37,7 Z"/> <path fill="#ffab5e" d="m37 7v12.5c0 1.3808 1.1193 2.5 2.5 2.5h12.5l-15-15z"/> <path fill="#fff6e8" d="m21 29v3h22v-3h-22zm0 6v3h22v-3h-22zm0 6v3h22v-3h-22zm0 6v3h16v-3h-16z"/></g></g>
 </svg>

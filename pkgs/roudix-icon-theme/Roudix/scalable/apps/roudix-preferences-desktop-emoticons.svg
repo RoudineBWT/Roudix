@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc369)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc369)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><defs><linearGradient id="i369_a"><stop offset="0" stop-color="#ac5018"/><stop offset="1" stop-color="#cc5d19"/></linearGradient><linearGradient xlink:href="#i369_a" id="i369_c" x2="0" y1="538.8" y2="534.8" gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#i369_a" id="i369_b" x2="0" y1="528.8" y2="524.8" gradientUnits="userSpaceOnUse"/></defs><g transform="matrix(2 0 0 2 -769.14 -1031.6)"><rect width="27" height="27" x="387.07" y="518.3" fill="#ffc071" rx="13.5" ry="13.5"/><circle cx="395.57" cy="526.8" r="2" fill="url(#i369_b)"/><circle cx="405.57" cy="526.8" r="2" fill="url(#i369_b)"/><path fill="url(#i369_c)" d="M395.25 535.1a6.156 7.388 0 0 0 5.327 3.694 6.156 7.388 0 0 0 5.321-3.694h-.748a6.156 7.388 0 0 1-4.573 2.462A6.156 7.388 0 0 1 396 535.1z"/></g></g></g>
 </svg>

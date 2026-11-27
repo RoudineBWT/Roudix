@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt68)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht68)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(5.913 5.313) scale(0.56522)"><path fill="#ff964b" d="M13.059 29A4.05 4.05 0 0 0 9 33.059V50.94A4.05 4.05 0 0 0 13.06 55h32.47L55 45.529V33.058a4.05 4.05 0 0 0-4.058-4.059z" style="paint-order:normal"/><path fill="#f0792e" d="m45.529 55 9.47-9.47-5.29-.092c-2.248-.04-4.008 1.81-4.058 4.058z" style="paint-order:normal"/><path fill="#e2681d" d="M13.059 19A4.05 4.05 0 0 0 9 23.059V40.94A4.05 4.05 0 0 0 13.06 45h32.47L55 35.529V23.058a4.05 4.05 0 0 0-4.058-4.059z" style="paint-order:normal"/><path fill="#e97125" d="M13.059 9A4.05 4.05 0 0 0 9 13.059V30.94A4.05 4.05 0 0 0 13.06 35h32.47L55 25.529V13.058a4.05 4.05 0 0 0-4.058-4.059z" style="paint-order:normal"/><path fill="#bf5819" d="m45.529 45 9.47-9.47-5.29-.092c-2.248-.04-4.008 1.81-4.058 4.058z" style="paint-order:normal"/><path fill="#d5611a" d="m45.468 35 9.531-9.517-5.379-.046c-2.248-.019-4.113 1.811-4.058 4.06-.02 2.27-.094 5.503-.094 5.503" style="paint-order:normal"/></g></g>
 </svg>

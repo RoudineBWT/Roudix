@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1215)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1215)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(-2.000 -2.600) scale(3.07092)"><path d="M3.704 2.646c-.586 0-1.058.472-1.058 1.058v9.525c0 .586.472 1.058 1.058 1.058h1.852c0-.44.354-.794.794-.794h4.233c.44 0 .794.354.794.794h1.852c.586 0 1.058-.472 1.058-1.058V3.704c0-.586-.472-1.058-1.058-1.058h-1.852c0 .44-.354.794-.794.794H6.35a.79.79 0 0 1-.794-.794z" opacity=".15"/><rect width="8.466" height="6.35" x="4.233" y="5.292" fill="#df6721" fill-rule="evenodd" opacity=".35" rx=".794" ry=".794"/><rect width="6.35" height="1.323" x="5.292" y="7.937" fill="#df6721" fill-rule="evenodd" rx=".265" ry=".265"/><path fill="#804119" d="M6.35 8.599a.397.397 0 1 1-.794 0 .397.397 0 0 1 .794 0m1.06 0a.397.397 0 1 1-.795 0 .397.397 0 0 1 .794 0m1.058 0a.397.397 0 1 1-.794 0 .397.397 0 0 1 .794 0"/><path fill="#dd651e" d="M5.356 7.144h1.99c.035 0 .064.028.064.063v.137a.064.064 0 0 1-.064.064h-1.99a.064.064 0 0 1-.064-.064v-.137c0-.035.029-.063.064-.063"/></g></g>
 </svg>

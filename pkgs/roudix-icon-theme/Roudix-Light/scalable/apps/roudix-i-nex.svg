@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2055)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2055)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(8.878 4.563) scale(0.53061)"><path d="m4 49v8.1c0 1.6066 1.2934 2.9 2.9 2.9h8.1z" style="fill:#be571a"/> <rect x="11" y="12" width="42" height="42" rx="2.1" ry="2.1" style="opacity:.2"/> <rect x="11" y="11" width="42" height="42" rx="2.1" ry="2.1" style="fill:#c0581a"/> <rect x="29" y="27" width="6" height="20" style="fill:#8e461a"/> <rect x="29" y="17" width="6" height="6" style="fill:#8e461a"/> <path d="M 6.8984375,4 C 5.2918373,4 4,5.2918373 4,6.8984375 v 1 C 4,6.2918373 5.2918373,5 6.8984375,5 H 57.101781 c 1.606601,0 2.898438,1.2918373 2.898438,2.8984375 v -1 C 60.000219,5.2918373 58.708382,4 57.101781,4 Z" style="fill:#df6721;opacity:.1"/> <path d="m13.101562 11c-1.163399 0-2.101562 0.938162-2.101562 2.101562v1c0-1.1634 0.938163-2.101562 2.101562-2.101562h37.796876c1.1634 0 2.101562 0.938162 2.101562 2.101562v-1c0-1.163399-0.938162-2.101562-2.101562-2.101562h-37.796876z" style="fill:#df6721;opacity:.2"/></g></g>
 </svg>

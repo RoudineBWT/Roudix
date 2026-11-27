@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc326)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc326)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect x="25.999998" y="40" width="2" height="10" style="fill:#ffd699"/> <rect x="36" y="40" width="2" height="10" style="fill:#ffd699"/> <circle cx="31.999998" cy="25" r="20" style="opacity:.2"/> <circle cx="31.999998" cy="24" r="20" style="fill:#cf5d1a"/> <path d="m22 49h20l-4 12h-12z" style="opacity:.2"/> <path d="m22 48h20l-4 12h-12z" style="fill:#d35e1a"/> <path d="m32 4s6 8 6 20-6 20-6 20 14-4 14-20-14-20-14-20z" style="fill:#ffd699"/> <path d="m32 4s-6 8-6 20 6 20 6 20-14-4-14-20 14-20 14-20z" style="fill:#ffd699"/> <path d="M 32 4 A 20 20 0 0 0 12 24 A 20 20 0 0 0 12.021484 24.582031 A 20 20 0 0 1 32 5 A 20 20 0 0 1 51.978516 24.417969 A 20 20 0 0 0 52 24 A 20 20 0 0 0 32 4 z " style="fill:#fff6e8;opacity:.2"/> <path d="m22 48 0.333984 1h19.332032l0.333984-1h-20z" style="fill:#fff6e8;opacity:.1"/></g></g>
 </svg>

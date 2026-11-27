@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1067)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1067)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(-0.471 -1.071) scale(2.89028)"><defs><filter id="i1067_a" width="1.21" height="1.222" x="-.105" y="-.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation=".392"/></filter></defs><text xml:space="preserve" x="3.717" y="13.054" stroke-width=".311" filter="url(#i1067_a)" font-family="'URW Bookman'" font-size="12.432" font-style="italic" font-weight="300" opacity=".15" style="line-height:1.25" word-spacing="0"><tspan x="3.717" y="13.054">F</tspan></text><text xml:space="preserve" x="3.717" y="12.7" fill="#df6721" stroke-width=".311" font-family="'URW Bookman'" font-size="12.432" font-style="italic" font-weight="300" style="line-height:1.25" word-spacing="0"><tspan x="3.717" y="12.7">F</tspan></text></g></g>
 </svg>

@@ -75,7 +75,7 @@ def do_apps(v, vkey):
     apps = os.path.join(ROOT, v, "scalable", "apps")
     have = {f[:-4] for f in os.listdir(apps)}
     sample = read(os.path.join(apps, "roudix-0ad.svg"))
-    head = sample[:sample.index("  <clipPath")]
+    head = sample[:sample.index("  <defs><clipPath")]
     pap = {f[:-4] for f in os.listdir(PAP) if f.endswith(".svg")}
     names = sorted((tela_names("apps") | pap) - have)
     canon_of = {}                     # fichier source -> nom canonique (ou None si inconvertible)

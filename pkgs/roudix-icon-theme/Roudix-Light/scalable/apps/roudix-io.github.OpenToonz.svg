@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2117)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2117)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(6.840 6.240) scale(0.52000)"><rect transform="rotate(90)" x="26" y="-47" width="20" height="4" fill="#df6721"/> <rect x="32" y="22" width="24" height="4" fill="#df6721"/> <path d="m22 14a14 14 0 0 0-14 14 14 14 0 0 0 14 14 14 14 0 0 0 14-14 14 14 0 0 0-14-14zm0 4.2a9.8 9.8 0 0 1 9.8 9.8 9.8 9.8 0 0 1-9.8 9.8 9.8 9.8 0 0 1-9.8-9.8 9.8 9.8 0 0 1 9.8-9.8z" fill="#df6721"/> <path d="m58 46.514-19.895 11.486 5.9473-10.301c2.216-3.8382 7.09-5.1442 10.928-2.9282z" fill="#bb561a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1224"/> <circle cx="15" cy="9" r="1" fill="#df6721" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/> <circle cx="49" cy="9" r="1" fill="#df6721" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/> <rect x="26" y="8" width="12" height="2" rx="1" ry="1" fill="#df6721" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8516"/></g></g>
 </svg>

@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1899)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1899)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(9.818 4.491) scale(0.59091)"><g style="opacity:0.2" transform="matrix(1.9999714,0,0,2,5.72e-5,1)"> <rect width="6" height="6" x="5" y="5" rx=".75" ry=".75"/> <rect width="6" height="6" x="13" y="5" rx=".75" ry=".75"/> <rect width="6" height="6" x="5" y="13" rx=".75" ry=".75"/> <rect width="6" height="6" x="13" y="13" rx=".75" ry=".75"/> <rect width="6" height="6" x="5" y="21" rx=".75" ry=".75"/> </g> <g style="fill:#c5591a" transform="matrix(1.9999714,0,0,2,5.72e-5,1.146e-4)"> <rect width="6" height="6" x="5" y="5" rx=".75" ry=".75"/> <rect width="6" height="6" x="13" y="5" rx=".75" ry=".75"/> <rect width="6" height="6" x="5" y="13" rx=".75" ry=".75"/> <rect width="6" height="6" x="13" y="13" rx=".75" ry=".75"/> <rect width="6" height="6" x="5" y="21" rx=".75" ry=".75"/> </g></g></g>
 </svg>
