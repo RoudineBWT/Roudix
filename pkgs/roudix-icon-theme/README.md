@@ -49,7 +49,7 @@ volume, luminosité... venaient du thème parent en crème/bleu. Pour régénér
 
 ## Gestionnaire de fichiers
 `system-file-manager`, `org.kde.dolphin`, `file-manager` (et leurs alias : Nautilus, Thunar, PCManFM-Qt...) utilisent le
-**dossier home Roudix** (`places/user-home`, orange, sans tuile) au lieu d'une tuile sombre.
+**dossier home Roudix** (`places/user-home`, orange) posé dans la tuile Roudix, comme les autres icônes d'apps.
 
 ## Ce qui n'est pas dessiné
 Les symboliques hors Papirus (ex. noms propres à Adwaita/Breeze absents de Papirus) viennent du thème parent.
