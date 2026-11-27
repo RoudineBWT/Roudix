@@ -146,18 +146,18 @@ in
         then [ kdePackages.xdg-desktop-portal-kde xdg-desktop-portal-gtk ]
         else [ xdg-desktop-portal-gtk xdg-desktop-portal-gnome ])
         ++ fp.portals;
-      # programs.umbriel.portalPackage only sets default = [ umbriel gtk ]
-      # (mkDefault). FileChooser is pinned to the backend of roudix.fileManager
-      # in every mode; the rest only differs in kde mode.
-      config.umbriel = lib.mkMerge [
-        { "org.freedesktop.impl.portal.FileChooser" = fp.chain; }
-        (lib.mkIf isKdeIntegration {
-          default = [ "umbriel" "kde" ];
-          # gtk portal only for Settings: dark/light follows dconf
-          # (color-scheme) instead of the KDE portal's kdeglobals (= light).
-          "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
-        })
-      ];
+      # xdg-desktop-portal reads ONE portals.conf (this /etc file wins over the
+      # one shipped by the umbriel module, no merging between files), so it
+      # must be complete: default backend (umbriel, which does ScreenCast and
+      # Screenshot) + FileChooser following roudix.fileManager.
+      config.umbriel = {
+        default = [ "umbriel" (if isKdeIntegration then "kde" else "gtk") ];
+        "org.freedesktop.impl.portal.FileChooser" = fp.chain;
+      } // lib.optionalAttrs isKdeIntegration {
+        # gtk portal only for Settings: dark/light follows dconf
+        # (color-scheme) instead of the KDE portal's kdeglobals (= light).
+        "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
+      };
     };
 
     # ── Polkit ────────────────────────────────────────────────────────────
