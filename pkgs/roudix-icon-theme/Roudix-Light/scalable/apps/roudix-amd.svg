@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc363)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc363)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
-  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="m 4,56 0,2 c 0,1.662 1.338,3 3,3 l 50,0 c 1.662,0 3,-1.338 3,-3 l 0,-2 c 0,1.662 -1.338,3 -3,3 L 7,59 C 5.338,59 4,57.662 4,56 Z"/> <rect style="fill:#c0581a" width="56" height="56" x="4" y="4" rx="3" ry="3"/> <path style="opacity:0.1;fill:#fff6e8" d="M 7 4 C 5.338 4 4 5.338 4 7 L 4 8 C 4 6.338 5.338 5 7 5 L 57 5 C 58.662 5 60 6.338 60 8 L 60 7 C 60 5.338 58.662 4 57 4 L 7 4 z"/> <path style="opacity:0.2" d="M 14.1876,15.1254 24,25 l 16,0 0,15.9376 10,9.9376 0,-35.75 z M 24,27.312 14,37.062 14,51 28.75,51 38.624,41 24,41 Z"/> <path style="fill:#fff6e8" d="M 14.1876,14.1254 24,24 l 16,0 0,15.9376 10,9.9376 0,-35.75 z M 24,26.312 14,36.062 14,50 28.75,50 38.624,40 24,40 Z"/></g></g>
+  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(0.889 0.289) scale(0.72222)"><path style="opacity:0.2" d="M 14.1876,15.1254 24,25 l 16,0 0,15.9376 10,9.9376 0,-35.75 z M 24,27.312 14,37.062 14,51 28.75,51 38.624,41 24,41 Z"/> <path style="fill:#df6721" d="M 14.1876,14.1254 24,24 l 16,0 0,15.9376 10,9.9376 0,-35.75 z M 24,26.312 14,36.062 14,50 28.75,50 38.624,40 24,40 Z"/></g></g>
 </svg>

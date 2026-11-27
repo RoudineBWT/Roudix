@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3207)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3207)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
-  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="52" height="52" x="6" y="6" fill="#92481a" rx="1.857"/><path fill="#ed772f" d="M10 34h20v20H10zm24 0h20v20H34zm0-24h20v20H34zm-24 0h20v20H10z"/><path fill="#fff6e8" d="M44 14v2H20a3.98 3.98 0 0 0-3.132 1.512A4 4 0 0 0 16 20v10a4 4 0 0 0 .06.68 4 4 0 0 0 .374 1.132A4 4 0 0 0 20 34h22a2 2 0 0 1 .98.26 2 2 0 0 1 .388.284A2 2 0 0 1 44 36v6a2 2 0 0 1-2 2H20v-2l-6 4 6 4v-2h24a3.98 3.98 0 0 0 2.872-1.214 4 4 0 0 0 .984-1.716A4 4 0 0 0 48 44V34a4 4 0 0 0-.06-.68 4 4 0 0 0-.374-1.132A4 4 0 0 0 44 30H22a2 2 0 0 1-.98-.26 2 2 0 0 1-.388-.284A2 2 0 0 1 20 28v-6a2 2 0 0 1 2-2h22v2l6-4z"/></g></g>
+  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(5.091 4.491) scale(0.59091)"><path fill="#a8501a" d="M10 34h20v20H10zm24 0h20v20H34zm0-24h20v20H34zm-24 0h20v20H10z"/><path fill="#df6721" d="M44 14v2H20a3.98 3.98 0 0 0-3.132 1.512A4 4 0 0 0 16 20v10a4 4 0 0 0 .06.68 4 4 0 0 0 .374 1.132A4 4 0 0 0 20 34h22a2 2 0 0 1 .98.26 2 2 0 0 1 .388.284A2 2 0 0 1 44 36v6a2 2 0 0 1-2 2H20v-2l-6 4 6 4v-2h24a3.98 3.98 0 0 0 2.872-1.214 4 4 0 0 0 .984-1.716A4 4 0 0 0 48 44V34a4 4 0 0 0-.06-.68 4 4 0 0 0-.374-1.132A4 4 0 0 0 44 30H22a2 2 0 0 1-.98-.26 2 2 0 0 1-.388-.284A2 2 0 0 1 20 28v-6a2 2 0 0 1 2-2h22v2l6-4z"/></g></g>
 </svg>

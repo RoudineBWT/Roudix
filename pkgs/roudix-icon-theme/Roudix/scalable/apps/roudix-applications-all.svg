@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt27)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht27)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
-  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="52" height="52" x="6" y="6" fill="#ed762b" rx="8" ry="8"/><rect width="14" height="14" x="16" y="16" fill="#fff1dc" rx="2" ry="2"/><path fill="#fff1dc" d="M36 16c-1.108 0-2 .892-2 2v10c0 1.108.892 2 2 2h10c1.108 0 2-.892 2-2V18c0-1.108-.892-2-2-2zm0 2h10v10H36zm0 16c-1.108 0-2 .892-2 2v10c0 1.108.892 2 2 2h10c1.108 0 2-.892 2-2V36c0-1.108-.892-2-2-2zm0 2h10v10H36zm-18-2c-1.108 0-2 .892-2 2v10c0 1.108.892 2 2 2h10c1.108 0 2-.892 2-2V36c0-1.108-.892-2-2-2zm0 2h10v10H18z"/></g></g>
+  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(-2.000 -2.600) scale(0.81250)"><rect width="14" height="14" x="16" y="16" fill="#fff1dc" rx="2" ry="2"/><path fill="#fff1dc" d="M36 16c-1.108 0-2 .892-2 2v10c0 1.108.892 2 2 2h10c1.108 0 2-.892 2-2V18c0-1.108-.892-2-2-2zm0 2h10v10H36zm0 16c-1.108 0-2 .892-2 2v10c0 1.108.892 2 2 2h10c1.108 0 2-.892 2-2V36c0-1.108-.892-2-2-2zm0 2h10v10H36zm-18-2c-1.108 0-2 .892-2 2v10c0 1.108.892 2 2 2h10c1.108 0 2-.892 2-2V36c0-1.108-.892-2-2-2zm0 2h10v10H18z"/></g></g>
 </svg>

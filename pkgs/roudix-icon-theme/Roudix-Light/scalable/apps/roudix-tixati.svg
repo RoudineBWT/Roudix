@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt750)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht750)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
-  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><rect width="13.229" height="13.229" x="1.852" y="1.852" fill="#ffd89f" rx="1.852" ry="1.852" style="paint-order:markers stroke fill"/><g stroke-width=".265"><path fill="#c2581a" d="M4.34 12.614 7.627 4.29h1.676l3.574 8.247-.673.227-3.32-7.636h-.838L5.09 12.842z"/><path fill="#f17b33" d="m4.188 12.955.538.455 8.349-9.12h-1.257z"/><path fill="#f17b33" d="m12.532 13.316.519-.474L5.115 4.29H3.858z"/><path fill="#db621c" d="M3.44 3.44v.85h4.608v9.216h.837V4.29h4.609v-.85z"/></g></g></g>
+  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(2.105 1.505) scale(2.58604)"><g stroke-width=".265"><path fill="#c2581a" d="M4.34 12.614 7.627 4.29h1.676l3.574 8.247-.673.227-3.32-7.636h-.838L5.09 12.842z"/><path fill="#f17b33" d="m4.188 12.955.538.455 8.349-9.12h-1.257z"/><path fill="#f17b33" d="m12.532 13.316.519-.474L5.115 4.29H3.858z"/><path fill="#db621c" d="M3.44 3.44v.85h4.608v9.216h.837V4.29h4.609v-.85z"/></g></g></g>
 </svg>

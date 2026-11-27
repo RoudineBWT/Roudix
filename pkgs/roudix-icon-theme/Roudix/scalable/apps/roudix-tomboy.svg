@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt752)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht752)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
-  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><rect width="13.229" height="14.287" x="1.852" y="1.323" fill="#ffb86a" fill-rule="evenodd" rx="1.587" ry="1.587"/><rect width="9.525" height=".265" x="3.704" y="6.614" opacity=".1" paint-order="markers stroke fill" ry="0"/><rect width="9.525" height=".265" x="3.704" y="9.524" opacity=".1" paint-order="markers stroke fill" ry="0"/><rect width="9.525" height=".265" x="3.704" y="12.434" opacity=".1" paint-order="markers stroke fill" ry="0"/><path fill="#ff9b4f" fill-rule="evenodd" d="M3.44 1.323c-.88 0-1.588.708-1.588 1.587v1.588h13.229V2.91c0-.88-.708-1.587-1.587-1.587H3.438z"/></g></g>
+  <clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath>
+  <g clip-path="url(#rvp)"><g transform="translate(4.800 16.800) scale(2.26776)"><rect width="9.525" height=".265" x="3.704" y="6.614" opacity=".1" paint-order="markers stroke fill" ry="0"/><rect width="9.525" height=".265" x="3.704" y="9.524" opacity=".1" paint-order="markers stroke fill" ry="0"/><rect width="9.525" height=".265" x="3.704" y="12.434" opacity=".1" paint-order="markers stroke fill" ry="0"/><path fill="#ff9b4f" fill-rule="evenodd" d="M3.44 1.323c-.88 0-1.588.708-1.588 1.587v1.588h13.229V2.91c0-.88-.708-1.587-1.587-1.587H3.438z"/></g></g>
 </svg>
