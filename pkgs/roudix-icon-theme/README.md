@@ -38,8 +38,21 @@ Aux petites tailles (barres d'outils, tray, menus) on a donc `go-previous`, `edi
 (`go-previous` → `go`) et tombe sur une icône d'app en tuile (gopher Go, haut-parleur Tela…).
 Pour régénérer : `python3 tools/add_papirus_ui.py <dépôt papirus-icon-theme>`.
 
+## Icônes symboliques (tray, menus, popups Plasma)
+Les `*-symbolic` de **Papirus-Dark / Papirus-Light** (16/22/24 px, tous contextes : `actions, apps, categories, devices,
+emblems, mimetypes, places, status`) sont embarquées dans `{16x16,22x22,24x24}/symbolic/*` et **recolorées en orange Roudix**
+(texte `#dfdfdf`/`#444444` et bleu highlight -> primaire ; `<style id>` renommé pour que KDE ne remette pas la couleur du texte).
+Sans ça, Notifications, Météo, Disques & périphériques, Configuration d'affichage, KDE Connect, presse-papiers, utilisateur,
+volume, luminosité... venaient du thème parent en crème/bleu. Pour régénérer (après `add_papirus_ui.py`) :
+
+    python3 tools/add_papirus_symbolic.py <dépôt papirus-icon-theme>
+
+## Gestionnaire de fichiers
+`system-file-manager`, `org.kde.dolphin`, `file-manager` (et leurs alias : Nautilus, Thunar, PCManFM-Qt...) utilisent le
+**dossier home Roudix** (`places/user-home`, orange, sans tuile) au lieu d'une tuile sombre.
+
 ## Ce qui n'est pas dessiné
-Les icônes **symboliques** (`*-symbolic`) ne sont pas embarquées : elles viennent du thème parent (Papirus dans Roudix, Adwaita/Breeze sinon).
+Les symboliques hors Papirus (ex. noms propres à Adwaita/Breeze absents de Papirus) viennent du thème parent.
 
 ## Utilisation dans Roudix
 Le thème est un paquet Nix (`default.nix`, `nix build .#roudix-icon-theme`) branché sur l'option existante :
