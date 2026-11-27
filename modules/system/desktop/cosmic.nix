@@ -160,6 +160,15 @@ let
       (mkDefault "com.system76.CosmicAppList" "favorites" (ron.list (map ron.str favoriteApps)))
       (mkDefault "com.system76.CosmicAppLibrary" "groups" appLibraryGroups)
       (mkDefault "com.system76.CosmicComp" "xkb_config" xkbConfig)
+      # Settings > Desktop > Wallpaper only lists ONE folder: the first
+      # <dir>/backgrounds found in XDG_DATA_DIRS (cosmic-settings, wallpaper/
+      # config.rs). On NixOS that is not guaranteed to be the system one, which
+      # left the picker empty. Pin it to the system folder, which holds both the
+      # Roudix wallpapers (roudix/, from roudix-branding) and COSMIC's own
+      # (cosmic/, from cosmic-wallpapers). Only a DEFAULT: picking another folder
+      # in Settings writes the user's own file, which wins.
+      (mkDefault "com.system76.CosmicSettings.Wallpaper" "current-folder"
+        ''Some(${ron.str "/run/current-system/sw/share/backgrounds"})'')
       # Wallpaper: the same Ember Cove as the other desktops, same on all outputs.
       (mkDefault "com.system76.CosmicBackground" "same-on-all" "true")
       (mkDefault "com.system76.CosmicBackground" "all"
@@ -240,6 +249,10 @@ in
       # hiPrio: Roudix's defaults win over any file with the same path
       # shipped by a COSMIC package.
       polkit_gnome
+      # COSMIC's own wallpapers (share/backgrounds/cosmic): not part of the
+      # nixpkgs COSMIC module's core packages, so without this only Roudix's
+      # show up in the picker.
+      cosmic-wallpapers
       (lib.hiPrio cosmicDefaults)
       (lib.hiPrio roudixBranding)
       (writeTextDir "share/desktop-directories/roudix.directory" ''
