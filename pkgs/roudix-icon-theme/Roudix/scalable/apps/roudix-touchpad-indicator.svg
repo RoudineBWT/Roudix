@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc3489)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc3489)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect style="opacity:0.2" width="52" height="52" x="-59" y="-58" rx="2.5" ry="2.5" transform="matrix(0,-1,-1,0,0,0)"/> <rect style="fill:#a24b18" width="52" height="52" x="-58" y="-58" rx="2.5" ry="2.5" transform="matrix(0,-1,-1,0,0,0)"/> <g style="opacity:0.40" transform="matrix(2,0,0,2,2e-4,0)"> <rect width="11" height="6" x="4" y="22" rx="1.25" ry="1.25"/> <rect width="11" height="6" x="17" y="22" rx="1.25" ry="1.25"/> <rect width="4" height="1" x="24" y="7"/> <rect width="4" height="1" x="24" y="9"/> <rect width="4" height="1" x="24" y="11"/> <rect width="4" height="1" x="24" y="13"/> <rect width="4" height="1" x="24" y="15"/> <rect width="4" height="1" x="24" y="17"/> </g> <path style="fill:#fff1dc;opacity:0.1" d="M 8.5 6 C 7.115 6 6 7.115 6 8.5 L 6 9.5 C 6 8.115 7.115 7 8.5 7 L 55.5 7 C 56.885 7 58 8.115 58 9.5 L 58 8.5 C 58 7.115 56.885 6 55.5 6 L 8.5 6 z"/></g></g>
 </svg>

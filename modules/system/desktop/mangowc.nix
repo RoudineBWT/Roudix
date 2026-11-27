@@ -6,14 +6,16 @@ let
   isNoctalia  = shellType == "noctalia";
   needsPolkit = !isDms;
   isKdeIntegration = config.roudix.desktopIntegration == "kde";
+  fp = config.roudix.filePicker;   # file picker follows roudix.fileManager
 
-  # kde integration: wlr keeps ScreenCast/Screenshot, everything else
-  # (FileChooser included) goes to the KDE portal. wlr has no FileChooser.
+  # kde integration: wlr keeps ScreenCast/Screenshot, everything else goes to
+  # the KDE portal, except FileChooser which follows roudix.fileManager
+  # (wlr has no FileChooser).
   kdePortalConfig = {
     default = [ "wlr" "kde" ];
     "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
     "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
-    "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+    "org.freedesktop.impl.portal.FileChooser" = fp.chain;
     # gtk portal only for Settings: dark/light follows dconf
     # (color-scheme) instead of the KDE portal's kdeglobals (= light).
     "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
@@ -51,10 +53,11 @@ in
         xdg.portal = {
           enable = true;
           wlr.enable = true;
-          extraPortals = with pkgs;
+          extraPortals = (with pkgs;
             (if isKdeIntegration
              then [ kdePackages.xdg-desktop-portal-kde xdg-desktop-portal-gtk ]
-             else [ xdg-desktop-portal-gtk ]);
+             else [ xdg-desktop-portal-gtk ]))
+            ++ fp.portals;
           # Session runs with XDG_CURRENT_DESKTOP=wlroots, so config.common
           # is what applies. The mango flake module also ships a
           # config.mango (default = gtk) and always installs the gtk portal,
@@ -66,6 +69,7 @@ in
               default = "wlr";
               # Explicitly set screencast to wlr to avoid gtk taking over
               "org.freedesktop.impl.portal.ScreenCast" = "wlr";
+              "org.freedesktop.impl.portal.FileChooser" = fp.chain;
             };
           config.mango = lib.mkIf isKdeIntegration (lib.mkForce kdePortalConfig);
 

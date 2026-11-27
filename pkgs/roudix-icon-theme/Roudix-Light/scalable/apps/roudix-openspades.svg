@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc2244)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc2244)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="M 7,28 7,55.2 C 7,56.7512 8.2488,58 9.8,58 l 44.4,0 C 55.7512,58 57,56.7512 57,55.2 L 57,28 Z"/> <path style="fill:#ffedd3" d="M 7,27 7,54.2 C 7,55.7512 8.2488,57 9.8,57 l 44.4,0 C 55.7512,57 57,55.7512 57,54.2 L 57,27 Z"/> <path style="fill:#db631d" d="M 57,27 57,9.8 C 57,8.2488 55.7512,7 54.2,7 L 9.8,7 C 8.2488,7 7,8.2488 7,9.8 L 7,27 Z"/> <rect style="opacity:0.1" width="10" height="10" x="17" y="28"/> <rect style="fill:#9c4c1a" width="10" height="10" x="17" y="27"/> <rect style="opacity:0.1" width="10" height="10" x="37" y="28"/> <rect style="fill:#9c4c1a" width="10" height="10" x="37" y="27"/> <path style="opacity:0.1;fill:#fff6e8" d="M 9.8007812 7 C 8.2495813 7 7 8.2495813 7 9.8007812 L 7 10.800781 C 7 9.2495815 8.2495813 8 9.8007812 8 L 54.199219 8 C 55.750419 8 57 9.2495814 57 10.800781 L 57 9.8007812 C 57 8.2495813 55.750419 7 54.199219 7 L 9.8007812 7 z"/></g></g>
 </svg>

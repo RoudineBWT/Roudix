@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt306)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht306)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
-  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="52" height="52" x="6" y="6" fill="#dc641d" rx="8" ry="8"/><path fill="#984a1a" d="m32 10-18 5.803 9.196 31.424L32 54.002l8.804-6.773L50 15.804z"/><path fill="#ffab5e" d="M31.984 11 28 16.2l2.004 24.237L31.996 43l1.984-2.543L36 16.207zm-7.16 30L24 42.992 24.84 45l4.285-.758.875-1.246-.875-1.25zm14.148 0-4.297.746-.875 1.25.875 1.246L38.96 45l.84-2.008zm-6.969 4-1.246.875-.758 4.29 2.008.835 1.992-.824-.75-4.301z"/></g></g>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
+  <g clip-path="url(#rvp)"><g transform="translate(5.091 4.491) scale(0.59091)"><path fill="#984a1a" d="m32 10-18 5.803 9.196 31.424L32 54.002l8.804-6.773L50 15.804z"/><path fill="#ffab5e" d="M31.984 11 28 16.2l2.004 24.237L31.996 43l1.984-2.543L36 16.207zm-7.16 30L24 42.992 24.84 45l4.285-.758.875-1.246-.875-1.25zm14.148 0-4.297.746-.875 1.25.875 1.246L38.96 45l.84-2.008zm-6.969 4-1.246.875-.758 4.29 2.008.835 1.992-.824-.75-4.301z"/></g></g>
 </svg>

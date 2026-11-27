@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
   <defs>
-    <linearGradient id="bgp6" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
-    <linearGradient id="shp6" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
-    <linearGradient id="glp6" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
-    <linearGradient id="gbp6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
-    <linearGradient id="fop6" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
-    <linearGradient id="pgp6" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
+    <linearGradient id="bgh44696" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#211a15"/></linearGradient>
+    <linearGradient id="shh44696" x1="24" y1="3" x2="24" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glh44696" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="gbh44696" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc878"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="foh44696" x1="0" y1="17" x2="0" y2="41" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb468"/><stop offset="1" stop-color="#ff8c42"/></linearGradient>
+    <linearGradient id="pgh44696" x1="8" y1="5" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a211b"/><stop offset="1" stop-color="#1c1511"/></linearGradient>
   </defs>
-  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgp6)"/>
-  <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shp6)"/>
-  <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <g transform="translate(11 11) scale(1.0833)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" stroke="#000000" opacity="0.3"><rect x="16" y="16" width="6" height="6" rx="1" /> <rect x="2" y="16" width="6" height="6" rx="1" /> <rect x="9" y="2" width="6" height="6" rx="1" /> <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" /> <path d="M12 12V8" /></g>
-  <g transform="translate(11 10) scale(1.0833)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" stroke="url(#glp6)"><rect x="16" y="16" width="6" height="6" rx="1" /> <rect x="2" y="16" width="6" height="6" rx="1" /> <rect x="9" y="2" width="6" height="6" rx="1" /> <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" /> <path d="M12 12V8" /></g>
+  <ellipse cx="24" cy="42.2" rx="16" ry="1.6" fill="#000" opacity="0.28"/>
+  <path d="M5 11.5A3.5 3.5 0 0 1 8.5 8H19a3 3 0 0 1 2.3 1.1L24 12.5h15.5A3.5 3.5 0 0 1 43 16v21a3.5 3.5 0 0 1-3.5 3.5h-31A3.5 3.5 0 0 1 5 37z" fill="#cc7034"/>
+  <path d="M5 20.5A3.5 3.5 0 0 1 8.5 17h31a3.5 3.5 0 0 1 3.5 3.5v16.5a3.5 3.5 0 0 1-3.5 3.5h-31A3.5 3.5 0 0 1 5 37z" fill="url(#foh44696)"/>
+  <path d="M8.5 17.6h31" stroke="#ffffff" stroke-opacity="0.35" stroke-width="0.8" stroke-linecap="round"/>
+  <g transform="translate(17 21.5) scale(0.5833)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" stroke="#4a2410" stroke-opacity="0.85"><circle cx="18" cy="5" r="3" /> <circle cx="6" cy="12" r="3" /> <circle cx="18" cy="19" r="3" /> <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" /> <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" /></g>
 </svg>

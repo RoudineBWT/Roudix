@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt749)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht749)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><rect width="14.287" height="14.287" x="1.323" y="1.323" fill="#6c3818" rx="7.144" ry="7.144"/><path fill="#e46d26" d="M1.655 10.602c.742 1.856 4.065 4.091 6.563-.758l2.03.31.827 1.893c-3.698 2.297-9.2 4.085-9.593-2.063z"/><path fill="#ffc777" d="M11.635 12.698a.53.53 0 0 0 .481-.296l1.081-2.188 2.414-.351a.53.53 0 0 0 .293-.905l-1.748-1.702.412-2.405a.53.53 0 0 0-.768-.558l-2.16 1.136-2.16-1.135a.53.53 0 0 0-.769.56l.414 2.403-1.748 1.704a.53.53 0 0 0 .294.904l2.415.35 1.08 2.188a.53.53 0 0 0 .469.295" color="#4a2a16" style="font-feature-settings:normal;font-variant-alternates:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-variant-numeric:normal;font-variant-position:normal;isolation:auto;mix-blend-mode:normal;shape-padding:0;text-decoration-color:#4a2a16;text-decoration-line:none;text-decoration-style:solid;text-indent:0;text-orientation:mixed;text-transform:none;white-space:normal"/></g></g>
 </svg>

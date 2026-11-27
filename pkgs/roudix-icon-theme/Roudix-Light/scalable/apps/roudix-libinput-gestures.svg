@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1254)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1254)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><circle cx="8.466" cy="8.46" r="7.144" fill="#ec752d" style="paint-order:stroke markers fill"/><circle cx="8.466" cy="8.46" r="6.085" fill="#fff6e8" opacity=".1" style="paint-order:stroke markers fill"/><g fill-rule="evenodd"><circle cx="7.673" cy="5.292" r="2.117" opacity=".15" style="paint-order:stroke fill markers"/><circle cx="7.673" cy="5.292" r="1.587" opacity=".15" style="paint-order:stroke fill markers"/><circle cx="7.673" cy="5.292" r="1.058" opacity=".15" style="paint-order:stroke fill markers"/></g><path fill="#fff6e8" d="M7.673 5.027c-.264 0-.46.213-.476.476v5.239L5.47 9.294a.475.475 0 0 0-.813.337.47.47 0 0 0 .14.336l2.876 2.68s.598.635 1.429.635c1.052 0 1.905-.71 1.905-1.588V8.52a.317.317 0 0 0-.318-.317h-.317V9.79h-.318V7.83a.317.317 0 0 0-.317-.317h-.318v1.96h-.317v-2.62c0-.131-.142-.237-.318-.237s-.317.106-.317.238v2.301h-.318v-3.65a.475.475 0 0 0-.476-.477z" style="paint-order:normal"/></g></g>
 </svg>

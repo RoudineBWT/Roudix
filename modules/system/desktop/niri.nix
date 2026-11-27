@@ -5,6 +5,7 @@ let
   isDms      = shellType == "dms";
   isNoctalia = shellType == "noctalia";
   isKdeIntegration = config.roudix.desktopIntegration == "kde";
+  fp = config.roudix.filePicker;   # file picker follows roudix.fileManager
   dp = import ../../desktop-pkgs.nix {
     inherit pkgs inputs;
     latest = config.roudix.desktop.latest;
@@ -56,10 +57,11 @@ in
     # interfaces must keep going through the gnome portal.
     xdg.portal = {
       enable = true;
-      extraPortals = with pkgs;
+      extraPortals = (with pkgs;
         if isKdeIntegration
         then [ kdePackages.xdg-desktop-portal-kde xdg-desktop-portal-gtk ]
-        else [ xdg-desktop-portal-gtk xdg-desktop-portal-gnome ];
+        else [ xdg-desktop-portal-gtk xdg-desktop-portal-gnome ])
+        ++ fp.portals;
       config.niri =
         if isKdeIntegration
         then lib.mkForce {
@@ -70,11 +72,13 @@ in
           # gtk portal only for Settings: dark/light follows dconf
           # (color-scheme) instead of the KDE portal's kdeglobals (= light).
           "org.freedesktop.impl.portal.Settings"      = [ "gtk" ];
+          "org.freedesktop.impl.portal.FileChooser"   = fp.chain;
         }
         else {
           default = [ "gnome" "gtk" ];
           "org.freedesktop.impl.portal.ScreenCast"    = [ "gnome" ];
           "org.freedesktop.impl.portal.RemoteDesktop" = [ "gnome" ];
+          "org.freedesktop.impl.portal.FileChooser"   = fp.chain;
         };
     };
 

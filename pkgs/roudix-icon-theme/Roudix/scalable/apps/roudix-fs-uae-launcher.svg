@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt205)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht205)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
-  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><rect width="52" height="52" x="6" y="6" fill="#904317" fill-rule="evenodd" rx="8" ry="8" style="paint-order:stroke fill markers"/><path fill="#f78238" d="m43.567 18-14.33 23.002-3.447-5.318h-4.916L27.504 46l3.513-.018L48.45 18z"/><path fill="#ffa659" d="m37.377 18-14.33 23.002-3.447-5.318h-4.916L21.314 46l3.513-.018L42.26 18z"/><path fill="none" stroke="#fff1dc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.211" d="M48.21 36.863s-2.932-.752-2.932 1.863 2.932 1.438 2.932 4.053-2.932 2.063-2.932 2.063m-3.698-4.368H39.4m2.916-3.684c-3.494 0-2.916.832-2.916 8.053"/></g></g>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
+  <g clip-path="url(#rvp)"><g transform="translate(-0.143 -0.371) scale(0.74286)"><path fill="#f78238" d="m43.567 18-14.33 23.002-3.447-5.318h-4.916L27.504 46l3.513-.018L48.45 18z"/><path fill="#ffa659" d="m37.377 18-14.33 23.002-3.447-5.318h-4.916L21.314 46l3.513-.018L42.26 18z"/><path fill="none" stroke="#fff1dc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.211" d="M48.21 36.863s-2.932-.752-2.932 1.863 2.932 1.438 2.932 4.053-2.932 2.063-2.932 2.063m-3.698-4.368H39.4m2.916-3.684c-3.494 0-2.916.832-2.916 8.053"/></g></g>
 </svg>

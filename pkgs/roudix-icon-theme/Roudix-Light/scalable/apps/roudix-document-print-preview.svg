@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1630)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1630)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path fill="#ffdfb0" d="M12 30V9c0-1.662 1.338-3 3-3h34c1.662 0 3 1.338 3 3v21z" style="paint-order:stroke fill markers"/><rect width="56" height="28" x="4" y="18" fill="#ad511a" rx="6" ry="6" style="paint-order:stroke fill markers"/><rect width="46" height="4" x="9" y="30" fill="#fff6e8" opacity=".35" rx="2" ry="2" style="paint-order:stroke fill markers"/><path fill="#ffdfb0" d="M12 34v21c0 1.662 1.338 3 3 3h34c1.662 0 3-1.338 3-3V34z" style="paint-order:stroke fill markers"/><rect width="3" height="3" x="8" y="22" fill="#ffe6c2" rx="3" ry="3" style="paint-order:stroke fill markers"/><circle cx="32" cy="34.5" r="12" fill="#f58037"/><ellipse cx="32" cy="34.5" fill="#fff6e8" opacity=".35" rx="9" ry="6" style="paint-order:stroke fill markers"/><path fill="#fff6e8" d="M32 29.5a5 5 0 0 0-5 5 5 5 0 0 0 5 5 5 5 0 0 0 5-5 5 5 0 0 0-5-5m1.5 1.5a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5 1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5" style="paint-order:stroke fill markers"/></g></g>
 </svg>

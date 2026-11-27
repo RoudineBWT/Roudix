@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt144)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht144)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><g transform="translate(0 -280.07)"><circle cx="8.466" cy="288.53" r="7.144" fill="#e66f28" style="paint-order:stroke markers fill"/><circle cx="8.467" cy="288.53" r="5.594" opacity=".15" paint-order="stroke markers fill"/><path fill="#ad511a" fill-rule="evenodd" d="M11.164 285.359a.43.43 0 0 0-.308.108l-1.668 1.483a.42.42 0 0 0-.116.458c-.117.111-.031.615-.06.79-.038.215-.483.313-.852.298-.477.02-.946.121-1.288.427-.19.17-1.682 2.587-1.575 2.78.06.108 3.154-1.258 4.12-1.866.175-.11.165-.24.137-.467-.02-.155-.082-.308-.134-.443-.23-.338-.154-.84.004-1.181a.43.43 0 0 0 .408-.09l1.668-1.482a.417.417 0 0 0 .032-.596l-.072-.079a.43.43 0 0 0-.295-.14"/><g fill="#fff6e8" transform="translate(0 -.333)"><path d="M8.467 285.69c-.813 0-1.852.226-1.852 1.324 0 .292.273.529.529.529.255 0 .529-.237.529-.53v-.264c0-.234.238-.529.794-.529.555 0 .793.37.793.794 0 1.058-1.058 1.058-1.058 3.175h.53c0-1.829 1.587-1.694 1.587-3.175 0-.847-.926-1.323-1.852-1.323z"/><circle cx="8.467" cy="291.51" r=".529"/></g></g></g></g>
 </svg>

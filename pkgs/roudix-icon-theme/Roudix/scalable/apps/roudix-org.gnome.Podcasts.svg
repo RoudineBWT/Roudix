@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt516)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht516)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><g transform="translate(0 -236)"><rect width="60" height="48" x="2" y="244" fill="#d3611a" rx="4.286" ry="5.053"/><path fill="#bb5619" d="M17 292h30l-2.143-10H19.143z"/><path fill="#ffe6c2" d="M10.333 248h43.333l4.333 4.533V282H6v-29.467z"/><path fill="#8a4117" d="M6 257h52v18H6z"/><circle cx="19" cy="266" r="4" fill="#ffe6c2"/><circle cx="45.818" cy="266" r="4" fill="#ffe6c2"/><path fill="#f37d32" d="M25 262h14v8H25z"/><path fill="#8a4117" d="M25 262v8h8.222c.282-1.29.442-2.626.442-4s-.16-2.71-.442-4z" opacity=".5"/></g></g></g>
 </svg>

@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1529)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1529)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><circle cx="32" cy="32" r="18" fill="#fff1dc" fill-rule="evenodd" style="paint-order:normal"/><path fill="#ea7327" d="M32 5A27 27 0 0 0 5 32a27 27 0 0 0 27 27 27 27 0 0 0 27-27A27 27 0 0 0 32 5m0 15.428A11.57 11.57 0 0 1 43.572 32 11.57 11.57 0 0 1 32 43.572 11.57 11.57 0 0 1 20.428 32 11.57 11.57 0 0 1 32 20.428"/><path fill="#fff1dc" d="M32 9A23 23 0 0 0 9 32a23 23 0 0 0 23 23 23 23 0 0 0 23-23A23 23 0 0 0 32 9m0 13.143A9.857 9.857 0 0 1 41.857 32 9.857 9.857 0 0 1 32 41.857 9.857 9.857 0 0 1 22.143 32 9.857 9.857 0 0 1 32 22.143" opacity=".15"/><path d="M32 17a15 15 0 0 0-15 15 15 15 0 0 0 15 15 15 15 0 0 0 15-15 15 15 0 0 0-15-15m0 9a6 6 0 0 1 6 6 6 6 0 0 1-6 6 6 6 0 0 1-6-6 6 6 0 0 1 6-6" opacity=".35"/></g></g>
 </svg>

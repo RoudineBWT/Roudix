@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc581)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc581)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#3b2f27" stroke-opacity="0.1" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(0.53125)"><path style="opacity:0.2" d="M 32,5 8,19 V 31 L 43.023,42.635 32,49 18,41 V 38.43 L 8,35 V 47 L 32,61 56,47 V 35 L 20.977,23.365 32,17 46,25 V 27.57 L 56,31 V 19 Z"/> <path style="fill:#ca5b1a" d="M 32,4 8,18 V 30 L 43.023,41.635 32,48 18,40 V 37.43 L 8,34 V 46 L 32,60 56,46 V 34 L 20.977,22.365 32,16 46,24 V 26.57 L 56,30 V 18 Z"/> <path style="fill:#fff6e8;opacity:0.2" d="M 32 4 L 8 18 L 8 19 L 32 5 L 56 19 L 56 18 L 32 4 z M 22.076 22.73 L 20.977 23.365 L 56 35 L 56 34 L 22.076 22.73 z M 8 34 L 8 35 L 18 38.43 L 18 37.43 L 8 34 z M 18 40 L 18 41 L 32 49 L 43.023 42.635 L 41.924 42.27 L 32 48 L 18 40 z"/></g></g>
 </svg>

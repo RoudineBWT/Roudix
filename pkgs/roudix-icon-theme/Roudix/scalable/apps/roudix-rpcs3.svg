@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgt677)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#sht677)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
-  <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><rect x="1.5875" y="1.5875" width="13.758" height="13.758" rx="2.1166" ry="2.1166" fill="#b65418" stroke-linecap="round" stroke-linejoin="round" stroke-width=".26977"/> <path d="M4.498 8.493h6.52s.764.05.764 1.523-.744 1.523-.744 1.523h-6.54m0-6.091h6.52s.764.05.764 1.522-.744 1.523-.744 1.523h-6.54" fill="none" stroke="#fff1dc" stroke-linejoin="round" stroke-width="1.3063"/></g></g>
+  <defs><clipPath id="rvp"><rect x="4" y="4" width="40" height="40"/></clipPath></defs>
+  <g clip-path="url(#rvp)"><g transform="translate(-3.733 -4.333) scale(3.27565)"><path d="M4.498 8.493h6.52s.764.05.764 1.523-.744 1.523-.744 1.523h-6.54m0-6.091h6.52s.764.05.764 1.522-.744 1.523-.744 1.523h-6.54" fill="none" stroke="#fff1dc" stroke-linejoin="round" stroke-width="1.3063"/></g></g>
 </svg>

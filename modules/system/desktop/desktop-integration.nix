@@ -2,6 +2,13 @@
 let
   isKdeIntegration = config.roudix.desktopIntegration == "kde";
   isBareCompositor = builtins.elem config.roudix.desktop.type [ "niri" "hyprland" "mangowc" "umbriel" ];
+  # xdg-desktop-portal-kde is also used when roudix.fileManager = "dolphin"
+  # (or any picker mapped to "kde") in gnome integration mode.
+  usesKdePicker = isBareCompositor && config.roudix.filePicker.backend == "kde";
+
+  # Qt platform theme for the (Qt) KDE portal, see the comment in kdeCounterparts.
+  qtPortalEnv =
+    "\"QT_QPA_PLATFORMTHEME=qt6ct\" \"QT_QPA_PLATFORMTHEME_QT6=qt6ct\" \"QT_PLUGIN_PATH=${pkgs.qt6Packages.qt6ct}/${pkgs.qt6.qtbase.qtPluginPrefix}\"";
 
   # ── KDE counterparts of the GNOME pieces (bare compositors only) ───────────
   # keyring / portal / polkit are switched in niri.nix, hyprland.nix,
@@ -41,8 +48,7 @@ let
     # the user manager makes every compositor behave the same, and the
     # dialog follows the qt6ct colors Noctalia/DMS generate.
     # (systemd.user.extraConfig is deprecated: systemd.user.settings.Manager.)
-    systemd.user.settings.Manager.DefaultEnvironment =
-      "\"QT_QPA_PLATFORMTHEME=qt6ct\" \"QT_QPA_PLATFORMTHEME_QT6=qt6ct\" \"QT_PLUGIN_PATH=${pkgs.qt6Packages.qt6ct}/${pkgs.qt6.qtbase.qtPluginPrefix}\"";
+    systemd.user.settings.Manager.DefaultEnvironment = qtPortalEnv;
   };
 in
 {
@@ -58,6 +64,12 @@ in
   config = lib.mkMerge [
     { programs.dconf.enable = lib.mkDefault true; }
     kdeCounterparts
+    # Dolphin picker with the GNOME stack: only the Qt theming env is needed
+    # (the KDE counterparts bundle above stays kde-integration only).
+    (lib.mkIf (usesKdePicker && !isKdeIntegration) {
+      environment.systemPackages = [ pkgs.qt6Packages.qt6ct ];
+      systemd.user.settings.Manager.DefaultEnvironment = qtPortalEnv;
+    })
   ];
 
   options.roudix.desktopIntegration = lib.mkOption {

@@ -10,6 +10,6 @@
   <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#bgc1534)"/>
   <rect x="3" y="3" width="42" height="17" rx="10" fill="url(#shc1534)"/>
   <rect x="3.25" y="3.25" width="41.5" height="41.5" rx="9.75" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.5"/>
-  <clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath>
+  <defs><clipPath id="rvp"><rect x="7" y="6.5" width="34" height="34"/></clipPath></defs>
   <g clip-path="url(#rvp)"><g transform="translate(7 6.5) scale(2.00791)"><path fill="#f17b30" d="M8.38 1.323a7.144 7.144 0 1 1 0 14.287 7.144 7.144 0 0 1 0-14.287"/><path fill="#fff1dc" fill-rule="evenodd" d="M6.476 4.233a2.24 2.24 0 0 0-2.243 2.243 2.26 2.26 0 0 0 2.251 2.25l.557.002h-.002.001l1.163.003.003 1.718a2.26 2.26 0 0 0 2.251 2.25 2.24 2.24 0 0 0 2.243-2.242 2.26 2.26 0 0 0-2.251-2.25l-.525-.002-1.193-.002-.004-1.719a2.26 2.26 0 0 0-2.251-2.25m-.001.53q.109 0 .215.014v1.906H4.776a1.701 1.701 0 0 1 1.698-1.92m.744.17c.578.278.977.868.978 1.552l.004 1.716-1.715-.004a1.73 1.73 0 0 1-1.556-.984h2.29zm1.513 3.799 1.716.004a1.73 1.73 0 0 1 1.566 1.008h-2.28v2.266a1.73 1.73 0 0 1-.998-1.562zm1.531 1.54h1.897q.01.093.01.186a1.7 1.7 0 0 1-1.907 1.7z" color="#2e1d12" style="-inkscape-stroke:none"/></g></g>
 </svg>

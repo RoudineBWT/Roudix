@@ -28,11 +28,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795765877,
-        "narHash": "sha256-5WhG/zosKd9u66FPn4sj6t/1osZlP/H0Bbf8DJCA0kM=",
+        "lastModified": 1795750423,
+        "narHash": "sha256-8STg+HrWdkiisBYY9hclw7xc7W2iqOcD/1h3mobfTIc=",
         "owner": "roudinebwt",
         "repo": "brave-preview",
-        "rev": "91e738dd2287107030477f19cb308129df532cf8",
+        "rev": "9bebde00278a4aaa7734e4693d4b5f83711ca317",
         "type": "github"
       },
       "original": {
@@ -213,11 +213,11 @@
     "dank-qml-common_2": {
       "flake": false,
       "locked": {
-        "lastModified": 1795764551,
-        "narHash": "sha256-VtvfFyMBL+Zqi4iX6xgEZkxEpA7yekxvEHhSJKT5zxU=",
+        "lastModified": 1795625362,
+        "narHash": "sha256-i8eUaVSUEbvkTvW9yLPtOsKQZO5s3khXszAg+sEDiKw=",
         "owner": "duxlabs-dev",
         "repo": "dux-qml-common",
-        "rev": "cfd1daa02e437ea9b18db50873d3796f7861f93b",
+        "rev": "440a066dbd68ac9a9be0de7134679e304b30d6ca",
         "type": "github"
       },
       "original": {
@@ -236,11 +236,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795769305,
-        "narHash": "sha256-bAbDgrXzQeoqRNdcY9VH7IuGDbyxz77Xo+X0A2LZMEk=",
+        "lastModified": 1795763175,
+        "narHash": "sha256-G2kSyWor/NbPPpFLCWh3pcip4zJGp4i7c2JE54g19cA=",
         "owner": "duxlabs-dev",
         "repo": "dux-shell",
-        "rev": "e9358e5d9a2a3f840a6178907a74409ea2f420af",
+        "rev": "f7fff29aabc7204bee01d4048737a0fa91ac34d0",
         "type": "github"
       },
       "original": {
@@ -924,11 +924,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1795770645,
-        "narHash": "sha256-I2gwUKWCKUGPpur7/tzG5kkmM6LvPF/VPyPZoCiYyBI=",
+        "lastModified": 1795763896,
+        "narHash": "sha256-sXPxO/R7yItcquze7Pp4n+YRsaeEhjbZ5GfqIxt8kFM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "176f744b692ac142f30c836070ef17639875a7d2",
+        "rev": "a364c84969f4619b47052d70e265871f399494ee",
         "type": "github"
       },
       "original": {
@@ -1380,11 +1380,11 @@
         "rust-overlay": "rust-overlay_4"
       },
       "locked": {
-        "lastModified": 1795770875,
-        "narHash": "sha256-c+qr8/9G8ODhz+5rQyMIS8VO2tAG6YJNcfy5MdXmKvY=",
+        "lastModified": 1795744949,
+        "narHash": "sha256-eVmbJWp3noiKo0yt2zf82VuQX8zMqcRgtus3xbLt8eI=",
         "owner": "sonorahq",
         "repo": "sonora",
-        "rev": "d7b65382ab33a0dd0b10304de0331be51caa1f4b",
+        "rev": "ec2aba5717fdfc58d640fb4f08d4aecfa8944d05",
         "type": "github"
       },
       "original": {
