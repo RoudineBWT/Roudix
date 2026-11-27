@@ -20,7 +20,7 @@ DialogSizes=16,22,32,48,64,128,256
 FollowsColorScheme=false
 KDE-Extensions=.svg
 
-Directories=16x16/actions,22x22/actions,24x24/actions,16x16/panel,22x22/panel,24x24/panel,16x16/status,22x22/status,24x24/status,scalable/apps,scalable/categories,scalable/devices,scalable/mimetypes,scalable/places
+Directories=16x16/actions,22x22/actions,24x24/actions,16x16/panel,22x22/panel,24x24/panel,16x16/status,22x22/status,24x24/status,32x32/status,48x48/status,scalable/apps,scalable/categories,scalable/devices,scalable/mimetypes,scalable/places
 
 [scalable/apps]
 Context=Applications
@@ -100,4 +100,14 @@ Type=Fixed
 [24x24/status]
 Context=Status
 Size=24
+Type=Fixed
+
+[32x32/status]
+Context=Status
+Size=32
+Type=Fixed
+
+[48x48/status]
+Context=Status
+Size=48
 Type=Fixed
