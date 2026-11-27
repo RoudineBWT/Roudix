@@ -9,6 +9,9 @@
 # and LICENSES.md for the (mixed) licences — the icons converted from Tela /
 # Papirus are GPL-3.0.
 #
+# COSMIC names (tools/add_cosmic.py: symbolic aliases, emblems, preferences-*, file types) are covered too
+# (tools/check_cosmic.py reports 0 missing).
+#
 # UI icons (go-previous, edit-find, audio-volume-*, tray/panel...) are Papirus-Dark /
 # Papirus-Light's 16/22/24 px monochrome actions/panel/status sets, embedded as-is
 # (tools/add_papirus_ui.py) so they no longer depend on the parent theme. Whatever the
@@ -25,7 +28,7 @@
 
 stdenvNoCC.mkDerivation {
   pname = "roudix-icon-theme";
-  version = "1.6";
+  version = "1.7";
 
   src = ./.;
 

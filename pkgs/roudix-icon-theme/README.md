@@ -51,6 +51,26 @@ volume, luminosité... venaient du thème parent en crème/bleu. Pour régénér
 `system-file-manager`, `org.kde.dolphin`, `file-manager` (et leurs alias : Nautilus, Thunar, PCManFM-Qt...) utilisent le
 **dossier home Roudix** (`places/user-home`, orange) posé dans la tuile Roudix, comme les autres icônes d'apps.
 
+## COSMIC (System76)
+Le thème couvre aussi les noms attendus par COSMIC (`cosmic-icons`, libcosmic, cosmic-files, cosmic-settings, applets).
+`python3 tools/check_cosmic.py <cosmic-icons>` compare les deux ; résultat actuel : **0 nom manquant** (665 noms).
+Ce qui a été ajouté par `tools/add_cosmic.py <dépôt papirus-icon-theme>` (à lancer **après** `add_papirus_ui.py`,
+`add_papirus_symbolic.py` et `extras*.py`, qui réécrivent les dossiers `symbolic/` et `Directories`) :
+
+* **Symboliques** (`{16,22,24}/symbolic/*`) : ~50 noms COSMIC qui n'existent pas sous ce nom chez Papirus (`pencil-symbolic`,
+  `pin-symbolic`, `view-fit-symbolic`, `window-new-symbolic`, `preferences-*-symbolic`, `network-wireless-secure-signal-*`,
+  `plugged-into-power-symbolic`...) : copiés depuis l'équivalent Papirus déjà recoloré en orange Roudix.
+* **Symboliques dessinées** (absentes de Papirus) : `grip-lines`, `insert-arrow`, `insert-ellipse`, `ratios`, `stroke-width`,
+  `window-stack`, `navbar-open`, `navbar-closed`, `payment-card` (16 px, `currentColor`, primaire Roudix).
+* **Emblèmes** (`{16,22,24}/emblems`) : `emblem-default|documents|favorite|important|photos|shared|synchronizing|system`
+  de Papirus, recolorés en orange Roudix. Dossiers déclarés dans `index.theme`.
+* **Types de fichiers** (liens symboliques dans `scalable/mimetypes`) : `text-x-json|xml|html|csv|c#|cheader|dockerfile|just|ron|godot|flatpak`,
+  `package-x-deb|rpm`, `application-x-ebook|epub`, `text-x-generic-template`, `x-office`, `x-office-database`
+  → pages Roudix existantes (même glyphes que sous KDE). `text-x-ron` utilise le glyphe JSON, `text-x-just` celui de Makefile.
+* **Pages de réglages COSMIC** (`scalable/apps/preferences-*`, `chat`, `application-default`) : alias vers les tuiles
+  `roudix-cosmic-settings-*` ou, à défaut, vers les tuiles Roudix équivalentes ; `devices/payment-card` (nouvelle tuile) et
+  `audio-subwoofer*` (alias de `audio-speakers`).
+
 ## Ce qui n'est pas dessiné
 Les symboliques hors Papirus (ex. noms propres à Adwaita/Breeze absents de Papirus) viennent du thème parent.
 
@@ -84,6 +104,7 @@ Puis les retouches par-dessus (à relancer après chaque régénération) :
     python3 tools/extras.py                                              # dossier Bureau, zip à fermeture éclair, .nix
     python3 tools/extras_apps.py <simple-icons/package> <lucide-static/package>   # apps manquantes + icônes io.roudix.*
     python3 tools/extras_complete.py <Tela-icon-theme> <Papirus>/64x64/apps       # tous les noms Tela/Papirus restants
+    python3 tools/add_cosmic.py <dépôt papirus-icon-theme>                        # noms COSMIC (symboliques, emblèmes, alias)
 
 ## Licences
 **Attention : une partie du thème est en GPL-3.0** (icônes converties depuis Tela/Papirus). Détails et option « sans GPL » dans `LICENSES.md`.
