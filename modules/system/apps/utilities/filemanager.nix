@@ -42,7 +42,7 @@ let
     # Plain `pkgs.nemo` has none of them. file-roller + the CLI backends do the work.
     "nemo"       = { package = nemoWithTerminal;               command = "nemo";       extras = [ pkgs.gvfs pkgs.file-roller pkgs.p7zip pkgs.unrar pkgs.zip pkgs.unzip ]; };
     "thunar"     = { package = pkgs.thunar;           command = "thunar";     extras = [ pkgs.gvfs pkgs.thunar-volman ]; };
-    "pcmanfm-qt" = { package = pkgs.libsForQt5.pcmanfm-qt; command = "pcmanfm-qt"; extras = []; };
+    "pcmanfm-qt" = { package = pkgs.lxqt.pcmanfm-qt; command = "pcmanfm-qt"; extras = []; };
     # Luciole (Noctalia family, native Wayland / OpenGL ES, no Qt or GTK).
     # Only valid with roudix.desktop.shell = "noctalia" (assertion below).
     # Package from its flake (no nixpkgs attribute yet). Its wrapper already
